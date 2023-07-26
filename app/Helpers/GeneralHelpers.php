@@ -1,0 +1,197 @@
+<?php
+
+namespace App\Helpers;
+
+class GeneralHelpers
+{
+
+    /**
+     * build child menu
+     * @param $child
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+
+     public static function dates($tgl, $hari_tampil = true){
+
+        $bulan  = array("Januari"
+                        , "Februari"
+                        , "Maret"
+                        , "April"
+                        , "Mei"
+                        , "Juni"
+                        , "Juli"
+                        , "Agustus"
+                        , "September"
+                        , "Oktober"
+                        , "November"
+                        , "Desember");
+        $hari   = array("Senin"
+                        , "Selasa"
+                        , "Rabu"
+                        , "Kamis"
+                        , "Jum'at"
+                        , "Sabtu"
+                        , "Minggu");
+        $tahun_split    = substr($tgl, 0, 4);
+        $bulan_split    = substr($tgl, 5, 2);
+        $hari_split     = substr($tgl, 8, 2);
+        $tmpstamp       = mktime(0, 0, 0, $bulan_split, $hari_split, $tahun_split);
+        $bulan_jadi     = $bulan[date("n", $tmpstamp)-1];
+        $hari_jadi      = $hari[date("N", $tmpstamp)-1];
+        if(!$hari_tampil)
+        $hari_jadi="";
+        return $hari_jadi.", ".$hari_split." ".$bulan_jadi." ".$tahun_split;
+
+    } 
+
+    public static function tanggal_indo($tanggal=null, $time=true, $day=true) 
+    {   
+
+        $date = strtotime($tanggal);
+
+        $hari=date('w', $date);
+        $tgl =date('d', $date);
+        $bln =date('m', $date);
+        $thn =date('Y', $date);
+
+        switch($hari){      
+            case 0 :
+                $hari='Minggu';
+                break;
+            case 1 :
+                $hari='Senin';
+                break;
+            case 2 :
+                $hari='Selasa';
+                break;
+            case 3 :
+                $hari='Rabu';
+                break;
+            case 4 :
+                $hari='Kamis';
+                break;
+            case 5 :
+                $hari="Jum'at";
+                break;
+            case 6 :
+                $hari='Sabtu';
+                break;
+            default:
+                $hari='UnKnown';
+                break;
+        }
+    
+        switch($bln){       
+            case 1 :
+                $bln='Januari';
+                break;
+            case 2 :
+                $bln='Februari';
+                break;
+            case 3 :
+                $bln='Maret';
+                break;
+            case 4 :
+                $bln='April';
+                break;
+            case 5 :
+                $bln='Mei';
+                break;
+            case 6 :
+                $bln="Juni";
+                break;
+            case 7 :
+                $bln='Juli';
+                break;
+            case 8 :
+                $bln='Agustus';
+                break;
+            case 9 :
+                $bln='September';
+                break;
+            case 10 :
+                $bln='Oktober';
+                break;      
+            case 11 :
+                $bln='November';
+                break;
+            case 12 :
+                $bln='Desember';
+                break;
+            default:
+                $bln='UnKnown';
+                break;
+        }
+
+        if($time)
+        {   
+            $day = ($day==true) ? $hari .', ': '';
+            $format = $day.$tgl." ".$bln." ".$thn .' | '. strftime('%H:%M', $date) . ' WIB';
+        }else{
+            $day = ($day==true) ? $hari .', ': '';
+            $format = $day. $tgl." ".$bln." ".$thn;
+        }
+
+        return $format;
+    }
+
+    public static function urlRegex(){
+        return "/^((?:https?\:\/\/|www\.)(?:[-a-z0-9]+\.)*[-a-z0-9]+.*)$/";
+    }
+
+    public  function excuteFileSh($params) {
+        
+        $data = isset($params['data']) ? $params['data'] : '';
+        @exec('sh '.base_path('sh/'.$params['file']) . ' ' . $params['path'].' '.$data, $output, $return);
+       
+        // echo "<br />----------------<br />";
+        // if(function_exists('exec')) {
+        //     echo "exec is enabled";
+        // }
+        // echo "<br />----------------<br />";
+        // echo '<pre/>'; print_r($output); 
+        // echo "<br />----------------<br />";
+        // echo '<pre/>'; print_r($return); 
+        // echo "<br />----------------<br />";
+        // if (!$return) {
+        //     echo "Successfully";
+        // } else {
+        //     echo "failed";
+        // }
+        // echo "<br />----------------<br />";
+        // // shell_exec(base_path('sh/'.$params['file'].' '.$params['path']));
+        // echo base_path('sh/'.$params['file']) . ' ' . $params['path'];
+        
+        return true;
+
+    }
+
+    public static function  formatNumber($number)
+    {
+        if (substr($number, 0, 1) === '0') {
+            $n = "62" . substr($number, 1);
+        }
+        else if (substr($number, 0, 1) === '+') {
+            $n = substr($number, 1);
+        }
+        else {
+            $n = $number;
+        }
+
+        $n = str_replace(" ", "", $n);
+        $n = str_replace("-", "", $n);
+        $n = str_replace('"', "", $n);
+
+        return $n;
+    }
+
+    public static function formatRupiah($angka){
+    
+    $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
+    return $hasil_rupiah;
+ 
+}
+
+   
+
+}
