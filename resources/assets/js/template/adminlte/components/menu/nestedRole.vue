@@ -188,7 +188,7 @@ export default {
      Delete(role,el)
     {
         let data = this.value ? this.value : this.list;  
-
+         console.log(el.id)
        this.$swal({
             buttons:true,
             dangerMode:true,

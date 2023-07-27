@@ -121,7 +121,9 @@ export default {
 
           },
           logout(){
-              
+              localStorage.removeItem('menu');
+              localStorage.removeItem('root_vue');
+              localStorage.removeItem('apps');
               document.cookie = 'token' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
               document.cookie = 'access' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
               window.location.href = BASE_URL+ '/login';
