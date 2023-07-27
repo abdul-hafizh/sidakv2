@@ -7,6 +7,7 @@ use App\Http\Request\RequestMenuRoles;
 use App\Models\Roles;
 use App\Models\MenusRole;
 use App\Models\RoleUser;
+use App\Models\Pages;
 use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
@@ -67,10 +68,29 @@ class MenusRoleApiController extends Controller
      public function pages(Request $request)
     {
          $objectMenu = json_decode(json_encode($request->menu), FALSE);
-         //$fields = RequestMenuRoles::fieldsPages($objectMenu);
-         $data = RequestMenuRoles::createDirectorySingle($objectMenu);
-      
-          return response()->json(['status'=>true,'result'=> $data,'message'=>'Success update menu']);
+         $fields = RequestMenuRoles::fieldsPages($objectMenu);
+         $err = array();
+         // if($fields->type == 'table')
+         // {
+         //     if(empty($fields->label_list) )
+         //     {
+         //        $err['messages']['label_list'] = 'Label & Column harus di isi';
+              
+         //     }
+
+         //    if(empty($fields->action_list))
+         //    {
+         //           $err['messages']['action_list'] = 'Action Table harus di isi';  
+         //    } 
+         //     return response()->json($err,400);  
+         // } 
+
+         //$data = Pages::create($fields); 
+
+        
+         //$data = RequestMenuRoles::createDirectorySingle($objectMenu);
+        
+          return response()->json(['status'=>true,'result'=> $fields,'message'=>'Success update menu']);
     }
 
     

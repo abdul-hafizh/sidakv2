@@ -13,31 +13,34 @@ use App\Http\Controllers\LayoutController;
        
     
     Route::resource('/login', LayoutController::class);
-   
+    Route::resource('/register', LayoutController::class);
     if(!empty($_COOKIE['access']))
     {    
     
-    Route::middleware([$_COOKIE['access']])->group(function () {
+    Route::middleware(['authRole'])->group(function () {
 
        if($_COOKIE['access'])
        { 
              $access = Roles::where('slug',$_COOKIE['access'])->first();
              $menu = RequestMenuRoles::Roles($access->id);
-             $arr1 =array();
-             $arr2 =array();
-             $arr3 =array();
-      
+           
               
              if($menu)
              {
                 $data = json_decode($menu);
                 $result = RequestMenuRoles::RoleTasks($data);
-               
-                foreach($result as $kuy =>$val)
+                //dd($result);
+                $check = RequestMenuRoles::CheckMenuRole($result);
+                if($check)
                 {
-                   Route::resource(''.$val->path_web.'', LayoutController::class);                     
-                } 
 
+                   foreach($result as $kuy =>$val)
+                   {
+                     Route::get($val->path_web,  'App\Http\Controllers\LayoutController@index');                   
+                   }   
+                }    
+                
+                Route::get('/menu', 'App\Http\Controllers\LayoutController@index');
                // Route::resource('/user/edit/{id}', LayoutController::class);
 
                 if(Request::segment(1) =='login')
@@ -68,7 +71,11 @@ use App\Http\Controllers\LayoutController;
     });
  
     }else{
-         return redirect('login'); 
+        if(Request::segment(1) =='login')
+        {
+           return redirect('login'); 
+        }
+       
     }
 
     

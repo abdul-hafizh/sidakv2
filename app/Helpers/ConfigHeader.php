@@ -20,33 +20,42 @@ class ConfigHeader
              $menu = RequestMenuRoles::PathVue($role);
              if($menu)
              {  
-                  
-               $title = ConfigHeader::GetMenuPrimary($menu);
-
+               $title = ConfigHeader::GetMenuTitle($menu);
              } 
             
               
         }else{
-            $title = 'Login'; 
+            if(Request::segment(1) =='register')
+            {
+               $title = 'Register'; 
+            }else if(Request::segment(1) =='forgot'){
+               $title = 'Lupa Password'; 
+            }else{
+               $title = 'Login'; 
+            }    
+          
         }      
 
         return $title; 
 
     } 
 
-    public static function GetMenuPrimary($data)
+    public static function GetMenuTitle($data)
     {    
               $encode = json_encode($data);
               $data = json_decode($encode);
               
                 foreach($data as $kuy =>$val)
                 {
-   
                     if(Request::segment(2) == $val->filename)
                     {
-                      return  $val->name;
+                       if(Request::segment(1) == $val->foldername)
+                       {
+                           return  $val->name;
+                       } 
+                          
+                      
                     }else{
-
                         if(Request::segment(1) == $val->foldername)
                         {
                           if(!Request::segment(2))
@@ -60,8 +69,36 @@ class ConfigHeader
                      
                    
                 }  
+         
 
-                 
+    }
+
+
+      public static function GetMenuSlug($data)
+    {    
+              $encode = json_encode($data);
+              $data = json_decode($encode);
+              
+                foreach($data as $kuy =>$val)
+                {
+                    if(Request::segment(2) == $val->filename)
+                    {
+                      return  $val->slug;
+                    }else{
+                        if(Request::segment(1) == $val->foldername)
+                        {
+                          if(!Request::segment(2))
+                          {
+                             return $val->slug; 
+                          }
+                          
+                        }   
+
+                    }
+                     
+                   
+                }  
+         
 
     }
 

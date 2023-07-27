@@ -4,9 +4,12 @@ namespace App\Http\Request;
 use Auth;
 use App\Helpers\GeneralHelpers;
 use App\Helpers\GeneralPaginate;
+use App\Helpers\ConfigHeader;
 use Illuminate\Support\Str;
 use App\Models\RoleMenu;
 use App\Models\SettingApps;
+use App\Models\Roles;
+
 class RequestMenuRoles 
 {
    
@@ -75,7 +78,10 @@ class RequestMenuRoles
 
 
                 if (!$value->tasks) {
-                    $result[] = array('name'=>$value->name,'slug'=>$value->slug,'type'=>$value->type,'foldername'=>$value->foldername,'filename'=>$value->filename,'path_web' => $value->path_web,'path_vue'=>$value->path_vue,'path_api'=>$value->path_api);
+                   if($value->type !='menu')
+                   { 
+                      $result[] = array('name'=>$value->name,'slug'=>$value->slug,'type'=>$value->type,'foldername'=>$value->foldername,'filename'=>$value->filename,'path_web' => $value->path_web,'path_vue'=>$value->path_vue,'path_api'=>$value->path_api);
+                   } 
 
                 } else if($value->path_web && $value->tasks){
                     $result[] = array('name'=>$value->name,'slug'=>$value->slug,'type'=>$value->type,'foldername'=>$value->foldername,'filename'=>$value->filename,'path_web' => $value->path_web,'path_vue'=>$value->path_vue,'path_api'=>$value->path_api);
@@ -96,33 +102,48 @@ class RequestMenuRoles
         return json_decode($res);
 
    }
+
+   public static function CheckMenuRole($menu)
+   {
+         $res = array(); 
+         $active = ConfigHeader::GetMenuSlug($menu);
+         foreach($menu  as $key =>$value)
+         {
+            $res[$key]  = $value->slug;
+         }
+
+         if(in_array($active, $res))
+         {
+            return true;
+         }else{
+            return false;
+         }
+
+
+   }
    
     public static function MenuSidebar($array){
-      
-        $single = array();
-        $multiple = array();
-        if (isset($array)) {
-            $no = 1;
-            foreach ($array as $a => $value) {
-              if($value->path_web)
-              {
-                $single = array(['no'=>$no,'name'=>$value->name,'icon'=>$value->icon,'path_vue'=>$value->path_vue,'count'=>0,'status'=>'menu-open active']);
-  
-              }  
-               
+        
 
-                if ($value->tasks) {
-                    $multiple[] = array('no'=>$no,'name'=>$value->name,'icon'=>$value->icon,'tasks'=> RequestMenuRoles::secondaryMenu($value->tasks),'count'=>count($value->tasks) ,'status'=>'');
-                } else {
-                    $multiple = array_merge($single,$multiple, RequestMenuRoles::MenuSidebar($value->tasks));
-                }
+        foreach ($array as $key => $value) 
+        {
+           if($key == 0)
+           {
+              $status = 'menu-open active';
+           }else{
+              $status = '';
+           }
 
-                 $no++;
-            }
+           $arr[$key]['name'] = $value->name;
+           $arr[$key]['icon'] = $value->icon;
+           $arr[$key]['path_vue'] = $value->path_vue;
+           $arr[$key]['status'] = $status;
+           $arr[$key]['count'] =  count($value->tasks);
+           $arr[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ;      
         }
-         
-        $result =  json_encode($multiple);
-        return json_decode($result);
+ 
+       $result =  json_encode($arr);
+       return json_decode($result);
 
 
    }
@@ -168,17 +189,22 @@ class RequestMenuRoles
             'name' => $request->name,
             'slug' => $slug,
             'role_id'  => $request->role_id,
-            'menu_id'  => $request->menu_id,
+            'foldername'  => $request->foldername,
             'filename'  => $request->filename,
             'type'  => $request->type,
-            'type_param'  =>  json_encode($request->label_list),
+            'label_list'  =>  json_encode($request->label_list),
+            'action_table'  => json_encode($request->action_list),
+            'limit_table' =>$request->limit_table,
             'path_api'  => $request->path_api,
             'search'  => $request->search,
             'paginate'  => $request->paginate,
             'created_by' => Auth::User()->username,
             'created_at' => date('Y-m-d H:i:s'),
         ];
-        return $fields;
+
+       $result =  json_encode($fields);
+       return json_decode($result);
+       
 
     }
 

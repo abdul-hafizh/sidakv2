@@ -5,69 +5,44 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" @click="$emit('close')">&times;</button>
-        <h4 class="modal-title">Detail {{Title}}</h4>
+        <h4 class="modal-title">Create {{Title}}</h4>
       </div>
 
       <form  enctype="multipart/form-data" method="post"  @submit.prevent="RequestPost">
        <perfect-scrollbar>
          <div class="modal-body">
         
-            <div class="form-group" :class="errors.messages.name ? 'has-error' : ''">
+            <div class="form-group" >
                  <label>Name :</label>
                  <input v-model="name" type="text" class="form-control" disabled>
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('name')">
-                    <strong>{{ errors.messages.name }}</strong>
-                </span>
-            </div>
-
-            <div class="form-group" :class="errors.messages.path_vue ? 'has-error' : ''">
-                <label>Route Vue :</label>
-                <input v-model="path_vue" type="text" class="form-control" disabled>
                 
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('path_vue')">
-                    <strong>{{ errors.messages.path_vue }}</strong>
-                </span>
             </div>
 
-            <div class="form-group" :class="errors.messages.path_web ? 'has-error' : ''" >
-                <label>Route Web :</label>
-                <input v-model="path_web" type="text" class="form-control" disabled>
 
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('path_web')">
-                    <strong>{{ errors.messages.path_web }}</strong>
-                </span>
-            </div>
-
-            <div class="form-group" :class="errors.messages.path_api ? 'has-error' : ''" >
+            <div class="form-group"  >
                  <label>Route Api :</label>
                  <input v-model="path_api" type="text" class="form-control" disabled>               
 
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('path_api')">
-                    <strong>{{ errors.messages.path_api }}</strong>
-                </span>
+               
             </div>
 
 
-            <div class="form-group" :class="errors.messages.foldername ? 'has-error' : ''" >
+            <div class="form-group"  >
                  <label>Foldername :</label>
                  <input v-model="foldername" type="text" class="form-control" disabled>               
 
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('foldername')">
-                    <strong>{{ errors.messages.foldername }}</strong>
-                </span>
+               
             </div>
 
 
 
-            <div class="form-group" :class="errors.messages.filename ? 'has-error' : ''" >
+            <div class="form-group" >
                  <label>Filename :</label>
-                 <input v-model="filename" type="text" class="form-control" @input="getFilename(filename)">
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('filename')" disabled>
-                    <strong>{{ errors.messages.filename }}</strong>
-                </span>
+                 <input v-model="filename" type="text" class="form-control" @input="getFilename(filename)" disabled>
+               
             </div>
 
-            <div class="form-group" :class="errors.messages.type ? 'has-error' : ''" >
+            <div class="form-group"  >
                  <label>Type :</label>
 	                 <div class="radio">
 						<label>
@@ -90,28 +65,34 @@
 						</label>
 					 </div>
 
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('type')">
-                    <strong>{{ errors.messages.type }}</strong>
-                </span>
+               
             </div>
 
+            <div class="form-group"  v-if="type =='table'">
+                 <label>Limit Table :</label>
+                 <model-select class="form-control" v-model="limit_table" :options="list_limit" placeholder="Pilih limit table">
+                     </model-select>
+               
+            </div>
 
-
-            <!-- <div class="form-group">
+            <div class="form-group pull-left full" v-if="type =='table' || type =='form' " :class="errors.messages.label_list ? 'has-error' : ''">
                 <label>Label & Column</label>
                 <div class="col-sm-12 pd-none"  v-for="(item, index) in label_list">
                    <div class=" mgn-bottom-20">
-                        <input type="text" class="form-control" placeholder="Label" v-model="item.label" @input="updateTestimoni(index,item.label,'label')">
+                        <input type="text" class="form-control" placeholder="Label" v-model="item.label" @input="updateLabel(index,item.label,'label')">
                    </div>
                    <div class=" mgn-bottom-20">
                         <input class="form-control text-height-115" placeholder="Column" v-model="item.column" @input="updateLabel(index,item.column,'column')">
                    </div>
-                    <div class=" mgn-bottom-20">
-                          <button type="button" @click="deleteLabel(index)" class="btn btn-default ">
+                    <div class=" mgn-bottom-20 pull-right">
+                          <button type="button" @click="deleteLabel(index)" class="btn btn-danger ">
                                     Delete     
                          </button>
                     </div>  
-
+                  
+                    <span class="help-block" v-if="errors.messages.hasOwnProperty('label_list')" >
+                        <strong>{{ errors.messages.label_list }}</strong>
+                    </span>
 
                 </div>
                 <div class="col-sm-12 pd-none">    
@@ -121,8 +102,38 @@
                 </div>
  
             </div>
+
+
+            <div class="form-group pull-left full" :class="errors.messages.action_list ? 'has-error' : ''">
+                 <label>Action Table</label>
+                    <div class="col-sm-12 pd-none"  v-for="(item, index) in action_list">
+                        <div class="input-group form-group" >
+                            <input type="text" class="form-control" v-model="item.fitur" @input="updateAction(index,item.fitur)">
+                            <span class="input-group-btn">
+                            <button type="button" class="btn btn-danger btn-flat" @click="deleteAction(index)"><i class="fa fa-trash" ></i></button>
+                            </span>
+
+                          
+
+                        </div> 
+
+                          <span class="help-block" v-if="errors.messages.hasOwnProperty('action_list')" >
+                            <strong>{{ errors.messages.action_list }}</strong>
+                            </span>
+
+                    </div>
+                    <div class="col-sm-12 pd-none form-group"> 
+                        <button type="button" @click="addAction()" class="btn btn-primary pull-right">
+                                    Add Action
+                        </button>
+                    </div>  
+
+            </div>
+
+
+                 
                
-            <div class="form-group" :class="errors.messages.search ? 'has-error' : ''" >
+            <div class="form-group"  v-if="type =='table'">
                  <label>Search :</label>
 	                 <div class="radio">
 						<label>
@@ -138,13 +149,11 @@
 						</label>
 					 </div>
 
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('search')">
-                    <strong>{{ errors.messages.search }}</strong>
-                </span>
+              
             </div> 
                 
 
-            <div class="form-group" :class="errors.messages.paginate ? 'has-error' : ''" >
+            <div class="form-group"  v-if="type =='table'">
                  <label>Pagination :</label>
 	                 <div class="radio">
 						<label>
@@ -160,17 +169,15 @@
 						</label>
 					 </div>
 
-                <span class="help-block" v-if="errors.messages.hasOwnProperty('paginate')">
-                    <strong>{{ errors.messages.paginate }}</strong>
-                </span>
+               
             </div> 
-              -->
+             
 
          </div>
       </perfect-scrollbar>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" @click="$emit('close')">Close</button>
-       <!--  <button type="submit" class="btn btn-primary" >Create File</button> -->
+        <button type="submit" class="btn btn-primary" >Create File</button>
       </div>
       </form>
     </div>
@@ -178,6 +185,8 @@
 </div> 
 </template>
 <script>
+   import { ModelSelect } from 'vue-search-select';
+   import 'vue-search-select/dist/VueSearchSelect.css';   
    export default {
         props:["Apps","Title","role","lists","URL_Segment"],
         
@@ -185,30 +194,23 @@
             return {
                 errors: {
                     messages: {
-                        name:'',
-                        path_vue:'',
-               			path_web:'',
-               			path_api:'',
-                        filename:'',
-                        foldername:'',
-                        // type:'',
-                        // search:'',
-                        // paginate:'',
+                        label_list:'',
+               			action_list:'',
                             
                     },
                }, 
                menu_id:'',
-
                name:'',
-               path_vue:'',
-               path_web:'',
                path_api:'',
                foldername:'',
                filename:'',
                type:'',
-               // search:true,
-               // paginate:true,
-               // label_list:[],
+               list_limit:[{'value':'5','text':'5'},{'value':'10','text':'10'},{'value':'15','text':'15'},{'value':'20','text':'20'}],
+               limit_table:'10',
+               search:true,
+               paginate:true,
+               label_list:[],
+               action_list: [{fitur: 'add'}, {fitur: 'edit'},{fitur: 'detail'}],
                // btnDelete:true,
               
 
@@ -219,8 +221,6 @@
             document.title = this.Apps;
             this.menu_id = this.lists.id;
             this.name = this.lists.name;
-            this.path_vue = this.lists.path_vue;
-            this.path_web = this.lists.path_web;
             this.path_api =  this.lists.path_api;
             this.foldername = this.lists.foldername;
             this.filename = this.lists.filename;
@@ -236,7 +236,7 @@
              
         },
         components: {
-
+           ModelSelect,
         },
         
         methods: {
@@ -277,7 +277,7 @@
 
                     data.push({
                       'label':textinput,
-                      'column':this.label_list[i].column,            
+                      'column':this.label_list[i].column.toLowerCase(),            
                     });
 
                 }else{
@@ -286,12 +286,12 @@
                     {
                         textinput = text;
                     }else{
-                        textinput = this.label_list[i].column;
+                        textinput = this.label_list[i].column.toLowerCase();
                     }
 
                     data.push({
                       'label':this.label_list[i].label,
-                      'column':textinput, 
+                      'column':textinput.toLowerCase(), 
                     });
 
                 }    
@@ -310,28 +310,52 @@
               
 
           },
+          addAction() {
+              this.action_list.push({});
+          },
+          updateAction(index,text) {
+              
+            var jml = this.action_list.length; 
+            var data = [];
+            for(var i=0; i<jml; i++)
+            {
+                data.push({
+                  'fitur':this.action_list[i].fitur
+                }); 
+                
+            }  
+            this.action_list = data;
+
+          },
+          deleteAction(index) {
+              this.action_list.splice(index, 1);
+              
+          },
           RequestPost(){
             
                 const self = this; 
                 let urlBase="";
                 let formData = {
-                  menu_id:self.menu_id,
+               
                   role_id:self.role,
                   name:self.name,
                   path_api:self.path_api,
                   foldername:self.foldername,
                   filename:self.filename,
                   type:self.type,
-                  // label_list:self.label_list,
-                  // search:self.search,
-                  // paginate:self.paginate,
+                  label_list:self.label_list,
+                  action_list:self.action_list,
+                  limit_table:self.limit_table,
+                  search:self.search,
+                  paginate:self.paginate,
+
                 }
 
                 const forms = {
 	               menu: formData
 	            }
-               
-                
+
+
                 urlBase = axios.post(BASE_URL+'/api/' + self.URL_Segment+'/pages/save', forms);
                 urlBase
                 .then((response) => {
@@ -347,9 +371,14 @@
                     }
                 
                 }).catch((error) => {
-                
+                    self.addLabel();
+                    if(this.action_list.length ==0)
+                    {
+                       self.addAction();   
+                    }    
+                   
                     self.errors = error.response.data;
-                 
+                   
                     
                 });
 

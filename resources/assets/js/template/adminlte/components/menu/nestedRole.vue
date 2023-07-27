@@ -27,7 +27,7 @@
 
               <div class="pull-right padding-05-05 bg-list-menu-btn" v-if="el.edit == false" >
 
-                <span class="padding-05-05" v-if="el.foldername !=''">
+                <span class="padding-05-05" v-if="el.type !='menu'">
                   <i class="fa fa-eye" data-toggle="modal" data-target="#AddPages" @click="AddPages(el.id)"></i> 
                   <i class="border-right-white"></i>
                 </span>
@@ -50,7 +50,7 @@
           <div v-else class="pull-right padding-05-05 bg-list-menu-btn">
              
 
-                <span class="padding-05-05" v-if="el.foldername !=''">
+                <span class="padding-05-05" v-if="el.type !='menu'">
                   <i class="fa fa-eye"  data-toggle="modal" data-target="#AddPages" @click="AddPages(el.id)"></i> 
                   <i class="border-right-white"></i>
                 </span>
@@ -81,7 +81,7 @@
 
         </div>
       
-        <nested-role  class="list-group" :list="el.tasks" />
+        <nested-role  class="list-group" :list="el.tasks" :role="role" :Apps="Apps" :URL_Segment="URL_Segment"/>
         <DetailPages :Apps="Apps" :role="role" :URL_Segment="URL_Segment" :lists="pages" v-if="v_add" :Title="Title" @close="closeModal"></DetailPages>
     </div>
   
@@ -116,7 +116,7 @@ export default {
        loading:false,
        v_add:false,
        v_edit:false,
-       Title:'Pages', 
+       Title:'Pages',
        pages:[],
     }
   },

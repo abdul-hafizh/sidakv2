@@ -12,12 +12,15 @@ class LayoutController extends Controller
     {
         $this->title = ConfigHeader::index();
         $this->template = GeneralPaginate::template();
+       
     }
     
     public function index(Request $request)
     {
         return view('template/'.$this->template.'.index')->with(['title'=>$this->title]); 
     }
+
+
 
     public function show(Request $request){
 

@@ -34,14 +34,14 @@ use App\Http\Controllers\API\UserApiController;
 
 
 
-
- Route::post('auth/login',[AuthApiController::class, 'Login']);
+ Route::get('register/daerah', [AuthApiController::class, 'GetDaerahID']);
+ Route::post('login/auth',[AuthApiController::class, 'Login']);
  Route::get('apps', [SettingWebApiController::class, 'index']);
 
  //setting
 Route::post('role/check', [RolesApiController::class, 'check']);
 
- Route::middleware(['jwt.auth','admin'])->group(function () {
+ Route::middleware(['jwt.auth','authRole'])->group(function () {
 
      Route::get('profile', [AuthApiController::class, 'getAuthUser']);
      Route::get('user/menu', [AuthApiController::class, 'sidebar']);
@@ -90,24 +90,24 @@ Route::post('role/check', [RolesApiController::class, 'check']);
 
  });
 
-Route::group(['middleware' => 'jwt.auth','daerah','provinsi'], function () {
+// Route::group(['middleware' => 'jwt.auth','daerah','provinsi'], function () {
 
       
-     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
-     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
+//      Route::get('profile', [AuthApiController::class, 'getAuthUser']);
+//      Route::get('user/menu', [AuthApiController::class, 'sidebar']);
  
     
-     Route::get('daerah', [AuthApiController::class, 'GetDaerahID']);
-     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
+//      Route::get('daerah', [AuthApiController::class, 'GetDaerahID']);
+//      Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
 
-     Route::get('perencanaan/create', [PerencanaanApiController::class, 'create']);
-     Route::get('periode/edit/{id}', [PerencanaanApiController::class, 'edit']);
-     Route::post('periode/check', [PeriodeApiController::class, 'check']);
-     Route::post('pagu/check', [PaguTargetApiController::class, 'check']); 
+//      Route::get('perencanaan/create', [PerencanaanApiController::class, 'create']);
+//      Route::get('periode/edit/{id}', [PerencanaanApiController::class, 'edit']);
+//      Route::post('periode/check', [PeriodeApiController::class, 'check']);
+//      Route::post('pagu/check', [PaguTargetApiController::class, 'check']); 
 
 
 
-});
+// });
 
 
 
