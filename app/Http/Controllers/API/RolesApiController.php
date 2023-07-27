@@ -38,6 +38,7 @@ class RolesApiController extends Controller
         $access = Roles::where('slug',$request->access)->first();
         $role = RequestMenuRoles::Roles($access->id);
         $path = RequestMenuRoles::PathVue($role);
+        
         $apps = RequestMenuRoles::AppsWeb();
         
         

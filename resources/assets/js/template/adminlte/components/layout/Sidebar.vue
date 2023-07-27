@@ -93,7 +93,7 @@ export default {
         },
         methods: {
           Refresh(){
-            this.GetSidebar();
+            window.location.href = BASE_URL+ '/menu'; 
             this.$emit('refresh',false);
          
           },

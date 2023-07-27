@@ -17,7 +17,7 @@ use App\Http\Request\RequestGlobalUser;
 use App\Http\Request\RequestMenuRoles;
 use App\Http\Request\RequestMenus;
 use App\Http\Request\RequestAuth;
-use App\Http\Request\Validation\ValidationGlobalUser;
+use App\Http\Request\Validation\ValidationAuth;
 use DB;
 use App\Helpers\GeneralPaginate;
 class AuthApiController extends Controller
@@ -37,69 +37,49 @@ class AuthApiController extends Controller
      public function Login(Request $request){
 
         $credentials = $request->only('username', 'password');
-            
-        try {
-            if (! $token = JWTAuth::attempt($credentials))
-            {   
-                $messages1 = array('identity'=>'Kode identitas tidak valid');
-                $messages2 = array('password'=>'Password tidak valid');
-                $messages3 = array('identity'=>'Kode identitas masih kosong');
-                $messages4 = array('password'=>'Password masih kosong');
-
-                if($credentials['username'] !="" && $credentials['password'] !="")
-                {
+        $validation = ValidationAuth::validation($request);
+        if($validation)
+        {
+          return response()->json($validation,400);  
+        }else{
+            RequestAuth::requestHash($credentials['username'],$credentials['password']);
+           try
+           {
+                if (! $token = JWTAuth::attempt($credentials))
+                { 
+                   
+                    $messages1 = array('username'=>'username tidak valid');
+                    $messages2 = array('password'=>'Password tidak valid');
                     $user = User::where('username',$credentials['username'])->first();
-                    if ($user ==null) {
-                        
+                    if ($user ==null)
+                    {
                         return response()->json(['status'=>false,'messages' => $messages1],400);
                     }
-
-
-                    if (!Hash::check($credentials['password'], $user->password)) {
-                         if($credentials['password'] == $user->password)
-                         {
-                              User::where('username',$credentials['username'])->update(['password'=> Hash::make($credentials['password'])]);
-                         }else{
-                            return response()->json(['status'=>false, 'messages' => $messages2],400); 
-                         }   
-                        
+                     
+                    if (!Hash::check($credentials['password'], $user->password))
+                    {
+                        return response()->json(['status'=>false, 'messages' => $messages2],400); 
                     }
 
+                }
 
-                }else{
-                    
-                    if($credentials['username'] =="" && $credentials['password'] =="")
-                    {
-                        $merge = array_merge($messages3,$messages4);
-                        return response()->json(['status'=>false, 'messages' => $merge],400);
-                    }  
+            } catch (JWTException $e) {
+               return response()->json(['error' => 'validasi tidak valid'], 500);
+            }   
 
-                    if($credentials['username'] =="")
-                    {
-                        return response()->json(['status'=>false,'messages' => $messages3],400);
-                    }  
+            $token = compact('token');
+            $auth = Auth::User();
+            $RoleUser = RoleUser::where('user_id',$auth->id)->first();
+            $access =  $RoleUser->role->slug;
 
-                    if($credentials['password'] =="")
-                    {
-                        return response()->json(['status'=>false,'messages' => $messages4],400);
-                    } 
+            return response()->json(['status'=>true,'access'=>$access,'token'=>$token['token']],200);   
+
+        }    
 
 
-                }    
-                
-              
-            }
-        } catch (JWTException $e) {
-            return response()->json(['error' => 'could_not_create_token'], 500);
-        }
-         
-        $token = compact('token');
-        $auth = Auth::User();
-        $RoleUser = RoleUser::where('user_id',$auth->id)->first();
-        $access =  $RoleUser->role->slug;
 
-        return response()->json(['status'=>true,'access'=>$access,'token'=>$token['token']],200);
 
+     
      }
 
      public function getAuthUser()
@@ -203,8 +183,8 @@ class AuthApiController extends Controller
     public function GetDaerahID(Request $request)
     {
        
-        $province = DB::table('provinces')->select('id as daerah_id','name as daerah_name');
-        $regency = DB::table('regencies')->select('id as daerah_id','name as daerah_name')->union($province)->orderBy('daerah_id','ASC')->get();
+        $province = DB::table('provinces')->select('id as value','name as text');
+        $regency = DB::table('regencies')->select('id as value','name as text')->union($province)->orderBy('value','ASC')->get();
 
         return response()->json(['status'=>true,'result'=>$regency,'message'=>'Daerah ID sucessfully']);
     }

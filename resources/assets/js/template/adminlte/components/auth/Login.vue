@@ -36,12 +36,12 @@
 
                                                     <form role="form"  method="post"  @submit.prevent="postData"> 
 
-                                                        <div class="pull-left full form-group has-feedback " :class="errors.messages.identity ? 'has-error' : ''">
+                                                        <div class="pull-left full form-group has-feedback " :class="errors.messages.username ? 'has-error' : ''">
                                                             <label class="text-capitalize color-dark-blue">Username </label>
                                                             <input type="text" class="form-control mb-3 border-radius-10" v-model="username" placeholder="Username">
 
-                                                            <span class="help-block" v-if="errors.messages.hasOwnProperty('identity')">
-                                                                <strong>{{ errors.messages.identity }}</strong>
+                                                            <span class="help-block" v-if="errors.messages.hasOwnProperty('username')">
+                                                                <strong>{{ errors.messages.username }}</strong>
                                                             </span>
                                                         </div>
 
@@ -94,12 +94,12 @@
 
    export default {
         
-        props:["Apps","Body"],
+        props:["Apps","Body","URL_Segment"],
         data() {
             return {
                 errors: {
                     messages: {
-                        identity:'',
+                        username:'',
                         password:'',        
                     },
                 }, 
@@ -141,7 +141,7 @@
                 self.btnLoading = true;
                 formData.append('username', self.username);
                 formData.append('password', self.password);
-                urlBase = axios.post(BASE_URL+'/api/auth/login', formData);
+                urlBase = axios.post(BASE_URL+'/api/'+ self.URL_Segment +'/auth', formData);
                 urlBase
                 .then((response) => {
                     
