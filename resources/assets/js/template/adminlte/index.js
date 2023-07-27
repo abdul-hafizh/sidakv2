@@ -79,15 +79,21 @@ if(access !=null)
 
 
 }else{
-
+    
     const router = new VueRouter({
         mode:'history',
         routes: [
             {
                 name: 'Login',
                 path: '/login',
-                props: { Apps:'Sidak | Login ',Body: 'login-page' },
-                component: require('./components/auth/Login.vue').default
+                props: { Apps:'Sidak | Login ',Body: 'login-page','URL_Segment':'login' },
+                component: require('./components/auth/login.vue').default
+            },
+            {
+                name: 'Register',
+                path: '/register',
+                props: { Apps:'Sidak | Register ',Body: 'register-page','URL_Segment':'register' },
+                component: require('./components/auth/register.vue').default
             },
 
         ],
