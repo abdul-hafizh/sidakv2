@@ -3,4 +3,5 @@
 2. php artisan migrate
 3. php artisan db:seed (untuk all)
 4. php artisan db:seed --class=UsersTableSeeder (untuk personal)
+5. tes
 
