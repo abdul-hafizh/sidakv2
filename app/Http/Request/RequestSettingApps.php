@@ -4,7 +4,7 @@ namespace App\Http\Request;
 use Auth;
 use App\Helpers\GeneralHelpers;
 use App\Models\SettingApps;
-use App\Helpers\GeneralPaginate;
+
 class RequestSettingApps 
 {
    
@@ -71,7 +71,33 @@ class RequestSettingApps
    }
 
 
-   
+    public static function AppsWeb(){
+
+        $apps = SettingApps::first();
+        if($apps)
+        {
+            $title = $apps->title; 
+        }else{
+            $title = env('APP_NAME',true); 
+        }  
+
+        return $title;  
+
+   }
+
+   public static function AppsTemplate(){
+
+        $apps = SettingApps::first();
+        if($apps)
+        {
+            $template = $apps->template; 
+        }else{
+            $template = env('APP_TEMPLATE',true); 
+        }  
+
+        return $template;  
+
+   }
 
    
 

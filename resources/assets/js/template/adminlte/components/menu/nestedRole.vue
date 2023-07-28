@@ -131,7 +131,7 @@ export default {
     dragOptions() {
        this.group = 'people';
       return {
-        animation: 200,
+        animation: 500,
         group: this.group,
         disabled: false,
         ghostClass: "moving-card"

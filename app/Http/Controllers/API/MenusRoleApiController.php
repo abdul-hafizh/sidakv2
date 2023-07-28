@@ -50,18 +50,24 @@ class MenusRoleApiController extends Controller
         
         if($check)
         {
-           $data = MenusRole::where('role_id',$request->role_id)->update(['menu_json'=>$objectMenu]);
+           MenusRole::where('role_id',$request->role_id)->update(['menu_json'=>$objectMenu]);
 
         }else{
             
            $fields = RequestMenuRoles::fieldsData($request);
-           $data = MenusRole::create($fields);
+           MenusRole::create($fields);
         }    
         
-         $role = RequestMenuRoles::Roles($request->role_id);
-         $path = RequestMenuRoles::PathVue($role);
+        $role = RequestMenuRoles::Roles($request->role_id);
+        if($role)
+        {
+                $dataMenu = json_decode($role);
+                $path = RequestMenuRoles::PathVue($role);
+                $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
+               
+        } 
 
-       return response()->json(['status'=>true,'result'=> $path,'message'=>'Success update menu']);
+       return response()->json(['status'=>true,'path'=> $path,'menu_sidebar'=>$sidebar,'message'=>'Success update menu']);
         
     }
 

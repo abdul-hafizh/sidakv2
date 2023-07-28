@@ -2642,6 +2642,10 @@ __webpack_require__.r(__webpack_exports__);
 
           _this.$cookies.set('token', response.data.token);
 
+          localStorage.setItem('apps', response.data.apps);
+          localStorage.setItem('root_vue', JSON.stringify(response.data.path));
+          localStorage.setItem('menu_sidebar', JSON.stringify(response.data.menu_sidebar));
+          localStorage.setItem('user_sidebar', JSON.stringify(response.data.user_sidebar));
           window.location.href = BASE_URL + '/dashboard';
         }
       })["catch"](function (error) {
@@ -3527,6 +3531,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     logout: function logout() {
+      localStorage.removeItem('menu');
+      localStorage.removeItem('root_vue');
+      localStorage.removeItem('menu_sidebar');
+      localStorage.removeItem('user_sidebar');
+      localStorage.removeItem('apps');
       document.cookie = 'token' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       document.cookie = 'access' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       window.location.href = BASE_URL + '/login';
@@ -3770,7 +3779,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     Refresh: function Refresh() {
-      this.GetSidebar();
+      window.location.href = BASE_URL + '/menu';
       this.$emit('refresh', false);
     },
     getArrow: function getArrow(arrow) {
@@ -3781,24 +3790,27 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     GetSidebar: function GetSidebar() {
-      var self = this; // const config = {
-      //  headers: { 'Authorization': 'bearer '+ this.cookie }
-      // }
+      var self = this;
+      self.GetRequestSidebar();
 
-      var listUrl = "";
-      listUrl = BASE_URL + '/api/user/menu';
-      axios.get(listUrl).then(function (response) {
-        self.lists = response.data;
-        self.user = self.lists.user;
-        self.menu = self.lists.menu; // var data = [];
-        // data =  JSON.parse(self.menu);
-        // self.menu = data;
-      })["catch"](function (error) {
-        // console.log(error);
-        // $cookies.remove('token');
-        // window.location.href = BASE_URL+ '/login';
-        self.loading = false;
-      });
+      if (self.menu == null || self.user == null) {
+        var listUrl = "";
+        listUrl = BASE_URL + '/api/user/menu';
+        axios.get(listUrl).then(function (response) {
+          localStorage.setItem('menu_sidebar', JSON.stringify(response.data.menu_sidebar));
+          localStorage.setItem('user_sidebar', JSON.stringify(response.data.user_sidebar));
+          self.GetRequestSidebar();
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }
+    },
+    GetRequestSidebar: function GetRequestSidebar() {
+      var self = this;
+      var menu = localStorage.getItem('menu_sidebar');
+      self.menu = JSON.parse(menu);
+      var user = localStorage.getItem('user_sidebar');
+      self.user = JSON.parse(user);
     }
   }
 });
@@ -4388,18 +4400,18 @@ __webpack_require__.r(__webpack_exports__);
 
           data.push({
             'label': textinput,
-            'column': this.label_list[i].column.toLowerCase()
+            'column': this.label_list[i].column
           });
         } else {
           if (this.label_list[i].column == text) {
-            textinput = text;
+            textinput = text.toLowerCase();
           } else {
             textinput = this.label_list[i].column.toLowerCase();
           }
 
           data.push({
             'label': this.label_list[i].label,
-            'column': textinput.toLowerCase()
+            'column': textinput
           });
         }
       }
@@ -5144,11 +5156,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       urlBase = axios.post(BASE_URL + '/api/' + this.URL_Segment + '/role/save', forms);
       urlBase.then(function (response) {
         localStorage.removeItem('root_vue');
+        localStorage.removeItem('menu_sidebar');
         setTimeout(function () {
           _this2.load_tab = false;
           _this2.btn_cond = 'btn-primary';
           _this2.btn_disable = false;
-          localStorage.setItem('root_vue', JSON.stringify(response.data.result));
+          localStorage.setItem('root_vue', JSON.stringify(response.data.path));
+          localStorage.setItem('menu_sidebar', JSON.stringify(response.data.menu_sidebar));
         }, 500);
 
         _this2.$emit('updateMenu', true);
@@ -5559,7 +5573,7 @@ __webpack_require__.r(__webpack_exports__);
     dragOptions: function dragOptions() {
       this.group = 'people';
       return {
-        animation: 200,
+        animation: 500,
         group: this.group,
         disabled: false,
         ghostClass: "moving-card"
@@ -5614,6 +5628,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     Delete: function Delete(role, el) {
       var data = this.value ? this.value : this.list;
+      console.log(el.id);
       this.$swal({
         buttons: true,
         dangerMode: true,
@@ -9443,20 +9458,6 @@ var Role = /*#__PURE__*/function () {
       }
 
       return null;
-    }
-  }, {
-    key: "SetLocalStroge",
-    value: function SetLocalStroge(access) {
-      var formData = new FormData();
-      formData.append('access', access);
-      axios.post('/api/role/check', formData).then(function (response) {
-        var list = localStorage.getItem('root_vue');
-
-        if (list == null || JSON.parse(list).length == 0) {
-          localStorage.setItem('apps', response.data.apps);
-          localStorage.setItem('root_vue', JSON.stringify(response.data.result));
-        }
-      })["catch"](function (error) {});
     }
   }]);
 
@@ -87123,11 +87124,6 @@ var access = Roles.GetCookie('access');
 if (access != null) {
   var list = localStorage.getItem('root_vue');
   var Apps = localStorage.getItem('apps');
-
-  if (list == null || JSON.parse(list).length == 0) {
-    Roles.SetLocalStroge(access);
-  }
-
   var path = JSON.parse(list);
   var AppsName = Apps + ' | ';
   var BodyLogin = "login-page";
@@ -87135,17 +87131,27 @@ if (access != null) {
   var BodyDashboard2 = "sidebar-mini";
   var data2 = [];
 
-  for (var i = 0; i < path.length; i++) {
-    data2.push({
-      name: path[i].name,
-      path: path[i].path_vue,
-      props: {
-        Apps: AppsName + path[i].name,
-        'Title': path[i].name,
-        'URL_Segment': path[i].path_api
-      },
-      component: __webpack_require__("./resources/assets/js/template/adminlte/components sync recursive ^\\.\\/.*\\.vue$")("./" + path[i].foldername + '/' + path[i].filename + ".vue")["default"]
-    });
+  if (path != null) {
+    for (var i = 0; i < path.length; i++) {
+      data2.push({
+        name: path[i].name,
+        path: path[i].path_vue,
+        props: {
+          Apps: AppsName + path[i].name,
+          'Title': path[i].name,
+          'URL_Segment': path[i].path_api
+        },
+        component: __webpack_require__("./resources/assets/js/template/adminlte/components sync recursive ^\\.\\/.*\\.vue$")("./" + path[i].foldername + '/' + path[i].filename + ".vue")["default"]
+      });
+    }
+  } else {
+    localStorage.removeItem('menu');
+    localStorage.removeItem('menu_sidebar');
+    localStorage.removeItem('user_sidebar');
+    localStorage.removeItem('apps');
+    document.cookie = 'token' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    document.cookie = 'access' + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    window.location.href = BASE_URL + '/login';
   }
 
   var data1 = [{

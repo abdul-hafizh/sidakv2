@@ -35,11 +35,6 @@ class GeneralPaginate
     }
 
   
-    public static function Template() 
-    {   
-        $res = env('APP_TEMPLATE', 'adminlte');
-        return $res;
-    }
-   
+
 
 }

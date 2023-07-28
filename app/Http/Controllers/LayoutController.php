@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Helpers\ConfigHeader;
-use App\Helpers\GeneralPaginate;
+use App\Http\Request\RequestSettingApps;
 
 class LayoutController extends Controller
 {
@@ -12,7 +12,7 @@ class LayoutController extends Controller
     public function __construct()
     {
         $this->title = ConfigHeader::index();
-        $this->template = GeneralPaginate::template();
+        $this->template = RequestSettingApps::AppsTemplate();
     }
 
     public function index(Request $request)
