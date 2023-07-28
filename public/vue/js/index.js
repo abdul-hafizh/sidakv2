@@ -2750,6 +2750,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2764,18 +2819,26 @@ __webpack_require__.r(__webpack_exports__);
           phone: '',
           nip: '',
           daerah_id: '',
-          password: ''
+          password: '',
+          password_confirmation: '',
+          leader_name: '',
+          leader_nip: '',
+          igree: ''
         }
       },
       btnSubmit: true,
       btnLoading: false,
-      username: 'admin',
-      password: 'D4lak2021',
+      username: '',
+      password: '',
+      password_confirmation: '',
       name: '',
       email: '',
       phone: '',
       nip: '',
       daerah_id: '',
+      leader_name: '',
+      leader_nip: '',
+      igree: true,
       lists: [],
       logo: 'template/adminlte/img/logo_sidak.png'
     };
@@ -2785,7 +2848,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     document.body.classList.add(this.Body);
-    document.title = this.Apps; // this.getLogo();
+    document.title = this.Apps;
   },
   computed: {
     base_url: function base_url() {
@@ -2812,25 +2875,23 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     postData: function postData() {
-      var _this = this;
-
       var self = this;
       var urlBase = "";
       var formData = new FormData();
       self.btnSubmit = false;
       self.btnLoading = true;
       formData.append('username', self.username);
+      formData.append('name', self.name);
+      formData.append('nip', self.nip);
+      formData.append('email', self.email);
+      formData.append('phone', self.phone);
+      formData.append('leader_name', self.leader_name);
+      formData.append('leader_nip', self.leader_nip);
+      formData.append('daerah_id', self.daerah_id);
       formData.append('password', self.password);
-      urlBase = axios.post(BASE_URL + '/api/auth/login', formData);
-      urlBase.then(function (response) {
-        if (response.data.status === true) {
-          _this.$cookies.set('access', response.data.access);
-
-          _this.$cookies.set('token', response.data.token);
-
-          window.location.href = BASE_URL + '/dashboard';
-        }
-      })["catch"](function (error) {
+      formData.append('password_confirmation', self.password_confirmation);
+      urlBase = axios.post(BASE_URL + '/api/' + this.URL_Segment, formData);
+      urlBase.then(function (response) {})["catch"](function (error) {
         //console.log(error)
         self.errors = error.response.data;
         self.btnSubmit = true;
@@ -9013,8 +9074,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-//
-//
 //
 //
 //
@@ -50734,42 +50793,479 @@ var render = function() {
         _vm._v("Register daerah untuk SIDAK")
       ]),
       _vm._v(" "),
-      _c("form", { attrs: { action: "", method: "post" } }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _vm._m(3),
-        _vm._v(" "),
-        _vm._m(4),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "form-group has-feedback" },
-          [
-            _c("model-select", {
-              staticClass: "form-control",
-              attrs: { options: _vm.lists, placeholder: "Pilih Daerah" },
-              model: {
-                value: _vm.daerah_id,
-                callback: function($$v) {
-                  _vm.daerah_id = $$v
-                },
-                expression: "daerah_id"
-              }
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _vm._m(5),
-        _vm._v(" "),
-        _vm._m(6),
-        _vm._v(" "),
-        _vm._m(7)
-      ]),
+      _c(
+        "form",
+        {
+          attrs: { method: "post" },
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.postData.apply(null, arguments)
+            }
+          }
+        },
+        [
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.username ? "has-error" : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.username,
+                    expression: "username"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Username" },
+                domProps: { value: _vm.username },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.username = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass: "glyphicon glyphicon-user form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("username")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [_vm._v(_vm._s(_vm.errors.messages.username))])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.name ? "has-error" : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.name,
+                    expression: "name"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Nama Lengkap" },
+                domProps: { value: _vm.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.name = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass: "glyphicon glyphicon-star form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("name")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [_vm._v(_vm._s(_vm.errors.messages.name))])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.nip ? "has-error" : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.nip,
+                    expression: "nip"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "NIP" },
+                domProps: { value: _vm.nip },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.nip = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass:
+                  "glyphicon glyphicon-education form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("nip")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [_vm._v(_vm._s(_vm.errors.messages.nip))])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.email ? "has-error" : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.email,
+                    expression: "email"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "email", placeholder: "Email" },
+                domProps: { value: _vm.email },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.email = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass:
+                  "glyphicon glyphicon-envelope form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("email")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [_vm._v(_vm._s(_vm.errors.messages.email))])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.phone ? "has-error" : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.phone,
+                    expression: "phone"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "No Telp" },
+                domProps: { value: _vm.phone },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.phone = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass: "glyphicon glyphicon-phone form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("phone")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [_vm._v(_vm._s(_vm.errors.messages.phone))])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.leader_name ? "has-error" : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.leader_name,
+                    expression: "leader_name"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "Penanggung Jawab" },
+                domProps: { value: _vm.leader_name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.leader_name = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass: "glyphicon glyphicon-user form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("leader_name")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [
+                      _vm._v(_vm._s(_vm.errors.messages.leader_name))
+                    ])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.leader_nip ? "has-error" : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.leader_nip,
+                    expression: "leader_nip"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", placeholder: "NIP Penanggung Jawab" },
+                domProps: { value: _vm.leader_nip },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.leader_nip = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass:
+                  "glyphicon glyphicon-education form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("leader_nip")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [
+                      _vm._v(_vm._s(_vm.errors.messages.leader_nip))
+                    ])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.daerah_id ? "has-error" : ""
+            },
+            [
+              _c("model-select", {
+                staticClass: "form-control",
+                attrs: { options: _vm.lists, placeholder: "Pilih Daerah" },
+                model: {
+                  value: _vm.daerah_id,
+                  callback: function($$v) {
+                    _vm.daerah_id = $$v
+                  },
+                  expression: "daerah_id"
+                }
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("daerah_id")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [
+                      _vm._v(_vm._s(_vm.errors.messages.daerah_id))
+                    ])
+                  ])
+                : _vm._e()
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.password ? "has-error" : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.password,
+                    expression: "password"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "password", placeholder: "Password" },
+                domProps: { value: _vm.password },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.password = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass: "glyphicon glyphicon-lock form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("password")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [_vm._v(_vm._s(_vm.errors.messages.password))])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "form-group has-feedback",
+              class: _vm.errors.messages.password_confirmation
+                ? "has-error"
+                : ""
+            },
+            [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.password_confirmation,
+                    expression: "password_confirmation"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "password", placeholder: "Retype password" },
+                domProps: { value: _vm.password_confirmation },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.password_confirmation = $event.target.value
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", {
+                staticClass: "glyphicon glyphicon-log-in form-control-feedback"
+              }),
+              _vm._v(" "),
+              _vm.errors.messages.hasOwnProperty("password_confirmation")
+                ? _c("span", { staticClass: "help-block" }, [
+                    _c("strong", [
+                      _vm._v(_vm._s(_vm.errors.messages.password_confirmation))
+                    ])
+                  ])
+                : _vm._e()
+            ]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-xs-8" }, [
+              _c("div", { staticClass: "checkbox icheck" }, [
+                _c("label", [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.igree,
+                        expression: "igree"
+                      }
+                    ],
+                    attrs: { type: "checkbox", value: "true" },
+                    domProps: {
+                      checked: Array.isArray(_vm.igree)
+                        ? _vm._i(_vm.igree, "true") > -1
+                        : _vm.igree
+                    },
+                    on: {
+                      change: function($event) {
+                        var $$a = _vm.igree,
+                          $$el = $event.target,
+                          $$c = $$el.checked ? true : false
+                        if (Array.isArray($$a)) {
+                          var $$v = "true",
+                            $$i = _vm._i($$a, $$v)
+                          if ($$el.checked) {
+                            $$i < 0 && (_vm.igree = $$a.concat([$$v]))
+                          } else {
+                            $$i > -1 &&
+                              (_vm.igree = $$a
+                                .slice(0, $$i)
+                                .concat($$a.slice($$i + 1)))
+                          }
+                        } else {
+                          _vm.igree = $$c
+                        }
+                      }
+                    }
+                  }),
+                  _vm._v(" I agree to the "),
+                  _c("a", { attrs: { href: "#" } }, [_vm._v("terms")])
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _vm._m(0)
+          ])
+        ]
+      ),
       _vm._v(" "),
       _c(
         "a",
@@ -50791,132 +51287,15 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group has-feedback" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", placeholder: "Username" }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "glyphicon glyphicon-user form-control-feedback"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group has-feedback" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", placeholder: "Nama Lengkap" }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "glyphicon glyphicon-star form-control-feedback"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group has-feedback" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "email", placeholder: "Email" }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "glyphicon glyphicon-envelope form-control-feedback"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group has-feedback" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", placeholder: "No Telp" }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "glyphicon glyphicon-phone form-control-feedback"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group has-feedback" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", placeholder: "NIP" }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "glyphicon glyphicon-education form-control-feedback"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group has-feedback" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "password", placeholder: "Password" }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "glyphicon glyphicon-lock form-control-feedback"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "form-group has-feedback" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "password", placeholder: "Retype password" }
-      }),
-      _vm._v(" "),
-      _c("span", {
-        staticClass: "glyphicon glyphicon-log-in form-control-feedback"
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-xs-8" }, [
-        _c("div", { staticClass: "checkbox" }, [
-          _c("label", [
-            _c("input", { attrs: { type: "checkbox" } }),
-            _vm._v(" I agree to the "),
-            _c("a", { attrs: { href: "#" } }, [_vm._v("terms")])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-xs-4" }, [
-        _c(
-          "button",
-          {
-            staticClass: "btn btn-primary btn-block btn-flat",
-            attrs: { type: "submit" }
-          },
-          [_vm._v("Register")]
-        )
-      ])
+    return _c("div", { staticClass: "col-xs-4" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary btn-block btn-flat",
+          attrs: { type: "submit" }
+        },
+        [_vm._v("Register")]
+      )
     ])
   }
 ]
@@ -60385,14 +60764,6 @@ var render = function() {
                       _vm._v(" Email ")
                     ]),
                     _vm._v(" "),
-                    _c("th", { staticClass: "border-right-table" }, [
-                      _vm._v(" Sample ")
-                    ]),
-                    _vm._v(" "),
-                    _c("th", { staticClass: "border-right-table" }, [
-                      _vm._v(" Sample ")
-                    ]),
-                    _vm._v(" "),
                     _c("th", [_vm._v(" Options ")])
                   ])
                 ]),
@@ -60482,10 +60853,6 @@ var render = function() {
                             ]),
                             _vm._v(" "),
                             _c("td", [_vm._v(" " + _vm._s(list.email) + " ")]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(" Sample ")]),
-                            _vm._v(" "),
-                            _c("td", [_vm._v(" Sample ")]),
                             _vm._v(" "),
                             _c("td", [
                               _c("div", { staticClass: "btn-group" }, [

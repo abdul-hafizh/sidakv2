@@ -28,6 +28,7 @@ const mix = require('laravel-mix');
         'public/template/adminlte/js/jquery.min.js',
         'public/template/adminlte/js/adminlte.min.js',
         'public/template/adminlte/js/bootstrap.min.js',
+        'public/template/adminlte/js/icheck.min.js',
         'public/template/adminlte/js/icheck.js',
     ], 'public/vue/js/bundle.js').vue({ version: 2 });
 

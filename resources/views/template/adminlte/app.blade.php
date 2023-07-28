@@ -37,6 +37,7 @@
      <script type="text/javascript" src="{{ mix('/vue/js/index.js') }}"></script>
      <script type="text/javascript" src="{{ mix('/vue/js/bundle.js') }}"></script> 
      
+   
 
       </body>      
 </html>
