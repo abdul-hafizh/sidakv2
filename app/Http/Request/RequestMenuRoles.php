@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\RoleMenu;
 use App\Models\SettingApps;
 use App\Models\Roles;
+use App\Http\Request\RequestSettingApps;
 
 class RequestMenuRoles 
 {
@@ -210,7 +211,7 @@ class RequestMenuRoles
     {   
 
         
-        $temp = GeneralPaginate::Template();
+        $temp = RequestSettingApps::AppsTemplate();
 
         foreach($data as $key =>$val)
         {
