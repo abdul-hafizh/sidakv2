@@ -17,21 +17,5 @@ export default class Role {
       }
 
 
-      SetLocalStroge(access){
-
-        let formData = new FormData();
-        formData.append('access', access);
-        axios.post('/api/role/check', formData).then((response) => {
-                const list  = localStorage.getItem('root_vue'); 
-                if(list ==null || JSON.parse(list).length ==0)
-                {
-                   localStorage.setItem('apps', response.data.apps);  
-                   localStorage.setItem('root_vue', JSON.stringify(response.data.result)); 
-                } 
-           }).catch((error) => {
-          
-           
-        }) 
-      }
-     
+      
 }

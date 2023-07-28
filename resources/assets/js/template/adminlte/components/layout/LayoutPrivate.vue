@@ -123,6 +123,8 @@ export default {
           logout(){
               localStorage.removeItem('menu');
               localStorage.removeItem('root_vue');
+              localStorage.removeItem('menu_sidebar');
+              localStorage.removeItem('user_sidebar');
               localStorage.removeItem('apps');
               document.cookie = 'token' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
               document.cookie = 'access' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';

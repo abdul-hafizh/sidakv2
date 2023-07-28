@@ -26,34 +26,47 @@ Vue.use(PerfectScrollbar)
 
 Vue.component('loading-block', require('./components/layout/LoadingBlock.vue').default);
 const Roles = new Role();
-const access = Roles.GetCookie('access');
+const access = Roles.GetCookie('access'); 
+
+
 if(access !=null)
 {    
+
         const list  = localStorage.getItem('root_vue'); 
         const Apps  = localStorage.getItem('apps');
-        if(list ==null || JSON.parse(list).length ==0)
-        {
-            Roles.SetLocalStroge(access); 
-        } 
 
         const path = JSON.parse(list);
+
         const AppsName = Apps+' | ';
         const BodyLogin = "login-page";
         const BodyDashboard1 = "skin-default";
         const BodyDashboard2 = "sidebar-mini";
-
         var data2 = [];
-        for(var i=0; i< path.length; i++)
+        if(path !=null)
         {
-           
-            data2.push({
-               name:path[i].name,
-               path:path[i].path_vue,
-               props:{ Apps: AppsName + path[i].name,'Title':path[i].name,'URL_Segment':path[i].path_api },
-               component: require('./components/'+ path[i].foldername +'/'+ path[i].filename +'.vue').default 
-            });
+            for(var i=0; i< path.length; i++)
+            {
+                data2.push({
+                   name:path[i].name,
+                   path:path[i].path_vue,
+                   props:{ Apps: AppsName + path[i].name,'Title':path[i].name,'URL_Segment':path[i].path_api },
+                   component: require('./components/'+ path[i].foldername +'/'+ path[i].filename +'.vue').default 
+                });
 
-        }  
+            }  
+        }else{
+            
+          localStorage.removeItem('menu');
+         
+          localStorage.removeItem('menu_sidebar');
+          localStorage.removeItem('user_sidebar');
+          localStorage.removeItem('apps');
+          document.cookie = 'token' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          document.cookie = 'access' +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+          window.location.href = BASE_URL+ '/login';
+
+        }    
+        
                  
         var data1 = 
         [

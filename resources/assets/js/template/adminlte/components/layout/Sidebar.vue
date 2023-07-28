@@ -108,29 +108,34 @@ export default {
           },
           GetSidebar(){
             const self = this;
-           // const config = {
-                      //  headers: { 'Authorization': 'bearer '+ this.cookie }
-               // }
-            let listUrl = "";
-            listUrl = BASE_URL + '/api/user/menu';    
-            axios.get(listUrl).then((response) => {
-                self.lists = response.data;
-                self.user = self.lists.user;
-                self.menu = self.lists.menu;
+            self.GetRequestSidebar();
+            if(self.menu ==null || self.user ==null)
+            {
+                let listUrl = "";
+                listUrl = BASE_URL + '/api/user/menu';    
+                axios.get(listUrl).then((response) => {
+                    
 
-                // var data = [];
-                // data =  JSON.parse(self.menu);
+                    localStorage.setItem('menu_sidebar', JSON.stringify(response.data.menu_sidebar));
+                    localStorage.setItem('user_sidebar', JSON.stringify(response.data.user_sidebar));
+                    self.GetRequestSidebar();
+                     
+                }).catch((error) => {
+                   console.log(error)
+                });
 
-                // self.menu = data;
+            }     
 
-                 
-            }).catch((error) => {
-               // console.log(error);
-               // $cookies.remove('token');
-               // window.location.href = BASE_URL+ '/login';
-                self.loading = false;
-            });
+           
 
+          },
+          GetRequestSidebar(){
+            const self = this;
+            const menu  = localStorage.getItem('menu_sidebar'); 
+            self.menu = JSON.parse(menu);
+
+            const user  = localStorage.getItem('user_sidebar'); 
+            self.user = JSON.parse(user);
           },
         }
     }

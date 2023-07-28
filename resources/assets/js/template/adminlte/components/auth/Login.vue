@@ -149,7 +149,10 @@
                    {
                             this.$cookies.set('access',response.data.access);
                             this.$cookies.set('token',response.data.token);
-                           
+                            localStorage.setItem('apps', response.data.apps);  
+                            localStorage.setItem('root_vue', JSON.stringify(response.data.path));
+                            localStorage.setItem('menu_sidebar', JSON.stringify(response.data.menu_sidebar));
+                            localStorage.setItem('user_sidebar', JSON.stringify(response.data.user_sidebar));
                             window.location.href = BASE_URL+ '/dashboard'; 
                               
 

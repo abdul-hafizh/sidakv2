@@ -17,6 +17,7 @@ class SettingApps extends Model
 
     public $fillable = [
         'title',
+        'template',
         'logo_lg',
         'logo_sm',
         'about',

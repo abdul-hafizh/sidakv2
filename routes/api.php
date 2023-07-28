@@ -38,8 +38,6 @@ use App\Http\Controllers\API\UserApiController;
  Route::post('login/auth',[AuthApiController::class, 'Login']);
  Route::get('apps', [SettingWebApiController::class, 'index']);
 
- //setting
-Route::post('role/check', [RolesApiController::class, 'check']);
 
  Route::middleware(['jwt.auth','authRole'])->group(function () {
 

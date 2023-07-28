@@ -352,11 +352,14 @@
             urlBase
             .then((response) => {
               localStorage.removeItem('root_vue');
+              localStorage.removeItem('menu_sidebar');
               setTimeout(() => {
                  this.load_tab = false;
                  this.btn_cond = 'btn-primary';
                  this.btn_disable = false; 
-                 localStorage.setItem('root_vue', JSON.stringify(response.data.result)); 
+                 localStorage.setItem('root_vue', JSON.stringify(response.data.path));
+                 localStorage.setItem('menu_sidebar', JSON.stringify(response.data.menu_sidebar));
+
                  }, 500);
 
 

@@ -32,52 +32,11 @@ class RolesApiController extends Controller
 
     }
 
-      public function check(Request $request)
-    {
-   
-        $access = Roles::where('slug',$request->access)->first();
-        $role = RequestMenuRoles::Roles($access->id);
-        $path = RequestMenuRoles::PathVue($role);
-        
-        $apps = RequestMenuRoles::AppsWeb();
-        
-        
-        return response()->json(['status'=>true,'apps'=>$apps,'result'=>$path,'message'=>'success data menu']);
-
-    }
+    
 
    
 
-     public function SidebarMenu(Request $request)
-    {
    
-        $access = Roles::where('slug',$request->access)->first();
-        $role = RequestMenus::Roles($access->id);
-        $res = array();
-        if($role)
-        {
-               
-            $result = json_decode($role);
-            foreach($result as $key =>$value)
-            {
-               if($value->path_web !=null){ $path_web = $value->path_web;}else{$path_web = "";}
-               if($value->path_vue !=null){ $path_vue = $value->path_vue;}else{$path_vue = "";}
-               if($value->path_api !=null){ $path_api = $value->path_api;}else{$path_api = "";}  
-               $res[$key]['name'] = $value->name;
-               $res[$key]['filename'] = $value->filename;
-               $res[$key]['slug'] = $value->slug;
-               $res[$key]['path_api'] = $path_api;
-               $res[$key]['path_web'] = $path_web;
-               $res[$key]['path_vue'] = $path_vue;
-               $res[$key]['tasks'] = RequestMenus::MenuTaks($value->tasks);
-            }    
-        }
-
-        $apps = RequestMenuRoles::AppsWeb();
-        
-        return response()->json(['status'=>true,'apps'=>$apps,'result'=>$res,'message'=>'success data menu']);
-
-    }
 
     
 

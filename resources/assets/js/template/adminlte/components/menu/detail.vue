@@ -277,21 +277,21 @@
 
                     data.push({
                       'label':textinput,
-                      'column':this.label_list[i].column.toLowerCase(),            
+                      'column':this.label_list[i].column,            
                     });
 
                 }else{
 
                     if(this.label_list[i].column == text)
                     {
-                        textinput = text;
+                        textinput = text.toLowerCase();
                     }else{
                         textinput = this.label_list[i].column.toLowerCase();
                     }
 
                     data.push({
                       'label':this.label_list[i].label,
-                      'column':textinput.toLowerCase(), 
+                      'column':textinput, 
                     });
 
                 }    

@@ -40,19 +40,7 @@ class RequestMenuRoles
 
    }
 
-   public static function AppsWeb(){
-
-        $apps = SettingApps::first();
-        if($apps)
-        {
-            $title = $apps->title; 
-        }else{
-            $title = env('APP_NAME',true); 
-        }  
-
-        return $title;  
-
-   }
+   
 
    public static function Roles($id)
    {

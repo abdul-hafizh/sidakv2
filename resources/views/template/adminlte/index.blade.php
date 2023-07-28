@@ -1,4 +1,4 @@
-@extends('template/apex.app')
+@extends('template/adminlte.app')
 
 @section('content')
     <div id="app" class="wrapper">
