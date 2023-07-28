@@ -49,8 +49,7 @@
                                      <th class="border-right-table"> Nama </th>
                                      <th class="border-right-table"> Username </th>
                                      <th class="border-right-table"> Email </th>
-                                     <th class="border-right-table"> Sample </th>
-                                     <th class="border-right-table"> Sample </th>
+                                     
                                     <th> Options </th> 
                                 </tr>
                                 </thead>
@@ -67,8 +66,7 @@
                                         <td> {{ list.name }} </td>
                                         <td> {{ list.username }} </td>
                                         <td> {{ list.email }} </td>
-                                        <td> Sample </td>
-                                        <td> Sample </td>
+                                      
                                         <td>
                                             <div class="btn-group">
                                            

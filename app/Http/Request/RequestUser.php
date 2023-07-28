@@ -79,53 +79,22 @@ class RequestUser
    public static function fieldsData($type,$request)
    {
     
-     
-
-    if($request->status =="A"){ $st_account ="A"; }else if($request->status =="C"){ $st_account ="A";  }else{ $st_account ="B"; } 
-
-    if($type =="insert")
-    {
-        if($request->password ==""){ $password = bcrypt($request->username);}else{$password = bcrypt($request->password);}
-        $username = $request->username;
-        $photo = "";
-    }else{
-        $user = User::find($request->id);
-        $username =  $user->username;
-        $UploadFolder = GeneralPaginate::uploadPhotoFolder();
-        $photo =  $user->photo;
-        $password = $user->password;
-    }  
-
-    $fieldsAccess = [  
-            'username'  => $username,
-            'password'  => $password,
-            'email'  => $request->email,
-            'phone'  => $request->phone,
-            'status'  => $st_account,
-            'created_by' => Auth::User()->username,
-            'remember_token'=>'',
+        $fields = 
+        [  
+            'username'  => $request->username,
+            'name'  => $request->name,
+            'nip'  => $request->nip,
+            'password'  => bcrypt($request->password),
+            'email'     => $request->email,
+            'phone'     => $request->phone,
+            'leader_name'     => $request->leader_name,
+            'leader_nip'     => $request->leader_nip,
+            'daerah_id'     => $request->daerah_id,
+            'created_by' => '',
             'created_at' => date('Y-m-d H:i:s'),
-    ];
+        ];
 
-     $fieldsUser = [
-            'first_name' => $request->first_name,
-            'last_name' =>  $request->last_name,
-            'address'  => $request->address,
-            'gender'  => $request->gender,
-            'brithday' => $request->brithday,
-            'class_id'  => (int)$request->class_id,
-            'semester_id'  => (int)$request->semester_id,
-            'academic_id'  => (int)$request->academic_id,
-            'generation_id'  => (int)$request->generation_id,
-            'prodi_id'  => (int)$request->prodi_id,
-            'created_at' => date('Y-m-d H:i:s'),
-
-     ];   
-         
-    $fieldsStatus = ['status'=>$request->status ];
-    $fields = array_merge($fieldsUser,$fieldsStatus);
-    $merge = array('account'=>$fieldsAccess,'attribut'=>$fields,'photo'=>$photo);    
-    return $merge;
+        return $fields;
 
    }
 

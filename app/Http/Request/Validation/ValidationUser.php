@@ -1,0 +1,82 @@
+<?php
+
+namespace App\Http\Request\Validation;
+use Illuminate\Support\Facades\Validator;
+
+class ValidationUser
+{
+    public static function validation($request){
+        $err = array(); 
+        
+        $fields = [
+            'username'  => 'Username',
+            'name'  => 'Nama',
+            'email'  => 'Email',
+            'phone'  => 'No Telp',
+            'nip'  => 'NIP',
+            'leader_name'  => 'Penanggung Jawab',
+            'leader_nip'=>'NIP Penanggung Jawab',
+            'daerah_id'  => 'Daerah',
+            'password'  => 'Password',
+        ];
+
+        $validator =  Validator::make($request->all(), 
+        [
+            'username'  => 'required|max:255',
+            'name'  => 'required',
+            'email'  => 'required',
+            'phone'  => 'required',
+            'nip'  => 'required',
+            'leader_name'  => 'required',
+            'leader_nip'  => 'required',
+            'daerah_id'  => 'required',
+            'password'  => 'required',
+        ]);
+
+        $validator->setAttributeNames($fields); 
+        if ($validator->fails()) {
+         
+            $errors = $validator->errors();
+            
+            if($errors->has('username')){
+                $err['messages']['username'] = $errors->first('username');
+            }
+
+            if($errors->has('name')){
+                $err['messages']['name'] = $errors->first('name');
+            }
+
+            if($errors->has('email')){
+                $err['messages']['email'] = $errors->first('email');
+            }
+
+            if($errors->has('phone')){
+                $err['messages']['phone'] = $errors->first('phone');
+            }
+
+            if($errors->has('nip')){
+                $err['messages']['nip'] = $errors->first('nip');
+            }
+
+            if($errors->has('leader_name')){
+                $err['messages']['leader_name'] = $errors->first('leader_name');
+            }
+
+            if($errors->has('leader_nip')){
+                $err['messages']['leader_nip'] = $errors->first('leader_nip');
+            }
+            
+            if($errors->has('daerah_id')){
+                $err['messages']['daerah_id'] = $errors->first('daerah_id');
+            }
+            
+            if($errors->has('password')){
+                $err['messages']['password'] = $errors->first('password');
+            } 
+            return $err;
+       }
+    }
+
+
+   
+}
