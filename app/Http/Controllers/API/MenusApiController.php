@@ -32,6 +32,7 @@ class MenusApiController extends Controller
         $description = '';
         $resultMenu = RequestMenus::GetDataAll($menu,$description);
         $resultRole = RequestMenus::RoleMenu($role);
+
         return response()->json(['menu'=>$resultMenu,'role'=>$resultRole]);
 
     }

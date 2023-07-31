@@ -21,7 +21,7 @@
                  <img class="menu-icon"  :src="el.icon" />
             </span>
             <div class="pull-left checkbox-label">
-                 <span class="">{{ el.name }} </span>
+                 <span class="text-bold font-16">{{ el.name }} </span>
             </div>
 
             <div class="pull-right padding-05-05 bg-list-menu-btn" v-if="el.status =='unlock'" >

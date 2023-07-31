@@ -3,6 +3,17 @@
     color: #a94442;
 }
 
+.form-group.has-error .form-control {
+    border-color: #dd4b39!important;
+    box-shadow: none;
+}
+
+.box {
+    border-radius: 12px!important;
+}
+.box.box-solid.box-primary {
+    border: none!important;
+}
 
 .pd-left-right-15{
     padding: 0px 15px 0 15px!important;
@@ -701,7 +712,9 @@
 
 .border-right-table{
         border-right: 3px solid #0e298f;
+
 }
+
 
 .bg-search-table{
    width: 100%;
@@ -716,6 +729,18 @@
 .mgn-bottom-20{
     margin: 0px 0px 20px;
 }
+
+.font-16{
+    font-size: 16px;
+}
+.font-10{
+    font-size: 10px!important;
+}
+.font-normal{
+     font-style: normal!important;
+}
+
+
 
 
 @media (min-width: 576px) {

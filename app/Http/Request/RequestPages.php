@@ -7,7 +7,7 @@ use App\Models\Roles;
 use App\Models\RoleUser;
 use Illuminate\Support\Str;
 
-class RequestRoles 
+class RequestPages 
 {
    
    public static function GetDataAll($data,$perPage,$request,$description)

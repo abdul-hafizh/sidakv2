@@ -1,13 +1,10 @@
 <?php
 
 namespace App\Http\Request;
-use Auth;
 use App\Helpers\GeneralHelpers;
-use App\Models\Roles;
-use App\Models\RoleUser;
 use Illuminate\Support\Str;
 
-class RequestRoles 
+class RequestMobil
 {
    
    public static function GetDataAll($data,$perPage,$request,$description)
@@ -18,13 +15,12 @@ class RequestRoles
         $numberNext = (($page*$perPage) - ($perPage-1));
    	    foreach ($data as $key => $val)
         {
-            if($val->status =='Y'){ $status = 'Aktif'; }else{ $status = 'Tidak Aktif';}
+           
 
             $__temp_[$key]['number'] = $numberNext++;
             $__temp_[$key]['id'] = $val->id;
             $__temp_[$key]['name'] = $val->name;
-            $__temp_[$key]['status'] = $status;
-            $__temp_[$key]['slug'] = $val->slug;  
+         
             $__temp_[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
         }
        
@@ -50,34 +46,17 @@ class RequestRoles
 
    }
 
-   public static function GetDataID($data)
-   {         
-           
-            $__temp_['id'] = $data->id;
-            $__temp_['name'] = $data->name;
-            $__temp_['status'] = $data->status;
-                
-            return $__temp_;
-   }
-
-  
-
+   
    public static function fieldsData($request)
    {
         $uuid = Str::uuid()->toString();
         $fields = [ 
                 'id'=> $uuid,
                 'name'  =>  $request->name,
-                'status'  =>  $request->status,
-                'slug' =>  strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name))),
-                'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
         ];
         return $fields;
    }
-
-   
-
   
 
    
