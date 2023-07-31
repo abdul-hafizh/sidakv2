@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\RoleMenu;
 use App\Models\SettingApps;
 use App\Models\Roles;
+use App\Models\Pages;
 use App\Http\Request\RequestSettingApps;
 
 class RequestMenuRoles 
@@ -49,9 +50,7 @@ class RequestMenuRoles
        $RoleMenus = RoleMenu::where('role_id',$id)->first();
        if($RoleMenus !=null)
        {
-          $encode = json_encode($RoleMenus->menu_json);
-          $data = json_decode($encode);
-          //$data = array(['text'=>'Master','value'=>4,'path'=>'','icon'=>'fa fa-bars']);
+          $data = json_decode(json_encode($RoleMenus->menu_json), FALSE);
           
        }else{
           $data = [];
@@ -86,9 +85,43 @@ class RequestMenuRoles
             }
         }
               
-        
-        $res =  json_encode($result);
-        return json_decode($res);
+        $data = json_decode(json_encode($result), FALSE);
+        return $data;
+
+   }
+
+    public static function ConvertMenu($data){
+
+           $objectMenu = json_decode($data);
+           $arr = array();
+            if (isset($objectMenu)) {
+                foreach ($objectMenu as $key => $value) 
+                {
+                   if($value->type =='menu')
+                   {
+                     $pages = true; 
+                   }else{
+                     $pages =  RequestMenuRoles::CreatePages($value->slug);
+                   } 
+                   
+                   $arr[$key]['id'] = $value->id;
+                   $arr[$key]['name'] = $value->name;
+                   $arr[$key]['slug'] = $value->slug;  
+                   $arr[$key]['path_web'] = $value->path_web;
+                   $arr[$key]['path_vue'] = $value->path_vue;
+                   $arr[$key]['path_api'] = $value->path_api;
+                   $arr[$key]['status'] =  $value->status;
+                   $arr[$key]['foldername'] = $value->foldername;
+                   $arr[$key]['filename'] = $value->filename;
+                   $arr[$key]['type'] = $value->type;
+                   $arr[$key]['type_icon'] = $value->type_icon;
+                   $arr[$key]['icon'] = $value->icon;
+                   $arr[$key]['edit'] = $value->edit;
+                   $arr[$key]['pages'] = $pages;
+                   $arr[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ;      
+                 }
+            }     
+            return json_encode($arr);
 
    }
 
@@ -142,19 +175,75 @@ class RequestMenuRoles
         $result = array();
         if (isset($array)) {
             $no = 1;
-            foreach ($array as $a => $value)
+            foreach ($array as $key => $value)
             {
-               $result[$a]['no'] = $no;
-               $result[$a]['name'] = $value->name;
-               $result[$a]['path_vue'] = $value->path_vue;
-               $result[$a]['icon'] = $value->icon; 
-               $result[$a]['status'] = ''; 
+                   if($value->type =='menu')
+                   {
+                     $pages = true; 
+                   }else{
+                     $pages =  RequestMenuRoles::CreatePages($value->slug);
+                   } 
+
+                   $result[$key]['no'] = $no;
+                   $result[$key]['id'] = $value->id;
+                   $result[$key]['name'] = $value->name;
+                   $result[$key]['slug'] = $value->slug;  
+                   $result[$key]['path_web'] = $value->path_web;
+                   $result[$key]['path_vue'] = $value->path_vue;
+                   $result[$key]['path_api'] = $value->path_api;
+                   $result[$key]['status'] =  $value->status;
+                   $result[$key]['foldername'] = $value->foldername;
+                   $result[$key]['filename'] = $value->filename;
+                   $result[$key]['type'] = $value->type;
+                   $result[$key]['type_icon'] = $value->type_icon;
+                   $result[$key]['icon'] = $value->icon;
+                   $result[$key]['edit'] = $value->edit;
+                   $result[$key]['pages'] = $pages;
+                   $result[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ; 
+               
                $no ++;  
             }
         }
         return $result;
 
    }
+
+   public static function CreatePages($slug)
+   {
+        $pages = Pages::where('slug',$slug)->first();
+        if($pages)
+        { 
+            $result = true;
+        }else{
+            $result = false;
+        } 
+         
+
+        return  $result;
+   }
+
+   public static function Condition($path)
+   {  
+        $path =  json_encode($path);
+        $path =  json_decode($path);
+        $res = array();
+        $result = array();
+        foreach($path as $key =>$value)
+        {
+           $res[$key] = $value->slug;
+        }
+
+        if (in_array('menu', $res))
+        {
+            $result = true;
+        }else{
+           $result = false;
+        }
+
+        return $result; 
+
+   }
+
 
     public static function fieldsData($request)
     {
@@ -182,7 +271,7 @@ class RequestMenuRoles
             'filename'  => $request->filename,
             'type'  => $request->type,
             'label_list'  =>  json_encode($request->label_list),
-            'action_table'  => json_encode($request->action_list),
+            'action_list'  => json_encode($request->action_list),
             'limit_table' =>$request->limit_table,
             'path_api'  => $request->path_api,
             'search'  => $request->search,
@@ -785,7 +874,7 @@ class RequestMenuRoles
                
                 
                 
-                urlBase = axios.post(BASE_URL+"/api/"+  self.URL_Segment +"/add", formData);
+                urlBase = axios.post(BASE_URL+"/api/"+  self.URL_Segment , formData);
                 urlBase
                 .then((response) => {
                     if(response.data.status == true){

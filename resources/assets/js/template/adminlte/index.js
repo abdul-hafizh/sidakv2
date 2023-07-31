@@ -41,6 +41,7 @@ if(access !=null)
         const BodyLogin = "login-page";
         const BodyDashboard1 = "skin-default";
         const BodyDashboard2 = "sidebar-mini";
+        
         var data2 = [];
         if(path !=null)
         {

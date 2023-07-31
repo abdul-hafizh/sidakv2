@@ -1,45 +1,53 @@
+<template>
 
-    <template>
+ <!-- Modal content-->
+<div class="modal fade in" id="modal-default" style="display: block; padding-right: 17px;">
+ <div class="modal-dialog"> 
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" @click="$emit('close')">&times;</button>
+        <h4 class="modal-title">Add {{Title}}</h4>
+      </div>
 
-<div class="content">
-   
-    <div class="box box-primary">
+      <form  enctype="multipart/form-data" method="post"  @submit.prevent="RequestPost">
+       <perfect-scrollbar>
+         <div class="modal-body">
 
-        <div class="box-body">
-             <div class="row" v-if="loading">  
-                <div class="form-group col-sm-12">
-                 <loading-block class="loading-table"  />
-                </div>
-              </div> 
-            <div class="row" v-if="views">
-            <form  enctype="multipart/form-data" method="post"  @submit.prevent="RequestPost">
-                   
-
-                   <div class="form-group col-sm-6" >
-                         <label>Sample :</label>
-                         <input v-model="name" type="text" class="form-control" placeholder="Sample Name">
-                       
-                    </div>
-
-                     
-
-                     
-
-                   
-                    <div class="form-group col-sm-12">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-default" @click="Cancel">Cancel</button>
-
-                      
-                    </div>
-
-            </form>
-                
-
-            </div>
+        <div class="form-group has-feedback" :class="errors.messages.username ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="Username" v-model="username">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span class="help-block" v-if="errors.messages.hasOwnProperty('username')">
+                <strong>{{ errors.messages.username }}</strong>
+            </span>
         </div>
+
+
+        <div class="form-group has-feedback" :class="errors.messages.name ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="Username" v-model="name">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span class="help-block" v-if="errors.messages.hasOwnProperty('name')">
+                <strong>{{ errors.messages.name }}</strong>
+            </span>
+        </div>
+
+         <div class="form-group has-feedback" :class="errors.messages.phone ? 'has-error' : ''">
+            <input type="text" class="form-control" placeholder="Username" v-model="phone">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span class="help-block" v-if="errors.messages.hasOwnProperty('phone')">
+                <strong>{{ errors.messages.phone }}</strong>
+            </span>
+        </div>
+            
+         </div>
+      </perfect-scrollbar>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" @click="$emit('close')">Close</button>
+        <button type="submit" class="btn btn-primary" >Save</button>
+      </div>
+      </form>
     </div>
-</div>
+ </div>
+</div> 
 
 </template>
 <script>
@@ -49,14 +57,33 @@
             return {
                errors: {
                     messages: {
-                        name:"", 
-                        status:"", 
-                       
-                            
+                        username:'',
+                        name:'',
+                        email:'',
+                        phone:'',
+                        nip:'',
+                        daerah_id:'',
+                        password:'',
+                        password_confirmation:'', 
+                        leader_name:'',
+                        leader_nip:'', 
+                        agree:'',     
                     },
-               }, 
-               loading:true,
-               views:false,
+                }, 
+                btnSubmit:true,
+                btnLoading:false,
+                username:'',
+                password:'',
+                password_confirmation:'',
+                name:'',
+                email:'',
+                phone:'',
+                nip:'',
+                daerah_id:'',
+                leader_name:'',
+                leader_nip:'',
+                loading:true,
+                views:false,
                name:"",
                status:"Y", 
                

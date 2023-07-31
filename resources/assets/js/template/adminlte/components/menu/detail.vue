@@ -68,6 +68,37 @@
                
             </div>
 
+            <div class="form-group"  :class="errors.messages.table_name ? 'has-error' : ''">
+                 <label>Table Name :</label>
+                  <input v-model="table_name" type="text" class="form-control" > 
+                   <span class="help-block" v-if="errors.messages.hasOwnProperty('table_name')">
+                    <strong>{{ errors.messages.table_name }}</strong>
+                </span>          
+            </div>
+
+            <div class="form-group"  v-if="type =='table'" :class="errors.messages.order_by ? 'has-error' : ''" >
+                 <label>Table Sort :</label>
+                     <div class="radio">
+                        <label>
+                            <input type="radio" value="asc" v-model="order_by" >
+                           Ascending
+                        </label>
+                     </div>
+
+                     <div class="radio">
+                        <label>
+                            <input type="radio" value="desc" v-model="order_by" >
+                           Descending
+                        </label>
+                     </div>
+
+                    
+                <span class="help-block" v-if="errors.messages.hasOwnProperty('order_by')">
+                    <strong>{{ errors.messages.order_by }}</strong>
+                </span>          
+               
+            </div>
+
             <div class="form-group"  v-if="type =='table'">
                  <label>Limit Table :</label>
                  <model-select class="form-control" v-model="limit_table" :options="list_limit" placeholder="Pilih limit table">
@@ -82,7 +113,10 @@
                         <input type="text" class="form-control" placeholder="Label" v-model="item.label" @input="updateLabel(index,item.label,'label')">
                    </div>
                    <div class=" mgn-bottom-20">
-                        <input class="form-control text-height-115" placeholder="Column" v-model="item.column" @input="updateLabel(index,item.column,'column')">
+                        <model-select class="form-control text-height-115" v-model="item.column" :options="list_table" placeholder="Pilih Column" @input="updateLabel(index,item.column,'column')">
+                        </model-select>
+
+                       
                    </div>
                     <div class=" mgn-bottom-20 pull-right">
                           <button type="button" @click="deleteLabel(index)" class="btn btn-danger ">
@@ -196,7 +230,8 @@
                     messages: {
                         label_list:'',
                			action_list:'',
-                            
+                        table_name:'',
+                        order_by:'',    
                     },
                }, 
                menu_id:'',
@@ -206,10 +241,13 @@
                filename:'',
                type:'',
                list_limit:[{'value':'5','text':'5'},{'value':'10','text':'10'},{'value':'15','text':'15'},{'value':'20','text':'20'}],
+               table_name:'',
+               order_by:'',
                limit_table:'10',
                search:true,
                paginate:true,
                label_list:[],
+               list_table:[],
                action_list: [{fitur: 'add'}, {fitur: 'edit'},{fitur: 'detail'}],
                // btnDelete:true,
               
@@ -227,7 +265,7 @@
             this.type = this.lists.type;
         },
         mounted() {
-
+          console.log(this.role) 
         },
         computed: {
              base_url() {
@@ -335,28 +373,46 @@
             
                 const self = this; 
                 let urlBase="";
-                let formData = {
+             //    let formData = {
                
-                  role_id:self.role,
-                  name:self.name,
-                  path_api:self.path_api,
-                  foldername:self.foldername,
-                  filename:self.filename,
-                  type:self.type,
-                  label_list:self.label_list,
-                  action_list:self.action_list,
-                  limit_table:self.limit_table,
-                  search:self.search,
-                  paginate:self.paginate,
+             //      role_id:self.role,
+             //      name:self.name,
+             //      path_api:self.path_api,
+             //      foldername:self.foldername,
+             //      filename:self.filename,
+             //      type:self.type,
+             //      table_name:self.table_name,
+             //      order_by:self.order_by,
+             //      label_list:self.label_list,
+             //      action_list:self.action_list,
+             //      limit_table:self.limit_table,
+             //      search:self.search,
+             //      paginate:self.paginate,
 
-                }
+             //    }
 
-                const forms = {
-	               menu: formData
-	            }
+             //    const forms = {
+	            //    menu: formData
+	            // }
 
+                let formData = new FormData();
+               
+                formData.append('name', self.name);
+                formData.append('role_id', self.role);
+                formData.append('path_api', self.path_api);
+                formData.append('foldername', self.foldername);
+                formData.append('filename', self.filename);
+                formData.append('type', self.type);
+                formData.append('table_name', self.table_name);
+                formData.append('order_by', self.order_by);
+                formData.append('label_list', self.label_list);
+                formData.append('action_list', self.action_list);
+                formData.append('limit_table', self.limit_table);
+                formData.append('search', self.search);
+                formData.append('paginate', self.paginate);
+               
 
-                urlBase = axios.post(BASE_URL+'/api/' + self.URL_Segment+'/pages/save', forms);
+                urlBase = axios.post(BASE_URL+'/api/' + self.URL_Segment+'/pages/save', formData);
                 urlBase
                 .then((response) => {
                     if(response.data.status == true){

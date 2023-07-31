@@ -26,7 +26,7 @@ use App\Http\Controllers\API\SettingWebApiController;
 use App\Http\Controllers\API\PerencanaanApiController;
 use App\Http\Controllers\API\UserApiController;
 
-
+use App\Http\Controllers\API\MobilApiController;
 
 
 
@@ -35,6 +35,7 @@ use App\Http\Controllers\API\UserApiController;
 
 
  Route::get('register/daerah', [AuthApiController::class, 'GetDaerahID']);
+ Route::post('register', [UserApiController::class, 'Register']);
  Route::post('login/auth',[AuthApiController::class, 'Login']);
  Route::get('apps', [SettingWebApiController::class, 'index']);
 
@@ -45,8 +46,14 @@ use App\Http\Controllers\API\UserApiController;
      Route::get('user/menu', [AuthApiController::class, 'sidebar']);
 
      Route::get('user', [UserApiController::class, 'index']);
+     
 
 
+
+
+
+     Route::get('mobil', [MobilApiController::class, 'index']);
+     Route::post('mobil', [MobilApiController::class, 'store']);
      
      Route::get('dashboard', [DashboardApiController::class, 'index']); 
      Route::get('menu', [MenusApiController::class, 'index']);
@@ -71,7 +78,7 @@ use App\Http\Controllers\API\UserApiController;
      Route::delete('role/{id}', [RolesApiController::class, 'delete']);
      Route::post('role/selected', [RolesApiController::class, 'deleteSelected']);
 
-
+     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
 
      Route::get('periode', [PeriodeApiController::class, 'index']);
      Route::get('periode/create', [PeriodeApiController::class, 'create']);

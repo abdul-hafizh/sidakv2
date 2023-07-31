@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestMenuRoles;
+use App\Http\Request\Validation\ValidationPages;
+
 use App\Models\Roles;
 use App\Models\MenusRole;
 use App\Models\RoleUser;
@@ -25,7 +27,7 @@ class MenusRoleApiController extends Controller
      public function keys(Request $request)
     {
         $validation = ValidationKeys::validation($request);
-        if($validation !=null || $validation !="")
+        if($validation)
         {
           return response()->json($validation,400);  
         }else{
@@ -64,17 +66,27 @@ class MenusRoleApiController extends Controller
                 $dataMenu = json_decode($role);
                 $path = RequestMenuRoles::PathVue($role);
                 $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
+                $condition =  RequestMenuRoles::Condition($path); 
                
         } 
 
-       return response()->json(['status'=>true,'path'=> $path,'menu_sidebar'=>$sidebar,'message'=>'Success update menu']);
+       return response()->json(['status'=>true,'condition'=>$condition,'path'=> $path,'menu_sidebar'=>$sidebar,'message'=>'Success update menu']);
         
     }
 
      public function pages(Request $request)
     {
-         $objectMenu = json_decode(json_encode($request->menu), FALSE);
-         $fields = RequestMenuRoles::fieldsPages($objectMenu);
+        
+         $validation = ValidationPages::validation($request);
+         if($validation)
+         {
+          return response()->json($validation,400);  
+         }else{
+
+         }
+
+
+         //$fields = RequestMenuRoles::fieldsPages($objectMenu);
          $err = array();
          // if($fields->type == 'table')
          // {
@@ -96,7 +108,7 @@ class MenusRoleApiController extends Controller
         
          //$data = RequestMenuRoles::createDirectorySingle($objectMenu);
         
-          return response()->json(['status'=>true,'result'=> $fields,'message'=>'Success update menu']);
+         // return response()->json(['status'=>true,'result'=> $fields,'message'=>'Success update menu']);
     }
 
     
