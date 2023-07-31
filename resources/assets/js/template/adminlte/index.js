@@ -44,6 +44,7 @@ if(access !=null)
         var data2 = [];
         if(path !=null)
         {
+            console.log(path)
             for(var i=0; i< path.length; i++)
             {
                 data2.push({
