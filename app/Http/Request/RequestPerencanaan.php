@@ -1,55 +1,56 @@
 <?php
 
 namespace App\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Auth;
+use DB;
+use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
+use App\Models\Perencanaan;
+use App\Models\Roles;
 use App\Models\Periode;
+use App\Http\Request\RequestSettingApps;
 
 class RequestPerencanaan 
 {
-   
-   public static function GetDataAll($data,$perPage,$request,$description)
+
+  public static function GetDataAll($data,$perPage,$request)
    {
-        $__temp_ = array();
+        $temp = array();
+         
         $getRequest = $request->all();
         $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
         $numberNext = (($page*$perPage) - ($perPage-1));
-
+        $template = RequestSettingApps::AppsTemplate();
    	    foreach ($data as $key => $val)
-        {
-         
-            if($val->status =="13"){ $status = 'Terkirim';}else{ $status = 'Draft';  } 
+        {         
 
-            
-            $__temp_[$key]['number'] = $numberNext++;
-            $__temp_[$key]['id'] = $val->id;
-            $__temp_[$key]['periode_id'] = Periode::where('slug',$val->periode_id)->first()->year;
-            $__temp_[$key]['status'] = $status;
-            $__temp_[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
+            if($val->status =="13") { $status = 'Terkirim'; } else { $status = 'Draft';  } 
+
+            $temp[$key]['id'] = $val->id;
+            $temp[$key]['lokasi'] = $val->lokasi;
+            $temp[$key]['nama_pejabat'] = $val->nama_pejabat;
+            $temp[$key]['number'] = $numberNext++;
+            $temp[$key]['periode_id'] = Periode::where('slug', $val->periode_id)->first()->year;
+            $temp[$key]['daerah_id'] = RequestPerencanaan::GetDaerahID($val->daerah_id);
+            $temp[$key]['status'] = $status;
+            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
         }
+
+        return json_decode(json_encode($temp),FALSE);
        
-   
-        $results['result'] = $__temp_;
-        if($description !="")
-        {  if($data->total() !=0)
-           {
-             $results['cari'] = 'Pencarian "'.$description.'" berhasil ditemukan'; 
-           }else{
-             $results['cari'] = 'Pencarian tidak ditemukan "'.$description.'" '; 
-           } 
-            
-        }else{
-            $results['cari'] = ''; 
-        }   
-        $results['total'] = $data->total();
-        $results['lastPage'] = $data->lastPage();
-        $results['perPage'] = $data->perPage();
-        $results['currentPage'] = $data->currentPage();
-        $results['nextPageUrl'] = $data->nextPageUrl();
-        return $results;
 
    }
 
+   public function GetDaerahID($daerah_id)
+    {
+       
+        $province = DB::table('provinces')->select('id as value','name as text');
+        $regency = DB::table('regencies')->select('id as value','name')->where('id', $daerah_id)->union($province)->orderBy('value','ASC')->first();
+
+        return $regency->name;
+    }
+   
    public static function GetDataID($data)
    {         
            
@@ -66,11 +67,9 @@ class RequestPerencanaan
    {
     
         $fields = [  
-                'name'  =>  $request->name,
-                'category'  =>  $request->category,
-                'price'  =>  $request->price,
-                'slug' =>  strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name))),
-                'created_by' => Auth::User()->id,
+                'lokasi'  =>  $request->lokasi,
+                'nama_pejabat'  =>  $request->nama_pejabat,
+                'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
         ];
   
