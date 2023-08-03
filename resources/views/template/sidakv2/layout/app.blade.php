@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="{{ $template.'/css/_all.css' }}">
     <link rel="stylesheet" href="{{ $template.'/css/style.css' }}">
     <link rel="stylesheet" href="{{ $template.'/css/pagination.css' }}">
-
+   <link rel="stylesheet" href="{{ $template.'/css/scrollbar.css' }}">
 
    
   
@@ -89,8 +89,8 @@
     <script src="{{ $template.'/js/icheck.min.js' }}"></script>
     <script src="{{ $template.'/js/icheck.js' }}"></script>
     <script src="{{ $template.'/js/dynemicbody.js' }}"></script> 
-    
-
+    <script src="{{ $template.'/js/scrollbar.js' }}"></script>
+   
 
       </body>      
 </html>
