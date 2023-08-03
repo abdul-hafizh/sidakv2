@@ -12,10 +12,10 @@ use App\Http\Request\RequestSettingApps;
 class RequestUser 
 {
    
-   public static function GetDataAll($data,$perPage,$request,$description)
+   public static function GetDataAll($data,$perPage,$request)
    {
-        $__temp_ = array();
-        $UploadFolder = GeneralPaginate::uploadPhotoFolder(); 
+        $temp = array();
+         
         $getRequest = $request->all();
         $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
         $numberNext = (($page*$perPage) - ($perPage-1));
@@ -33,46 +33,24 @@ class RequestUser
 
          
 
-            $__temp_[$key]['number'] = $numberNext++;
+            $temp[$key]['number'] = $numberNext++;
           
-            $__temp_[$key]['id'] = $val->id;
-            $__temp_[$key]['name'] = $val->name;
-            $__temp_[$key]['daerah_id'] = $val->daerah_id;
-            $__temp_[$key]['username'] = $val->username;
-            $__temp_[$key]['email'] = $val->email;
-            $__temp_[$key]['phone'] = $val->phone;
-            $__temp_[$key]['nip'] = $val->nip;
-            $__temp_[$key]['leader_nip'] = $val->leader_nip;
-            $__temp_[$key]['leader_name'] = $val->leader_name;
-            $__temp_[$key]['status'] = $status;
-            $__temp_[$key]['photo'] = $photo;
-            $__temp_[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+            $temp[$key]['id'] = $val->id;
+            $temp[$key]['name'] = $val->name;
+            $temp[$key]['daerah_id'] = $val->daerah_id;
+            $temp[$key]['username'] = $val->username;
+            $temp[$key]['email'] = $val->email;
+            $temp[$key]['phone'] = $val->phone;
+            $temp[$key]['nip'] = $val->nip;
+            $temp[$key]['leader_nip'] = $val->leader_nip;
+            $temp[$key]['leader_name'] = $val->leader_name;
+            $temp[$key]['status'] = $status;
+            $temp[$key]['photo'] = $photo;
+            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
         }
 
-
-        
-            $results['result'] = $__temp_;
-            if($description !="")
-            {  if($data->total() !=0)
-               {
-                 $results['cari'] = 'Pencarian "'.$description.'" berhasil ditemukan'; 
-               }else{
-                 $results['cari'] = 'Pencarian tidak ditemukan "'.$description.'" '; 
-               } 
-                
-            }else{
-                $results['cari'] = ''; 
-            }   
-           
-            $results['total'] = $data->total();
-            $results['lastPage'] = $data->lastPage();
-            $results['perPage'] = $data->perPage();
-            $results['currentPage'] = $data->currentPage();
-            $results['nextPageUrl'] = $data->nextPageUrl(); 
-
+        return json_decode(json_encode($temp),FALSE);
        
-        
-        return $results;
 
    }
 
