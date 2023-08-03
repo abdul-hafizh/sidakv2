@@ -113,8 +113,10 @@
                         <input type="text" class="form-control" placeholder="Label" v-model="item.label" @input="updateLabel(index,item.label,'label')">
                    </div>
                    <div class=" mgn-bottom-20">
-                        <model-select class="form-control text-height-115" v-model="item.column" :options="list_table" placeholder="Pilih Column" @input="updateLabel(index,item.column,'column')">
-                        </model-select>
+
+                       <input type="text" class="form-control text-height-115" placeholder="Column" v-model="item.label" @input="updateLabel(index,item.column,'column')">
+
+                     
 
                        
                    </div>
@@ -138,7 +140,41 @@
             </div>
 
 
-            <div class="form-group pull-left full" :class="errors.messages.action_list ? 'has-error' : ''">
+            <div class="form-group pull-left full" v-if="type =='table' " :class="errors.messages.action_list ? 'has-error' : ''">
+                <label>Action Table</label>
+                <div class="col-sm-12 pd-none"  v-for="(item, index) in action_list">
+                   <div class=" mgn-bottom-20">
+                        <input type="text" class="form-control" placeholder="Label" v-model="item.label" @input="updateLabel(index,item.label,'label')">
+                   </div>
+                   <div class=" mgn-bottom-20">
+
+                       <input type="text" class="form-control text-height-115" placeholder="Column" v-model="item.label" @input="updateLabel(index,item.column,'column')">
+
+                     
+
+                       
+                   </div>
+                    <div class=" mgn-bottom-20 pull-right">
+                          <button type="button" @click="deleteAction(index)" class="btn btn-danger ">
+                                    Delete     
+                         </button>
+                    </div>  
+                  
+                    <span class="help-block" v-if="errors.messages.hasOwnProperty('action_list')" >
+                        <strong>{{ errors.messages.action_list }}</strong>
+                    </span>
+
+                </div>
+                <div class="col-sm-12 pd-none">    
+                    <button type="button" @click="addAction()" class="btn btn-primary pull-left">
+                                        Add Action  
+                    </button> 
+                </div>
+ 
+            </div>
+
+
+         <!--    <div class="form-group pull-left full" :class="errors.messages.action_list ? 'has-error' : ''">
                  <label>Action Table</label>
                     <div class="col-sm-12 pd-none"  v-for="(item, index) in action_list">
                         <div class="input-group form-group" >
@@ -163,7 +199,7 @@
                     </div>  
 
             </div>
-
+ -->
 
                  
                
@@ -265,7 +301,7 @@
             this.type = this.lists.type;
         },
         mounted() {
-          console.log(this.role) 
+         
         },
         computed: {
              base_url() {

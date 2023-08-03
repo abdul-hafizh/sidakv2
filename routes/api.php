@@ -49,7 +49,8 @@ use App\Http\Controllers\API\MobilApiController;
      
 
 
-
+     Route::get('halo', [MobilApiController::class, 'index']);
+     Route::post('halo', [MobilApiController::class, 'store']); 
 
 
      Route::get('mobil', [MobilApiController::class, 'index']);
@@ -61,6 +62,8 @@ use App\Http\Controllers\API\MobilApiController;
      Route::post('menu/search', [MenusApiController::class, 'search']); 
      Route::put('menu/{id}', [MenusApiController::class, 'update']);
      Route::delete('menu/{id}', [MenusApiController::class, 'delete']);
+
+     Route::post('menu/table', [MenusApiController::class, 'table']);
      
 
      Route::post('menu/role/keys', [MenusRoleApiController::class, 'keys']);
