@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent as Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Uuids;
+
 class Perencanaan extends Model
 {
      // use SoftDeletes;
