@@ -18,19 +18,21 @@ class ValidationUser
             'leader_nip'=>'NIP Penanggung Jawab',
             'daerah_id'  => 'Daerah',
             'password'  => 'Password',
+            'password_confirmation'  => 'Password Konfirmasi',
         ];
 
         $validator =  Validator::make($request->all(), 
         [
-            'username'  => 'required|max:255',
+            'username'  => 'required|unique:users|max:255',
             'name'  => 'required',
-            'email'  => 'required',
+            'email'  => 'required|email|unique:users',
             'phone'  => 'required',
             'nip'  => 'required',
             'leader_name'  => 'required',
             'leader_nip'  => 'required',
             'daerah_id'  => 'required',
-            'password'  => 'required',
+            'password'  => 'required|confirmed|min:6',
+            'password_confirmation'  => 'required',
         ]);
 
         $validator->setAttributeNames($fields); 
@@ -72,6 +74,10 @@ class ValidationUser
             
             if($errors->has('password')){
                 $err['messages']['password'] = $errors->first('password');
+            }
+
+            if($errors->has('password_confirmation')){
+                $err['messages']['password_confirmation'] = $errors->first('password_confirmation');
             } 
             return $err;
        }

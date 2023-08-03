@@ -1,7 +1,5 @@
 <template>
 <div>
-
-
     <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full">
             <div class="width-50 pull-left">
@@ -16,7 +14,7 @@
                     <span class="input-group-btn">
                     <button type="button" @click="GetShowSearch(ShowSearch)" class="btn btn-default btn-flat"><i class="fa fa-times"></i></button>
                     </span>    
-                    <input type="text" class="form-control" v-model="inputsearch" placeholder="Search Role" @input="Search(inputsearch)">
+                    <input type="text" class="form-control" v-model="inputsearch" :placeholder="placeholder" @input="Search(inputsearch)">
                 
                 </div>
 
@@ -47,10 +45,12 @@
                                 <thead>
                                 <tr>
                                     <th><input type="checkbox" @click="selectAll(allSelected)" v-model="allSelected" ></th>
-                                    <th class="border-right-table text-center"> No </th>
-                                    <th class="border-right-table text-center"> Role </th>
-                                    <th class="border-right-table text-center"> Slug </th>
-                                    <th class="border-right-table text-center"> Status  </th>                                  
+                                    <th class="border-right-table"> No </th>
+                                     <th class="border-right-table"> Sample </th>
+                                     <th class="border-right-table"> Sample </th>
+                                     <th class="border-right-table"> Sample </th>
+                                     <th class="border-right-table"> Sample </th>
+                                     <th class="border-right-table"> Sample </th>
                                     <th> Options </th> 
                                 </tr>
                                 </thead>
@@ -62,19 +62,18 @@
                                         <td colspan="10"> Data Kosong</td>
                                     </tr>
                                     <tr v-for="(list,index) in lists.result" v-bind:key="list.id"  v-if="views">
-                                        <td><input type="checkbox" v-model="dataIds" :value="list.id" number  @change='updateCheckall()'></td>
+                                        <td><input type="checkbox" v-model="dataIds" :value="list.id" number  @change="updateCheckall()"></td>
                                         <td> {{ list.number }}</td>
-                                        <td> {{ list.name }}</td>
-                                        <td> {{ list.slug }}</td>
-                                        <td> {{ list.status }}</td>
-                                       
-                                      
+                                        <td> Sample </td>
+                                        <td> Sample </td>
+                                        <td> Sample </td>
+                                        <td> Sample </td>
+                                        <td> Sample </td>
                                         <td>
                                             <div class="btn-group">
                                            
-                                              <router-link :to="{path: '/'+ URL_Segment +'/edit/'+list.id}" class="btn btn-primary">
-                                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                                              </router-link>
+                                             
+                                              <button type="button" @click="Edit(list.id)" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                                               <button type="button" @click="Delete(list.id)" class="btn btn-primary"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             </div>
                                         </td>
@@ -109,23 +108,25 @@
                viewsPage:false,
                searchViews:false,
                resultNull:false,
-               inputsearch:'',
+               inputsearch:"",
                lists:[],
                total: 10,
                halaman: 1,
                showModalSearch: false,
                isSearch: false,
-               searchMessage: '',
-               search_text:'',
+               searchMessage: "",
+               search_text:"",
                allSelected: false,
                dataIds:[],
                btn_delete:true,
                ShowSearch:true,
+               placeholder:"",
             }
         },
         created() {  
            document.title = this.Apps;
            this.$emit("Title",this.Title);
+           this.placeholder = "Search Data "+ this.Title;
         },
         mounted() {
            this.getData();
@@ -136,7 +137,7 @@
             },  
         },
         components: {
-           'Pagination': require('vue-plain-pagination'),
+           "Pagination": require("vue-plain-pagination"),
           
         },
         methods: {
@@ -200,7 +201,7 @@
                         };
 
                         
-                        axios.post(BASE_URL + '/api/'+ this.URL_Segment +'/selected',formData)
+                        axios.post(BASE_URL + "/api/"+ this.URL_Segment +"/selected",formData)
                         .then((response) => {
                             
                             if(response.data.messages == true){
@@ -240,7 +241,7 @@
           Refresh(){
              this.loading = true;
              this.views = false;
-             this.inputsearch = '';
+             this.inputsearch = "";
              this.searchViews = false;
              this.resultNull = false;
              this.dataIds = [];
@@ -251,7 +252,7 @@
             const self = this;
             let listUrl = "";
 
-            listUrl = BASE_URL + '/api/'+ this.URL_Segment +'?page='+ self.halaman;    
+            listUrl = BASE_URL + "/api/"+ this.URL_Segment +"?page="+ self.halaman;    
             axios.get(listUrl).then((response) => {
                 self.lists = response.data;
                 self.loading = false;
@@ -280,7 +281,12 @@
           },
           Add(){
 
-            this.$router.push({path:'/'+ this.URL_Segment +'/add'})
+            this.$router.push({path:"/"+ this.URL_Segment +"/add"})
+
+          },
+          Edit(id){
+
+            this.$router.push({path:"/"+ this.URL_Segment +"/edit/"+ id})
 
           },
           Search(input){
@@ -293,8 +299,8 @@
                     self.views = false;
                     let urlBase="";
                     let formData = new FormData();
-                    formData.append('search', input);
-                    urlBase = axios.post(BASE_URL+'/api/'+ this.URL_Segment +'/search', formData);
+                    formData.append("search", input);
+                    urlBase = axios.post(BASE_URL+"/api/"+ this.URL_Segment +"/search", formData);
                     urlBase
                     .then((response) => {
                        
@@ -311,7 +317,7 @@
                            self.viewsPage = true;
                            self.resultNull = false;
                         }else{
-                           self.search_text = 'Pencarian "'+ self.inputsearch +'" tidak ditemukan ';
+                           self.search_text = "Pencarian "+ self.inputsearch +" tidak ditemukan ";
                            self.halaman = 1;
                            self.total = 10;
                            self.viewsPage = false;
@@ -338,7 +344,7 @@
                 }).then((result) => {
                     if (result) {
                         
-                        axios.delete(BASE_URL + '/api/'+ this.URL_Segment +'/'+ id)
+                        axios.delete(BASE_URL + "/api/"+ this.URL_Segment +"/"+ id)
                         .then((response) => {
                             
                             if(response.data.messages == true){

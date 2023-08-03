@@ -71,7 +71,8 @@ class RequestMenus
             $rolr[$key]['id'] = $val->id;
             $rolr[$key]['name'] = $val->name;
             $rolr[$key]['show'] = $active;
-            $rolr[$key]['tasks'] = RequestMenuRoles::Roles($val->id);
+            $rolr[$key]['tasks'] = RequestMenuRoles::ConvertMenu(RequestMenuRoles::Roles($val->id));
+            // $rolr[$key]['tasks2'] =RequestMenuRoles::Roles($val->id);
         }
 
           return  $rolr;  
@@ -98,8 +99,7 @@ class RequestMenus
    }
 
    
-  
-
+   
 
    public static function fieldsData($request)
    {

@@ -30,6 +30,31 @@ class UserApiController extends Controller
 
     }
 
+
+     public function register(Request $request)
+    {
+        $validation = ValidationUser::validation($request);
+        if($validation)
+        {
+          return response()->json($validation,400);  
+        }else{
+
+            
+
+           $insert = RequestUser::fieldsData($request);  
+            //create menu
+           $saveData = User::create($insert);
+            //result
+            return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);  
+             
+
+            
+             
+            
+        } 
+
+    }
+
     
     public function store(Request $request)
     {

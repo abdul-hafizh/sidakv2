@@ -20,7 +20,11 @@
 
 
           <div class="pull-left checkbox-label">
-              <span class="pull-left">{{ el.name }}</span>
+              <span class="pull-left text-bold font-16">
+                {{ el.name }}  
+               <!--  <i class="font-10 font-normal" v-if="el.pages == false">Create</i>
+                <i class="font-10 font-normal" v-else>Active</i> -->
+              </span>
           </div>
 
           <div v-if="el.status =='unlock'">
@@ -37,7 +41,7 @@
                   <i class="border-right-white"></i>
                 </span>
              
-                 <span class="padding-05-05"><i class="fa fa-trash" @click="Delete(role,el)"></i></span>
+                 <span class="padding-05-05"><i class="fa fa-trash" @click="Delete(role,el,index)"></i></span>
               </div>
 
               <div class="pull-right padding-05-05 bg-list-menu-btn" v-else>
@@ -125,7 +129,7 @@ export default {
   },
   components: {
     draggable,
-    'DetailPages': require('../menu/detail.vue').default,
+    'DetailPages': require('./detail.vue').default,
   },
   computed: {
     dragOptions() {
@@ -141,7 +145,8 @@ export default {
     // this.value when input = v-model
     // this.list  when input != v-model
     realValue() {
-
+      var data = this.value ? this.value : this.list;
+        
       return this.value ? this.value : this.list;
     }
   },  
@@ -185,10 +190,10 @@ export default {
           }  
     },
    
-     Delete(role,el)
+     Delete(role,el,index)
     {
         let data = this.value ? this.value : this.list;  
-         console.log(el.id)
+        
        this.$swal({
             buttons:true,
             dangerMode:true,
@@ -196,17 +201,15 @@ export default {
             icon: "warning",
         }).then((result) => {
             if (result) {
-
-
-                     
+ 
                  if(data.length > 1)
-                 {
-                    data.splice(el.id, 1);
+                 {  
+                    data.splice(index, 1); 
                  }else{
 
-                    if(role == undefined)
+                    if(el.tasks.length ==0)
                     {
-                       data.splice(el.id, 1);
+                      data.splice(el.tasks, 1);
                     }else{
                         axios.delete(BASE_URL + '/api/menus/role/'+ role)
                         .then((response) => {   

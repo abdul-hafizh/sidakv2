@@ -111,7 +111,7 @@
 <div class="checkbox icheck">
     <label>
        
-            <input type="checkbox" v-model="igree" value="true"> I agree to the <a href="#">terms</a>
+            <input id="register" type="checkbox" v-model="agree" value=""> I agree to the <a href="#">terms</a>
     </label>
 </div>
 </div>
@@ -149,7 +149,7 @@
                         password_confirmation:'', 
                         leader_name:'',
                         leader_nip:'', 
-                        igree:'',     
+                        agree:'',     
                     },
                 }, 
                 btnSubmit:true,
@@ -164,7 +164,7 @@
                 daerah_id:'',
                 leader_name:'',
                 leader_nip:'',
-                igree:true,  
+                agree:false,  
                 lists:[],
                 logo:'template/adminlte/img/logo_sidak.png',
                 

@@ -11,7 +11,7 @@
 <div class="nav-tabs-custom" v-else> 
     <ul class="nav nav-tabs">
         <li v-for="(role,i) in role_list" :class="role.show">
-            <a :href="'#tab_'+i" @click="getloading()" data-toggle="tab" aria-expanded="true">{{ role.name }}</a>
+            <a class="text-bold" :href="'#tab_'+i" @click="getloading()" data-toggle="tab" aria-expanded="true">{{ role.name }}</a>
         </li>
     </ul>
     <div class="tab-content pull-left full form-group">
@@ -160,9 +160,9 @@
            NestedRole,
            NestedMenu,
            ModelSelect,
-           'KeyForm': require('../menu/key.vue').default,
-           'AddForm': require('../menu/add.vue').default,
-           'UpdateForm': require('../menu/edit.vue').default,
+           'KeyForm': require('./key.vue').default,
+           'AddForm': require('./add.vue').default,
+           'UpdateForm': require('./edit.vue').default,
         },
         methods: {
 
@@ -351,14 +351,24 @@
             urlBase = axios.post(BASE_URL+'/api/'+ this.URL_Segment +'/role/save', forms);
             urlBase
             .then((response) => {
-              localStorage.removeItem('root_vue');
-              localStorage.removeItem('menu_sidebar');
+                if(response.data.condition == true)
+                {
+                  localStorage.removeItem('root_vue');
+                  localStorage.removeItem('menu_sidebar');  
+                }    
+             
               setTimeout(() => {
                  this.load_tab = false;
                  this.btn_cond = 'btn-primary';
-                 this.btn_disable = false; 
+                 this.btn_disable = false;
+
+                if(response.data.condition == true)
+                {
+
                  localStorage.setItem('root_vue', JSON.stringify(response.data.path));
                  localStorage.setItem('menu_sidebar', JSON.stringify(response.data.menu_sidebar));
+
+                }
 
                  }, 500);
 

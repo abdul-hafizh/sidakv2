@@ -44,12 +44,17 @@
                             <table class="table table-hover text-nowrap" id="datatable">
                                 <thead>
                                 <tr>
-                                    <th><input type="checkbox" @click="selectAll(allSelected)" v-model="allSelected" ></th>
-                                    <th class="border-right-table"> No </th>
-                                     <th class="border-right-table"> Nama </th>
-                                     <th class="border-right-table"> Username </th>
-                                     <th class="border-right-table"> Email </th>
-                                     
+                                    <th class="text-center"><input type="checkbox" @click="selectAll(allSelected)" v-model="allSelected" ></th>
+                                    <th class="border-right-table text-center"> No </th>
+                                    <th class="border-right-table text-center"> Username </th>
+                                    <th class="border-right-table text-center"> Nama </th>
+                                    <th class="border-right-table text-center"> NIP </th>
+                                    <th class="border-right-table text-center"> Email </th>
+                                    <th class="border-right-table text-center"> Phone </th>
+                                    <th class="border-right-table text-center"> Penanggung Jawab </th>
+                                    <th class="border-right-table text-center"> NIP Penanggung Jawab </th>
+
+
                                     <th> Options </th> 
                                 </tr>
                                 </thead>
@@ -63,10 +68,13 @@
                                     <tr v-for="(list,index) in lists.result" v-bind:key="list.id"  v-if="views">
                                         <td><input type="checkbox" v-model="dataIds" :value="list.id" number  @change="updateCheckall()"></td>
                                         <td> {{ list.number }}</td>
-                                        <td> {{ list.name }} </td>
                                         <td> {{ list.username }} </td>
+                                        <td> {{ list.name }} </td>
+                                        <td> {{ list.nip }} </td>
                                         <td> {{ list.email }} </td>
-                                      
+                                        <td> {{ list.phone }} </td>
+                                        <td> {{ list.leader_name }} </td>
+                                        <td> {{ list.leader_nip }} </td>
                                         <td>
                                             <div class="btn-group">
                                            
@@ -91,7 +99,7 @@
         </div>
     </div>
 
-   
+   <AddForm :Apps="Apps" v-if="v_add" :Title="Title" :URL_Segment="URL_Segment" @close="closeModal" ></AddForm>
 
 
 </div>
@@ -119,6 +127,7 @@
                btn_delete:true,
                ShowSearch:true,
                placeholder:"",
+               v_add:false,
             }
         },
         created() {  
@@ -136,10 +145,11 @@
         },
         components: {
            "Pagination": require("vue-plain-pagination"),
-          
+           "AddForm": require("./add").default,
         },
         methods: {
-          GetShowSearch(status){
+          GetShowSearch(status)
+          {
             if(status ==true)
             {
               this.ShowSearch = false;   
@@ -147,6 +157,11 @@
                this.ShowSearch = true;     
             }    
              
+          },
+          closeModal(){
+             
+              this.v_add = false;  
+              this.v_edit = false; 
           },
             
           selectAll: function(event) {
@@ -279,7 +294,7 @@
           },
           Add(){
 
-            this.$router.push({path:"/"+ this.URL_Segment +"/add"})
+           this.v_add = true; 
 
           },
           Edit(id){
