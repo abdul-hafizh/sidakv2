@@ -47,8 +47,21 @@ Route::middleware(['jwt.auth', 'authRole'])->group(function () {
     Route::get('user', [UserApiController::class, 'index']);
 
 
+    Route::get('halo', [MobilApiController::class, 'index']);
+    Route::post('halo', [MobilApiController::class, 'store']);
 
 
+    Route::get('mobil', [MobilApiController::class, 'index']);
+    Route::post('mobil', [MobilApiController::class, 'store']);
+
+    Route::get('dashboard', [DashboardApiController::class, 'index']);
+    Route::get('menu', [MenusApiController::class, 'index']);
+    Route::post('menu', [MenusApiController::class, 'store']);
+    Route::post('menu/search', [MenusApiController::class, 'search']);
+    Route::put('menu/{id}', [MenusApiController::class, 'update']);
+    Route::delete('menu/{id}', [MenusApiController::class, 'delete']);
+
+    Route::post('menu/table', [MenusApiController::class, 'table']);
 
 
     Route::get('mobil', [MobilApiController::class, 'index']);
