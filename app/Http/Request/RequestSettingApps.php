@@ -7,10 +7,16 @@ use App\Models\SettingApps;
 
 class RequestSettingApps 
 {
+
+   public static function AppsSidebar(){
+      $data = SettingApps::first();
+      $result = RequestSettingApps::GetDataApps($data);
+      return  $result;
+   } 
    
    public static function GetDataApps($data)
    {
-            $__temp_ = array();
+            $temp = array();
              
             if($data->logo_lg)
             {   
@@ -28,18 +34,19 @@ class RequestSettingApps
           
 
 
-            $__temp_['id'] = $data->id;
-            $__temp_['title'] = $data->title;
-            $__temp_['about'] = $data->about;
-            $__temp_['contact'] = $data->contact;
-            $__temp_['address'] = $data->address;
-            $__temp_['facebook'] = $data->facebook;
-            $__temp_['instagram'] = $data->instagram;
-            $__temp_['twitter'] = $data->twitter;
-            $__temp_['logo_lg'] = $logoLg;
-            $__temp_['logo_sm'] =  $logoSm;
-            $results['result'] = $__temp_;
-            return $results;
+            $temp['id'] = $data->id;
+            $temp['title'] = $data->title;
+            $temp['about'] = $data->about;
+            $temp['contact'] = $data->contact;
+            $temp['address'] = $data->address;
+            $temp['facebook'] = $data->facebook;
+            $temp['instagram'] = $data->instagram;
+            $temp['twitter'] = $data->twitter;
+            $temp['logo_lg'] = $logoLg;
+            $temp['logo_sm'] =  $logoSm;
+            $results = $temp;
+
+            return json_decode(json_encode($results),FALSE);
    }
 
   

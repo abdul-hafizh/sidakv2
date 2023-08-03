@@ -108,7 +108,7 @@
 }
 
 .sidebar-mini.sidebar-collapse .main-header .logo {
-   background-image: url("../../template/adminlte/img/side-bar.png");
+    background-image: url("../../sidakv2/img/side-bar.png");
     background-repeat: no-repeat;
     border-radius: 20px 20px 0px 0px;
 }
@@ -582,7 +582,7 @@
     background-color: #ecf0f5;
 }
 .main-sidebar{
-    background-image: url("../../template/adminlte/img/side-bar.png");
+    background-image: url("../../sidakv2/img/side-bar.png");
     background-repeat: no-repeat;
     border-radius: 20px;
     z-index: 9999;

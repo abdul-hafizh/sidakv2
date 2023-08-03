@@ -94,7 +94,7 @@
     </div>
 
    
-
+<InsertForm v-if="v_add"  :Apps="Apps" :Title="Title" @close="closeModal"></InsertForm>
 
 </div>
 </template>
@@ -121,6 +121,7 @@
                btn_delete:true,
                ShowSearch:true,
                placeholder:"",
+               v_add:false,
             }
         },
         created() {  
@@ -138,7 +139,7 @@
         },
         components: {
            "Pagination": require("vue-plain-pagination"),
-          
+           "InsertForm": require("./add.vue").default,
         },
         methods: {
           GetShowSearch(status){
@@ -280,9 +281,12 @@
              
           },
           Add(){
+             this.v_add = true;
+            //this.$router.push({path:"/"+ this.URL_Segment +"/add"})
 
-            this.$router.push({path:"/"+ this.URL_Segment +"/add"})
-
+          },
+          closeModal(){
+            this.v_add = false;
           },
           Edit(id){
 
