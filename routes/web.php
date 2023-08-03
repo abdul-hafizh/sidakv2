@@ -30,7 +30,7 @@ use App\Http\Controllers\UserController;
 
         Route::middleware(['auth','pusat'])->group(function () {
 
-       
+          Route::resource('/dashboard', DashboardController::class);
               
 
 

@@ -21,7 +21,7 @@ class PusatMiddleware
         if(empty($_COOKIE['access']))
         {
             return redirect()->to('login');
-        }else if($_COOKIE['access'] != 'daerah'){
+        }else if($_COOKIE['access'] != 'pusat'){
             abort(404);
            
         }   
