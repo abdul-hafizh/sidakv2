@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Request;
+
+use Illuminate\Support\Facades\Validator;
+use Auth;
+use App\Helpers\GeneralPaginate;
+use App\Helpers\GeneralHelpers;
+use App\Models\PaguTarget;
+use App\Http\Request\RequestSettingApps;
+
+class RequestPaguTarget
+{
+
+    public static function GetDataAll($data, $perPage, $request)
+    {
+        $temp = array();
+
+        $getRequest = $request->all();
+        $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
+        $numberNext = (($page * $perPage) - ($perPage - 1));
+        foreach ($data as $key => $val) {
+
+            $temp[$key]['number'] = $numberNext++;
+
+            $temp[$key]['id'] = $val->id;
+            $temp[$key]['periode_id'] = $val->periode_id;
+            $temp[$key]['daerah_id'] = $val->daerah_id;
+            $temp[$key]['nama_daerah'] = $val->nama_daerah;
+            $temp[$key]['pagu_apbn'] = $val->pagu_apbn;
+            $temp[$key]['pagu_promosi'] = $val->pagu_promosi;
+            $temp[$key]['type_daerah'] = $val->type_daerah;
+            $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
+            $temp[$key]['target_penyelesaian_permasalahan'] = $val->target_penyelesaian_permasalahan;
+            $temp[$key]['target_bimbingan_teknis'] = $val->target_bimbingan_teknis;
+            $temp[$key]['target_video_promosi'] = $val->target_video_promosi;
+            $temp[$key]['pagu_dalak'] = $val->pagu_dalak;
+            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+        }
+
+        return json_decode(json_encode($temp), FALSE);
+    }
+
+
+
+
+    public static function fieldsData($request)
+    {
+
+        $fields =
+            [
+                'username'  => $request->username,
+                'name'  => $request->name,
+                'nip'  => $request->nip,
+                'password'  => bcrypt($request->password),
+                'email'     => $request->email,
+                'phone'     => $request->phone,
+                'leader_name'     => $request->leader_name,
+                'leader_nip'     => $request->leader_nip,
+                'daerah_id'     => $request->daerah_id,
+                'created_by' => $request->username,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+
+        return $fields;
+    }
+}

@@ -15,14 +15,19 @@
             <form  enctype="multipart/form-data" method="post"  @submit.prevent="RequestPost">
                    
 
-                   <div class="form-group col-sm-6" :class="errors.messages.name ? 'has-error' : ''">
-                         <label>Name :</label>
-                         <input v-model="name" type="text" class="form-control" placeholder="Name">
-
-                          <span class="help-block" v-if="errors.messages.hasOwnProperty('name')">
-                            <strong>{{ errors.messages.name }}</strong>
+                <div class="form-group col-sm-6" :class="errors.messages.merk ? 'has-error' : ''">
+                         <label>Merk :</label>
+                         <input v-model="merk" type="text" class="form-control" placeholder="Sample merk">
+                         <span class="help-block" v-if="errors.messages.hasOwnProperty('merk')">
+                            <strong>{{ errors.messages.merk }}</strong>
                          </span>
-
+                    </div>
+                    <div class="form-group col-sm-6" :class="errors.messages.type ? 'has-error' : ''">
+                         <label>Type :</label>
+                         <input v-model="type" type="text" class="form-control" placeholder="Sample type">
+                         <span class="help-block" v-if="errors.messages.hasOwnProperty('type')">
+                            <strong>{{ errors.messages.type }}</strong>
+                         </span>
                     </div>
 
                      
@@ -53,16 +58,16 @@
             return {
                errors: {
                     messages: {
-                        name:"", 
-                        
+                        merk:"", 
+                        type:"", 
                        
                             
                     },
                }, 
                loading:true,
                views:false,
-               name:"",
-               status:"Y", 
+               merk:"",
+               type:"", 
                
             }
         },
@@ -92,12 +97,12 @@
               const self = this; 
                 let urlBase="";
                 let formData = new FormData();
-                formData.append("name", self.name);
-               
+                formData.append("merk", self.merk);
+                formData.append("type", self.type);
                
                 
                 
-                urlBase = axios.post(BASE_URL+"/api/"+  self.URL_Segment, formData);
+                urlBase = axios.post(BASE_URL+"/api/"+  self.URL_Segment , formData);
                 urlBase
                 .then((response) => {
                     if(response.data.status == true){
