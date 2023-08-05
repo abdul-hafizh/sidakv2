@@ -24,7 +24,7 @@ class PerencanaanController extends Controller
     public function index(Request $request)
     {
 
-        $data = Perencanaan::orderBy('id', 'DESC')->paginate($this->perPage);
+        $data = Perencanaan::orderBy('id', 'DESC')->paginate($this->perPage)->onEachSide(0);
         $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
 
         return view('template/' . $this->template . '.perencanaan.index')
@@ -38,70 +38,90 @@ class PerencanaanController extends Controller
 
     public function store(Request $request)
     {
-
         
         $validation = ValidationPerencanaan::validation($request);
 
         if($validation) {
-
-            $data = Perencanaan::orderBy('id', 'DESC')->paginate($this->perPage);
-            $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
-
-            return view('template/' . $this->template . '.perencanaan.index')
+            return view('template/' . $this->template . '.perencanaan.create')
             ->with([
-                'result' => $result,
-                'paginate' => $data->links('vendor.pagination.default'),   
                 'title' => $this->title,
                 'sidebar' =>$this->sidebar,
                 'errors' =>$validation,
                 'template'=>'template/'.$this->template ]);
-
+            
         } else {
-
+            
             $data = RequestPerencanaan::fieldsData($request);
             Perencanaan::create($data);
-            
 
+            return view('template/' . $this->template . '.perencanaan.create')
+            ->with([
+            'title' => $this->title,
+            'sidebar' =>$this->sidebar,
+            'template'=>'template/'.$this->template ]);
         }   
-         
-      
+        
     }
 
     public function update($id, Request $request)
     {
-        
         $validation = ValidationPerencanaan::validation($request);
+        $data = Perencanaan::find($id);
 
         if($validation) {
-
-            $data = Perencanaan::orderBy('id', 'DESC')->paginate($this->perPage);
-            $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
-
-            return view('template/' . $this->template . '.perencanaan.index')
+            return view('template/' . $this->template . '.perencanaan.edit')
             ->with([
-                'result' => $result,
-                'paginate' => $data->links('vendor.pagination.default'),   
+                'result' => $data,
                 'title' => $this->title,
                 'sidebar' =>$this->sidebar,
                 'errors' =>$validation,
                 'template'=>'template/'.$this->template ]);
-
+            
         } else {
-
+            
             $data = RequestPerencanaan::fieldsData($request);
-
-            dd($data);
             
-            Perencanaan::where('id',$id)->update($data);
-            
+            Perencanaan::where('id', $id)->update($data);
 
-        }
+            return redirect('perencanaan');
+            
+        }   
         
       
     }
 
     public function show($id, Request $request) {
 
+    }
+
+    public function create(Request $request) {
+        return view('template/' . $this->template . '.perencanaan.create')
+        ->with([
+            'title' => 'Tambah Perencanaan',
+            'sidebar' =>$this->sidebar,
+            'template'=>'template/'.$this->template ]);
+    }
+
+    public function edit($id) {
+        $data = Perencanaan::find($id);
+
+        return view('template/' . $this->template . '.perencanaan.edit')
+        ->with([
+            'result' => $data,
+            'title' => 'Tambah Perencanaan',
+            'sidebar' =>$this->sidebar,
+            'template'=>'template/'.$this->template ]);
+    }
+
+    public function destroy($id)
+    {
+        $data = Perencanaan::find($id);
+
+        if($data) {
+            Perencanaan::where('id', $id)->delete();
+        }
+
+        return redirect('perencanaan');
     }
 
 }

@@ -9,14 +9,16 @@ class ValidationPerencanaan
         $err = array(); 
         
         $fields = [
-            'lokasi'  => 'Lokasi',
-            'nama_pejabat'  => 'Nama Pejabat'
+            //'lokasi'  => 'Lokasi',
+            'pengawas_analisa_target'  => 'pengawas_analisa_target',
+            //'nama_pejabat'  => 'Nama Pejabat'
         ];
 
         $validator =  Validator::make($request->all(), 
         [
-            'lokasi'  => 'required',
-            'nama_pejabat'  => 'required_if:lokasi,Kabupaten Sambas'
+            //'lokasi'  => 'required',
+            'pengawas_analisa_target'  => 'required',
+            //'nama_pejabat'  => 'required_if:lokasi,Kabupaten Sambas'
         ]);
 
         $validator->setAttributeNames($fields); 

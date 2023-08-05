@@ -5,18 +5,16 @@
 		<div class="width-50 pull-left">
 			<div class="btn-group pull-left padding-9-0">
 				<button type="button" disabled="disabled" class="btn btn-primary">
-					<i class="fa fa-trash"></i> Delete
-				</button>
-	
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">
-					<i aria-hidden="true" class="fa fa-plus"></i> Add
-				</button> 
+					<i class="fa fa-trash"></i> Hapus
+				</button>	
+				<a href="{{ url('perencanaan/create') }}"  class="btn btn-primary">
+					<i aria-hidden="true" class="fa fa-plus"></i> Tambah
+				</a> 
 				<button type="button" class="btn btn-primary">
-					<i aria-hidden="true" class="fa fa-search"></i> Search
+					<i aria-hidden="true" class="fa fa-search"></i> Cari
 				</button>
 			</div>
 		</div> 
-
 		<div class="pull-right width-50">
 			 {!! $paginate !!}     
 		</div>
@@ -45,36 +43,34 @@
 
 					<tbody>
 						@foreach($result as $index => $item)
-					<tr>
-					 	<td><input type="checkbox" number="" value="4"></td>
-					 	<td>{{ $item->number }}</td> 
-					 	<td>{{ $item->periode_id }}</td>
-					 	<td>{{ $item->daerah_id }}</td>
-					 	<td>{{ $item->status }}</td>
-					 	<td>{{ $item->created_at }}</td>
-					 	<td>
-					 		<div class="btn-group">
-					 			<button type="button" data-toggle="modal" data-target="#modal-edit-{{ $index }}" class="btn btn-primary">
-					 				<i aria-hidden="true" class="fa fa-pencil"></i>
-					 			</button>
-                                 @include('template/sidakv2/perencanaan.edit',['index'=>$index,'data'=>$result[$index]])
-					 			<button type="button" class="btn btn-primary">
-					 				<i aria-hidden="true" class="fa fa-trash"></i>
-					 			</button>
-					 		</div>
-					 	</td>
-					</tr>
+						<tr>
+							<td><input type="checkbox" number="" value="4"></td>
+							<td>{{ $item->number }}</td> 
+							<td>{{ $item->periode_id }}</td>
+							<td>{{ $item->daerah_id }}</td>
+							<td>{{ $item->status }}</td>
+							<td>{{ $item->created_at }}</td>
+							<td>
+								<div class="btn-group">
+									<a href="{!! route('perencanaan.edit', [$item->id]) !!}" class="btn btn-primary">
+										<i aria-hidden="true" class="fa fa-pencil"></i>
+									</a>
+									<form method="post" action="{!! route('perencanaan.destroy',$item->id) !!}">	
+										@csrf
+                                		@method('DELETE')									
+										<button type="submit" class="btn btn-danger"><i aria-hidden="true" class="fa fa-trash"></i></button>
+									</form>
+								</div>
+							</td>
+						</tr>
 
-					@endforeach
+						@endforeach					
 					
-					
-					 </tbody>
-					</table>
-				</div>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>
-
-    @include('template/sidakv2/perencanaan.add',['errors'=>$errors])
+</div>
 
 @stop
