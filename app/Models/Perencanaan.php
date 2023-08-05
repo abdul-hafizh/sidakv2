@@ -23,10 +23,6 @@ class Perencanaan extends Model
         'pengawas_analisa_satuan',
         'pengawas_analisa_pagu',
 
-        'pengawas_analisa_target',
-        'pengawas_analisa_satuan',
-        'pengawas_analisa_pagu',
-
         'pengawas_inspeksi_target',
         'pengawas_inspeksi_satuan',
         'pengawas_inspeksi_pagu',

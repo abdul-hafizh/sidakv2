@@ -67,8 +67,9 @@ class RequestPerencanaan
    {
     
         $fields = [  
-                'lokasi'  =>  $request->lokasi,
-                'nama_pejabat'  =>  $request->nama_pejabat,
+                // 'lokasi'  =>  $request->lokasi,
+                // 'nama_pejabat'  =>  $request->nama_pejabat,
+                'pengawas_analisa_target'  =>  $request->pengawas_analisa_target,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
         ];

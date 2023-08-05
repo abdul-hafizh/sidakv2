@@ -15,25 +15,18 @@
 
     <meta name="csrf-token" content="{{ Session::token() }}"> 
     <title> {{ config('app.name') }} | {{ $title  }}</title>
-    <!--  <script type="text/javascript">
-        const BASE_URL = window.location.origin;
-    </script> -->
     <link rel="icon" type="image/x-icon" href="{{ $template.'/img/faveicon.png' }}">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">   
-    <link rel="stylesheet" href="{{ $template.'/css/bootstrap.min.css' }}">
-    <link rel="stylesheet" href="{{ $template.'/css/font-awesome.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/bootstrap.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/font-awesome.min.css' }}">
 
-    <link rel="stylesheet" href="{{ $template.'/css/ionicons.min.css' }}">
-    <link rel="stylesheet" href="{{ $template.'/css/AdminLTE.min.css' }}">
-    <link rel="stylesheet" href="{{ $template.'/css/_all-skins.min.css' }}">
-    <link rel="stylesheet" href="{{ $template.'/css/_all.css' }}">
-    <link rel="stylesheet" href="{{ $template.'/css/style.css' }}">
-    <link rel="stylesheet" href="{{ $template.'/css/pagination.css' }}">
-   <link rel="stylesheet" href="{{ $template.'/css/scrollbar.css' }}">
-
-   
-  
-   
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/ionicons.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/AdminLTE.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/_all-skins.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/_all.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/style.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/pagination.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/scrollbar.css' }}">
     </head>
 
     <body class="hold-transition"> 
@@ -54,7 +47,7 @@
                     <span class="sr-only">Toggle navigation</span>
                 </a>
 
-                <h3 class="pull-left padding-10-0 mgn-none">Data {{ $title  }} </h3> 
+                <h3 class="pull-left padding-10-0 mgn-none">{{ $title  }} </h3> 
                 <div class="navbar-custom-menu">
                     <div class="mt-10 mc-15">
                         <button type="button" class="btn btn-primary margin-0-12-0-0 btn-flat border-radius-10">
@@ -82,14 +75,13 @@
     </div>
     @endif
 
-
-    <script src="{{ $template.'/js/jquery.min.js' }}"></script>
-    <script src="{{ $template.'/js/adminlte.min.js' }}"></script>
-    <script src="{{ $template.'/js/bootstrap.min.js' }}"></script>
-    <script src="{{ $template.'/js/icheck.min.js' }}"></script>
-    <script src="{{ $template.'/js/icheck.js' }}"></script>
-    <script src="{{ $template.'/js/dynemicbody.js' }}"></script> 
-    <script src="{{ $template.'/js/scrollbar.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/adminlte.min.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/bootstrap.min.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/icheck.min.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/icheck.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script> 
+    <script src="{{ config('app.url').$template.'/js/scrollbar.js' }}"></script>
    
 
       </body>      

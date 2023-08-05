@@ -7,19 +7,19 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SettingWebController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PaguTargetController;
+use App\Http\Controllers\PerencanaanController;
 
 Route::get('/', function () {
     return redirect('login');
 });
 
 Route::resource('/login', AuthController::class);
+Route::resource('/dashboard', DashboardController::class);
 
 if (!empty($_COOKIE['access'])) {
 
     Route::middleware(['auth', 'admin'])->group(function () {
 
-
-        Route::resource('/dashboard', DashboardController::class);
         Route::resource('/apps', SettingWebController::class);
         Route::resource('/user', UserController::class);
         Route::resource('/pagutarget', PaguTargetController::class);
@@ -27,10 +27,12 @@ if (!empty($_COOKIE['access'])) {
 
 
     Route::middleware(['auth', 'pusat'])->group(function () {
+        Route::resource('/perencanaan', PerencanaanController::class);
     });
 
 
     Route::middleware(['auth', 'daerah', 'provinsi'])->group(function () {
+        
     });
 
 
