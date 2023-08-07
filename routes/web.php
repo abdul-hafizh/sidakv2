@@ -17,17 +17,9 @@ use Illuminate\Support\Facades\Auth;
     Route::resource('/login', AuthController::class);      
     if(!empty($_COOKIE['access']))
     {    
-            // if (!Auth::check())
-            // {
-            //         Auth::logout();
-            //         unset($_COOKIE['access']); 
-            //         setcookie('token', '', -1, '/');
-            //         setcookie('access', '', -1, '/'); 
-            //         return redirect('login');
-
-            // }
+            
            
-             Route::get('/dashboard',  [DashboardController::class, 'index']);      
+            Route::get('/dashboard',  [DashboardController::class, 'index']);      
             Route::middleware(['auth','admin'])->group(function () {
 
                 Route::resource('/user', UserController::class); 

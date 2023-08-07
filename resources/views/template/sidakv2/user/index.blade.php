@@ -3,18 +3,22 @@
 <section class="content-header pd-left-right-15">
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
-			<div class="btn-group pull-left padding-9-0">
-				<button type="button" disabled="disabled" class="btn btn-primary">
-					<i class="fa fa-trash"></i> Delete
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button" disabled="disabled" class="btn btn-danger border-radius-10">
+					 Hapus
 				</button>
 	
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">
-					<i aria-hidden="true" class="fa fa-plus"></i> Add
-				</button> 
-				<button type="button" class="btn btn-primary">
+				
+				<!-- <button type="button" class="btn btn-primary">
 					<i aria-hidden="true" class="fa fa-search"></i> Search
-				</button>
+				</button> -->
 			</div>
+
+			<div class="pull-left padding-9-0">
+                <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
+				 Tambah Data
+				</button> 
+		    </div>		
 		</div> 
 
 		<div class="pull-right width-50">
@@ -36,12 +40,12 @@
 					<thead>
 						<tr>
 							<th><input type="checkbox"></th>
-							<th class="border-right-table "> No </th>
-							<th class="border-right-table "> Username </th>
-							<th class="border-right-table "> Nama </th>
-							<th class="border-right-table "> Email </th>
-							<th class="border-right-table "> Phone </th>
-							<th class="border-right-table "> Status </th> 
+							<th class=""><span class="border-left-table">No</span>  </th>
+							<th class=""><span class="border-left-table"> Username </span></th>
+							<th class=""><span class="border-left-table"> Nama </span></th>
+							<th class=" "><span class="border-left-table"> Email </span></th>
+							<th class=""><span class="border-left-table"> Phone </span></th>
+							<th class=""><span class="border-left-table"> Status </span></th> 
 							<th> Options </th>
 						</tr>
 					</thead>

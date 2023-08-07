@@ -45,6 +45,24 @@
     padding: 0px 10px;
 }
 
+.font-10-link{
+  font-size: 10px;
+  font-family: 'Montserrat';
+
+}
+
+.font-12{
+    font-size: 12px!important;
+}
+
+.font-label-login{
+    font-weight: 500;
+}
+
+.margin-left-button{
+    margin: 0px 16px 0px 0px;
+}
+
 .padding-0-15{
     padding: 0px 15px!important;
 }
@@ -721,7 +739,11 @@
         border-right: 3px solid #0e298f;
 
 }
-
+.border-left-table {
+    border-left: 3px solid #0e298f;
+    padding: 0px 0px 0px 16px;
+   
+}
 
 .bg-search-table{
    width: 100%;

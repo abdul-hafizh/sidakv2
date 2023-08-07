@@ -147,14 +147,14 @@
             cache: false,
             dataType: "json",
             success: (respons) =>{
-                   Swal.fire({
-                        title: 'Sukses!',
-                        text: 'Berhasil Disimpan',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
+                   // Swal.fire({
+                   //      title: 'Sukses!',
+                   //      text: 'Berhasil Disimpan',
+                   //      icon: 'success',
+                   //      confirmButtonText: 'OK'
                         
-                    });
-                   window.location.replace(BASE_URL+'/user');
+                   //  });
+                   // window.location.replace(BASE_URL+'/user');
             },
             error: (respons)=>{
                 errors = respons.responseJSON;

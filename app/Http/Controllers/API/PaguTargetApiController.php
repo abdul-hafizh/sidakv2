@@ -5,7 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PaguTarget;
 use Auth;
-
+use Datatables;
 
 class PaguTargetApiController extends Controller
 {
@@ -27,6 +27,12 @@ class PaguTargetApiController extends Controller
        
         return response()->json($Data);
 
+    }
+
+
+    public function jsonData(Request $request)
+    {
+        return Datatables::of(PaguTarget::all())->make(true);
     }
 
     

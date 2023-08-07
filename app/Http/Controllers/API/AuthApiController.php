@@ -130,9 +130,9 @@ class AuthApiController extends Controller
         {
             $dataMenu = json_decode($role);
             $userSidebar = RequestAuth::requestUserSidebar();
-            $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
+           // $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
         } 
-        return response()->json(['status'=>true,'user_sidebar'=>$userSidebar,'menu_sidebar'=>$sidebar],200);
+        return response()->json(['status'=>true,'user_sidebar'=>$userSidebar],200);
 
     }
 

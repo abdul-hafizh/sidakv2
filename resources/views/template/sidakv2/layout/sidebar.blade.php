@@ -34,3 +34,27 @@
 		</div>
 	</section>
 </aside>
+
+<script type="text/javascript">
+	 $(function(){
+          $(function(){
+           $.ajax({
+            type:"GET",
+            url: BASE_URL+'/api/user/menu',
+            cache: false,
+            dataType: "json",
+            success: (respons) =>{
+                  console.log(respons)
+            },
+            error: (respons)=>{
+                errors = respons.responseJSON;
+                
+               
+            }
+          });
+
+         });
+
+	 }); 	
+
+</script>

@@ -37,7 +37,7 @@ use App\Http\Controllers\API\DaerahApiController;
 
 
 
-
+ Route::post('login/auth',[AuthApiController::class, 'Login']);
  Route::middleware(['jwt.auth'])->group(function () {
 
      Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
@@ -46,11 +46,11 @@ use App\Http\Controllers\API\DaerahApiController;
      Route::get('user/menu', [AuthApiController::class, 'sidebar']);
 
      Route::get('user', [UserApiController::class, 'index']);
-      Route::post('user', [UserApiController::class, 'store']);
+     Route::post('user', [UserApiController::class, 'store']);
 
-
-     Route::get('halo', [MobilApiController::class, 'index']);
-     Route::post('halo', [MobilApiController::class, 'store']); 
+     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
+     // Route::get('halo', [MobilApiController::class, 'index']);
+     // Route::post('halo', [MobilApiController::class, 'store']); 
 
 
      Route::get('mobil', [MobilApiController::class, 'index']);
