@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SettingWebController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\PaguTargetController;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -23,6 +24,7 @@ if (!empty($_COOKIE['access'])) {
 
         Route::resource('/user', UserController::class);
         Route::get('/role', [RoleController::class, 'getdata']);
+        Route::get('/pagutarget/dt_index', [PaguTargetController::class, 'dt_index']);
         // Route::resource('/apps', SettingWebController::class);
 
         Route::get('/user/destroy',  [UserController::class, 'destroy']);
