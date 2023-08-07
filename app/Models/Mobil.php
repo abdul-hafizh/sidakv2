@@ -9,22 +9,18 @@ use App\Traits\Uuids;
 
 class Mobil extends Model
 {
-     // use SoftDeletes;
+    // use SoftDeletes;
     use Uuids;
     public $table = 'mobil';
-    
 
-   // protected $dates = ['deleted_at'];
+
+    // protected $dates = ['deleted_at'];
 
 
     public $fillable = [
-     
-        'name'
-       
-       
+
+        'merk',
+        'type'
+
     ];
-
-
-    
-    
 }

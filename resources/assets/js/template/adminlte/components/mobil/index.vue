@@ -46,8 +46,8 @@
                                 <tr>
                                     <th><input type="checkbox" @click="selectAll(allSelected)" v-model="allSelected" ></th>
                                     <th class="border-right-table"> No </th>
-                                     <th class="border-right-table"> Nama </th>
-                                   
+                                     <th class="border-right-table"> Merk </th>
+                                     <th class="border-right-table"> Type </th>
                                     <th> Options </th> 
                                 </tr>
                                 </thead>
@@ -61,8 +61,8 @@
                                     <tr v-for="(list,index) in lists.result" v-bind:key="list.id"  v-if="views">
                                         <td><input type="checkbox" v-model="dataIds" :value="list.id" number  @change="updateCheckall()"></td>
                                         <td> {{ list.number }}</td>
-                                        <td> {{ list.name }} </td>
-                                      
+                                        <td> {{ list.merk }}</td>
+                                        <td> {{ list.type }}</td>
                                         <td>
                                             <div class="btn-group">
                                            

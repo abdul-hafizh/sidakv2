@@ -4,6 +4,9 @@
     <a href="{!! url('dashboard') !!}"><i class="fa fa-home"></i><span>Dashboard</span></a>
 </li>
 
+<li class="">
+    <a href="{!! url('perencanaan') !!}"><i class="fa fa-home"></i><span>Perencanaan</span></a>
+</li>
 
 
 <li class="treeview">

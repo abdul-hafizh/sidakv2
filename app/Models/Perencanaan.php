@@ -5,6 +5,7 @@ namespace App\Models;
 use Eloquent as Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Uuids;
+
 class Perencanaan extends Model
 {
      // use SoftDeletes;
@@ -18,10 +19,6 @@ class Perencanaan extends Model
     public $fillable = [
         'daerah_id',
         'periode_id',
-        'pengawas_analisa_target',
-        'pengawas_analisa_satuan',
-        'pengawas_analisa_pagu',
-
         'pengawas_analisa_target',
         'pengawas_analisa_satuan',
         'pengawas_analisa_pagu',
