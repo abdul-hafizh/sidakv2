@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\Validation\ValidationAuth;
-use App\Http\Request\RequestAuth;
-
-use App\Models\User;
-use App\Models\RoleUser;
-
+use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Request\RequestAuth;
+use App\Models\RoleUser;
+use App\Models\User;
+
+use JWTAuth;
+
 
 class AuthController extends Controller
 {
@@ -54,10 +56,27 @@ class AuthController extends Controller
          
           if (Auth::attempt($credentials)) {
             // Authentication successful
+              
+                try
+                {
+                    if (! $token = JWTAuth::attempt($credentials))
+                    { 
+                   
+                  
+                    }
+
+                } catch (JWTException $e) {
+                   return response()->json(['error' => 'validasi tidak valid'], 500);
+                } 
+
                $auth = Auth::User();
                $RoleUser = RoleUser::where('user_id',$auth->id)->first();
                $access =  $RoleUser->role->slug; 
+ 
+
+               $token = compact('token');
                setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
+               setcookie('token', $token['token'], time() + (86400 * 30), "/"); // 86400 = 1 day
                return redirect('dashboard');
         } else {
             // Authentication failed

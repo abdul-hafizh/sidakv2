@@ -3,7 +3,7 @@
 		<div class="logo">
 			<div class="pd-logo-sidebar pull-left">
 				<a href="#">
-					<img src="/images/logo_sidak.png" class="img-logo">
+					<img src="{{ $sidebar->logo_lg  }}" class="img-logo">
 				</a>
 			</div> 
 			<div class="toogle-menu pull-left d-sm-block ">
@@ -21,7 +21,7 @@
 			<div class="pull-left full info">
 				<div class="text-center">
 					<p>Welcome Back</p>
-					<p class="font-bold">Admin</p>
+					<p class="font-bold">{{ Auth::user()->username }}</p>
 				</div>
 			</div>
 		</div> 

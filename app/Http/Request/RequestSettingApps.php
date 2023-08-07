@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Request;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Helpers\GeneralHelpers;
 use App\Models\SettingApps;
+
 
 class RequestSettingApps 
 {
@@ -32,7 +33,7 @@ class RequestSettingApps
                 $logoSm = url(env('URL_TEMPLATE').'logo_icon.png');
             }  
           
-
+           // $temp['user'] = array('username'=>Auth::User()->username);
 
             $temp['id'] = $data->id;
             $temp['title'] = $data->title;

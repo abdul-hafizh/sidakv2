@@ -27,6 +27,7 @@ use App\Http\Controllers\API\PerencanaanApiController;
 use App\Http\Controllers\API\UserApiController;
 
 use App\Http\Controllers\API\MobilApiController;
+use App\Http\Controllers\API\DaerahApiController;
 
 
 
@@ -34,19 +35,18 @@ use App\Http\Controllers\API\MobilApiController;
 
 
 
- Route::get('register/daerah', [AuthApiController::class, 'GetDaerahID']);
- Route::post('register', [UserApiController::class, 'Register']);
- Route::post('login/auth',[AuthApiController::class, 'Login']);
- Route::get('apps', [SettingWebApiController::class, 'index']);
 
 
- Route::middleware(['jwt.auth','authRole'])->group(function () {
+
+ Route::middleware(['jwt.auth'])->group(function () {
+
+     Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
 
      Route::get('profile', [AuthApiController::class, 'getAuthUser']);
      Route::get('user/menu', [AuthApiController::class, 'sidebar']);
 
      Route::get('user', [UserApiController::class, 'index']);
-     
+      Route::post('user', [UserApiController::class, 'store']);
 
 
      Route::get('halo', [MobilApiController::class, 'index']);

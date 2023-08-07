@@ -171,6 +171,11 @@
     
 }
 
+.select2-container{
+    z-index: 9999!important;
+    width: 100%!important;
+}
+
 .progress-bar{
         width: 0%;
 }
@@ -684,7 +689,9 @@
   padding: 0px 13px;
 }
 
-
+.pagination{
+    float: right!important;
+}
 
 .d-none {
   display: none !important; }

@@ -27,6 +27,8 @@
 	<div class="clearfix"></div>
 	<div class="clearfix"></div> 
 
+
+
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
@@ -77,6 +79,7 @@
 			</div>
 		</div>
 	</div>
-     @include('template/sidakv2/user.add')
+     @include('template/sidakv2/user.add',['daerah'=>$daerah])
 
 @stop
+

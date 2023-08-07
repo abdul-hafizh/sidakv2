@@ -153,14 +153,7 @@ class AuthApiController extends Controller
     }
 
     
-    public function GetDaerahID(Request $request)
-    {
-       
-        $province = DB::table('provinces')->select('id as value','name as text');
-        $regency = DB::table('regencies')->select('id as value','name as text')->union($province)->orderBy('value','ASC')->get();
-
-        return response()->json(['status'=>true,'result'=>$regency,'message'=>'Daerah ID sucessfully']);
-    }
+   
     
 
 
