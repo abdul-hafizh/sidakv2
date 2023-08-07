@@ -27,40 +27,14 @@ class AuthController extends Controller
   public function index(Request $request)
   {
 
-        }else{
-         
-          if (Auth::attempt($credentials)) {
-            // Authentication successful
-              
-                try
-                {
-                    if (! $token = JWTAuth::attempt($credentials))
-                    { 
-                   
-                  
-                    }
-
-                } catch (JWTException $e) {
-                   return response()->json(['error' => 'validasi tidak valid'], 500);
-                } 
-
-               $auth = Auth::User();
-               $RoleUser = RoleUser::where('user_id',$auth->id)->first();
-               $access =  $RoleUser->role->slug; 
- 
-
-               $token = compact('token');
-               setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
-               setcookie('token', $token['token'], time() + (86400 * 30), "/"); // 86400 = 1 day
-               return redirect('dashboard');
-        } else {
-            // Authentication failed
-            return redirect()->route('login')->with('error', 'Invalid credentials');
-        }
-        
-       }    
-      
-    }
+    return view('template/' . $this->template . '.auth.login')
+      ->with(
+        [
+          'title' => $this->title,
+          'template' => 'template/' . $this->template
+        ]
+      );
+  }
 
   public function store(Request $request)
   {
@@ -83,10 +57,22 @@ class AuthController extends Controller
 
       if (Auth::attempt($credentials)) {
         // Authentication successful
+
+        try {
+          if (!$token = JWTAuth::attempt($credentials)) {
+          }
+        } catch (JWTException $e) {
+          return response()->json(['error' => 'validasi tidak valid'], 500);
+        }
+
         $auth = Auth::User();
         $RoleUser = RoleUser::where('user_id', $auth->id)->first();
         $access =  $RoleUser->role->slug;
+
+
+        $token = compact('token');
         setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
+        setcookie('token', $token['token'], time() + (86400 * 30), "/"); // 86400 = 1 day
         return redirect('dashboard');
       } else {
         // Authentication failed

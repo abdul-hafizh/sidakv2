@@ -8,12 +8,7 @@ use App\Http\Request\RequestPaguTarget;
 use App\Models\PaguTarget;
 use App\Helpers\GeneralPaginate;
 use Auth;
-<<<<<<< HEAD
-use DataTables;
-
-=======
-use Datatables;
->>>>>>> 2e06355ca2f7d24553e895beb277d2d8ba8c6fe7
+use Yajra\DataTables\DataTables;
 
 class PaguTargetApiController extends Controller
 {
@@ -48,6 +43,4 @@ class PaguTargetApiController extends Controller
     {
         return Datatables::of(PaguTarget::all())->make(true);
     }
-
-
 }

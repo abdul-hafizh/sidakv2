@@ -29,17 +29,17 @@
 				<table id="datatable" class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th class="border-right-table "> No </th>
-							<th class="border-right-table "> Nama Daerah </th>
-							<th class="border-right-table "> Type </th>
-							<th class="border-right-table "> Periode </th>
-							<th class="border-right-table "> Pagu APBN (Rp) </th>
-							<th class="border-right-table "> Pagu Promosi (Rp) </th>
-							<th class="border-right-table "> Target Pengawasan </th>
-							<th class="border-right-table "> Target Penyelesaian Permasalahan </th>
-							<th class="border-right-table "> Target Bimbingan Teknis </th>
-							<th class="border-right-table "> Target Video Promosi </th>
-							<th class="border-right-table "> Pagu Dalak </th>
+							<th class=""><span class="border-left-table">No </span> </th>
+							<th class=""><span class="border-left-table">Nama Daerah </span> </th>
+							<th class=""><span class="border-left-table">Type </span> </th>
+							<th class=""><span class="border-left-table">Periode </span> </th>
+							<th class=""><span class="border-left-table">Pagu APBN (Rp) </span> </th>
+							<th class=""><span class="border-left-table">Pagu Promosi (Rp) </span> </th>
+							<th class=""><span class="border-left-table">Target Pengawasan </span> </th>
+							<th class=""><span class="border-left-table">Target Penyelesaian Permasalahan </span> </th>
+							<th class=""><span class="border-left-table">Target Bimbingan Teknis </span> </th>
+							<th class=""><span class="border-left-table">Target Video Promosi </span> </th>
+							<th class=""><span class="border-left-table">Pagu Dalak </span> </th>
 						</tr>
 					</thead>
 				</table>
