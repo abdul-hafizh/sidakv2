@@ -18,11 +18,13 @@ Route::resource('/dashboard', DashboardController::class);
 
 if (!empty($_COOKIE['access'])) {
 
-    Route::middleware(['auth', 'admin'])->group(function () {
+    Route::middleware(['auth'])->group(function () {
 
         Route::resource('/apps', SettingWebController::class);
         Route::resource('/user', UserController::class);
-        Route::resource('/pagutarget', PaguTargetController::class);
+        //Route::resource('/pagutarget', PaguTargetController::class);
+        Route::get('/pagutarget/dt_index', [PaguTargetController::class, 'dt_index']);
+        //     Route::resource('/pagutarget/dt_index', [PaguTargetController::class, 'dt_index']);
     });
 
 
@@ -32,7 +34,6 @@ if (!empty($_COOKIE['access'])) {
 
 
     Route::middleware(['auth', 'daerah', 'provinsi'])->group(function () {
-        
     });
 
 

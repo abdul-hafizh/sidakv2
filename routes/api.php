@@ -78,6 +78,8 @@ Route::middleware(['jwt.auth', 'authRole'])->group(function () {
 
     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
 
+    Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'json']);
+
 
 
     Route::get('periode', [PeriodeApiController::class, 'index']);

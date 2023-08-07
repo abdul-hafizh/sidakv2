@@ -19,14 +19,12 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        if(empty($_COOKIE['access']))
-        {
+        if (empty($_COOKIE['access'])) {
             return redirect()->to('login');
-        }else if($_COOKIE['access'] != 'admin'){
+        } else if ($_COOKIE['access'] != 'admin') {
             abort(404);
-            
         }
-       
+
 
         return $next($request);
     }
