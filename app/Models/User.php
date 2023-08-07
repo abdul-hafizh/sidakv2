@@ -34,6 +34,7 @@ class User extends Authenticatable implements JWTSubject
         'created_by',
         'modified_by',
         'status',
+        'photo',
     ];
 
     /**

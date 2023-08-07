@@ -8,8 +8,12 @@ use App\Http\Request\RequestPaguTarget;
 use App\Models\PaguTarget;
 use App\Helpers\GeneralPaginate;
 use Auth;
+<<<<<<< HEAD
 use DataTables;
 
+=======
+use Datatables;
+>>>>>>> 2e06355ca2f7d24553e895beb277d2d8ba8c6fe7
 
 class PaguTargetApiController extends Controller
 {
@@ -40,9 +44,10 @@ class PaguTargetApiController extends Controller
         return response()->json($Data);
     }
 
-
-    public function json()
+    public function jsonData(Request $request)
     {
-        echo 'test';
+        return Datatables::of(PaguTarget::all())->make(true);
     }
+
+
 }

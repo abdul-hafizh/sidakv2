@@ -19,7 +19,7 @@
     <script type="text/javascript">
         const BASE_URL = window.location.origin;
     </script>
-    <link rel="icon" type="image/x-icon" href="{{ $template.'/img/faveicon.png' }}">
+    <link rel="icon" type="image/x-icon" href="{{ $template.'/img/fave-icon.png' }}">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/bootstrap.min.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/font-awesome.min.css' }}">
@@ -30,10 +30,16 @@
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/_all.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/style.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/pagination.css' }}">
-    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/scrollbar.css' }}">
+    <link href="{{ config('app.url').$template.'/css/scrollbar.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/plugin/select2/css/select2.min.css' }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/sweetalert2.min.css'}}">
 
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+    <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
+
+</head>
+
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
 </head>
 
 <body class="hold-transition">
@@ -50,11 +56,14 @@
             </a>
 
             <nav role="navigation" class="navbar navbar-static-top">
-                <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
                 </a>
 
-                <h3 class="pull-left padding-10-0 mgn-none">{{ $title  }} </h3>
+                <h3 class="pull-left padding-10-0 mgn-none">Data {{ $title  }} </h3>
                 <div class="navbar-custom-menu">
                     <div class="mt-10 mc-15">
                         <button type="button" class="btn btn-primary margin-0-12-0-0 btn-flat border-radius-10">
@@ -69,6 +78,7 @@
                 </div>
             </nav>
         </header>
+
         @include('template/sidakv2/layout.sidebar')
         <div class="content-wrapper">
             @yield('content')
@@ -82,7 +92,8 @@
     </div>
     @endif
 
-    <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
+
+    <script src="{{ config('app.url').$template.'/js/sweetalert2.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/adminlte.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/bootstrap.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/icheck.min.js' }}"></script>
@@ -97,6 +108,12 @@
     <!-- Bootstrap JavaScript -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <!-- App scripts -->
+    <script src="{{ config('app.url').$template.'/plugin/select2/js/select2.min.js' }}"></script>
+    <script type="text/javascript">
+        $(function() {
+            $('.js-example-basic-single').select2();
+        });
+    </script>
     @stack('scripts')
 
 </body>
