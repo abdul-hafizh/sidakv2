@@ -42,8 +42,8 @@
 
                                                       
                                                         <div class="pull-left full form-group has-feedback {{ $errors->has('username') ? ' has-error' : '' }}"> 	
-                                                            <label class="text-capitalize color-dark-blue">Username </label>
-                                                            <input value="admin"  name="username" type="text" class="form-control mb-3 border-radius-10"  placeholder="Username">
+                                                            <label class="text-capitalize color-dark-blue font-label-login font-12">Nama Pengguna </label>
+                                                            <input value="admin"  name="username" type="text" class="form-control mb-3 border-radius-10 font-12"  placeholder="Username">
 
                                                                @if ($errors->has('username'))
 												                    <span class="help-block">
@@ -54,8 +54,8 @@
 
                                                           <div class="pull-left full form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
 
-                                                            <label class="text-capitalize color-dark-blue">Password </label> 
-                                                            <input name="password" type="password"  v-model="password" value="D4lak2021" class="form-control mb-2 border-radius-10" placeholder="Password">
+                                                            <label class="text-capitalize color-dark-blue font-label-login font-12">Kata Sandi </label> 
+                                                            <input name="password" type="password"  v-model="password" value="D4lak2021" class="form-control mb-2 border-radius-10 font-12" placeholder="Kata Sandi">
                                                             
                                                                @if ($errors->has('password'))
 												                    <span class="help-block">
@@ -68,7 +68,7 @@
                                                         </div>
 
                                                         <div class="pull-left full form-group">
-                                                            <a href="#" class="pull-right">Lupa Password?</a>
+                                                            <a href="#" class="pull-right font-10-link">Lupa Kata Sandi?</a>
                                                         </div> 
 
                                                         <div class="pull-left full form-group mgn-top-bottom-10">
@@ -100,6 +100,9 @@
             <!-- END : End Main Content-->
         </div>
     </div>
+
+
+   
 
     <style>
 .wrapper {
@@ -279,6 +282,67 @@
     font-weight: 600;
 }
 </style>
+<script type="text/javascript">
+     $(function(){
+     
+  $("#simpan").click( () => {
 
+           
+
+
+
+          var data = $("#FormSubmit").serializeArray();
+          var form = {
+              'username':data[0].value,
+              'password':data[1].value,
+          };
+
+              var errors = {
+                  messages: {
+                      username:'',
+                      password:'',
+                     
+                        
+                  },
+              };
+
+          $.ajax({
+            type:"POST",
+            url: BASE_URL+'/api/login/auth',
+            data:form,
+            cache: false,
+            dataType: "json",
+            success: (respons) =>{
+                  
+            },
+            error: (respons)=>{
+                errors = respons.responseJSON;
+                
+                if(errors.messages.username)
+                {
+                     $('#username-alert').addClass('has-error');
+                     $('#username-messages').addClass('help-block').html('<strong>'+ errors.messages.username +'</strong>');
+                }else{
+                    $('#username-alert').removeClass('has-error');
+                    $('#username-messages').removeClass('help-block').html('');
+                }
+
+                if(errors.messages.password)
+                {
+                     $('#password-alert').addClass('has-error');
+                     $('#password-messages').addClass('help-block').html('<strong>'+ errors.messages.password +'</strong>');
+                }else{
+                    $('#password-alert').removeClass('has-error');
+                    $('#password-messages').removeClass('help-block').html('');
+                }
+
+                
+            }
+          });
+     });
+
+  });
+
+</script>
 
 @stop
