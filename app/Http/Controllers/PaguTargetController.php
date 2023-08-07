@@ -38,6 +38,23 @@ class PaguTargetController extends Controller
             );
     }
 
+    public function dt_index(Request $request)
+    {
+
+        $data = PaguTarget::orderBy('id', 'ASC')->paginate($this->perPage);
+        $result = RequestPaguTarget::GetDataAll($data, $this->perPage, $request);
+
+        return view('template/' . $this->template . '.paguTarget.dt_index')->with(
+            [
+                'title' => $this->title,
+                'sidebar' => $this->sidebar,
+                'template' => 'template/' . $this->template
+            ]
+        );
+    }
+
+
+
     public function store(Request $request)
     {
     }
