@@ -35,7 +35,7 @@ class RequestSettingApps
           
            // $temp['user'] = array('username'=>Auth::User()->username);
 
-            $temp['id'] = $data->id;
+            // $temp['id'] = $data->id;
             $temp['title'] = $data->title;
             $temp['about'] = $data->about;
             $temp['contact'] = $data->contact;

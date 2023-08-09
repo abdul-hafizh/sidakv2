@@ -7,7 +7,18 @@
   }
   
 
+  .pagination-disable{
+    color: #8f8d8d!important;
+    border: 1px solid #7c7c7c!important;
+  }
 
+  .pagination-disable:hover{
+    background-color:inherit!important;
+    border-color:#7c7c7c!important;
+    color: #8f8d8d!important;
+
+
+    }
   
 
   .pagination li {

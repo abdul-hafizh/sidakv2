@@ -2,8 +2,8 @@
 	<section class="sidebar">
 		<div class="logo">
 			<div class="pd-logo-sidebar pull-left">
-				<a href="#">
-					<img src="{{ $sidebar->logo_lg  }}" class="img-logo">
+				<a href="#"  id="logo">
+					
 				</a>
 			</div> 
 			<div class="toogle-menu pull-left d-sm-block ">
@@ -14,14 +14,14 @@
 		</div> 
 		<div class="user-panel">
 			<div class="pull-left full pd-img-sidebar">
-				<div class="mgn-center-img picture-mini">
-					<img class="img-circle " src="/template/sidakv2/img/user.png" alt="admin sidak">
+				<div id="img_profile" class="mgn-center-img picture-mini">
+					
 				</div>
 			</div> 
 			<div class="pull-left full info">
 				<div class="text-center">
 					<p>Welcome Back</p>
-					<p class="font-bold">{{ Auth::user()->username }}</p>
+					<p id="username" class="font-bold text-capitalize"></p>
 				</div>
 			</div>
 		</div> 
@@ -37,23 +37,16 @@
 
 <script type="text/javascript">
 	 $(function(){
-          $(function(){
-           $.ajax({
-            type:"GET",
-            url: BASE_URL+'/api/user/menu',
-            cache: false,
-            dataType: "json",
-            success: (respons) =>{
-                  console.log(respons)
-            },
-            error: (respons)=>{
-                errors = respons.responseJSON;
-                
-               
-            }
-          });
+        const apps  = JSON.parse(localStorage.getItem('apps')); 
+        const user_sidebar  = JSON.parse(localStorage.getItem('user_sidebar'));
+        
+         $("#logo").html('<img src="'+ apps.logo_lg +'" class="img-logo">');         
+         $('#img_profile').html('<img class="img-circle" src="'+ user_sidebar.photo +'" alt="'+ user_sidebar.fullname +'">');
+          
+         $('#username').html(user_sidebar.fullname);
+           
 
-         });
+       
 
 	 }); 	
 

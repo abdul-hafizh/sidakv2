@@ -18,7 +18,7 @@ class GeneralPaginate
 
     public static function uploadPhotoFolder() 
     {   
-        $img = env('URL_FILE', '/profile/');
+        $img = env('URL_FILE');
         return $img;
     }
 

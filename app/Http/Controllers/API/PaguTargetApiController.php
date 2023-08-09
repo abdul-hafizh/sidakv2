@@ -30,9 +30,9 @@ class PaguTargetApiController extends Controller
     }
 
 
-    public function jsonData(Request $request)
+    public function json()
     {
-        return Datatables::of(PaguTarget::all())->make(true);
+        return PaguTarget::get();
     }
 
     

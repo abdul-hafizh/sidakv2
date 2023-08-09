@@ -6,13 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Request\Validation\ValidationAdminAuth;
 use App\Http\Request\RequestAdminAuth;
 use App\Helpers\GeneralPaginate;
-use App\Models\Admin;
 use App\Models\User;
-use App\Models\Student;
-use App\Models\Teacher;
-use App\Models\Payment;
-use App\Models\ProgramStudy;
-use App\Models\Subject;
+
+
 
 use File;
 use Auth;
@@ -30,21 +26,13 @@ class DashboardApiController extends Controller
 
     public function dashboard()
     {
-      $res['total_teacher'] = Teacher::count();
-      $res['total_student'] = Student::count();
-      $res['total_payment_paid'] = Payment::where('status','paid')->count(); 
-      $res['total_payment_unpaid'] = Payment::where('status','unpaid')->count(); 
-      $res['total_prody'] = ProgramStudy::count(); 
-      $res['total_subject'] = Subject::count(); 
-        return response()->json($res); 
+     
     }
 
     public function index(Request $request)
     {
        
-        $student = Auth::User();
-        $_res = RequestAdminAuth::GetDataID($student);
-        return response()->json($_res);
+       
 
     }
 

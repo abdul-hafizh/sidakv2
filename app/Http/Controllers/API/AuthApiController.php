@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
@@ -10,7 +11,8 @@ use App\Models\Menus;
 use App\Models\RoleMenu;
 use App\Models\RoleUser;
 use App\Models\User;
-use App\Http\Request\RequestGlobalUser;
+
+
 use App\Http\Request\RequestMenuRoles;
 use App\Http\Request\RequestMenus;
 use App\Http\Request\RequestAuth;
@@ -44,13 +46,16 @@ class AuthApiController extends Controller
           return response()->json($validation,400);  
         }else{
             RequestAuth::requestHash($credentials['username'],$credentials['password']);
-           try
-           {
+          
+         if (Auth::attempt($credentials)) 
+         {
+            try
+            {
                 if (! $token = JWTAuth::attempt($credentials))
                 { 
                    
-                    $messages1 = array('username'=>'username tidak valid');
-                    $messages2 = array('password'=>'Password tidak valid');
+                    $messages1 = array('username'=>'Nama pengguna tidak valid');
+                    $messages2 = array('password'=>'Kata sandi tidak valid');
                     $user = User::where('username',$credentials['username'])->first();
                     if ($user ==null)
                     {
@@ -68,22 +73,28 @@ class AuthApiController extends Controller
                return response()->json(['error' => 'validasi tidak valid'], 500);
             }   
 
-            $token = compact('token');
+           
             $auth = Auth::User();
             $RoleUser = RoleUser::where('user_id',$auth->id)->first();
-            $access =  $RoleUser->role->slug;
-            $role = RequestMenuRoles::Roles($RoleUser->role->id);
-            if($role)
-            {
-                $dataMenu = json_decode($role);
-                $path = RequestMenuRoles::PathVue($role);
-                $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
-                $userSidebar = RequestAuth::requestUserSidebar();
-                $apps = RequestSettingApps::AppsWeb();
+          
+           
+            if($RoleUser)
+            {    
+                 $access =  $RoleUser->role->slug;
+                 $token = compact('token');
+                 setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
+                 setcookie('token', $token['token'], time() + (86400 * 30), "/"); // 86400 = 1 day
+                 $userSidebar = RequestAuth::requestUserSidebar();
+              
             } 
             
 
-            return response()->json(['status'=>true,'apps'=>$apps,'path'=>$path,'user_sidebar'=>$userSidebar,'menu_sidebar'=>$sidebar,'access'=>$access,'token'=>$token['token']],200);   
+            return response()->json(['status'=>true,'user_sidebar'=>$userSidebar,'access'=>$access,'token'=>$token['token']],200);  
+
+         } else {
+            // Authentication failed
+              return response()->json(['status'=>false,'user_sidebar'=>[],'access'=>'','token'=>''],404);  
+        }    
 
         }    
 
@@ -124,11 +135,11 @@ class AuthApiController extends Controller
     {
 
         $RoleUser = RoleUser::where('user_id',Auth::User()->id)->first()->role_id;
-        $role = RequestMenuRoles::Roles($RoleUser);
-        $res = array();
-        if($role)
+        // $role = RequestMenuRoles::Roles($RoleUser);
+        // $res = array();
+        if($RoleUser)
         {
-            $dataMenu = json_decode($role);
+            //$dataMenu = json_decode($role);
             $userSidebar = RequestAuth::requestUserSidebar();
            // $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
         } 

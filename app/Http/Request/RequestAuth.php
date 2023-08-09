@@ -66,7 +66,7 @@ class RequestAuth
 
         
 
-        return $user;     
+        return  $user ;     
 
     }
 
