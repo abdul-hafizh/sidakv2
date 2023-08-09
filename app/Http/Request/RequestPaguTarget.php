@@ -8,6 +8,7 @@ use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\PaguTarget;
 use App\Http\Request\RequestSettingApps;
+use DB;
 
 class RequestPaguTarget
 {
@@ -39,6 +40,53 @@ class RequestPaguTarget
         }
 
         return json_decode(json_encode($temp), FALSE);
+    }
+
+
+
+    public static function GetDataList($request)
+    {
+        $temp = array();
+
+        $getRequest = $request->all();
+        $column_order   = array('', 'nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $order = array('nama_daerah' => 'ASC');
+
+        $data = DB::table('pagu_target')->offset($request->start)
+            ->limit($request->length);
+
+        //  dd($request->order[0]['dir']);
+        if ($request->order['0']['column'] != 0) {
+            $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
+        } else if (isset($order)) {
+            $order = $order;
+            $data->orderBy(key($order), $order[key($order)]);
+        }
+        $numberNext = 1;
+        //dd($data);
+        $result = $data->get();
+        foreach ($result as $key => $val) {
+
+            $row    = array();
+            $row[]  = $numberNext++;
+
+            $row[]  = $val->nama_daerah;
+            $row[]  = $val->type_daerah;
+            $row[]  = $val->periode_id;
+            $row[]  = $val->pagu_apbn;
+            $row[]  = $val->pagu_promosi;
+            $row[]  = $val->target_pengawasan;
+            $row[]  = $val->target_penyelesaian_permasalahan;
+            $row[]  = $val->target_bimbingan_teknis;
+            $row[]  = $val->target_video_promosi;
+            $row[]  = $val->pagu_dalak;
+
+            $temp[] = $row;
+        }
+        $temp2['data'] = $temp;
+        $temp2['total'] = DB::table('pagu_target')->count();
+        return json_decode(json_encode($temp2), FALSE);
     }
 
 
