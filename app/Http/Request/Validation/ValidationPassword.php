@@ -18,7 +18,8 @@ class ValidationPassword implements Rule
 
     public function passes($attribute, $value)
     {
-        return Hash::check($value, $this->user->password);
+        
+        return $this->user->password;
      
     }
 

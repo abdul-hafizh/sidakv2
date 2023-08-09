@@ -15,17 +15,6 @@ class PaguTargetApiController extends Controller
 
 
     public function __construct()
-    {
-        $this->perPage = GeneralPaginate::limit();
-    }
-
-    public function index(Request $request)
-    {
-        $paginate = GeneralPaginate::limit();
-        $Data = PaguTarget::orderBy('id', 'DESC')->paginate($paginate);
-        $description = '';
-        $_res = RequestPaguTarget::GetDataAll($Data, $this->perPage, $request, $description);
-        return response()->json($_res);
     }
 
     public function check(Request $request)
@@ -41,6 +30,5 @@ class PaguTargetApiController extends Controller
 
     public function jsonData(Request $request)
     {
-        return Datatables::of(PaguTarget::all())->make(true);
+        return PaguTarget::get();
     }
-}

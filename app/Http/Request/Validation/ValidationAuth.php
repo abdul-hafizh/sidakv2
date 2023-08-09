@@ -13,14 +13,14 @@ class ValidationAuth
         $err = array(); 
          
         $fields = [
-            'username'  => 'Username',  
-            'password'  => 'Password',
+            'username'  => 'Nama Pengguna',  
+            'password'  => 'Kata Sandi',
         ];
 
         $validator =  Validator::make($request->all(), 
         [
             'username'  => 'required|exists:users,username',
-            'password' => ['required', new ValidationPassword($request->username)]
+            'password' =>  'required',
                
         ]);
 
@@ -28,8 +28,17 @@ class ValidationAuth
         if ($validator->fails()) {
          
             $errors = $validator->errors();
+            if($errors->has('username'))
+            {
+                $err['messages']['username'] = $errors->first('username');
+            }           
+            
+            if($errors->has('password'))
+            {
+                $err['messages']['password'] = $errors->first('password');
+            }
 
-            return $errors;
+            return $err;
        }
   }
 

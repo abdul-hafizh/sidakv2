@@ -8,7 +8,7 @@ use App\Http\Request\RequestUser;
 use App\Http\Request\RequestDaerah;
 use App\Helpers\GeneralPaginate;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class UserController extends Controller
 {
@@ -16,19 +16,15 @@ class UserController extends Controller
     public function __construct()
     {
       
-        
-        $this->title = 'User';
         $this->template = RequestSettingApps::AppsTemplate();
-        $this->sidebar = RequestSettingApps::AppsSidebar();
-
         $this->perPage = GeneralPaginate::limit();
     }
 
     public function index(Request $request)
     {
-        
-        $data = User::orderBy('id', 'ASC')->paginate($this->perPage)->onEachSide(0);
-        $result = RequestUser::GetDataAll($data,$this->perPage,$request);
+       
+        // $data = User::orderBy('id', 'ASC')->paginate($this->perPage)->onEachSide(0);
+        // $result = RequestUser::GetDataAll($data,$this->perPage,$request);
         $list_daerah = RequestDaerah::GetDaerahID();
        
 
@@ -36,92 +32,13 @@ class UserController extends Controller
         ->with(
             [
 
-              'result' => $data,
+              // 'result' => $result,
               'daerah' => $list_daerah,
-              'paginate' => $data->links('vendor.pagination.default'),   
-              'title' => $this->title,
-              'sidebar' =>$this->sidebar,
+             // 'paginate' => $data->links('vendor.pagination.default'),   
+              'title' => 'Data User',
               'template'=>'template/'.$this->template
             ]);
     }
 
-    public function create(Request $request)
-    {
-
-       
-       
-         
-      
-    }
-
-    public function store(Request $request)
-    {
-
-        
-            
     
-         
-      
-    }
-
-
-    public function add(Request $request)
-    {
-
-        
-            
-
-         
-      
-    }
-
-    public function edit($id,Request $request)
-    {
-
-        
-            
-
-         
-      
-    }
-
-     public function show($id,Request $request)
-    {
-
-        
-            
-
-         
-      
-    }
-
-
-     public function update($id,Request $request)
-    {
-
-        
-            
-
-         
-      
-    }
-
-
-     public function delete($id,Request $request)
-    {
-
-        
-            
-
-         
-      
-    }
-
-
-
-    // public function show(Request $request)
-    // {
-
-    //     return view('template/' . $this->template . '.index')->with(['title' => $this->title]);
-    // }
 }
