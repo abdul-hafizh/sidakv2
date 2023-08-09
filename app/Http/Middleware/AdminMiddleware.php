@@ -17,33 +17,24 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        
-        if(isset($_COOKIE['access']))
-        {
-           
-            if (Auth::check())
-            {
-               
-                if($_COOKIE['access'] != 'admin')
-                {
-                   abort(404); 
+
+        if (isset($_COOKIE['access'])) {
+
+            if (Auth::check()) {
+
+                if ($_COOKIE['access'] != 'admin') {
+                    abort(404);
                 }
-
-              
-
             }
-            
-        }else{
-                Auth::logout();
-                unset($_COOKIE['access']); 
-                setcookie('access', '', -1, '/'); 
-                setcookie('token', '', -1, '/');  
-                return redirect('login');
+        } else {
+            Auth::logout();
+            unset($_COOKIE['access']);
+            setcookie('access', '', -1, '/');
+            setcookie('token', '', -1, '/');
+            return redirect('login');
         }
 
-        
-        return $next($request);
 
-       
+        return $next($request);
     }
 }

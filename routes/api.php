@@ -121,6 +121,3 @@ use App\Http\Controllers\API\DaerahApiController;
 
 
 // });
-
-
-
