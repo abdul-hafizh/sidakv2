@@ -39,29 +39,6 @@ class AuthController extends Controller
       );
   }
 
-  public function store(Request $request)
-  {
-
-    $credentials = $request->only('username', 'password');
-    RequestAuth::requestHash($request->username, $request->password);
-    $validation = ValidationAuth::validation($request);
-
-    if ($validation) {
-
-      return view('template/' . $this->template . '.auth.login')
-        ->with(
-          [
-            'title' => $this->title,
-            'template' => 'template/' . $this->template,
-            'errors' => $validation,
-          ]
-        );
-    } else {
-
-      if (Auth::attempt($credentials)) {
-        // Authentication successful
-
-
 
     public function store(Request $request)
     {
@@ -128,14 +105,7 @@ class AuthController extends Controller
     }
 
 
-        $token = compact('token');
-        setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
-        setcookie('token', $token['token'], time() + (86400 * 30), "/"); // 86400 = 1 day
-        return redirect('dashboard');
-      } else {
-        // Authentication failed
-        return redirect()->route('login')->with('error', 'Invalid credentials');
-      }
-    }
-  }
+       
+  
+  
 }

@@ -58,10 +58,10 @@ use Illuminate\Support\Facades\Auth;
 
                     if (isset($_COOKIE['access']))
                     {
-                        return redirect('login');
+                         Auth::logout();
                         setcookie('token', '', -1, '/');
                         setcookie('access', '', -1, '/');
-                        Auth::logout();
+                        return redirect('login');
                     }
                 });
 
@@ -75,56 +75,15 @@ use Illuminate\Support\Facades\Auth;
             } 
         } else {
            // User is not authenticated
-            return redirect('login'); 
+             Auth::logout();
+          
             setcookie('token', '', -1, '/');
             setcookie('access', '', -1, '/'); 
-            Auth::logout();
+              return redirect('login'); 
+           
             
         }
            
              
 
-        
-
-           
-        
-       
-
-
-
-    Route::middleware(['auth', 'pusat'])->group(function () {
-    });
-
-
-    Route::middleware(['auth', 'province'])->group(function () {
-    });
-
-    if (Request::segment(1) == 'login') {
-        Route::get('/login', function () {
-            return redirect('dashboard');
-        });
-    }
-
-    Route::get('/logout', function () {
-
-        if (isset($_COOKIE['access'])) {
-            Auth::logout();
-            unset($_COOKIE['access']);
-            setcookie('token', '', -1, '/');
-            setcookie('access', '', -1, '/');
-            return redirect('login');
-        }
-    });
-} else {
-
-    Route::get('/logout', function () {
-
-        if (isset($_COOKIE['access'])) {
-            Auth::logout();
-            unset($_COOKIE['access']);
-            setcookie('token', '', -1, '/');
-            setcookie('access', '', -1, '/');
-            return redirect('login');
-        }
-    });
-}
+    
