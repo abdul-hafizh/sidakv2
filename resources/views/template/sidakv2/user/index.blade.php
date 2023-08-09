@@ -70,7 +70,7 @@
 			</div>
 		</div>
 	</div>
-     @include('template/sidakv2/user.add',['daerah'=>$daerah])
+     @include('template/sidakv2/user.add')
 
      <script type="text/javascript">
  //     	$(function() {
@@ -161,6 +161,18 @@
     let previousPage = 1; // Previous page number
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
+
+
+     $('.select2').select2();
+
+    // Simulate editing with pre-selected item
+    const selectedItemValue = 2; // The value of the selected item you want to edit
+
+    // Fetch item data (this could be an AJAX call to retrieve item details)
+    const selectedItemText = 'Option 2'; // Replace with fetched item text
+
+    // Set the selected item in the Select2 input
+    $('#daerah_id').append(new Option(selectedItemText, selectedItemValue, true, true));
 
      // "Select All" checkbox
     $('.select-all').on('change', function() {
@@ -273,7 +285,13 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button type="button" class="btn btn-primary"><i class="fa fa-pencil"></i></button>`; 
+                row +=`<button id="Edit" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+
+                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+                row +=``+ GetFormEdit(item) +``;
+                row +=`</div>`;
+
+
 
                 row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
@@ -301,7 +319,141 @@
 	        
         }); 
 
+        $( "#content" ).on( "click", "#Edit", (e) => {
+	        let id = e.currentTarget.dataset.param_id;
+
+	         
+	        
+        }); 
+
         
+    }
+
+
+    function GetFormEdit(item)
+    {
+    	  console.log(item)
+        	let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+				       row +=`<div class="modal-header">`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Edit User</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form  method="post">`;
+					        row +=`<div class="modal-body">`;
+                               
+                                row +=`<div class="form-group has-feedback" >`;
+				                  row +=`<label>Username</label>`;
+				                  row +=`<input type="text" class="form-control" name="username" placeholder="Username" value="`+ item.username +`">`;
+				                row +=`</div>`;
+
+				                 row +=`<div id="name-alert" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Name</label>`;
+
+				                  row +=`<input type="text" class="form-control" name="name" placeholder="Name" value="`+ item.name +`">
+				                  <span id="name-messages"></span>`;
+
+				                 row +=`</div>`;
+
+
+
+				                 row +=`<div id="email-alert" class="form-group has-feedback">`;
+
+				                   row +=`<label>Email</label>`;
+
+				                   row +=`<input type="email" class="form-control" name="email" placeholder="email" value="`+ item.email +`">`;
+
+				                   row +=`<span id="email-messages"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="phone-alert" class="form-group has-feedback">`;
+
+				                   row +=`<label>Phone</label>`;
+
+				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone" value="`+ item.phone +`">`;
+
+				                   row +=`<span id="phone-messages"></span>`;
+
+				                 row +=`</div>`;
+
+
+
+				                 row +=`<div id="nip-alert" class="form-group has-feedback">`;
+
+				                   row +=`<label>NIP</label>`;
+
+				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP" value="`+ item.nip +`">`;
+
+				                   row +=`<span id="nip-messages"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="leader-name-alert" class="form-group has-feedback">`;
+
+				                   row +=`<label>Penanggung Jawab</label>`;
+
+				                   row +=`<input type="text" class="form-control" name="leader_name" placeholder="Penanggung Jawab " value="`+ item.leader_name +`">`;
+
+				                   row +=`<span id="leader-name-messages"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="leader-nip-alert" class="form-group has-feedback">`;
+
+				                   row +=`<label>NIP Penanggung Jawab</label>`;
+
+				                   row +=`<input type="text" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
+				                    row +=`<span id="leader-nip-messages"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="daerah-alert" class="form-group has-feedback">`;
+
+				                     row +=`<label>Daerah </label>`;
+
+				                   row +=`<select id="daerah_id" class="select2 form-control" value="`+ item.daerah_id +`"  name="daerah_id" ></select>`;
+
+				                   row +=`<span id="daerah-messages"></span>`;
+				                 row +=`</div>`;
+
+				                 row +=`<div id="password-alert" class="form-group has-feedback" >`;
+				                    row +=`<label>Password </label>`;
+				                     row +=`<input type="password" class="form-control" name="password" placeholder="Password" value="`+ item.password +`" >`;
+				                     row +=`<span id="password-messages"></span>`;
+
+				                   
+				                 row +=`</div>`;
+
+				                 row +=`<div id="password-confirmation-alert" class="form-group has-feedback">`;
+				                   row +=`<label>Konfirmasi Password </label>`;
+				                 row +=`<input type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password" value="`+ item.password_confirmation +`">`;
+				                 row +=`<span id="password-confirmation-messages"></span>`;
+				                 row +=`</div>`;
+
+
+					        row +=`</div>`;
+
+                            row +=`<div class="modal-footer">`;
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`;
+
+            return row;
+
+
     }
 
     // Function to update pagination controls
@@ -363,6 +515,10 @@
     // Initial data fetch
     fetchData(currentPage);
 });
+
+
+ 
+
      </script>
 
 @stop
