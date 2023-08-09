@@ -3,16 +3,20 @@
 <section class="content-header pd-left-right-15">
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
-			<div class="btn-group pull-left padding-9-0">
-				<button type="button" disabled="disabled" class="btn btn-primary">
-					<i class="fa fa-trash"></i> Delete
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button" disabled="disabled" class="btn btn-danger border-radius-10">
+					Hapus
 				</button>
 
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">
-					<i aria-hidden="true" class="fa fa-plus"></i> Add
-				</button>
-				<button type="button" class="btn btn-primary">
+
+				<!-- <button type="button" class="btn btn-primary">
 					<i aria-hidden="true" class="fa fa-search"></i> Search
+				</button> -->
+			</div>
+
+			<div class="pull-left padding-9-0">
+				<button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
+					Tambah Data
 				</button>
 			</div>
 		</div>
@@ -29,7 +33,7 @@
 				<table id="datatable" class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th class=""><span class="border-left-table">No </span> </th>
+							<th class="">No </th>
 							<th class=""><span class="border-left-table">Nama Daerah </span> </th>
 							<th class=""><span class="border-left-table">Type </span> </th>
 							<th class=""><span class="border-left-table">Periode </span> </th>
@@ -58,51 +62,13 @@
 			processing: true,
 			serverSide: true,
 			ajax: BASE_URL + '/api/pagutarget/datalist',
-			columns: [{
-					data: 'id',
-					name: 'id'
-				},
-				{
-					data: 'nama_daerah',
-					name: 'nama_daerah'
-				},
-				{
-					data: 'type_daerah',
-					name: 'type_daerah'
-				},
-				{
-					data: 'periode_id',
-					name: 'periode_id'
-				},
-				{
-					data: 'pagu_apbn',
-					name: 'pagu_apbn'
-				},
-				{
-					data: 'pagu_promosi',
-					name: 'pagu_promosi'
-				},
-				{
-					data: 'target_pengawasan',
-					name: 'target_pengawasan'
-				},
-				{
-					data: 'target_penyelesaian_permasalahan',
-					name: 'target_penyelesaian_permasalahan'
-				},
-				{
-					data: 'target_bimbingan_teknis',
-					name: 'target_bimbingan_teknis'
-				},
-				{
-					data: 'target_video_promosi',
-					name: 'target_video_promosi'
-				},
-				{
-					data: 'pagu_dalak',
-					name: 'pagu_dalak'
-				}
-			]
+			dom: "<'row'<'col-sm-6'l><'col-sm-6'p>>" +
+				"<'row'<'col-sm-12'tr>>" +
+				"<'row'<'col-sm-5'i>>",
+			columnDefs: [{
+				targets: [0],
+				orderable: false,
+			}],
 		});
 	});
 </script>

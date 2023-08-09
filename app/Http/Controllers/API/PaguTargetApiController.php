@@ -41,6 +41,13 @@ class PaguTargetApiController extends Controller
 
     public function jsonData(Request $request)
     {
-        return Datatables::of(PaguTarget::all())->make(true);
+        $result = RequestPaguTarget::GetDataList($request);
+        $output = array(
+            "draw" => $request->draw,
+            "recordsTotal" => $result->total,
+            "recordsFiltered" => $result->total,
+            "data" => $result->data,
+        );
+        return response()->json($output);
     }
 }
