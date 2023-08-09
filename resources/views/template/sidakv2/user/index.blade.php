@@ -162,18 +162,6 @@
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
 
-
-     $('.select2').select2();
-
-    // Simulate editing with pre-selected item
-    const selectedItemValue = 2; // The value of the selected item you want to edit
-
-    // Fetch item data (this could be an AJAX call to retrieve item details)
-    const selectedItemText = 'Option 2'; // Replace with fetched item text
-
-    // Set the selected item in the Select2 input
-    $('#daerah_id').append(new Option(selectedItemText, selectedItemValue, true, true));
-
      // "Select All" checkbox
     $('.select-all').on('change', function() {
         $('.item-checkbox').prop('checked', $(this).is(':checked'));
@@ -332,7 +320,6 @@
 
     function GetFormEdit(item)
     {
-    	  console.log(item)
         	let row = ``;
             row +=`<div class="modal-dialog">`;
                 row +=`<div class="modal-content">`;
@@ -420,7 +407,7 @@
 
 				                     row +=`<label>Daerah </label>`;
 
-				                   row +=`<select id="daerah_id" class="select2 form-control" value="`+ item.daerah_id +`"  name="daerah_id" ></select>`;
+				                   row +=`<select id="daerah_id" class="select2 form-control"  name="daerah_id" ></select>`;
 
 				                   row +=`<span id="daerah-messages"></span>`;
 				                 row +=`</div>`;
@@ -515,10 +502,6 @@
     // Initial data fetch
     fetchData(currentPage);
 });
-
-
- 
-
      </script>
 
 @stop
