@@ -35,33 +35,25 @@
                                                        <h3 class="text-capitalize text-center text-bold">Selamat Datang</h3>
                                                     </div> 
 
-                                                     <form method="POST" action="{{ url('/login') }}">
-                           								 @csrf
+                                                     <form id="FormLogin">
+                           							
 
-
+                                                        @csrf
 
                                                       
-                                                        <div class="pull-left full form-group has-feedback {{ $errors->has('username') ? ' has-error' : '' }}"> 	
+                                                        <div  id="username-alert" class="pull-left full form-group has-feedback"> 	
                                                             <label class="text-capitalize color-dark-blue font-label-login font-12">Nama Pengguna </label>
                                                             <input value="admin"  name="username" type="text" class="form-control mb-3 border-radius-10 font-12"  placeholder="Username">
-
-                                                               @if ($errors->has('username'))
-												                    <span class="help-block">
-												                    <strong>{{ $errors->first('username') }}</strong>
-												                </span>
-												                @endif
+                                                            <span id="username-messages"></span>
+                                                             
                                                         </div>
 
-                                                          <div class="pull-left full form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
+                                                          <div id="password-alert" class="pull-left full form-group has-feedback">
 
-                                                            <label class="text-capitalize color-dark-blue font-label-login font-12">Kata Sandi </label> 
+                                                            <label  id="password-alert"  class="text-capitalize color-dark-blue font-label-login font-12">Kata Sandi </label> 
                                                             <input name="password" type="password"  v-model="password" value="D4lak2021" class="form-control mb-2 border-radius-10 font-12" placeholder="Kata Sandi">
                                                             
-                                                               @if ($errors->has('password'))
-												                    <span class="help-block">
-												                    <strong>{{ $errors->first('password') }}</strong>
-												                </span>
-												                @endif
+                                                             <span id="password-messages"></span>
 
                                                                 
                                                           
@@ -72,7 +64,7 @@
                                                         </div> 
 
                                                         <div class="pull-left full form-group mgn-top-bottom-10">
-                                                            <button type="submit" v-show="btnSubmit"  class="btn btn-primary btn-block btn-flat border-radius-20">Masuk</button>
+                                                            <button id="Submitlogin" type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Masuk</button>
                                                            
                                                         </div> 
 
@@ -104,7 +96,64 @@
 
    
 
-    <style>
+
+<script type="text/javascript">
+$(function(){
+     
+  $("#Submitlogin").click( () => {
+          var data = $("#FormLogin").serializeArray();
+          var form = {
+              '_token':data[0].value,
+              'username':data[1].value,
+              'password':data[2].value,
+          };
+
+            
+
+          $.ajax({
+            type:"POST",
+            url: BASE_URL+'/login',
+            data:form,
+            cache: false,
+            dataType: "json",
+            success: (respons) =>{
+
+                 localStorage.setItem('user_sidebar', JSON.stringify(respons.user_sidebar));
+                 localStorage.setItem('apps', JSON.stringify(respons.template));
+                 window.location.href = BASE_URL+ '/dashboard'; 
+                  
+            },
+            error: (respons)=>{
+                
+              var  errors = respons.responseJSON;
+                console.log(errors)
+                if(errors.messages.username)
+                {
+                     $('#username-alert').addClass('has-error');
+                     $('#username-messages').addClass('help-block').html('<strong>'+ errors.messages.username +'</strong>');
+                }else{
+                    $('#username-alert').removeClass('has-error');
+                    $('#username-messages').removeClass('help-block').html('');
+                }
+
+                if(errors.messages.password)
+                {
+                     $('#password-alert').addClass('has-error');
+                     $('#password-messages').addClass('help-block').html('<strong>'+ errors.messages.password +'</strong>');
+                }else{
+                    $('#password-alert').removeClass('has-error');
+                    $('#password-messages').removeClass('help-block').html('');
+                }
+
+                
+            }
+          });
+     });
+
+  });
+
+</script>
+<style>
 .wrapper {
     position: relative;
     top: 0;
@@ -282,67 +331,4 @@
     font-weight: 600;
 }
 </style>
-<script type="text/javascript">
-     $(function(){
-     
-  $("#simpan").click( () => {
-
-           
-
-
-
-          var data = $("#FormSubmit").serializeArray();
-          var form = {
-              'username':data[0].value,
-              'password':data[1].value,
-          };
-
-              var errors = {
-                  messages: {
-                      username:'',
-                      password:'',
-                     
-                        
-                  },
-              };
-
-          $.ajax({
-            type:"POST",
-            url: BASE_URL+'/api/login/auth',
-            data:form,
-            cache: false,
-            dataType: "json",
-            success: (respons) =>{
-                  
-            },
-            error: (respons)=>{
-                errors = respons.responseJSON;
-                
-                if(errors.messages.username)
-                {
-                     $('#username-alert').addClass('has-error');
-                     $('#username-messages').addClass('help-block').html('<strong>'+ errors.messages.username +'</strong>');
-                }else{
-                    $('#username-alert').removeClass('has-error');
-                    $('#username-messages').removeClass('help-block').html('');
-                }
-
-                if(errors.messages.password)
-                {
-                     $('#password-alert').addClass('has-error');
-                     $('#password-messages').addClass('help-block').html('<strong>'+ errors.messages.password +'</strong>');
-                }else{
-                    $('#password-alert').removeClass('has-error');
-                    $('#password-messages').removeClass('help-block').html('');
-                }
-
-                
-            }
-          });
-     });
-
-  });
-
-</script>
-
 @stop

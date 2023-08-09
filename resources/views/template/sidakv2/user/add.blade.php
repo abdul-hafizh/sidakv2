@@ -61,13 +61,7 @@
 
                 <div id="daerah-alert" class="form-group has-feedback">
                     <label>Daerah </label>
-                  <select class="js-example-basic-single form-control" name="daerah_id" >
-                      <option value="">Pilih Daerah</option>
-                      @foreach($daerah as $index => $item)
-                     
-                        <option value="{{ $item->value }}">{{ $item->text }}</option>
-                      @endforeach
-                    </select>
+                  <select id="daerah_id" class="select2 form-control"  name="daerah_id" ></select>
                   <span id="daerah-messages"></span>
                 </div>
 
@@ -103,6 +97,30 @@
 
 <script type="text/javascript">
  $(function(){
+
+    $('.select2').select2({
+        ajax: {
+            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
+            dataType: 'json',
+            delay: 250, // Delay before sending the request (milliseconds)
+            processResults: function(data) {
+                
+                // Transform the data to match Select2's expected format
+                return {
+                    results: data.map(function(item) {
+                        return { id: item.value, text: item.text };
+                    })
+                };
+            },
+            cache: true // Cache the results to improve performance
+        },
+        minimumInputLength: 1 // Minimum number of characters required for a search
+    });
+
+    $('.select2').on('select2:select', function(e) {
+        var selectedOption = e.params.data;
+        $('#daerah_id').val(selectedOption.id);
+    });
      
   $("#simpan").click( () => {
 
@@ -124,6 +142,9 @@
               'password_confirmation':data[9].value,
           };
 
+          console.log(form)
+
+        
               var errors = {
                   messages: {
                       username:'',
@@ -147,14 +168,20 @@
             cache: false,
             dataType: "json",
             success: (respons) =>{
-                   // Swal.fire({
-                   //      title: 'Sukses!',
-                   //      text: 'Berhasil Disimpan',
-                   //      icon: 'success',
-                   //      confirmButtonText: 'OK'
+                   Swal.fire({
+                        title: 'Sukses!',
+                        text: 'Berhasil Disimpan',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
                         
-                   //  });
-                   // window.location.replace(BASE_URL+'/user');
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // User clicked "Yes, proceed!" button
+                            window.location.replace('/user');
+                        }
+                    });
+
+                   //
             },
             error: (respons)=>{
                 errors = respons.responseJSON;
