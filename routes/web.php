@@ -30,7 +30,6 @@ if (Auth::guest()) {
             Route::get('/user',  [UserController::class, 'index']);
             Route::get('/role', [RoleController::class, 'index']);
             Route::get('/apps', [SettingWebController::class, 'index']);
-            Route::get('/pagutarget', [PaguTargetController::class, 'dt_index']);
         });
 
         Route::middleware(['auth', 'pusat'])->group(function () {
@@ -51,10 +50,10 @@ if (Auth::guest()) {
         Route::get('/logout', function () {
 
             if (isset($_COOKIE['access'])) {
-                return redirect('login');
+                Auth::logout();
                 setcookie('token', '', -1, '/');
                 setcookie('access', '', -1, '/');
-                Auth::logout();
+                return redirect('login');
             }
         });
     } else {
@@ -66,8 +65,9 @@ if (Auth::guest()) {
     }
 } else {
     // User is not authenticated
-    return redirect('login');
+    Auth::logout();
+
     setcookie('token', '', -1, '/');
     setcookie('access', '', -1, '/');
-    Auth::logout();
+    return redirect('login');
 }
