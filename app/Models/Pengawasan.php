@@ -5,21 +5,13 @@ namespace App\Models;
 use Eloquent as Model;
 use App\Traits\Uuids;
 
-// use Illuminate\Database\Eloquent\SoftDeletes;
-
 class Pengawasan extends Model
 {
-     // use SoftDeletes;
     use Uuids;
     public $table = 'pengawasan';
-    
-
-   // protected $dates = ['deleted_at'];
-
 
     public $fillable = [
-     
-      
+           
             'daerah_id',
             'periode_id',
            
@@ -33,12 +25,10 @@ class Pengawasan extends Model
             'tgl_izin_lokasi',
             
             'no_izin_amdal',
-           'tgl_izin_amdal',
+            'tgl_izin_amdal',
 
-           
             'no_izin_lingkungan',
             'tgl_izin_lingkungan',
-
 
             'no_imb',
             'tgl_imb',
@@ -75,10 +65,6 @@ class Pengawasan extends Model
             'sub_menu',
             'sub_menu_slug',
             'request_edit',
-       
-    ];
-
-
-    
+        ];
     
 }
