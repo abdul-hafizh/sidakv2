@@ -20,7 +20,7 @@
 			</div> 
 			<div class="pull-left full info">
 				<div class="text-center">
-					<p>Welcome Back</p>
+					<p>Welcome Back {{ Cookie::get('access') }}</p>
 					<p id="username" class="font-bold text-capitalize"></p>
 				</div>
 			</div>

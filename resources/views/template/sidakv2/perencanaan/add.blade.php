@@ -323,25 +323,13 @@
 
 <script type="text/javascript">
  $(document).ready(function() {
-    var list = []; 
     var periode =[];
     var pagu_apbn = 0;
     $('#pagu_apbn').val('Rp '+pagu_apbn+'');
     const user_sidebar  = JSON.parse(localStorage.getItem('user_sidebar'));
     $('#lokasi').val(user_sidebar.daerah_name);
 
-       $.ajax({
-        type: 'GET',
-        url: BASE_URL +'/api/perencanaan/edit/',
-        success: function(response) {
-           list = response;
-          
-        },
-        error: function( error) {
-         
-        }
-      });
-     
+    
       $.ajax({
         type: 'GET',
         url: BASE_URL +'/api/periode/check',

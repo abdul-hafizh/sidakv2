@@ -61,7 +61,7 @@
 
                 <div id="daerah-alert" class="form-group has-feedback">
                     <label>Daerah </label>
-                  <select id="daerah_id" class="select2 form-control"  name="daerah_id" ></select>
+                  <select id="daerah_id" class="select-add form-control"  name="daerah_id" ></select>
                   <span id="daerah-messages"></span>
                 </div>
 
@@ -98,7 +98,7 @@
 <script type="text/javascript">
  $(function(){
 
-    $('.select2').select2({
+    $('.select-add').select2({
         ajax: {
             url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
             dataType: 'json',
@@ -117,16 +117,12 @@
         minimumInputLength: 1 // Minimum number of characters required for a search
     });
 
-    $('.select2').on('select2:select', function(e) {
+    $('.select-add').on('select-add:select', function(e) {
         var selectedOption = e.params.data;
         $('#daerah_id').val(selectedOption.id);
     });
      
   $("#simpan").click( () => {
-
-           
-
-
 
           var data = $("#FormSubmit").serializeArray();
           var form = {
@@ -142,24 +138,6 @@
               'password_confirmation':data[9].value,
           };
 
-          console.log(form)
-
-        
-              var errors = {
-                  messages: {
-                      username:'',
-                      name:'',
-                      email:'',
-                      phone:'',
-                      nip:'',
-                      daerah_id:'',
-                      password:'',
-                      password_confirmation:'', 
-                      leader_name:'',
-                      leader_nip:'', 
-                        
-                  },
-              };
 
           $.ajax({
             type:"POST",

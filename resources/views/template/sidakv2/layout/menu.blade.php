@@ -4,8 +4,23 @@
     <a href="{!! url('dashboard') !!}"><i class="fa fa-home"></i><span>Dashboard</span></a>
 </li>
 
-<li class="">
-    <a href="{!! url('perencanaan') !!}"><i class="fa fa-home"></i><span>Perencanaan</span></a>
+@if($_COOKIE['access'] =='admin' )
+
+<li class="treeview">
+  <a href="#">
+    <i class="fa fa-bar-chart"></i>
+    <span>Report</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+
+ <li class="">
+    <a href="{!! url('perencanaan') !!}"><i class="fa fa-circle-o"></i><span>Perencanaan</span></a>
+ </li>
+
+  </ul>
 </li>
 
 
@@ -23,5 +38,34 @@
 	    <a href="{!! url('user') !!}"><i class="fa fa-circle-o"></i><span>User</span></a>
 	</li>
 
+  <li class="">
+      <a href="{!! url('role') !!}"><i class="fa fa-circle-o"></i><span>Role</span></a>
+  </li>
+
   </ul>
 </li>
+
+@endif
+
+
+@if($_COOKIE['access'] =='daerah' )
+
+<li class="treeview">
+  <a href="#">
+    <i class="fa fa-bars"></i>
+    <span>Master</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+
+ <li class="">
+    <a href="{!! url('perencanaan') !!}"><i class="fa fa-circle-o"></i><span>Perencanaan</span></a>
+ </li>
+
+  </ul>
+</li>
+
+
+@endif
