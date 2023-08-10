@@ -8,6 +8,7 @@ use App\Http\Controllers\SettingWebController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PaguTargetController;
+use App\Http\Controllers\PerencanaanController;
 use Illuminate\Support\Facades\Auth;
 
    
@@ -24,6 +25,7 @@ use Illuminate\Support\Facades\Auth;
             // User is authenticated
             if(!empty($_COOKIE['access']))
             {
+                
 
                 Route::get('/dashboard', [DashboardController::class,'index']);
                 Route::middleware(['auth','admin'])->group(function () {
@@ -43,7 +45,9 @@ use Illuminate\Support\Facades\Auth;
                 });
 
                 Route::middleware(['auth','daerah'])->group(function () {
-                           
+                    Route::get('/perencanaan', [PerencanaanController::class,'index']);
+                    Route::get('/perencanaan/add', [PerencanaanController::class,'add']);
+                    Route::get('/perencanaan/edit/{id}', [PerencanaanController::class,'edit']);       
                 });
 
                 if(Request::segment(1) =='login')
