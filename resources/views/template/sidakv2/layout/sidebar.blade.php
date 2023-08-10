@@ -20,14 +20,14 @@
 			</div> 
 			<div class="pull-left full info">
 				<div class="text-center">
-					<p>Welcome Back {{ Cookie::get('access') }}</p>
+					<p>Selamat Datang {{ Cookie::get('access') }}</p>
 					<p id="username" class="font-bold text-capitalize"></p>
 				</div>
 			</div>
 		</div> 
 		<div class="menus">
 			<div data-widget="tree" class="sidebar-menu tree">
-				<li class="header main-nav">MAIN NAVIGATION</li>
+				<li class="header main-nav text-center">MENU</li>
 				 @include('template/sidakv2/layout.menu')
 				
 			</div>
