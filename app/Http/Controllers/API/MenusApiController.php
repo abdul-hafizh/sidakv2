@@ -12,7 +12,7 @@ use App\Models\RoleMenu;
 use App\Models\User;
 use App\Models\Roles;
 use App\Models\MenuPosition;
-
+use DB;
 
 class MenusApiController extends Controller
 {
@@ -69,7 +69,12 @@ class MenusApiController extends Controller
     
 
     
-
+    public function table(Request $request)
+    {
+      $table = $request->table;   
+      $data =  DB::table($table)->get();
+      return response()->json($data); 
+    }
 
 
     public function edit($id){
