@@ -14,35 +14,58 @@ use App\Http\Request\RequestSettingApps;
 class RequestPerencanaan 
 {
 
-  public static function GetDataAll($data,$perPage,$request)
+   public static function GetDataAll($data,$perPage,$request)
    {
-        $temp = array();
+      $temp = array();
          
         $getRequest = $request->all();
         $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
         $numberNext = (($page*$perPage) - ($perPage-1));
-        $template = RequestSettingApps::AppsTemplate();
-   	    foreach ($data as $key => $val)
-        {         
+        
+        foreach ($data as $key => $val)
+        {
+           
+            $periode = RequestPerencanaan::GetPeriodeYear($val->periode_id);
+            if($periode !="")
+            {   
 
-            if($val->status =="13") { $status = 'Terkirim'; } else { $status = 'Draft';  } 
+                if($val->status =="13"){ $status = 'Draft';}else{ $status = 'Terkirim';  } 
+                $temp[$key]['number'] = $numberNext++;
+                $temp[$key]['id'] = $val->id;
+                $temp[$key]['periode'] =  $periode;
+                $temp[$key]['status'] = $status;
+                $temp[$key]['created_at'] = GeneralHelpers::dates($val->created_at);
+            }
+            
+        }   
+         
 
-            $temp[$key]['id'] = $val->id;
-            $temp[$key]['lokasi'] = $val->lokasi;
-            $temp[$key]['nama_pejabat'] = $val->nama_pejabat;
-            $temp[$key]['number'] = $numberNext++;
-            $temp[$key]['periode_id'] = Periode::where('slug', $val->periode_id)->first()->year;
-            $temp[$key]['daerah_id'] = RequestPerencanaan::GetDaerahID($val->daerah_id);
-            $temp[$key]['status'] = $status;
-            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
-        }
-
-        return json_decode(json_encode($temp),FALSE);
+            
        
+         $result['data'] = $temp;
+         $result['current_page'] = $data->currentPage();
+         $result['last_page'] = $data->lastPage(); 
+        return $result;
 
    }
 
-   public function GetDaerahID($daerah_id)
+
+   public static function GetPeriodeYear($periode_id){
+
+    $periode = Periode::where('slug',$periode_id)->first();
+    if($periode)
+    {
+        $result = $periode->year;
+    }else{
+        $result = '';
+    }    
+
+      return $result;
+   }
+
+   
+
+   public static function GetDaerahID($daerah_id)
     {
        
         $province = DB::table('provinces')->select('id as value','name as text');
@@ -65,12 +88,43 @@ class RequestPerencanaan
 
    public static function fieldsData($request)
    {
+       if($request->type =="draft")
+       {
+        $status = 13;
+       }else{
+        $status = 14;
+       } 
     
         $fields = [  
-                // 'lokasi'  =>  $request->lokasi,
-                // 'nama_pejabat'  =>  $request->nama_pejabat,
                 'pengawas_analisa_target'  =>  $request->pengawas_analisa_target,
+                'pengawas_analisa_pagu'    =>  $request->pengawas_analisa_pagu,
+                'pengawas_inspeksi_target'  =>  $request->pengawas_inspeksi_target,
+                'pengawas_inspeksi_pagu'  =>  $request->pengawas_inspeksi_pagu,
+                'pengawas_evaluasi_target'  =>  $request->pengawas_evaluasi_target,
+                'pengawas_evaluasi_pagu'  =>  $request->pengawas_evaluasi_pagu,
+
+                'bimtek_perizinan_target'  =>  $request->bimtek_perizinan_target,
+                'bimtek_perizinan_pagu'    =>  $request->bimtek_perizinan_pagu,
+                'bimtek_pengawasan_target'  =>  $request->bimtek_pengawasan_target,
+                'bimtek_pengawasan_pagu'  =>  $request->bimtek_pengawasan_pagu,
+
+
+                'penyelesaian_identifikasi_target'  =>  $request->penyelesaian_identifikasi_target,
+                'penyelesaian_identifikasi_pagu'    =>  $request->penyelesaian_identifikasi_pagu,
+                'penyelesaian_realisasi_target'  =>  $request->penyelesaian_realisasi_target,
+                'penyelesaian_realisasi_pagu'  =>  $request->penyelesaian_realisasi_pagu,
+                'penyelesaian_evaluasi_target'  =>  $request->penyelesaian_evaluasi_target,
+                'penyelesaian_evaluasi_pagu'  =>  $request->penyelesaian_evaluasi_pagu,
+                'periode_id'  =>  $request->periode_id,
+                'nama_pejabat'  =>  $request->nama_pejabat,
+                'nip_pejabat'  =>  $request->nip_pejabat,
+                'tgl_tandatangan'  =>  $request->tgl_tandatangan,
+                'lokasi'  =>  $request->lokasi,
+                'request_edit' =>'false',
+                'status' => $status,
+                'periode_id' => $request->periode_id,
                 'created_by' => Auth::User()->username,
+                'daerah_id' => Auth::User()->daerah_id,
                 'created_at' => date('Y-m-d H:i:s'),
         ];
   

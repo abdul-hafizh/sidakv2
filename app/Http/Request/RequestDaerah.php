@@ -18,7 +18,20 @@ class RequestDaerah
         return $regency;
     }
 
+     public function GetDaerahWhereName($id)
+    {
+       
+        $province = Provinces::select('name');
+        $regency = Regencies::select('name')->where('id',$id)->union($province)->first();
+        if($id !=0)
+        {
+           $result = $regency->name;
+        }else{
+           $result =  '';   
+        }    
 
+        return $result;
+    }
 
    
 

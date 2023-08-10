@@ -162,8 +162,10 @@
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
 
+
+
      // "Select All" checkbox
-    $('.select-all').on('change', function() {
+    $('#select-all').on('change', function() {
         $('.item-checkbox').prop('checked', $(this).is(':checked'));
     });
 
@@ -203,10 +205,7 @@
     }
 
 
-
-
-
-
+   
 
 
 
@@ -222,7 +221,7 @@
 	            method: 'POST',
 	            success: function(response) {
 	                // Update content area with fetched data
-	                updateContent(response.data);
+	                updateContent(response.data,response.daerah);
 
 	                // Update pagination controls
 	                updatePagination(response.current_page, response.last_page);
@@ -241,7 +240,7 @@
             method: 'GET',
             success: function(response) {
                 // Update content area with fetched data
-                updateContent(response.data);
+                updateContent(response.data,response.daerah);
 
                 // Update pagination controls
                 updatePagination(response.current_page, response.last_page);
@@ -253,7 +252,7 @@
     }
 
     // Function to update the content area with data
-    function updateContent(data) {
+    function updateContent(data,daerah) {
         const content = $('#content');
 
         // Clear previous data
@@ -276,10 +275,10 @@
                 row +=`<button id="Edit" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=``+ GetFormEdit(item) +``;
+                row +=``+ GetFormEdit(item,daerah) +``;
                 row +=`</div>`;
 
-
+       
 
                 row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
@@ -288,38 +287,204 @@
               row +=`</tr>`; 
 
             content.append(row);
+
+
+
+
         });
+
+        $( ".modal-content" ).on( "click", "#update", (e) => {
+		          let id = e.currentTarget.dataset.param_id;
+	              var data = $("#FormSubmit-"+ id).serializeArray();
+	             
+		          var form = {
+		              
+		              'name':data[0].value,
+		              'email':data[1].value,
+		              'phone':data[2].value,
+		              'nip':data[3].value,
+		              'leader_name':data[4].value,
+		              'leader_nip':data[5].value,
+		              'daerah_id':data[6].value,
+		            
+		          };
+
+
+
+					$.ajax({
+			            type:"PUT",
+			            url: BASE_URL+'/api/user/'+ id,
+			            data:form,
+			            cache: false,
+			            dataType: "json",
+			            success: (respons) =>{
+			                   Swal.fire({
+			                        title: 'Sukses!',
+			                        text: 'Berhasil Diupdate',
+			                        icon: 'success',
+			                        confirmButtonText: 'OK'
+			                        
+			                    }).then((result) => {
+			                        if (result.isConfirmed) {
+			                            // User clicked "Yes, proceed!" button
+			                            window.location.replace('/user');
+			                        }
+			                    });
+
+			                   //
+			            },
+			            error: (respons)=>{
+			                errors = respons.responseJSON;
+			                
+			               
+
+			                if(errors.messages.name)
+			                {
+			                     $('#name-alert').addClass('has-error');
+			                     $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
+			                }else{
+			                    $('#name-alert').removeClass('has-error');
+			                    $('#name-messages').removeClass('help-block').html('');
+			                }
+
+			                 if(errors.messages.email)
+			                {
+			                     $('#email-alert').addClass('has-error');
+			                     $('#email-messages').addClass('help-block').html('<strong>'+ errors.messages.email +'</strong>');
+			                }else{
+			                    $('#email-alert').removeClass('has-error');
+			                    $('#email-messages').removeClass('help-block').html('');
+			                }  
+
+			                if(errors.messages.phone)
+			                {
+			                     $('#phone-alert').addClass('has-error');
+			                     $('#phone-messages').addClass('help-block').html('<strong>'+ errors.messages.phone +'</strong>');
+			                }else{
+			                    $('#phone-alert').removeClass('has-error');
+			                    $('#phone-messages').removeClass('help-block').html('');
+			                }
+
+			                if(errors.messages.nip)
+			                {
+			                     $('#nip-alert').addClass('has-error');
+			                     $('#nip-messages').addClass('help-block').html('<strong>'+ errors.messages.nip +'</strong>');
+			                }else{
+			                    $('#nip-alert').removeClass('has-error');
+			                    $('#nip-messages').removeClass('help-block').html('');
+			                }  
+
+			                if(errors.messages.daerah_id)
+			                {
+			                     $('#daerah-alert').addClass('has-error');
+			                     $('#daerah-messages').addClass('help-block').html('<strong>'+ errors.messages.daerah_id +'</strong>');
+			                }else{
+			                    $('#daerah-alert').removeClass('has-error');
+			                    $('#daerah-messages').removeClass('help-block').html('');
+			                }  
+
+			                if(errors.messages.leader_name)
+			                {
+			                     $('#leader-name-alert').addClass('has-error');
+			                     $('#leader-name-messages').addClass('help-block').html('<strong>'+ errors.messages.leader_name +'</strong>');
+			                }else{
+			                    $('#leader-name-alert').removeClass('has-error');
+			                    $('#leader-name-messages').removeClass('help-block').html('');
+			                } 
+
+			                 if(errors.messages.leader_nip)
+			                {
+			                     $('#leader-nip-alert').addClass('has-error');
+			                     $('#leader-nip-messages').addClass('help-block').html('<strong>'+ errors.messages.leader_nip +'</strong>');
+			                }else{
+			                    $('#leader-nip-alert').removeClass('has-error');
+			                    $('#leader-nip-messages').removeClass('help-block').html('');
+			                }  
+
+			                
+			            }
+			          });
+ 
+		        
+	    }); 
+
 
         $( "#content" ).on( "click", "#Destroy", (e) => {
 	        let id = e.currentTarget.dataset.param_id;
 
-	         $.ajax({
-	            url:  BASE_URL +`/api/user/`+ id,
-	            method: 'DELETE',
-	            success: function(response) {
-	                // Handle success (e.g., remove deleted items from the list)
-	                fetchData(page);
-	            },
-	            error: function(error) {
-	                console.error('Error deleting items:', error);
-	            }
-	        });
+
+	        Swal.fire({
+			      title: 'Apakah anda yakin hapus?',
+			    
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#d33',
+			      cancelButtonColor: '#3085d6',
+			      confirmButtonText: 'Ya'
+			    }).then((result) => {
+			      if (result.isConfirmed) {
+			        // Perform the delete action here, e.g., using an AJAX request
+			        // You can use the itemId to identify the item to be deleted
+			        deleteItem(id);
+			        
+			        Swal.fire(
+			          'Deleted!',
+			          'Data berhasil dihapus.',
+			          'success'
+			        );
+			      }
+			    });
+
 	        
         }); 
 
-        $( "#content" ).on( "click", "#Edit", (e) => {
-	        let id = e.currentTarget.dataset.param_id;
 
-	         
-	        
-        }); 
 
+       
         
     }
 
+    function deleteItem(id){
 
-    function GetFormEdit(item)
+		$.ajax({
+		    url:  BASE_URL +`/api/user/`+ id,
+		    method: 'DELETE',
+		    success: function(response) {
+		        // Handle success (e.g., remove deleted items from the list)
+		        fetchData(page);
+		    },
+		    error: function(error) {
+		        console.error('Error deleting items:', error);
+		    }
+		});
+
+    }
+
+
+    function GetFormEdit(item,daerah)
     {
+	    	$('.select-edit').select2();
+		    populateSelect2(daerah);
+		    
+
+	    	// Simulate editing with pre-selected item
+		    const selectedItemValue = item.daerah_id; // The value of the selected item you want to edit
+
+		    // Set the selected item in the Select2 input
+		    $('#select-edit').val(selectedItemValue).trigger('change');
+
+		    // Event handler when an item is selected
+		     $('.select-edit').on('select-edit:select', function(e) {
+		        var selectedOption = e.params.data;
+		        $('#daerah_id').val(selectedOption.id);
+		    });
+
+
+
+
+		   
+
+
         	let row = ``;
             row +=`<div class="modal-dialog">`;
                 row +=`<div class="modal-content">`;
@@ -329,12 +494,12 @@
 				         row +=`<h4 class="modal-title">Edit User</h4>`;
 				       row +=`</div>`;
 
-				       row +=`<form  method="post">`;
+				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
 					        row +=`<div class="modal-body">`;
                                
                                 row +=`<div class="form-group has-feedback" >`;
 				                  row +=`<label>Username</label>`;
-				                  row +=`<input type="text" class="form-control" name="username" placeholder="Username" value="`+ item.username +`">`;
+				                  row +=`<input type="text" class="form-control" name="username" placeholder="Username" value="`+ item.username +`" disabled>`;
 				                row +=`</div>`;
 
 				                 row +=`<div id="name-alert" class="form-group has-feedback" >`;
@@ -407,30 +572,21 @@
 
 				                     row +=`<label>Daerah </label>`;
 
-				                   row +=`<select id="daerah_id" class="select2 form-control"  name="daerah_id" ></select>`;
+				                   row +=`<select id="daerah_id" class="select-edit form-control"  name="daerah_id" ></select>`;
 
 				                   row +=`<span id="daerah-messages"></span>`;
 				                 row +=`</div>`;
 
-				                 row +=`<div id="password-alert" class="form-group has-feedback" >`;
-				                    row +=`<label>Password </label>`;
-				                     row +=`<input type="password" class="form-control" name="password" placeholder="Password" value="`+ item.password +`" >`;
-				                     row +=`<span id="password-messages"></span>`;
+				                
 
-				                   
-				                 row +=`</div>`;
-
-				                 row +=`<div id="password-confirmation-alert" class="form-group has-feedback">`;
-				                   row +=`<label>Konfirmasi Password </label>`;
-				                 row +=`<input type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password" value="`+ item.password_confirmation +`">`;
-				                 row +=`<span id="password-confirmation-messages"></span>`;
-				                 row +=`</div>`;
-
+				                
 
 					        row +=`</div>`;
 
                             row +=`<div class="modal-footer">`;
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>`;
+
+						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
 						    row +=`</div>`;
 
 
@@ -438,9 +594,17 @@
                 row +=`</div>`;
             row +=`</div>`;
 
-            return row;
+        return row;
 
+       
+    }
 
+    // Function to populate Select2 with data
+    function populateSelect2(data) {
+        const select = $('.select-edit');
+        data.forEach(item => {
+            select.append(new Option(item.text, item.value));
+        });
     }
 
     // Function to update pagination controls
