@@ -38,13 +38,15 @@ use App\Http\Controllers\API\DaerahApiController;
 
 
 
-Route::middleware(['jwt.auth'])->group(function () {
+ Route::middleware(['jwt.auth','admin'])->group(function () {
+
 
     Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
 
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
 
+<<<<<<< HEAD
 <<<<<<< HEAD
      Route::get('halo', [MobilApiController::class, 'index']);
      Route::post('halo', [MobilApiController::class, 'store']); 
@@ -68,6 +70,14 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('user/search', [UserApiController::class, 'search']);
     Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
     Route::delete('user/{id}', [UserApiController::class, 'delete']);
+=======
+     Route::get('user', [UserApiController::class, 'index']);
+     Route::post('user', [UserApiController::class, 'store']);
+     Route::put('user/{id}', [UserApiController::class, 'update']);
+     Route::post('user/search', [UserApiController::class, 'search']);
+     Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
+     Route::delete('user/{id}', [UserApiController::class, 'delete']);
+>>>>>>> a7d0939987f9d143f4498e99535bed8bd6124d64
 
 
 
@@ -120,21 +130,24 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);
 });
 
-// Route::group(['middleware' => 'jwt.auth','daerah','provinsi'], function () {
+Route::group(['middleware' => 'jwt.auth','daerah','provinsi'], function () {
 
       
-//      Route::get('profile', [AuthApiController::class, 'getAuthUser']);
-//      Route::get('user/menu', [AuthApiController::class, 'sidebar']);
+     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
+     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
  
     
-//      Route::get('daerah', [AuthApiController::class, 'GetDaerahID']);
-//      Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
+     Route::get('daerah', [AuthApiController::class, 'GetDaerahID']);
+     Route::get('periode/check', [PeriodeApiController::class, 'check']);
+     Route::get('perencanaan/periode', [PeriodeApiController::class, 'periode']);
+     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
+     Route::post('perencanaan', [PerencanaanApiController::class, 'store']);
+     Route::get('perencanaan/edit/{id}', [PerencanaanApiController::class, 'edit']);
+     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']); 
+     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
+     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
+     Route::post('pagu/check', [PaguTargetApiController::class, 'check']); 
 
-//      Route::get('perencanaan/create', [PerencanaanApiController::class, 'create']);
-//      Route::get('periode/edit/{id}', [PerencanaanApiController::class, 'edit']);
-//      Route::post('periode/check', [PeriodeApiController::class, 'check']);
-//      Route::post('pagu/check', [PaguTargetApiController::class, 'check']); 
 
 
-
-// });
+});

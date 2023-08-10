@@ -43,7 +43,7 @@ class RolesApiController extends Controller
     public function search(Request $request){
         $search = $request->search;
         $_res = array();
-        $column_search  = array('name', 'created_by');
+        $column_search  = array('name', 'slug');
 
         $i = 0;
         $query  = Roles::orderBy('id','DESC');

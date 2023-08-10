@@ -39,6 +39,7 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+            'timeout' => 10800, // 1 day in minutes
         ],
 
         'api' => [
