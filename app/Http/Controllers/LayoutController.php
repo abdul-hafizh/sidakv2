@@ -20,16 +20,5 @@ class LayoutController extends Controller
         return view('template/' . $this->template . '.index')->with(['title' => $this->title]);
     }
 
-    public function test(Request $request)
-    {
-        return view('template/' . $this->template . '.index')->with(['title' => $this->title]);
-    }
-
-
-
-    public function show(Request $request)
-    {
-
-        return view('template/' . $this->template . '.index')->with(['title' => $this->title]);
-    }
+    
 }

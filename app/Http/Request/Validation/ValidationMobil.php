@@ -1,40 +1,44 @@
 <?php
 
 namespace App\Http\Request\Validation;
+
 use Illuminate\Support\Facades\Validator;
 
 class ValidationMobil
 {
-    public static function validation($request){
-        $err = array(); 
-        
+    public static function validation($request)
+    {
+        $err = array();
+
         $fields = [
-            'name'  => 'Name',
-            
+            'merk'  => 'Merk',
+            'type' => 'Type',
         ];
 
-        $validator =  Validator::make($request->all(), 
-        [
-            'name'  => 'required|max:255',
-            
-        ]);
+        $validator =  Validator::make(
+            $request->all(),
+            [
+                'merk'  => 'required|max:255',
+                'type'  => 'required',
+            ]
+        );
 
-        $validator->setAttributeNames($fields); 
+        $validator->setAttributeNames($fields);
         if ($validator->fails()) {
-         
+
             $errors = $validator->errors();
-            
-            if($errors->has('name')){
-                $err['messages']['name'] = $errors->first('name');
+
+            if ($errors->has('merk')) {
+                $err['messages']['merk'] = $errors->first('merk');
             }
 
-           
-            
+            if ($errors->has('type')) {
+                $err['messages']['type'] = $errors->first('type');
+            }
+
+
 
             return $err;
-       }
+        }
     }
-
-
-   
 }
