@@ -15,7 +15,9 @@ class PaguTargetApiController extends Controller
 
 
     public function __construct()
+    {
     }
+
 
     public function check(Request $request)
     {
@@ -39,3 +41,4 @@ class PaguTargetApiController extends Controller
         );
         return response()->json($output);
     }
+}

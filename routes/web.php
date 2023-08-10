@@ -10,7 +10,6 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PaguTargetController;
 use App\Http\Controllers\PerencanaanController;
 use Illuminate\Support\Facades\Auth;
-
    
     Route::get('/', function () {
         return redirect('login');
@@ -73,21 +72,22 @@ use Illuminate\Support\Facades\Auth;
                 // User is not authenticated
                 Auth::logout();
                 setcookie('token', '', -1, '/');
-                setcookie('access', '', -1, '/'); 
-                return redirect('login'); 
+                setcookie('access', '', -1, '/');
+                return redirect('login');
+            }
+        });
+    } else {
+        // User is not authenticated
+        Auth::logout();
+        setcookie('token', '', -1, '/');
+        setcookie('access', '', -1, '/');
+        return redirect('login');
+    }
+} else {
+    // User is not authenticated
+    Auth::logout();
 
-            } 
-        } else {
-           // User is not authenticated
-             Auth::logout();
-          
-            setcookie('token', '', -1, '/');
-            setcookie('access', '', -1, '/'); 
-              return redirect('login'); 
-           
-            
-        }
-           
-             
-
-    
+    setcookie('token', '', -1, '/');
+    setcookie('access', '', -1, '/');
+    return redirect('login');
+}
