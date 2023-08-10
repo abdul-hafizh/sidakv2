@@ -22,7 +22,7 @@
         <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Kabupaten</span></a>
     </li>
     <li class="">
-        <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Kendala</span></a>
+        <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Kriteria Kendala</span></a>
     </li>
     <li class="">
         <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Grup Forum</span></a>
@@ -353,7 +353,7 @@
           <a href="{!! url('perencanaan') !!}"><i class="fa fa-circle-o"></i><span>Perencanaan</span></a>
       </li>
       <li class="">
-          <a href="{!! url('role') !!}"><i class="fa fa-circle-o"></i><span>Pengawasan</span></a>
+          <a href="{!! url('pengawasan') !!}"><i class="fa fa-circle-o"></i><span>Pengawasan</span></a>
       </li>
       <li class="">
           <a href="{!! url('role') !!}"><i class="fa fa-circle-o"></i><span>Bimbingan/Sosialisasi</span></a>
