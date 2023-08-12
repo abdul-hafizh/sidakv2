@@ -34,7 +34,7 @@ class RequestPerencanaan
                 $temp[$key]['id'] = $val->id;
                 $temp[$key]['periode'] =  $periode;
                 $temp[$key]['status'] = $status;
-                $temp[$key]['created_at'] = GeneralHelpers::dates($val->created_at);
+                $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
             }
             
         }   

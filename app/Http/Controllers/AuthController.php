@@ -30,6 +30,10 @@ class AuthController extends Controller
   public function index(Request $request)
   {
 
+    // Auth::logout();
+    // setcookie('token', '', -1, '/');
+    // setcookie('access', '', -1, '/');
+
     return view('template/' . $this->template . '.auth.login')
       ->with(
         [

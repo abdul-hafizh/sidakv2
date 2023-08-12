@@ -21,9 +21,16 @@ class Regencies extends Model
      
         'name',
         'province_id',
+        'created_by',
        
        
     ];
+
+    public function province()
+    {
+        return $this->belongsTo('App\Models\Provinces','province_id');
+    }
+
 
 
     

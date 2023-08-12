@@ -61,7 +61,8 @@
 
                 <div id="daerah-alert" class="form-group has-feedback">
                     <label>Daerah </label>
-                  <select id="daerah_id" class="select-add form-control"  name="daerah_id" ></select>
+                  <select id="daerah_id" class="select form-control"  name="daerah_id" >
+                  </select>
                   <span id="daerah-messages"></span>
                 </div>
 
@@ -84,7 +85,9 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
+        <button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
       </div>
     </form>
     </div>
@@ -98,11 +101,15 @@
 <script type="text/javascript">
  $(function(){
 
-    $('.select-add').select2({
+  
+    
+    $('.select').select2({
+        data: [{ id: '', text: '' }],
+        placeholder: 'Pilih Daerah',
         ajax: {
             url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
             dataType: 'json',
-            delay: 250, // Delay before sending the request (milliseconds)
+            //delay: 250, // Delay before sending the request (milliseconds)
             processResults: function(data) {
                 
                 // Transform the data to match Select2's expected format
@@ -117,15 +124,17 @@
         minimumInputLength: 1 // Minimum number of characters required for a search
     });
 
-    $('.select-add').on('select-add:select', function(e) {
+    $('.select').on('select:select', function(e) {
         var selectedOption = e.params.data;
         $('#daerah_id').val(selectedOption.id);
     });
      
   $("#simpan").click( () => {
-
-          var data = $("#FormSubmit").serializeArray();
-          var form = {
+         $("#simpan").hide();
+         $("#load-simpan").show();
+        
+         var data = $("#FormSubmit").serializeArray();
+         var  form = {
               'username':data[0].value,
               'name':data[1].value,
               'email':data[2].value,
@@ -137,7 +146,6 @@
               'password':data[8].value,
               'password_confirmation':data[9].value,
           };
-
 
           $.ajax({
             type:"POST",
@@ -162,8 +170,9 @@
                    //
             },
             error: (respons)=>{
-                errors = respons.responseJSON;
-                
+               var errors = respons.responseJSON;
+                $("#simpan").show();
+                $("#load-simpan").hide();
                 if(errors.messages.username)
                 {
                      $('#username-alert').addClass('has-error');
@@ -211,6 +220,7 @@
 
                 if(errors.messages.daerah_id)
                 {
+                     $('.select2-selection').addClass('form-control');
                      $('#daerah-alert').addClass('has-error');
                      $('#daerah-messages').addClass('help-block').html('<strong>'+ errors.messages.daerah_id +'</strong>');
                 }else{

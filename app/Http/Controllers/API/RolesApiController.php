@@ -70,12 +70,6 @@ class RolesApiController extends Controller
     }
 
 
-    public function edit($id){
-        $Data = Roles::find($id);
-        $_res = RequestRoles::GetDataID($Data);
-        return response()->json($_res);  
-
-    }
 
        
     public function store(Request $request){

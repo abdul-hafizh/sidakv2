@@ -21,19 +21,10 @@ class DaerahMiddleware
         
       if(isset($_COOKIE['access']))
         {
-           
-            if (Auth::check())
+            if($_COOKIE['access'] != 'daerah')
             {
-               
-                if($_COOKIE['access'] != 'daerah')
-                {
-                   abort(404); 
-                }
-
-              
-
+               abort(404); 
             }
-            
         }else{
 
             Auth::logout();

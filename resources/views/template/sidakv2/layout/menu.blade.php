@@ -8,7 +8,7 @@
 
 <li class="treeview">
   <a href="#">
-    <i class="fa fa-bar-chart"></i>
+    <i class="fa fa-bars"></i>
     <span>Manajemen Data</span>
     <span class="pull-right-container">
       <i class="fa fa-angle-left pull-right"></i>
@@ -16,10 +16,10 @@
   </a>
   <ul class="treeview-menu">
     <li class="">
-        <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Provinsi</span></a>
+        <a href="{!! url('province') !!}"><i class="fa fa-circle-o"></i><span>Provinsi</span></a>
     </li>
     <li class="">
-        <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Kabupaten</span></a>
+        <a href="{!! url('regency') !!}"><i class="fa fa-circle-o"></i><span>Kabupaten</span></a>
     </li>
     <li class="">
         <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Kriteria Kendala</span></a>
@@ -31,10 +31,14 @@
         <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Status</span></a>
     </li>
     <li class="">
-        <a href="{!! url('dashboard') !!}"><i class="fa fa-circle-o"></i><span>Batas Periode</span></a>
+        <a href="{!! url('periode') !!}"><i class="fa fa-circle-o"></i><span>Batas Periode</span></a>
     </li>
   </ul>
 </li>
+
+
+
+
 
 <li class="treeview">
   <a href="#">

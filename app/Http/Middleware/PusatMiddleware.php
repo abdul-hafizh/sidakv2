@@ -21,16 +21,11 @@ class PusatMiddleware
         
         if(isset($_COOKIE['access']))
         {
-           
-            if (Auth::check())
+            if($_COOKIE['access'] != 'pusat')
             {
-               
-                if($_COOKIE['access'] != 'pusat')
-                {
-                   abort(404); 
-                }
+               abort(404); 
             }
-            
+
         }else{
 
             Auth::logout();

@@ -63,8 +63,10 @@
                                                             <a href="#" class="pull-right font-10-link">Lupa Kata Sandi?</a>
                                                         </div> 
 
-                                                        <div class="pull-left full form-group mgn-top-bottom-10">
+                                                        <div id="loginLoad" class="pull-left full form-group mgn-top-bottom-10">
                                                             <button id="Submitlogin" type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Masuk</button>
+
+                                                            <button style="display:none;" id="btnloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
                                                            
                                                         </div> 
 
@@ -101,13 +103,15 @@
 $(function(){
      
   $("#Submitlogin").click( () => {
+
           var data = $("#FormLogin").serializeArray();
           var form = {
               '_token':data[0].value,
               'username':data[1].value,
               'password':data[2].value,
           };
-
+          $("#Submitlogin").hide(); 
+          $("#btnloading").show();  
             
 
           $.ajax({
@@ -124,9 +128,10 @@ $(function(){
                   
             },
             error: (respons)=>{
-                
+               $("#Submitlogin").show(); 
+               $("#btnloading").hide();   
               var  errors = respons.responseJSON;
-                console.log(errors)
+              
                 if(errors.messages.username)
                 {
                      $('#username-alert').addClass('has-error');
