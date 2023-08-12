@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
-
 use App\Http\Controllers\API\AuthApiController;
 use App\Http\Controllers\API\PeriodeApiController;
 use App\Http\Controllers\API\MenusApiController;
@@ -24,13 +22,16 @@ use App\Http\Controllers\API\RolesApiController;
 use App\Http\Controllers\API\PaguTargetApiController;
 use App\Http\Controllers\API\SettingWebApiController;
 use App\Http\Controllers\API\PerencanaanApiController;
+use App\Http\Controllers\API\PengawasanApiController;
 use App\Http\Controllers\API\UserApiController;
 
 use App\Http\Controllers\API\ProvinceApiController;
 use App\Http\Controllers\API\RegencyApiController;
 use App\Http\Controllers\API\DaerahApiController;
 
+Route::middleware(['jwt.auth','admin'])->group(function () {
 
+     Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
 
 
 
@@ -67,6 +68,8 @@ use App\Http\Controllers\API\DaerahApiController;
      Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
      Route::delete('user/{id}', [UserApiController::class, 'delete']);
 
+     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
+     Route::get('pengawasan/datalist', [PengawasanApiController::class, 'jsonData']);
 
      Route::get('province', [ProvinceApiController::class, 'index']);
      Route::post('province', [ProvinceApiController::class, 'store']);
@@ -110,8 +113,8 @@ use App\Http\Controllers\API\DaerahApiController;
     
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
 
-    Route::get('setting-apps', [SettingWebApiController::class, 'index']);
-    Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);
+     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
+     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);
 });
 
   
