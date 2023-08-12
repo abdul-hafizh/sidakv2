@@ -65,6 +65,8 @@
 
                                                         <div id="loginLoad" class="pull-left full form-group mgn-top-bottom-10">
                                                             <button id="Submitlogin" type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Masuk</button>
+
+                                                            <button style="display:none;" id="btnloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
                                                            
                                                         </div> 
 
@@ -108,8 +110,8 @@ $(function(){
               'username':data[1].value,
               'password':data[2].value,
           };
-          $("#Submitlogin").remove(); 
-          $("#loginLoad").append('<button disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>'); 
+          $("#Submitlogin").hide(); 
+          $("#btnloading").show();  
             
 
           $.ajax({
@@ -126,7 +128,8 @@ $(function(){
                   
             },
             error: (respons)=>{
-                
+               $("#Submitlogin").show(); 
+               $("#btnloading").hide();   
               var  errors = respons.responseJSON;
               
                 if(errors.messages.username)

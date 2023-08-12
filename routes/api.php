@@ -29,9 +29,6 @@ use App\Http\Controllers\API\ProvinceApiController;
 use App\Http\Controllers\API\RegencyApiController;
 use App\Http\Controllers\API\DaerahApiController;
 
-Route::middleware(['jwt.auth','admin'])->group(function () {
-
-     Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
 
 
 

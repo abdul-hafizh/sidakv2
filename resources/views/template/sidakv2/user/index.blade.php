@@ -128,24 +128,7 @@
         $('.select-all').prop('checked', allChecked);
     });
 
-    // Function to delete items
-    function deleteItems(ids) {
-        // Send the selected IDs for deletion using AJAX
-        
-        $.ajax({
-            url:  BASE_URL +`/api/user/selected`,
-            method: 'POST',
-            data: { data: ids },
-            success: function(response) {
-
-                // Handle success (e.g., remove deleted items from the list)
-                fetchData(page);
-            },
-            error: function(error) {
-                console.error('Error deleting items:', error);
-            }
-        });
-    }
+   
 
 
    
@@ -179,6 +162,25 @@
 	        });
 	     }    
     });
+
+     // Function to delete items
+    function deleteItems(ids) {
+        // Send the selected IDs for deletion using AJAX
+        
+        $.ajax({
+            url:  BASE_URL +`/api/user/selected`,
+            method: 'POST',
+            data: { data: ids },
+            success: function(response) {
+
+                // Handle success (e.g., remove deleted items from the list)
+                fetchData(page);
+            },
+            error: function(error) {
+                console.error('Error deleting items:', error);
+            }
+        });
+    }
 
     // Function to fetch data from the API
     function fetchData(page) {
@@ -261,7 +263,156 @@
    		});
 
 
-        $( ".modal-content" ).on( "click", "#update", (e) => {
+        
+
+ 		$( "#content" ).on( "click", "#Edit", (e) => {
+             
+            let index = e.currentTarget.dataset.param_id;
+            const item = list[index];
+
+		    // Event handler when an item is selected
+		    $('.select-edit').on('select-edit:select', function(e) {
+		        var selectedOption = e.params.data;
+		        $('#daerah_id').val(selectedOption.id);
+		    });
+            
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+				       row +=`<div class="modal-header">`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Edit User</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body">`;
+                               
+                                row +=`<div class="form-group has-feedback" >`;
+				                  row +=`<label>Username</label>`;
+				                  row +=`<input type="text" class="form-control" name="username" placeholder="Username" value="`+ item.username +`" disabled>`;
+				                row +=`</div>`;
+
+				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Name</label>`;
+
+				                  row +=`<input type="text" class="form-control" name="name" placeholder="Name" value="`+ item.name +`">
+				                  <span id="name-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+
+
+				                 row +=`<div id="email-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                   row +=`<label>Email</label>`;
+
+				                   row +=`<input type="email" class="form-control" name="email" placeholder="email" value="`+ item.email +`">`;
+
+				                   row +=`<span id="email-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="phone-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                   row +=`<label>Phone</label>`;
+
+				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone" value="`+ item.phone +`">`;
+
+				                   row +=`<span id="phone-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+
+
+				                 row +=`<div id="nip-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                   row +=`<label>NIP</label>`;
+
+				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP" value="`+ item.nip +`">`;
+
+				                   row +=`<span id="nip-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="leader-name-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                   row +=`<label>Penanggung Jawab</label>`;
+
+				                   row +=`<input type="text" class="form-control" name="leader_name" placeholder="Penanggung Jawab " value="`+ item.leader_name +`">`;
+
+				                   row +=`<span id="leader-name-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="leader-nip-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                   row +=`<label>NIP Penanggung Jawab</label>`;
+
+				                   row +=`<input type="text" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
+				                    row +=`<span id="leader-nip-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="daerah-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                     row +=`<label>Daerah </label>`;
+
+				                   row +=`<select id="daerah_id-`+ item.id +`" class="select-edit form-control"  name="daerah_id" ></select>`;
+
+				                   row +=`<span id="daerah-messages-`+ item.id +`"></span>`;
+				                 row +=`</div>`;
+
+
+					        row +=`</div>`;
+
+                            row +=`<div class="modal-footer">`;
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>`;
+
+						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
+						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
+     						</div>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`;
+
+
+          
+
+            $('#FormEdit-'+ item.id).html(row);
+           
+            $('.select-edit').select2({
+		        data: [{ id: '', text: '' }],
+		        placeholder: 'Pilih Daerah',
+		        ajax: {
+		            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
+		            dataType: 'json',
+		            //delay: 250, // Delay before sending the request (milliseconds)
+		            processResults: function(data) {
+		                
+		                // Transform the data to match Select2's expected format
+		                return {
+		                    results: data.map(function(item) {
+		                        return { id: item.value, text: item.text };
+		                    })
+		                };
+		            },
+		            cache: true // Cache the results to improve performance
+		        },
+		        minimumInputLength: 1 // Minimum number of characters required for a search
+		    });	
+
+            $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true)); 
+
+            $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
 	              var data = $("#FormSubmit-"+ id).serializeArray();
 	              $("#update").hide();
@@ -310,65 +461,65 @@
  
 			                if(errors.messages.name)
 			                {
-			                     $('#name-alert').addClass('has-error');
-			                     $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
+			                     $('#name-alert-'+id).addClass('has-error');
+			                     $('#name-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
 			                }else{
-			                    $('#name-alert').removeClass('has-error');
-			                    $('#name-messages').removeClass('help-block').html('');
+			                    $('#name-alert-'+id).removeClass('has-error');
+			                    $('#name-messages-'+id).removeClass('help-block').html('');
 			                }
 
 			                 if(errors.messages.email)
 			                {
-			                     $('#email-alert').addClass('has-error');
-			                     $('#email-messages').addClass('help-block').html('<strong>'+ errors.messages.email +'</strong>');
+			                     $('#email-alert-'+id).addClass('has-error');
+			                     $('#email-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.email +'</strong>');
 			                }else{
-			                    $('#email-alert').removeClass('has-error');
-			                    $('#email-messages').removeClass('help-block').html('');
+			                    $('#email-alert-'+id).removeClass('has-error');
+			                    $('#email-messages-'+id).removeClass('help-block').html('');
 			                }  
 
 			                if(errors.messages.phone)
 			                {
-			                     $('#phone-alert').addClass('has-error');
-			                     $('#phone-messages').addClass('help-block').html('<strong>'+ errors.messages.phone +'</strong>');
+			                     $('#phone-alert-'+id).addClass('has-error');
+			                     $('#phone-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.phone +'</strong>');
 			                }else{
-			                    $('#phone-alert').removeClass('has-error');
-			                    $('#phone-messages').removeClass('help-block').html('');
+			                    $('#phone-alert-'+id).removeClass('has-error');
+			                    $('#phone-messages-'+id).removeClass('help-block').html('');
 			                }
 
 			                if(errors.messages.nip)
 			                {
-			                     $('#nip-alert').addClass('has-error');
-			                     $('#nip-messages').addClass('help-block').html('<strong>'+ errors.messages.nip +'</strong>');
+			                     $('#nip-alert-'+id).addClass('has-error');
+			                     $('#nip-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.nip +'</strong>');
 			                }else{
-			                    $('#nip-alert').removeClass('has-error');
-			                    $('#nip-messages').removeClass('help-block').html('');
+			                    $('#nip-alert-'+id).removeClass('has-error');
+			                    $('#nip-messages-'+id).removeClass('help-block').html('');
 			                }  
 
 			                if(errors.messages.daerah_id)
 			                {
-			                     $('#daerah-alert').addClass('has-error');
-			                     $('#daerah-messages').addClass('help-block').html('<strong>'+ errors.messages.daerah_id +'</strong>');
+			                     $('#daerah-alert-'+id).addClass('has-error');
+			                     $('#daerah-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.daerah_id +'</strong>');
 			                }else{
-			                    $('#daerah-alert').removeClass('has-error');
-			                    $('#daerah-messages').removeClass('help-block').html('');
+			                    $('#daerah-alert-'+id).removeClass('has-error');
+			                    $('#daerah-messages-'+id).removeClass('help-block').html('');
 			                }  
 
 			                if(errors.messages.leader_name)
 			                {
-			                     $('#leader-name-alert').addClass('has-error');
-			                     $('#leader-name-messages').addClass('help-block').html('<strong>'+ errors.messages.leader_name +'</strong>');
+			                     $('#leader-name-alert-'+id).addClass('has-error');
+			                     $('#leader-name-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.leader_name +'</strong>');
 			                }else{
-			                    $('#leader-name-alert').removeClass('has-error');
-			                    $('#leader-name-messages').removeClass('help-block').html('');
+			                    $('#leader-name-alert-'+id).removeClass('has-error');
+			                    $('#leader-name-messages-'+id).removeClass('help-block').html('');
 			                } 
 
 			                 if(errors.messages.leader_nip)
 			                {
-			                     $('#leader-nip-alert').addClass('has-error');
-			                     $('#leader-nip-messages').addClass('help-block').html('<strong>'+ errors.messages.leader_nip +'</strong>');
+			                     $('#leader-nip-alert-'+id).addClass('has-error');
+			                     $('#leader-nip-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.leader_nip +'</strong>');
 			                }else{
-			                    $('#leader-nip-alert').removeClass('has-error');
-			                    $('#leader-nip-messages').removeClass('help-block').html('');
+			                    $('#leader-nip-alert-'+id).removeClass('has-error');
+			                    $('#leader-nip-messages-'+id).removeClass('help-block').html('');
 			                }  
 
 			                
@@ -376,154 +527,11 @@
 			          });
  
 		        
-	    }); 
-
- 		$( "#content" ).on( "click", "#Edit", (e) => {
-             
-             let index = e.currentTarget.dataset.param_id;
-             const item = list[index];
-
-		    // Event handler when an item is selected
-		    $('.select-edit').on('select-edit:select', function(e) {
-		        var selectedOption = e.params.data;
-		        $('#daerah_id').val(selectedOption.id);
-		    });
-            
-             let row = ``;
-            row +=`<div class="modal-dialog">`;
-                row +=`<div class="modal-content">`;
-
-				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit User</h4>`;
-				       row +=`</div>`;
-
-				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body">`;
-                               
-                                row +=`<div class="form-group has-feedback" >`;
-				                  row +=`<label>Username</label>`;
-				                  row +=`<input type="text" class="form-control" name="username" placeholder="Username" value="`+ item.username +`" disabled>`;
-				                row +=`</div>`;
-
-				                 row +=`<div id="name-alert" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Name</label>`;
-
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Name" value="`+ item.name +`">
-				                  <span id="name-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-
-				                 row +=`<div id="email-alert" class="form-group has-feedback">`;
-
-				                   row +=`<label>Email</label>`;
-
-				                   row +=`<input type="email" class="form-control" name="email" placeholder="email" value="`+ item.email +`">`;
-
-				                   row +=`<span id="email-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-				                 row +=`<div id="phone-alert" class="form-group has-feedback">`;
-
-				                   row +=`<label>Phone</label>`;
-
-				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone" value="`+ item.phone +`">`;
-
-				                   row +=`<span id="phone-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-
-				                 row +=`<div id="nip-alert" class="form-group has-feedback">`;
-
-				                   row +=`<label>NIP</label>`;
-
-				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP" value="`+ item.nip +`">`;
-
-				                   row +=`<span id="nip-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-				                 row +=`<div id="leader-name-alert" class="form-group has-feedback">`;
-
-				                   row +=`<label>Penanggung Jawab</label>`;
-
-				                   row +=`<input type="text" class="form-control" name="leader_name" placeholder="Penanggung Jawab " value="`+ item.leader_name +`">`;
-
-				                   row +=`<span id="leader-name-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-				                 row +=`<div id="leader-nip-alert" class="form-group has-feedback">`;
-
-				                   row +=`<label>NIP Penanggung Jawab</label>`;
-
-				                   row +=`<input type="text" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
-				                    row +=`<span id="leader-nip-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-				                 row +=`<div id="daerah-alert" class="form-group has-feedback">`;
-
-				                     row +=`<label>Daerah </label>`;
-
-				                   row +=`<select id="daerah_id" class="select-edit form-control"  name="daerah_id" ></select>`;
-
-				                   row +=`<span id="daerah-messages"></span>`;
-				                 row +=`</div>`;
-
-
-					        row +=`</div>`;
-
-                            row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>`;
-
-						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
-						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
-     						</div>`;
-						    row +=`</div>`;
-
-
-					    row +=`</form>`;     
-                row +=`</div>`;
-            row +=`</div>`;
-
-          $('#FormEdit-'+ item.id).append(row);
-
-            $('.select-edit').select2({
-		        data: [{ id: '', text: '' }],
-		        placeholder: 'Pilih Daerah',
-		        ajax: {
-		            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
-		            dataType: 'json',
-		            //delay: 250, // Delay before sending the request (milliseconds)
-		            processResults: function(data) {
-		                
-		                // Transform the data to match Select2's expected format
-		                return {
-		                    results: data.map(function(item) {
-		                        return { id: item.value, text: item.text };
-		                    })
-		                };
-		            },
-		            cache: true // Cache the results to improve performance
-		        },
-		        minimumInputLength: 1 // Minimum number of characters required for a search
-		    });	
-
-
-            $('#daerah_id').append(new Option(item.daerah_name, item.daerah_id, true, true));
+	    });  
             
         });
+
+       
 
 
         $( "#content" ).on( "click", "#Destroy", (e) => {
