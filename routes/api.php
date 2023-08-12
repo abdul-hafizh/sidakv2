@@ -26,7 +26,8 @@ use App\Http\Controllers\API\SettingWebApiController;
 use App\Http\Controllers\API\PerencanaanApiController;
 use App\Http\Controllers\API\UserApiController;
 
-use App\Http\Controllers\API\MobilApiController;
+use App\Http\Controllers\API\ProvinceApiController;
+use App\Http\Controllers\API\RegencyApiController;
 use App\Http\Controllers\API\DaerahApiController;
 
 
@@ -35,16 +36,29 @@ use App\Http\Controllers\API\DaerahApiController;
 
 
 
+  
+ Route::middleware(['jwt.auth'])->group(function () {
 
-
-
- Route::middleware(['jwt.auth','admin'])->group(function () {
-
-
+    Route::get('select-province', [DaerahApiController::class, 'listProvince']);
     Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
 
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
+
+     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
+     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
+ 
+    
+     Route::get('daerah', [AuthApiController::class, 'GetDaerahID']);
+     Route::get('periode/check', [PeriodeApiController::class, 'check']);
+     Route::get('perencanaan/periode', [PeriodeApiController::class, 'periode']);
+     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
+     Route::post('perencanaan', [PerencanaanApiController::class, 'store']);
+     Route::get('perencanaan/edit/{id}', [PerencanaanApiController::class, 'edit']);
+     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']); 
+     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
+     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
+     Route::post('pagu/check', [PaguTargetApiController::class, 'check']); 
 
      Route::get('user', [UserApiController::class, 'index']);
      Route::post('user', [UserApiController::class, 'store']);
@@ -54,30 +68,26 @@ use App\Http\Controllers\API\DaerahApiController;
      Route::delete('user/{id}', [UserApiController::class, 'delete']);
 
 
+     Route::get('province', [ProvinceApiController::class, 'index']);
+     Route::post('province', [ProvinceApiController::class, 'store']);
+     Route::put('province/{id}', [ProvinceApiController::class, 'update']);
+     Route::post('province/search', [ProvinceApiController::class, 'search']);
+     Route::post('province/selected', [ProvinceApiController::class, 'deleteSelected']);
+     Route::delete('province/{id}', [ProvinceApiController::class, 'delete']);
 
-    Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
-    // Route::get('halo', [MobilApiController::class, 'index']);
-    // Route::post('halo', [MobilApiController::class, 'store']); 
+
+     Route::get('regency', [RegencyApiController::class, 'index']);
+     Route::post('regency', [RegencyApiController::class, 'store']);
+     Route::put('regency/{id}', [RegencyApiController::class, 'update']);
+     Route::post('regency/search', [RegencyApiController::class, 'search']);
+     Route::post('regency/selected', [RegencyApiController::class, 'deleteSelected']);
+     Route::delete('regency/{id}', [RegencyApiController::class, 'delete']);
 
 
-    Route::get('mobil', [MobilApiController::class, 'index']);
-    Route::post('mobil', [MobilApiController::class, 'store']);
+ 
 
     Route::get('dashboard', [DashboardApiController::class, 'index']);
-    Route::get('menu', [MenusApiController::class, 'index']);
-    Route::post('menu', [MenusApiController::class, 'store']);
-    Route::post('menu/search', [MenusApiController::class, 'search']);
-    Route::put('menu/{id}', [MenusApiController::class, 'update']);
-    Route::delete('menu/{id}', [MenusApiController::class, 'delete']);
-
-    Route::post('menu/table', [MenusApiController::class, 'table']);
-
-
-    Route::post('menu/role/keys', [MenusRoleApiController::class, 'keys']);
-    Route::post('menu/role/save', [MenusRoleApiController::class, 'store']);
-    Route::post('menu/pages/save', [MenusRoleApiController::class, 'pages']);
-    Route::delete('menu/role/{id}', [MenusRoleApiController::class, 'delete']);
-
+   
 
     Route::get('role', [RolesApiController::class, 'index']);
 
@@ -97,30 +107,12 @@ use App\Http\Controllers\API\DaerahApiController;
     Route::post('periode/search', [PeriodeApiController::class, 'search']);
     Route::put('periode/{id}', [PeriodeApiController::class, 'update']);
     Route::delete('periode/{id}', [PeriodeApiController::class, 'delete']);
-
+    
+    Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);
 });
 
-Route::group(['middleware' => 'jwt.auth','daerah','provinsi'], function () {
+  
 
-      
-     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
-     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
- 
-    
-     Route::get('daerah', [AuthApiController::class, 'GetDaerahID']);
-     Route::get('periode/check', [PeriodeApiController::class, 'check']);
-     Route::get('perencanaan/periode', [PeriodeApiController::class, 'periode']);
-     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
-     Route::post('perencanaan', [PerencanaanApiController::class, 'store']);
-     Route::get('perencanaan/edit/{id}', [PerencanaanApiController::class, 'edit']);
-     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']); 
-     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
-     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
-     Route::post('pagu/check', [PaguTargetApiController::class, 'check']); 
-
-
-
-});

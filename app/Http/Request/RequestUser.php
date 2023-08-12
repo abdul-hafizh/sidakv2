@@ -41,6 +41,7 @@ class RequestUser
             $temp[$key]['id'] = $val->id;
             $temp[$key]['name'] = $val->name;
             $temp[$key]['daerah_id'] = $val->daerah_id;
+            $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $temp[$key]['username'] = $val->username;
             $temp[$key]['email'] = $val->email;
             $temp[$key]['phone'] = $val->phone;
@@ -53,7 +54,7 @@ class RequestUser
         }
 
          $result['data'] = $temp;
-         $result['daerah'] = RequestDaerah::GetDaerahID();
+        // $result['daerah'] = RequestDaerah::GetDaerahID();
          $result['current_page'] = $data->currentPage();
          $result['last_page'] = $data->lastPage(); 
         return $result;

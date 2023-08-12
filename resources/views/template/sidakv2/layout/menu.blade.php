@@ -26,6 +26,32 @@
 
 <li class="treeview">
   <a href="#">
+    <i class="fa fa-bars"></i>
+    <span>Management Data</span>
+    <span class="pull-right-container">
+      <i class="fa fa-angle-left pull-right"></i>
+    </span>
+  </a>
+  <ul class="treeview-menu">
+
+  <li class="">
+      <a href="{!! url('province') !!}"><i class="fa fa-circle-o"></i><span>Provisi</span></a>
+  </li>
+
+  <li class="">
+      <a href="{!! url('regency') !!}"><i class="fa fa-circle-o"></i><span>Kabupaten</span></a>
+  </li>
+
+  <li class="">
+      <a href="{!! url('periode') !!}"><i class="fa fa-circle-o"></i><span>Batas Periode</span></a>
+  </li>
+
+  </ul>
+</li>
+
+
+<li class="treeview">
+  <a href="#">
     <i class="fa fa-users"></i>
     <span>Management User</span>
     <span class="pull-right-container">

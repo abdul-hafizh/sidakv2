@@ -57,12 +57,14 @@ class RequestPaguTarget
             ->limit($request->length);
 
         //  dd($request->order[0]['dir']);
-        if ($request->order['0']['column'] != 0) {
+       
+            if ($request->order['0']['column'] != 0) {
             $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
-        } else if (isset($order)) {
-            $order = $order;
-            $data->orderBy(key($order), $order[key($order)]);
-        }
+            } else if (isset($order)) {
+                $order = $order;
+                $data->orderBy(key($order), $order[key($order)]);
+            } 
+        
         $numberNext = 1;
         //dd($data);
         $result = $data->get();

@@ -15,14 +15,19 @@ class DaerahApiController extends Controller
     }
 
   
+    public  function listProvince()
+    {
+
+        $data = RequestDaerah::GetProvinceID();
+        return response()->json($data);
+    }
+       
     public  function listAll()
     {
 
-        $daerah = RequestDaerah::GetDaerahID();
-        return response()->json($daerah);
+        $data = RequestDaerah::GetDaerahID();
+        return response()->json($data);
     }
-       
-   
 
     
     

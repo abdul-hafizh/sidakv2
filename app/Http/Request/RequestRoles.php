@@ -38,16 +38,7 @@ class RequestRoles
 
    }
 
-   public static function GetDataID($data)
-   {         
-           
-            $__temp_['id'] = $data->id;
-            $__temp_['name'] = $data->name;
-            $__temp_['status'] = $data->status;
-                
-            return $__temp_;
-   }
-
+  
   
 
    public static function fieldsData($request)

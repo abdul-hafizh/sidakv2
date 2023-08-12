@@ -26,7 +26,7 @@ class PaguTargetController extends Controller
         $data = PaguTarget::orderBy('id', 'ASC')->paginate($this->perPage);
         $result = RequestPaguTarget::GetDataAll($data, $this->perPage, $request);
 
-        return view('template/' . $this->template . '.paguTarget.index')
+        return view('template/' . $this->template . '.paguTarget.dt_index')
             ->with(
                 [
                     'result' => $result,
@@ -41,13 +41,11 @@ class PaguTargetController extends Controller
     public function dt_index(Request $request)
     {
 
-        $data = PaguTarget::orderBy('id', 'ASC')->paginate($this->perPage);
-        $result = RequestPaguTarget::GetDataAll($data, $this->perPage, $request);
+    
 
         return view('template/' . $this->template . '.paguTarget.dt_index')->with(
             [
-                'title' => $this->title,
-                'sidebar' => $this->sidebar,
+                'title' => 'Pagu Target',
                 'template' => 'template/' . $this->template
             ]
         );
