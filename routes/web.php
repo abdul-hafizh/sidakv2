@@ -30,6 +30,7 @@ if (Auth::guest()) {
             Route::get('/user',  [UserController::class, 'index']);
             Route::get('/role', [RoleController::class, 'index']);
             Route::get('/apps', [SettingWebController::class, 'index']);
+            Route::get('/pagutarget', [PaguTargetController::class, 'dt_index']);
         });
 
         Route::middleware(['auth', 'pusat'])->group(function () {
