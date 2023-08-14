@@ -8,7 +8,8 @@ use App\Models\Periode;
 use App\Http\Request\RequestPeriode;
 use App\Http\Request\Validation\ValidationPeriode;
 use App\Helpers\GeneralPaginate;
-
+use DB;
+use Auth;
 
 class PeriodeApiController extends Controller
 {
@@ -23,33 +24,56 @@ class PeriodeApiController extends Controller
     {
         $paginate = GeneralPaginate::limit();
         $Data = Periode::orderBy('id', 'DESC')->paginate($paginate);
-        $_res = RequestPeriode::GetDataAll($Data,$this->perPage,$request);
+        $description = '';
+        $_res = RequestPeriode::GetDataAll($Data, $this->perPage, $request, $description);
         return response()->json($_res);
     }
 
 
-
     public function check(Request $request)
     {
-       
-        $data =  DB::table('periode')->whereNotIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id',Auth::User()->daerah_id))->select('slug','name')->get();
-        
-        $periode = RequestPeriode::SelectAll($data); 
-        return response()->json($periode);
 
+        $data =  DB::table('periode')->whereNotIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id', Auth::User()->daerah_id))->select('slug', 'name')->get();
+
+        $periode = RequestPeriode::SelectAll($data);
+        return response()->json($periode);
     }
 
 
     public function periode(Request $request)
     {
-       
-        $data =  DB::table('periode')->whereIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id',Auth::User()->daerah_id))->select('slug','name')->get();
-       
+
+        $data =  DB::table('periode')->whereIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id', Auth::User()->daerah_id))->select('slug', 'name')->get();
+
         $Data = Periode::orderBy('id', 'DESC')->get();
         $periode = RequestPeriode::SelectAll($Data, $request);
         return response()->json(['status' => true, 'periode' => $periode]);
     }
 
+
+
+    public function search(Request $request)
+    {
+        $search = $request->search;
+        $_res = array();
+        $AccountValidate = SearchGeneration::Search($search);
+        if (count($AccountValidate) > 0) {
+            $label = $AccountValidate['label'];
+            $value = $AccountValidate['value'];
+            $Data = Periode::where($label, 'LIKE', '%' . $value . '%')->orderBy('id', 'DESC')->paginate($this->perPage);
+            $description = $search;
+            $_res = RequestPeriode::GetDataAll($Data, $this->perPage, $request, $description);
+        }
+        return response()->json($_res);
+    }
+
+
+    public function edit($id)
+    {
+        $Data = Periode::find($id);
+        $_res = RequestPeriode::GetDataID($Data);
+        return response()->json($_res);
+    }
 
 
     public function store(Request $request)
@@ -84,58 +108,15 @@ class PeriodeApiController extends Controller
         }
     }
 
-    
-      public function search(Request $request)
+    public function delete($id)
     {
-        $search = $request->search;
-        $_res = array();
-        $column_search  = array('name');
-
-        $i = 0;
-        $query  = Periode::orderBy('id', 'DESC');
-        foreach ($column_search as $item) {
-            if ($search) {
-                if ($i === 0) {
-                    $query->where($item, 'LIKE', '%' . $search . '%');
-                } else {
-                    $query->orWhere($item, 'LIKE', '%' . $search . '%');
-                }
-            }
-            $i++;
-        }
-
-        $Data = $query->paginate($this->perPage);
-        $description = $search;
-        $_res = RequestPeriode::GetDataAll($Data, $this->perPage, $request);
-
-
-        return response()->json($_res);
-    }
-
-    public function deleteSelected(Request $request){
         $messages['messages'] = false;
-        foreach($request->data as $key)
-        {
-            $results = Periode::where('id',(int)$key)->delete();
-        }
-
-        if($results){
-            $messages['messages'] = true;
-        }
-
-        return response()->json($messages);
-    
-    }
-    
-    
-     public function delete($id){
-
-       $messages['messages'] = false;
         $_res = Periode::find($id);
 
         if (empty($_res)) {
             return response()->json(['messages' => false]);
         }
+
         $results = $_res->delete();
         if ($results) {
             $messages['messages'] = true;
@@ -143,4 +124,10 @@ class PeriodeApiController extends Controller
         return response()->json($messages);
     }
 
+    public  function listAll()
+    {
 
+        $periode = RequestPeriode::GetPeriodeID();
+        return response()->json($periode);
+    }
+}
