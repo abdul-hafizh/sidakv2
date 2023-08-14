@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Request\RequestPaguTarget;
 use App\Models\PaguTarget;
 use App\Helpers\GeneralPaginate;
+use App\Http\Request\Validation\ValidationPaguTarget;
 use Auth;
 use Yajra\DataTables\DataTables;
 
@@ -40,5 +41,21 @@ class PaguTargetApiController extends Controller
         //     "data" => $result->data,
         // );
         return response()->json($result);
+    }
+
+    public function store(Request $request)
+    {
+        $validation = ValidationPaguTarget::validation($request);
+        if ($validation) {
+            return response()->json($validation, 400);
+        } else {
+
+
+            $insert = RequestPaguTarget::fieldsData($request);
+            //create menu
+            $saveData = PaguTarget::create($insert);
+            //result
+            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Insert data sucessfully']);
+        }
     }
 }

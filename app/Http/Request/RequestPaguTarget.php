@@ -99,16 +99,18 @@ class RequestPaguTarget
 
         $fields =
             [
-                'username'  => $request->username,
-                'name'  => $request->name,
-                'nip'  => $request->nip,
-                'password'  => bcrypt($request->password),
-                'email'     => $request->email,
-                'phone'     => $request->phone,
-                'leader_name'     => $request->leader_name,
-                'leader_nip'     => $request->leader_nip,
-                'daerah_id'     => $request->daerah_id,
-                'created_by' => $request->username,
+                'periode_id'  => $request->periode_id,
+                'daerah_id'  => $request->daerah_id,
+                'nama_daerah'  => $request->nama_daerah,
+                'pagu_apbn'  => $request->pagu_apbn,
+                'pagu_promosi'  => $request->pagu_promosi,
+                'type_daerah'  => $request->type_daerah,
+                'target_pengawasan' => $request->target_pengawasan,
+                'target_penyelesaian_permasalahan'  => $request->target_penyelesaian_permasalahan,
+                'target_bimbingan_teknis'  => $request->target_bimbingan_teknis,
+                'target_video_promosi'  => $request->target_video_promosi,
+                'pagu_dalak'  => $request->pagu_dalak,
+                'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
 
