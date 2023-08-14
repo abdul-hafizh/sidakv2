@@ -10,6 +10,7 @@ use App\Http\Controllers\PaguTargetController;
 use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RegencyController;
+use App\Http\Controllers\PeriodeController;
 
 
 Route::get('/', function () {
@@ -18,7 +19,6 @@ Route::get('/', function () {
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'store']);
-
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
@@ -31,6 +31,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/province', [ProvinceController::class, 'index']);
     Route::get('/regency', [RegencyController::class, 'index']);
+    Route::get('/periode', [PeriodeController::class,'index']);          
 });
 
 Route::middleware(['auth', 'pusat'])->group(function () {
@@ -39,7 +40,6 @@ Route::middleware(['auth', 'pusat'])->group(function () {
 
 Route::middleware(['auth', 'province'])->group(function () {
 });
-
 
 Route::middleware(['auth', 'daerah'])->group(function () {
     Route::get('/perencanaan', [PerencanaanController::class, 'index']);

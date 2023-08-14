@@ -6,7 +6,7 @@
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn btn-primary btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
 			</div>
         </div> 	
@@ -15,7 +15,7 @@
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
+				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
 	
@@ -74,18 +74,28 @@
  $(document).ready(function() {
 
  	
-
     const itemsPerPage = 10; // Number of items to display per page
     let currentPage = 1; // Current page number
     let previousPage = 1; // Previous page number
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
+    var list = [];
+
 
 
 
      // "Select All" checkbox
     $('#select-all').on('change', function() {
         $('.item-checkbox').prop('checked', $(this).is(':checked'));
+
+         const checkedCount = $('.item-checkbox:checked').length;
+         if(checkedCount >0)
+         {
+         	$('#delete-selected').prop("disabled", false);
+         }else{
+         	$('#delete-selected').prop("disabled", true);
+         } 
+
     });
 
     // Delete selected button
@@ -154,10 +164,13 @@
 
     // Function to fetch data from the API
     function fetchData(page) {
+    	const content = $('#content');
+           content.empty();
         $.ajax({
             url: BASE_URL+ `/api/role?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
+            	list = response.data;
                 // Update content area with fetched data
                 updateContent(response.data);
 
@@ -178,7 +191,7 @@
         content.empty();
 
         // Populate content with new data
-        data.forEach(item => {
+        data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
@@ -188,11 +201,13 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
+               
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=``+ GetFormEdit(item) +``;
+                row +=`<div id="FormEdit-${item.id}"></div>`;
                 row +=`</div>`;
+
 
        
 
@@ -204,24 +219,91 @@
 
             content.append(row);
 
-
+            
 
 
         });
 
+        $('.item-checkbox').on('click', function() {
+	         const checkedCount = $('.item-checkbox:checked').length;
+	         if(checkedCount ==true)
+	         {
+	           $('#delete-selected').prop("disabled", false);
+	         }else{
+	           $('#delete-selected').prop("disabled", true);
+	         } 	
+   		});
 
 
-        $( ".modal-content" ).on( "click", "#update", (e) => {
+        $( "#content" ).on( "click", "#Edit", (e) => {
+             
+            let index = e.currentTarget.dataset.param_id;
+            const item = list[index];
+              
+		  
+            
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+				       row +=`<div class="modal-header">`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Edit Role</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body">`;
+                               
+                                 
+				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Nama</label>`;
+
+				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
+				                  <span id="name-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+				                 row +=`<div class="radio">`;
+					                    row +=`<label>`;
+					                      row +=`<input  type="radio" name="status" id="status-`+ item.id +`" value="Y" >`;
+					                      row +=`Aktif`;
+					                    row +=`</label>`;
+					                row +=`</div>`;
+					                row +=`<div class="radio">`;
+					                    row +=`<label>`;
+					                      row +=`<input   type="radio" name="status" id="status-`+ item.id +`" value="N">`;
+					                     row +=`Non Aktif`;
+					                    row +=`</label>`;
+					                row +=`</div>`;
+
+
+
+
+                            row +=`<div class="modal-footer">`;
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
+						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
+     						</div>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ item.id).html(row);    
+
+            $('#status-'+ item.id).prop('checked', true);     
+
+            $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
 	              var data = $("#FormSubmit-"+ id).serializeArray();
-	             
-		          var form = {
-		              
-		              'name':data[0].value,
-		              'status':data[1].value,
-		            
-		            
-		          };
+	              $("#update").hide();
+	              $("#load-simpan").show();
+	              
+		          var form = {'name':data[0].value,'status':data[1].value};
 
 
 
@@ -249,35 +331,34 @@
 			            },
 			            error: (respons)=>{
 			                errors = respons.responseJSON;
-			                
-			               
-
+			                $("#update").show();
+			                $("#load-simpan").hide();
+ 
 			                if(errors.messages.name)
 			                {
-			                     $('#name-alert').addClass('has-error');
-			                     $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
+			                     $('#name-alert-'+id).addClass('has-error');
+			                     $('#name-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
 			                }else{
-			                    $('#name-alert').removeClass('has-error');
-			                    $('#name-messages').removeClass('help-block').html('');
+			                    $('#name-alert-'+id).removeClass('has-error');
+			                    $('#name-messages-'+id).removeClass('help-block').html('');
 			                }
 
-			                 if(errors.messages.status)
-			                {
-			                     $('#status-alert').addClass('has-error');
-			                     $('#status-messages').addClass('help-block').html('<strong>'+ errors.messages.status +'</strong>');
-			                }else{
-			                    $('#status-alert').removeClass('has-error');
-			                    $('#status-messages').removeClass('help-block').html('');
-			                }  
-
 			                
+
+			               
 
 			                
 			            }
 			          });
  
 		        
-	    }); 
+	        });  
+            
+        });
+
+
+
+    
 
 
         $( "#content" ).on( "click", "#Destroy", (e) => {
@@ -331,101 +412,6 @@
 
     }
 
-
-    function GetFormEdit(item)
-    {
-	   	    	
-                   
-			
-
-
-
-        	let row = ``;
-            row +=`<div class="modal-dialog">`;
-                row +=`<div class="modal-content">`;
-
-				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit Role</h4>`;
-				       row +=`</div>`;
-
-				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body">`;
-                               
-                                
-
-				                 row +=`<div id="name-alert" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Name</label>`;
-
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Name" value="`+ item.name +`">
-				                  <span id="name-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-
-				                 row +=`<div id="status-alert" class="form-group has-feedback">`;
-
-				                   row +=`<label>Status</label>`;
-                                
-                                if(item.status_ori === 'Y')
-                                { 	
-				                    row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input  type="radio" name="status" id="status" value="Y"  checked>`;
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input   type="radio" name="status" id="status" value="N">`;
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-
-					            }else{
-
-                                     row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input  type="radio" name="status" id="status" value="Y"  >`;
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input   type="radio" name="status" id="status" value="N" checked>`;
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-
-
-					            }    
-
-				                   row +=`<span id="status-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-					        row +=`</div>`;
-
-                            row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>`;
-
-						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
-						    row +=`</div>`;
-
-
-					    row +=`</form>`;     
-                row +=`</div>`;
-            row +=`</div>`;
-
-        return row;
-
-       
-    }
-
-   
 
     // Function to update pagination controls
     function updatePagination(currentPage, totalPages) {

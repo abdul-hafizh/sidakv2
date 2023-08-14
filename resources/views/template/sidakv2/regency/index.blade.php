@@ -6,7 +6,7 @@
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn btn-primary btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
 			</div>
         </div> 	
@@ -15,15 +15,19 @@
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
+				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
-	
-				
-				<!-- <button type="button" class="btn btn-primary">
-					<i aria-hidden="true" class="fa fa-search"></i> Search
-				</button> -->
 			</div>
+
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button"  id="refresh" class="btn btn-default border-radius-10">
+					 Refresh
+				</button>
+			</div>
+
+
+				
 
 			<div class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
@@ -53,7 +57,7 @@
 							<th><input id="select-all" type="checkbox"></th>
 							<th><span class="border-left-table">No</span>  </th>
 							<th><span class="border-left-table"> Nama </span></th>
-							 <th><span class="border-left-table"> Provinsi </span></th>
+							<th><span class="border-left-table"> Provinsi </span></th>
 							<th> Options </th>
 						</tr>
 					</thead>
@@ -69,7 +73,8 @@
 	</div>
      @include('template/sidakv2/regency.add')
 
-<script type="text/javascript">
+     <script type="text/javascript">
+ 
 
  $(document).ready(function() {
 
@@ -80,12 +85,28 @@
     let previousPage = 1; // Previous page number
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
-
+    var list = [];
 
 
      // "Select All" checkbox
     $('#select-all').on('change', function() {
         $('.item-checkbox').prop('checked', $(this).is(':checked'));
+          
+         const checkedCount = $('.item-checkbox:checked').length;
+         if(checkedCount >0)
+         {
+         	$('#delete-selected').prop("disabled", false);
+         }else{
+         	$('#delete-selected').prop("disabled", true);
+         } 	
+        
+    });
+
+     // Delete selected button
+    $('#refresh').on('click', function() {
+    	
+        fetchData(page);
+        $('#search-input').val('');
     });
 
     // Delete selected button
@@ -94,7 +115,6 @@
         $('.item-checkbox:checked').each(function() {
             selectedIds.push($(this).data('id'));
         });
-
         // Send selected IDs for deletion (e.g., via AJAX)
         deleteItems(selectedIds);
     });
@@ -105,23 +125,7 @@
         $('.select-all').prop('checked', allChecked);
     });
 
-    // Function to delete items
-    function deleteItems(ids) {
-        // Send the selected IDs for deletion using AJAX
-       
-        $.ajax({
-            url:  BASE_URL +`/api/regency/selected`,
-            method: 'POST',
-            data: { data: ids },
-            success: function(response) {
-                // Handle success (e.g., remove deleted items from the list)
-                fetchData(page);
-            },
-            error: function(error) {
-                console.error('Error deleting items:', error);
-            }
-        });
-    }
+   
 
 
    
@@ -133,7 +137,11 @@
  		 
  		 if(search)
  		 { 	
-	 		 
+	 		 const content = $('#content');
+        	 content.empty();
+    	 	 let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
 	         $.ajax({
 	            url: BASE_URL + `/api/regency/search?page=${page}&per_page=${itemsPerPage}`,
 	            data:{'search':search},
@@ -152,12 +160,39 @@
 	     }    
     });
 
+     // Function to delete items
+    function deleteItems(ids) {
+        // Send the selected IDs for deletion using AJAX
+        
+        $.ajax({
+            url:  BASE_URL +`/api/regency/selected`,
+            method: 'POST',
+            data: { data: ids },
+            success: function(response) {
+
+                // Handle success (e.g., remove deleted items from the list)
+                fetchData(page);
+            },
+            error: function(error) {
+                console.error('Error deleting items:', error);
+            }
+        });
+    }
+
     // Function to fetch data from the API
     function fetchData(page) {
+    	   const content = $('#content');
+           content.empty();
+    	  
+    	 	let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
+
         $.ajax({
             url: BASE_URL+ `/api/regency?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
+            	list = response.data;
                 // Update content area with fetched data
                 updateContent(response.data);
 
@@ -178,20 +213,21 @@
         content.empty();
 
         // Populate content with new data
-        data.forEach(item => {
+        data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
                row +=`<td>${item.number}</td>`;
+           
                row +=`<td>${item.name}</td>`;
                row +=`<td>${item.province_name}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=``+ GetFormEdit(item) +``;
+                row +=`<div id="FormEdit-${item.id}"></div>`;
                 row +=`</div>`;
 
        
@@ -209,18 +245,120 @@
 
         });
 
+        	
+
+        $('.item-checkbox').on('click', function() {
+         const checkedCount = $('.item-checkbox:checked').length;
+         if(checkedCount ==true)
+         {
+           $('#delete-selected').prop("disabled", false);
+         }else{
+           $('#delete-selected').prop("disabled", true);
+         } 	
+   		});
 
 
-        $( ".modal-content" ).on( "click", "#update", (e) => {
+        
+
+ 		$( "#content" ).on( "click", "#Edit", (e) => {
+             
+            let index = e.currentTarget.dataset.param_id;
+            const item = list[index];
+
+		    // Event handler when an item is selected
+		    $('.select-edit').on('select-edit:select', function(e) {
+		        var selectedOption = e.params.data;
+		        $('#province_id').val(selectedOption.id);
+		    });
+            
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+				       row +=`<div class="modal-header">`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Edit User</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body">`;
+                               
+                             
+				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Nama</label>`;
+
+				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
+				                  <span id="name-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+
+				                 row +=`<div id="province-id-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                     row +=`<label>Provinsi </label>`;
+
+				                   row +=`<select id="province-id-`+ item.id +`" class="select-edit form-control"  name="province_id" ></select>`;
+
+				                   row +=`<span id="province-id-messages-`+ item.id +`"></span>`;
+				                 row +=`</div>`;
+
+
+					        row +=`</div>`;
+
+                            row +=`<div class="modal-footer">`;
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
+						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
+     						</div>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`;
+
+
+          
+
+            $('#FormEdit-'+ item.id).html(row);
+
+
+           
+            $('.select-edit').select2({
+		        data: [{ id: '', text: '' }],
+		        placeholder: 'Pilih Daerah',
+		        ajax: {
+		            url: BASE_URL+'/api/select-province', // URL to your server-side endpoint
+		            dataType: 'json',
+		            //delay: 250, // Delay before sending the request (milliseconds)
+		            processResults: function(data) {
+		                
+		                // Transform the data to match Select2's expected format
+		                return {
+		                    results: data.map(function(item) {
+		                        return { id: item.value, text: item.text };
+		                    })
+		                };
+		            },
+		            cache: true // Cache the results to improve performance
+		        },
+		        minimumInputLength: 1 // Minimum number of characters required for a search
+		    });	
+
+            $('#province-id-'+item.id).append(new Option(item.province_name, item.province_id, true, true)); 
+
+            $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
 	              var data = $("#FormSubmit-"+ id).serializeArray();
-	             
+	              $("#update").hide();
+	              $("#load-simpan").show();
+	              
 		          var form = {
 		              
 		              'name':data[0].value,
-		              'province_id':data[1].value
-		              
-		            
+		              'province_id':data[1].value,
 		            
 		          };
 
@@ -250,35 +388,36 @@
 			            },
 			            error: (respons)=>{
 			                errors = respons.responseJSON;
-			                
-			               
-
+			                 $("#update").show();
+			                 $("#load-simpan").hide();
+ 
 			                if(errors.messages.name)
 			                {
-			                     $('#name-alert').addClass('has-error');
-			                     $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
+			                     $('#name-alert-'+id).addClass('has-error');
+			                     $('#name-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
 			                }else{
-			                    $('#name-alert').removeClass('has-error');
-			                    $('#name-messages').removeClass('help-block').html('');
+			                    $('#name-alert-'+id).removeClass('has-error');
+			                    $('#name-messages-'+id).removeClass('help-block').html('');
 			                }
-
 
 			                if(errors.messages.province_id)
 			                {
-			                     $('#province-id-alert').addClass('has-error');
-			                     $('#province-id-messages').addClass('help-block').html('<strong>'+ errors.messages.province_id +'</strong>');
+			                     $('#province-id-alert-'+id).addClass('has-error');
+			                     $('#province-id-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.province_id +'</strong>');
 			                }else{
-			                    $('#province-id-alert').removeClass('has-error');
-			                    $('#province-id-messages').removeClass('help-block').html('');
-			                }
-
-
+			                    $('#province-id-alert-'+id).removeClass('has-error');
+			                    $('#province-id-messages-'+id).removeClass('help-block').html('');
+			                }  
 			                
 			            }
 			          });
  
 		        
-	    }); 
+	    });  
+            
+        });
+
+       
 
 
         $( "#content" ).on( "click", "#Destroy", (e) => {
@@ -307,6 +446,7 @@
 			      }
 			    });
 
+	        
         }); 
 
 
@@ -315,11 +455,10 @@
         
     }
 
-
     function deleteItem(id){
 
 		$.ajax({
-		    url:  BASE_URL +`/api/role/`+ id,
+		    url:  BASE_URL +`/api/user/`+ id,
 		    method: 'DELETE',
 		    success: function(response) {
 		        // Handle success (e.g., remove deleted items from the list)
@@ -332,102 +471,7 @@
 
     }
 
-
-    function GetFormEdit(item)
-    {
-	   	    	
-                   
-			
-
-
-
-        	let row = ``;
-            row +=`<div class="modal-dialog">`;
-                row +=`<div class="modal-content">`;
-
-				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit Provinsi</h4>`;
-				       row +=`</div>`;
-
-				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body">`;
-                               
-                                
-
-				                 row +=`<div id="name-alert" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Name</label>`;
-
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Name" value="`+ item.name +`">
-				                  <span id="name-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-
-				                 row +=`<div id="status-alert" class="form-group has-feedback">`;
-
-				                   row +=`<label>Status</label>`;
-                                
-                                if(item.status_ori === 'Y')
-                                { 	
-				                    row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input  type="radio" name="status" id="status" value="Y"  checked>`;
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input   type="radio" name="status" id="status" value="N">`;
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-
-					            }else{
-
-                                     row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input  type="radio" name="status" id="status" value="Y"  >`;
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input   type="radio" name="status" id="status" value="N" checked>`;
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-
-
-					            }    
-
-				                   row +=`<span id="status-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-					        row +=`</div>`;
-
-                            row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>`;
-
-						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
-						    row +=`</div>`;
-
-
-					    row +=`</form>`;     
-                row +=`</div>`;
-            row +=`</div>`;
-
-        return row;
-
-       
-    }
-
-   
-
+ 
     // Function to update pagination controls
     function updatePagination(currentPage, totalPages) {
         const pagination = $('#pagination');
@@ -480,6 +524,8 @@
         // Add click event to pagination links
         pagination.find('.page-link').on('click', function() {
             currentPage = parseInt($(this).data('page'));
+             const content = $('#content');
+             content.empty();
             fetchData(currentPage);
         });
     }

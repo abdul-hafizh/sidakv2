@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 
-
-class RoleController extends Controller
+class PeriodeController extends Controller
 {
    
    
@@ -13,21 +12,19 @@ class RoleController extends Controller
     {
        
         $this->template = RequestSettingApps::AppsTemplate();
-        
-
     }
 
     public function index(Request $request)
     {
         
-        return view('template/' . $this->template . '.role.index')
+        return view('template/' . $this->template . '.periode.index')
         ->with(
             [
-              'title' => 'Data Role',
+              'title' => 'Data Periode',
               'template'=>'template/'.$this->template
             ]);
     }
 
-   
+ 
    
 }
