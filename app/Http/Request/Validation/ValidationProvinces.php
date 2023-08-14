@@ -4,22 +4,22 @@ namespace App\Http\Request\Validation;
 
 use Illuminate\Support\Facades\Validator;
 
-class ValidationMobil
+class ValidationProvinces
 {
     public static function validation($request)
     {
         $err = array();
 
         $fields = [
-            'merk'  => 'Merk',
-            'type' => 'Type',
+            'name'  => 'Nama',
+           
         ];
 
         $validator =  Validator::make(
             $request->all(),
             [
-                'merk'  => 'required|max:255',
-                'type'  => 'required',
+                'name'  => 'required'
+                
             ]
         );
 
@@ -28,14 +28,11 @@ class ValidationMobil
 
             $errors = $validator->errors();
 
-            if ($errors->has('merk')) {
-                $err['messages']['merk'] = $errors->first('merk');
+            if ($errors->has('name')) {
+                $err['messages']['name'] = $errors->first('name');
             }
 
-            if ($errors->has('type')) {
-                $err['messages']['type'] = $errors->first('type');
-            }
-
+            
 
 
             return $err;

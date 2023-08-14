@@ -9,6 +9,7 @@ use App\Http\Request\RequestPeriode;
 use App\Http\Request\Validation\ValidationPeriode;
 use App\Helpers\GeneralPaginate;
 use DB;
+use Auth;
 
 class PeriodeApiController extends Controller
 {
@@ -32,9 +33,20 @@ class PeriodeApiController extends Controller
     public function check(Request $request)
     {
 
-        $Data = Periode::orderBy('id', 'DESC')->get();
-        $periode = RequestPeriode::SelectAll($Data, $request);
-        return response()->json(['status' => true, 'periode' => $periode]);
+        $data =  DB::table('periode')->whereNotIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id', Auth::User()->daerah_id))->select('slug', 'name')->get();
+
+        $periode = RequestPeriode::SelectAll($data);
+        return response()->json($periode);
+    }
+
+
+    public function periode(Request $request)
+    {
+
+        $data =  DB::table('periode')->whereIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id', Auth::User()->daerah_id))->select('slug', 'name')->get();
+
+        $periode = RequestPeriode::SelectAll($data);
+        return response()->json($periode);
     }
 
 

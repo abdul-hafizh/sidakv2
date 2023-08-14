@@ -20,15 +20,12 @@ class AdminMiddleware
 
         if (isset($_COOKIE['access'])) {
 
-            if (Auth::check()) {
-
-                if ($_COOKIE['access'] != 'admin') {
-                    abort(404);
-                }
+            if ($_COOKIE['access'] != 'admin') {
+                abort(404);
             }
+           
         } else {
             Auth::logout();
-            unset($_COOKIE['access']);
             setcookie('access', '', -1, '/');
             setcookie('token', '', -1, '/');
             return redirect('login');

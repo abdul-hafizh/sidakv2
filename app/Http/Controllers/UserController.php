@@ -23,18 +23,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
        
-        // $data = User::orderBy('id', 'ASC')->paginate($this->perPage)->onEachSide(0);
-        // $result = RequestUser::GetDataAll($data,$this->perPage,$request);
-        $list_daerah = RequestDaerah::GetDaerahID();
+       
        
 
         return view('template/' . $this->template . '.user.index')
         ->with(
             [
-
-              // 'result' => $result,
-              'daerah' => $list_daerah,
-             // 'paginate' => $data->links('vendor.pagination.default'),   
               'title' => 'Data User',
               'template'=>'template/'.$this->template
             ]);
