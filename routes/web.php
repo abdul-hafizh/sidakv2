@@ -10,6 +10,8 @@ use App\Http\Controllers\PaguTargetController;
 use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RegencyController;
+use App\Http\Controllers\PeriodeController;
+
 
    
     Route::get('/', function () {
@@ -30,7 +32,8 @@ use App\Http\Controllers\RegencyController;
         Route::get('/apps', [SettingWebController::class,'index']);
 
         Route::get('/province', [ProvinceController::class,'index']); 
-        Route::get('/regency', [RegencyController::class,'index']);           
+        Route::get('/regency', [RegencyController::class,'index']);
+        Route::get('/periode', [PeriodeController::class,'index']);          
     });
 
     Route::middleware(['auth','pusat'])->group(function () {
@@ -50,13 +53,11 @@ use App\Http\Controllers\RegencyController;
 
     Route::get('/logout', function () {
 
-        if (isset($_COOKIE['access']))
-        {
             Auth::logout();
             setcookie('token', '', -1, '/');
             setcookie('access', '', -1, '/');
             return redirect('login');
-        }
+       
     });
 
 
