@@ -10,7 +10,6 @@ use App\Http\Controllers\PaguTargetController;
 use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RegencyController;
-
    
     Route::get('/', function () {
         return redirect('login');

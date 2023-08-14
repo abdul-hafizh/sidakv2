@@ -39,10 +39,11 @@ use App\Http\Controllers\API\DaerahApiController;
 
     Route::get('select-province', [DaerahApiController::class, 'listProvince']);
     Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
+    Route::get('select-periode', [PeriodeApiController::class, 'listAll']);
 
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
-
+   
      Route::get('profile', [AuthApiController::class, 'getAuthUser']);
      Route::get('user/menu', [AuthApiController::class, 'sidebar']);
  
@@ -82,10 +83,6 @@ use App\Http\Controllers\API\DaerahApiController;
      Route::post('regency/search', [RegencyApiController::class, 'search']);
      Route::post('regency/selected', [RegencyApiController::class, 'deleteSelected']);
      Route::delete('regency/{id}', [RegencyApiController::class, 'delete']);
-
-
- 
-
     Route::get('dashboard', [DashboardApiController::class, 'index']);
    
 

@@ -1,5 +1,3 @@
-    
-    
 <!-- Modal -->
 <div id="modal-add" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -78,9 +76,7 @@
                   <label>Konfirmasi Password </label>
                 <input type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password" >
                 <span id="password-confirmation-messages"></span>
-                </div>
-
-
+              </div>
        
       </div>
       <div class="modal-footer">
@@ -89,18 +85,13 @@
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
         <button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
       </div>
-    </form>
     </div>
 
-  </div>
-</div>
 
 
 
-
-<script type="text/javascript">
- $(function(){
-
+    <script type="text/javascript">
+      $(function() {
   
     
     $('.select').select2({
@@ -111,18 +102,28 @@
             dataType: 'json',
             //delay: 250, // Delay before sending the request (milliseconds)
             processResults: function(data) {
-                
-                // Transform the data to match Select2's expected format
-                return {
-                    results: data.map(function(item) {
-                        return { id: item.value, text: item.text };
-                    })
-                };
+
+              // Transform the data to match Select2's expected format
+              return {
+                results: data.map(function(item) {
+                  return {
+                    id: item.value,
+                    text: item.text
+                  };
+                })
+              };
             },
             cache: true // Cache the results to improve performance
-        },
-        minimumInputLength: 1 // Minimum number of characters required for a search
-    });
+          },
+          minimumInputLength: 1 // Minimum number of characters required for a search
+        });
+
+        $('.select2').on('select2:select', function(e) {
+          var selectedOption = e.params.data;
+          $('#daerah_id').val(selectedOption.id);
+        });
+
+        $("#simpan").click(() => {
 
     $('.select').on('select:select', function(e) {
         var selectedOption = e.params.data;
@@ -146,11 +147,10 @@
               'password':data[8].value,
               'password_confirmation':data[9].value,
           };
-
           $.ajax({
-            type:"POST",
-            url: BASE_URL+'/api/user',
-            data:form,
+            type: "POST",
+            url: BASE_URL + '/api/user',
+            data: form,
             cache: false,
             dataType: "json",
             success: (respons) =>{
@@ -190,6 +190,7 @@
                     $('#name-alert').removeClass('has-error');
                     $('#name-messages').removeClass('help-block').html('');
                 }
+              });
 
                  if(errors.messages.email)
                 {
@@ -265,16 +266,10 @@
                 }  
             }
           });
-     });
+        });
 
-  });
-  </script>
- 
-
-</script>  
-
- 
+      });
+    </script>
 
 
-    
- 
+    </script>
