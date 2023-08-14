@@ -83,10 +83,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('regency/search', [RegencyApiController::class, 'search']);
     Route::post('regency/selected', [RegencyApiController::class, 'deleteSelected']);
     Route::delete('regency/{id}', [RegencyApiController::class, 'delete']);
-
-
-
-
     Route::get('dashboard', [DashboardApiController::class, 'index']);
 
 

@@ -53,20 +53,22 @@ class RequestPeriode
       return $results;
    }
 
-
-   public static function SelectAll($periode)
+   public static function SelectAll($data, $request)
    {
-      $temp = array();
-      foreach ($periode as $key => $val) {
+      $__temp_ = array();
+
+      if ($request->type == 'perencanaan') {
+
+
+         $periode =  DB::table('periode')->whereNotIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id', Auth::User()->daerah_id))->select('slug', 'name')->get();
+
+         foreach ($periode as $key => $val) {
 
          $temp[$key]['value'] = (string)$val->slug;
          $temp[$key]['text'] = $val->name;
          $temp[$key]['pagu_apbn'] = RequestPeriode::Pagu('APBN', substr((string)$val->slug, 0, 4));
          $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
       }
-
-      return  $temp;
-
 
       return  $temp;
    }
