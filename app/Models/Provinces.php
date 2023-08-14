@@ -20,6 +20,7 @@ class Provinces extends Model
     public $fillable = [
      
         'name',
+        'created_by',
        
        
     ];

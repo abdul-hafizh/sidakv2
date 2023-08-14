@@ -22,14 +22,11 @@ class ProvinceMiddleware
         if(isset($_COOKIE['access']))
         {
            
-            if (Auth::check())
-            {   
-                if($_COOKIE['access'] != 'province')
-                {
-                   abort(404); 
-                }
+            if($_COOKIE['access'] != 'province')
+            {
+               abort(404); 
             }
-            
+ 
         }else{
 
             Auth::logout();

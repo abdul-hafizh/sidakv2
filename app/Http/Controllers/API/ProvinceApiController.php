@@ -4,18 +4,13 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\Mobil;
-
-use App\Http\Request\RequestMenus;
-use App\Http\Request\RequestMenuRoles;
-use App\Http\Request\RequestMobil;
-use App\Http\Request\Search\SearchRoles;
-use App\Http\Request\Validation\ValidationMobil;
+use App\Http\Request\RequestProvinces;
+use App\Http\Request\Validation\ValidationProvinces;
+use App\Models\Provinces;
 use App\Helpers\GeneralPaginate;
 use DB;
 
-class MobilApiController extends Controller
+class ProvinceApiController extends Controller
 {
 
 
@@ -27,9 +22,8 @@ class MobilApiController extends Controller
     public function index(Request $request)
     {
         $paginate = GeneralPaginate::limit();
-        $Data = Mobil::orderBy('id', 'DESC')->paginate($paginate);
-        $description = '';
-        $_res = RequestMobil::GetDataAll($Data, $this->perPage, $request, $description);
+        $Data = Provinces::orderBy('created_at', 'DESC')->paginate($paginate);
+        $_res = RequestProvinces::GetDataAll($Data, $this->perPage, $request);
         return response()->json($_res);
     }
 
@@ -37,15 +31,15 @@ class MobilApiController extends Controller
     public function store(Request $request)
     {
 
-        $validation = ValidationMobil::validation($request);
-        if ($validation != null || $validation != "") {
+        $validation = ValidationProvinces::validation($request);
+        if ($validation) {
             return response()->json($validation, 400);
         } else {
 
 
-            $insert = RequestMobil::fieldsData($request);
+            $insert = RequestProvinces::fieldsData($request);
             //create menu
-            $saveData = Mobil::create($insert);
+            $saveData = Provinces::create($insert);
             //result
             return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Insert data sucessfully']);
         }
@@ -63,7 +57,7 @@ class MobilApiController extends Controller
         $column_search  = array('name', 'created_by');
 
         $i = 0;
-        $query  = Roles::orderBy('id', 'DESC');
+        $query  = Provinces::orderBy('id', 'DESC');
         foreach ($column_search as $item) {
             if ($search) {
                 if ($i === 0) {
@@ -77,19 +71,14 @@ class MobilApiController extends Controller
 
         $Data = $query->paginate($this->perPage);
         $description = $search;
-        $_res = RequestRoles::GetDataAll($Data, $this->perPage, $request, $description);
+        $_res = RequestProvinces::GetDataAll($Data, $this->perPage, $request, $description);
 
 
         return response()->json($_res);
     }
 
 
-    public function edit($id)
-    {
-        $Data = Roles::find($id);
-        $_res = RequestRoles::GetDataID($Data);
-        return response()->json($_res);
-    }
+   
 
 
 
@@ -97,14 +86,14 @@ class MobilApiController extends Controller
     public function update($id, Request $request)
     {
 
-        $validation = ValidationRoles::validation($request);
+        $validation = ValidationProvinces::validation($request);
         if ($validation != null || $validation != "") {
             return response()->json($validation, 400);
         } else {
 
-            $update = RequestRoles::fieldsData($request);
+            $update = RequestProvinces::fieldsData($request);
             //update account
-            $UpdateData = Roles::where('id', $id)->update($update);
+            $UpdateData = Provinces::where('id', $id)->update($update);
             //result
             return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
         }
@@ -114,7 +103,7 @@ class MobilApiController extends Controller
     {
         $messages['messages'] = false;
         foreach ($request->data as $key) {
-            $results = Roles::where('id', (int)$key)->delete();
+            $results = Provinces::where('id', (int)$key)->delete();
         }
 
         if ($results) {
@@ -127,7 +116,7 @@ class MobilApiController extends Controller
     public function delete($id)
     {
         $messages['messages'] = false;
-        $_res = Roles::find($id);
+        $_res = Provinces::find($id);
 
         if (empty($_res)) {
             return response()->json(['messages' => false]);

@@ -53,7 +53,6 @@ class RequestPeriode
       return $results;
    }
 
-
    public static function SelectAll($data, $request)
    {
       $__temp_ = array();
@@ -76,7 +75,6 @@ class RequestPeriode
             $temp[$key]['text'] = $val->name;
          }
       }
-
 
       return  $temp;
    }

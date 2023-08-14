@@ -62,20 +62,39 @@ class UserApiController extends Controller
     
     public function store(Request $request)
     {
-        $validation = ValidationUser::validation($request);
+        $validation = ValidationUser::validationInsert($request);
         if($validation)
         {
           return response()->json($validation,400);  
         }else{
 
             
-           $insert = RequestUser::fieldsData($request);  
+           $insert = RequestUser::fieldsData($request,'insert');  
             //create menu
            $saveData = User::create($insert);
             //result
             return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);    
             
         } 
+
+    }
+
+     public function update($id,Request $request){
+     
+        $validation = ValidationUser::validationUpdate($request);
+        if($validation !=null || $validation !="")
+        {
+          return response()->json($validation,400);  
+        }else{
+            
+               $update = RequestUser::fieldsData($request,'update');
+                //update account
+               $UpdateData = User::where('id',$id)->update($update);
+                //result
+               return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+            
+          
+        }   
 
     }
 
