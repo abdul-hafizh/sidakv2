@@ -1,20 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\API;
+
+use Auth;
+use File;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Request\validation\ValidationPerencanaan;
+use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPerencanaan;
 use App\Helpers\GeneralPaginate;
 use App\Models\Perencanaan;
-use App\Models\RoleUser;
-use Auth;
-use File;
 
 class PerencanaanApiController extends Controller
 {
-
-   
     public function __construct()
     {   
         $this->perPage = GeneralPaginate::limit();
@@ -22,23 +21,30 @@ class PerencanaanApiController extends Controller
     }
 
     public function index(Request $request)
-    {
-        
-        $data = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('id', 'DESC')->paginate($this->perPage);
-      
+    {                
+
+        $access = RequestAuth::access();
+        $data = Perencanaan::orderBy('id', 'DESC')->paginate($this->perPage);              
         $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
+
+        if($access == 'daerah' || $access == 'province') {
+            $data = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('id', 'DESC')->paginate($this->perPage);              
+            $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);            
+        } 
+
         return response()->json($result);
-
+        
     }
-
     
-    public function search(Request $request){
+    public function search(Request $request)
+    {
         $search = $request->search;
         $_res = array();
         $column_search  = array('periode_id');
 
         $i = 0;
         $query  = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('id','DESC');
+
         foreach ($column_search as $item)
         {
             if ($search) 
@@ -49,41 +55,40 @@ class PerencanaanApiController extends Controller
                    $query->orWhere($item,'LIKE','%'.$search.'%');
                 }   
             }
+
             $i++;
         }
        
         $data = $query->paginate($this->perPage);
         $description = $search;
         $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
+
         return response()->json($result);
 
     }
-    
-
-   
-
-
-
        
     public function store(Request $request){
 
-       $validation = ValidationPerencanaan::validation($request);
+        $validation = ValidationPerencanaan::validation($request);
+
         if($validation)
         {
-          return response()->json($validation,400);  
-        }else{
+          
+            return response()->json($validation, 400);  
+
+        } else {
             
-           $insert = RequestPerencanaan::fieldsData($request);  
-            //create menu
-           $saveData = Perencanaan::create($insert);
-            //result
-            return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);    
+            $insert = RequestPerencanaan::fieldsData($request);  
+            $saveData = Perencanaan::create($insert);
+
+            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);    
             
         } 
     }
 
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
+
         foreach($request->data as $key)
         {
             $results = Perencanaan::where('id',(int)$key)->delete();
@@ -97,32 +102,29 @@ class PerencanaanApiController extends Controller
     
     }
 
-    
-
     public function delete($id){
 
-       $messages['messages'] = false;
+        $messages['messages'] = false;
         $_res = Perencanaan::find($id);
           
         if(empty($_res)){
+            
             return response()->json(['messages' => false]);
-        }else{
 
+        } else {
 
             if(file_exists($this->UploadFolder.$_res['lap_rencana'])) {
                 File::delete($this->UploadFolder.$_res['lap_rencana']);
             } 
         }
+
         $results = $_res->delete();
+
         if($results){
             $messages['messages'] = true;
         }
+        
         return response()->json($messages);
+
     }
-    
-
-
-    
-
-
 }    

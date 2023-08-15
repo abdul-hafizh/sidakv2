@@ -33,7 +33,7 @@
     <link href="{{ config('app.url').$template.'/css/scrollbar.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/plugin/select2/css/select2.min.css' }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/sweetalert2.min.css'}}">
-
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
 
@@ -98,6 +98,11 @@
     <script src="{{ config('app.url').$template.'/js/scrollbar.js' }}"></script>
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script src="{{ config('app.url').$template.'/plugin/select2/js/select2.min.js' }}"></script>
+    <script>
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
     <script type="text/javascript">
         const apps = localStorage.getItem('apps');
         const template = JSON.parse(apps);

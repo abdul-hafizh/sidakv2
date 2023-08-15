@@ -3,18 +3,12 @@
 namespace App\Models;
 
 use Eloquent as Model;
-// use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Uuids;
 
 class Perencanaan extends Model
 {
-     // use SoftDeletes;
     use Uuids;
     public $table = 'perencanaan';
-    
-
-   // protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'daerah_id',
@@ -63,11 +57,6 @@ class Perencanaan extends Model
         'request_edit',
         'status',
         'lap_rencana',
-        'created_by',
-       
+        'created_by',       
     ];
-
-
-    
-    
 }

@@ -6,6 +6,7 @@ use Auth;
 use App\Helpers\GeneralHelpers;
 use App\Models\Regencies;
 use Illuminate\Support\Str;
+use App\Http\Request\RequestDaerah;
 
 class RequestRegency
 {
@@ -23,6 +24,7 @@ class RequestRegency
       $temp[$key]['name'] = $val->name;
       $temp[$key]['province_id'] = $val->province_id;
       $temp[$key]['province_name'] = $val->province->name;
+      $temp[$key]['deleted'] = RequestDaerah::checkValidate($val->id);
       $temp[$key]['created_by'] = $val->created_by;
       $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
     }

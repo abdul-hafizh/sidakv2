@@ -89,57 +89,51 @@
 
 
 
+
     <script type="text/javascript">
       $(function() {
 
 
-      <
-      script type = "text/javascript" >
-        $(function() {
+        $('.select').select2({
+          data: [{
+            id: '',
+            text: ''
+          }],
+          placeholder: 'Pilih Daerah',
+          ajax: {
+            url: BASE_URL + '/api/select-daerah', // URL to your server-side endpoint
+            dataType: 'json',
+            //delay: 250, // Delay before sending the request (milliseconds)
+            processResults: function(data) {
 
-
-            $('.select').select2({
-                  data: [{
-                    id: '',
-                    text: ''
-                  }],
-                  placeholder: 'Pilih Daerah',
-                  ajax: {
-                    url: BASE_URL + '/api/select-daerah', // URL to your server-side endpoint
-                    dataType: 'json',
-                    //delay: 250, // Delay before sending the request (milliseconds)
-                    processResults: function(data) {
-
-                      // Transform the data to match Select2's expected format
-                      return {
-                        results: data.map(function(item) {
-                          return {
-                            id: item.value,
-                            text: item.text
-                          };
-                        })
-                      };
-                    })
-                };
-              },
-              cache: true // Cache the results to improve performance
+              // Transform the data to match Select2's expected format
+              return {
+                results: data.map(function(item) {
+                  return {
+                    id: item.value,
+                    text: item.text
+                  };
+                })
+              };
+            },
+            cache: true // Cache the results to improve performance
           },
           minimumInputLength: 1 // Minimum number of characters required for a search
         });
 
-      $('.select2').on('select2:select', function(e) {
-      var selectedOption = e.params.data;
-      $('#daerah_id').val(selectedOption.id);
-      });
+        $('.select2').on('select2:select', function(e) {
+          var selectedOption = e.params.data;
+          $('#daerah_id').val(selectedOption.id);
+        });
 
-      $("#simpan").click(() => {
 
-      $('.select').on('select:select', function(e) {
-        var selectedOption = e.params.data;
-        $('#daerah_id').val(selectedOption.id);
-      });
 
-      $("#simpan").click(() => {
+        $('.select').on('select:select', function(e) {
+          var selectedOption = e.params.data;
+          $('#daerah_id').val(selectedOption.id);
+        });
+
+        $("#simpan").click(() => {
           $("#simpan").hide();
           $("#load-simpan").show();
 
@@ -157,47 +151,24 @@
             'password_confirmation': data[9].value,
           };
           $.ajax({
-                type: "POST",
-                url: BASE_URL + '/api/user',
-                data: form,
-                cache: false,
-                dataType: "json",
-                success: (respons) => {
-                  Swal.fire({
-                    title: 'Sukses!',
-                    text: 'Berhasil Disimpan',
-                    icon: 'success',
-                    confirmButtonText: 'OK'
+            type: "POST",
+            url: BASE_URL + '/api/user',
+            data: form,
+            cache: false,
+            dataType: "json",
+            success: (respons) => {
+              Swal.fire({
+                title: 'Sukses!',
+                text: 'Berhasil Disimpan',
+                icon: 'success',
+                confirmButtonText: 'OK'
 
-                  }).then((result) => {
-                    if (result.isConfirmed) {
-                      // User clicked "Yes, proceed!" button
-                      window.location.replace('/user');
-                    }
-                  });
-
-                  //
-                },
-                error: (respons) => {
-                  var errors = respons.responseJSON;
-                  $("#simpan").show();
-                  $("#load-simpan").hide();
-                  if (errors.messages.username) {
-                    $('#username-alert').addClass('has-error');
-                    $('#username-messages').addClass('help-block').html('<strong>' + errors.messages.username + '</strong>');
-                  } else {
-                    $('#username-alert').removeClass('has-error');
-                    $('#username-messages').removeClass('help-block').html('');
-                  }
-
-                  if (errors.messages.name) {
-                    $('#name-alert').addClass('has-error');
-                    $('#name-messages').addClass('help-block').html('<strong>' + errors.messages.name + '</strong>');
-                  } else {
-                    $('#name-alert').removeClass('has-error');
-                    $('#name-messages').removeClass('help-block').html('');
-                  }
-                });
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  // User clicked "Yes, proceed!" button
+                  window.location.replace('/user');
+                }
+              });
 
               //
             },
@@ -220,75 +191,75 @@
                 $('#name-alert').removeClass('has-error');
                 $('#name-messages').removeClass('help-block').html('');
               }
-            });
 
-        if (errors.messages.email) {
-          $('#email-alert').addClass('has-error');
-          $('#email-messages').addClass('help-block').html('<strong>' + errors.messages.email + '</strong>');
-        } else {
-          $('#email-alert').removeClass('has-error');
-          $('#email-messages').removeClass('help-block').html('');
-        }
 
-        if (errors.messages.phone) {
-          $('#phone-alert').addClass('has-error');
-          $('#phone-messages').addClass('help-block').html('<strong>' + errors.messages.phone + '</strong>');
-        } else {
-          $('#phone-alert').removeClass('has-error');
-          $('#phone-messages').removeClass('help-block').html('');
-        }
+              if (errors.messages.email) {
+                $('#email-alert').addClass('has-error');
+                $('#email-messages').addClass('help-block').html('<strong>' + errors.messages.email + '</strong>');
+              } else {
+                $('#email-alert').removeClass('has-error');
+                $('#email-messages').removeClass('help-block').html('');
+              }
 
-        if (errors.messages.nip) {
-          $('#nip-alert').addClass('has-error');
-          $('#nip-messages').addClass('help-block').html('<strong>' + errors.messages.nip + '</strong>');
-        } else {
-          $('#nip-alert').removeClass('has-error');
-          $('#nip-messages').removeClass('help-block').html('');
-        }
+              if (errors.messages.phone) {
+                $('#phone-alert').addClass('has-error');
+                $('#phone-messages').addClass('help-block').html('<strong>' + errors.messages.phone + '</strong>');
+              } else {
+                $('#phone-alert').removeClass('has-error');
+                $('#phone-messages').removeClass('help-block').html('');
+              }
 
-        if (errors.messages.daerah_id) {
-          $('.select2-selection').addClass('form-control');
-          $('#daerah-alert').addClass('has-error');
-          $('#daerah-messages').addClass('help-block').html('<strong>' + errors.messages.daerah_id + '</strong>');
-        } else {
-          $('#daerah-alert').removeClass('has-error');
-          $('#daerah-messages').removeClass('help-block').html('');
-        }
+              if (errors.messages.nip) {
+                $('#nip-alert').addClass('has-error');
+                $('#nip-messages').addClass('help-block').html('<strong>' + errors.messages.nip + '</strong>');
+              } else {
+                $('#nip-alert').removeClass('has-error');
+                $('#nip-messages').removeClass('help-block').html('');
+              }
 
-        if (errors.messages.leader_name) {
-          $('#leader-name-alert').addClass('has-error');
-          $('#leader-name-messages').addClass('help-block').html('<strong>' + errors.messages.leader_name + '</strong>');
-        } else {
-          $('#leader-name-alert').removeClass('has-error');
-          $('#leader-name-messages').removeClass('help-block').html('');
-        }
+              if (errors.messages.daerah_id) {
+                $('.select2-selection').addClass('form-control');
+                $('#daerah-alert').addClass('has-error');
+                $('#daerah-messages').addClass('help-block').html('<strong>' + errors.messages.daerah_id + '</strong>');
+              } else {
+                $('#daerah-alert').removeClass('has-error');
+                $('#daerah-messages').removeClass('help-block').html('');
+              }
 
-        if (errors.messages.leader_nip) {
-          $('#leader-nip-alert').addClass('has-error');
-          $('#leader-nip-messages').addClass('help-block').html('<strong>' + errors.messages.leader_nip + '</strong>');
-        } else {
-          $('#leader-nip-alert').removeClass('has-error');
-          $('#leader-nip-messages').removeClass('help-block').html('');
-        }
+              if (errors.messages.leader_name) {
+                $('#leader-name-alert').addClass('has-error');
+                $('#leader-name-messages').addClass('help-block').html('<strong>' + errors.messages.leader_name + '</strong>');
+              } else {
+                $('#leader-name-alert').removeClass('has-error');
+                $('#leader-name-messages').removeClass('help-block').html('');
+              }
 
-        if (errors.messages.password) {
-          $('#password-alert').addClass('has-error');
-          $('#password-messages').addClass('help-block').html('<strong>' + errors.messages.password + '</strong>');
-        } else {
-          $('#password-alert').removeClass('has-error');
-          $('#password-messages').removeClass('help-block').html('');
-        }
+              if (errors.messages.leader_nip) {
+                $('#leader-nip-alert').addClass('has-error');
+                $('#leader-nip-messages').addClass('help-block').html('<strong>' + errors.messages.leader_nip + '</strong>');
+              } else {
+                $('#leader-nip-alert').removeClass('has-error');
+                $('#leader-nip-messages').removeClass('help-block').html('');
+              }
 
-        if (errors.messages.password_confirmation) {
-          $('#password-confirmation-alert').addClass('has-error');
-          $('#password-confirmation-messages').addClass('help-block').html('<strong>' + errors.messages.password_confirmation + '</strong>');
-        } else {
-          $('#password-confirmation-alert').removeClass('has-error');
-          $('#password-confirmation-messages').removeClass('help-block').html('');
-        }
-      }
-      });
-      });
+              if (errors.messages.password) {
+                $('#password-alert').addClass('has-error');
+                $('#password-messages').addClass('help-block').html('<strong>' + errors.messages.password + '</strong>');
+              } else {
+                $('#password-alert').removeClass('has-error');
+                $('#password-messages').removeClass('help-block').html('');
+              }
+
+              if (errors.messages.password_confirmation) {
+                $('#password-confirmation-alert').addClass('has-error');
+                $('#password-confirmation-messages').addClass('help-block').html('<strong>' + errors.messages.password_confirmation + '</strong>');
+              } else {
+                $('#password-confirmation-alert').removeClass('has-error');
+                $('#password-confirmation-messages').removeClass('help-block').html('');
+              }
+            }
+          });
+        });
 
       });
     </script>
