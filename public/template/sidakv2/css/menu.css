@@ -1,0 +1,258 @@
+
+
+.fa-img-home{
+    background: url('../img/menu/home.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-home:hover{
+    background: url('../img/menu/hover/home.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-ma-data{
+    background: url('../img/menu/master_data.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-ma-data:hover{
+    background: url('../img/menu/hover/master_data.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-province{
+    background: url('../img/menu/provinsi.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-province:hover{
+    background: url('../img/menu/hover/provinsi.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-regency{
+    background: url('../img/menu/kabupaten.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-regency:hover{
+    background: url('../img/menu/hover/kabupaten.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+
+.fa-img-kendala{
+    background: url('../img/menu/kendala.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-kendala:hover{
+    background: url('../img/menu/hover/kendala.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-forum{
+    background: url('../img/menu/forum.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-forum:hover{
+    background: url('../img/menu/hover/forum.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-status{
+    background: url('../img/menu/access.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-status:hover{
+    background: url('../img/menu/hover/access.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-ma-user{
+    background: url('../img/menu/user_management.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-ma-user:hover{
+    background: url('../img/menu/hover/user_management.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-user{
+    background: url('../img/menu/user.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-user:hover{
+    background: url('../img/menu/hover/user.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-role{
+    background: url('../img/menu/role.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-user:hover{
+    background: url('../img/menu/hover/role.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-pagu{
+    background: url('../img/menu/pagu_target.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-pagu:hover{
+    background: url('../img/menu/hover/pagu_target.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-monitoring{
+    background: url('../img/menu/rekapitulasi.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-monitoring:hover{
+    background: url('../img/menu/hover/rekapitulasi.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-perencanaan{
+    background: url('../img/menu/perencanaan.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-perencanaan:hover{
+    background: url('../img/menu/hover/perencanaan.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-pengawasan{
+    background: url('../img/menu/pengawasan.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-pengawasan:hover{
+    background: url('../img/menu/hover/pengawasan.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-bimsos{
+    background: url('../img/menu/bimbingan.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-bimsos:hover{
+    background: url('../img/menu/hover/bimbingan.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+
+.fa-img-penyelesaian{
+    background: url('../img/menu/penyelesaian_masalah.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-penyelesaian:hover{
+    background: url('../img/menu/hover/penyelesaian_masalah.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}
+
+.fa-img-promosi{
+    background: url('../img/menu/promosi.png');
+    background-repeat: no-repeat;
+    width: 100%;
+    padding: 2px 0px 4px;
+}
+
+.fa-img-promosi:hover{
+    background: url('../img/menu/hover/promosi.png');
+    background-repeat: no-repeat;
+    width: 24px;
+    height: 24px;
+
+}

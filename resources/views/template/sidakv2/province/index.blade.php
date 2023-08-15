@@ -4,7 +4,7 @@
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
+				<input type="text" id="search-input" placeholder="Cari" class="padding-search form-control height-35 border-radius-left">
 				<span class="input-group-btn">
 				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
@@ -18,15 +18,17 @@
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
-	
-				
-				<!-- <button type="button" class="btn btn-primary">
-					<i aria-hidden="true" class="fa fa-search"></i> Search
-				</button> -->
 			</div>
 
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+					 Refresh
+				</button>
+			</div>
+
+
 			<div class="pull-left padding-9-0">
-                <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
+                <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add" >
 				 Tambah Data
 				</button> 
 		    </div>		
@@ -50,11 +52,11 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th><input id="select-all" type="checkbox"></th>
-							<th><span class="border-left-table">No</span>  </th>
-							<th><span class="border-left-table"> Nama </span></th>
+							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
+							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
 							
-							<th> Options </th>
+							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -83,17 +85,24 @@
     var list = [];
 
 
-     // "Select All" checkbox
+    // "Select All" checkbox
     $('#select-all').on('change', function() {
-        $('.item-checkbox').prop('checked', $(this).is(':checked'));
-
-        const checkedCount = $('.item-checkbox:checked').length;
-         if(checkedCount >0)
-         {
+        var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
+        nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
+        const checkedCount =  $('.item-checkbox:checked').length;
+        if(checkedCount >0)
+        {
          	$('#delete-selected').prop("disabled", false);
-         }else{
+        }else{
          	$('#delete-selected').prop("disabled", true);
-         }
+        }
+    });
+
+     // Refresh selected button
+    $('#refresh').on('click', function() {
+    	
+        fetchData(page);
+        $('#search-input').val('');
     });
 
     // Delete selected button
@@ -105,6 +114,13 @@
 
         // Send selected IDs for deletion (e.g., via AJAX)
         deleteItems(selectedIds);
+    });
+
+     // Refresh selected button
+    $('#refresh').on('click', function() {
+    	
+        fetchData(page);
+        $('#search-input').val('');
     });
 
     // Individual item checkboxes
@@ -141,7 +157,11 @@
  		 
  		 if(search)
  		 { 	
-	 		 
+	 		 const content = $('#content');
+        	 content.empty();
+    	 	 let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
 	         $.ajax({
 	            url: BASE_URL + `/api/province/search?page=${page}&per_page=${itemsPerPage}`,
 	            data:{'search':search},
@@ -162,6 +182,14 @@
 
     // Function to fetch data from the API
     function fetchData(page) {
+
+    	 const content = $('#content');
+           content.empty();
+    	  
+    	 	 let row = ``;
+              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
+              
         $.ajax({
             url: BASE_URL+ `/api/province?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
@@ -190,14 +218,14 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-               row +=`<td>${item.number}</td>`;
-               row +=`<td>${item.name}</td>`;
+               row +=`<td><input class="item-checkbox" ${item.deleted} data-id="${item.id}"  type="checkbox"></td></td>`;
+               row +=`<td class="padding-text-table">${item.number}</td>`;
+               row +=`<td class="padding-text-table">${item.name}</td>`;
        
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                 row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                 row +=`<button    id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
@@ -207,7 +235,7 @@
 
        
 
-                row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                row +=`<button id="Destroy" data-placement="top" ${item.deleted} data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -215,19 +243,19 @@
 
             content.append(row);
 
-
+            
 
 
         });
 
         $('.item-checkbox').on('click', function() {
-         const checkedCount = $('.item-checkbox:checked').length;
-         if(checkedCount ==true)
-         {
-           $('#delete-selected').prop("disabled", false);
-         }else{
-           $('#delete-selected').prop("disabled", true);
-         } 	
+	         const checkedCount = $('.item-checkbox:checked').length;
+	         if(checkedCount>0)
+	         {
+	           $('#delete-selected').prop("disabled", false);
+	         }else{
+	           $('#delete-selected').prop("disabled", true);
+	         } 	
    		});
 
 

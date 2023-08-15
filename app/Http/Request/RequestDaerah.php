@@ -4,6 +4,7 @@ namespace App\Http\Request;
 
 use App\Models\Provinces;
 use App\Models\Regencies;
+use App\Models\User;
 use DB;
 
 class RequestDaerah
@@ -39,6 +40,19 @@ class RequestDaerah
 
         return $result;
     }
+
+    public static function checkValidate($daerah_id){
+
+       $data = User::where('daerah_id',$daerah_id)->first();
+       if($data)
+       {
+          $result = 'disabled';
+       }else{
+          $result = '';
+       } 
+
+       return $result;
+  }
 
    
 

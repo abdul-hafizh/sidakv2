@@ -8,7 +8,8 @@ use App\Models\Periode;
 use App\Http\Request\RequestPeriode;
 use App\Http\Request\Validation\ValidationPeriode;
 use App\Helpers\GeneralPaginate;
-
+use Auth;
+use DB;
 
 class PeriodeApiController extends Controller
 {
@@ -29,10 +30,20 @@ class PeriodeApiController extends Controller
 
 
 
-    public function check(Request $request)
+    public function listAll(Request $request)
     {
-       
-        $data =  DB::table('periode')->whereNotIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id',Auth::User()->daerah_id))->select('slug','name')->get();
+
+        $data =  DB::table('periode as a')
+                 ->select('a.slug','a.year')
+                 ->where('a.status','Y')
+                 ->groupBy('a.year')
+                 ->whereNotIn(
+                    'a.year', DB::table('perencanaan as c')
+                       ->select(DB::raw("LEFT(c.periode_id,4) AS periode_id"))
+                       ->where('c.daerah_id',Auth::User()->daerah_id)
+
+                    )
+                 ->get();
         
         $periode = RequestPeriode::SelectAll($data); 
         return response()->json($periode);
@@ -43,11 +54,19 @@ class PeriodeApiController extends Controller
     public function periode(Request $request)
     {
        
-        $data =  DB::table('periode')->whereIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id',Auth::User()->daerah_id))->select('slug','name')->get();
+        $data =  DB::table('periode')
+                 ->select('slug','year')
+                 ->where('status','Y')
+                 ->whereIn(
+                    'slug', DB::table('perencanaan')
+                    ->select('periode_id')->where('daerah_id',Auth::User()->daerah_id)
+                    )
+                 ->groupBy('year')
+                   ->get();
        
-        $Data = Periode::orderBy('id', 'DESC')->get();
-        $periode = RequestPeriode::SelectAll($Data, $request);
-        return response()->json(['status' => true, 'periode' => $periode]);
+      
+        $periode = RequestPeriode::SelectAll($data);
+        return response()->json($periode);
     }
 
 
@@ -56,7 +75,7 @@ class PeriodeApiController extends Controller
     {
 
         $validation = ValidationPeriode::validation($request);
-        if ($validation != null || $validation != "") {
+        if ($validation) {
             return response()->json($validation, 400);
         } else {
 
@@ -72,7 +91,7 @@ class PeriodeApiController extends Controller
     {
 
         $validation = ValidationPeriode::validation($request);
-        if ($validation != null || $validation != "") {
+        if ($validation) {
             return response()->json($validation, 400);
         } else {
 
@@ -142,5 +161,7 @@ class PeriodeApiController extends Controller
         }
         return response()->json($messages);
     }
+
+}    
 
 

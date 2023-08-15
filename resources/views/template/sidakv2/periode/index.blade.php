@@ -4,7 +4,7 @@
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
+				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
 				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
@@ -18,11 +18,13 @@
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
-	
-				
-				<!-- <button type="button" class="btn btn-primary">
-					<i aria-hidden="true" class="fa fa-search"></i> Search
-				</button> -->
+
+			</div>
+
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+					 Refresh
+				</button>
 			</div>
 
 			<div class="pull-left padding-9-0">
@@ -50,13 +52,13 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th><input id="select-all" type="checkbox"></th>
-							<th><span class="border-left-table">No</span>  </th>
-							<th><span class="border-left-table"> Nama </span></th>
-							<th><span class="border-left-table"> Semester </span></th>
-							<th><span class="border-left-table"> Tahun </span></th>
-							<th><span class="border-left-table"> Status </span></th> 
-							<th> Options </th>
+							<th><input id="select-all" class="span-title" type="checkbox"></th>
+							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th><div class="split-table"></div><span class="span-title"> Nama </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Semester </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Tahun </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Status </span></th> 
+							<th> Aksi </th>
 						</tr>
 					</thead>
 
@@ -98,6 +100,13 @@
          	$('#delete-selected').prop("disabled", true);
          } 
 
+    });
+
+     // Refresh selected button
+    $('#refresh').on('click', function() {
+    	
+        fetchData(page);
+        $('#search-input').val('');
     });
 
     // Delete selected button
@@ -145,7 +154,11 @@
  		 
  		 if(search)
  		 { 	
-	 		 
+	 		 const content = $('#content');
+        	 content.empty();
+    	 	 let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
 	         $.ajax({
 	            url: BASE_URL + `/api/periode/search?page=${page}&per_page=${itemsPerPage}`,
 	            data:{'search':search},
@@ -166,8 +179,14 @@
 
     // Function to fetch data from the API
     function fetchData(page) {
-    	const content = $('#content');
-           content.empty();
+    	  
+		const content = $('#content');
+		content.empty();
+
+		let row = ``;
+		row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+		content.append(row);
+
         $.ajax({
             url: BASE_URL+ `/api/periode?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
@@ -199,13 +218,13 @@
                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
                row +=`<td>${item.number}</td>`;
                row +=`<td>${item.name}</td>`;
-               row +=`<td>${item.semester}</td>`;
+               row +=`<td>${item.semester_text}</td>`;
                row +=`<td>${item.year}</td>`;
                row +=`<td>${item.status}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
@@ -215,7 +234,7 @@
 
        
 
-                row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -230,7 +249,7 @@
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
-	         if(checkedCount ==true)
+	         if(checkedCount>0)
 	         {
 	           $('#delete-selected').prop("disabled", false);
 	         }else{
@@ -243,8 +262,7 @@
              
             let index = e.currentTarget.dataset.param_id;
             const item = list[index];
-              
-		  
+            console.log(item)
             
             let row = ``;
             row +=`<div class="modal-dialog">`;
@@ -270,8 +288,17 @@
 					              row +=`<label>Semester</label>`;
 					              row +=`<select id="semester-`+ item.id +`" class="form-control" name="semester">`;
 					                  row +=`<option value="">Pilih Semester</option>`;
-					                  row +=`<option value="01">Semester 1</option>`;
-					                  row +=`<option value="02">Semester 2</option>`;
+					                 if(item.semester_value =='01')
+					                     {
+                                              row +=`<option value="01" selected>Semester 01</option>`;
+                                              row +=`<option value="02">Semester 02</option>`;
+					                     }else if(item.semester_value =='02'){
+					                     	  row +=`<option value="01" >Semester 01</option>`;
+                                              row +=`<option value="02" selected>Semester 02</option>`;
+					                     }else{
+					                     	    row +=`<option value="01" >Semester 01</option>`;
+                                              row +=`<option value="02" >Semester 02</option>`;
+					                     }
 					              row +=`</select>`;
 					              row +=`<span id="semester-messages-`+ item.id +`"></span>`;
 					            row +=`</div>`;
@@ -283,18 +310,31 @@
 					            row +=`</div>`;
 
 
-				                 row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input  type="radio" name="status" id="status-`+ item.id +`" value="Y" >`;
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input   type="radio" name="status" id="status-`+ item.id +`" value="N">`;
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
+			                    row +=`<div class="radio">`;
+				                    row +=`<label>`;
+				                    if(item.status_ori =='Y')
+				                    {
+				                        row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
+				                    }else{
+				                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
+				                    } 	
+				                 
+				                      row +=`Aktif`;
+				                    row +=`</label>`;
+				                row +=`</div>`;
+				                row +=`<div class="radio">`;
+				                    row +=`<label>`;
+				                      if(item.status_ori =='N')
+				                    {
+				                        row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
+				                    }else{
+				                    	row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
+				                    } 
+
+				                     
+				                     row +=`Non Aktif`;
+				                    row +=`</label>`;
+				                row +=`</div>`;
 
 
 
@@ -313,10 +353,7 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ item.id).html(row); 
-
-            $('#semester-'+item.id).append(new Option(item.semester_text, item.semester_value, true, true));   
-
-            $('#status-'+ item.id).prop('checked', true);     
+                
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
@@ -324,7 +361,7 @@
 	              $("#update").hide();
 	              $("#load-simpan").show();
 	              
-		          var form = {'name':data[0].value,'status':data[1].value};
+		          var form = {'name':data[0].value,'semester':data[1].value,'year':data[2].value,'status':data[3].value};
 
 
 
@@ -344,7 +381,7 @@
 			                    }).then((result) => {
 			                        if (result.isConfirmed) {
 			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/role');
+			                            window.location.replace('/periode');
 			                        }
 			                    });
 
@@ -364,9 +401,23 @@
 			                    $('#name-messages-'+id).removeClass('help-block').html('');
 			                }
 
-			                
+			                if(errors.messages.semester)
+			                {
+			                     $('#semester-alert-'+id).addClass('has-error');
+			                     $('#semester-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.semester +'</strong>');
+			                }else{
+			                    $('#semester-alert-'+id).removeClass('has-error');
+			                    $('#semester-messages-'+id).removeClass('help-block').html('');
+			                }
 
-			               
+			                if(errors.messages.year)
+			                {
+			                     $('#year-alert-'+id).addClass('has-error');
+			                     $('#year-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.year +'</strong>');
+			                }else{
+			                    $('#year-alert-'+id).removeClass('has-error');
+			                    $('#year-messages-'+id).removeClass('help-block').html('');
+			                }
 
 			                
 			            }
