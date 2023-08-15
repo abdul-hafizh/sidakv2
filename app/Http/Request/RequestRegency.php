@@ -21,6 +21,7 @@ class RequestRegency
       $temp[$key]['number'] = $numberNext++;
       $temp[$key]['id'] = $val->id;
       $temp[$key]['name'] = $val->name;
+      $temp[$key]['province_id'] = $val->province_id;
       $temp[$key]['province_name'] = $val->province->name;
       $temp[$key]['created_by'] = $val->created_by;
       $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);

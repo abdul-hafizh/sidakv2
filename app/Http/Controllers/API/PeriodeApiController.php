@@ -37,11 +37,6 @@ class PeriodeApiController extends Controller
 
         $periode = RequestPeriode::SelectAll($data);
         return response()->json($periode);
-
-        $data =  DB::table('periode')->whereNotIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id', Auth::User()->daerah_id))->select('slug', 'name')->get();
-
-        $periode = RequestPeriode::SelectAll($data);
-        return response()->json($periode);
     }
 
 

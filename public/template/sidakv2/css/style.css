@@ -802,7 +802,12 @@
      font-style: normal!important;
 }
 
-
+.bg-input-search,.bg-input-search:hover{
+    background-color: #fff!important;
+    border-right: 1px solid #dfdfdf!important;
+    border-top: 1px solid #dfdfdf!important;
+    border-bottom: 1px solid #dfdfdf!important;
+}
 
 
 @media (min-width: 576px) {

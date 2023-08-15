@@ -9,7 +9,7 @@ class ValidationRoles
         $err = array(); 
         
         $fields = [
-            'name'  => 'Name',
+            'name'  => 'Nama',
             'status'=>'Status',
         ];
 

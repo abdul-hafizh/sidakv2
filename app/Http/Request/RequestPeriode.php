@@ -53,6 +53,7 @@ class RequestPeriode
       return $results;
    }
 
+
    public static function SelectAll($data, $request)
    {
       $__temp_ = array();
@@ -69,6 +70,7 @@ class RequestPeriode
          $temp[$key]['pagu_apbn'] = RequestPeriode::Pagu('APBN', substr((string)$val->slug, 0, 4));
          $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
       }
+
 
       return  $temp;
    }

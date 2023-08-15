@@ -17,10 +17,10 @@
 
                
 
-            <div id="name-alert" class="form-group has-feedback" >
-              <label>Name</label>
-              <input type="text" class="form-control" name="name" placeholder="Name" value="">
-              <span id="name-messages"></span>
+            <div id="name-alert-add" class="form-group has-feedback" >
+              <label>Nama</label>
+              <input type="text" class="form-control" name="name" placeholder="Nama" value="">
+              <span id="name-messages-add"></span>
             </div>
 
 
@@ -52,17 +52,10 @@
   $("#simpan").click( () => {
 
           var data = $("#FormSubmit").serializeArray();
-          console.log(data)
           var form = {
               'name':data[0].value
              
           };
-
-           var errors = {
-                  messages: {
-                      name:'',  
-                  },
-              };
 
 
           $.ajax({
@@ -94,11 +87,11 @@
 
                 if(errors.messages.name)
                 {
-                     $('#name-alert').addClass('has-error');
-                     $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
+                     $('#name-alert-add').addClass('has-error');
+                     $('#name-messages-add').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
                 }else{
-                    $('#name-alert').removeClass('has-error');
-                    $('#name-messages').removeClass('help-block').html('');
+                    $('#name-alert-add').removeClass('has-error');
+                    $('#name-messages-add').removeClass('help-block').html('');
                 }
 
                

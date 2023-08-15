@@ -106,6 +106,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::delete('periode/{id}', [PeriodeApiController::class, 'delete']);
 
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
+    Route::post('pagutarget', [PaguTargetApiController::class, 'store']);
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);

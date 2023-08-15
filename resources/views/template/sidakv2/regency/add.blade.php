@@ -14,25 +14,18 @@
       <div class="modal-body">
         
            
-
-               
-
             <div id="name-alert" class="form-group has-feedback" >
-              <label>Name</label>
-              <input type="text" class="form-control" name="name" placeholder="Name" value="">
+              <label>Nama</label>
+              <input type="text" class="form-control" name="name" placeholder="Nama" value="">
               <span id="name-messages"></span>
             </div>
 
-             <div id="province-id-alert" class="form-group has-feedback">
+            <div id="province-id-alert" class="form-group has-feedback">
                     <label>Provinsi </label>
                   <select id="province_id" class="select-add form-control"  name="province_id" ></select>
                   <span id="province-id-messages"></span>
-                </div>
+            </div>
             
-
-
-
-
        
       </div>
       <div class="modal-footer">
@@ -52,10 +45,12 @@
  $(function(){
 
   $('.select-add').select2({
+        data: [{ id: '', text: '' }],
+        placeholder: 'Pilih Provinsi',
         ajax: {
             url: BASE_URL+'/api/select-province', // URL to your server-side endpoint
             dataType: 'json',
-            delay: 250, // Delay before sending the request (milliseconds)
+            //delay: 250, // Delay before sending the request (milliseconds)
             processResults: function(data) {
                 
                 // Transform the data to match Select2's expected format
@@ -70,10 +65,10 @@
         minimumInputLength: 1 // Minimum number of characters required for a search
     });
 
-    $('.select-add').on('select-add:select', function(e) {
+    $('.select-add').on('select:select', function(e) {
         var selectedOption = e.params.data;
         $('#province_id').val(selectedOption.id);
-    }); 
+    });
      
   $("#simpan").click( () => {
 
@@ -85,14 +80,6 @@
               
              
           };
-
-
-              var errors = {
-                  messages: {
-                      name:'',
-                      province_id:'', 
-                  },
-              };
 
           $.ajax({
             type:"POST",
@@ -145,10 +132,10 @@
      });
 
   });
-  </script>
+</script>
  
 
-</script>  
+
 
  
 

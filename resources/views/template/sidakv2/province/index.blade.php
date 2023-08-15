@@ -6,7 +6,7 @@
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn btn-primary btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
 			</div>
         </div> 	
@@ -15,7 +15,7 @@
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
+				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
 	
@@ -80,12 +80,20 @@
     let previousPage = 1; // Previous page number
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
-
+    var list = [];
 
 
      // "Select All" checkbox
     $('#select-all').on('change', function() {
         $('.item-checkbox').prop('checked', $(this).is(':checked'));
+
+        const checkedCount = $('.item-checkbox:checked').length;
+         if(checkedCount >0)
+         {
+         	$('#delete-selected').prop("disabled", false);
+         }else{
+         	$('#delete-selected').prop("disabled", true);
+         }
     });
 
     // Delete selected button
@@ -159,6 +167,7 @@
             method: 'GET',
             success: function(response) {
                 // Update content area with fetched data
+                list = response.data;
                 updateContent(response.data);
 
                 // Update pagination controls
@@ -178,7 +187,7 @@
         content.empty();
 
         // Populate content with new data
-        data.forEach(item => {
+        data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
@@ -188,11 +197,13 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                 row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
+               
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=``+ GetFormEdit(item) +``;
+                row +=`<div id="FormEdit-${item.id}"></div>`;
                 row +=`</div>`;
+
 
        
 
@@ -208,6 +219,128 @@
 
 
         });
+
+        $('.item-checkbox').on('click', function() {
+         const checkedCount = $('.item-checkbox:checked').length;
+         if(checkedCount ==true)
+         {
+           $('#delete-selected').prop("disabled", false);
+         }else{
+           $('#delete-selected').prop("disabled", true);
+         } 	
+   		});
+
+
+        $( "#content" ).on( "click", "#Edit", (e) => {
+             
+            let index = e.currentTarget.dataset.param_id;
+            const item = list[index];
+              
+		  
+            
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+				       row +=`<div class="modal-header">`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Edit Provinsi</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body">`;
+                               
+                                 
+				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Nama</label>`;
+
+				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
+				                  <span id="name-messages-`+ item.id +`"></span>`;
+
+				                 row +=`</div>`;
+
+				                
+
+
+
+
+                            row +=`<div class="modal-footer">`;
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
+						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
+     						</div>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ item.id).html(row);    
+
+
+            $( ".modal-content" ).on( "click", "#update", (e) => {
+		          let id = e.currentTarget.dataset.param_id;
+	              var data = $("#FormSubmit-"+ id).serializeArray();
+	              $("#update").hide();
+	              $("#load-simpan").show();
+	              
+		          var form = {'name':data[0].value};
+
+
+
+					$.ajax({
+			            type:"PUT",
+			            url: BASE_URL+'/api/province/'+ id,
+			            data:form,
+			            cache: false,
+			            dataType: "json",
+			            success: (respons) =>{
+			                   Swal.fire({
+			                        title: 'Sukses!',
+			                        text: 'Berhasil Diupdate',
+			                        icon: 'success',
+			                        confirmButtonText: 'OK'
+			                        
+			                    }).then((result) => {
+			                        if (result.isConfirmed) {
+			                            // User clicked "Yes, proceed!" button
+			                            window.location.replace('/province');
+			                        }
+			                    });
+
+			                   //
+			            },
+			            error: (respons)=>{
+			                errors = respons.responseJSON;
+			                $("#update").show();
+			                $("#load-simpan").hide();
+ 
+			                if(errors.messages.name)
+			                {
+			                     $('#name-alert-'+id).addClass('has-error');
+			                     $('#name-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
+			                }else{
+			                    $('#name-alert-'+id).removeClass('has-error');
+			                    $('#name-messages-'+id).removeClass('help-block').html('');
+			                }
+
+			                
+
+			               
+
+			                
+			            }
+			          });
+ 
+		        
+	        });  
+            
+        });
+
+
 
 
 
