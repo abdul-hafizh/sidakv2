@@ -18,12 +18,14 @@
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
-	
-				
-				<!-- <button type="button" class="btn btn-primary">
-					<i aria-hidden="true" class="fa fa-search"></i> Search
-				</button> -->
 			</div>
+
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+					 Refresh
+				</button>
+			</div>
+
 
 			<div class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
@@ -50,11 +52,11 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th><input id="select-all" type="checkbox"></th>
-							<th><span class="border-left-table">No</span>  </th>
-							<th><span class="border-left-table"> Nama </span></th>
-							<th><span class="border-left-table"> Status </span></th> 
-							<th> Options </th>
+							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
+							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
+							<th><div class="split-table"></div> <span class="span-title"> Status </span></th>
+								<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -96,6 +98,13 @@
          	$('#delete-selected').prop("disabled", true);
          } 
 
+    });
+
+    // Refresh selected button
+    $('#refresh').on('click', function() {
+    	
+        fetchData(page);
+        $('#search-input').val('');
     });
 
     // Delete selected button
@@ -143,7 +152,11 @@
  		 
  		 if(search)
  		 { 	
-	 		 
+	 		 const content = $('#content');
+        	 content.empty();
+    	 	 let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
 	         $.ajax({
 	            url: BASE_URL + `/api/role/search?page=${page}&per_page=${itemsPerPage}`,
 	            data:{'search':search},
@@ -164,8 +177,12 @@
 
     // Function to fetch data from the API
     function fetchData(page) {
-    	const content = $('#content');
+    	 const content = $('#content');
            content.empty();
+    	  
+    	 	let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
         $.ajax({
             url: BASE_URL+ `/api/role?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
@@ -195,13 +212,13 @@
            	let row = ``;
              row +=`<tr>`;
                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-               row +=`<td>${item.number}</td>`;
-               row +=`<td>${item.name}</td>`;
-               row +=`<td>${item.status}</td>`;
+               row +=`<td class="padding-text-table">${item.number}</td>`;
+               row +=`<td class="padding-text-table">${item.name}</td>`;
+               row +=`<td class="padding-text-table">${item.status}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
@@ -211,7 +228,7 @@
 
        
 
-                row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -226,7 +243,7 @@
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
-	         if(checkedCount ==true)
+	         if(checkedCount>0)
 	         {
 	           $('#delete-selected').prop("disabled", false);
 	         }else{
@@ -264,15 +281,28 @@
 
 				                 row +=`</div>`;
 
-				                 row +=`<div class="radio">`;
+				                    row +=`<div class="radio">`;
 					                    row +=`<label>`;
-					                      row +=`<input  type="radio" name="status" id="status-`+ item.id +`" value="Y" >`;
+					                    if(item.status_ori =='Y')
+					                    {
+					                        row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
+					                    }else{
+					                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
+					                    } 	
+					                 
 					                      row +=`Aktif`;
 					                    row +=`</label>`;
 					                row +=`</div>`;
 					                row +=`<div class="radio">`;
 					                    row +=`<label>`;
-					                      row +=`<input   type="radio" name="status" id="status-`+ item.id +`" value="N">`;
+					                      if(item.status_ori =='N')
+					                    {
+					                        row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
+					                    }else{
+					                    	row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
+					                    } 
+
+					                     
 					                     row +=`Non Aktif`;
 					                    row +=`</label>`;
 					                row +=`</div>`;
@@ -295,7 +325,7 @@
 
             $('#FormEdit-'+ item.id).html(row);    
 
-            $('#status-'+ item.id).prop('checked', true);     
+               
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;

@@ -75,7 +75,7 @@ class RolesApiController extends Controller
     public function store(Request $request){
 
         $validation = ValidationRoles::validation($request);
-        if($validation !=null || $validation !="")
+        if($validation)
         {
           return response()->json($validation,400);  
         }else{
@@ -93,7 +93,7 @@ class RolesApiController extends Controller
     public function update($id,Request $request){
      
         $validation = ValidationRoles::validation($request);
-        if($validation !=null || $validation !="")
+        if($validation)
         {
           return response()->json($validation,400);  
         }else{

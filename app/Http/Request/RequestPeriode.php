@@ -42,50 +42,23 @@ class RequestPeriode
          $result['last_page'] = $data->lastPage(); 
         return $result;
 
-         $__temp_[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
-      }
+       
 
-
-      $results['result'] = $__temp_;
-      if ($description != "") {
-         if ($data->total() != 0) {
-            $results['cari'] = 'Pencarian "' . $description . '" berhasil ditemukan';
-         } else {
-            $results['cari'] = 'Pencarian tidak ditemukan "' . $description . '" ';
-         }
-      } else {
-         $results['cari'] = '';
-      }
-      $results['total'] = $data->total();
-      $results['lastPage'] = $data->lastPage();
-      $results['perPage'] = $data->perPage();
-      $results['currentPage'] = $data->currentPage();
-      $results['nextPageUrl'] = $data->nextPageUrl();
-      return $results;
    }
 
-   public static function SelectAll($data, $request)
+   public static function SelectAll($data)
    {
-      $__temp_ = array();
+         $temp = array();
+       
 
-      if ($request->type == 'perencanaan') {
-
-
-         $periode =  DB::table('periode')->whereNotIn('slug', DB::table('perencanaan')->select('periode_id')->where('daerah_id', Auth::User()->daerah_id))->select('slug', 'name')->get();
-
-         foreach ($periode as $key => $val) {
+         foreach ($data as $key => $val) {
 
             $temp[$key]['value'] = (string)$val->slug;
-            $temp[$key]['text'] = $val->name;
+            $temp[$key]['text'] = 'Periode '.$val->year;
             $temp[$key]['pagu_apbn'] = RequestPeriode::Pagu('APBN', substr((string)$val->slug, 0, 4));
             $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
          }
-      } else {
-         foreach ($data as $key => $val) {
-            $temp[$key]['value'] = (string)$val->slug;
-            $temp[$key]['text'] = $val->name;
-         }
-      }
+       
 
       return  $temp;
    }

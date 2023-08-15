@@ -123,7 +123,7 @@
           $('#daerah_id').val(selectedOption.id);
         });
 
-        $("#simpan").click(() => {
+     
 
     $('.select').on('select:select', function(e) {
         var selectedOption = e.params.data;
@@ -190,7 +190,7 @@
                     $('#name-alert').removeClass('has-error');
                     $('#name-messages').removeClass('help-block').html('');
                 }
-              });
+            
 
                  if(errors.messages.email)
                 {

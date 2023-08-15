@@ -86,7 +86,7 @@ class RegencyApiController extends Controller
     {
 
         $validation = ValidationRegency::validation($request);
-        if ($validation != null || $validation != "") {
+        if ($validation) {
             return response()->json($validation, 400);
         } else {
 

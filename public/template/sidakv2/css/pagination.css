@@ -31,9 +31,11 @@
    .pagination li button{
        border: 1px solid #1f3897;
        color: #1f3897;
-       border-radius: 3px;
+       border-radius: 10px;
        font-weight: bold;
        cursor: pointer;
+       height: 35px;
+       width: 33px;
    }
   .pagination li.pagination-active {
     background-color: green;

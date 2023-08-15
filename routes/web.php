@@ -23,7 +23,10 @@ use App\Http\Controllers\PeriodeController;
  
 
     Route::middleware(['auth'])->group(function () {
-        Route::get('/dashboard', [DashboardController::class,'index']);           
+        Route::get('/dashboard', [DashboardController::class,'index']);
+        Route::get('/perencanaan', [PerencanaanController::class,'index']);
+        Route::get('/perencanaan/add', [PerencanaanController::class,'add']);
+        Route::get('/perencanaan/edit/{id}', [PerencanaanController::class,'edit']);          
     });
 
     Route::middleware(['auth','admin'])->group(function () {           
@@ -31,8 +34,8 @@ use App\Http\Controllers\PeriodeController;
         Route::get('/role', [RoleController::class,'index']);      
         Route::get('/apps', [SettingWebController::class,'index']);
 
-        Route::get('/province', [ProvinceController::class,'index']); 
-        Route::get('/regency', [RegencyController::class,'index']);
+        Route::get('/provinsi', [ProvinceController::class,'index']); 
+        Route::get('/kabupaten', [RegencyController::class,'index']);
         Route::get('/periode', [PeriodeController::class,'index']);          
     });
 
@@ -46,9 +49,7 @@ use App\Http\Controllers\PeriodeController;
 
 
     Route::middleware(['auth','daerah'])->group(function () {
-        Route::get('/perencanaan', [PerencanaanController::class,'index']);
-        Route::get('/perencanaan/add', [PerencanaanController::class,'add']);
-        Route::get('/perencanaan/edit/{id}', [PerencanaanController::class,'edit']);       
+             
     });
 
     Route::get('/logout', function () {
