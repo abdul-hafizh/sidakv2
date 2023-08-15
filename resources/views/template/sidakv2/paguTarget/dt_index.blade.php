@@ -59,7 +59,6 @@
 <script>
 	$(function() {
 		$('#datatable').DataTable({
-			alert('asd');
 			processing: true,
 			serverSide: true,
 			ajax: BASE_URL + '/api/pagutarget/datalist',
