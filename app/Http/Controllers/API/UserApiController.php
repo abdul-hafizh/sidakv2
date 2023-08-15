@@ -82,7 +82,7 @@ class UserApiController extends Controller
      public function update($id,Request $request){
      
         $validation = ValidationUser::validationUpdate($request);
-        if($validation !=null || $validation !="")
+        if($validation)
         {
           return response()->json($validation,400);  
         }else{

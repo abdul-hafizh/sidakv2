@@ -87,7 +87,7 @@ class ProvinceApiController extends Controller
     {
 
         $validation = ValidationProvinces::validation($request);
-        if ($validation != null || $validation != "") {
+        if ($validation) {
             return response()->json($validation, 400);
         } else {
 

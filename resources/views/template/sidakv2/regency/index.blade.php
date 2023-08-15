@@ -4,7 +4,7 @@
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
+				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
 				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
@@ -21,7 +21,7 @@
 			</div>
 
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-default border-radius-10">
+				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
 					 Refresh
 				</button>
 			</div>
@@ -54,11 +54,11 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th><input id="select-all" type="checkbox"></th>
-							<th><span class="border-left-table">No</span>  </th>
-							<th><span class="border-left-table"> Nama </span></th>
-							<th><span class="border-left-table"> Provinsi </span></th>
-							<th> Options </th>
+							<th class="th-checkbox"><input  id="select-all" class="span-title" type="checkbox"></th>
+							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Provinsi </span></th>
+							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -89,20 +89,27 @@
 
 
      // "Select All" checkbox
-    $('#select-all').on('change', function() {
-        $('.item-checkbox').prop('checked', $(this).is(':checked'));
-          
-         const checkedCount = $('.item-checkbox:checked').length;
+     $('#select-all').on('change', function() {
+        var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
+        nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
+        const checkedCount =  $('.item-checkbox:checked').length;
+   
          if(checkedCount >0)
          {
          	$('#delete-selected').prop("disabled", false);
          }else{
          	$('#delete-selected').prop("disabled", true);
-         } 	
-        
+         }
     });
 
      // Delete selected button
+    $('#refresh').on('click', function() {
+    	
+        fetchData(page);
+        $('#search-input').val('');
+    });
+
+     // Refresh selected button
     $('#refresh').on('click', function() {
     	
         fetchData(page);
@@ -216,15 +223,15 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-               row +=`<td>${item.number}</td>`;
+               row +=`<td><input class="item-checkbox" ${item.deleted} data-id="${item.id}"  type="checkbox"></td></td>`;
+               row +=`<td class="padding-text-table">${item.number}</td>`;
            
-               row +=`<td>${item.name}</td>`;
-               row +=`<td>${item.province_name}</td>`;
+               row +=`<td class="padding-text-table">${item.name}</td>`;
+               row +=`<td class="padding-text-table">${item.province_name}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
                 row +=`<div id="FormEdit-${item.id}"></div>`;
@@ -232,7 +239,7 @@
 
        
 
-                row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                row +=`<button id="Destroy" data-placement="top" ${item.deleted}  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -240,25 +247,20 @@
 
             content.append(row);
 
-
-
+         
 
         });
 
-        	
-
-        $('.item-checkbox').on('click', function() {
-         const checkedCount = $('.item-checkbox:checked').length;
-         if(checkedCount ==true)
-         {
-           $('#delete-selected').prop("disabled", false);
-         }else{
-           $('#delete-selected').prop("disabled", true);
-         } 	
+       $('.item-checkbox').on('click', function() {
+	         const checkedCount = $('.item-checkbox:checked').length;
+	         if(checkedCount>0)
+	         {
+	           $('#delete-selected').prop("disabled", false);
+	         }else{
+	           $('#delete-selected').prop("disabled", true);
+	         } 	
    		});
 
-
-        
 
  		$( "#content" ).on( "click", "#Edit", (e) => {
              

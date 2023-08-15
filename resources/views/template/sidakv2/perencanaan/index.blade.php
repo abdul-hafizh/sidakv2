@@ -76,7 +76,7 @@
 
 <script type="text/javascript">
  $(document).ready(function() {
-
+   
  	
 
     const itemsPerPage = 10; // Number of items to display per page
@@ -84,6 +84,7 @@
     let previousPage = 1; // Previous page number
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
+    var periode = [];
 
     $.ajax({
         type: 'GET',

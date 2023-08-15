@@ -332,7 +332,7 @@
     
       $.ajax({
         type: 'GET',
-        url: BASE_URL +'/api/periode/check',
+        url: BASE_URL +'/api/select-periode',
         success: function(response) {
            periode = response;
            onOptionSelect(response)
