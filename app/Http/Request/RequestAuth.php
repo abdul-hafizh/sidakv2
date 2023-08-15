@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Request\RequestSettingApps;
 use App\Models\User;
+use App\Models\RoleUser;
 use JWTAuth;
 use Auth;
 use DB;
@@ -28,6 +29,15 @@ class RequestAuth
         }
 
     } 
+
+    public static function access()
+    {
+        $auth = Auth::User();
+        $RoleUser = RoleUser::where('user_id',$auth->id)->first();
+        $access =  $RoleUser->role->slug;
+
+        return $access;
+    }
 
     public static function requestUserSidebar()
     {
