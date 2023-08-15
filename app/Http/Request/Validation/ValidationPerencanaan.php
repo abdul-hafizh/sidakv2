@@ -16,7 +16,6 @@ class ValidationPerencanaan
              'pengawas_evaluasi_target'  => 'Pengawas Evaluasi Target',
              'pengawas_evaluasi_pagu'  => 'Pengawas Evaluasi Pagu',
 
-
              'bimtek_perizinan_target'  => 'Bimtek Perizinan Target',
              'bimtek_perizinan_pagu'  => 'Bimtek Perizinan Pagu',
              'bimtek_pengawasan_target'  => 'Bimtek Pengawasan Target',
@@ -38,32 +37,30 @@ class ValidationPerencanaan
 
         $validator =  Validator::make($request->all(), 
         [
-           
-             'pengawas_analisa_target'  => 'required',
-             'pengawas_analisa_pagu'  => 'required',
-             'pengawas_inspeksi_target'  => 'required',
-             'pengawas_inspeksi_pagu'  => 'required',
-             'pengawas_evaluasi_target'  => 'required',
-             'pengawas_evaluasi_pagu'  => 'required',
+            'pengawas_analisa_target'  => 'required',
+            'pengawas_analisa_pagu'  => 'required',
+            'pengawas_inspeksi_target'  => 'required',
+            'pengawas_inspeksi_pagu'  => 'required',
+            'pengawas_evaluasi_target'  => 'required',
+            'pengawas_evaluasi_pagu'  => 'required',
 
+            'bimtek_perizinan_target'  => 'required',
+            'bimtek_perizinan_pagu'  => 'required',
+            'bimtek_pengawasan_target'  => 'required',
+            'bimtek_pengawasan_pagu'  => 'required',
 
-             'bimtek_perizinan_target'  => 'required',
-             'bimtek_perizinan_pagu'  => 'required',
-             'bimtek_pengawasan_target'  => 'required',
-             'bimtek_pengawasan_pagu'  => 'required',
+            'penyelesaian_identifikasi_target'  => 'required',
+            'penyelesaian_identifikasi_pagu'  => 'required',
+            'penyelesaian_realisasi_target'  => 'required',
+            'penyelesaian_realisasi_pagu'  => 'required',
+            'penyelesaian_evaluasi_target'  => 'required',
+            'penyelesaian_evaluasi_pagu'  => 'required',
 
-             'penyelesaian_identifikasi_target'  => 'required',
-             'penyelesaian_identifikasi_pagu'  => 'required',
-             'penyelesaian_realisasi_target'  => 'required',
-             'penyelesaian_realisasi_pagu'  => 'required',
-             'penyelesaian_evaluasi_target'  => 'required',
-             'penyelesaian_evaluasi_pagu'  => 'required',
-
-             'periode_id'  => 'required',
-             'nama_pejabat'  => 'required',
-             'nip_pejabat'  => 'required',
-             'tgl_tandatangan'  => 'required',
-             'lokasi'  => 'required',
+            'periode_id'  => 'required|unique:perencanaan',
+            'nama_pejabat'  => 'required',
+            'nip_pejabat'  => 'required',
+            'tgl_tandatangan'  => 'required',
+            'lokasi'  => 'required',
         ]);
 
         $validator->setAttributeNames($fields); 
@@ -90,26 +87,18 @@ class ValidationPerencanaan
             if($errors->has('pengawas_evaluasi_pagu')){
                 $err['messages']['pengawas_evaluasi_pagu'] = $errors->first('pengawas_evaluasi_pagu');
             }
-
-            
             if($errors->has('bimtek_perizinan_target')){
                 $err['messages']['bimtek_perizinan_target'] = $errors->first('bimtek_perizinan_target');
             }
-
             if($errors->has('bimtek_perizinan_pagu')){
                 $err['messages']['bimtek_perizinan_pagu'] = $errors->first('bimtek_perizinan_pagu');
             }
-
             if($errors->has('bimtek_pengawasan_target')){
                 $err['messages']['bimtek_pengawasan_target'] = $errors->first('bimtek_pengawasan_target');
             }
-
             if($errors->has('bimtek_pengawasan_pagu')){
                 $err['messages']['bimtek_pengawasan_pagu'] = $errors->first('bimtek_pengawasan_pagu');
             }
-
-
-
             if($errors->has('penyelesaian_identifikasi_target')){
                 $err['messages']['penyelesaian_identifikasi_target'] = $errors->first('penyelesaian_identifikasi_target');
             }
@@ -128,33 +117,24 @@ class ValidationPerencanaan
             if($errors->has('penyelesaian_evaluasi_pagu')){
                 $err['messages']['penyelesaian_evaluasi_pagu'] = $errors->first('penyelesaian_evaluasi_pagu');
             }
-
-
             if($errors->has('periode_id')){
                 $err['messages']['periode_id'] = $errors->first('periode_id');
             }
-
             if($errors->has('nama_pejabat')){
                 $err['messages']['nama_pejabat'] = $errors->first('nama_pejabat');
             }
-
             if($errors->has('nip_pejabat')){
                 $err['messages']['nip_pejabat'] = $errors->first('nip_pejabat');
             }
-
-             if($errors->has('tgl_tandatangan')){
+            if($errors->has('tgl_tandatangan')){
                 $err['messages']['tgl_tandatangan'] = $errors->first('tgl_tandatangan');
             }
-
             if($errors->has('lokasi')){
                 $err['messages']['lokasi'] = $errors->first('lokasi');
             }
 
-
             return $err;
-       }
+        }
     }
 
-
-   
 }
