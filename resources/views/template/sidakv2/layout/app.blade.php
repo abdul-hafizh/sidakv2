@@ -32,15 +32,14 @@
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/pagination.css' }}">
     <link href="{{ config('app.url').$template.'/css/scrollbar.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/plugin/select2/css/select2.min.css' }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/plugin/selectpicker/css/bootstrap-select.min.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/sweetalert2.min.css'}}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+    
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
-
+ 
     <body class="hold-transition"> 
-
-
-
 
     @if (!Auth::guest())
     <div class="wrapper">
@@ -58,7 +57,7 @@
                     <span class="icon-bar"></span>
                 </a>
 
-                <h3 class="pull-left padding-10-0 mgn-none">{{ $title  }} </h3> 
+                <h3 class="pull-left padding-10-0 mgn-none">{{ $title  }} </h3>
                 <div class="navbar-custom-menu">
                     <div class="mt-10 mc-15">
                         <button type="button" class="btn btn-primary margin-0-12-0-0 btn-flat border-radius-10">
@@ -94,21 +93,23 @@
     <script src="{{ config('app.url').$template.'/js/icheck.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/icheck.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script>
-    <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script> 
+    <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/scrollbar.js' }}"></script>
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script src="{{ config('app.url').$template.'/plugin/select2/js/select2.min.js' }}"></script>
-    <script>
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip();
-    });
-  </script>
-    <script type="text/javascript">
+    <script src="{{ config('app.url').$template.'/plugin/selectpicker/js/bootstrap-select.min.js' }}"></script>
 
-        const apps  = localStorage.getItem('apps'); 
+
+    <script>
+        $(function() {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+    <script type="text/javascript">
+        const apps = localStorage.getItem('apps');
         const template = JSON.parse(apps);
-        $('.logo-mini').html('<img src="'+ template.logo_sm +'" class="full">');
-        $('.logo-lg').html('<img src="'+ template.logo_lg +'" class="full">');
+        $('.logo-mini').html('<img src="' + template.logo_sm + '" class="full">');
+        $('.logo-lg').html('<img src="' + template.logo_lg + '" class="full">');
     </script>
     @stack('scripts')
 

@@ -9,10 +9,11 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestSystemLog;
 use App\Models\RoleUser;
 use App\Models\User;
 use App\Models\SettingApps;
-
+use App\Models\SystemLog;
 
 use JWTAuth;
 
@@ -23,24 +24,32 @@ class AuthController extends Controller
 
   public function __construct()
   {
-    $this->title = 'Login';
     $this->template = RequestSettingApps::AppsTemplate();
   }
 
   public function index(Request $request)
   {
+       
+ 
 
-    Auth::logout();
-    setcookie('token', '', -1, '/');
-    setcookie('access', '', -1, '/');
+    if (Auth::check()) {
+        // User is authenticated
+        $log = SystemLog::where('created_by',Auth::user()->username)->first();
+        return redirect($log->url);
 
-    return view('template/' . $this->template . '.auth.login')
-      ->with(
-        [
-          'title' => $this->title,
-          'template' => 'template/' . $this->template
-        ]
-      );
+    }else{
+        
+         return view('template/' . $this->template . '.auth.login')
+          ->with(
+            [
+              'title' => 'Login',
+              'template' => 'template/' . $this->template
+            ]
+          );
+
+    } 
+
+   
   }
 
 
@@ -91,11 +100,21 @@ class AuthController extends Controller
                $access =  $RoleUser->role->slug; 
                $userSidebar = RequestAuth::requestUserSidebar();
 
+
                $token = compact('token');
                setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
                setcookie('token', $token['token'], time() + (86400 * 30), "/"); // 86400 = 1 day
                $apps = SettingApps::first();
                $template = RequestSettingApps::GetDataApps($apps);
+
+               $log = array(
+                            'menu'=>'Login',
+                            'slug'=>'login',
+                            'url'=>'login'
+                           );
+               RequestSystemLog::CreateLog($log);
+
+
 
               return response()->json(['status'=>true,'template'=>$template,'user_sidebar'=>$userSidebar,'access'=>$access,'token'=>$token['token']],200);  
                
