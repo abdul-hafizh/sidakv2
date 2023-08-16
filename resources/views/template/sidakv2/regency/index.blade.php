@@ -460,7 +460,7 @@
     function deleteItem(id){
 
 		$.ajax({
-		    url:  BASE_URL +`/api/user/`+ id,
+		    url:  BASE_URL +`/api/regency/`+ id,
 		    method: 'DELETE',
 		    success: function(response) {
 		        // Handle success (e.g., remove deleted items from the list)

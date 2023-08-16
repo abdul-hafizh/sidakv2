@@ -116,12 +116,7 @@
         deleteItems(selectedIds);
     });
 
-     // Refresh selected button
-    $('#refresh').on('click', function() {
-    	
-        fetchData(page);
-        $('#search-input').val('');
-    });
+   
 
     // Individual item checkboxes
     $('.item-checkbox').on('change', function() {
@@ -468,7 +463,7 @@
     function deleteItem(id){
 
 		$.ajax({
-		    url:  BASE_URL +`/api/role/`+ id,
+		    url:  BASE_URL +`/api/province/`+ id,
 		    method: 'DELETE',
 		    success: function(response) {
 		        // Handle success (e.g., remove deleted items from the list)
@@ -481,101 +476,6 @@
 
     }
 
-
-    function GetFormEdit(item)
-    {
-	   	    	
-                   
-			
-
-
-
-        	let row = ``;
-            row +=`<div class="modal-dialog">`;
-                row +=`<div class="modal-content">`;
-
-				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit Provinsi</h4>`;
-				       row +=`</div>`;
-
-				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body">`;
-                               
-                                
-
-				                 row +=`<div id="name-alert" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Name</label>`;
-
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Name" value="`+ item.name +`">
-				                  <span id="name-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-
-				                 row +=`<div id="status-alert" class="form-group has-feedback">`;
-
-				                   row +=`<label>Status</label>`;
-                                
-                                if(item.status_ori === 'Y')
-                                { 	
-				                    row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input  type="radio" name="status" id="status" value="Y"  checked>`;
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input   type="radio" name="status" id="status" value="N">`;
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-
-					            }else{
-
-                                     row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input  type="radio" name="status" id="status" value="Y"  >`;
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      row +=`<input   type="radio" name="status" id="status" value="N" checked>`;
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-
-
-					            }    
-
-				                   row +=`<span id="status-messages"></span>`;
-
-				                 row +=`</div>`;
-
-
-					        row +=`</div>`;
-
-                            row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>`;
-
-						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
-						    row +=`</div>`;
-
-
-					    row +=`</form>`;     
-                row +=`</div>`;
-            row +=`</div>`;
-
-        return row;
-
-       
-    }
-
-   
 
     // Function to update pagination controls
     function updatePagination(currentPage, totalPages) {

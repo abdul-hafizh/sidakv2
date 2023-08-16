@@ -28,7 +28,7 @@ use App\Http\Controllers\API\UserApiController;
 use App\Http\Controllers\API\ProvinceApiController;
 use App\Http\Controllers\API\RegencyApiController;
 use App\Http\Controllers\API\DaerahApiController;
-
+use App\Http\Controllers\API\AuditLogApiController;
 
 
 
@@ -99,8 +99,6 @@ use App\Http\Controllers\API\DaerahApiController;
     Route::delete('role/{id}', [RolesApiController::class, 'delete']);
     Route::post('role/selected', [RolesApiController::class, 'deleteSelected']);
 
-    Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
-
     Route::get('periode', [PeriodeApiController::class, 'index']);
     Route::get('periode/create', [PeriodeApiController::class, 'create']);
     Route::get('periode/edit/{id}', [PeriodeApiController::class, 'edit']);
@@ -108,8 +106,10 @@ use App\Http\Controllers\API\DaerahApiController;
     Route::post('periode/search', [PeriodeApiController::class, 'search']);
     Route::put('periode/{id}', [PeriodeApiController::class, 'update']);
     Route::delete('periode/{id}', [PeriodeApiController::class, 'delete']);
-    
-    Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
+
+    Route::get('auditlog', [AuditLogApiController::class, 'index']);
+    Route::post('auditlog/search', [AuditLogApiController::class, 'search']);
+  
 
      Route::get('setting-apps', [SettingWebApiController::class, 'index']);
      Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);
