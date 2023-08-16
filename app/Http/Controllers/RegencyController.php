@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
-
+use App\Http\Request\RequestSystemLog;
 
 
 class RegencyController extends Controller
@@ -19,12 +19,18 @@ class RegencyController extends Controller
 
     public function index(Request $request)
     {
-
+         $title = 'Data Kabupaten';
+         $log = array(             
+            'menu'=>$title,
+            'slug'=>'kabupaten',
+            'url'=>'kabupaten'
+        );
+        RequestSystemLog::CreateLog($log);
       
         return view('template/' . $this->template . '.regency.index')
         ->with(
             [
-              'title' => 'Data Kabupaten',
+              'title' => $title,
               'template'=>'template/'.$this->template
             ]);
     }
