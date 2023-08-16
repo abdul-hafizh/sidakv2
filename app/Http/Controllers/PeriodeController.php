@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
+use App\Http\Request\RequestSystemLog;
 
 class PeriodeController extends Controller
 {
@@ -16,11 +17,18 @@ class PeriodeController extends Controller
 
     public function index(Request $request)
     {
-        
+        $title = 'Data Periode';
+        $log = array(             
+            'menu'=>$title,
+            'slug'=>'periode',
+            'url'=>'periode'
+        );
+        RequestSystemLog::CreateLog($log);
+
         return view('template/' . $this->template . '.periode.index')
         ->with(
             [
-              'title' => 'Data Periode',
+              'title' => $title,
               'template'=>'template/'.$this->template
             ]);
     }

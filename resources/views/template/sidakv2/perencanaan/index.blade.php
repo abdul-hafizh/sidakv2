@@ -3,24 +3,35 @@
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
-            <div class="input-group input-group-sm border-radius-20">
-				<select id="periode_id" class="form-control height-35"></select>
-				<span class="input-group-btn">
-				    <button id="Search" type="button" class="btn btn-primary btn-flat height-35"><i class="fa fa-search"></i></button>
-				</span>
-			</div>
+          
+				<select id="periode_id" class="selectpicker" data-style="btn-primary" title="Pilih Periode"></select>
+				
+
+
+
+			
         </div> 	
     </div> 	
 
+
+
+
+
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
-            @if($access != 'daerah' && $access != 'province')
+            @if($access != 'daerah' || $access != 'province')
                 <div class="pull-left padding-9-0 margin-left-button">
-                    <button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
-                        Hapus
+                    <button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
+                         Hapus
                     </button>
                 </div>
             @endif
+
+            <div class="pull-left padding-9-0 margin-left-button">
+                <button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+                     Refresh
+                </button>
+            </div>
 
             @if($access == 'daerah' || $access == 'province')
                 <div class="pull-left padding-9-0">
@@ -47,12 +58,12 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th><input id="select-all" type="checkbox"></th>
-							<th><span class="border-left-table">No</span>  </th>
-							<th><span class="border-left-table">Periode </span></th>
-							<th><span class="border-left-table">Status </span></th>
-							<th><span class="border-left-table">Tanggal </span></th>
-							<th> Options </th>
+							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
+							<th><div class="split-table"></div><span class="span-title">No</span></th>
+							<th><div class="split-table"></div><span class="span-title">Periode </span></th>
+							<th><div class="split-table"></div><span class="span-title">Status </span></th>
+							<th><div class="split-table"></div><span class="span-title">Tanggal </span></th>
+							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -66,7 +77,6 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-
         const itemsPerPage = 10;
         let currentPage = 1; 
         let previousPage = 1; 
@@ -74,21 +84,89 @@
         let page = 1;
         var periode = [];
 
+        $('.selectpicker').selectpicker();
         $.ajax({
-            type: 'GET',
             url: BASE_URL +'/api/perencanaan/periode',
-            success: function(response) {
-                periode = response;
-                onOptionSelect(response)
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Populate SelectPicker options using received data
+                $.each(data, function(index, option) {
+                    $('.selectpicker').append($('<option>', {
+                      value: option.value,
+                      text: option.text
+                    }));
+                });
+
+                // Refresh the SelectPicker to apply the new options
+                $('.selectpicker').selectpicker('refresh');
             },
-            error: function( error) {
-            
+            error: function(error) {
+            console.error(error);
             }
         });
 
+        // $.ajax({
+        //     type: 'GET',
+        //     url: BASE_URL +'/api/perencanaan/periode',
+        //     success: function(response) {
+        //         periode = response;
+        //         onOptionSelect(response)
+        //     },
+        //     error: function( error) {
+            
+        //     }
+        // });
+
+          $('#periode_id').on('change', function() {
+            var value = $(this).val();         
+            if(value)
+            {   
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+
+                $.ajax({
+                    url: BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}`,
+                    data:{'search':value},
+                    method: 'POST',
+                    success: function(response) {
+                        updateContent(response.data);
+                        updatePagination(response.current_page, response.last_page);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }    
+           
+            
+            // Perform other actions based on the selected value
+          });
+
+        // "Select All" checkbox
         $('#select-all').on('change', function() {
-            $('.item-checkbox').prop('checked', $(this).is(':checked'));
+            var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
+            nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
+            const checkedCount =  $('.item-checkbox:checked').length;
+            if(checkedCount >0)
+            {
+                $('#delete-selected').prop("disabled", false);
+            }else{
+                $('#delete-selected').prop("disabled", true);
+            }
         });
+
+        // Refresh selected button
+        $('#refresh').on('click', function() {
+            
+            fetchData(page);
+            $('#search-input').val('');
+        });
+
+       
 
         $('#delete-selected').on('click', function() {
             const selectedIds = [];
@@ -107,10 +185,12 @@
         function onOptionSelect(data) {
             const content = $('#periode_id');
             content.empty();
+            let row = ``;
+            row +=`<option value="">Pilih Periode</option>`;
             data.forEach(item => {
-                let row = ``;
+                
                 row +=`<option value="${item.value}">${item.text}</option>`;
-                content.append(row);
+                content.html(row);
             });     
         } 
 
@@ -128,26 +208,15 @@
             });
         }
 
-        $('#Search').click( () => {
-            let search = $('#periode_id').val();            
-            if(search)
-            { 	                
-                $.ajax({
-                    url: BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}`,
-                    data:{'search':search},
-                    method: 'POST',
-                    success: function(response) {
-                        updateContent(response.data);
-                        updatePagination(response.current_page, response.last_page);
-                    },
-                    error: function(error) {
-                        console.error('Error fetching data:', error);
-                    }
-                });
-            }    
-        });
 
         function fetchData(page) {
+             const content = $('#content');
+           content.empty();
+          
+             let row = ``;
+              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
+
             $.ajax({
                 url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
                 method: 'GET',
@@ -184,6 +253,16 @@
                     row +=`</td>`;
                 row +=`</tr>`; 
                 content.append(row);
+            });
+
+            $('.item-checkbox').on('click', function() {
+                 const checkedCount = $('.item-checkbox:checked').length;
+                 if(checkedCount>0)
+                 {
+                   $('#delete-selected').prop("disabled", false);
+                 }else{
+                   $('#delete-selected').prop("disabled", true);
+                 }  
             });
 
             $( "#content" ).on( "click", "#Edit", (e) => {

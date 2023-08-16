@@ -11,22 +11,26 @@ use App\Http\Controllers\PerencanaanController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\PeriodeController;
+use App\Http\Controllers\AuditLogController;
 
-
-
-Route::get('/', function () {
-    return redirect('login');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class,'index']);
+    Route::get('/perencanaan', [PerencanaanController::class,'index']);
+    Route::get('/perencanaan/add', [PerencanaanController::class,'add']);
+    Route::get('/perencanaan/edit/{id}', [PerencanaanController::class,'edit']); 
+    Route::get('/pagutarget', [PaguTargetController::class,'index']);             
 });
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'store']);
 
+Route::get('/provinsi', [ProvinceController::class,'index']); 
+Route::get('/kabupaten', [RegencyController::class,'index']);
+Route::get('/periode', [PeriodeController::class,'index']);
+Route::get('/auditlog', [AuditLogController::class,'index']);           
+   
+Route::middleware(['auth','pusat'])->group(function () {
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index']);
-    Route::get('/perencanaan', [PerencanaanController::class, 'index']);
-    Route::get('/perencanaan/add', [PerencanaanController::class, 'add']);
-    Route::get('/perencanaan/edit/{id}', [PerencanaanController::class, 'edit']);
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {

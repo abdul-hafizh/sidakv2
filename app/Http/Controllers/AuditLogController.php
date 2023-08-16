@@ -7,7 +7,7 @@ use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestSystemLog;
 
 
-class ProvinceController extends Controller
+class AuditLogController extends Controller
 {
 
     public function __construct()
@@ -19,18 +19,18 @@ class ProvinceController extends Controller
 
     public function index(Request $request)
     {
-       $title = 'Data Provinsi';
-       $log = array(             
-            'menu'=>$title,
-            'slug'=>'provinsi',
-            'url'=>'provinsi'
+        $title = 'Audit Log System';
+        $log = array(             
+            'menu'=> $title,
+            'slug'=>'auditlog',
+            'url'=>'auditlog'
         );
         RequestSystemLog::CreateLog($log);
       
-        return view('template/' . $this->template . '.province.index')
+        return view('template/' . $this->template . '.auditlog.index')
         ->with(
             [
-              'title' => $title,
+              'title' =>  $title,
               'template'=>'template/'.$this->template
             ]);
     }

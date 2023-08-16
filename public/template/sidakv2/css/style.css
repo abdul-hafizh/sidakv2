@@ -884,6 +884,15 @@
     width: 30px!important;
 }
 
+.bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
+    width: 100%!important;
+ 
+}
+
+.bootstrap-select>.dropdown-toggle.bs-placeholder.btn-primary{
+      color: #fff!important; 
+}
+
 @media (min-width: 576px) {
   .d-sm-none {
     display: none !important; }

@@ -4,12 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
-use App\Http\Request\RequestPerencanaan;
 use App\Http\Request\RequestAuth;
-use App\Http\Request\Validation\ValidationPerencanaan;
-use App\Helpers\GeneralPaginate;
-use App\Models\Perencanaan;
-use Auth;
+use App\Http\Request\RequestSystemLog;
 
 class PerencanaanController extends Controller
 {
@@ -20,30 +16,51 @@ class PerencanaanController extends Controller
     }
 
     public function index(Request $request)
-    {        
+    {      
+        $title = 'Perencanaan Tahun Anggaran';
+        $log = array(             
+            'menu'=>$title,
+            'slug'=>'perencanaan',
+            'url'=>'perencanaan'
+        );
+        RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.index')
         ->with([
-            'title' => 'Data Perencanaan',
+            'title' => $title,
             'access' => RequestAuth::access(),
             'template'=>'template/'.$this->template ]);
     }
 
     public function add(Request $request)
     {
+        $title = 'Tambah Perencanaan Tahun Anggaran';
+        $log = array(             
+            'menu'=>$title,
+            'slug'=>'perencanaan',
+            'url'=>'perencanaan'
+        );
+        RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.add')
         ->with([
-            'title' => 'Perencanaan Tahun Anggaran',
+            'title' => $title,
             'template'=>'template/'.$this->template ]);
     }
 
     public function edit(Request $request)
     {
+        $title = 'Edit Perencanaan Tahun Anggaran';
+        $log = array(             
+            'menu'=>$title,
+            'slug'=>'perencanaan',
+            'url'=>'perencanaan'
+        );
+        RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.edit')
         ->with([
-            'title' => 'Edit Perencanaan Tahun Anggaran',
+            'title' =>$title,
             'template'=>'template/'.$this->template ]);
     }
 
