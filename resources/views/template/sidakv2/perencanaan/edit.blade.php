@@ -149,7 +149,7 @@
 
                                  <div id="bimtek-pengawasan-pagu-alert" class="form-group col-sm-3" >
                                       <label>Pagu :</label>
-                                      <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_target" type="number" class="form-control" placeholder="Pagu">
+                                      <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" class="form-control" placeholder="Pagu">
                                       <span id="bimtek-pengawasan-pagu-messages"></span>
                                  </div>
 
@@ -344,7 +344,7 @@
      
       $.ajax({
         type: 'GET',
-        url: BASE_URL +'/api/periode/check',
+        url: BASE_URL +'/api/select-periode',
         success: function(response) {
            periode = response;
            onOptionSelect(response)
