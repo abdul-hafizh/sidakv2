@@ -10,37 +10,26 @@ use DB;
 
 class RequestPeriode
 {
-   
-   public static function GetDataAll($data,$perPage,$request)
+
+   public static function GetDataAll($data, $perPage, $request, $description)
    {
-        $temp = array();
-         
-        $getRequest = $request->all();
-        $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
-        $numberNext = (($page*$perPage) - ($perPage-1));
-        $template = RequestSettingApps::AppsTemplate();
-        foreach ($data as $key => $val)
-        {
-            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "Non Aktif"; }
-
-            if($val->semester =="01") { $semester = "Semester 01";  }else{ $semester = "Semester 02"; }
-           
-            $temp[$key]['number'] = $numberNext++;
-            $temp[$key]['id'] = $val->id;
-            $temp[$key]['name'] = $val->name;
-            $temp[$key]['slug'] = $val->slug;
-            $temp[$key]['semester_text'] = $semester;
-            $temp[$key]['semester_value'] = $val->semester;
-            $temp[$key]['year'] = $val->year;
-            $temp[$key]['status'] = $status;
-            $temp[$key]['status_ori'] = $val->status;
-            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
-        }
-
-         $result['data'] = $temp;
-         $result['current_page'] = $data->currentPage();
-         $result['last_page'] = $data->lastPage(); 
-        return $result;
+      $__temp_ = array();
+      $getRequest = $request->all();
+      $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
+      $numberNext = (($page * $perPage) - ($perPage - 1));
+      foreach ($data as $key => $val) {
+         if ($val->status == 'A') {
+            $status = 'Aktif';
+         } else {
+            $status = 'Non Aktif';
+         };
+         $__temp_[$key]['number'] = $numberNext++;
+         $__temp_[$key]['id'] = $val->id;
+         $__temp_[$key]['name'] = $val->name;
+         $__temp_[$key]['semester'] = $val->semester;
+         $__temp_[$key]['year'] = $val->year;
+         $__temp_[$key]['slug'] = $val->slug;
+         $__temp_[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
 
        
 
@@ -59,6 +48,7 @@ class RequestPeriode
             $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
          }
        
+
 
       return  $temp;
    }
@@ -86,23 +76,22 @@ class RequestPeriode
       return $result;
    }
 
-   
-  
+   public static function GetDataID($data)
+   {
+
+      $__temp_['id'] = $data->id;
+      $__temp_['name'] = $data->name;
+      $__temp_['slug'] = $data->slug;
+      $__temp_['semester'] = $data->semester;
+      $__temp_['year'] = $data->year;
+      $__temp_['status'] = $data->status;
+      return $__temp_;
+   }
+
+
 
    public static function fieldsData($request)
    {
-        
-        $fields = [  
-                'name'  =>  $request->name,
-                'slug' => $request->year.$request->semester,
-                'semester' =>$request->semester,
-                'year' =>$request->year,
-                'status' =>$request->status,
-                'created_by' =>Auth::User()->username,
-                'created_at' => date('Y-m-d H:i:s'),
-        ];
-  
-        return $fields;
 
       $fields = [
          'name'  =>  $request->name,

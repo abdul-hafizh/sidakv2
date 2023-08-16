@@ -20,7 +20,7 @@
                                    </div>
                                    <div class="form-group col-sm-4">
                                         <label>Satuan :</label>
-                                        <input  type="text" class="form-control" placeholder="Satuan" disabled>                                     
+                                        <input type="text" class="form-control" placeholder="Satuan" disabled>                                     
                                    </div>
                                    <div id="pengawas-analisa-pagu-alert" class="form-group col-sm-4">
                                         <label>Pagu :</label>
@@ -37,7 +37,7 @@
                                    </div>
                                    <div class="form-group col-sm-4">
                                         <label>Satuan :</label>
-                                        <input  type="text" class="form-control" placeholder="Satuan" disabled>                                   
+                                        <input type="text" class="form-control" placeholder="Satuan" disabled>                                   
                                    </div>
                                    <div id="pengawas-inspeksi-pagu-alert" class="form-group col-sm-4">
                                         <label>Pagu :</label>
@@ -54,7 +54,7 @@
                                    </div>
                                    <div class="form-group col-sm-4">
                                         <label>Satuan :</label>
-                                        <input  type="text" class="form-control" placeholder="Satuan" disabled>                                     
+                                        <input type="text" class="form-control" placeholder="Satuan" disabled>                                     
                                    </div>
                                    <div id="pengawas-evaluasi-pagu-alert" class="form-group col-sm-4" >
                                         <label>Pagu :</label>
@@ -102,7 +102,7 @@
                                  </div>
                                  <div id="bimtek-pengawasan-pagu-alert" class="form-group col-sm-4" >
                                       <label>Pagu :</label>
-                                      <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_target" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
+                                      <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
                                       <span id="bimtek-pengawasan-pagu-messages"></span>
                                  </div>
                               </div>    
@@ -180,7 +180,7 @@
                               <div class="row">
                                    <div id="periode-id-alert" class="form-group col-sm-12">
                                         <label>Pilih Tahun :</label>
-                                        <select id="periode_id" class="select-add form-control" name="periode_id"></select>
+                                        <select id="periode_id" name="periode_id" class="form-control"></select>
                                         <span id="periode-id-messages"></span>
                                    </div>
                                    <div class="form-group col-sm-12">
@@ -264,6 +264,7 @@
                content.empty();
                data.forEach(item => {
                     let row = ``;
+                    row +=`<option value="">Pilih Tahun</option>`;
                     row +=`<option value="${item.value}">${item.text}</option>`;
                     content.append(row);
                });     
@@ -272,66 +273,74 @@
           $("#simpan").click( () => {
 
                var data = $("#FormSubmit").serializeArray();
-               
-               var form = {
-                    "pengawas_analisa_target":data[0].value,
-                    "pengawas_analisa_pagu":data[1].value,
-                    "pengawas_inspeksi_target":data[2].value,
-                    "pengawas_inspeksi_pagu":data[3].value,
-                    "pengawas_evaluasi_target":data[4].value,
-                    "pengawas_evaluasi_pagu":data[5].value,
-                    "bimtek_perizinan_target":data[6].value,
-                    "bimtek_perizinan_pagu":data[7].value,
-                    "bimtek_pengawasan_target":data[8].value,
-                    "bimtek_pengawasan_pagu":data[9].value,
-                    "penyelesaian_identifikasi_target":data[10].value,
-                    "penyelesaian_identifikasi_pagu":data[11].value,
-                    "penyelesaian_realisasi_target":data[12].value,
-                    "penyelesaian_realisasi_pagu":data[13].value,
-                    "penyelesaian_evaluasi_target":data[14].value,
-                    "penyelesaian_evaluasi_pagu":data[15].value,
-                    "periode_id":data[16].value,
-                    "nama_pejabat":data[17].value,
-                    "nip_pejabat":data[18].value,
-                    "tgl_tandatangan":data[19].value,
-                    "lokasi":data[20].value,
-                    "type":"kirim",
-               };
 
-               SendingData(form);
+               if (data.length == 21) {
+
+                    var form = {
+                         "pengawas_analisa_target":data[0].value,
+                         "pengawas_analisa_pagu":data[1].value,
+                         "pengawas_inspeksi_target":data[2].value,
+                         "pengawas_inspeksi_pagu":data[3].value,
+                         "pengawas_evaluasi_target":data[4].value,
+                         "pengawas_evaluasi_pagu":data[5].value,
+                         "bimtek_perizinan_target":data[6].value,
+                         "bimtek_perizinan_pagu":data[7].value,
+                         "bimtek_pengawasan_target":data[8].value,
+                         "bimtek_pengawasan_pagu":data[9].value,
+                         "penyelesaian_identifikasi_target":data[10].value,
+                         "penyelesaian_identifikasi_pagu":data[11].value,
+                         "penyelesaian_realisasi_target":data[12].value,
+                         "penyelesaian_realisasi_pagu":data[13].value,
+                         "penyelesaian_evaluasi_target":data[14].value,
+                         "penyelesaian_evaluasi_pagu":data[15].value,
+                         "periode_id":data[16].value,
+                         "nama_pejabat":data[17].value,
+                         "nip_pejabat":data[18].value,
+                         "tgl_tandatangan":data[19].value,
+                         "lokasi":data[20].value,
+                         "type":"kirim",
+                    };
+                    
+                    SendingData(form);
+
+               } else alert("Tidak ada tahun yang dipilih.");
                
           });
 
           $("#draft").click( () => {
 
-               var data = $("#FormSubmit").serializeArray();
+               var data = $("#FormSubmit").serializeArray();       
                
-               var form = {
-                    "pengawas_analisa_target":data[0].value,
-                    "pengawas_analisa_pagu":data[1].value,
-                    "pengawas_inspeksi_target":data[2].value,
-                    "pengawas_inspeksi_pagu":data[3].value,
-                    "pengawas_evaluasi_target":data[4].value,
-                    "pengawas_evaluasi_pagu":data[5].value,
-                    "bimtek_perizinan_target":data[6].value,
-                    "bimtek_perizinan_pagu":data[7].value,
-                    "bimtek_pengawasan_target":data[8].value,
-                    "bimtek_pengawasan_pagu":data[9].value,
-                    "penyelesaian_identifikasi_target":data[10].value,
-                    "penyelesaian_identifikasi_pagu":data[11].value,
-                    "penyelesaian_realisasi_target":data[12].value,
-                    "penyelesaian_realisasi_pagu":data[13].value,
-                    "penyelesaian_evaluasi_target":data[14].value,
-                    "penyelesaian_evaluasi_pagu":data[15].value,
-                    "periode_id":data[16].value,
-                    "nama_pejabat":data[17].value,
-                    "nip_pejabat":data[18].value,
-                    "tgl_tandatangan":data[19].value,
-                    "lokasi":data[20].value,
-                    "type":"draft",
-               };
+               if (data.length == 21) {
 
-               SendingData(form);
+                    var form = {
+                         "pengawas_analisa_target":data[0].value,
+                         "pengawas_analisa_pagu":data[1].value,
+                         "pengawas_inspeksi_target":data[2].value,
+                         "pengawas_inspeksi_pagu":data[3].value,
+                         "pengawas_evaluasi_target":data[4].value,
+                         "pengawas_evaluasi_pagu":data[5].value,
+                         "bimtek_perizinan_target":data[6].value,
+                         "bimtek_perizinan_pagu":data[7].value,
+                         "bimtek_pengawasan_target":data[8].value,
+                         "bimtek_pengawasan_pagu":data[9].value,
+                         "penyelesaian_identifikasi_target":data[10].value,
+                         "penyelesaian_identifikasi_pagu":data[11].value,
+                         "penyelesaian_realisasi_target":data[12].value,
+                         "penyelesaian_realisasi_pagu":data[13].value,
+                         "penyelesaian_evaluasi_target":data[14].value,
+                         "penyelesaian_evaluasi_pagu":data[15].value,
+                         "periode_id":data[16].value,
+                         "nama_pejabat":data[17].value,
+                         "nip_pejabat":data[18].value,
+                         "tgl_tandatangan":data[19].value,
+                         "lokasi":data[20].value,
+                         "type":"draft",
+                    };
+
+                    SendingData(form);
+
+               } else alert("Tidak ada tahun yang dipilih.");
                
           });
 
