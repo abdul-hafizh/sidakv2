@@ -145,7 +145,7 @@
     <li class="">
         <a href="{!! url('pengawasan') !!}">
             <div class="fa-img-pengawasan">
-                <span class="title-menu">pengawasan</span>
+                <span class="title-menu">Pengawasan</span>
             </div>
         </a>
     </li>
@@ -246,7 +246,7 @@
     <li class="">
         <a href="{!! url('pengawasan') !!}">
             <div class="fa-img-pengawasan">
-                <span class="title-menu">pengawasan</span>
+                <span class="title-menu">Pengawasan</span>
             </div>
         </a>
     </li>
@@ -344,7 +344,7 @@
     <li class="">
         <a href="{!! url('pengawasan') !!}">
             <div class="fa-img-pengawasan">
-                <span class="title-menu">pengawasan</span>
+                <span class="title-menu">Pengawasan</span>
             </div>
         </a>
     </li>
@@ -447,7 +447,7 @@
     <li class="">
         <a href="{!! url('pengawasan') !!}">
             <div class="fa-img-pengawasan">
-                <span class="title-menu">pengawasan</span>
+                <span class="title-menu">Pengawasan</span>
             </div>
         </a>
     </li>
@@ -519,7 +519,7 @@
     <li class="">
         <a href="{!! url('pengawasan') !!}">
             <div class="fa-img-pengawasan">
-                <span class="title-menu">pengawasan</span>
+                <span class="title-menu">Pengawasan</span>
             </div>
         </a>
     </li>
@@ -616,7 +616,7 @@
     <li class="">
         <a href="{!! url('pengawasan') !!}">
             <div class="fa-img-pengawasan">
-                <span class="title-menu">pengawasan</span>
+                <span class="title-menu">Pengawasan</span>
             </div>
         </a>
     </li>
@@ -688,7 +688,7 @@
     <li class="">
         <a href="{!! url('pengawasan') !!}">
             <div class="fa-img-pengawasan">
-                <span class="title-menu">pengawasan</span>
+                <span class="title-menu">Pengawasan</span>
             </div>
         </a>
     </li>
@@ -783,7 +783,7 @@
     <li class="">
         <a href="{!! url('pengawasan') !!}">
             <div class="fa-img-pengawasan">
-                <span class="title-menu">pengawasan</span>
+                <span class="title-menu">Pengawasan</span>
             </div>
         </a>
     </li>
