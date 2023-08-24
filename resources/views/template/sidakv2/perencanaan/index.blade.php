@@ -219,9 +219,9 @@
                 row +=`<td class="table-padding-second">${item.created_at}</td>`;
                 row +=`<td>`; 
                     row +=`<div class="btn-group">`;
-                    row +=`<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-danger" title="Approve Data"><i class="fa fa-pencil"></i></button>`;
-                    row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                    row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+                    row +=`<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
+                    row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-warning" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                    row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-danger" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
                     row +=`</div>`;
                     row +=`</td>`;
                 row +=`</tr>`; 
