@@ -22,13 +22,21 @@ class PerencanaanApiController extends Controller
 
     public function index(Request $request)
     {                
-
         $access = RequestAuth::access();
-        $data = Perencanaan::orderBy('id', 'DESC')->paginate($this->perPage);              
+        $data = Perencanaan::join('regencies', 'perencanaan.daerah_id', '=', 'regencies.id')
+            ->orderBy('perencanaan.created_at', 'DESC')
+            ->select('perencanaan.*', 'regencies.name as nama_daerah')
+            ->paginate($this->perPage);    
+
         $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
 
         if($access == 'daerah' || $access == 'province') {
-            $data = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('id', 'DESC')->paginate($this->perPage);              
+            $data = Perencanaan::join('regencies', 'perencanaan.daerah_id', '=', 'regencies.id')
+                ->where('perencanaan.daerah_id', Auth::user()->daerah_id)
+                ->orderBy('perencanaan.id', 'DESC')
+                ->select('perencanaan.*', 'regencies.name as nama_daerah')
+                ->paginate($this->perPage);
+
             $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);            
         } 
 
@@ -100,6 +108,27 @@ class PerencanaanApiController extends Controller
 
         return response()->json($messages);
     
+    }
+
+    public function approve($id){
+
+        $messages['messages'] = false;
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            
+            return response()->json(['messages' => false]);
+
+        }
+
+        $results = $_res->where('id', $id)->update([ 'status' => 15, 'request_edit' => 'request_doc']);
+
+        if($results){
+            $messages['messages'] = true;
+        }
+        
+        return response()->json($messages);
+
     }
 
     public function delete($id){

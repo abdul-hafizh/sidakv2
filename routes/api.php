@@ -39,15 +39,9 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('select-province', [DaerahApiController::class, 'listProvince']);
     Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
-
-
-
-    
     Route::get('select-periode', [PeriodeApiController::class, 'listAll']);
-
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
-
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
 
@@ -57,6 +51,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('perencanaan/periode', [PeriodeApiController::class, 'periode']);
     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
     Route::post('perencanaan', [PerencanaanApiController::class, 'store']);
+    Route::put('perencanaan/approve/{id}', [PerencanaanApiController::class, 'approve']);
     Route::get('perencanaan/edit/{id}', [PerencanaanApiController::class, 'edit']);
     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']);
     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
@@ -80,7 +75,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('province/selected', [ProvinceApiController::class, 'deleteSelected']);
     Route::delete('province/{id}', [ProvinceApiController::class, 'delete']);
 
-
     Route::get('regency', [RegencyApiController::class, 'index']);
     Route::post('regency', [RegencyApiController::class, 'store']);
     Route::put('regency/{id}', [RegencyApiController::class, 'update']);
@@ -88,7 +82,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('regency/selected', [RegencyApiController::class, 'deleteSelected']);
     Route::delete('regency/{id}', [RegencyApiController::class, 'delete']);
     Route::get('dashboard', [DashboardApiController::class, 'index']);
-
 
 
     Route::get('select-role', [RolesApiController::class, 'listAll']);

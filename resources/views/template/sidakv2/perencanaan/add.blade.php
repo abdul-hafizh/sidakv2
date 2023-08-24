@@ -1,230 +1,224 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
+<style>
+     tr.border-bottom td {
+          border-bottom: 3pt solid #f4f4f4;
+     }
+     td {
+          padding: 10px !important;
+     }
+</style>
 <div class="content">
-     <div class="row in-content">
-          <form id="FormSubmit">
-               <section class="col-lg-7 connectedSortable ui-sortable">
-                    <div class="box box-solid box-primary">
-                         <div class="box-header with-border border-radius-top">
-                              <h3 class="box-title">Pengawasan Penanaman Modal :</h3>
-                         </div>
-                         <div class="box-body">
-                              <div class="row">
-                                   <div class="form-group col-sm-12">
-                                        <label>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha :</label>
-                                   </div>
-                                   <div id="pengawas-analisa-target-alert" class="form-group col-sm-4">
-                                        <label>Target :</label>
-                                        <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" class="form-control" placeholder="Target">
-                                        <span id="pengawas-analisa-target-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-4">
-                                        <label>Satuan :</label>
-                                        <input type="text" class="form-control" placeholder="Satuan" disabled>                                     
-                                   </div>
-                                   <div id="pengawas-analisa-pagu-alert" class="form-group col-sm-4">
-                                        <label>Pagu :</label>
-                                        <input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
-                                        <span id="pengawas-analisa-pagu-messages"></span>                                   
-                                   </div>
-                                   <div class="form-group col-sm-12" >
-                                        <label>B. Inspeksi Lapangan :</label>
-                                   </div>
-                                   <div id="pengawas-inspeksi-target-alert" class="form-group col-sm-4">
-                                        <label> Target :</label>
-                                        <input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" class="form-control" placeholder="Target">
-                                        <span id="pengawas-inspeksi-target-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-4">
-                                        <label>Satuan :</label>
-                                        <input type="text" class="form-control" placeholder="Satuan" disabled>                                   
-                                   </div>
-                                   <div id="pengawas-inspeksi-pagu-alert" class="form-group col-sm-4">
-                                        <label>Pagu :</label>
-                                        <input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">                                        
-                                        <span id="pengawas-inspeksi-pagu-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-12">
-                                        <label>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha :</label>
-                                   </div>
-                                   <div id="pengawas-evaluasi-target-alert" class="form-group col-sm-4" >
-                                        <label>Target :</label>
-                                        <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" class="form-control" placeholder="Target">
-                                        <span id="pengawas-evaluasi-target-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-4">
-                                        <label>Satuan :</label>
-                                        <input type="text" class="form-control" placeholder="Satuan" disabled>                                     
-                                   </div>
-                                   <div id="pengawas-evaluasi-pagu-alert" class="form-group col-sm-4" >
-                                        <label>Pagu :</label>
-                                        <input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
-                                        <span id="pengawas-evaluasi-pagu-messages"></span>
-                                   </div>
-                              </div>
-                          </div>  
-                    </div> 
-
-                    <div class="box box-solid box-primary">
-                         <div class="box-header with-border border-radius-top">
-                              <h3 class="box-title">Bimbingan Teknis Kepada Pelaku Usaha :</h3>
-                         </div>
-                         <div class="box-body">                      
-                              <div class="row">
-                                 <div class="form-group col-sm-12" >
-                                     <label>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko :</label>
-                                 </div>
-                                 <div id="bimtek-perizinan-target-alert" class="form-group col-sm-4" >
-                                      <label>Target :</label>
-                                      <input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" class="form-control" placeholder="Target">
-                                      <span id="bimtek-perizinan-target-messages"></span>
-                                 </div>
-                                 <div class="form-group col-sm-4" >
-                                      <label>Satuan :</label>
-                                      <input  type="text" class="form-control" placeholder="Satuan" disabled>                                     
-                                 </div>
-                                 <div id="bimtek-perizinan-pagu-alert" class="form-group col-sm-4" >
-                                      <label>Pagu :</label>
-                                      <input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
-                                      <span id="bimtek-perizinan-pagu-messages"></span>
-                                 </div>
-                                 <div class="form-group col-sm-12" >
-                                     <label>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko :</label>
-                                 </div>
-                                 <div id="bimtek-pengawasan-target-alert" class="form-group col-sm-4" >
-                                      <label> Target :</label>
-                                      <input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" class="form-control" placeholder="Target">
-                                      <span id="bimtek-pengawasan-target-messages"></span> 
-                                 </div>
-                                 <div class="form-group col-sm-4" >
-                                      <label>Satuan :</label>
-                                      <input  type="text" class="form-control" placeholder="Satuan" disabled>                                     
-                                 </div>
-                                 <div id="bimtek-pengawasan-pagu-alert" class="form-group col-sm-4" >
-                                      <label>Pagu :</label>
-                                      <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
-                                      <span id="bimtek-pengawasan-pagu-messages"></span>
-                                 </div>
-                              </div>    
-                         </div>   
-                    </div>   
-                    
-                    <div class="box box-solid box-primary">
-                         <div class="box-header with-border border-radius-top">
-                              <h3 class="box-title">Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya :</h3>
-                         </div>
-                         <div class="box-body">             
-                              <div class="row">
-                                   <div class="form-group col-sm-12" >
-                                        <label>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya :</label>
-                                   </div>
-                                   <div id="penyelesaian-identifikasi-target-alert" class="form-group col-sm-4" >
-                                        <label>Target :</label>
-                                        <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control" placeholder="Target">
-                                        <span id="penyelesaian-identifikasi-target-messages"></span>
-                                   </div>
-                                   <div  class="form-group col-sm-4" >
-                                        <label>Satuan :</label>
-                                        <input  type="text" class="form-control" placeholder="Satuan" disabled>                              
-                                   </div>
-                                   <div id="penyelesaian-identifikasi-pagu-alert" class="form-group col-sm-4" >
-                                        <label>Pagu :</label>
-                                        <input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
-                                        <span id="penyelesaian-identifikasi-pagu-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-12" >
-                                        <label>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya :</label>
-                                   </div>
-                                   <div id="penyelesaian-realisasi-target-alert" class="form-group col-sm-4" >
-                                        <label> Target :</label>
-                                        <input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" type="number" class="form-control" placeholder="Target">
-                                        <span id="penyelesaian-realisasi-target-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-4" >
-                                        <label>Satuan :</label>
-                                        <input  type="text" class="form-control" placeholder="Satuan" disabled>                                   
-                                   </div>
-                                   <div id="penyelesaian-realisasi-pagu-alert" class="form-group col-sm-4" >
-                                        <label>Pagu :</label>
-                                        <input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
-                                        <span id="penyelesaian-realisasi-pagu-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-12" >
-                                        <label>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan Berusaha Para Pelaku Usaha :</label>
-                                   </div>
-                                   <div id="penyelesaian-evaluasi-target-alert" class="form-group col-sm-4" >
-                                        <label>Target :</label>
-                                        <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control" placeholder="Target">
-                                        <span id="penyelesaian-evaluasi-target-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-4" >
-                                        <label>Satuan :</label>
-                                        <input  type="text" class="form-control" placeholder="Satuan" disabled>                                   
-                                   </div>
-                                   <div id="penyelesaian-evaluasi-pagu-alert" class="form-group col-sm-4" >
-                                        <label>Pagu :</label>
-                                        <input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" class="form-control nilai_inp" placeholder="Pagu" value="0">
-                                        <span id="penyelesaian-evaluasi-pagu-messages"></span>
-                                   </div>
-                              </div>    
+     <form id="FormSubmit">
+          <div class="box box-solid box-primary">
+               <div class="box-body">
+                    <div class="card-body">
+                         <div id="periode-id-alert" class="form-group col-sm-2 pull-right"> <br/>
+                              <select id="periode_id" name="periode_id" class="form-control"></select>
+                              <span id="periode-id-messages"></span>
                          </div>
                     </div>
-               </section>    
-               
-               <section  class="col-lg-5 connectedSortable ui-sortable">
-                    <div class="box box-solid box-primary ">
-                         <div class="box-header with-border border-radius-top">
-                              <h3 class="box-title">Pagu & Total Anggaran</h3>
+               </div>
+          </div>
+          <div class="box box-solid box-primary">
+               <div class="box-body">
+                    <div class="card-body table-responsive">
+                         <table class="table table-hover text-nowrap">
+                              <thead>
+                                   <tr>
+                                        <th><div></div><span class="span-title">No</span></th>
+                                        <th><div class="split-table"></div><span class="span-title">Kegiatan/Sub Kegiatan</span></th>
+                                        <th><div class="split-table"></div><span class="span-title">Target</span></th>
+                                        <th><div class="split-table"></div><span class="span-title">Satuan</span></th>
+                                        <th><div class="split-table"></div><span class="span-title">Pagu APBN (Rp)</span></th>
+                                   </tr>
+                              </thead>
+                              <tbody>
+                                   <tr>
+                                        <td><strong>1</strong></td>
+                                        <td class="text-left"><strong>Pengawasan Penanaman Modal</strong></td>
+                                        <td class="text-center"><strong>0</strong></td>
+                                        <td class="text-center"><strong>Kegiatan Usaha</strong></td>
+                                        <td class="text-right"><strong id="total_pengawasan">Rp. 0</strong></td>
+                                   </tr>
+                                   <tr>
+                                        <td>&nbsp;</td>
+                                        <td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>
+                                        <td>
+                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control" placeholder="Target">
+                                             <span id="pengawas-analisa-target-messages"></span>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                        </td>
+                                        <td>
+                                             <input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_inp text-right" placeholder="Pagu" value="0">
+                                             <span id="pengawas-analisa-pagu-messages"></span>
+                                        </td>
+                                   </tr>
+                                   <tr>
+                                        <td>&nbsp;</td>
+                                        <td>B. Inspeksi Lapangan</td>
+                                        <td>
+                                             <input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control" placeholder="Target">
+                                             <span id="pengawas-inspeksi-target-messages"></span>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                        </td>
+                                        <td>
+                                             <input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_inp text-right" placeholder="Pagu" value="0">                                        
+                                             <span id="pengawas-inspeksi-pagu-messages"></span>
+                                        </td>
+                                   </tr>        
+                                   <tr class="border-bottom">
+                                        <td>&nbsp;</td>
+                                        <td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>
+                                        <td>
+                                             <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control" placeholder="Target">
+                                             <span id="pengawas-evaluasi-target-messages"></span>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                        </td>
+                                        <td>
+                                             <input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_inp text-right" placeholder="Pagu" value="0">
+                                             <span id="pengawas-evaluasi-pagu-messages"></span>
+                                        </td>
+                                   </tr>
+                                   <tr>
+                                        <td><strong>2</strong></td>
+                                        <td class="text-left"><strong>Bimbingan Teknis Kepada Pelaku Usaha</strong></td>
+                                        <td class="text-center"><strong>0</strong></td>
+                                        <td class="text-center"><strong>Pelaku Usaha</strong></td>
+                                        <td class="text-right"><strong id="total_bimsos">Rp. 0</strong></td>
+                                   </tr>
+                                   <tr>
+                                        <td>&nbsp;</td>
+                                        <td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>
+                                        <td>
+                                             <input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control" placeholder="Target">
+                                             <span id="bimtek-perizinan-target-messages"></span>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                        </td>
+                                        <td>
+                                             <input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control nilai_inp bimsos_nilai_inp text-right" placeholder="Pagu" value="0">
+                                             <span id="bimtek-perizinan-pagu-messages"></span>
+                                        </td>
+                                   </tr>
+                                   <tr class="border-bottom">
+                                        <td>&nbsp;</td>
+                                        <td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>
+                                        <td>
+                                             <input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control" placeholder="Target">
+                                             <span id="bimtek-pengawasan-target-messages"></span> 
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                        </td>
+                                        <td>
+                                             <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control nilai_inp bimsos_nilai_inp text-right" placeholder="Pagu" value="0">
+                                             <span id="bimtek-pengawasan-pagu-messages"></span>
+                                        </td>
+                                   </tr>
+                                   <tr>
+                                        <td><strong>3</strong></td>
+                                        <td class="text-left"><strong>Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</strong></td>
+                                        <td class="text-center"><strong>0</strong></td>
+                                        <td class="text-center"><strong>Kegiatan Usaha</strong></td>
+                                        <td class="text-right"><strong id="total_masalah">Rp. 0</strong></td>
+                                   </tr>
+                                   <tr>
+                                        <td>&nbsp;</td>
+                                        <td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>
+                                        <td>
+                                             <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control" placeholder="Target">
+                                             <span id="penyelesaian-identifikasi-target-messages"></span>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                        </td>
+                                        <td>
+                                             <input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" class="form-control nilai_inp masalah_nilai_inp text-right" placeholder="Pagu" value="0">
+                                             <span id="penyelesaian-identifikasi-pagu-messages"></span>
+                                        </td>
+                                   </tr>
+                                   <tr>
+                                        <td>&nbsp;</td>
+                                        <td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>
+                                        <td>
+                                             <input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" type="number" class="form-control" placeholder="Target">
+                                             <span id="penyelesaian-realisasi-target-messages"></span>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                        </td>
+                                        <td>
+                                             <input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" class="form-control nilai_inp masalah_nilai_inp text-right" placeholder="Pagu" value="0">
+                                             <span id="penyelesaian-realisasi-pagu-messages"></span>
+                                        </td>
+                                   </tr>
+                                   <tr class="border-bottom">
+                                        <td>&nbsp;</td>
+                                        <td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>
+                                        <td>
+                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control" placeholder="Target">
+                                             <span id="penyelesaian-evaluasi-target-messages"></span>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                        </td>
+                                        <td>
+                                             <input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" class="form-control nilai_inp masalah_nilai_inp text-right" placeholder="Pagu" value="0">
+                                             <span id="penyelesaian-evaluasi-pagu-messages"></span>
+                                        </td>
+                                   </tr>
+                                   <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <th>Total Rencana : </th>
+                                        <th><input type="text" id="total_apbn" class="form-control text-right" value="Rp. 0" disabled></th>
+                                   </tr>
+                                   <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <th>Pagu APBN : </th>
+                                        <th><input type="text" id="pagu_apbn" class="form-control text-right" disabled></th>
+                                   </tr>
+                              </tbody>
+                         </table>
+                    </div>
+               </div>
+               <div style="margin-top: 1%">
+                    <div id="lokasi-alert" class="form-group col-sm-3">
+                         <label>Lokasi :</label>
+                         <input id="lokasi" name="lokasi" type="text" class="form-control" placeholder="Lokasi">
+                         <span id="lokasi-messages"></span>
+                    </div>
+                    <div id="tgl-tandatangan-alert" class="form-group col-sm-3">
+                         <label>Tanggal Ditandatangani :</label>
+                         <input id="tgl_tandatangan" name="tgl_tandatangan" type="date" class="form-control" placeholder="Tanggal Ditandatangani">
+                         <span id="tgl-tandatangan-messages"></span>
+                    </div> 
+                    <div id="nama-pejabat-alert" class="form-group col-sm-3">
+                         <label>Nama Pejabat :</label>
+                         <input id="nama_pejabat" name="nama_pejabat" type="text" class="form-control" placeholder="Nama Pejabat">
+                         <span id="nama-pejabat-messages"></span>
+                    </div> 
+                    <div id="nip-pejabat-alert" class="form-group col-sm-3">
+                         <label>NIP Pejabat :</label>
+                         <input id="nip_pejabat" name="nip_pejabat" type="text" class="form-control" placeholder="Nama Pejabat">
+                         <span id="nip-pejabat-messages"></span>
+                    </div> 
+                    <div class="form-group col-sm-12">
+                         <div class="group-btn-rencana">
+                              <button id="simpan" type="button" class="btn btn-primary pull-right"><i class="fa fa-cloud-upload"></i> Kirim</button>
+                              <button id="draft" type="button" class="btn btn-warning pull-left"><i class="fa fa-cloud-upload"></i> Draft</button>
                          </div>
-                         <div class="box-body">
-                              <div class="row">
-                                   <div id="periode-id-alert" class="form-group col-sm-12">
-                                        <label>Pilih Tahun :</label>
-                                        <select id="periode_id" name="periode_id" class="form-control"></select>
-                                        <span id="periode-id-messages"></span>
-                                   </div>
-                                   <div class="form-group col-sm-12">
-                                        <label>Pagu APBN :</label></br>
-                                        <input type="text" id="pagu_apbn" class="form-control" disabled>
-                                   </div> 
-                                   <div class="form-group col-sm-12">
-                                        <label>Total Perencanaan :</label></br>
-                                        <input type="text" id="total_apbn" class="form-control" value="Rp. 0" disabled>
-                                   </div> 
-                                   <div id="nama-pejabat-alert" class="form-group col-sm-12" >
-                                        <label>Nama Pejabat :</label>
-                                        <input id="nama_pejabat" name="nama_pejabat" type="text" class="form-control" placeholder="Nama Pejabat">
-                                        <span id="nama-pejabat-messages"></span>
-                                   </div> 
-
-                                   <div id="nip-pejabat-alert" class="form-group col-sm-12" >
-                                        <label>NIP Pejabat :</label>
-                                        <input id="nip_pejabat" name="nip_pejabat" type="text" class="form-control" placeholder="Nama Pejabat">
-                                        <span id="nip-pejabat-messages"></span>
-                                   </div> 
-
-                                   <div id="tgl-tandatangan-alert" class="form-group col-sm-12" >
-                                        <label>Tanggal Ditandatangani :</label>
-                                        <input id="tgl_tandatangan" name="tgl_tandatangan" type="date" class="form-control" placeholder="Tanggal Ditandatangani">
-                                        <span id="tgl-tandatangan-messages"></span>
-                                   </div> 
-                                   <div id="lokasi-alert" class="form-group col-sm-12" >
-                                        <label>Lokasi :</label>
-                                        <input id="lokasi" name="lokasi" type="text" class="form-control" placeholder="Lokasi">
-                                        <span id="lokasi-messages"></span>
-                                   </div>   
-                                   <div class="form-group col-sm-12">
-                                        <div class="group-btn-rencana">
-                                             <button id="simpan" type="button" class="btn btn-primary pull-right "><i class="fa fa-cloud-upload"></i> Kirim</button>
-                                             <button id="draft" type="button" class="btn btn-default pull-left"><i class="fa fa-cloud-upload"></i> Draft</button>
-                                        </div>
-                                   </div>                                  
-                              </div>
-                         </div>         
-                    </div>  
-               </section>               
-          </form>      
-     </div>
+                    </div>
+               </div>
+          </div>
+     </form>
 </div>
 
 <script type="text/javascript">
@@ -234,13 +228,25 @@
           var periode =[];
           var pagu_apbn = 0;
           
-          $('#pagu_apbn').val('Rp '+pagu_apbn+'');
+          $('#pagu_apbn').val('Rp. '+pagu_apbn+'');
 
           const user_sidebar  = JSON.parse(localStorage.getItem('user_sidebar'));
           $('#lokasi').val(user_sidebar.daerah_name);
 
           $(".nilai_inp").on("input", function() {
                calculateTotal();
+          });
+
+          $(".pengawasan_nilai_inp").on("input", function() {
+               calculatePengawasan();
+          });
+
+          $(".bimsos_nilai_inp").on("input", function() {
+               calculateBimsos();
+          });
+
+          $(".masalah_nilai_inp").on("input", function() {
+               calculateMasalah();
           });
 
           $.ajax({
@@ -570,6 +576,35 @@
           });
 
           $("#total_apbn").val('Rp. '+total);
+     }
+
+     function calculatePengawasan() {
+          var total_pengawasan = 0;
+          
+          $(".pengawasan_nilai_inp").each(function() {
+               total_pengawasan += parseFloat($(this).val());
+          });
+
+          $("#total_pengawasan").text('Rp. '+total_pengawasan);
+     }
+     function calculateBimsos() {
+          var total_bimsos = 0;
+          
+          $(".bimsos_nilai_inp").each(function() {
+               total_bimsos += parseFloat($(this).val());
+          });
+
+          $("#total_bimsos").text('Rp. '+total_bimsos);
+     }
+
+     function calculateMasalah() {
+          var total_masalah = 0;
+          
+          $(".masalah_nilai_inp").each(function() {
+               total_masalah += parseFloat($(this).val());
+          });
+
+          $("#total_masalah").text('Rp. '+total_masalah);
      }
 
 

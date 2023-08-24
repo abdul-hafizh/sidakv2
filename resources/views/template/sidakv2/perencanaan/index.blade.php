@@ -3,19 +3,9 @@
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
-          
-				<select id="periode_id" class="selectpicker" data-style="btn-primary" title="Pilih Periode"></select>
-				
-
-
-
-			
+		    <select id="periode_id" class="selectpicker" data-style="btn-primary" title="Pilih Periode"></select>
         </div> 	
     </div> 	
-
-
-
-
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
@@ -60,10 +50,11 @@
 						<tr>
 							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span></th>
+							<th><div class="split-table"></div><span class="span-title">Nama Daerah </span></th>
 							<th><div class="split-table"></div><span class="span-title">Periode </span></th>
 							<th><div class="split-table"></div><span class="span-title">Status </span></th>
 							<th><div class="split-table"></div><span class="span-title">Tanggal </span></th>
-							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+							<th><div class="split-table"></div><span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -83,8 +74,10 @@
         const visiblePages = 5; 
         let page = 1;
         var periode = [];
+        var list = [];
 
         $('.selectpicker').selectpicker();
+
         $.ajax({
             url: BASE_URL +'/api/perencanaan/periode',
             method: 'GET',
@@ -102,23 +95,11 @@
                 $('.selectpicker').selectpicker('refresh');
             },
             error: function(error) {
-            console.error(error);
+                console.error(error);
             }
         });
 
-        // $.ajax({
-        //     type: 'GET',
-        //     url: BASE_URL +'/api/perencanaan/periode',
-        //     success: function(response) {
-        //         periode = response;
-        //         onOptionSelect(response)
-        //     },
-        //     error: function( error) {
-            
-        //     }
-        // });
-
-          $('#periode_id').on('change', function() {
+        $('#periode_id').on('change', function() {
             var value = $(this).val();         
             if(value)
             {   
@@ -141,12 +122,8 @@
                     }
                 });
             }    
-           
-            
-            // Perform other actions based on the selected value
-          });
+        });
 
-        // "Select All" checkbox
         $('#select-all').on('change', function() {
             var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
             nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
@@ -154,19 +131,16 @@
             if(checkedCount >0)
             {
                 $('#delete-selected').prop("disabled", false);
-            }else{
+            } else {
                 $('#delete-selected').prop("disabled", true);
             }
         });
 
-        // Refresh selected button
         $('#refresh').on('click', function() {
-            
             fetchData(page);
             $('#search-input').val('');
         });
 
-       
 
         $('#delete-selected').on('click', function() {
             const selectedIds = [];
@@ -208,19 +182,19 @@
             });
         }
 
-
         function fetchData(page) {
-             const content = $('#content');
-           content.empty();
+            const content = $('#content');
+            content.empty();
           
-             let row = ``;
-              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-              content.append(row);
+            let row = ``;
+                row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                content.append(row);
 
             $.ajax({
                 url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
                 method: 'GET',
                 success: function(response) {
+                    list = response.data;
                     updateContent(response.data);
                     updatePagination(response.current_page, response.last_page);
                 },
@@ -234,21 +208,20 @@
             const content = $('#content');
 
             content.empty();
-            data.forEach(item => {
+            data.forEach(function(item, index) {
                 let row = ``;
                 row +=`<tr>`;
                 row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
                 row +=`<td class="table-padding-second">${item.number}</td>`;
+                row +=`<td class="table-padding-second">${item.nama_daerah}</td>`;
                 row +=`<td class="table-padding-second">${item.periode}</td>`;
                 row +=`<td class="table-padding-second">${item.status}</td>`;
                 row +=`<td class="table-padding-second">${item.created_at}</td>`;
                 row +=`<td>`; 
                     row +=`<div class="btn-group">`;
-
-                    row +=`<button  id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
-
-                    row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-
+                    row +=`<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
+                    row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-warning" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                    row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-danger" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
                     row +=`</div>`;
                     row +=`</td>`;
                 row +=`</tr>`; 
@@ -256,13 +229,36 @@
             });
 
             $('.item-checkbox').on('click', function() {
-                 const checkedCount = $('.item-checkbox:checked').length;
-                 if(checkedCount>0)
-                 {
-                   $('#delete-selected').prop("disabled", false);
-                 }else{
-                   $('#delete-selected').prop("disabled", true);
-                 }  
+                const checkedCount = $('.item-checkbox:checked').length;
+                if(checkedCount>0)
+                {
+                    $('#delete-selected').prop("disabled", false);
+                } else {
+                    $('#delete-selected').prop("disabled", true);
+                }  
+            });
+
+            $( "#content" ).on( "click", "#Approve", (e) => {
+             
+                let id = e.currentTarget.dataset.param_id;
+                
+                Swal.fire({
+			      title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#d33',
+			      cancelButtonColor: '#3085d6',
+			      confirmButtonText: 'Ya'
+			    }).then((result) => {
+			        if (result.isConfirmed) {
+                        approveItem(id);
+                        Swal.fire(
+                            'Approved!',
+                            'Data berhasil diapprove.',
+                            'success'
+                        );
+			        }
+			    });
             });
 
             $( "#content" ).on( "click", "#Edit", (e) => {
@@ -290,6 +286,19 @@
                     }
                 });
             }); 
+        }
+
+        function approveItem(id){
+            $.ajax({
+                url:  BASE_URL +`/api/perencanaan/approve/`+ id,
+                method: 'PUT',
+                success: function(response) {
+                    fetchData(page);
+                },
+                error: function(error) {
+                    console.error('Error approving data:', error);
+                }
+            });
         }
 
         function deleteItem(id){
@@ -348,6 +357,7 @@
         }
 
         fetchData(currentPage);
+
     });
 
 </script>
