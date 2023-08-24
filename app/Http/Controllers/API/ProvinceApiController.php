@@ -21,10 +21,16 @@ class ProvinceApiController extends Controller
 
     public function index(Request $request)
     {
-        $paginate = GeneralPaginate::limit();
-        $Data = Provinces::orderBy('created_at', 'DESC')->paginate($paginate);
-        $_res = RequestProvinces::GetDataAll($Data, $this->perPage, $request);
-        return response()->json($_res);
+         $query = Provinces::orderBy('created_at', 'DESC');
+         if($request->per_page !='all')
+         {
+           $data = $query->paginate($request->per_page);
+         }else{   
+           $data = $query->get(); 
+         }   
+        
+         $result = RequestProvinces::GetDataAll($data,$request->per_page,$request);
+         return response()->json($result);
     }
 
 

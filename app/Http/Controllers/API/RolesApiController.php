@@ -3,15 +3,9 @@
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\Roles;
-
-use App\Http\Request\RequestMenus;
-use App\Http\Request\RequestMenuRoles;
 use App\Http\Request\RequestRoles;
-use App\Http\Request\Search\SearchRoles;
 use App\Http\Request\Validation\ValidationRoles;
-use App\Helpers\GeneralPaginate;
 use DB;
 class RolesApiController extends Controller
 {
@@ -19,21 +13,36 @@ class RolesApiController extends Controller
    
     public function __construct()
     {   
-        $this->perPage = GeneralPaginate::limit();
+        
     }
 
     public function index(Request $request)
     {
-        $paginate = GeneralPaginate::limit();
-        $Data = Roles::orderBy('id', 'DESC')->paginate($paginate);
-        $description = '';
-        $_res = RequestRoles::GetDataAll($Data,$this->perPage,$request,$description);
-        return response()->json($_res);
+       
+
+        // $_res = array();
+         $query = Roles::orderBy('created_at', 'DESC');
+         if($request->per_page !='all')
+         {
+           $data = $query->paginate($request->per_page);
+         }else{   
+           $data = $query->get(); 
+         }   
+        
+         $result = RequestRoles::GetDataAll($data,$request->per_page,$request);
+         return response()->json($result);
+
 
     }
 
     
+      public function listAll(Request $request)
+    {
+       
+        $data = RequestRoles::GetRoles();
+        return response()->json($data);
 
+    }
    
 
    

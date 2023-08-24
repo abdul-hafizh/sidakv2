@@ -60,6 +60,12 @@
                 <h3 class="pull-left padding-10-0 mgn-none">{{ $title  }} </h3>
                 <div class="navbar-custom-menu">
                     <div class="mt-10 mc-15">
+
+                        <button type="button" class="btn btn-default margin-0-12-0-0 btn-flat border-radius-10">
+                            <i aria-hidden="true" class="fa fa-bell"></i>
+                            <span class="label label-warning">1</span>
+                        </button>
+
                         <button type="button" class="btn btn-primary margin-0-12-0-0 btn-flat border-radius-10">
                             <i aria-hidden="true" class="fa fa-user"></i> Profile
                         </button>
@@ -94,7 +100,7 @@
     <script src="{{ config('app.url').$template.'/js/icheck.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script>
-    <script src="{{ config('app.url').$template.'/js/scrollbar.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/slimscroll.min.js' }}"></script>
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script src="{{ config('app.url').$template.'/plugin/select2/js/select2.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/plugin/selectpicker/js/bootstrap-select.min.js' }}"></script>

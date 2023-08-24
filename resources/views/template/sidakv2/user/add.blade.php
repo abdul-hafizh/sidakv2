@@ -64,6 +64,14 @@
             <span id="daerah-messages"></span>
           </div>
 
+          <div id="role-alert" class="form-group has-feedback">
+            <label>Role </label>
+            <select id="role_id"  data-style="btn-default" title="Pilih Role" class="selectpicker form-control" name="role_id">
+
+            </select>
+            <span id="role-messages"></span>
+          </div>
+
           <div id="password-alert" class="form-group has-feedback">
             <label>Password </label>
             <input type="password" class="form-control" name="password" placeholder="Password">
@@ -133,6 +141,29 @@
           $('#daerah_id').val(selectedOption.id);
         });
 
+        
+        $.ajax({
+            url: BASE_URL +'/api/select-role',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                // Populate SelectPicker options using received data
+                var select =  $('#role_id')
+                $.each(data, function(index, option) {
+                    select.append($('<option>', {
+                      value: option.value,
+                      text: option.text
+                    }));
+                });
+
+                // Refresh the SelectPicker to apply the new options
+               select.selectpicker('refresh');
+            },
+            error: function(error) {
+            console.error(error);
+            }
+        });
+
         $("#simpan").click(() => {
           $("#simpan").hide();
           $("#load-simpan").show();
@@ -147,8 +178,9 @@
             'leader_name': data[5].value,
             'leader_nip': data[6].value,
             'daerah_id': data[7].value,
-            'password': data[8].value,
-            'password_confirmation': data[9].value,
+            'role_id': data[8].value,
+            'password': data[9].value,
+            'password_confirmation': data[10].value,
           };
           $.ajax({
             type: "POST",
@@ -224,6 +256,14 @@
               } else {
                 $('#daerah-alert').removeClass('has-error');
                 $('#daerah-messages').removeClass('help-block').html('');
+              }
+
+              if (errors.messages.role_id) {
+                $('#role-alert').addClass('has-error');
+                $('#role-messages').addClass('help-block').html('<strong>' + errors.messages.role_id + '</strong>');
+              } else {
+                $('#role-alert').removeClass('has-error');
+                $('#role-messages').removeClass('help-block').html('');
               }
 
               if (errors.messages.leader_name) {

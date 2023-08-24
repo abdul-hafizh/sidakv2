@@ -22,11 +22,18 @@ class PeriodeApiController extends Controller
 
     public function index(Request $request)
     {
-        $paginate = GeneralPaginate::limit();
-        $Data = Periode::orderBy('id', 'DESC')->paginate($paginate);
-        $description = '';
-        $_res = RequestPeriode::GetDataAll($Data, $this->perPage, $request, $description);
-        return response()->json($_res);
+        // $_res = array();
+         $query = Periode::orderBy('created_at', 'DESC');
+         if($request->per_page !='all')
+         {
+           $data = $query->paginate($request->per_page);
+         }else{   
+           $data = $query->get(); 
+         }   
+        
+         $result = RequestPeriode::GetDataAll($data,$request->per_page,$request);
+         return response()->json($result);
+
     }
 
 

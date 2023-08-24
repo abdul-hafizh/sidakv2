@@ -6,7 +6,7 @@
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
 			</div>
         </div> 	
@@ -14,6 +14,17 @@
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
+            <div class="pull-left padding-9-0 margin-left-button">
+               
+				<select id="row_page" class="selectpicker" data-style="btn-default" >
+					<option value="10" selected>10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+					<option value="all">All</option>
+				</select>
+            </div> 	
+
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
@@ -21,7 +32,7 @@
 			</div>
 
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+				<button type="button"  id="refresh" class="btn btn-info border-radius-10">
 					 Refresh
 				</button>
 			</div>
@@ -66,10 +77,15 @@
 						
 					
 					 </tbody>
-					</table>
+				</table>
+
+							
 				</div>
 			</div>
 		</div>
+		<div class="pull-left full">
+          <div id="total-data" class="pull-left width-25"></div> 	
+	    </div>
 	</div>
      @include('template/sidakv2/regency.add')
 
@@ -78,15 +94,53 @@
 
  $(document).ready(function() {
 
- 	
 
-    const itemsPerPage = 10; // Number of items to display per page
+    const itemsPerPage = $('#row_page').val(); // Number of items to display per page
     let currentPage = 1; // Current page number
     let previousPage = 1; // Previous page number
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
     var list = [];
+    const total = 0;
+  
 
+
+    $('#row_page').on('change', function() {
+            var value = $(this).val();         
+            if(value)
+            {   
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+                  let search = $('#search-input').val();
+                  if(search !='')
+                  {
+                  	var url = BASE_URL + `/api/regency/search?page=${page}&per_page=${value}`;
+                  	var method = 'POST';
+                  }else{
+                    var url = BASE_URL + `/api/regency?page=${page}&per_page=${value}`;
+                    var method = 'GET';
+                  } 	
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data:{'search':search},
+                    success: function(response) {
+                    	list = response.data;
+                        resultTotal(response.total);
+                        updateContent(response.data);
+                        updatePagination(response.current_page, response.last_page);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }    
+    // Perform other actions based on the selected value
+    });
 
      // "Select All" checkbox
      $('#select-all').on('change', function() {
@@ -154,6 +208,8 @@
 	            data:{'search':search},
 	            method: 'POST',
 	            success: function(response) {
+	            	list = response.data;
+	            	resultTotal(response.total);
 	                // Update content area with fetched data
 	                updateContent(response.data);
 
@@ -195,11 +251,14 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 
+
+
         $.ajax({
             url: BASE_URL+ `/api/regency?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
             	list = response.data;
+            	resultTotal(response.total);
                 // Update content area with fetched data
                 updateContent(response.data);
 
@@ -218,6 +277,9 @@
 
         // Clear previous data
         content.empty();
+
+        if(data.length > 0)
+        { 	
 
         // Populate content with new data
         data.forEach(function(item, index) {
@@ -247,9 +309,15 @@
 
             content.append(row);
 
-         
-
         });
+
+	    }else{
+
+
+    	 	let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Data Kosong</b></td></tr>`;
+              content.html(row);
+	    }
 
        $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
@@ -455,6 +523,10 @@
 
        
         
+    }
+
+    function resultTotal(total){
+       $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
     }
 
     function deleteItem(id){

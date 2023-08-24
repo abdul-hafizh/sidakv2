@@ -4,7 +4,7 @@
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
+				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
 				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
@@ -15,7 +15,6 @@
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-               
 				<select id="row_page" class="selectpicker" data-style="btn-default" >
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
@@ -23,11 +22,12 @@
 					<option value="100">100</option>
 					<option value="all">All</option>
 				</select>
-            </div> 	
+            </div>
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
+
 			</div>
 
 			<div class="pull-left padding-9-0 margin-left-button">
@@ -35,7 +35,6 @@
 					 Refresh
 				</button>
 			</div>
-
 
 			<div class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
@@ -62,11 +61,12 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
+							<th><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
-							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
-							<th><div class="split-table"></div> <span class="span-title"> Status </span></th>
-								<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+							<th><div class="split-table"></div><span class="span-title">Permasalahan</span></th>
+							<th><div class="split-table"></div><span class="span-title"> Pesan Kendala</span></th>
+							<th><div class="split-table"></div><span class="span-title"> Status </span></th> 
+							<th><div class="split-table"></div><span class="span-title"> Aksi </span></th>
 						</tr>
 					</thead>
 
@@ -82,12 +82,13 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	    </div>
 	</div>
-     @include('template/sidakv2/role.add')
+     @include('template/sidakv2/kendala.add')
 
 <script type="text/javascript">
 
  $(document).ready(function() {
 
+ 	
     const itemsPerPage = 10; // Number of items to display per page
     let currentPage = 1; // Current page number
     let previousPage = 1; // Previous page number
@@ -106,13 +107,12 @@
                  row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
                   content.append(row);
                   let search = $('#search-input').val();
-
                   if(search !='')
                   {
-                  	var url = BASE_URL + `/api/role/search?page=${page}&per_page=${value}`;
+                  	var url = BASE_URL + `/api/kendala/search?page=${page}&per_page=${value}`;
                   	var method = 'POST';
                   }else{
-                    var url = BASE_URL + `/api/role?page=${page}&per_page=${value}`;
+                    var url = BASE_URL + `/api/kendala?page=${page}&per_page=${value}`;
                     var method = 'GET';
                   } 	
 
@@ -134,8 +134,6 @@
     // Perform other actions based on the selected value
     });
 
-
-
      // "Select All" checkbox
     $('#select-all').on('change', function() {
         $('.item-checkbox').prop('checked', $(this).is(':checked'));
@@ -150,7 +148,7 @@
 
     });
 
-    // Refresh selected button
+     // Refresh selected button
     $('#refresh').on('click', function() {
     	
         fetchData(page);
@@ -174,7 +172,7 @@
         $('.select-all').prop('checked', allChecked);
     });
 
-
+    
     $('#Search').click( () => {
  		 let search = $('#search-input').val();
  		 
@@ -186,12 +184,12 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 	         $.ajax({
-	            url: BASE_URL + `/api/role/search?page=${page}&per_page=${itemsPerPage}`,
+	            url: BASE_URL + `/api/kendala/search?page=${page}&per_page=${itemsPerPage}`,
 	            data:{'search':search},
 	            method: 'POST',
 	            success: function(response) {
 	            	list = response.data;
-	            	resultTotal(response.total);
+                    resultTotal(response.total);
 	                // Update content area with fetched data
 	                updateContent(response.data);
 
@@ -205,42 +203,22 @@
 	     }    
     });
 
-    // Function to delete items
-    function deleteItems(ids) {
-        // Send the selected IDs for deletion using AJAX
-       
-        $.ajax({
-            url:  BASE_URL +`/api/role/selected`,
-            method: 'POST',
-            data: { data: ids },
-            success: function(response) {
-                // Handle success (e.g., remove deleted items from the list)
-                fetchData(page);
-            },
-            error: function(error) {
-                console.error('Error deleting items:', error);
-            }
-        });
-    }
-
-    function resultTotal(total){
-       $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
-    }
-
     // Function to fetch data from the API
     function fetchData(page) {
-    	 const content = $('#content');
-           content.empty();
     	  
-    	 	let row = ``;
-             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-              content.append(row);
+		const content = $('#content');
+		content.empty();
+
+		let row = ``;
+		row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+		content.append(row);
+
         $.ajax({
-            url: BASE_URL+ `/api/role?page=${page}&per_page=${itemsPerPage}`,
+            url: BASE_URL+ `/api/kendala?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
             	list = response.data;
-            	resultTotal(response.total);
+                resultTotal(response.total);
                 // Update content area with fetched data
                 updateContent(response.data);
 
@@ -259,40 +237,61 @@
 
         // Clear previous data
         content.empty();
+        if(data.length>0)
+        { 	
+	        // Populate content with new data
+	        data.forEach(function(item, index) {
+	           	let row = ``;
+	             row +=`<tr>`;
+	              if(item.showdelete == true)
+	              { 
+	                row +=`<td><input  class="item-checkbox" data-id="${item.id}"  type="checkbox"></td>`;
+	              }else{
+	              	row +=`<td><input disabled  type="checkbox"></td>`;
+	              } 
+	               row +=`<td>${item.number}</td>`;
+	               row +=`<td>${item.permasalahan}</td>`;
+	               row +=`<td>${item.messages}</td>`;
+	               row +=`<td>${item.status}</td>`;
+	               row +=`<td>`; 
+	               row +=`<div class="btn-group">`;
+	              
+	              if(item.showedit == true){  
 
-        // Populate content with new data
-        data.forEach(function(item, index) {
-           	let row = ``;
-             row +=`<tr>`;
-               row +=`<td><input ${item.deleted} class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-               row +=`<td class="padding-text-table">${item.number}</td>`;
-               row +=`<td class="padding-text-table">${item.name}</td>`;
-               row +=`<td class="padding-text-table">${item.status}</td>`;
-               row +=`<td>`; 
-                row +=`<div class="btn-group">`;
-
-                row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
-
-               
-                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=`<div id="FormEdit-${item.id}"></div>`;
-                row +=`</div>`;
+	                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+	              }else{
+	              	 row +=`<button disabled  data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-danger"><i class="fa fa-pencil" ></i></button>`;
+	              }
+	               
+	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+	                row +=`<div id="FormEdit-${item.id}"></div>`;
+	                row +=`</div>`;
 
 
-       
+	              if(item.showdelete == true)
+	              {  
 
-                row +=`<button id="Destroy" ${item.deleted} data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	              }else{
+	              	 row +=`<button  data-placement="top"  data-toggle="tooltip" title="Hapus Data"  type="button" disabled class="btn btn-danger"><i class="fa fa-trash" ></i></button>`;
+	              }
 
-                row +=`</div>`;
-                row +=`</td>`;
-              row +=`</tr>`; 
+	                row +=`</div>`;
+	                row +=`</td>`;
+	              row +=`</tr>`; 
 
-            content.append(row);
+	            content.append(row);
 
+	        });
+	    }else{
             
+             	let row = ``;
+	             row +=`<tr>`;
+	             row +=`<td colspan="6" align="center">Data Kosong</td>`;
+                 row +=`</tr>`;
+                 content.append(row);
 
-
-        });
+	    }    
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
@@ -309,8 +308,7 @@
              
             let index = e.currentTarget.dataset.param_id;
             const item = list[index];
-              
-		  
+          
             
             let row = ``;
             row +=`<div class="modal-dialog">`;
@@ -318,55 +316,36 @@
 
 				       row +=`<div class="modal-header">`;
 				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit Role</h4>`;
+				         row +=`<h4 class="modal-title">Edit Kendala</h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
 					        row +=`<div class="modal-body">`;
                                
                                  
-				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                 row +=`<div id="permasalahan-alert-`+ item.id +`" class="form-group has-feedback" >`;
 
-				                  row +=`<label>Nama</label>`;
+				                  row +=`<label>Permasalahan :</label>`;
+				                  row +=`<input type="text" class="form-control" name="permasalahan" placeholder="Permasalahan" value="`+ item.permasalahan +`">
+				                  <span id="permasalahan-messages-`+ item.id +`"></span>`;
+				                  row +=`</div>`;
 
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
-				                  <span id="name-messages-`+ item.id +`"></span>`;
-
-				                 row +=`</div>`;
-
-				                    row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                    if(item.status_ori =='Y')
-					                    {
-					                        row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
-					                    }else{
-					                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
-					                    } 	
-					                 
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      if(item.status_ori =='N')
-					                    {
-					                        row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
-					                    }else{
-					                    	row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
-					                    } 
-
-					                     
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-
+				                  
+                                  
+					             row +=`<div id="messages-alert-`+ item.id +`" class="form-group has-feedback" >`;
+					              row +=`<label>Pesan :</label>`;
+					              row +=`<textarea class="form-control textarea-fixed" placeholder="Pesan Kendala" name="messages">`+ item.messages +`</textarea>`;
+					              row +=`<span id="messages-messages-`+ item.id +`"></span>`;
+					            row +=`</div>`;
+					
 
 
 
                             row +=`<div class="modal-footer">`;
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
-						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
+						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-success" >Update </button>`;
+						           row +=`<button id="kirim" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Kirim </button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
      						</div>`;
 						    row +=`</div>`;
@@ -376,9 +355,8 @@
                 row +=`</div>`;
             row +=`</div>`   
 
-            $('#FormEdit-'+ item.id).html(row);    
-
-               
+            $('#FormEdit-'+ item.id).html(row); 
+                
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
@@ -386,56 +364,34 @@
 	              $("#update").hide();
 	              $("#load-simpan").show();
 	              
-		          var form = {'name':data[0].value,'status':data[1].value};
+		          var form = {
+		              'permasalahan':data[0].value,
+		              'messages':data[1].value,
+		              'status':'draft',
+		          };
 
-
-
-					$.ajax({
-			            type:"PUT",
-			            url: BASE_URL+'/api/role/'+ id,
-			            data:form,
-			            cache: false,
-			            dataType: "json",
-			            success: (respons) =>{
-			                   Swal.fire({
-			                        title: 'Sukses!',
-			                        text: 'Berhasil Diupdate',
-			                        icon: 'success',
-			                        confirmButtonText: 'OK'
-			                        
-			                    }).then((result) => {
-			                        if (result.isConfirmed) {
-			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/role');
-			                        }
-			                    });
-
-			                   //
-			            },
-			            error: (respons)=>{
-			                errors = respons.responseJSON;
-			                $("#update").show();
-			                $("#load-simpan").hide();
- 
-			                if(errors.messages.name)
-			                {
-			                     $('#name-alert-'+id).addClass('has-error');
-			                     $('#name-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
-			                }else{
-			                    $('#name-alert-'+id).removeClass('has-error');
-			                    $('#name-messages-'+id).removeClass('help-block').html('');
-			                }
-
-			                
-
-			               
-
-			                
-			            }
-			          });
- 
+		          SendData(form,id);
 		        
-	        });  
+	        }); 
+
+	        $( ".modal-content" ).on( "click", "#kirim", (e) => {
+		          let id = e.currentTarget.dataset.param_id;
+	              var data = $("#FormSubmit-"+ id).serializeArray();
+	              $("#kirim").hide();
+	              $("#load-simpan").show();
+	              
+		          var form = {
+		              'permasalahan':data[0].value,
+		              'messages':data[1].value,
+		              'status':'sent',
+		          };
+
+		          SendData(form,id);
+		        
+	        });   
+
+           
+
             
         });
 
@@ -448,7 +404,7 @@
 	        let id = e.currentTarget.dataset.param_id;
 
 
-	        Swal.fire({
+	            Swal.fire({
 			      title: 'Apakah anda yakin hapus?',
 			    
 			      icon: 'warning',
@@ -478,11 +434,123 @@
         
     }
 
+    function SendData(form,id){
+          if(form.status =='sent')
+	      {
+	        var status = 'Terkirim';
+	      }else{
+	        var status = 'Diupdate';
+	      }  
+    	 $.ajax({
+			            type:"PUT",
+			            url: BASE_URL+'/api/kendala/'+ id,
+			            data:form,
+			            cache: false,
+			            dataType: "json",
+			            success: (respons) =>{
+			                   Swal.fire({
+			                        title: 'Sukses!',
+			                        text: 'Berhasil '+ status,
+			                        icon: 'success',
+			                        confirmButtonText: 'OK'
+			                        
+			                    }).then((result) => {
+			                        if (result.isConfirmed) {
+			                            // User clicked "Yes, proceed!" button
+			                            window.location.replace('/kendala');
+			                        }
+			                    });
+
+			                   //
+			            },
+			            error: (respons)=>{
+			                errors = respons.responseJSON;
+			                $("#update").show();
+			                $("#kirim").show();
+			                $("#load-simpan").hide();
+                             
+                             if(errors.messages.permasalahan)
+			                {
+			                     $('#permasalahan-alert-'+id).addClass('has-error');
+			                     $('#permasalahan-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.permasalahan +'</strong>');
+			                }else{
+			                    $('#permasalahan-alert-'+id).removeClass('has-error');
+			                    $('#permasalahan-messages-'+id).removeClass('help-block').html('');
+			                }
+
+			                if(errors.messages.messages)
+			                {
+			                     $('#messages-alert-'+id).addClass('has-error');
+			                     $('#messages-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.messages +'</strong>');
+			                }else{
+			                    $('#messages-alert-'+id).removeClass('has-error');
+			                    $('#messages-messages-'+id).removeClass('help-block').html('');
+			                }
+
+			               
+ 
+			                
+			            }
+		 });
+
+    }
+
+    function resultTotal(total){
+       $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
+    }
+
+    // Function to delete items
+    function deleteItems(ids) {
+        // Send the selected IDs for deletion using AJAX
+
+               Swal.fire({
+			      title: 'Apakah anda yakin hapus?',
+			    
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#d33',
+			      cancelButtonColor: '#3085d6',
+			      confirmButtonText: 'Ya'
+			    }).then((result) => {
+			      if (result.isConfirmed) {
+			        // Perform the delete action here, e.g., using an AJAX request
+			        // You can use the itemId to identify the item to be deleted
+			         deleteMultiple(ids)
+			        
+			        Swal.fire(
+			          'Deleted!',
+			          'Data berhasil dihapus.',
+			          'success'
+			        );
+			      }
+			    });
+       
+      
+    }
+
+    function deleteMultiple(ids){
+
+
+    	  $.ajax({
+            url:  BASE_URL +`/api/kendala/selected`,
+            method: 'POST',
+            data: { data: ids },
+            success: function(response) {
+                // Handle success (e.g., remove deleted items from the list)
+                fetchData(page);
+            },
+            error: function(error) {
+                console.error('Error deleting items:', error);
+            }
+        });
+
+    }
+
 
     function deleteItem(id){
 
 		$.ajax({
-		    url:  BASE_URL +`/api/role/`+ id,
+		    url:  BASE_URL +`/api/kendala/`+ id,
 		    method: 'DELETE',
 		    success: function(response) {
 		        // Handle success (e.g., remove deleted items from the list)

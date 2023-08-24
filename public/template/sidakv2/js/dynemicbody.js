@@ -6,6 +6,6 @@ $(function () {
             {
                 $('body').addClass('login-page');
             }else{
-                 $('body').addClass('skin-default sidebar-mini'); 
+                 $('body').addClass('skin-blue sidebar-mini'); 
             }   
 });

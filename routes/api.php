@@ -29,7 +29,7 @@ use App\Http\Controllers\API\ProvinceApiController;
 use App\Http\Controllers\API\RegencyApiController;
 use App\Http\Controllers\API\DaerahApiController;
 use App\Http\Controllers\API\AuditLogApiController;
-
+use App\Http\Controllers\API\KendalaApiController;
 
 
 
@@ -52,7 +52,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
 
 
-    Route::get('daerah', [AuthApiController::class, 'GetDaerahID']);
+   
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
     Route::get('perencanaan/periode', [PeriodeApiController::class, 'periode']);
     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
@@ -90,8 +90,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('dashboard', [DashboardApiController::class, 'index']);
 
 
-    Route::get('role', [RolesApiController::class, 'index']);
 
+    Route::get('select-role', [RolesApiController::class, 'listAll']);
+ 
+    Route::get('role', [RolesApiController::class, 'index']);
     Route::get('role/edit/{id}', [RolesApiController::class, 'edit']);
     Route::post('role', [RolesApiController::class, 'store']);
     Route::post('role/search', [RolesApiController::class, 'search']);
@@ -100,8 +102,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('role/selected', [RolesApiController::class, 'deleteSelected']);
 
     Route::get('periode', [PeriodeApiController::class, 'index']);
-    Route::get('periode/create', [PeriodeApiController::class, 'create']);
-    Route::get('periode/edit/{id}', [PeriodeApiController::class, 'edit']);
     Route::post('periode', [PeriodeApiController::class, 'store']);
     Route::post('periode/search', [PeriodeApiController::class, 'search']);
     Route::put('periode/{id}', [PeriodeApiController::class, 'update']);
@@ -109,7 +109,16 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('auditlog', [AuditLogApiController::class, 'index']);
     Route::post('auditlog/search', [AuditLogApiController::class, 'search']);
-  
+
+    Route::get('kendala', [KendalaApiController::class, 'index']);
+    Route::post('kendala', [KendalaApiController::class, 'store']);
+    Route::post('kendala/replay', [KendalaApiController::class, 'replay']);
+    Route::get('kendala/list-replay/{id}', [KendalaApiController::class, 'listreplay']);
+    Route::post('kendala/search', [KendalaApiController::class, 'search']);
+    Route::put('kendala/{id}', [KendalaApiController::class, 'update']);
+    Route::post('kendala/selected', [KendalaApiController::class, 'deleteSelected']);
+    Route::delete('kendala/{id}', [KendalaApiController::class, 'delete']);
+    
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);

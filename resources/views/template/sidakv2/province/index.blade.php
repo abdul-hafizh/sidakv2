@@ -6,7 +6,7 @@
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="padding-search form-control height-35 border-radius-left">
 				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
 			</div>
         </div> 	
@@ -14,6 +14,16 @@
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
+			<div class="pull-left padding-9-0 margin-left-button">
+				<select id="row_page" class="selectpicker" data-style="btn-default" >
+					<option value="10" selected>10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+					<option value="all">All</option>
+				</select>
+            </div>
+           
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
@@ -68,6 +78,9 @@
 				</div>
 			</div>
 		</div>
+		<div class="pull-left full">
+          <div id="total-data" class="pull-left width-25"></div> 	
+	    </div>
 	</div>
      @include('template/sidakv2/province.add')
 
@@ -83,6 +96,44 @@
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
     var list = [];
+    const total = 0;
+
+    $('#row_page').on('change', function() {
+            var value = $(this).val();         
+            if(value)
+            {   
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+                  let search = $('#search-input').val();
+                  if(search !='')
+                  {
+                  	var url = BASE_URL + `/api/province/search?page=${page}&per_page=${value}`;
+                  	var method = 'POST';
+                  }else{
+                    var url = BASE_URL + `/api/province?page=${page}&per_page=${value}`;
+                    var method = 'GET';
+                  } 	
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data:{'search':search},
+                    success: function(response) {
+                    	list = response.data;
+                        resultTotal(response.total);
+                        updateContent(response.data);
+                        updatePagination(response.current_page, response.last_page);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }    
+    // Perform other actions based on the selected value
+    });
 
 
     // "Select All" checkbox
@@ -124,23 +175,7 @@
         $('.select-all').prop('checked', allChecked);
     });
 
-    // Function to delete items
-    function deleteItems(ids) {
-        // Send the selected IDs for deletion using AJAX
-       
-        $.ajax({
-            url:  BASE_URL +`/api/province/selected`,
-            method: 'POST',
-            data: { data: ids },
-            success: function(response) {
-                // Handle success (e.g., remove deleted items from the list)
-                fetchData(page);
-            },
-            error: function(error) {
-                console.error('Error deleting items:', error);
-            }
-        });
-    }
+   
 
 
    
@@ -162,6 +197,8 @@
 	            data:{'search':search},
 	            method: 'POST',
 	            success: function(response) {
+	            	list = response.data;
+	            	resultTotal(response.total);
 	                // Update content area with fetched data
 	                updateContent(response.data);
 
@@ -191,6 +228,7 @@
             success: function(response) {
                 // Update content area with fetched data
                 list = response.data;
+                resultTotal(response.total);
                 updateContent(response.data);
 
                 // Update pagination controls
@@ -457,6 +495,28 @@
 
        
         
+    }
+
+     function resultTotal(total){
+       $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
+    }
+
+     // Function to delete items
+    function deleteItems(ids) {
+        // Send the selected IDs for deletion using AJAX
+       
+        $.ajax({
+            url:  BASE_URL +`/api/province/selected`,
+            method: 'POST',
+            data: { data: ids },
+            success: function(response) {
+                // Handle success (e.g., remove deleted items from the list)
+                fetchData(page);
+            },
+            error: function(error) {
+                console.error('Error deleting items:', error);
+            }
+        });
     }
 
 
