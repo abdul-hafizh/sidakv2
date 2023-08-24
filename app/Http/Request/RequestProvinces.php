@@ -17,7 +17,12 @@ class RequestProvinces
     $temp = array();
     $getRequest = $request->all();
     $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
-    $numberNext = (($page * $perPage) - ($perPage - 1));
+    if($perPage !='all')
+    {
+         $numberNext = (($page * $perPage) - ($perPage - 1));
+    }else{
+         $numberNext = (($page * $data->count()) - ($data->count() - 1));
+    }  
     foreach ($data as $key => $val) {
 
       $temp[$key]['number'] = $numberNext++;
@@ -29,8 +34,16 @@ class RequestProvinces
     }
 
        $result['data'] = $temp;
-       $result['current_page'] = $data->currentPage();
-       $result['last_page'] = $data->lastPage(); 
+       if($perPage !='all')
+       {
+           $result['current_page'] = $data->currentPage();
+           $result['last_page'] = $data->lastPage();
+           $result['total'] = $data->total(); 
+       }else{
+           $result['current_page'] = 1;
+           $result['last_page'] = 1;
+           $result['total'] = $data->count(); 
+       } 
    
     return $result;
   }

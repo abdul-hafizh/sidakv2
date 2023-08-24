@@ -8,6 +8,7 @@ use App\Helpers\GeneralHelpers;
 use App\Models\User;
 use App\Models\Roles;
 use App\Http\Request\RequestSettingApps;
+use App\Http\Request\RequestRoles;
 use App\Http\Request\RequestDaerah;
 class RequestUser 
 {
@@ -21,7 +22,12 @@ class RequestUser
          
         $getRequest = $request->all();
         $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
-        $numberNext = (($page*$perPage) - ($perPage-1));
+        if($perPage !='all')
+        {
+             $numberNext = (($page * $perPage) - ($perPage - 1));
+        }else{
+             $numberNext = (($page * $data->count()) - ($data->count() - 1));
+        }  
         $template = RequestSettingApps::AppsTemplate();
         foreach ($data as $key => $val)
         {
@@ -42,6 +48,8 @@ class RequestUser
             $temp[$key]['name'] = $val->name;
             $temp[$key]['daerah_id'] = $val->daerah_id;
             $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+            $temp[$key]['role_id'] = RequestRoles::GetRoleWhere($val->id,'id');
+            $temp[$key]['role_name'] = RequestRoles::GetRoleWhere($val->id,'name');
             $temp[$key]['username'] = $val->username;
             $temp[$key]['email'] = $val->email;
             $temp[$key]['phone'] = $val->phone;
@@ -53,10 +61,17 @@ class RequestUser
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
         }
 
-         $result['data'] = $temp;
-        // $result['daerah'] = RequestDaerah::GetDaerahID();
-         $result['current_page'] = $data->currentPage();
-         $result['last_page'] = $data->lastPage(); 
+       $result['data'] = $temp;
+       if($perPage !='all')
+       {
+           $result['current_page'] = $data->currentPage();
+           $result['last_page'] = $data->lastPage();
+           $result['total'] = $data->total(); 
+       }else{
+           $result['current_page'] = 1;
+           $result['last_page'] = 1;
+           $result['total'] = $data->count(); 
+       }
         return $result;
        
 

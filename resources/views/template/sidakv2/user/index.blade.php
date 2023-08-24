@@ -6,7 +6,7 @@
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn bg-input-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
 			</div>
         </div> 	
@@ -14,6 +14,17 @@
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
+			<div class="pull-left padding-9-0 margin-left-button">
+               
+				<select id="row_page" class="selectpicker" data-style="btn-default" >
+					<option value="10" selected>10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+					<option value="all">All</option>
+				</select>
+            </div> 	
+
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
@@ -73,6 +84,9 @@
 				</div>
 			</div>
 		</div>
+		<div class="pull-left full">
+          <div id="total-data" class="pull-left width-25"></div> 	
+	    </div>
 	</div>
      @include('template/sidakv2/user.add')
 
@@ -82,13 +96,52 @@
  $(document).ready(function() {
 
  	
-
-    const itemsPerPage = 10; // Number of items to display per page
+    
+    const itemsPerPage = $('#row_page').val(); // Number of items to display per page
     let currentPage = 1; // Current page number
     let previousPage = 1; // Previous page number
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
     var list = [];
+    const total = 0;
+
+    $('#row_page').on('change', function() {
+            var value = $(this).val();         
+            if(value)
+            {   
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+                  let search = $('#search-input').val();
+
+                  if(search !='')
+                  {
+                  	var url = BASE_URL + `/api/user/search?page=${page}&per_page=${value}`;
+                  	var method = 'POST';
+                  }else{
+                    var url = BASE_URL + `/api/user?page=${page}&per_page=${value}`;
+                    var method = 'GET';
+                  } 	
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data:{'search':search},
+                    success: function(response) {
+                    	list = response.data;
+                        resultTotal(response.total);
+                        updateContent(response.data);
+                        updatePagination(response.current_page, response.last_page);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }    
+    // Perform other actions based on the selected value
+    });
 
 
      // "Select All" checkbox
@@ -150,6 +203,8 @@
 	            data:{'search':search},
 	            method: 'POST',
 	            success: function(response) {
+	            	list = response.data;
+	            	resultTotal(response.total);
 	                // Update content area with fetched data
 	                updateContent(response.data);
 
@@ -162,6 +217,11 @@
 	        });
 	     }    
     });
+
+
+     function resultTotal(total){
+       $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
+    }
 
      // Function to delete items
     function deleteItems(ids) {
@@ -196,6 +256,7 @@
             method: 'GET',
             success: function(response) {
             	list = response.data;
+            	resultTotal(response.total);
                 // Update content area with fetched data
                 updateContent(response.data);
 
@@ -368,6 +429,14 @@
 				                   row +=`<span id="daerah-messages-`+ item.id +`"></span>`;
 				                 row +=`</div>`;
 
+				                 row +=`<div id="role-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                     row +=`<label>Role </label>`;
+				                   row +=`<select id="role-`+ item.id +`" class="selectpicker" name="role_id"></select>`;
+
+				                   row +=`<span id="role-messages-`+ item.id +`"></span>`;
+				                 row +=`</div>`;
+
 
 					        row +=`</div>`;
 
@@ -410,7 +479,40 @@
 		        minimumInputLength: 1 // Minimum number of characters required for a search
 		    });	
 
-            $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true)); 
+            $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
+
+          
+		         // Fetch data using AJAX
+			  $.ajax({
+			    url: BASE_URL +'/api/select-role',
+			    method: 'GET',
+			    dataType: 'json',
+			    success: function(data) {
+			      var select =  $('#role-'+item.id)
+
+			     // Clear existing options
+			     select.empty();
+
+			      // Populate options from the received data
+			      $.each(data, function(index, option) {
+			        select.append($('<option>', {
+			          value: option.value,
+			          text: option.text
+			        }));
+			      });
+
+			     // Set a specific option as selected
+			       var selectedValue = item.role_id;
+			       select.val(selectedValue);
+			      // Refresh the SelectPicker
+			      select.selectpicker('refresh');
+
+			    },
+			    error: function() {
+			      console.error('Failed to fetch data.');
+			    }
+			  });
+
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
@@ -427,7 +529,7 @@
 		              'leader_name':data[4].value,
 		              'leader_nip':data[5].value,
 		              'daerah_id':data[6].value,
-		            
+		              'role_id':data[7].value,
 		          };
 
 
@@ -502,7 +604,16 @@
 			                }else{
 			                    $('#daerah-alert-'+id).removeClass('has-error');
 			                    $('#daerah-messages-'+id).removeClass('help-block').html('');
-			                }  
+			                } 
+
+			                  if(errors.messages.role_id)
+			                {
+			                     $('#role-'+id).addClass('has-error');
+			                     $('#role-'+id).addClass('help-block').html('<strong>'+ errors.messages.role_id +'</strong>');
+			                }else{
+			                    $('#role-'+id).removeClass('has-error');
+			                    $('#role-'+id).removeClass('help-block').html('');
+			                }   
 
 			                if(errors.messages.leader_name)
 			                {
@@ -540,7 +651,6 @@
 
 	        Swal.fire({
 			      title: 'Apakah anda yakin hapus?',
-			    
 			      icon: 'warning',
 			      showCancelButton: true,
 			      confirmButtonColor: '#d33',

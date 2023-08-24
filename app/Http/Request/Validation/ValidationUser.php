@@ -17,6 +17,7 @@ class ValidationUser
             'leader_name'  => 'Penanggung Jawab',
             'leader_nip'=>'NIP Penanggung Jawab',
             'daerah_id'  => 'Daerah',
+            'role_id'  => 'Role',
             'password'  => 'Password',
             'password_confirmation'  => 'Password Konfirmasi',
         ];
@@ -31,6 +32,7 @@ class ValidationUser
             'leader_name'  => 'required',
             'leader_nip'  => 'required',
             'daerah_id'  => 'required',
+            'role_id'  => 'required',
             'password'  => 'required|confirmed|min:6',
             'password_confirmation'  => 'required',
         ]);
@@ -71,6 +73,10 @@ class ValidationUser
             if($errors->has('daerah_id')){
                 $err['messages']['daerah_id'] = $errors->first('daerah_id');
             }
+
+            if($errors->has('role_id')){
+                $err['messages']['role_id'] = $errors->first('role_id');
+            }
             
             if($errors->has('password')){
                 $err['messages']['password'] = $errors->first('password');
@@ -96,7 +102,7 @@ class ValidationUser
             'leader_name'  => 'Penanggung Jawab',
             'leader_nip'=>'NIP Penanggung Jawab',
             'daerah_id'  => 'Daerah',
-          
+            'role_id'  => 'Role',
         ];
 
         $validator =  Validator::make($request->all(), 
@@ -109,7 +115,7 @@ class ValidationUser
             'leader_name'  => 'required',
             'leader_nip'  => 'required',
             'daerah_id'  => 'required',
-           
+            'role_id'  => 'required',
         ]);
 
         $validator->setAttributeNames($fields); 
@@ -148,6 +154,11 @@ class ValidationUser
             if($errors->has('daerah_id')){
                 $err['messages']['daerah_id'] = $errors->first('daerah_id');
             }
+
+            if($errors->has('role_id')){
+                $err['messages']['role_id'] = $errors->first('role_id');
+            }
+
             return $err;
        }
     }

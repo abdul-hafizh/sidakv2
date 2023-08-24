@@ -81,6 +81,22 @@ class RequestAuth
     }
 
 
+    public static function photoUser($username)
+    {
+        $template = RequestSettingApps::AppsTemplate();
+        $user = User::where('username',$username)->first();
+        if($user)
+        {
+            $photo = url('/template/'.$template.'/img/user.png');
+        }else{
+            $photo = url('/images/profile/'.$user->photo);
+        }
+
+        return $photo;
+
+    }
+
+
 
    
 

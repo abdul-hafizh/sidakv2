@@ -11,27 +11,47 @@ use DB;
 class RequestPeriode
 {
 
-   public static function GetDataAll($data, $perPage, $request, $description)
+   public static function GetDataAll($data, $perPage, $request)
    {
-      $__temp_ = array();
+      $temp = array();
       $getRequest = $request->all();
       $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
-      $numberNext = (($page * $perPage) - ($perPage - 1));
-      foreach ($data as $key => $val) {
+      if($perPage !='all')
+      {
+            $numberNext = (($page * $perPage) - ($perPage - 1));
+      }else{
+            $numberNext = (($page * $data->count()) - ($data->count() - 1));
+      }  
+      foreach ($data as $key => $val)
+      {
          if ($val->status == 'A') {
             $status = 'Aktif';
          } else {
             $status = 'Non Aktif';
          };
-         $__temp_[$key]['number'] = $numberNext++;
-         $__temp_[$key]['id'] = $val->id;
-         $__temp_[$key]['name'] = $val->name;
-         $__temp_[$key]['semester'] = $val->semester;
-         $__temp_[$key]['year'] = $val->year;
-         $__temp_[$key]['slug'] = $val->slug;
-         $__temp_[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
 
-       
+         $temp[$key]['number'] = $numberNext++;
+         $temp[$key]['id'] = $val->id;
+         $temp[$key]['name'] = $val->name;
+         $temp[$key]['semester'] = $val->semester;
+         $temp[$key]['year'] = $val->year;
+         $temp[$key]['slug'] = $val->slug;
+         $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
+
+      }
+       $result['data'] = $temp;
+       if($perPage !='all')
+       {
+           $result['current_page'] = $data->currentPage();
+           $result['last_page'] = $data->lastPage();
+           $result['total'] = $data->total(); 
+       }else{
+           $result['current_page'] = 1;
+           $result['last_page'] = 1;
+           $result['total'] = $data->count(); 
+       } 
+
+       return $result; 
 
    }
 

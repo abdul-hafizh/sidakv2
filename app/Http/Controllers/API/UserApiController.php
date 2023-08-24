@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\RoleUser;
 use App\Http\Request\RequestUser;
 use App\Helpers\GeneralPaginate;
 use App\Http\Request\Validation\ValidationUser;
@@ -24,14 +25,17 @@ class UserApiController extends Controller
 
     public function index(Request $request)
     {
-        // $_res = array();
-         $data = User::orderBy('created_at', 'DESC')->paginate($this->perPage);
-         $description = '';
-         $result = RequestUser::GetDataAll($data,$this->perPage,$request);
+         // $_res = array();
+         $query = User::orderBy('created_at', 'DESC');
+         if($request->per_page !='all')
+         {
+           $data = $query->paginate($request->per_page);
+         }else{   
+           $data = $query->get(); 
+         }   
+        
+         $result = RequestUser::GetDataAll($data,$request->per_page,$request);
          return response()->json($result);
-
-
-        //return Datatables::of($result)->make(true);
     }
 
 
@@ -72,8 +76,9 @@ class UserApiController extends Controller
            $insert = RequestUser::fieldsData($request,'insert');  
             //create menu
            $saveData = User::create($insert);
+           $RoleUser = RoleUser::create(['user_id'=>$saveData->id,'role_id'=>$request->role_id,'status'=>'Y']);  
             //result
-            return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);    
+           return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);    
             
         } 
 
@@ -90,6 +95,12 @@ class UserApiController extends Controller
                $update = RequestUser::fieldsData($request,'update');
                 //update account
                $UpdateData = User::where('id',$id)->update($update);
+               $Role = RoleUser::where(['user_id'=>$id,'role_id'=>$request->role_id])->first();
+               if(!$Role)
+               {
+                RoleUser::where(['user_id'=>$id])->update(['role_id'=>$request->role_id]);
+               } 
+
                 //result
                return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
             
@@ -129,6 +140,7 @@ class UserApiController extends Controller
         $messages['messages'] = false;
         foreach($request->data as $key)
         {
+            $roleuser = RoleUser::where('user_id',(int)$key)->delete(); 
             $results = User::where('id',(int)$key)->delete();
         }
 
@@ -155,6 +167,7 @@ class UserApiController extends Controller
                 File::delete($this->UploadFolder.$_res['photo']);
             } 
         }
+        $roleuser = RoleUser::where('user_id',$id)->delete();
         $results = $_res->delete();
         if($results){
             $messages['messages'] = true;

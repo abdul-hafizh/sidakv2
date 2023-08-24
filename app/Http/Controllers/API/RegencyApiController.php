@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Request\RequestRegency;
 use App\Http\Request\Validation\ValidationRegency;
 use App\Models\Regencies;
-use App\Helpers\GeneralPaginate;
+use App\Models\Provinces;
 use DB;
 
 class RegencyApiController extends Controller
@@ -16,14 +16,23 @@ class RegencyApiController extends Controller
 
     public function __construct()
     {
-        $this->perPage = GeneralPaginate::limit();
+   
     }
 
     public function index(Request $request)
     {
-        $paginate = GeneralPaginate::limit();
-        $Data = Regencies::orderBy('created_at', 'DESC')->paginate($paginate);
-        $_res = RequestRegency::GetDataAll($Data, $this->perPage, $request);
+        
+           
+        $query = DB::table('regencies as a')->select('a.id','a.name','b.id as province_id','b.name as province_name','a.created_by','a.created_at')->join('provinces as b','a.province_id','=','b.id')->orderBy('a.created_at', 'DESC');
+        if($request->per_page !='all')
+        {
+           $data = $query->paginate($request->per_page);
+        }else{   
+           $data = $query->get(); 
+        } 
+
+        
+        $_res = RequestRegency::GetDataAll($data, $request->per_page, $request);
         return response()->json($_res);
     }
 
@@ -54,26 +63,37 @@ class RegencyApiController extends Controller
     {
         $search = $request->search;
         $_res = array();
-        $column_search  = array('name', 'created_by');
+        $column_search  = array('name');
 
         $i = 0;
-        $query  = Regencies::orderBy('id', 'DESC');
-        foreach ($column_search as $item) {
-            if ($search) {
-                if ($i === 0) {
-                    $query->where($item, 'LIKE', '%' . $search . '%');
-                } else {
-                    $query->orWhere($item, 'LIKE', '%' . $search . '%');
+        $query  = Regencies::select('id','name','province_id','created_by','created_at')->orderBy('id','ASC');
+        $check = Provinces::where('name','LIKE','%' . $search . '%')->first();
+        if($check)
+        {
+            $query->where('province_id',$check->id);
+        }else{
+
+            foreach ($column_search as $item) {
+                if ($search) {
+                    if ($i === 0) {
+                        $query->where($item, 'LIKE', '%' . $search . '%');
+                    } else {
+                        $query->orWhere($item, 'LIKE', '%' . $search . '%');
+                    }
                 }
-            }
-            $i++;
+                $i++;
+            } 
+        
         }
 
-        $Data = $query->paginate($this->perPage);
+        if($request->per_page !='all')
+        {
+           $data = $query->paginate($request->per_page);
+        }else{   
+           $data = $query->get(); 
+        } 
         $description = $search;
-        $_res = RequestRegency::GetDataAll($Data, $this->perPage, $request, $description);
-
-
+        $_res = RequestRegency::GetDataAll($data, $request->per_page, $request, $description);
         return response()->json($_res);
     }
 

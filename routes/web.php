@@ -12,6 +12,9 @@ use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\AuditLogController;
+use App\Http\Controllers\KendalaController;
+
+
 
    
     Route::get('/', function () {
@@ -27,7 +30,8 @@ use App\Http\Controllers\AuditLogController;
         Route::get('/perencanaan', [PerencanaanController::class,'index']);
         Route::get('/perencanaan/add', [PerencanaanController::class,'add']);
         Route::get('/perencanaan/edit/{id}', [PerencanaanController::class,'edit']); 
-        Route::get('/pagutarget', [PaguTargetController::class,'index']);             
+        Route::get('/pagutarget', [PaguTargetController::class,'index']);
+        Route::get('/kendala', [KendalaController::class,'index']);              
     });
 
     Route::middleware(['auth','admin'])->group(function () {           
