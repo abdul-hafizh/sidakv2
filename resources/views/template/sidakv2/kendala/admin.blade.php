@@ -238,59 +238,67 @@
 
         // Clear previous data
         content.empty();
+        if(data.length>0)
+        { 
+	        // Populate content with new data
+	        data.forEach(function(item, index) {
+	           	let row = ``;
+	             row +=`<tr>`;
+	               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	               row +=`<td>${item.number}</td>`;
+	               row +=`<td>${item.username }</td>`;
+	               row +=`<td>${item.permasalahan}</td>`;
+		           row +=`<td>${item.messages}</td>`;
+		           row +=`<td>${item.status}</td>`;
+		           row +=`<td>${item.created_at}</td>`;
+	               row +=`<td>`; 
+	                row +=`<div class="btn-group">`;
 
-        // Populate content with new data
-        data.forEach(function(item, index) {
-           	let row = ``;
-             row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-               row +=`<td>${item.number}</td>`;
-               row +=`<td>${item.username }</td>`;
-               row +=`<td>${item.permasalahan}</td>`;
-	           row +=`<td>${item.messages}</td>`;
-	           row +=`<td>${item.status}</td>`;
-	           row +=`<td>${item.created_at}</td>`;
-               row +=`<td>`; 
-                row +=`<div class="btn-group">`;
+	                 if(item.showedit != true){  
 
-                 if(item.showedit != true){  
+		               
+	                    
+	                    if(item.replay ==true)
+	                    {
+	                         row +=`<button id="Detail"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-primary"><i class="fa fa-envelope" ></i></button>`;
+
+	                    }else{
+	                         row +=`<button id="Balas"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-primary"><i class="fa fa-envelope" ></i></button>`;	
+	                    }  	
+
+		              }else{
+		              	 row +=`<button disabled  data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-danger"><i class="fa fa-envelope" ></i></button>`;
+		              }
 
 	               
-                    
-                    if(item.replay ==true)
-                    {
-                         row +=`<button id="Detail"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-primary"><i class="fa fa-envelope" ></i></button>`;
 
-                    }else{
-                         row +=`<button id="Balas"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-primary"><i class="fa fa-envelope" ></i></button>`;	
-                    }  	
-
-	              }else{
-	              	 row +=`<button disabled  data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-danger"><i class="fa fa-envelope" ></i></button>`;
-	              }
-
-               
-
-               
-                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=`<div id="FormEdit-${item.id}"></div>`;
-                row +=`</div>`;
+	               
+	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+	                row +=`<div id="FormEdit-${item.id}"></div>`;
+	                row +=`</div>`;
 
 
-       
+	       
 
-                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
-                row +=`</div>`;
-                row +=`</td>`;
-              row +=`</tr>`; 
+	                row +=`</div>`;
+	                row +=`</td>`;
+	              row +=`</tr>`; 
 
-            content.append(row);
+	            content.append(row);
 
+	         });
+
+        }else{
             
+             	let row = ``;
+	             row +=`<tr>`;
+	             row +=`<td colspan="6" align="center">Data Kosong</td>`;
+                 row +=`</tr>`;
+                 content.append(row);
 
-
-        });
+	    }  
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
