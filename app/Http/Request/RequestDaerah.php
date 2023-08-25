@@ -46,9 +46,9 @@ class RequestDaerah
        $data = User::where('daerah_id',$daerah_id)->first();
        if($data)
        {
-          $result = 'disabled';
+          $result = false;
        }else{
-          $result = '';
+          $result = true;
        } 
 
        return $result;

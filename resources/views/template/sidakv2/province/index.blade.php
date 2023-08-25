@@ -246,7 +246,8 @@
 
         // Clear previous data
         content.empty();
-
+    if(data.length>0)
+    {
         // Populate content with new data
         data.forEach(function(item, index) {
            	let row = ``;
@@ -276,10 +277,16 @@
 
             content.append(row);
 
-            
-
-
         });
+
+    }else{
+
+    	 let row = ``;
+         row +=`<tr>`;
+         row +=`<td colspan="4" align="center">Data Kosong</td>`;
+         row +=`</tr>`;
+         content.append(row);
+    }    
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;

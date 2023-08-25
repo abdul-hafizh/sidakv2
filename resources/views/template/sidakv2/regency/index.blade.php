@@ -315,7 +315,7 @@
 
 
     	 	let row = ``;
-             row +=`<tr><td colspan="8" align="center"> <b>Data Kosong</b></td></tr>`;
+             row +=`<tr><td colspan="5" align="center"> <b>Data Kosong</b></td></tr>`;
               content.html(row);
 	    }
 

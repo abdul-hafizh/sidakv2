@@ -22,7 +22,7 @@
 
             <div id="semester-alert" class="form-group has-feedback" >
               <label>Semester</label>
-              <select id="semester" class="form-control" name="semester">
+              <select id="semester" class="form-control selectpicker" data-style="btn-default"name="semester">
                   <option value="">Pilih Semester</option>
                   <option value="01">Semester 1</option>
                   <option value="02">Semester 2</option>

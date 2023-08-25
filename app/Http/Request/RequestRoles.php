@@ -83,9 +83,9 @@ class RequestRoles
        $data = RoleUser::where('role_id',$role_id)->count();
        if($data > 0)
        {
-          $result = 'disabled';
+          $result = false;
        }else{
-          $result = '';
+          $result = true;
        } 
 
        return $result;
