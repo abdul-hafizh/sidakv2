@@ -80,6 +80,21 @@ class RequestAuth
 
     }
 
+    public static function fullname($username)
+    {
+      
+        $user = User::where('username',$username)->first();
+        if($user)
+        {
+            $fullname = $user->name;
+        }else{
+            $fullname = $username;
+        }
+
+        return $fullname;
+
+    }
+
 
     public static function photoUser($username)
     {

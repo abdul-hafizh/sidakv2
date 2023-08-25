@@ -108,7 +108,9 @@
 
     <script>
         $(function() {
+           
             $('[data-toggle="tooltip"]').tooltip();
+            
         });
     </script>
     <script type="text/javascript">

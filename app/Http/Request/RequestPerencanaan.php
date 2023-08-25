@@ -28,7 +28,6 @@ class RequestPerencanaan
                 $status = ($val->status == "13") ? 'Draft' : 'Terkirim';
                 $temp[$key]['number'] = $numberNext++;
                 $temp[$key]['id'] = $val->id;
-                $temp[$key]['nama_daerah'] = $val->nama_daerah;
                 $temp[$key]['periode'] =  $periode;
                 $temp[$key]['status'] = $status;
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
@@ -60,6 +59,7 @@ class RequestPerencanaan
 
     public static function GetDaerahID($daerah_id)
     {
+       
         $province = DB::table('provinces')->select('id as value','name as text');
         $regency = DB::table('regencies')->select('id as value','name')->where('id', $daerah_id)->union($province)->orderBy('value','ASC')->first();
 
@@ -67,7 +67,8 @@ class RequestPerencanaan
     }
    
     public static function GetDataID($data)
-    {            
+    {         
+           
         $__temp_['id'] = $data->id;
         $__temp_['name'] = $data->name; 
         $__temp_['category'] = $data->category; 

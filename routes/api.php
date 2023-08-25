@@ -107,6 +107,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('kendala', [KendalaApiController::class, 'store']);
     Route::post('kendala/replay', [KendalaApiController::class, 'replay']);
     Route::get('kendala/list-replay/{id}', [KendalaApiController::class, 'listreplay']);
+    Route::delete('kendala/delete-replay/{id}', [KendalaApiController::class, 'deletereplay']);
     Route::post('kendala/search', [KendalaApiController::class, 'search']);
     Route::put('kendala/{id}', [KendalaApiController::class, 'update']);
     Route::post('kendala/selected', [KendalaApiController::class, 'deleteSelected']);

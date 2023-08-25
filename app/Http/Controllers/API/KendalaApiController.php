@@ -84,7 +84,7 @@ class KendalaApiController extends Controller
 
     public function listreplay($id){
      
-       $data = KendalaDetail::where('kendala_id',$id)->get();
+       $data = KendalaDetail::where('kendala_id',$id)->orderBy('created_at','DESC')->get();
        $_res = RequestKendala::ReplayAll($data,$id);
        return response()->json($_res); 
     }
@@ -140,8 +140,9 @@ class KendalaApiController extends Controller
 
            } 
            $saveData = KendalaDetail::create($insert);
+           $last = RequestKendala::MessagesLast($saveData->id);
             //result
-            return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);    
+            return response()->json(['status'=>true,'data'=>$last,'message'=>'Insert data sucessfully']);    
             
         } 
     }
@@ -187,6 +188,23 @@ class KendalaApiController extends Controller
 
         return response()->json($messages);
     
+    }
+
+    public function deletereplay($id){
+        $messages['messages'] = false;
+        $_res = KendalaDetail::find($id);
+          
+        if(empty($_res)){
+            return response()->json(['messages' => false]);
+        }
+
+        $results = $_res->delete();
+        if($results){
+            $messages['messages'] = true;
+        }
+        return response()->json($messages);
+
+
     }
 
     public function delete($id){

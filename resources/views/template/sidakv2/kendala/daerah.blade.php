@@ -255,6 +255,11 @@
 	               row +=`<td>${item.status}</td>`;
 	               row +=`<td>`; 
 	               row +=`<div class="btn-group">`;
+
+	               if(item.replay == true){
+
+                       row +=`<button id="Detail"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Detail Data" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
+	               }	
 	              
 	              if(item.showedit == true){  
 
@@ -302,6 +307,26 @@
 	           $('#delete-selected').prop("disabled", true);
 	         } 	
    		});
+
+   		//list chat
+         $( "#content" ).on( "click", "#Detail", (e) => {
+             
+            let index = e.currentTarget.dataset.param_id;
+            const item = list[index];
+
+            $.ajax({
+			    url:  BASE_URL +`/api/kendala/list-replay/`+ item.id,
+			    method: 'GET',
+			    success: function(response) {
+			        getlistKendala(response,item);
+			        
+			    },
+			    error: function(error) {
+			        console.error('Error deleting items:', error);
+			    }
+			});
+            
+        });
 
 
         $( "#content" ).on( "click", "#Edit", (e) => {
@@ -432,6 +457,208 @@
 
        
         
+    }
+
+     function getlistKendala(data,item){
+       
+       let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content pull-left full">`;
+
+				       row +=`<div class="modal-header pull-left full">`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Balas Pesan `+ item.username +`</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form  id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body pull-left full">`;
+
+					         row +=`<div id="succes"></div>`;
+                                
+                             row +=`<div id="slimScrollDiv" style="height: 200px; overflow: auto;background: #fafafa;">`;
+
+                            
+
+                             
+									
+                             row +=`<div id="replayNew" ></div>`;
+
+ 							data.forEach(function(items, index) {
+                                  
+									row +=`<div id="list-${index}" class="form-group pull-left full border-list">`;		
+										row +=`<div class="col-sm-2">`;
+										row +=`<img class="chat-img" src="${items.photo}" alt="${items.username}" class="offline">`;	
+	                                           
+	                                    row +=`</div>`;	
+										row +=`<div class="margin-top-7 col-sm-9">`;
+                                               row +=`<input class="text-username" disabled type="text" value="${items.username}">`;
+													row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">${items.messages}</textarea>`;
+										row +=`</div>`;	
+										
+
+									row +=`</div>`;
+				           
+                            });
+
+                          
+                           
+                            row +=`</div>`; 
+
+
+
+                            row +=`<div class="form-group has-feedback pull-left full" >`;
+					              row +=`<label>Balas :</label>`;
+					              row +=`<textarea id="replay" class="form-control textarea-fixed-replay" placeholder="Balas Pesan" name="messages"></textarea>`;
+					              row +=`<span id="messages-messages"></span>`;
+					        row +=`</div>`;
+
+
+
+                             
+                         
+
+                             row +=`</div>`;        
+                                  
+                             
+                            row +=`<div class="pull-left full modal-footer">`;
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+						          row +=`<button id="balas" disabled data-param_id="`+ item.id +`" type="button" class="btn btn-default">Kirim</button>`;
+						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button></div>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ item.id).html(row); 
+             
+            $('#replay').on('input', function() {
+              $('#balas').removeClass('btn-default').addClass('btn-primary');	
+		      var charCount = $(this).val().length;
+		         if(charCount >0)
+		         {
+		         	$('#balas').prop("disabled", false);
+		         	$('#balas').removeClass('btn-default').addClass('btn-primary');	
+		         }else{
+		         	$('#balas').prop("disabled", true);
+		         	$('#balas').removeClass('btn-primary').addClass('btn-default');
+		         } 
+		        
+		    });
+
+            
+	        $( ".modal-content" ).on( "click", "#deleted", (e) => {
+		          let id = e.currentTarget.dataset.param_id; 
+		          let index = e.currentTarget.dataset.param_index; 
+
+                $.ajax({
+				    url:  BASE_URL +`/api/kendala/delete-replay/`+ id,
+				    method: 'DELETE',
+				    success: function(response) {
+				        
+				         data.splice(index, 1);
+		                  $('#list-'+index).remove();
+
+		                    var al = '';
+		                    al +=`<div class="alert alert-success alert-dismissible">`;
+								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
+								al +=`<i class="icon fa fa-check"></i>`;
+								al +=`Sukses menghapus kendala`;
+							al +=`</div>`;
+							$('#succes').append(al);
+
+						    setTimeout(function() {
+						      $('#succes').html('');
+						    }, 3000); // 3000 milliseconds (3 seconds)	
+
+				    },
+				    error: function(error) {
+				        console.error('Error deleting items:', error);
+				    }
+				});
+
+
+
+		         		
+
+
+             });
+             
+            $( ".modal-content" ).on( "click", "#balas", (e) => {
+		          let id = e.currentTarget.dataset.param_id;
+		          const item = list.find(o => o.id === id);
+
+		          var data = $("#FormSubmit-"+ item.id).serializeArray();
+	             
+	              
+			        var form = {
+			        	'messages':data[0].value,
+			        	'kendala_id':item.id,
+			        	'permasalahan':item.permasalahan,
+			        	'sender':item.username,
+			        	'status':'sent',
+			        };
+
+
+
+					$.ajax({
+			            type:"POST",
+			            url: BASE_URL+'/api/kendala/replay',
+			            data:form,
+			            cache: false,
+			            dataType: "json",
+			            success: (respons) =>{
+
+
+
+			               $('#replay').val('');
+
+                            var row = '';
+                            row +=`<div class="form-group pull-left full border-list">`;
+			            	row +=`<div class="col-sm-2">`;
+							row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
+	                                           
+                            row +=`</div>`;	
+							row +=`<div class="margin-top-7 col-sm-10">`;
+                                   row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
+										row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
+							row +=`</div>`;		
+			                row +=`</div>`;	   
+                          $('#replayNew').append(row);
+                          
+                          var al = '';
+                           al +=`<div class="alert alert-success alert-dismissible">`;
+								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
+								al +=`<i class="icon fa fa-check"></i>`;
+								al +=`Sukses mengirim kendala`;
+							al +=`</div>`;
+							$('#succes').append(al);
+
+							$('#balas').prop("disabled", true);
+		         	        $('#balas').removeClass('btn-primary').addClass('btn-default');
+
+							setTimeout(function() {
+						      $('#succes').html('');
+						    }, 3000); // 3000 milliseconds (3 seconds)
+			                   
+			            },
+			            error: (respons)=>{
+			                errors = respons.responseJSON;
+			                
+
+			                
+
+			                
+			            }
+			          });
+                
+		    });      
+
+
+
+
     }
 
     function SendData(form,id){

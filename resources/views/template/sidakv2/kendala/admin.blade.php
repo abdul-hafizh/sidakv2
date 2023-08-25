@@ -1,5 +1,6 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
+
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
@@ -72,14 +73,16 @@
 						
 					
 					 </tbody>
-					</table>
-				</div>
+				</table>
 			</div>
 		</div>
-		<div class="pull-left full">
-          <div id="total-data" class="pull-left width-25"></div> 	
-	    </div>
 	</div>
+
+
+	<div class="pull-left full">
+          <div id="total-data" class="pull-left width-25"></div> 	
+	</div>
+</div>
      
 
 <script type="text/javascript">
@@ -235,59 +238,67 @@
 
         // Clear previous data
         content.empty();
+        if(data.length>0)
+        { 
+	        // Populate content with new data
+	        data.forEach(function(item, index) {
+	           	let row = ``;
+	             row +=`<tr>`;
+	               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	               row +=`<td>${item.number}</td>`;
+	               row +=`<td>${item.username }</td>`;
+	               row +=`<td>${item.permasalahan}</td>`;
+		           row +=`<td>${item.messages}</td>`;
+		           row +=`<td>${item.status}</td>`;
+		           row +=`<td>${item.created_at}</td>`;
+	               row +=`<td>`; 
+	                row +=`<div class="btn-group">`;
 
-        // Populate content with new data
-        data.forEach(function(item, index) {
-           	let row = ``;
-             row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-               row +=`<td>${item.number}</td>`;
-               row +=`<td>${item.from }</td>`;
-               row +=`<td>${item.permasalahan}</td>`;
-	           row +=`<td>${item.messages}</td>`;
-	           row +=`<td>${item.status}</td>`;
-	           row +=`<td>${item.created_at}</td>`;
-               row +=`<td>`; 
-                row +=`<div class="btn-group">`;
+	                 if(item.showedit != true){  
 
-                 if(item.showedit != true){  
+		               
+	                    
+	                    if(item.replay ==true)
+	                    {
+	                         row +=`<button id="Detail"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-primary"><i class="fa fa-envelope" ></i></button>`;
+
+	                    }else{
+	                         row +=`<button id="Balas"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-primary"><i class="fa fa-envelope" ></i></button>`;	
+	                    }  	
+
+		              }else{
+		              	 row +=`<button disabled  data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-danger"><i class="fa fa-envelope" ></i></button>`;
+		              }
 
 	               
-                    
-                    if(item.replay ==true)
-                    {
-                         row +=`<button id="Detail"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-primary"><i class="fa fa-envelope" ></i></button>`;
 
-                    }else{
-                         row +=`<button id="Balas"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-primary"><i class="fa fa-envelope" ></i></button>`;	
-                    }  	
-
-	              }else{
-	              	 row +=`<button disabled  data-toggle="tooltip" data-placement="top" title="Balas Pesan" type="button" class="btn btn-danger"><i class="fa fa-envelope" ></i></button>`;
-	              }
-
-               
-
-               
-                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=`<div id="FormEdit-${item.id}"></div>`;
-                row +=`</div>`;
+	               
+	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+	                row +=`<div id="FormEdit-${item.id}"></div>`;
+	                row +=`</div>`;
 
 
-       
+	       
 
-                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
-                row +=`</div>`;
-                row +=`</td>`;
-              row +=`</tr>`; 
+	                row +=`</div>`;
+	                row +=`</td>`;
+	              row +=`</tr>`; 
 
-            content.append(row);
+	            content.append(row);
 
+	         });
+
+        }else{
             
+             	let row = ``;
+	             row +=`<tr>`;
+	             row +=`<td colspan="6" align="center">Data Kosong</td>`;
+                 row +=`</tr>`;
+                 content.append(row);
 
-
-        });
+	    }  
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
@@ -308,42 +319,49 @@
             
             let row = ``;
             row +=`<div class="modal-dialog">`;
-                row +=`<div class="modal-content">`;
+                row +=`<div class="modal-content pull-left full">`;
 
-				       row +=`<div class="modal-header">`;
+				       row +=`<div class="modal-header pull-left full">`;
 				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Balas Pesan `+ item.from +`</h4>`;
+				         row +=`<h4 class="modal-title">Balas Pesan `+ item.username +`</h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form    id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body">`;
+					        row +=`<div class="modal-body pull-left full">`;
                                
-                                 
-				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+                                    row +=`<div id="succes"></div>`;
 
+                                      row +=`<div id="slimScrollDiv" style="height: 200px; overflow: auto;background: #fafafa;">`;
+
+                                    row +=`<div id="replayNew" ></div>`;
+
+                                    row +=`<div  class="form-group pull-left full border-list">`;		
+										row +=`<div class="col-sm-2">`;
+										row +=`<img class="chat-img" src="`+ item.photo +`" alt="`+ item.username +`" class="offline">`;	
+	                                           
+	                                    row +=`</div>`;	
+										row +=`<div class="margin-top-7 col-sm-9">`;
+                                               row +=`<input class="text-username" disabled type="text" value="`+ item.username +`">`;
+													row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+ item.messages +`</textarea>`;
+										row +=`</div>`;	
+									row +=`</div>`;
 				                 
+                                      row +=`</div>`;
 
-				                  row +=`<div  class="form-group has-feedback" >`;
-					              row +=`<label>Pesan :</label>`;
-					              row +=`<p>`+ item.messages +`</p>`;
-					             
-					              row +=`</div>`;
-
-
-					              row +=`<div id="messages-alert-`+ item.id +`" class="form-group has-feedback" >`;
+					              row +=`<div id="messages-alert-`+ item.id +`" class="form-group has-feedback pull-left full" >`;
 					              row +=`<label>Balas :</label>`;
-					              row +=`<textarea  class="form-control textarea-fixed-replay" placeholder="Balas Pesan" name="messages"></textarea>`;
+					              row +=`<textarea id="replay"  class="form-control textarea-fixed-replay" placeholder="Balas Pesan" name="messages"></textarea>`;
 					              row +=`<span id="messages-messages-`+ item.id +`"></span>`;
 					              row +=`</div>`;
 
+                            row +=`</div>`;
 
-
-                            row +=`<div class="modal-footer">`;
+                            row +=`<div class="modal-footer pull-left full">`;
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="balas" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Kirim</button>`;
-						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
-     						</div>`;
+						           
+     						 row +=`</div>`;
 						    row +=`</div>`;
 
 
@@ -359,16 +377,16 @@
 		          const item = list.find(o => o.id === id);
 		         
 	              var data = $("#FormSubmit-"+ item.id).serializeArray();
-	              $("#balas").hide();
-	              $("#load-simpan").show();
+	              // $("#balas").hide();
+	              // $("#load-simpan").show();
 	              
-		        var form = {
-		        	'messages':data[0].value,
-		        	'kendala_id':item.id,
-		        	'permasalahan':item.permasalahan,
-		        	'sender':item.from,
-		        	'status':'sent',
-		        };
+			        var form = {
+			        	'messages':data[0].value,
+			        	'kendala_id':item.id,
+			        	'permasalahan':item.permasalahan,
+			        	'sender':item.username,
+			        	'status':'sent',
+			        };
 
 
 
@@ -379,19 +397,35 @@
 			            cache: false,
 			            dataType: "json",
 			            success: (respons) =>{
-			                   Swal.fire({
-			                        title: 'Sukses!',
-			                        text: 'Berhasil Dikirim',
-			                        icon: 'success',
-			                        confirmButtonText: 'OK'
-			                        
-			                    }).then((result) => {
-			                        if (result.isConfirmed) {
-			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/kendala');
-			                        }
-			                    });
+			                   
+                            
+			               $('#replay').val('');
 
+                            var row = '';
+                            row +=`<div class="form-group pull-left full border-list">`;
+			            	row +=`<div class="col-sm-2">`;
+							row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
+	                                           
+                            row +=`</div>`;	
+							row +=`<div class="margin-top-7 col-sm-10">`;
+                                   row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
+										row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
+							row +=`</div>`;		
+			                row +=`</div>`;	   
+                          $('#replayNew').append(row);
+                          
+                          var al = '';
+                           al +=`<div class="alert alert-success alert-dismissible">`;
+								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
+								al +=`<i class="icon fa fa-check"></i>`;
+								al +=`Sukses membalas kendala`;
+							al +=`</div>`;
+							$('#succes').append(al);
+
+
+							setTimeout(function() {
+						      $('#succes').html('');
+						    }, 3000); // 3000 milliseconds (3 seconds)
 			                   
 			            },
 			            error: (respons)=>{
@@ -438,9 +472,6 @@
 			    }
 			});
             
-            
-            
-            
         });
     
 
@@ -483,44 +514,76 @@
        
        let row = ``;
             row +=`<div class="modal-dialog">`;
-                row +=`<div class="modal-content">`;
+                row +=`<div class="modal-content pull-left full">`;
 
-				       row +=`<div class="modal-header">`;
+				       row +=`<div class="modal-header pull-left full">`;
 				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Balas Pesan `+ item.from +`</h4>`;
+				         row +=`<h4 class="modal-title">Balas Pesan `+ item.username +`</h4>`;
 				       row +=`</div>`;
 
-				       row +=`<form    id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body ">`;
+				       row +=`<form  id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body pull-left full">`;
+
+					         row +=`<div id="succes"></div>`;
                                 
-                                row +=`<div class="slimScrollDiv" style="">`;
-										row +=`<div class="box-body chat" id="chat-box" style="">`;
-
- 							data.forEach(function(items, index) {
-
-										row +=`<div class="item ">`;
-											row +=`<img src="${items.photo}" alt="user image" class="online">`;
-											row +=`<div class="message">`;
-												row +=`<a href="#" class="name">`;
-												row +=`<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>`;
-												row +=`${items.username}`;
-												row +=`</a>`;
-												row +=`<p>${items.messages}<p>`;
-											row +=`</div>`;
-										row +=`</div>`;
-				           
-                            });
-
+                             row +=`<div id="slimScrollDiv" style="height: 200px; overflow: auto;background: #fafafa;">`;
 
                             
 
-                                        row +=`</div>`;
-                                row +=`</div>`;        
                              
-                            row +=`<div class="modal-footer">`;
+									
+                             row +=`<div id="replayNew" ></div>`;
+
+ 							data.forEach(function(items, index) {
+                                  
+									row +=`<div id="list-${index}" class="form-group pull-left full border-list">`;		
+										row +=`<div class="col-sm-2">`;
+										row +=`<img class="chat-img" src="${items.photo}" alt="${items.username}" class="offline">`;	
+	                                           
+	                                    row +=`</div>`;	
+										row +=`<div class="margin-top-7 col-sm-9">`;
+                                               row +=`<input class="text-username" disabled type="text" value="${items.username}">`;
+													row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">${items.messages}</textarea>`;
+										row +=`</div>`;	
+										if(items.deleted == false)
+									    {		
+	                                        row +=`<div class="margin-top-32 btn-delete-chat padding-none ">`;
+	                                         row +=`<button  disabled type="button" class="btn btn-danger pull-right"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
+	                                        row +=`</div>`;	
+                                        }else{
+                                        	row +=`<div  class="margin-top-32 btn-delete-chat padding-none ">`;
+	                                         row +=`<button id="deleted" data-param_index="`+ index +`" data-param_id="`+ items.id +`" type="button" class="btn btn-danger pull-right"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
+	                                        row +=`</div>`;
+                                        }
+
+									row +=`</div>`;
+				           
+                            });
+
+                          
+                           
+                            row +=`</div>`; 
+
+
+
+                            row +=`<div class="form-group has-feedback pull-left full" >`;
+					              row +=`<label>Balas :</label>`;
+					              row +=`<textarea id="replay" class="form-control textarea-fixed-replay" placeholder="Balas Pesan" name="messages"></textarea>`;
+					              row +=`<span id="messages-messages"></span>`;
+					        row +=`</div>`;
+
+
+
+                             
+                         
+
+                             row +=`</div>`;        
+                                  
+                             
+                            row +=`<div class="pull-left full modal-footer">`;
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
-						          row +=`<button id="balas" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Kirim</button>`;
+						          row +=`<button id="balas" disabled data-param_id="`+ item.id +`" type="button" class="btn btn-default">Kirim</button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button></div>`;
 						    row +=`</div>`;
 
@@ -530,6 +593,131 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ item.id).html(row); 
+             
+            $('#replay').on('input', function() {
+              $('#balas').removeClass('btn-default').addClass('btn-primary');	
+		      var charCount = $(this).val().length;
+		         if(charCount >0)
+		         {
+		         	$('#balas').prop("disabled", false);
+		         	$('#balas').removeClass('btn-default').addClass('btn-primary');	
+		         }else{
+		         	$('#balas').prop("disabled", true);
+		         	$('#balas').removeClass('btn-primary').addClass('btn-default');
+		         } 
+		        
+		    });
+
+            
+	        $( ".modal-content" ).on( "click", "#deleted", (e) => {
+		          let id = e.currentTarget.dataset.param_id; 
+		          let index = e.currentTarget.dataset.param_index; 
+
+                $.ajax({
+				    url:  BASE_URL +`/api/kendala/delete-replay/`+ id,
+				    method: 'DELETE',
+				    success: function(response) {
+				        
+				         data.splice(index, 1);
+		                  $('#list-'+index).remove();
+
+		                    var al = '';
+		                    al +=`<div class="alert alert-success alert-dismissible">`;
+								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
+								al +=`<i class="icon fa fa-check"></i>`;
+								al +=`Sukses menghapus kendala`;
+							al +=`</div>`;
+							$('#succes').append(al);
+
+						    setTimeout(function() {
+						      $('#succes').html('');
+						    }, 3000); // 3000 milliseconds (3 seconds)	
+
+				    },
+				    error: function(error) {
+				        console.error('Error deleting items:', error);
+				    }
+				});
+
+
+
+		         		
+
+
+             });
+             
+            $( ".modal-content" ).on( "click", "#balas", (e) => {
+		          let id = e.currentTarget.dataset.param_id;
+		          const item = list.find(o => o.id === id);
+
+		          var data = $("#FormSubmit-"+ item.id).serializeArray();
+	             
+	              
+			        var form = {
+			        	'messages':data[0].value,
+			        	'kendala_id':item.id,
+			        	'permasalahan':item.permasalahan,
+			        	'sender':item.username,
+			        	'status':'sent',
+			        };
+
+
+
+					$.ajax({
+			            type:"POST",
+			            url: BASE_URL+'/api/kendala/replay',
+			            data:form,
+			            cache: false,
+			            dataType: "json",
+			            success: (respons) =>{
+
+
+
+			               $('#replay').val('');
+
+                            var row = '';
+                            row +=`<div class="form-group pull-left full border-list">`;
+			            	row +=`<div class="col-sm-2">`;
+							row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
+	                                           
+                            row +=`</div>`;	
+							row +=`<div class="margin-top-7 col-sm-10">`;
+                                   row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
+										row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
+							row +=`</div>`;		
+			                row +=`</div>`;	   
+                          $('#replayNew').append(row);
+                          
+                          var al = '';
+                           al +=`<div class="alert alert-success alert-dismissible">`;
+								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
+								al +=`<i class="icon fa fa-check"></i>`;
+								al +=`Sukses membalas kendala`;
+							al +=`</div>`;
+							$('#succes').append(al);
+
+							$('#balas').prop("disabled", true);
+		         	        $('#balas').removeClass('btn-primary').addClass('btn-default');
+
+							setTimeout(function() {
+						      $('#succes').html('');
+						    }, 3000); // 3000 milliseconds (3 seconds)
+			                   
+			            },
+			            error: (respons)=>{
+			                errors = respons.responseJSON;
+			                
+
+			                
+
+			                
+			            }
+			          });
+                
+		    });      
+
+
+
 
     }
 
