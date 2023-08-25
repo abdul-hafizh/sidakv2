@@ -42,7 +42,7 @@ class RequestSystemLog
 
    public static function LastUpdate($username)
    {
-       $last = SystemLog::where('created_by',$username)->first()->created_at;
+       $last = SystemLog::where('created_by',$username)->first()->updated_at;
        return GeneralHelpers::tanggal_indo($last);
    }
    

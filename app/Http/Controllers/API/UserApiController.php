@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\RoleUser;
+use App\Models\Roles;
 use App\Http\Request\RequestUser;
 use App\Helpers\GeneralPaginate;
 use App\Http\Request\Validation\ValidationUser;
@@ -76,9 +77,16 @@ class UserApiController extends Controller
            $insert = RequestUser::fieldsData($request,'insert');  
             //create menu
            $saveData = User::create($insert);
-           $RoleUser = RoleUser::create(['user_id'=>$saveData->id,'role_id'=>$request->role_id,'status'=>'Y']);  
-            //result
-           return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);    
+           $role = Roles::where('slug',$request->role_id)->first();
+           if(!$role)
+           {
+              return response()->json('Role tidak valid',400);  
+           }else{
+             $RoleUser = RoleUser::create(['user_id'=>$saveData->id,'role_id'=>$role->id,'status'=>'Y']);  
+             //result
+             return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);     
+           } 
+           
             
         } 
 
@@ -95,15 +103,21 @@ class UserApiController extends Controller
                $update = RequestUser::fieldsData($request,'update');
                 //update account
                $UpdateData = User::where('id',$id)->update($update);
-               $Role = RoleUser::where(['user_id'=>$id,'role_id'=>$request->role_id])->first();
-               if(!$Role)
+               $role = Roles::where('slug',$request->role_id)->first();
+               if(!$role)
                {
-                RoleUser::where(['user_id'=>$id])->update(['role_id'=>$request->role_id]);
-               } 
+                  return response()->json('Role tidak valid',400);  
+               }else{
 
-                //result
-               return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
-            
+                   $RoleUser = RoleUser::where(['user_id'=>$id,'role_id'=>$role->role_id])->first();
+                   if(!$RoleUser)
+                   {
+                    RoleUser::where(['user_id'=>$id])->update(['role_id'=>$role->id]);
+                   } 
+
+                    //result
+                    return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+               }
           
         }   
 

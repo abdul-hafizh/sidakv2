@@ -55,7 +55,7 @@ class RequestRoles
   
   public static function GetRoles(){
 
-    $data = Roles::select('id as value','name as text')->get();
+    $data = Roles::select('slug as value','name as text')->get();
     return $data; 
   }
 

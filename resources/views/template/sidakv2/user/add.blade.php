@@ -11,7 +11,13 @@
       <form id="FormSubmit">
         <div class="modal-body">
 
+          <div id="role-alert" class="form-group has-feedback">
+            <label>Role </label>
+            <select id="role_id"  data-style="btn-default" title="Pilih Role" class="selectpicker form-control" name="role_id">
 
+            </select>
+            <span id="role-messages"></span>
+          </div>
 
           <div id="username-alert" class="form-group has-feedback">
             <label>Username</label>
@@ -57,6 +63,8 @@
             <span id="leader-nip-messages"></span>
           </div>
 
+         
+
           <div id="daerah-alert" class="form-group has-feedback">
             <label>Daerah </label>
             <select id="daerah_id" class="select form-control" name="daerah_id">
@@ -64,13 +72,7 @@
             <span id="daerah-messages"></span>
           </div>
 
-          <div id="role-alert" class="form-group has-feedback">
-            <label>Role </label>
-            <select id="role_id"  data-style="btn-default" title="Pilih Role" class="selectpicker form-control" name="role_id">
-
-            </select>
-            <span id="role-messages"></span>
-          </div>
+         
 
           <div id="password-alert" class="form-group has-feedback">
             <label>Password </label>
@@ -100,7 +102,16 @@
 
     <script type="text/javascript">
       $(function() {
-
+        $('#role_id').change(function() {
+          var selectedText = $(this).find("option:selected").text();
+            
+            if(selectedText =='Admin' || selectedText =='Pusat')
+            {
+              $('#daerah-alert').hide();
+            }else{
+              $('#daerah-alert').show();
+            }  
+        });  
 
         $('.select').select2({
           data: [{
@@ -156,7 +167,7 @@
                     }));
                 });
 
-                // Refresh the SelectPicker to apply the new options
+               // Refresh the SelectPicker to apply the new options
                select.selectpicker('refresh');
             },
             error: function(error) {
@@ -164,21 +175,25 @@
             }
         });
 
+
+        
+
+
         $("#simpan").click(() => {
           $("#simpan").hide();
           $("#load-simpan").show();
 
           var data = $("#FormSubmit").serializeArray();
           var form = {
-            'username': data[0].value,
-            'name': data[1].value,
-            'email': data[2].value,
-            'phone': data[3].value,
-            'nip': data[4].value,
-            'leader_name': data[5].value,
-            'leader_nip': data[6].value,
-            'daerah_id': data[7].value,
-            'role_id': data[8].value,
+            'role_id': data[0].value,
+            'username': data[1].value,
+            'name': data[2].value,
+            'email': data[3].value,
+            'phone': data[4].value,
+            'nip': data[5].value,
+            'leader_name': data[6].value,
+            'leader_nip': data[7].value,
+            'daerah_id': data[8].value,
             'password': data[9].value,
             'password_confirmation': data[10].value,
           };

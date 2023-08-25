@@ -31,8 +31,8 @@ class ValidationUser
             'nip'  => 'required',
             'leader_name'  => 'required',
             'leader_nip'  => 'required',
-            'daerah_id'  => 'required',
-            'role_id'  => 'required',
+            'role_id'  => 'required|required_if:role_id,admin,pusat',
+            'daerah_id'  => 'required_if:role_id,daerah,province',
             'password'  => 'required|confirmed|min:6',
             'password_confirmation'  => 'required',
         ]);
@@ -114,8 +114,8 @@ class ValidationUser
             'nip'  => 'required',
             'leader_name'  => 'required',
             'leader_nip'  => 'required',
-            'daerah_id'  => 'required',
-            'role_id'  => 'required',
+            'role_id'  => 'required|required_if:role_id,admin,pusat',
+            'daerah_id'  => 'required_if:role_id,daerah,province',
         ]);
 
         $validator->setAttributeNames($fields); 
