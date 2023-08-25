@@ -108,7 +108,13 @@
 
     <script>
         $(function() {
+            $('#slimScrollDiv').slimScroll({
+                height: '300px', // Set the desired height
+                color: '#ffcc00', // Set the color of the scrollbar (optional)
+                // Other options...
+            });
             $('[data-toggle="tooltip"]').tooltip();
+            
         });
     </script>
     <script type="text/javascript">

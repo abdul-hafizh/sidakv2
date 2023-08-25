@@ -52,8 +52,9 @@ class RequestKendala
             $temp[$key]['number'] = $numberNext++;
             $temp[$key]['id'] = $val->id;
             $temp[$key]['permasalahan'] = $permasalahan;
+            $temp[$key]['photo'] = RequestAuth::photoUser($val->from);
             $temp[$key]['messages'] = $messages;
-            $temp[$key]['from'] = $val->from;
+            $temp[$key]['username'] = RequestAuth::fullname($val->from);
             $temp[$key]['sender'] = $val->sender;
             $temp[$key]['status'] = $status;
             $temp[$key]['showedit'] = $showedit;
@@ -87,12 +88,21 @@ class RequestKendala
           $temp[$key]['username'] = $val->from;
           $temp[$key]['photo'] = RequestAuth::photoUser($val->from);
           $temp[$key]['messages'] = $val->messages; 
+          $temp[$key]['deleted'] = true;
        } 
 
         $first = Kendala::where('id',$id)->first();
-        $messages = array(['id'=>$first->id,'username'=>$first->from,'photo'=>RequestAuth::photoUser($val->from),'messages'=>$first->messages]);
-        $merge = array_merge($messages,$temp);
+        $messages = array(['id'=>$first->id,'username'=>RequestAuth::fullname($val->from),'photo'=>RequestAuth::photoUser($first->from),'messages'=>$first->messages,'deleted'=>false]);
+        $merge = array_merge($temp,$messages);
         return $merge;
+   }
+
+   public static function MessagesLast($id){
+     
+     $last = KendalaDetail::where('id',$id)->first();
+     $messages = array('id'=>$last->id,'username'=>$last->from,'photo'=>RequestAuth::photoUser($last->from),'messages'=>$last->messages);
+     return $messages;
+
    }
 
    public static function CheckReplay($id)
