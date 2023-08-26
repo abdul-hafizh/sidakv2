@@ -30,7 +30,7 @@ use App\Http\Controllers\API\RegencyApiController;
 use App\Http\Controllers\API\DaerahApiController;
 use App\Http\Controllers\API\AuditLogApiController;
 use App\Http\Controllers\API\KendalaApiController;
-
+use App\Http\Controllers\API\ForumApiController;
 
 
 
@@ -112,6 +112,15 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('kendala/{id}', [KendalaApiController::class, 'update']);
     Route::post('kendala/selected', [KendalaApiController::class, 'deleteSelected']);
     Route::delete('kendala/{id}', [KendalaApiController::class, 'delete']);
+
+
+    Route::get('forum', [ForumApiController::class, 'index']);
+    Route::post('forum', [ForumApiController::class, 'store']);
+    Route::post('forum/search', [ForumApiController::class, 'search']);
+    Route::put('forum/{id}', [ForumApiController::class, 'update']);
+    Route::post('forum/selected', [ForumApiController::class, 'deleteSelected']);
+    Route::delete('forum/{id}', [ForumApiController::class, 'delete']);
+
     
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
