@@ -163,8 +163,28 @@
             selectedIds.push($(this).data('id'));
         });
 
-        // Send selected IDs for deletion (e.g., via AJAX)
-        deleteItems(selectedIds);
+         Swal.fire({
+		      title: 'Apakah anda yakin hapus?',
+		    
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#d33',
+		      cancelButtonColor: '#3085d6',
+		      confirmButtonText: 'Ya'
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+		        // Perform the delete action here, e.g., using an AJAX request
+		        // Send selected IDs for deletion (e.g., via AJAX)
+   				 deleteItems(selectedIds);
+		        
+		        Swal.fire(
+		          'Deleted!',
+		          'Data berhasil dihapus.',
+		          'success'
+		        );
+		      }
+		    });
+		    
     });
 
    
@@ -246,7 +266,8 @@
 
         // Clear previous data
         content.empty();
-
+    if(data.length>0)
+    {
         // Populate content with new data
         data.forEach(function(item, index) {
            	let row = ``;
@@ -276,10 +297,16 @@
 
             content.append(row);
 
-            
-
-
         });
+
+    }else{
+
+    	 let row = ``;
+         row +=`<tr>`;
+         row +=`<td colspan="4" align="center">Data Kosong</td>`;
+         row +=`</tr>`;
+         content.append(row);
+    }    
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;

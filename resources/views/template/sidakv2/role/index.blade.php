@@ -164,8 +164,28 @@
             selectedIds.push($(this).data('id'));
         });
 
-        // Send selected IDs for deletion (e.g., via AJAX)
-        deleteItems(selectedIds);
+         Swal.fire({
+		      title: 'Apakah anda yakin hapus?',
+		    
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#d33',
+		      cancelButtonColor: '#3085d6',
+		      confirmButtonText: 'Ya'
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+		        // Perform the delete action here, e.g., using an AJAX request
+		        // Send selected IDs for deletion (e.g., via AJAX)
+   				 deleteItems(selectedIds);
+		        
+		        Swal.fire(
+		          'Deleted!',
+		          'Data berhasil dihapus.',
+		          'success'
+		        );
+		      }
+		    });
+		    
     });
 
     // Individual item checkboxes
@@ -259,40 +279,64 @@
 
         // Clear previous data
         content.empty();
-
+    if(data.length>0)
+    { 
         // Populate content with new data
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-               row +=`<td><input ${item.deleted} class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+             if(item.deleted ==true)
+             {
+                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;	
+             }else{
+             	row +=`<td><input disabled type="checkbox"></td></td>`;
+             }
+               
                row +=`<td class="padding-text-table">${item.number}</td>`;
                row +=`<td class="padding-text-table">${item.name}</td>`;
                row +=`<td class="padding-text-table">${item.status}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+              if(item.deleted ==true)
+              {  
 
+                  row +=`<button id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                }else{
+                   row +=`<button disabled data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-default"><i class="fa fa-pencil" ></i></button>`;
+
+                }
                
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
                 row +=`<div id="FormEdit-${item.id}"></div>`;
                 row +=`</div>`;
 
 
-       
+                if(item.deleted ==true)
+                {
 
-                row +=`<button id="Destroy" ${item.deleted} data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                    row +=`<button id="Destroy" ${item.deleted} data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+                 }else{
+
+                    row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"   type="button" class="btn btn-default"><i class="fa fa-trash" ></i></button>`; 
+
+                 } 	
 
                 row +=`</div>`;
                 row +=`</td>`;
               row +=`</tr>`; 
 
             content.append(row);
-
-            
-
-
         });
+
+    }else{
+         let row = ``;
+         row +=`<tr>`;
+         row +=`<td colspan="5" align="center">Data Kosong</td>`;
+         row +=`</tr>`;
+         content.append(row);
+    }    
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;

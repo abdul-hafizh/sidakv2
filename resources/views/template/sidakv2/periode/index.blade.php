@@ -66,8 +66,9 @@
 							<th><div class="split-table"></div><span class="span-title"> Nama </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Semester </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Tahun </span></th>
-							<th><div class="split-table"></div><span class="span-title"> Status </span></th> 
-							<th> Aksi </th>
+							<th><div class="split-table"></div><span class="span-title"> Status </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Aksi </span></th> 
+							
 						</tr>
 					</thead>
 
@@ -163,8 +164,29 @@
             selectedIds.push($(this).data('id'));
         });
 
-        // Send selected IDs for deletion (e.g., via AJAX)
-        deleteItems(selectedIds);
+         Swal.fire({
+		      title: 'Apakah anda yakin hapus?',
+		    
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#d33',
+		      cancelButtonColor: '#3085d6',
+		      confirmButtonText: 'Ya'
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+		        // Perform the delete action here, e.g., using an AJAX request
+		        // Send selected IDs for deletion (e.g., via AJAX)
+   				 deleteItems(selectedIds);
+		        
+		        Swal.fire(
+		          'Deleted!',
+		          'Data berhasil dihapus.',
+		          'success'
+		        );
+		      }
+		    });
+
+        
     });
 
     // Individual item checkboxes
@@ -238,12 +260,19 @@
 
         // Clear previous data
         content.empty();
-
+    if(data.length>0)
+    {
         // Populate content with new data
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+             if(item.deleted == false)
+             {
+             	 row +=`<td><input  class="item-checkbox"  data-id="${item.id}"  type="checkbox"></td></td>`;
+             }else{
+             	 row +=`<td><input  disabled    type="checkbox"></td></td>`;
+             } 	
+              
                row +=`<td>${item.number}</td>`;
                row +=`<td>${item.name}</td>`;
                row +=`<td>${item.semester}</td>`;
@@ -252,7 +281,7 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button  id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
@@ -260,9 +289,14 @@
                 row +=`</div>`;
 
 
-       
+                if(item.deleted == false)
+                {   
 
-                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                	row +=`<button  id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+	            }else{
+                   row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-default"><i class="fa fa-trash" ></i></button>`;
+	            }
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -270,10 +304,16 @@
 
             content.append(row);
 
-            
-
-
         });
+
+    }else{
+
+    	  let row = ``;
+         row +=`<tr>`;
+         row +=`<td colspan="7" align="center">Data Kosong</td>`;
+         row +=`</tr>`;
+         content.append(row);
+    }    
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
@@ -314,19 +354,11 @@
 
 				                  row +=`<div id="semester-alert-`+ item.id +`" class="form-group has-feedback" >`;
 					              row +=`<label>Semester</label>`;
-					              row +=`<select id="semester-`+ item.id +`" class="form-control" name="semester">`;
+					              row +=`<select id="semester-`+ item.id +`" class="selectpicker form-control" name="semester">`;
 					                  row +=`<option value="">Pilih Semester</option>`;
-					                 if(item.semester_value =='01')
-					                     {
-                                              row +=`<option value="01" selected>Semester 01</option>`;
-                                              row +=`<option value="02">Semester 02</option>`;
-					                     }else if(item.semester_value =='02'){
-					                     	  row +=`<option value="01" >Semester 01</option>`;
-                                              row +=`<option value="02" selected>Semester 02</option>`;
-					                     }else{
-					                     	    row +=`<option value="01" >Semester 01</option>`;
-                                              row +=`<option value="02" >Semester 02</option>`;
-					                     }
+                                      row +=`<option value="01" >Semester 01</option>`;
+                                      row +=`<option value="02">Semester 02</option>`;
+					                     
 					              row +=`</select>`;
 					              row +=`<span id="semester-messages-`+ item.id +`"></span>`;
 					            row +=`</div>`;
@@ -340,19 +372,19 @@
 
 			                    row +=`<div class="radio">`;
 				                    row +=`<label>`;
-				                    if(item.status_ori =='Y')
+				                    if(item.status.status_db =='Y')
 				                    {
 				                        row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
 				                    }else{
 				                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
 				                    } 	
 				                 
-				                      row +=`Aktif`;
+				                      row +=`Publish`;
 				                    row +=`</label>`;
 				                row +=`</div>`;
 				                row +=`<div class="radio">`;
 				                    row +=`<label>`;
-				                      if(item.status_ori =='N')
+				                      if(item.status.status_db =='N')
 				                    {
 				                        row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
 				                    }else{
@@ -360,11 +392,11 @@
 				                    } 
 
 				                     
-				                     row +=`Non Aktif`;
+				                     row +=`Draft`;
 				                    row +=`</label>`;
 				                row +=`</div>`;
 
-
+                            row +=`</div>`;
 
 
                             row +=`<div class="modal-footer">`;
@@ -381,6 +413,13 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ item.id).html(row); 
+
+            // Set a specific option as selected
+               let select = $('#semester-'+ item.id);
+		       var selectedValue = item.semester;
+		       select.val(selectedValue);
+		       // Refresh the SelectPicker
+		       select.selectpicker('refresh');
                 
 
             $( ".modal-content" ).on( "click", "#update", (e) => {

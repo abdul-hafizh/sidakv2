@@ -3,11 +3,10 @@
 namespace App\Http\Request;
 use Auth;
 use App\Helpers\GeneralHelpers;
-use App\Models\Roles;
-use App\Models\RoleUser;
 use Illuminate\Support\Str;
 
-class RequestRoles 
+
+class RequestForum 
 {
    
    public static function GetDataAll($data,$perPage,$request)
@@ -22,18 +21,26 @@ class RequestRoles
         }else{
              $numberNext = (($page * $data->count()) - ($data->count() - 1));
         }  
-        
+       
         foreach ($data as $key => $val)
         {
-            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "Non Aktif"; }
+            if($val->status =="Y") { 
+                $status = "Publish";
+            }else{ 
+                $status = "Draft";
+            }
+
+            
+            $description =  $val->description;
+            if (strlen($description) > 70) {
+                $description = substr($description, 0, 70) . "...";
+            } 
 
             $temp[$key]['number'] = $numberNext++;
             $temp[$key]['id'] = $val->id;
-            $temp[$key]['name'] = $val->name;
-            $temp[$key]['slug'] = $val->slug;
-            $temp[$key]['deleted'] = RequestRoles::checkValidate($val->id);
-            $temp[$key]['status'] = $status;
-            $temp[$key]['status_ori'] = $val->status;
+            $temp[$key]['category'] = $val->category;
+            $temp[$key]['description'] = $description;
+            $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
         }
 
@@ -53,58 +60,30 @@ class RequestRoles
    }
 
   
-  public static function GetRoles(){
 
-    $data = Roles::select('slug as value','name as text')->get();
-    return $data; 
-  }
-
-
-  public static function GetRoleWhere($id,$type){
-
-    $data = RoleUser::where('user_id',$id)->first();
-    if($data)
-    {
-       if($type =='id')
-       {
-          $result = $data->role->id;
-       }else{
-          $result = $data->role->slug;
-       }  
-      
-    }else{
-       $result = null;
-    }    
-    return $result; 
-  }
-
-   public static function checkValidate($role_id){
-
-       $data = RoleUser::where('role_id',$role_id)->count();
-       if($data > 0)
-       {
-          $result = false;
-       }else{
-          $result = true;
-       } 
-
-       return $result;
-  }
   
+
+  
+ 
 
    public static function fieldsData($request)
    {
         $uuid = Str::uuid()->toString();
+        
+
         $fields = [ 
                 'id'=> $uuid,
-                'name'  =>  $request->name,
+                'category'  =>  $request->category,
+                'description'  =>  $request->description,
                 'status'  =>  $request->status,
-                'slug' =>  strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name))),
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
         ];
         return $fields;
    }
+
+
+   
 
    
 

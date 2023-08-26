@@ -48,8 +48,8 @@ class RequestUser
             $temp[$key]['name'] = $val->name;
             $temp[$key]['daerah_id'] = $val->daerah_id;
             $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
-            $temp[$key]['role_id'] = RequestRoles::GetRoleWhere($val->id,'id');
-            $temp[$key]['role_name'] = RequestRoles::GetRoleWhere($val->id,'name');
+            $temp[$key]['role_id'] = RequestRoles::GetRoleWhere($val->id,'name');
+            
             $temp[$key]['username'] = $val->username;
             $temp[$key]['email'] = $val->email;
             $temp[$key]['phone'] = $val->phone;
@@ -83,6 +83,12 @@ class RequestUser
    public static function fieldsData($request,$type)
    {
        
+       if($request->daerah_id)
+       {
+        $daerah_id = $request->daerah_id;
+       }else{
+        $daerah_id = 0;
+       } 
     
         $fields = 
         [  
@@ -93,7 +99,7 @@ class RequestUser
             'phone'     => $request->phone,
             'leader_name'     => $request->leader_name,
             'leader_nip'     => $request->leader_nip,
-            'daerah_id'     => $request->daerah_id,
+            'daerah_id'     => $daerah_id,
             'status' =>'Y',
             'created_by' => $request->username,
             'created_at' => date('Y-m-d H:i:s'),

@@ -171,8 +171,29 @@
         $('.item-checkbox:checked').each(function() {
             selectedIds.push($(this).data('id'));
         });
-        // Send selected IDs for deletion (e.g., via AJAX)
-        deleteItems(selectedIds);
+
+         Swal.fire({
+		      title: 'Apakah anda yakin hapus?',
+		    
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#d33',
+		      cancelButtonColor: '#3085d6',
+		      confirmButtonText: 'Ya'
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+		        // Perform the delete action here, e.g., using an AJAX request
+		        // Send selected IDs for deletion (e.g., via AJAX)
+   				 deleteItems(selectedIds);
+		        
+		        Swal.fire(
+		          'Deleted!',
+		          'Data berhasil dihapus.',
+		          'success'
+		        );
+		      }
+		    });
+        
     });
 
     // Individual item checkboxes
@@ -275,7 +296,8 @@
 
         // Clear previous data
         content.empty();
-
+     if(data.length>0)
+     {
         // Populate content with new data
         data.forEach(function(item, index) {
            	let row = ``;
@@ -305,13 +327,17 @@
               row +=`</tr>`; 
 
             content.append(row);
-
-
-
-
         });
 
-        	
+      }else{
+            
+             	let row = ``;
+	             row +=`<tr>`;
+	             row +=`<td colspan="8" align="center">Data Kosong</td>`;
+                 row +=`</tr>`;
+                 content.append(row);
+
+	  }     	
 
         $('.item-checkbox').on('click', function() {
          const checkedCount = $('.item-checkbox:checked').length;
@@ -348,6 +374,14 @@
 
 				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
 					        row +=`<div class="modal-body">`;
+
+					             row +=`<div id="role-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+				                     row +=`<label>Role </label>`;
+				                   row +=`<select id="role-`+ item.id +`" class="selectpicker" name="role_id"></select>`;
+
+				                   row +=`<span id="role-messages-`+ item.id +`"></span>`;
+				                 row +=`</div>`;
                                
                                 row +=`<div class="form-group has-feedback" >`;
 				                  row +=`<label>Username</label>`;
@@ -429,13 +463,7 @@
 				                   row +=`<span id="daerah-messages-`+ item.id +`"></span>`;
 				                 row +=`</div>`;
 
-				                 row +=`<div id="role-alert-`+ item.id +`" class="form-group has-feedback">`;
-
-				                     row +=`<label>Role </label>`;
-				                   row +=`<select id="role-`+ item.id +`" class="selectpicker" name="role_id"></select>`;
-
-				                   row +=`<span id="role-messages-`+ item.id +`"></span>`;
-				                 row +=`</div>`;
+				                
 
 
 					        row +=`</div>`;
@@ -457,32 +485,29 @@
           
 
             $('#FormEdit-'+ item.id).html(row);
-           
-            $('.select-edit').select2({
-		        data: [{ id: '', text: '' }],
-		        placeholder: 'Pilih Daerah',
-		        ajax: {
-		            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
-		            dataType: 'json',
-		            //delay: 250, // Delay before sending the request (milliseconds)
-		            processResults: function(data) {
-		                
-		                // Transform the data to match Select2's expected format
-		                return {
-		                    results: data.map(function(item) {
-		                        return { id: item.value, text: item.text };
-		                    })
-		                };
-		            },
-		            cache: true // Cache the results to improve performance
-		        },
-		        minimumInputLength: 1 // Minimum number of characters required for a search
-		    });	
 
-            $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
+           // let role = $('#role-'+ item.id).val();
+            if(item.role_id !='admin' || item.role_id !='pusat')
+            {
+            	$('#daerah-alert-'+ item.id).hide();
+            	$('#daerah_id-'+ item.id).val(0);
+            }else{
+            	
+            	$('#daerah-alert-'+ item.id).show();
+            } 	
 
-          
-		         // Fetch data using AJAX
+             $('#role-'+ item.id).change(function() {
+	          var selectedText = $(this).find("option:selected").text();
+	              
+	            if(selectedText =='Admin' || selectedText =='Pusat')
+	            {
+	              $('#daerah-alert-'+ item.id).hide();
+	            }else{
+	              $('#daerah-alert-'+ item.id).show();
+	            }  
+	        });  
+
+                // Fetch data using AJAX
 			  $.ajax({
 			    url: BASE_URL +'/api/select-role',
 			    method: 'GET',
@@ -512,6 +537,32 @@
 			      console.error('Failed to fetch data.');
 			    }
 			  });
+           
+            $('.select-edit').select2({
+		        data: [{ id: '', text: '' }],
+		        placeholder: 'Pilih Daerah',
+		        ajax: {
+		            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
+		            dataType: 'json',
+		            //delay: 250, // Delay before sending the request (milliseconds)
+		            processResults: function(data) {
+		                
+		                // Transform the data to match Select2's expected format
+		                return {
+		                    results: data.map(function(item) {
+		                        return { id: item.value, text: item.text };
+		                    })
+		                };
+		            },
+		            cache: true // Cache the results to improve performance
+		        },
+		        minimumInputLength: 1 // Minimum number of characters required for a search
+		    });	
+
+            $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
+
+          
+		     
 
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
@@ -519,17 +570,19 @@
 	              var data = $("#FormSubmit-"+ id).serializeArray();
 	              $("#update").hide();
 	              $("#load-simpan").show();
+
+	              console.log(data);
 	              
 		          var form = {
+		              'role_id':data[0].value,
+		              'name':data[1].value,
+		              'email':data[2].value,
+		              'phone':data[3].value,
+		              'nip':data[4].value,
+		              'leader_name':data[5].value,
+		              'leader_nip':data[6].value,
+		              'daerah_id':data[7].value,
 		              
-		              'name':data[0].value,
-		              'email':data[1].value,
-		              'phone':data[2].value,
-		              'nip':data[3].value,
-		              'leader_name':data[4].value,
-		              'leader_nip':data[5].value,
-		              'daerah_id':data[6].value,
-		              'role_id':data[7].value,
 		          };
 
 

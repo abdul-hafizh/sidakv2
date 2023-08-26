@@ -13,8 +13,7 @@ use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\KendalaController;
-
-
+use App\Http\Controllers\ForumController;
 
    
     Route::get('/', function () {
@@ -31,7 +30,8 @@ use App\Http\Controllers\KendalaController;
         Route::get('/perencanaan/add', [PerencanaanController::class,'add']);
         Route::get('/perencanaan/edit/{id}', [PerencanaanController::class,'edit']); 
         Route::get('/pagutarget', [PaguTargetController::class,'index']);
-        Route::get('/kendala', [KendalaController::class,'index']);              
+        Route::get('/kendala', [KendalaController::class,'index']);
+        Route::get('/forum', [ForumController::class,'index']);              
     });
 
     Route::middleware(['auth','admin'])->group(function () {           

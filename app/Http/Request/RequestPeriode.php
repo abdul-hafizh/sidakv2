@@ -6,6 +6,7 @@ use Auth;
 use App\Helpers\GeneralHelpers;
 use App\Models\PaguTarget;
 use App\Models\Periode;
+use App\Models\Perencanaan;
 use DB;
 
 class RequestPeriode
@@ -36,6 +37,7 @@ class RequestPeriode
          $temp[$key]['semester'] = $val->semester;
          $temp[$key]['year'] = $val->year;
          $temp[$key]['slug'] = $val->slug;
+         $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->slug);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
 
       }
@@ -72,6 +74,19 @@ class RequestPeriode
 
       return  $temp;
    }
+
+   public static function checkValidate($slug){
+
+       $data = Perencanaan::where('periode_id',$slug)->first();
+       if($data)
+       {
+          $result = 'disabled';
+       }else{
+          $result = '';
+       } 
+
+       return $result;
+  }
 
    public static function Pagu($type, $periode_id)
    {
@@ -115,7 +130,7 @@ class RequestPeriode
 
       $fields = [
          'name'  =>  $request->name,
-         'slug' =>  $request->slug,
+         'slug' =>  $request->year.$request->semester,
          'semester' => $request->semester,
          'year' => $request->year,
          'status' => $request->status,

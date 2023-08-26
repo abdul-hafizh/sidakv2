@@ -176,8 +176,29 @@
         $('.item-checkbox:checked').each(function() {
             selectedIds.push($(this).data('id'));
         });
-        // Send selected IDs for deletion (e.g., via AJAX)
-        deleteItems(selectedIds);
+
+         Swal.fire({
+		      title: 'Apakah anda yakin hapus?',
+		    
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#d33',
+		      cancelButtonColor: '#3085d6',
+		      confirmButtonText: 'Ya'
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+		        // Perform the delete action here, e.g., using an AJAX request
+		        // Send selected IDs for deletion (e.g., via AJAX)
+   				 deleteItems(selectedIds);
+		        
+		        Swal.fire(
+		          'Deleted!',
+		          'Data berhasil dihapus.',
+		          'success'
+		        );
+		      }
+		    });
+        
     });
 
     // Individual item checkboxes
@@ -315,7 +336,7 @@
 
 
     	 	let row = ``;
-             row +=`<tr><td colspan="8" align="center"> <b>Data Kosong</b></td></tr>`;
+             row +=`<tr><td colspan="5" align="center"> <b>Data Kosong</b></td></tr>`;
               content.html(row);
 	    }
 
