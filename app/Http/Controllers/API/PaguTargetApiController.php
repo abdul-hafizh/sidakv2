@@ -34,10 +34,12 @@ class PaguTargetApiController extends Controller
     public function jsonData(Request $request)
     {
         $result = RequestPaguTarget::GetDataList($request);
+        $count = RequestPaguTarget::GetDataCountFilter($request);
+
         $output = array(
             "draw" => $request->draw,
             "recordsTotal" => $result->total,
-            "recordsFiltered" => $result->total,
+            "recordsFiltered" => $count->total,
             "data" => $result->data,
         );
         return response()->json($output);

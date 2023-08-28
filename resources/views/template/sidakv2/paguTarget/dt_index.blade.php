@@ -47,8 +47,28 @@
 </style>
 </script>
 <section class="content-header pd-left-right-15">
+	<div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+		<div class="pull-right width-25">
+			<div class="input-group input-group-sm border-radius-20">
+				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
+				<span class="input-group-btn">
+					<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+				</span>
+			</div>
+		</div>
+	</div>
 	<div class="col-sm-4 pull-left padding-default full dataTables_wrapper">
 		<div class="width-50 pull-left">
+			<div class="pull-left padding-9-0 margin-left-button">
+
+				<select id="row_page" class="selectpicker" data-style="btn-default">
+					<option value="10" selected>10</option>
+					<option value="25">25</option>
+					<option value="50">50</option>
+					<option value="100">100</option>
+					<option value="-1">All</option>
+				</select>
+			</div>
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled="disabled" class="btn btn-danger border-radius-10">
 					Hapus
@@ -122,6 +142,7 @@
 					'next': '<span >»</span>'
 				}
 			},
+			dom: 'prti',
 			scrollCollapse: true,
 			scrollX: true,
 			scrollY: 500,
@@ -147,6 +168,12 @@
 			}
 		});
 
+		$('#search-input').on('keyup', function() {
+			table.search(this.value).draw();
+		});
+		$('#row_page').on('change', function() {
+			table.page.len(this.value).draw();
+		});
 		// Handle click on "Select all" control
 		$('#example-select-all').on('click', function() {
 			// Get all rows with search applied

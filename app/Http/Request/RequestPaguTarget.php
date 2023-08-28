@@ -53,18 +53,32 @@ class RequestPaguTarget
         $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
         $order = array('nama_daerah' => 'ASC');
 
-        $data = DB::table('pagu_target')->offset($request->start)
-            ->limit($request->length);
+        $data = DB::table('pagu_target');
+        if ($request->length > 0)
+            $data->offset($request->start)->limit($request->length);
 
-        //  dd($request->order[0]['dir']);
-       
-            if ($request->order['0']['column'] != 0) {
+
+        $i = 0;
+        $search = $request->search['value'];
+        if ($request->search['value']) {
+            $data->where(function ($query) use ($search, $column_search, $i) {
+                foreach ($column_search as $item) {
+                    if ($i == 0)
+                        $query->where($item, 'LIKE', '%' . $search . '%');
+                    else
+                        $query->orWhere($item, 'LIKE', '%' . $search . '%');
+                    $i++;
+                }
+            });
+        }
+
+        if ($request->order['0']['column'] != 0) {
             $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
-            } else if (isset($order)) {
-                $order = $order;
-                $data->orderBy(key($order), $order[key($order)]);
-            } 
-        
+        } else if (isset($order)) {
+            $order = $order;
+            $data->orderBy(key($order), $order[key($order)]);
+        }
+
         $numberNext = 1;
         //dd($data);
         $result = $data->get();
@@ -91,6 +105,44 @@ class RequestPaguTarget
         return json_decode(json_encode($temp2), FALSE);
     }
 
+
+    public static function GetDataCountFilter($request)
+    {
+        $temp = array();
+
+        $column_order   = array('', 'nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $order = array('nama_daerah' => 'ASC');
+
+        $data = DB::table('pagu_target');
+        $i = 0;
+        $search = $request->search['value'];
+        if ($request->search['value']) {
+            $data->where(function ($query) use ($search, $column_search, $i) {
+                foreach ($column_search as $item) {
+                    if ($i == 0)
+                        $query->where($item, 'LIKE', '%' . $search . '%');
+                    else
+                        $query->orWhere($item, 'LIKE', '%' . $search . '%');
+                    $i++;
+                }
+            });
+        }
+
+        if ($request->order['0']['column'] != 0) {
+            $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
+        } else if (isset($order)) {
+            $order = $order;
+            $data->orderBy(key($order), $order[key($order)]);
+        }
+
+        $numberNext = 1;
+        //dd($data);
+        $result = $data->count();
+
+        $temp2['total'] = $result;
+        return json_decode(json_encode($temp2), FALSE);
+    }
 
 
 
