@@ -76,7 +76,7 @@
      
     $.ajax({
             type:"POST",
-            url: BASE_URL+'/api/forum/topic',
+            url: BASE_URL+'/api/topic',
             data:form,
             cache: false,
             dataType: "json",
