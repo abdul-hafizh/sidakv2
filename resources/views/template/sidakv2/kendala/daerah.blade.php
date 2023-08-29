@@ -634,18 +634,22 @@
 
 			               $('#replay').val('');
 
-                            var row = '';
-                            row +=`<div class="form-group pull-left full border-list">`;
-			            	row +=`<div class="col-sm-2">`;
-							row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
+       //                      var row = '';
+       //                      row +=`<div class="form-group pull-left full border-list">`;
+			    //         	row +=`<div class="col-sm-2">`;
+							// row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
 	                                           
-                            row +=`</div>`;	
-							row +=`<div class="margin-top-7 col-sm-10">`;
-                                   row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
-										row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
-							row +=`</div>`;		
-			                row +=`</div>`;	   
-                          $('#replayNew').append(row);
+       //                      row +=`</div>`;	
+							// row +=`<div class="margin-top-7 col-sm-10">`;
+       //                             row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
+							// 			row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
+							// row +=`</div>`;		
+			    //             row +=`</div>`;	   
+       //                    $('#replayNew').append(row);
+
+                             var row = '';
+                              row +=`<div class="form-group pull-left full text-center loading-position"> Loading ... </div>`;  
+                               $('#replayNew').append(row);
                           
                           var al = '';
                            al +=`<div class="alert alert-success alert-dismissible">`;
@@ -660,6 +664,8 @@
 
 							setTimeout(function() {
 						      $('#succes').html('');
+                              $('#replayNew').remove();
+						       getListKendala(item)   
 						    }, 3000); // 3000 milliseconds (3 seconds)
 			                   
 			            },
