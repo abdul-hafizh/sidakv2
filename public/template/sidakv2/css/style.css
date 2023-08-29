@@ -8,6 +8,18 @@
     box-shadow: none;
 }
 
+.text-capitalize{
+    text-transform: capitalize;
+}
+
+.loading-position{
+        margin: 89px 0px;
+    font-size: 14px;
+}
+
+.text-center{
+    text-align: center;
+}
 
 .modal-body {
     padding: 15px 15px 0px!important;
@@ -1007,8 +1019,18 @@
     box-shadow: 0px 2px 0px 0px #fff;
 }
 
+.padding-top-bottom-com{
+   padding: 4px 16px 10px; 
+}
+
+
 .btn-delete-chat{
         width: 8%!important;
+    padding: 0px 7px!important;
+    float: left;
+}
+
+.btn-group-forum{
     padding: 0px 7px!important;
     float: left;
 }

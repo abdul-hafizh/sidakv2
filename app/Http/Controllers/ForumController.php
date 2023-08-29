@@ -36,6 +36,29 @@ class ForumController extends Controller
      
     }
 
+    public function show($topic)
+    {
+        $title = 'Forum '.$topic;
+        $log = array(             
+            'menu'=>$title,
+            'slug'=>'forum-topik',
+            'url'=>'forum/'.$topic.''
+        );
+        RequestSystemLog::CreateLog($log);
+        $with =  ['title' => $title,'template'=>'template/'.$this->template];
+        if($_COOKIE['access'] =="admin")
+        {
+            return view('template/' . $this->template . '.forum.admin')->with($with);
+        }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){
+            return view('template/' . $this->template . '.forum.topik')->with($with);
+
+        }    
+
+     
+    }
+
+
+
  
    
 }

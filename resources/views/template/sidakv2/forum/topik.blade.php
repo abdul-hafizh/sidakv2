@@ -23,6 +23,12 @@
 				</button>
 			</div>
 
+			<div class="pull-left padding-9-0">
+                <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
+				 Tambah
+				</button> 
+		    </div>	
+
 				
 		</div> 
 
@@ -46,8 +52,8 @@
 						<tr>
 						
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
-							<th><div class="split-table"></div><span class="span-title">Kategori</span></th>
-							<th><div class="split-table"></div><span class="span-title"> Keterangan</span></th>
+							<th><div class="split-table"></div><span class="span-title">Topik</span></th>
+							<th><div class="split-table"></div><span class="span-title">Total Komentar</span></th>
 						
 							<th><div class="split-table"></div><span class="span-title"> Aksi </span></th>
 						</tr>
@@ -65,7 +71,7 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	    </div>
 	</div>
-    
+     @include('template/sidakv2/forum.topicAdd')  
 
 <script type="text/javascript">
 
@@ -104,7 +110,7 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 	         $.ajax({
-	            url: BASE_URL + `/api/forum/search?page=${page}&per_page=${itemsPerPage}`,
+	            url: BASE_URL + `/api/topic/search?page=${page}&per_page=${itemsPerPage}`,
 	            data:{'search':search},
 	            method: 'POST',
 	            success: function(response) {
@@ -133,8 +139,12 @@
 		row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
 		content.append(row);
 
+		var url = window.location.href; // Get the current URL
+        var segments = url.split('/');   // Split the URL by '/'
+        var topic = segments[4]; // Index 4 corresponds to the second segment
+
         $.ajax({
-            url: BASE_URL+ `/api/forum?page=${page}&per_page=${itemsPerPage}`,
+            url: BASE_URL+ `/api/topic/`+ topic +`?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
             	list = response.data;
@@ -165,21 +175,17 @@
 	             row +=`<tr>`;
 	             
 	               row +=`<td>${item.number}</td>`;
-	               row +=`<td>${item.category}</td>`;
-	               row +=`<td>${item.description}</td>`;
+	               row +=`<td>${item.name}</td>`;
+	               row +=`<td>${item.total_messsage}</td>`;
 	               
 	               row +=`<td>`; 
 	             
-
-	                row +=`<button id="Replay"  data-param_id="`+ index +`"  data-toggle="tooltip" data-placement="top" title="Replay Forum" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
+	                row +=`<button id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Komentar" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
 	            
 	               
 	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
 	                row +=`<div id="FormEdit-${item.id}"></div>`;
 	               
-
-
-	            
 
 	                row +=`</div>`;
 	                row +=`</td>`;
@@ -201,110 +207,33 @@
         
    		//list chat
          $( "#content" ).on( "click", "#Replay", (e) => {
-             
-            let index = e.currentTarget.dataset.param_id;
-            const item = list[index];
-            window.location.replace('/forum/'+ item.slug);  
+            let id = e.currentTarget.dataset.param_id;
+            let item = list.find(o => o.id === id)
+         
+            $.ajax({
+			    url:  BASE_URL +`/api/topic/list-replay/`+ item.id,
+			    method: 'GET',
+			    success: function(response) {
+			    	
+			        getlistComment(response,item);
+			        
+			    },
+			    error: function(error) {
+			        console.error('Error deleting items:', error);
+			    }
+			});
+         
             
             
         });
 
 
-        $( "#content" ).on( "click", "#Edit", (e) => {
-             
-            let index = e.currentTarget.dataset.param_id;
-            const item = list[index];
-          
-            
-            let row = ``;
-            row +=`<div class="modal-dialog">`;
-                row +=`<div class="modal-content">`;
-
-				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit forum</h4>`;
-				       row +=`</div>`;
-
-				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body">`;
-                               
-                                 
-				                 row +=`<div id="permasalahan-alert-`+ item.id +`" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Permasalahan :</label>`;
-				                  row +=`<input type="text" class="form-control" name="permasalahan" placeholder="Permasalahan" value="`+ item.permasalahan +`">
-				                  <span id="permasalahan-messages-`+ item.id +`"></span>`;
-				                  row +=`</div>`;
-
-				                  
-                                  
-					             row +=`<div id="messages-alert-`+ item.id +`" class="form-group has-feedback" >`;
-					              row +=`<label>Pesan :</label>`;
-					              row +=`<textarea class="form-control textarea-fixed" placeholder="Pesan forum" name="messages">`+ item.messages +`</textarea>`;
-					              row +=`<span id="messages-messages-`+ item.id +`"></span>`;
-					            row +=`</div>`;
-					
-
-
-
-                            row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-
-						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-success" >Update </button>`;
-						           row +=`<button id="kirim" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Kirim </button>`;
-						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
-     						</div>`;
-						    row +=`</div>`;
-
-
-					    row +=`</form>`;     
-                row +=`</div>`;
-            row +=`</div>`   
-
-            $('#FormEdit-'+ item.id).html(row); 
-                
-
-            $( ".modal-content" ).on( "click", "#update", (e) => {
-		          let id = e.currentTarget.dataset.param_id;
-	              var data = $("#FormSubmit-"+ id).serializeArray();
-	              $("#update").hide();
-	              $("#load-simpan").show();
-	              
-		          var form = {
-		              'permasalahan':data[0].value,
-		              'messages':data[1].value,
-		              'status':'draft',
-		          };
-
-		          SendData(form,id);
-		        
-	        }); 
-
-	        $( ".modal-content" ).on( "click", "#kirim", (e) => {
-		          let id = e.currentTarget.dataset.param_id;
-	              var data = $("#FormSubmit-"+ id).serializeArray();
-	              $("#kirim").hide();
-	              $("#load-simpan").show();
-	              
-		          var form = {
-		              'permasalahan':data[0].value,
-		              'messages':data[1].value,
-		              'status':'sent',
-		          };
-
-		          SendData(form,id);
-		        
-	        });   
-
-           
-
-            
-        });
+        
        
         
     }
 
-     function getlistforum(data,item){
+     function getlistComment(data,item){
        
        let row = ``;
             row +=`<div class="modal-dialog">`;
@@ -312,63 +241,74 @@
 
 				       row +=`<div class="modal-header pull-left full">`;
 				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Balas Pesan `+ item.username +`</h4>`;
+				         row +=`<h4 class="modal-title">Forum `+ item.category +` </h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form  id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body pull-left full">`;
+					        row +=`<div class="pull-left full modal-body ">`;
 
-					         row +=`<div id="succes"></div>`;
-                                
-                             row +=`<div id="slimScrollDiv" style="height: 200px; overflow: auto;background: #fafafa;">`;
-
-                            
-
-                             
-									
-                             row +=`<div id="replayNew" ></div>`;
-
- 							data.forEach(function(items, index) {
-                                  
-									row +=`<div id="list-${index}" class="form-group pull-left full border-list">`;		
-										row +=`<div class="col-sm-2">`;
-										row +=`<img class="chat-img" src="${items.photo}" alt="${items.username}" class="offline">`;	
-	                                           
-	                                    row +=`</div>`;	
-										row +=`<div class="margin-top-7 col-sm-9">`;
-                                               row +=`<input class="text-username" disabled type="text" value="${items.username}">`;
-													row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">${items.messages}</textarea>`;
-										row +=`</div>`;	
-										
-
-									row +=`</div>`;
-				           
-                            });
-
-                          
-                           
-                            row +=`</div>`; 
+					               row +=`<div id="succes"></div>`;    
+                                   row +=`<div  class="pull-left full form-group ">`;
+		                           row +=`<label >Topik : `+ item.name +`</label>`;
+		                           row +=`</div>`;	
 
 
+		                           row +=`<div id="slimScrollDiv" class="pull-left full form-group" style="height: 200px; overflow: auto;background: #fafafa;">`;
+                                      row +=`<div id="replayNew" ></div>`;
 
-                            row +=`<div class="form-group has-feedback pull-left full" >`;
-					              row +=`<label>Balas :</label>`;
-					              row +=`<textarea id="replay" class="form-control textarea-fixed-replay" placeholder="Balas Pesan" name="messages"></textarea>`;
-					              row +=`<span id="messages-messages"></span>`;
-					        row +=`</div>`;
+                                      data.forEach(function(items, index) {
+			                                  
+												row +=`<div id="list-${index}" class="form-group pull-left full border-list">`;		
+													row +=`<div class="col-sm-2">`;
+													row +=`<img class="chat-img" src="${items.photo}" alt="${items.username}" class="offline">`;	
+				                                           
+				                                    row +=`</div>`;	
+													row +=`<div class="margin-top-7 col-sm-8">`;
+			                                               row +=`<input class="text-username" disabled type="text" value="${items.username}">`;
+																row +=`<textarea id="comment-edit-`+ items.id +`" disabled class="form-control textarea-fixed-replay text-message resize-hide">${items.messages}</textarea>`;
+													row +=`</div>`;	
+                                                     
+                                                     row +=`<div id="divclose-`+ items.id +`" style="display:none;" class="col-sm-2 padding-none ">`;
 
+													 row +=`<button  id="Close-Edit" data-param_index="`+ index +`" data-param_id="`+ items.id +`"   type="button" class="pull-right btn btn-primary"><i class="fa fa-times" aria-hidden="true"></i></button>`;
+                                                    row +=`</div>`;	
 
+                                                 row +=`<div id="btn-update-`+ items.id +`" style="display:none;" class="pull-left full"  >`;
 
-                             
+                                                 row +=`<div class="pull-left col-sm-2"></div>`;
+                                              
+                                                 row +=`<div class="pull-left col-sm-8 padding-top-bottom-com">`;
+                                                    row +=`<button id="update-topic" data-param_id="`+ items.id +`" type="button" class="update-topic-`+ items.id +` pull-right btn btn-primary" >Update</button>`;
+                                                 row +=`</div>`;
+
+                                                row +=`</div>`;		
+
+													row +=`<div id="option-`+ items.id +`" class="margin-top-32 col-sm-2 btn-group btn-group-forum padding-none ">`;
+													 
+
+													   row +=`<button id="Edit" data-param_index="`+ index +`" data-param_id="`+ items.id +`"   type="button" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>`;
+			                                         row +=`<button id="deleted" data-param_index="`+ index +`" data-param_id="`+ items.id +`"  type="button" class="btn btn-primary"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
+			                                        row +=`</div>`;
+													
+
+												row +=`</div>`;
+							           
+			                            });
+
+                                   row +=`</div>`;
+
+                                      row +=`<div class="form-group has-feedback pull-left full" >`;
+						              row +=`<label>Komentar :</label>`;
+						              row +=`<textarea id="comment" class="form-control textarea-fixed-replay" placeholder="Komentar" name="messages"></textarea>`;
+						              row +=`<span id="messages-messages"></span>`;
+						              row +=`</div>`;
                          
-
-                             row +=`</div>`;        
-                                  
-                             
+                            row +=`</div>`;
+    
                             row +=`<div class="pull-left full modal-footer">`;
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
-						          row +=`<button id="balas" disabled data-param_id="`+ item.id +`" type="button" class="btn btn-default">Kirim</button>`;
+						          row +=`<button id="kirim" disabled data-param_id="`+ item.id +`" type="button" class="btn btn-default">Kirim</button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button></div>`;
 						    row +=`</div>`;
 
@@ -378,28 +318,125 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ item.id).html(row); 
-             
-            $('#replay').on('input', function() {
-              $('#balas').removeClass('btn-default').addClass('btn-primary');	
-		      var charCount = $(this).val().length;
+              
+             $('#comment').on('input', function() {
+                 $('#kirim').removeClass('btn-default').addClass('btn-primary');	
+		         var charCount = $(this).val().length;
 		         if(charCount >0)
 		         {
-		         	$('#balas').prop("disabled", false);
-		         	$('#balas').removeClass('btn-default').addClass('btn-primary');	
+		         	$('#kirim').prop("disabled", false);
+		         	$('#kirim').removeClass('btn-default').addClass('btn-primary');	
 		         }else{
-		         	$('#balas').prop("disabled", true);
-		         	$('#balas').removeClass('btn-primary').addClass('btn-default');
+		         	$('#kirim').prop("disabled", true);
+		         	$('#kirim').removeClass('btn-primary').addClass('btn-default');
 		         } 
 		        
 		    });
 
-            
-	        $( ".modal-content" ).on( "click", "#deleted", (e) => {
+
+
+            $( ".modal-content" ).on( "click", "#Edit", (e) => {
+		          let id = e.currentTarget.dataset.param_id; 
+		          let item = data.find(o => o.id === id)
+
+		          $.ajax({
+		            url: BASE_URL+ `/api/topic/comment/`+ id +``,
+		            method: 'GET',
+		            success: function(response) {
+
+		                 $('#comment-edit-'+ item.id).val(response.messages).prop("disabled", false).removeClass('text-message');
+		                 $('.update-topic-'+ item.id).prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
+				          $('#divclose-'+ item.id).show();
+		                  $('#btn-update-'+ item.id).show();
+				          $('#option-'+ item.id).hide();
+		            },
+		            error: function(error) {
+		                console.error('Error fetching data:', error);
+		            }
+		        });
+
+                   $('#comment-edit-'+ item.id).on('input', function() {
+		                $('.update-topic-'+ item.id).removeClass('btn-default').addClass('btn-primary');	
+				         var charCount = $(this).val().length;
+				         if(charCount >0)
+				         {
+				         	$('.update-topic-'+ item.id).prop("disabled", false);
+				         	$('.update-topic-'+ item.id).removeClass('btn-default').addClass('btn-primary');	
+				         }else{
+				         	$('.update-topic-'+ item.id).prop("disabled", true);
+				         	$('.update-topic-'+ item.id).removeClass('btn-primary').addClass('btn-default');
+				         } 
+				        
+				    });
+		        
+		
+              });
+
+             $( ".modal-content" ).on( "click", "#Close-Edit", (e) => {
+		          let id = e.currentTarget.dataset.param_id; 
+		          let item = data.find(o => o.id === id)
+
+		        
+		          $('#comment-edit-'+ item.id).val(item.messages).prop("disabled", true).addClass('text-message');
+		          $('#divclose-'+ item.id).hide();
+		          $('#btn-update-'+ item.id).hide();
+		          $('#option-'+ item.id).show();
+		         
+  
+              });
+
+            $( ".modal-content" ).on( "click", "#update-topic", (e) => {
+		           let id = e.currentTarget.dataset.param_id; 
+		           let item = data.find(o => o.id === id)
+		          
+                   var comment = $('#comment-edit-'+ item.id).val();
+		           var form = {
+			        	'comment':comment,
+			        	'topic_id':item.id
+			        };
+
+		          $.ajax({
+				    url:  BASE_URL +`/api/topic/update-replay/`+ id,
+				    method: 'PUT',
+				    data:form,
+				    success: function(response) {
+				        
+				           
+
+		                    var al = '';
+		                    al +=`<div class="alert alert-success alert-dismissible">`;
+								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
+								al +=`<i class="icon fa fa-check"></i>`;
+								al +=`Sukses update topic`;
+							al +=`</div>`;
+							$('#succes').append(al);
+
+							       $('#comment-edit-'+ item.id).val(comment).prop("disabled", true).addClass('text-message');
+						          $('#divclose-'+ item.id).hide();
+						          $('#btn-update-'+ item.id).hide();
+						          $('#option-'+ item.id).show();
+
+					
+						    setTimeout(function() {
+						      $('#succes').html('');
+						    
+						    }, 3000); // 3000 milliseconds (3 seconds)	
+
+				    },
+				    error: function(error) {
+				        console.error('Error deleting items:', error);
+				    }
+				});
+		          
+		
+              }); 
+
+            $( ".modal-content" ).on( "click", "#deleted", (e) => {
 		          let id = e.currentTarget.dataset.param_id; 
 		          let index = e.currentTarget.dataset.param_index; 
 
                 $.ajax({
-				    url:  BASE_URL +`/api/forum/delete-replay/`+ id,
+				    url:  BASE_URL +`/api/topic/delete-replay/`+ id,
 				    method: 'DELETE',
 				    success: function(response) {
 				        
@@ -410,12 +447,14 @@
 		                    al +=`<div class="alert alert-success alert-dismissible">`;
 								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
 								al +=`<i class="icon fa fa-check"></i>`;
-								al +=`Sukses menghapus forum`;
+								al +=`Sukses menghapus topic`;
 							al +=`</div>`;
 							$('#succes').append(al);
 
+					
 						    setTimeout(function() {
 						      $('#succes').html('');
+						     
 						    }, 3000); // 3000 milliseconds (3 seconds)	
 
 				    },
@@ -429,9 +468,10 @@
 		         		
 
 
-             });
-             
-            $( ".modal-content" ).on( "click", "#balas", (e) => {
+             }); 
+
+
+                $( ".modal-content" ).on( "click", "#kirim", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
 		          const item = list.find(o => o.id === id);
 
@@ -439,18 +479,15 @@
 	             
 	              
 			        var form = {
-			        	'messages':data[0].value,
-			        	'forum_id':item.id,
-			        	'permasalahan':item.permasalahan,
-			        	'sender':item.username,
-			        	'status':'sent',
+			        	'comment':data[0].value,
+			        	'topic_id':item.id
 			        };
 
 
 
 					$.ajax({
 			            type:"POST",
-			            url: BASE_URL+'/api/forum/replay',
+			            url: BASE_URL+'/api/topic/comment',
 			            data:form,
 			            cache: false,
 			            dataType: "json",
@@ -458,7 +495,7 @@
 
 
 
-			               $('#replay').val('');
+			               $('#comment').val('');
 
                             var row = '';
                             row +=`<div class="form-group pull-left full border-list">`;
@@ -477,12 +514,12 @@
                            al +=`<div class="alert alert-success alert-dismissible">`;
 								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
 								al +=`<i class="icon fa fa-check"></i>`;
-								al +=`Sukses mengirim forum`;
+								al +=`Sukses mengirim kendala`;
 							al +=`</div>`;
 							$('#succes').append(al);
 
-							$('#balas').prop("disabled", true);
-		         	        $('#balas').removeClass('btn-primary').addClass('btn-default');
+							$('#kirim').prop("disabled", true);
+		         	        $('#kirim').removeClass('btn-primary').addClass('btn-default');
 
 							setTimeout(function() {
 						      $('#succes').html('');
@@ -499,8 +536,7 @@
 			            }
 			          });
                 
-		    });      
-
+		    });    
 
 
 
@@ -515,7 +551,7 @@
 	      }  
     	 $.ajax({
 			            type:"PUT",
-			            url: BASE_URL+'/api/forum/'+ id,
+			            url: BASE_URL+'/api/topic/'+ id,
 			            data:form,
 			            cache: false,
 			            dataType: "json",
@@ -529,7 +565,7 @@
 			                    }).then((result) => {
 			                        if (result.isConfirmed) {
 			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/forum');
+			                            window.location.replace('/topic');
 			                        }
 			                    });
 
