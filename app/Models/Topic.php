@@ -7,11 +7,11 @@ use App\Traits\Uuids;
 
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Forum extends Model
+class Topic extends Model
 {
      // use SoftDeletes;
     use Uuids;
-    public $table = 'forum';
+    public $table = 'topic';
     
 
    // protected $dates = ['deleted_at'];
@@ -19,9 +19,9 @@ class Forum extends Model
 
     public $fillable = [
      
-        'category',
+        'name',
         'slug',
-        'description',
+        'forum_id',
         'status',
         'created_by'
        

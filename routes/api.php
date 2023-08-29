@@ -116,12 +116,20 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('forum', [ForumApiController::class, 'index']);
     Route::post('forum', [ForumApiController::class, 'store']);
-    Route::post('forum/search', [ForumApiController::class, 'search']);
+    Route::post('forum/search', [ForumApiController::class, 'searchForum']);
     Route::put('forum/{id}', [ForumApiController::class, 'update']);
     Route::post('forum/selected', [ForumApiController::class, 'deleteSelected']);
     Route::delete('forum/{id}', [ForumApiController::class, 'delete']);
-
     
+    Route::get('topic/{id}', [ForumApiController::class, 'show']);
+    Route::get('topic/comment/{id}', [ForumApiController::class, 'commentDetail']);
+    Route::post('topic/search', [ForumApiController::class, 'searchTopic']);
+    Route::post('topic/topic', [ForumApiController::class, 'saveTopic']); 
+    Route::get('topic/list-replay/{id}', [ForumApiController::class, 'listreplay']);
+    Route::post('topic/comment', [ForumApiController::class, 'saveComment']); 
+    Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
+    Route::delete('topic/delete-replay/{id}', [ForumApiController::class, 'deletereplay']);
+
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);

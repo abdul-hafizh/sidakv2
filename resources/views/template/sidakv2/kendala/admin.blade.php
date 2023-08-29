@@ -418,21 +418,32 @@
 			            dataType: "json",
 			            success: (respons) =>{
 			                   
-                            
+                           $('.border-list').remove(); 
 			               $('#replay').val('');
 
-                            var row = '';
-                            row +=`<div class="form-group pull-left full border-list">`;
-			            	row +=`<div class="col-sm-2">`;
-							row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
+			               
+
+       //                      var row = '';
+       //                      row +=`<div class="form-group pull-left full border-list">`;
+			    //         	row +=`<div class="col-sm-2">`;
+							// row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
 	                                           
-                            row +=`</div>`;	
-							row +=`<div class="margin-top-7 col-sm-10">`;
-                                   row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
-										row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
-							row +=`</div>`;		
-			                row +=`</div>`;	   
-                          $('#replayNew').append(row);
+       //                      row +=`</div>`;	
+							// row +=`<div class="margin-top-7 col-sm-10">`;
+       //                             row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
+							// 			row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
+							// row +=`</div>`;
+
+							// row +=`<div  class="margin-top-32 btn-delete-chat padding-none ">`;
+       //                       row +=`<button id="deleted" data-param_index="`+ data +`" data-param_id="`+ respons.data.id +`" type="button" class="btn btn-danger pull-right"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
+       //                      row +=`</div>`;
+
+			    //             row +=`</div>`;	   
+       //                    $('#replayNew').append(row);
+
+                         var row = '';
+                              row +=`<div class="form-group pull-left full text-center loading-position"> Loading ... </div>`;  
+                               $('#replayNew').append(row);
                           
                           var al = '';
                            al +=`<div class="alert alert-success alert-dismissible">`;
@@ -442,9 +453,11 @@
 							al +=`</div>`;
 							$('#succes').append(al);
 
-
+                          
 							setTimeout(function() {
 						      $('#succes').html('');
+                               $('#replayNew').remove();
+                                 getListKendala(item) ;
 						    }, 3000); // 3000 milliseconds (3 seconds)
 			                   
 			            },
@@ -480,17 +493,7 @@
             let index = e.currentTarget.dataset.param_id;
             const item = list[index];
 
-            $.ajax({
-			    url:  BASE_URL +`/api/kendala/list-replay/`+ item.id,
-			    method: 'GET',
-			    success: function(response) {
-			        getlistKendala(response,item);
-			        
-			    },
-			    error: function(error) {
-			        console.error('Error deleting items:', error);
-			    }
-			});
+            getListKendala(item);
             
         });
     
@@ -530,7 +533,23 @@
         
     }
 
-    function getlistKendala(data,item){
+    function getListKendala(item){
+
+    	 $.ajax({
+			    url:  BASE_URL +`/api/kendala/list-replay/`+ item.id,
+			    method: 'GET',
+			    success: function(response) {
+			        viewlistKendala(response,item);
+			        
+			    },
+			    error: function(error) {
+			        console.error('Error deleting items:', error);
+			    }
+			});
+
+    }
+
+    function viewlistKendala(data,item){
        
        let row = ``;
             row +=`<div class="modal-dialog">`;
@@ -538,18 +557,22 @@
 
 				       row +=`<div class="modal-header pull-left full">`;
 				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Balas Pesan `+ item.username +`</h4>`;
+				         row +=`<h4 class="modal-title">Balas Pesan</h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form  id="FormSubmit-`+ item.id +`">`;
 					        row +=`<div class="modal-body pull-left full">`;
 
 					         row +=`<div id="succes"></div>`;
-                                
-                             row +=`<div id="slimScrollDiv" style="height: 200px; overflow: auto;background: #fafafa;">`;
+                             row +=`<div class="form-group pull-left full">`;
+                             row +=`<label>Kendala : `+ item.username +`</label>`;
+
+                             row +=`</div>`;
+
+                             row +=`<div id="slimScrollDiv" class="pull-left full" style="height: 200px; overflow: auto;background: #fafafa;">`;
 
                             
-
+                  
                              
 									
                              row +=`<div id="replayNew" ></div>`;
@@ -649,8 +672,14 @@
 							al +=`</div>`;
 							$('#succes').append(al);
 
+							    // var row = '';
+           //                    row +=`<div class="form-group pull-left full text-center"> Loading ... </div>`;  
+           //                     $('#replayNew').append(row);
+                             
 						    setTimeout(function() {
 						      $('#succes').html('');
+						      //$('#replayNew').remove();
+						      //getListKendala(item)
 						    }, 3000); // 3000 milliseconds (3 seconds)	
 
 				    },
@@ -690,23 +719,29 @@
 			            cache: false,
 			            dataType: "json",
 			            success: (respons) =>{
+                           
 
-
-
+                           $('.border-list').remove();
 			               $('#replay').val('');
 
-                            var row = '';
-                            row +=`<div class="form-group pull-left full border-list">`;
-			            	row +=`<div class="col-sm-2">`;
-							row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
+       //                      var row = '';
+       //                      row +=`<div class="form-group pull-left full border-list">`;
+			    //         	row +=`<div class="col-sm-2">`;
+							// row +=`<img class="chat-img" src="`+respons.data.photo+`" alt="`+respons.data.username+`" class="offline">`;	
 	                                           
-                            row +=`</div>`;	
-							row +=`<div class="margin-top-7 col-sm-10">`;
-                                   row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
-										row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
-							row +=`</div>`;		
-			                row +=`</div>`;	   
-                          $('#replayNew').append(row);
+       //                      row +=`</div>`;	
+							// row +=`<div class="margin-top-7 col-sm-10">`;
+       //                             row +=`<input class="text-username" disabled type="text" value="`+respons.data.username+`">`;
+							// 			row +=`<textarea disabled class="form-control textarea-fixed-replay text-message resize-hide">`+respons.data.messages+`</textarea>`;
+							// row +=`</div>`;		
+			    //             row +=`</div>`;	   
+       //                    $('#replayNew').append(row);
+
+
+                              var row = '';
+                              row +=`<div class="form-group pull-left full text-center loading-position"> Loading ... </div>`;  
+                               $('#replayNew').append(row);
+
                           
                           var al = '';
                            al +=`<div class="alert alert-success alert-dismissible">`;
@@ -718,11 +753,13 @@
 
 							$('#balas').prop("disabled", true);
 		         	        $('#balas').removeClass('btn-primary').addClass('btn-default');
-
+                            
 							setTimeout(function() {
 						      $('#succes').html('');
+						      $('#replayNew').remove();
+						       getListKendala(item)   
 						    }, 3000); // 3000 milliseconds (3 seconds)
-			                   
+			                
 			            },
 			            error: (respons)=>{
 			                errors = respons.responseJSON;

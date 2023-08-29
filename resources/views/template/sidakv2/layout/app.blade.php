@@ -19,7 +19,7 @@
     <script type="text/javascript">
         const BASE_URL = window.location.origin;
     </script>
-    <link rel="icon" type="image/x-icon" href="{{ $template.'/img/fave-icon.png' }}">
+    <link rel="icon" type="image/x-icon" href="{{ config('app.url').$template.'/img/fave-icon.png' }}">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/bootstrap.min.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/font-awesome.min.css' }}">
@@ -57,7 +57,7 @@
                     <span class="icon-bar"></span>
                 </a>
 
-                <h3 class="pull-left padding-10-0 mgn-none">{{ $title  }} </h3>
+                <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
                 <div class="navbar-custom-menu">
                     <div class="mt-10 mc-15">
 

@@ -31,7 +31,8 @@ use App\Http\Controllers\ForumController;
         Route::get('/perencanaan/edit/{id}', [PerencanaanController::class,'edit']); 
         Route::get('/pagutarget', [PaguTargetController::class,'index']);
         Route::get('/kendala', [KendalaController::class,'index']);
-        Route::get('/forum', [ForumController::class,'index']);              
+        Route::get('/forum', [ForumController::class,'index']);
+        Route::get('/forum/{topic}', [ForumController::class,'show']);             
     });
 
     Route::middleware(['auth','admin'])->group(function () {           

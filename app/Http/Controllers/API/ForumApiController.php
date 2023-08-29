@@ -4,11 +4,14 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Forum;
+use App\Models\Topic;
+use App\Models\TopicDetail;
 use App\Models\Notification;
 use App\Helpers\GeneralPaginate;
 use App\Http\Request\RequestForum;
 use App\Http\Request\RequestNotification;
 use App\Http\Request\Validation\ValidationForum;
+use App\Http\Request\Validation\ValidationTopic;
 use DB;
 use Auth;
 
@@ -47,11 +50,98 @@ class ForumApiController extends Controller
     
 
 
-   
+    public function show($id,Request $request)
+    {
+       
+        $forum = Forum::where('slug',$id)->first();
+        if($forum)
+        {
+
+            $query = Topic::where('forum_id',$forum->id)->orderBy('created_at', 'DESC');
+        
+            if($request->per_page !='all')
+            {
+                $data = $query->paginate($request->per_page);
+            }else{   
+                $data = $query->get(); 
+            }   
+            
+            $result = RequestForum::GetDataTopic($data,$request->per_page,$request);
+            return response()->json($result);
+
+        }    
+       
+
+
+    }
+
+    public function commentDetail($id,Request $request)
+    {
+       
+            $data = TopicDetail::where('id',$id)->first();
+            if($data)
+            {
+                $result['messages'] = $data->messages;
+            }else{
+                $result['messages'] = '';  
+            }   
+            return response()->json($result);
+
+          
+       
+
+
+    }
+
+
+    public function saveTopic(Request $request){
+        $validation = ValidationTopic::validation($request);
+        if($validation)
+        {
+          return response()->json($validation,400);  
+        }else{
+
+           $insert = RequestForum::fieldsDataTopic($request);  
+            //create menu
+           $saveData = Topic::create($insert);
+           $messages = RequestForum::fieldsDataTopicDetail($saveData->id,$request);
+           TopicDetail::create($messages);
+            //result
+            return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);
+        }    
+
+    }
+
+
+    public function listreplay($id){
+       $data = TopicDetail::where('topic_id',$id)->orderBy('created_at','DESC')->get();
+       $_res = RequestForum::ReplayAll($data);
+       return response()->json($_res); 
+
+    }
+
+
+    public function saveComment(Request $request){
+        $validation = ValidationTopic::validationComment($request);
+        if($validation)
+        {
+          return response()->json($validation,400);  
+        }else{
+
+           $insert = RequestForum::fieldsDataTopicDetail($request->topic_id,$request);  
+            //create menu
+           $saveData = TopicDetail::create($insert);
+           $last = RequestForum::MessagesLast($saveData->id,$request->topic_id);
+         
+            //result
+           return response()->json(['status'=>true,'data'=>$last,'message'=>'Insert data sucessfully']);
+        }    
+
+    }
 
     
 
-    public function search(Request $request){
+    public function searchForum(Request $request){
         $search = $request->search;
         $_res = array();
         $column_search  = array('category');
@@ -81,7 +171,34 @@ class ForumApiController extends Controller
     }
 
 
-   
+    public function searchTopic(Request $request){
+        $search = $request->search;
+        $_res = array();
+        $column_search  = array('name');
+
+        $i = 0;
+        $query  = Topic::orderBy('id','DESC');
+        foreach ($column_search as $item)
+        {
+            if ($search) 
+            {                
+                if ($i === 0) {   
+                   $query->where($item,'LIKE','%'.$search.'%');
+                } else {
+                   $query->orWhere($item,'LIKE','%'.$search.'%');
+                }   
+            }
+            $i++;
+        }
+       
+        $Data = $query->paginate($this->perPage);
+        // $description = $search;
+        $_res = RequestForum::GetDataAll($Data,$this->perPage,$request);
+               
+    
+        return response()->json($_res);
+
+    }
 
 
        
@@ -120,6 +237,43 @@ class ForumApiController extends Controller
             
           
         }   
+
+    }
+
+
+    public function updatereplay($id,Request $request){
+     
+        $validation = ValidationTopic::validationComment($request);
+        if($validation)
+        {
+          return response()->json($validation,400);  
+        }else{
+            
+               $update = array('messages'=>$request->comment);
+                //update account
+               $UpdateData = TopicDetail::where('id',$id)->update($update);
+                //result
+               return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+            
+          
+        }   
+
+    }
+
+    public function deletereplay($id){
+        $messages['messages'] = false;
+        $_res = TopicDetail::find($id);
+          
+        if(empty($_res)){
+            return response()->json(['messages' => false]);
+        }
+
+        $results = $_res->delete();
+        if($results){
+            $messages['messages'] = true;
+        }
+        return response()->json($messages);
+
 
     }
 
