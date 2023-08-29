@@ -124,7 +124,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('topic/{id}', [ForumApiController::class, 'show']);
     Route::get('topic/comment/{id}', [ForumApiController::class, 'commentDetail']);
     Route::post('topic/search', [ForumApiController::class, 'searchTopic']);
-    Route::post('topic/topic', [ForumApiController::class, 'saveTopic']); 
+    Route::post('topic', [ForumApiController::class, 'saveTopic']); 
     Route::get('topic/list-replay/{id}', [ForumApiController::class, 'listreplay']);
     Route::post('topic/comment', [ForumApiController::class, 'saveComment']); 
     Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
