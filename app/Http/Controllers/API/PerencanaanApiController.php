@@ -43,6 +43,13 @@ class PerencanaanApiController extends Controller
         return response()->json($result);
         
     }
+
+    public function edit($id)
+    { 
+        $result = Perencanaan::where('id',$id)->first();
+
+        return response()->json($result);
+    }
     
     public function search(Request $request)
     {
@@ -94,20 +101,22 @@ class PerencanaanApiController extends Controller
         } 
     }
 
-    public function deleteSelected(Request $request){
-        $messages['messages'] = false;
+    public function update($id, Request $request){
+     
+        $validation = ValidationPerencanaan::validation($request);
 
-        foreach($request->data as $key)
+        if($validation)
         {
-            $results = Perencanaan::where('id',(int)$key)->delete();
-        }
+        
+            return response()->json($validation, 400);  
+            
+        } else {            
 
-        if($results){
-            $messages['messages'] = true;
-        }
-
-        return response()->json($messages);
-    
+            $update = RequestPerencanaan::fieldsData($request);            
+            $UpdateData = Perencanaan::where('id',$id)->update($update);
+            
+            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);            
+        }   
     }
 
     public function approve($id){
@@ -130,6 +139,22 @@ class PerencanaanApiController extends Controller
         return response()->json($messages);
 
     }
+
+    public function deleteSelected(Request $request){
+        $messages['messages'] = false;
+
+        foreach($request->data as $key)
+        {
+            $results = Perencanaan::where('id',(int)$key)->delete();
+        }
+
+        if($results){
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    
+    }    
 
     public function delete($id){
 

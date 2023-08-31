@@ -19,9 +19,9 @@ class PerencanaanController extends Controller
     {      
         $title = 'Perencanaan Tahun Anggaran';
         $log = array(             
-            'menu'=>$title,
-            'slug'=>'perencanaan',
-            'url'=>'perencanaan'
+            'menu' => $title,
+            'slug' => 'perencanaan',
+            'url' => 'perencanaan'
         );
         RequestSystemLog::CreateLog($log);  
 
@@ -29,39 +29,39 @@ class PerencanaanController extends Controller
         ->with([
             'title' => $title,
             'access' => RequestAuth::access(),
-            'template'=>'template/'.$this->template ]);
+            'template' => 'template/'.$this->template ]);
     }
 
     public function add(Request $request)
     {
-        $title = 'Tambah Perencanaan Tahun Anggaran';
+        $title = 'Tambah Perencanaan Anggaran';
         $log = array(             
-            'menu'=>$title,
-            'slug'=>'perencanaan',
-            'url'=>'perencanaan'
+            'menu' => $title,
+            'slug' => 'perencanaan',
+            'url' =>' perencanaan'
         );
         RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.add')
         ->with([
             'title' => $title,
-            'template'=>'template/'.$this->template ]);
+            'template' => 'template/'.$this->template ]);
     }
 
     public function edit(Request $request)
     {
-        $title = 'Edit Perencanaan Tahun Anggaran';
+        $title = 'Edit Perencanaan Anggaran';
         $log = array(             
-            'menu'=>$title,
-            'slug'=>'perencanaan',
-            'url'=>'perencanaan'
+            'menu' => $title,
+            'slug' => 'perencanaan',
+            'url' => 'perencanaan'
         );
         RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.edit')
         ->with([
-            'title' =>$title,
-            'template'=>'template/'.$this->template ]);
+            'title' => $title,
+            'template' => 'template/'.$this->template ]);
     }
 
 }

@@ -211,9 +211,9 @@
                          <span id="nip-pejabat-messages"></span>
                     </div> 
                     <div class="form-group col-sm-12">
-                         <div class="group-btn-rencana">
-                              <button id="simpan" type="button" class="btn btn-primary pull-right"><i class="fa fa-cloud-upload"></i> Kirim</button>
-                              <button id="draft" type="button" class="btn btn-warning pull-left"><i class="fa fa-cloud-upload"></i> Draft</button>
+                         <div class="btn-group pull-right">
+                              <button id="kirim" type="button" class="btn btn-primary pull-right"><i class="fa fa-cloud-upload"></i> Kirim</button>
+                              <button id="simpan" type="button" class="btn btn-warning pull-left"><i class="fa fa-cloud-upload"></i> Simpan</button>
                          </div>
                     </div>
                </div>
@@ -226,8 +226,10 @@
      $(document).ready(function() {
 
           var periode =[];
-          var pagu_apbn = 0;
-          
+          var pagu_apbn = 0;             
+          var url = window.location.href; 
+          var segments = url.split('/');  
+
           $('#pagu_apbn').val('Rp. '+pagu_apbn+'');
 
           const user_sidebar  = JSON.parse(localStorage.getItem('user_sidebar'));
@@ -247,13 +249,14 @@
 
           $(".masalah_nilai_inp").on("input", function() {
                calculateMasalah();
-          });
+          });          
 
           $.ajax({
                type: 'GET',
-               url: BASE_URL +'/api/perencanaan/edit/',
+               url: BASE_URL +'/api/perencanaan/edit/' + segments[5],
                success: function(response) {
-                    list = response;                    
+                    list = response;      
+                    getdataid(list);              
                },
                error: function( error) { }
           });
@@ -285,11 +288,11 @@
                });     
           } 
 
-          $("#simpan").click( () => {
+          $("#kirim").click( () => {
 
                var data = $("#FormSubmit").serializeArray();
 
-               if (data.length == 21) {
+               if (data.length == 20) {
 
                     var form = {
                          "pengawas_analisa_target":data[0].value,
@@ -322,11 +325,11 @@
                
           });
 
-          $("#draft").click( () => {
+          $("#simpan").click( () => {
 
                var data = $("#FormSubmit").serializeArray();       
                
-               if (data.length == 21) {
+               if (data.length == 20) {
 
                     var form = {
                          "pengawas_analisa_target":data[0].value,
@@ -361,16 +364,24 @@
 
           function SendingData(form) {
 
+               var pesan = '';
+
+               if (form.type == 'kirim') {
+                    pesan = 'Terkirim ke Pusat.';
+               } else {
+                    pesan = 'Berhasil Diupdate.';
+               }
+
                $.ajax({
-                    type:"POST",
-                    url: BASE_URL+'/api/perencanaan',
+                    type:"PUT",
+                    url: BASE_URL+'/api/perencanaan/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
                     success: (respons) =>{
                          Swal.fire({
                               title: 'Sukses!',
-                              text: 'Berhasil Disimpan',
+                              text: pesan,
                               icon: 'success',
                               confirmButtonText: 'OK'                        
                          }).then((result) => {
@@ -614,6 +625,29 @@
           });
 
           $("#total_masalah").text('Rp. '+total_masalah);
+     }
+
+     function getdataid(data)
+     {
+          $("#pengawas_analisa_target").val(data.pengawas_analisa_target);
+          $("#pengawas_analisa_pagu").val(data.pengawas_analisa_pagu);
+          $("#pengawas_inspeksi_target").val(data.pengawas_inspeksi_target);
+          $("#pengawas_inspeksi_pagu").val(data.pengawas_inspeksi_pagu);
+          $("#pengawas_evaluasi_target").val(data.pengawas_evaluasi_target);
+          $("#pengawas_evaluasi_pagu").val(data.pengawas_evaluasi_pagu);
+          $("#bimtek_perizinan_target").val(data.bimtek_perizinan_target);
+          $("#bimtek_perizinan_pagu").val(data.bimtek_perizinan_pagu);
+          $("#bimtek_pengawasan_target").val(data.bimtek_pengawasan_target);
+          $("#penyelesaian_identifikasi_target").val(data.penyelesaian_identifikasi_target);
+          $("#penyelesaian_identifikasi_pagu").val(data.penyelesaian_identifikasi_pagu);
+          $("#penyelesaian_realisasi_target").val(data.penyelesaian_realisasi_target);
+          $("#penyelesaian_realisasi_pagu").val(data.penyelesaian_realisasi_pagu);
+          $("#penyelesaian_evaluasi_target").val(data.penyelesaian_evaluasi_target);
+          $("#penyelesaian_evaluasi_pagu").val(data.penyelesaian_evaluasi_pagu);
+          $("#nama_pejabat").val(data.nama_pejabat);
+          $("#nip_pejabat").val(data.nip_pejabat);
+          $("#tgl_tandatangan").val(data.tgl_tandatangan);
+          $("#lokasi").val(data.lokasi);
      }
 
 </script>
