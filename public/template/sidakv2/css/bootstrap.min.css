@@ -4293,10 +4293,7 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
     padding: 10px 15px
 }
 
-.nav>li>a:focus,.nav>li>a:hover {
-    text-decoration: none;
-    background-color: #eee
-}
+
 
 .nav>li.disabled>a {
     color: #777
@@ -4310,8 +4307,8 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 }
 
 .nav .open>a,.nav .open>a:focus,.nav .open>a:hover {
-    background-color: #eee;
-    border-color: #337ab7
+   /* background-color: #eee;
+    border-color: #337ab7*/
 }
 
 .nav .nav-divider {
@@ -4811,8 +4808,8 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 
 .navbar-nav>li>.dropdown-menu {
     margin-top: 0;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0
+  /*  border-top-left-radius: 0;
+    border-top-right-radius: 0*/
 }
 
 .navbar-fixed-bottom .navbar-nav>li>.dropdown-menu {

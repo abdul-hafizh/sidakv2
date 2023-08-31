@@ -77,7 +77,7 @@ class ProvinceApiController extends Controller
 
         $Data = $query->paginate($this->perPage);
         $description = $search;
-        $_res = RequestProvinces::GetDataAll($Data, $this->perPage, $request, $description);
+        $_res = RequestProvinces::GetDataAll($Data, $this->perPage, $request);
 
 
         return response()->json($_res);

@@ -14,7 +14,7 @@ use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\KendalaController;
 use App\Http\Controllers\ForumController;
-
+use App\Http\Controllers\NotificationController;
    
     Route::get('/', function () {
         return redirect('login');
@@ -32,7 +32,8 @@ use App\Http\Controllers\ForumController;
         Route::get('/pagutarget', [PaguTargetController::class,'index']);
         Route::get('/kendala', [KendalaController::class,'index']);
         Route::get('/forum', [ForumController::class,'index']);
-        Route::get('/forum/{topic}', [ForumController::class,'show']);             
+        Route::get('/forum/{topic}', [ForumController::class,'show']); 
+        Route::get('/notification', [NotificationController::class,'index']);            
     });
 
     Route::middleware(['auth','admin'])->group(function () {           

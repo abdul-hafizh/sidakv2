@@ -132,6 +132,12 @@ class ForumApiController extends Controller
             //create menu
            $saveData = TopicDetail::create($insert);
            $last = RequestForum::MessagesLast($saveData->id,$request->topic_id);
+
+           //send notif
+                $type = 'Topic';
+                $messages = Auth::User()->username.' mengomentari tautan anda';
+                $notif = RequestNotification::fieldsData($type,$messages);
+                Notification::create($notif);
          
             //result
            return response()->json(['status'=>true,'data'=>$last,'message'=>'Insert data sucessfully']);

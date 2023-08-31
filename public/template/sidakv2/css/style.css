@@ -39,7 +39,14 @@
     max-width: 100%;
 }
 
+.navbar-custom-menu .navbar-nav>li>a {
+     padding: 6px 12px!important; 
 
+    
+}
+.label-black {
+    background-color: #000000 !important;
+}
 .mc-10{
     margin-left: 10px;
     margin-right: 10px;
