@@ -31,7 +31,7 @@ use App\Http\Controllers\API\DaerahApiController;
 use App\Http\Controllers\API\AuditLogApiController;
 use App\Http\Controllers\API\KendalaApiController;
 use App\Http\Controllers\API\ForumApiController;
-
+use App\Http\Controllers\API\NotificationApiController;
 
 
 
@@ -129,6 +129,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('topic/comment', [ForumApiController::class, 'saveComment']); 
     Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
     Route::delete('topic/delete-replay/{id}', [ForumApiController::class, 'deletereplay']);
+    
+     Route::get('notification', [NotificationApiController::class, 'index']);
+    Route::get('notif', [NotificationApiController::class, 'show']);
+    Route::get('notif-update', [NotificationApiController::class, 'update']);
 
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);

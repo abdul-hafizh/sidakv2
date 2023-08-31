@@ -39,7 +39,7 @@
     
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
  
-    <body class="hold-transition"> 
+    <body class="hold-transition "> 
 
     @if (!Auth::guest())
     <div class="wrapper">
@@ -58,23 +58,45 @@
                 </a>
 
                 <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
-                <div class="navbar-custom-menu">
-                    <div class="mt-10 mc-15">
+                <div class="navbar-custom-menu mt-10 mc-15">
+                   
 
-                        <button type="button" class="btn btn-default margin-0-12-0-0 btn-flat border-radius-10">
+                        
+                   
+                      <ul class="nav navbar-nav"> 
+                        <li class="dropdown messages-menu"> 
+                        <a id="update-notif"  data-toggle="dropdown" class="btn btn-danger margin-0-12-0-0  border-radius-10" aria-expanded="false">
                             <i aria-hidden="true" class="fa fa-bell"></i>
-                            <span class="label label-warning">1</span>
-                        </button>
-
-                        <button type="button" class="btn btn-primary margin-0-12-0-0 btn-flat border-radius-10">
-                            <i aria-hidden="true" class="fa fa-user"></i> Profile
-                        </button>
-
-
-                        <a href="{{ url('logout') }}" class="btn btn-danger btn-flat border-radius-10">
-                            <i aria-hidden="true" class="fa fa-sign-out"></i> Logout
+                            <span id="total-notif" class="label label-black"></span>
                         </a>
-                    </div>
+                        <ul class="dropdown-menu">
+                            <li id="total-notif-all" class="header"></li>
+                            <li>
+                                <ul id="menu-notif" class="menu"></ul>
+                            </li>
+
+                            <li class="footer"><a href="{{ url('notification') }}">See All Messages</a></li>
+                        </ul> 
+                         </li>
+                         <li>
+                                <a  class="btn btn-primary margin-0-12-0-0  border-radius-10">
+                                    <i aria-hidden="true" class="fa fa-user"></i> Profile
+                                </a>
+
+                         </li>   
+
+                         <li>
+                           <a href="{{ url('logout') }}" class="btn btn-danger  border-radius-10">
+                            <i aria-hidden="true" class="fa fa-sign-out"></i> Logout
+                            </a>  
+
+                         </li>
+                       </ul> 
+              
+                     
+
+                        
+                  
                 </div>
             </nav>
         </header>
@@ -111,6 +133,78 @@
            
             $('[data-toggle="tooltip"]').tooltip();
             
+                $("#update-notif").click( () => {    
+                    UpdateData();
+                });
+
+
+
+
+
+
+            getNotif();  
+
+
+            function UpdateData(){
+               
+               $.ajax({
+                url: BASE_URL+ `/api/notif-update`,
+                method: 'GET',
+                success: function(response) {
+                   $('#total-notif').html('');
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+
+
+            }  
+
+            function getNotif(){
+
+                $.ajax({
+                url: BASE_URL+ `/api/notif`,
+                method: 'GET',
+                success: function(response) {
+                   var row = ``;
+
+                    if(response.data.length>0)
+                    {
+                        // Populate content with new data
+                        response.data.forEach(function(item, index) {  
+
+                                    row += `<li>`;
+                                        row += `<a href="#">`;
+                                           row += `<div class="pull-left">`;
+                                                row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
+                                            row += `</div>`;
+                                            row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
+                                            row += `<p>${item.messages}</p>`;
+                                        row += `</a>`;
+
+                                    row += `</li>`;
+
+                        }); 
+                          $('#total-notif').append(response.total_not_show);
+                          $('#total-notif-all').append('You have '+response.total_all+' messages');
+                          $('#menu-notif').append(row);
+                    }else{
+
+                        
+                         row +=`<li>`;
+                         row +=`<a>Data Kosong</a>`;
+                         row +=`</li>`;
+                         content.append(row);
+                    }                   
+
+                  
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+            }
         });
     </script>
     <script type="text/javascript">
