@@ -40,19 +40,20 @@ class PeriodeApiController extends Controller
 
     public function listAll(Request $request)
     {
-
-        $data =  DB::table('periode as a')
-            ->select('a.slug', 'a.year')
+      
+        $query =  DB::table('periode as a')
+            ->select('a.id','a.slug', 'a.year')
             ->where('a.status', 'Y')
-            ->groupBy('a.year')
-            ->whereNotIn(
-                'a.year',
-                DB::table('perencanaan as c')
-                    ->select(DB::raw("LEFT(c.periode_id,4) AS periode_id"))
-                    ->where('c.daerah_id', Auth::User()->daerah_id)
-
+            ->whereIn(
+                'slug',
+                DB::table('perencanaan')
+                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
             )
-            ->get();
+            ->groupBy('year');
+
+           
+
+        $data = $query->get();
 
         $periode = RequestPeriode::SelectAll($data);
         return response()->json($periode);

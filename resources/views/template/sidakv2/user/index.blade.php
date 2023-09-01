@@ -516,7 +516,7 @@
 			      var select =  $('#role-'+item.id)
 
 			     // Clear existing options
-			     select.empty();
+			     //select.empty();
 
 			      // Populate options from the received data
 			      $.each(data, function(index, option) {

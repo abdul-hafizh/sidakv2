@@ -10,15 +10,22 @@ use App\Models\Perencanaan;
 use App\Models\Roles;
 use App\Models\Periode;
 use App\Http\Request\RequestSettingApps;
+use App\Http\Request\RequestPeriode;
 
 class RequestPerencanaan 
 {
-    public static function GetDataAll($data,$perPage,$request)
+    
+    public static function GetDataAll($data, $perPage, $request)
     {
-        $temp = array();         
-        $getRequest = $request->all();
-        $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
-        $numberNext = (($page*$perPage) - ($perPage-1));
+    $temp = array();
+    $getRequest = $request->all();
+    $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
+    if($perPage !='all')
+    {
+         $numberNext = (($page * $perPage) - ($perPage - 1));
+    }else{
+         $numberNext = (($page * $data->count()) - ($data->count() - 1));
+    }  
         
         foreach ($data as $key => $val)
         {           
@@ -30,15 +37,96 @@ class RequestPerencanaan
                 $temp[$key]['id'] = $val->id;
                 $temp[$key]['periode'] =  $periode;
                 $temp[$key]['status'] = $status;
+                $temp[$key]['action_status'] = RequestPerencanaan::CheckStatus($val->status);
+
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
             }
         }       
        
-        $result['data'] = $temp;
-        $result['current_page'] = $data->currentPage();
-        $result['last_page'] = $data->lastPage(); 
+       $result['data'] = $temp;
+       if($perPage !='all')
+       {
+           $result['current_page'] = $data->currentPage();
+           $result['last_page'] = $data->lastPage();
+           $result['total'] = $data->total(); 
+       }else{
+           $result['current_page'] = 1;
+           $result['last_page'] = 1;
+           $result['total'] = $data->count(); 
+       } 
+   
+       return $result;
+    }
 
-        return $result;
+    public static function CheckStatus($status){
+
+       
+        if($status == '13')
+        {
+           $result =  false;
+        }else{
+           $result =  true;
+        } 
+
+        return  $result;   
+
+    }
+
+    public static function GetDetailID($data){
+       $temp = array();
+       $temp['id'] = $data->id;
+       $temp['periode_id'] = $data->periode_id;
+       $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
+       $temp['pagu_apbn'] = RequestPeriode::getDetailPagu($data->periode_id,'APBN');
+       $temp['pagu_promosi'] = RequestPeriode::getDetailPagu($data->periode_id,'promosi');
+
+       $temp['pengawas_analisa_target'] = $data->pengawas_analisa_target;
+       $temp['pengawas_analisa_pagu'] = $data->pengawas_analisa_pagu;
+       $temp['pengawas_inspeksi_target'] = $data->pengawas_inspeksi_target;
+       $temp['pengawas_inspeksi_pagu'] = $data->pengawas_inspeksi_pagu;
+       $temp['pengawas_evaluasi_target'] = $data->pengawas_evaluasi_target;
+       $temp['pengawas_evaluasi_pagu'] = $data->pengawas_evaluasi_pagu;
+       
+       $temp['total_target_pengawasan'] = $data->pengawas_analisa_target + $data->pengawas_inspeksi_target + $data->pengawas_evaluasi_target;
+       
+       $temp['total_pagu_pengawasan'] = $data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu;
+       $temp['total_pagu_pengawasan_convert'] = GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu);
+
+
+       
+       $temp['bimtek_perizinan_target'] = $data->bimtek_perizinan_target;
+       $temp['bimtek_perizinan_pagu'] = $data->bimtek_perizinan_pagu;
+       $temp['bimtek_pengawasan_target'] = $data->bimtek_pengawasan_target;
+       $temp['bimtek_pengawasan_pagu'] = $data->bimtek_pengawasan_pagu;
+
+       $temp['total_target_bimtek'] = $data->bimtek_perizinan_target + $data->bimtek_pengawasan_target;
+       $temp['total_pagu_bimtek'] = $data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu;
+       $temp['total_pagu_bimtek_convert'] = GeneralHelpers::formatRupiah($data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu);
+
+
+
+       $temp['penyelesaian_identifikasi_target'] = $data->penyelesaian_identifikasi_target;
+       $temp['penyelesaian_identifikasi_pagu'] = $data->penyelesaian_identifikasi_pagu;
+       $temp['penyelesaian_realisasi_target'] = $data->penyelesaian_realisasi_target;
+       $temp['penyelesaian_realisasi_pagu'] = $data->penyelesaian_realisasi_pagu;
+       $temp['penyelesaian_evaluasi_target'] = $data->penyelesaian_evaluasi_target;
+       $temp['penyelesaian_evaluasi_pagu'] = $data->penyelesaian_evaluasi_pagu;
+       
+       $temp['total_target_penyelesaian'] = $data->penyelesaian_identifikasi_target + $data->penyelesaian_realisasi_target + $data->penyelesaian_evaluasi_target;
+        $temp['total_pagu_penyelesaian'] = $data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu;
+       $temp['total_pagu_penyelesaian_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu);
+       
+       
+        $temp['total_rencana'] =  GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu + $data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu + $data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu); 
+
+       
+       $temp['lokasi'] = $data->lokasi;
+       $temp['tgl_tandatangan'] = $data->tgl_tandatangan;
+       $temp['nama_pejabat'] = $data->nama_pejabat;
+       $temp['nip_pejabat'] = $data->nip_pejabat;
+
+      return $temp; 
+
     }
 
     public static function GetPeriodeYear($periode_id){
