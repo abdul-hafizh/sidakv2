@@ -9,7 +9,7 @@ use DB;
 
 class RequestDaerah
 {
-    public function GetProvinceID()
+    public static function GetProvinceID()
     {
        
         $province = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
@@ -17,7 +17,7 @@ class RequestDaerah
         return $province;
     }
 
-     public function GetDaerahID()
+     public static function GetDaerahID()
     {
        
         $province = Provinces::select('id as value','name as text');
@@ -26,7 +26,7 @@ class RequestDaerah
         return $regency;
     }
 
-     public function GetDaerahWhereName($id)
+     public static function GetDaerahWhereName($id)
     {
        
         $province = DB::table('provinces as a')->select('a.name');
