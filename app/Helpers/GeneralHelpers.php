@@ -192,7 +192,7 @@ class GeneralHelpers
  
 }
 
-function timeAgo($tanggal) {
+function static timeAgo($tanggal) {
     $dify = strtotime($tanggal);
    
     $diff     = time() - $dify;
