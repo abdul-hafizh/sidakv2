@@ -56,6 +56,36 @@
     
 }
 
+
+.camera_upload {
+    display: block;
+    position: relative;
+    cursor: pointer
+}
+
+.camera_upload .icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 1em;
+    height: 1em;
+    color: #fff;
+    font-size: 2em;
+    text-shadow: 0 0 3px #464646;
+    opacity: 0
+}
+
+.camera_upload:hover img {
+    opacity: .6
+}
+
+.camera_upload:hover .icon {
+    opacity: 1
+}
+
 .align-right{
    text-align: right; 
 }
@@ -885,8 +915,9 @@
 }
 
 .img-circle {
-    background: #fff;
-   width: 100%;
+   background: #fff;
+   width: 128px;
+   height: 128px;
     
 }
 

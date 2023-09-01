@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Models\Menus;
@@ -21,6 +22,8 @@ use App\Helpers\GeneralPaginate;
 use JWTAuth;
 use Auth;
 use DB;
+use File;
+
 
 class AuthApiController extends Controller
 {
@@ -28,7 +31,7 @@ class AuthApiController extends Controller
    
     public function __construct(){
        
-   
+      
     }
 
   
@@ -148,17 +151,34 @@ class AuthApiController extends Controller
 
 
 
-     public function updateSingle($id,Request $request)
+     public function update(Request $request)
     {
         
-        $check = ValidationGlobalUser::validationCheck($request);
-        if(count($check) !=null || count($check) !=0 )
-        {
-            return response()->json($check,400);  
-        }else{
-            $update = RequestGlobalUser::fieldsSingle($request);
-            $UpdateAccount = User::where('id',$id)->update($update);
-            return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
+         if($request->photo)
+         {   
+            $slug = Auth::User()->username;
+            $source = explode(";base64,", $request->photo);
+            $extFile = explode("image/", $source[0]);
+            $extentions = $extFile[1];
+            $fileDir = '/images/profile/';
+            $image = base64_decode($source[1]);
+            $filePath = public_path() .$fileDir;
+            $photo = time() . '-' . $slug.'.'.$extentions;
+            $success = file_put_contents($filePath.$photo, $image);
+
+            if(Auth::User()->photo)
+            { 
+               File::delete(public_path() .$fileDir.Auth::User()->photo);
+            } 
+
+
+            $data = array('photo'=>$photo); 
+            $update = User::where('id',Auth::User()->id)->update($data);
+
+
+            $userSidebar = RequestAuth::UpdateUserSidebar($photo);
+
+            return response()->json(['status'=>true,'user_sidebar'=>$userSidebar,'message'=>'Update data sucessfully']);
         }
     }
 
