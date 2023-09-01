@@ -24,12 +24,18 @@ class PerencanaanController extends Controller
             'url' => 'perencanaan'
         );
         RequestSystemLog::CreateLog($log);  
+        $with =  ['title' => $title,'template'=>'template/'.$this->template];
+        if($_COOKIE['access'] =="admin")
+        {
+            return view('template/' . $this->template . '.perencanaan.admin')->with($with);
+        }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){
+            return view('template/' . $this->template . '.perencanaan.daerah')->with($with);
 
-        return view('template/' . $this->template . '.perencanaan.index')
-        ->with([
-            'title' => $title,
-            'access' => RequestAuth::access(),
-            'template' => 'template/'.$this->template ]);
+        }    
+
+
+       
+       
     }
 
     public function add(Request $request)
