@@ -64,7 +64,7 @@ class RequestPeriode
 
          foreach ($data as $key => $val) {
 
-            $temp[$key]['value'] = (string)$val->slug;
+            $temp[$key]['value'] = $val->slug;
             $temp[$key]['text'] = 'Periode '.$val->year;
             $temp[$key]['pagu_apbn'] = RequestPeriode::Pagu('APBN', substr((string)$val->slug, 0, 4));
             $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
@@ -74,6 +74,14 @@ class RequestPeriode
 
       return  $temp;
    }
+
+   public static function getDetailPagu($slug,$type){
+
+       $pagu = RequestPeriode::Pagu($type, substr((string)$slug, 0, 4));
+       return $pagu;
+   }
+
+ 
 
    public static function checkValidate($slug){
 
@@ -139,6 +147,19 @@ class RequestPeriode
       ];
 
       return $fields;
+   }
+
+    public function GetPeriodeName($slug)
+   {
+
+      $periode = Periode::where('slug',$slug)->first();
+      if($periode)
+      {
+        $result = 'Periode '.$periode->year;
+      }else{
+         $result = Null;
+      }   
+      return $result;
    }
 
 

@@ -64,4 +64,20 @@ class PerencanaanController extends Controller
             'template' => 'template/'.$this->template ]);
     }
 
+     public function show(Request $request)
+    {
+        $title = 'Detail Perencanaan Anggaran';
+        $log = array(             
+            'menu' => $title,
+            'slug' => 'perencanaan',
+            'url' => 'perencanaan'
+        );
+        RequestSystemLog::CreateLog($log);  
+
+        return view('template/' . $this->template . '.perencanaan.detail')
+        ->with([
+            'title' => $title,
+            'template' => 'template/'.$this->template ]);
+    }
+
 }

@@ -126,6 +126,9 @@
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script src="{{ config('app.url').$template.'/plugin/select2/js/select2.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/plugin/selectpicker/js/bootstrap-select.min.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/accounting.min.js' }}"></script>
+
+    
 
 
     <script>

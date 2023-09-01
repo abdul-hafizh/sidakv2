@@ -30,12 +30,11 @@ class RequestAuth
 
     } 
 
-    public static function access()
+    public static function Access()
     {
-        $auth = Auth::User();
-        $RoleUser = RoleUser::where('user_id',$auth->id)->first();
+      
+        $RoleUser = RoleUser::where('user_id',Auth::User()->id)->first();
         $access =  $RoleUser->role->slug;
-
         return $access;
     }
 

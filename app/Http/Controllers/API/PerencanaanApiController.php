@@ -11,6 +11,7 @@ use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPerencanaan;
 use App\Helpers\GeneralPaginate;
 use App\Models\Perencanaan;
+use App\Models\PaguTarget;
 
 class PerencanaanApiController extends Controller
 {
@@ -18,38 +19,39 @@ class PerencanaanApiController extends Controller
     {   
         $this->perPage = GeneralPaginate::limit();
         $this->UploadFolder = GeneralPaginate::uploadPhotoFolder();
+       
     }
 
     public function index(Request $request)
     {                
-        $access = RequestAuth::access();
-        $data = Perencanaan::join('regencies', 'perencanaan.daerah_id', '=', 'regencies.id')
-            ->orderBy('perencanaan.created_at', 'DESC')
-            ->select('perencanaan.*', 'regencies.name as nama_daerah')
-            ->paginate($this->perPage);    
+        $access = RequestAuth::Access(); 
+        if($access == 'daerah' ||  $access == 'province') { 
+             $query = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('created_at', 'DESC');
+        }else{
+             $query = Perencanaan::orderBy('created_at', 'DESC');
+        }
 
-        $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
-
-        if($access == 'daerah' || $access == 'province') {
-            $data = Perencanaan::join('regencies', 'perencanaan.daerah_id', '=', 'regencies.id')
-                ->where('perencanaan.daerah_id', Auth::user()->daerah_id)
-                ->orderBy('perencanaan.id', 'DESC')
-                ->select('perencanaan.*', 'regencies.name as nama_daerah')
-                ->paginate($this->perPage);
-
-            $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);            
-        } 
-
+        if($request->per_page !='all')
+        {
+           $data = $query->paginate($request->per_page);
+        }else{   
+           $data = $query->get(); 
+        }   
+        
+        $result = RequestPerencanaan::GetDataAll($data,$request->per_page,$request);    
         return response()->json($result);
+        
         
     }
 
     public function edit($id)
     { 
-        $result = Perencanaan::where('id',$id)->first();
-
+        $data = Perencanaan::where('id',$id)->first();
+        $result = RequestPerencanaan::GetDetailID($data); 
         return response()->json($result);
     }
+
+    
     
     public function search(Request $request)
     {
