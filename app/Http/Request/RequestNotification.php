@@ -91,7 +91,7 @@ class RequestNotification
           $total_all = Notification::where('sender',Auth::User()->username)->count();  
         }else{
           $total = Notification::where(['view_sender'=>'false'])->count();
-          $total_all = Notification::count();   
+          $total_all = Notification::where(['view_sender'=>'false'])->count();   
         }  
            
           if($total>0)
