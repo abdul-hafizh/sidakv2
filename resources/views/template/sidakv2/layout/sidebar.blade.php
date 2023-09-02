@@ -108,7 +108,7 @@
             success: (respons) =>{
             	
             	 localStorage.setItem('user_sidebar', JSON.stringify(respons.user_sidebar));
-                // location.reload();   
+                 //location.reload();   
             },
             error: (respons)=>{
                 errors = respons.responseJSON;

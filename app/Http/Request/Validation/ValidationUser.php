@@ -164,5 +164,71 @@ class ValidationUser
     }
 
 
+     public static function validationProfile($request){
+        $err = array(); 
+        
+        $fields = [
+           
+            'name'  => 'Nama',
+            'email'  => 'Email',
+            'phone'  => 'No Telp',
+            'nip'  => 'NIP',
+            'leader_name'  => 'Penanggung Jawab',
+            'leader_nip'=>'NIP Penanggung Jawab',
+           
+        ];
+
+        $validator =  Validator::make($request->all(), 
+        [
+            
+            'name'  => 'required',
+            'email'  => 'required',
+            'phone'  => 'required',
+            'nip'  => 'required',
+            'leader_name'  => 'required',
+            'leader_nip'  => 'required',
+            
+        ]);
+
+        $validator->setAttributeNames($fields); 
+        if ($validator->fails()) {
+         
+            $errors = $validator->errors();
+            
+            if($errors->has('username')){
+                $err['messages']['username'] = $errors->first('username');
+            }
+
+            if($errors->has('name')){
+                $err['messages']['name'] = $errors->first('name');
+            }
+
+            if($errors->has('email')){
+                $err['messages']['email'] = $errors->first('email');
+            }
+
+            if($errors->has('phone')){
+                $err['messages']['phone'] = $errors->first('phone');
+            }
+
+            if($errors->has('nip')){
+                $err['messages']['nip'] = $errors->first('nip');
+            }
+
+            if($errors->has('leader_name')){
+                $err['messages']['leader_name'] = $errors->first('leader_name');
+            }
+
+            if($errors->has('leader_nip')){
+                $err['messages']['leader_nip'] = $errors->first('leader_nip');
+            }
+            
+          
+
+            return $err;
+       }
+    }
+
+
    
 }

@@ -64,6 +64,26 @@ class UserApiController extends Controller
 
     }
 
+    public function GetUserID(){
+        $user = User::select('id','username','name','email','phone','nip','leader_name','leader_nip')->where('id',Auth::User()->id)->first();
+        return response()->json(['status'=>true,'data'=>$user,'message'=>'Get data user ID sucessfully']);
+    }
+
+    public function updateProfile(Request $request)
+    {
+
+        $validation = ValidationUser::validationProfile($request);
+        if($validation)
+        {
+          return response()->json($validation,400);  
+        }else{
+           $update = RequestUser::fieldsProfile($request); 
+           $UpdateData = User::where('id',Auth::User()->id)->update($update);
+           return response()->json(['status'=>true,'message'=>'Update data sucessfully']);
+        }    
+
+    }    
+
     
     public function store(Request $request)
     {

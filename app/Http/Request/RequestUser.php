@@ -115,6 +115,28 @@ class RequestUser
 
    }
 
+
+    public static function fieldsProfile($request)
+   {
+       
+    
+        $fields = [    
+            'name'  => $request->name,
+            'nip'  => $request->nip,
+            'email'     => $request->email,
+            'phone'     => $request->phone,
+            'leader_name'     => $request->leader_name,
+            'leader_nip'     => $request->leader_nip,
+            'created_by' => $request->username,
+            'updated_at' => date('Y-m-d H:i:s'),
+         ];
+
+
+        return $fields;
+       
+
+   }
+
   
 
    
