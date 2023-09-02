@@ -44,7 +44,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
-
+    Route::post('user/photo', [AuthApiController::class, 'update']);
 
    
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
