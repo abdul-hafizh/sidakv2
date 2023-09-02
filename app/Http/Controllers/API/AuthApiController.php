@@ -151,7 +151,7 @@ class AuthApiController extends Controller
 
 
 
-     public function update(Request $request)
+     public function updatePhoto(Request $request)
     {
         
          if($request->photo)

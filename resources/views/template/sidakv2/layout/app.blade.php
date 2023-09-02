@@ -79,7 +79,7 @@
                         </ul> 
                          </li>
                          <li>
-                                <a  class="btn btn-primary margin-0-12-0-0  border-radius-10">
+                                <a id="profile-update" data-toggle="modal" data-target="#modal-profile"   class="btn btn-primary margin-0-12-0-0  border-radius-10">
                                     <i aria-hidden="true" class="fa fa-user"></i> Profile
                                 </a>
 
@@ -99,12 +99,14 @@
                   
                 </div>
             </nav>
-        </header>
 
+        </header>
+       
         @include('template/sidakv2/layout.sidebar')
         <div class="content-wrapper">
             @yield('content')
         </div>
+        @include('template/sidakv2/layout.profile')
 
     </div>
     @else
