@@ -69,7 +69,7 @@
                                         <td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>
                                         <td>
                                            <div id="pengawas-analisa-target-alert" class="margin-none form-group " >  
-                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target"  placeholder="Target" value="0">
+                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target"  placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-analisa-target-messages"></span>
                                            </div>  
                                         </td>
@@ -78,7 +78,7 @@
                                         </td>
                                         <td>
                                           <div id="pengawas-analisa-pagu-alert" class="margin-none form-group" >   
-                                             <input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0">
+                                             <input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-analisa-pagu-messages"></span>
                                           </div>   
                                         </td>
@@ -88,7 +88,7 @@
                                         <td>B. Inspeksi Lapangan</td>
                                         <td>
                                            <div id="pengawas-inspeksi-target-alert" class="margin-none form-group" >  
-                                             <input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="0">
+                                             <input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-inspeksi-target-messages"></span>
                                           </div>   
                                         </td>
@@ -97,7 +97,7 @@
                                         </td>
                                         <td>
                                            <div id="pengawas-inspeksi-pagu-alert" class="margin-none form-group" >  
-                                             <input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0">                                        
+                                             <input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">                                        
                                              <span id="pengawas-inspeksi-pagu-messages"></span>
                                            </div>  
                                         </td>
@@ -107,7 +107,7 @@
                                         <td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>
                                         <td>
                                           <div id="pengawas-evaluasi-target-alert" class="margin-none form-group" >   
-                                             <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="0">
+                                             <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-evaluasi-target-messages"></span>
                                           </div>   
                                         </td>
@@ -116,7 +116,7 @@
                                         </td>
                                         <td>
                                            <div id="pengawas-evaluasi-pagu-alert" class="margin-none form-group" >   
-                                             <input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0">
+                                             <input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-evaluasi-pagu-messages"></span>
                                            </div>  
                                         </td>
@@ -132,14 +132,14 @@
                                         <td>&nbsp;</td>
                                         <td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>
                                         <td>
-                                             <input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_nilai_target" placeholder="Target" value="0">
+                                             <input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="bimtek-perizinan-target-messages"></span>
                                         </td>
                                         <td>
-                                             <input type="text" class="form-control" placeholder="Satuan" disabled>
+                                             <input type="text" class="form-control" placeholder="Satuan" disabled >
                                         </td>
                                         <td>
-                                             <input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="0">
+                                             <input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="bimtek-perizinan-pagu-messages"></span>
                                         </td>
                                    </tr>
@@ -147,14 +147,14 @@
                                         <td>&nbsp;</td>
                                         <td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>
                                         <td>
-                                             <input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_nilai_target" placeholder="Target" value="0">
+                                             <input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="bimtek-pengawasan-target-messages"></span> 
                                         </td>
                                         <td>
                                              <input type="text" class="form-control" placeholder="Satuan" disabled>
                                         </td>
                                         <td>
-                                             <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="0">
+                                             <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="bimtek-pengawasan-pagu-messages"></span>
                                         </td>
                                    </tr>
@@ -170,7 +170,7 @@
                                         <td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>
                                         <td>
                                           <div id="penyelesaian-identifikasi-target-alert" class="margin-none form-group" >    
-                                             <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0">
+                                             <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-identifikasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -179,7 +179,7 @@
                                         </td>
                                         <td>
                                            <div id="penyelesaian-identifikasi-pagu-alert" class="margin-none form-group" >    
-                                             <input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0">
+                                             <input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-identifikasi-pagu-messages"></span>
                                            </div>  
                                         </td>
@@ -189,7 +189,7 @@
                                         <td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>
                                         <td>
                                            <div id="penyelesaian-realisasi-target-alert" class="margin-none form-group" >      
-                                             <input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0">
+                                             <input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-realisasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -198,7 +198,7 @@
                                         </td>
                                         <td>
                                            <div id="penyelesaian-realisasi-pagu-alert" class="margin-none form-group" >     
-                                             <input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0">
+                                             <input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-realisasi-pagu-messages"></span>
                                            </div>  
                                         </td>
@@ -208,7 +208,7 @@
                                         <td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>
                                         <td>
                                            <div id="penyelesaian-evaluasi-target-alert" class="margin-none form-group" >     
-                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0">
+                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-evaluasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -217,7 +217,7 @@
                                         </td>
                                         <td>
                                           <div id="penyelesaian-evaluasi-pagu-alert" class="margin-none form-group" >    
-                                             <input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0">
+                                             <input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-evaluasi-pagu-messages"></span>
                                           </div>   
                                         </td>
@@ -275,8 +275,8 @@
           </div> 
 
           <div class="box-footer">
-                    <button id="kirim" type="button" class="btn btn-primary pull-right mrg-left-10">Kirim</button>
-                    <button id="simpan" type="button" class="btn btn-primary pull-right">Simpan</button>
+                    <button id="kirim" disabled type="button" class="btn btn-default pull-right mrg-left-10">Kirim</button>
+                    <button id="simpan" disabled type="button" class="btn btn-default pull-right">Simpan</button>
           </div> 
      </form>
 </div>
@@ -286,17 +286,34 @@
      $(document).ready(function() {
 
           var periode =[];
+          var pengawasan = 0;
           var total_pengawasan_pagu = 0;
+          var bimtek = 0;
           var total_bimtek_pagu = 0;
+          var penyelesaian = 0;
           var total_penyelesaian_pagu = 0;
+
+          var val_pengawasan_target = false;
+          var val_bimtek_target = false;
+          var val_penyelesaian_target = false;
+
+          var val_pengawasan_pagu = false;
+          var val_bimtek_pagu = false;
+          var val_penyelesaian_pagu = false;
+
+          var temp_total_pengawasan = 0;
+          var temp_total_bimtek = 0;
+          var temp_total_penyelesaian = 0;
 
           $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
          
           const user_sidebar  = JSON.parse(localStorage.getItem('user_sidebar'));
           $('#lokasi').val(user_sidebar.daerah_name);
+          $('#total_rencana').html('<b>Rp 0</b>');
           
           getperiode();
-
+            
+            
 
             $(".pengawasan_nilai_target").on("input", function() {
                calculatePengawasanTarget();
@@ -401,9 +418,31 @@
 
           function calculatePengawasanTarget() {
                var total_pengawasan_target = 0;
+
                $(".pengawasan_nilai_target").each(function() {
                     total_pengawasan_target += parseFloat($(this).val());
                });
+               var periode_id = $('#periode_id').val();
+               if(periode_id)
+               {    
+                  if(total_pengawasan_target > pengawasan)
+                  {
+                    val_pengawasan_target = false;
+                    ActionButtonEnable();
+                          Swal.fire({
+                            icon: 'info', // Set the icon to info
+                            title: 'Peringatan',
+                            text:'Target pengawasan melebihi pagu target!! maksimal total target pengawasan yg di izinkan : ' + pengawasan,
+                            confirmButtonColor: '#000',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                          });  
+                  }else{
+                    ActionButtonEnable();
+                    val_pengawasan_target = true;
+                  }
+                
+               }
                   
                $("#total_pengawasan_target").text(total_pengawasan_target);
           }
@@ -417,12 +456,19 @@
                var number = total_pengawasan_pagu;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
 
+               if(total_pengawasan_pagu !=0)
+               {
+                  val_pengawasan_pagu = true;
+                  ActionButtonEnable(); 
+               }else{
+                  val_pengawasan_pagu = false;
+                  ActionButtonEnable();   
+               }     
+
                $("#total_pengawasan_pagu").text('Rp '+ formattedNumber);
-
-               // var total_rencana = number + total_bimtek_pagu + total_penyelesaian_pagu;
-               // var total = accounting.formatNumber(total_rencana, 0, ".", ".");
-               // $('#total_rencana').html('<b>Rp '+total+'</b>');
-
+               
+               temp_total_pengawasan = number;
+               totalRencana();
                
           }
 
@@ -431,6 +477,30 @@
                $(".bimtek_nilai_target").each(function() {
                     total_bimtek_target += parseFloat($(this).val());
                });
+
+               var periode_id = $('#periode_id').val();
+               if(periode_id)
+               {    
+                  if(total_bimtek_target > bimtek)
+                  {
+                     val_bimtek_target = false;
+                     ActionButtonEnable();
+                          Swal.fire({
+                            icon: 'info', // Set the icon to info
+                            title: 'Peringatan',
+                            text:'Target bimtek melebihi pagu target!! maksimal total target bimtek yg di izinkan : ' + bimtek,
+                            confirmButtonColor: '#000',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                          });  
+                  }else{
+                     val_bimtek_target = true;
+                     ActionButtonEnable();
+                  }
+                
+               }
+
+
                $("#total_bimtek_target").text(total_bimtek_target);
           }
 
@@ -444,11 +514,17 @@
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
                $("#total_bimtek_pagu").text('Rp '+ formattedNumber);
                
+               if(total_bimtek_pagu !=0)
+               {
+                  val_bimtek_pagu = true;
+                  ActionButtonEnable();
+               }else{
+                  val_bimtek_pagu = false;
+                  ActionButtonEnable(); 
+               }   
               
-
-               // var total_rencana = total_pengawasan_pagu + number + total_penyelesaian_pagu;
-               // var total = accounting.formatNumber(total_rencana, 0, ".", ".");
-               // $('#total_rencana').html('<b>Rp '+total+'</b>');
+               temp_total_bimtek = number;
+               totalRencana();
                
           }
 
@@ -457,6 +533,29 @@
                $(".penyelesaian_nilai_target").each(function() {
                     total_penyelesaian_target += parseFloat($(this).val());
                });
+
+               var periode_id = $('#periode_id').val();
+               if(periode_id)
+               {    
+                  if(total_penyelesaian_target > penyelesaian)
+                  {
+                       val_penyelesaian_target = false;
+                       ActionButtonEnable();
+                          Swal.fire({
+                            icon: 'info', // Set the icon to info
+                            title: 'Peringatan',
+                            text:'Target penyelesaian melebihi pagu target!! maksimal total target penyelesaian yg di izinkan : ' + penyelesaian,
+                            confirmButtonColor: '#000',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK',
+                          });  
+                  }else{
+                     val_penyelesaian_target = true;
+                     ActionButtonEnable();
+                  }
+                
+               }
+
                $("#total_penyelesaian_target").text(total_penyelesaian_target);
           }
 
@@ -469,19 +568,44 @@
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
                $("#total_penyelesaian_pagu").text('Rp '+ formattedNumber);
 
-               // var total_rencana = total_pengawasan_pagu + total_bimtek_pagu + number;
-               // var total = accounting.formatNumber(total_rencana, 0, ".", ".");
-               // $('#total_rencana').html('<b>Rp '+total+'</b>');
+                if(total_penyelesaian_pagu !=0)
+               {
+                  val_penyelesaian_pagu = true; 
+                  ActionButtonEnable(); 
+               }else{
+                  val_penyelesaian_pagu = false;
+                  ActionButtonEnable();  
+               }  
+              
+               temp_total_penyelesaian = number;
+               totalRencana();
                
           }
 
           function totalRencana(){
                
-             var total_rencana = total_pengawasan_pagu + total_bimtek_pagu + total_penyelesaian_pagu;
+             var total_rencana = temp_total_pengawasan + temp_total_bimtek + temp_total_penyelesaian;
+             
              var number = total_rencana;
              var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
              $('#total_rencana').html('<b>'+formattedNumber+'</b>');
 
+          }
+
+          function ActionButtonEnable(){
+           
+        
+           if(val_pengawasan_target == true && val_bimtek_target ==true && val_penyelesaian_target == true && val_pengawasan_pagu == true && val_bimtek_pagu == true && val_penyelesaian_pagu == true)
+           {
+              
+              $('#simpan').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
+              $('#kirim').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
+            }else{
+             
+              $('#simpan').prop("disabled", true).removeClass('btn-primary').addClass('btn-default');
+              $('#kirim').prop("disabled", true).removeClass('btn-primary').addClass('btn-default');
+
+            }     
           }
 
           function getperiode(){
@@ -489,22 +613,22 @@
           $.ajax({
                type: 'GET',
                dataType: 'json',
-               url: BASE_URL +'/api/select-periode',
+               url: BASE_URL +'/api/select-periode?type=POST',
                success: function(data) {
                      // 
                      var select =  $('#periode_id');
                      // Populate options from the received data
-                     $.each(data, function(index, option) {
+                     $.each(data.result, function(index, option) {
                        select.append($('<option>', {
                          value: option.value,
                          text: option.text
                        }));
                      });
-
-                   
+                    
+                    $('#periode_id').prop('disabled', data.selected);
                      // Refresh the SelectPicker
                      select.selectpicker('refresh');
-                     periode = data; 
+                     periode = data.result; 
                },
                error: function( error) {}
           });
@@ -512,8 +636,22 @@
           $('#periode_id').on('change', function() {
                var index = $(this).val();
                let find = periode.find(o => o.value === index); 
-               
+               //isi pagu
                $('#pagu_apbn').html('<b>'+find.pagu_apbn+'</b>');
+              
+               //isi target pengawasan
+                 pengawasan = find.target_pengawasan;
+                  $(".pengawasan_nilai_target").prop("disabled", false);
+                  $(".pengawasan_nilai_pagu").prop("disabled", false);
+               //isi target bimtek
+                 bimtek = find.target_bimtek;
+                  $(".bimtek_nilai_target").prop("disabled", false);
+                  $(".bimtek_nilai_pagu").prop("disabled", false);
+               //isi target penyelesaian
+                 penyelesaian = find.target_penyelesaian;
+                  $(".penyelesaian_nilai_target").prop("disabled", false);
+                  $(".penyelesaian_nilai_pagu").prop("disabled", false);
+
           });
 
      }
@@ -522,7 +660,7 @@
                if (form.type == 'kirim') {
                     pesan = 'Terkirim ke Pusat.';
                } else {
-                    pesan = 'Berhasil Diupdate.';
+                    pesan = 'Berhasil Simpan.';
                }
                $.ajax({
                     type:"POST",

@@ -80,6 +80,10 @@ class RequestPerencanaan
        $temp['pagu_apbn'] = RequestPeriode::getDetailPagu($data->periode_id,'APBN');
        $temp['pagu_promosi'] = RequestPeriode::getDetailPagu($data->periode_id,'promosi');
 
+       $temp['target_pengawasan'] = RequestPeriode::getDetailPagu($data->periode_id,'pengawasan');
+       $temp['target_bimtek'] = RequestPeriode::getDetailPagu($data->periode_id,'bimtek');
+       $temp['target_penyelesaian'] = RequestPeriode::getDetailPagu($data->periode_id,'penyelesaian');
+
        $temp['pengawas_analisa_target'] = $data->pengawas_analisa_target;
        $temp['pengawas_analisa_pagu'] = $data->pengawas_analisa_pagu;
        $temp['pengawas_inspeksi_target'] = $data->pengawas_inspeksi_target;

@@ -57,17 +57,25 @@ class RequestPeriode
 
    }
 
-   public static function SelectAll($data)
+   public static function SelectAll($data,$type)
    {
          $temp = array();
        
 
-         foreach ($data as $key => $val) {
+         foreach ($data as $key => $val)
+         {
 
             $temp[$key]['value'] = $val->slug;
             $temp[$key]['text'] = 'Periode '.$val->year;
-            $temp[$key]['pagu_apbn'] = RequestPeriode::Pagu('APBN', substr((string)$val->slug, 0, 4));
-            $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
+            if($type =="POST")
+            {
+               $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
+               $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
+               $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
+               $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
+               $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan; 
+            }   
+           
          }
        
 
@@ -96,6 +104,8 @@ class RequestPeriode
        return $result;
   }
 
+ 
+
    public static function Pagu($type, $periode_id)
    {
       $pagu = PaguTarget::where(DB::raw("LEFT(periode_id,4)"), $periode_id)->first();
@@ -106,18 +116,38 @@ class RequestPeriode
             } else {
                $result = 'Rp 0';
             }
-         } else {
+         }else if ($type == 'promosi')  {
             if ($pagu->pagu_promosi != 0) {
                $result = GeneralHelpers::formatRupiah($pagu->pagu_promosi);
             } else {
                $result = 'Rp 0';
             }
-         }
+         }else if ($type == 'pengawasan')  {
+            if ($pagu->target_pengawasan != 0) {
+               $result = $pagu->target_pengawasan;
+            } else {
+               $result = '0';
+            }
+         }else if ($type == 'bimtek')  {
+            if ($pagu->target_bimbingan_teknis != 0) {
+               $result = $pagu->target_bimbingan_teknis;
+            } else {
+               $result = '0';
+            }
+         }else if ($type == 'penyelesaian')  {  
+            if ($pagu->target_penyelesaian_permasalahan != 0) {
+               $result = $pagu->target_penyelesaian_permasalahan;
+            } else {
+               $result = '0';
+            }
+         }  
       } else {
-         $result = 'Rp 0';
+         $result = null;
       }
       return $result;
    }
+
+  
 
    public static function GetDataID($data)
    {

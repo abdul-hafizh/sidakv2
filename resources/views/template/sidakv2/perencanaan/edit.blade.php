@@ -91,8 +91,11 @@
      $(document).ready(function() {
           
           var periode =[];
+          var pengawasan = 0;
           var total_pengawasan_pagu = 0;
+          var bimtek = 0;
           var total_bimtek_pagu = 0;
+          var penyelesaian = 0;
           var total_penyelesaian_pagu = 0;           
           var url = window.location.href; 
           var segments = url.split('/');  
@@ -416,6 +419,12 @@
                total_pengawasan_pagu = data.total_pagu_pengawasan;
                total_bimtek_pagu = data.total_pagu_bimtek;
                total_penyelesaian_pagu = data.total_pagu_penyelesaian;
+
+               pengawasan = data.target_pengawasan;
+               bimtek = data.target_bimtek;
+               penyelesaian = data.target_penyelesaian;
+
+
                var row = '';
                var rows = '';
                row+= '<tr>';
@@ -430,14 +439,14 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target">';
+                         row+= '<input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-analisa-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Satuan" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_analisa_pagu +'">';
+                         row+= '<input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_analisa_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-analisa-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -446,14 +455,14 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Inspeksi Lapangan</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'">';
+                         row+= '<input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-inspeksi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Satuan" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu +'">';                                      
+                         row+= '<input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu +'" oninput="this.value = Math.abs(this.value)">';                                      
                          row+= '<span id="pengawas-inspeksi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -462,14 +471,14 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target">';
+                         row+= '<input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-evaluasi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Satuan" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_evaluasi_pagu +'">';
+                         row+= '<input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_evaluasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -486,14 +495,14 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>';
                     row+= '<td>';
-                         row+= '<input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target">';
+                         row+= '<input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="bimtek-perizinan-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Satuan" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_perizinan_pagu +'">';
+                         row+= '<input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_perizinan_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="bimtek-perizinan-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -501,14 +510,14 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>';
                     row+= '<td>';
-                         row+= '<input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target">';
+                         row+= '<input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="bimtek-pengawasan-target-messages"></span> ';
                     row+= '</td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Satuan" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_pengawasan_pagu +'">';
+                         row+= '<input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_pengawasan_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="bimtek-pengawasan-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -525,14 +534,14 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" value="'+ data.penyelesaian_identifikasi_target+'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
+                         row+= '<input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" value="'+ data.penyelesaian_identifikasi_target+'" min="0" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-identifikasi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Satuan" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_identifikasi_pagu +'">';
+                         row+= '<input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" min="0" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_identifikasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-identifikasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -540,14 +549,14 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" value="'+ data.penyelesaian_realisasi_target +'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
+                         row+= '<input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" value="'+ data.penyelesaian_realisasi_target +'" type="number" min="0" class="form-control penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-realisasi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Satuan" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_realisasi_pagu +'">';
+                         row+= '<input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" min="0" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_realisasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-realisasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -555,14 +564,14 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" value="'+ data.penyelesaian_evaluasi_target +'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
+                         row+= '<input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" value="'+ data.penyelesaian_evaluasi_target +'" type="number" min="0" class="form-control penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-evaluasi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Satuan" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_evaluasi_pagu +'">';
+                         row+= '<input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_evaluasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -635,6 +644,8 @@
                total_pengawasan_target += parseFloat($(this).val());
           });
           $("#total_pengawasan_target").text(total_pengawasan_target);
+
+               
      }
 
      function calculatePengawasanPagu() {

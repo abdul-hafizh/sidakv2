@@ -42,43 +42,41 @@ class PeriodeApiController extends Controller
     {
       
         $query =  DB::table('periode as a')
-            ->select('a.id','a.slug', 'a.year')
-            ->where('a.status', 'Y')
-            ->whereIn(
+            ->select('a.id','a.slug', 'a.year','c.pagu_apbn','c.pagu_promosi','c.target_pengawasan','c.target_bimbingan_teknis','c.target_penyelesaian_permasalahan')
+            ->where('a.status', 'Y');
+        if($request->type =='POST')
+        {    
+            $query->whereNotIn(
                 'slug',
                 DB::table('perencanaan')
                     ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-            )
+            );
+        }else{
+            $query->whereIn(
+                'slug',
+                DB::table('perencanaan')
+                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+            );
+
+        }
+            $query->join('pagu_target as c','a.slug','=','c.periode_id')
             ->groupBy('year');
 
            
 
         $data = $query->get();
-
-        $periode = RequestPeriode::SelectAll($data);
-        return response()->json($periode);
+        if($data->count() !=0)
+        {
+            $selected = false;
+        }else{
+             $selected = true;
+        }    
+        $periode = RequestPeriode::SelectAll($data,$request->type);
+        return response()->json(['selected'=> $selected,'result'=>$periode]);
     }
 
 
-    public function periode(Request $request)
-    {
-
-        $data =  DB::table('periode')
-            ->select('slug', 'year')
-            ->where('status', 'Y')
-            ->whereIn(
-                'slug',
-                DB::table('perencanaan')
-                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-            )
-            ->groupBy('year')
-            ->get();
-
-
-        $periode = RequestPeriode::SelectAll($data);
-        return response()->json($periode);
-    }
-
+   
 
 
     public function search(Request $request)
