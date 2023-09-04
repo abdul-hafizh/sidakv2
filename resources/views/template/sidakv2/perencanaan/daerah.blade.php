@@ -127,12 +127,12 @@
       
 
         $.ajax({
-            url: BASE_URL +'/api/perencanaan/periode',
+            url: BASE_URL +'/api/select-periode?type=GET',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
                 // Populate SelectPicker options using received data
-                $.each(data, function(index, option) {
+                $.each(data.result, function(index, option) {
                     $('#periode_id').append($('<option>', {
                       value: option.value,
                       text: option.text
