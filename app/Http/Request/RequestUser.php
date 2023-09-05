@@ -50,7 +50,7 @@ class RequestUser
             $temp[$key]['daerah_id'] = $val->daerah_id;
             $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $temp[$key]['role_id'] = RequestRoles::GetRoleWhere($val->id,'name');
-            $temp[$key]['deleted'] = RequestUser::checkValidate($val->daerah_id);
+            $temp[$key]['deleted'] = RequestUser::checkValidate($val->username);
             $temp[$key]['username'] = $val->username;
             $temp[$key]['email'] = $val->email;
             $temp[$key]['phone'] = $val->phone;
@@ -78,14 +78,14 @@ class RequestUser
 
    }
 
-   public static function checkValidate($daerah_id){
+   public static function checkValidate($username){
 
-       $data = Perencanaan::where('daerah_id',$daerah_id)->count();
+       $data = Perencanaan::where('created_by',$username)->count();
        if($data > 0)
        {
-          $result = true;
-       }else{
           $result = false;
+       }else{
+          $result = true;
        } 
 
        return $result;

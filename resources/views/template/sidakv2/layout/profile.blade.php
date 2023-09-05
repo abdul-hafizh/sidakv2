@@ -3,23 +3,8 @@
   <div class="modal-dialog">
 
     <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Update Profile</h4>
-      </div>
-      <form id="FormSubmit">
-        <div id="listProfile" class="modal-body" >
+    <div id="listProfile" class="modal-content">
 
-
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-          <button id="btn-update" type="button" class="btn btn-primary">Update</button>
-          <button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
-        </div>
     </div>
 
 
@@ -45,12 +30,134 @@
             }
         });
         
-        $("#btn-update").click(() => {
+      
+
+
+        function GetFormModal(data)
+        {
+          var row ='';
+             row +='<div class="modal-header">';
+          row +='<button type="button" class="close" data-dismiss="modal">&times;</button>';
+          row +='<h4 class="modal-title">Update Profile</h4>';
+        row +='</div>';
+
+         row +='<form id="FormUpdate">';
+        row +='<div  class="modal-body" >';
+            
+
+              row +='<div id="username-alert" class="form-group has-feedback">';
+             row +='<label>Username</label>';
+             row +='<input type="text" disabled class="form-control" name="username" placeholder="Username" value="'+ data.username +'">';
+             row +='<span id="username-messages"></span>';
+           row +='</div>';
+
+           row +='<div id="name-alert" class="form-group has-feedback">';
+             row +='<label>Name</label>';
+             row +='<input type="text" class="form-control" name="name" placeholder="Name" value="'+ data.name +'">';
+             row +='<span id="name-messages"></span>';
+           row +='</div>';
+
+
+           row +='<div id="email-alert" class="form-group has-feedback">';
+             row +='<label>Email</label>';
+             row +='<input type="email" class="form-control" name="email" placeholder="email" value="'+ data.email +'">';
+             row +='<span id="email-messages"></span>';
+           row +='</div>';
+
+           row +='<div id="phone-alert" class="form-group has-feedback">';
+             row +='<label>Phone</label>';
+             row +='<input type="text"   class="form-control" name="phone" placeholder="phone" value="'+ data.phone +'">';
+             row +='<span id="phone-messages"></span>';
+           row +='</div>';
+
+
+           row +='<div id="nip-alert" class="form-group has-feedback">';
+             row +='<label>NIP</label>';
+             row +='<input type="text" class="form-control" name="nip" placeholder="NIP" value="'+ data.nip +'">';
+             row +='<span id="nip-messages"></span>';
+           row +='</div>';
+
+           row +='<div id="leader-name-alert" class="form-group has-feedback">';
+             row +='<label>Penanggung Jawab</label>';
+             row +='<input type="text" class="form-control" name="leader_name" placeholder="Penanggung Jawab " value="'+ data.leader_name +'">';
+             row +='<span id="leader-name-messages"></span>';
+           row +='</div>';
+
+           row +='<div id="leader-nip-alert" class="form-group has-feedback">';
+             row +='<label>NIP Penanggung Jawab</label>';
+             row +='<input type="text"   class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="'+ data.leader_nip +'">';
+             row +='<span id="leader-nip-messages"></span>';
+           row +='</div>';
+
+
+            row +='<div  class="form-group has-feedback">';
+              row +='<label>Photo </label>';
+              row +='<div  class="user-photo camera_upload">';
+                row +='<img id="user-photo" class="user-photo-'+ data.id +'" width="130" src="'+ data.photo +'" alt="'+ data.name +'">';
+                row +='<i id="addPhotos-'+ data.id +'" class="icon fa fa-camera"></i>';
+                row +='<input id="AddFiles-'+ data.id +'" type="file" name="upload_photo" style="display:none">';
+              row +='</div>';
+            row +='</div>';
+
+        row +='</div>';  
+
+        row +='<div class="modal-footer">'; 
+          row +='<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>'; 
+
+          row +='<button id="btn-update" type="button" class="btn btn-primary">Update</button>'; 
+          row +='<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>'; 
+        row +='</div>'; 
+      row +='</form>';    
+
+           $('#listProfile').html(row);
+
+           $("#addPhotos-"+ data.id).click(()=> {
+               $("#AddFiles-"+ data.id).trigger("click");
+            
+            });
+
+            $("#AddFiles-"+ data.id).change((event)=> {     
+            
+            const files = event.target.files
+              let filename = files[0].name
+              const fileReader = new FileReader()
+              fileReader.addEventListener('load', () => {
+
+                if(files[0].name.toUpperCase().includes(".PNG"))
+                {
+                    photo = fileReader.result;
+                    $('.user-photo-'+ data.id).attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPEG")){
+                    photo = fileReader.result;
+                    $('.user-photo-'+ data.id).attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPG")){
+                    photo = fileReader.result;
+                    $('.user-photo-'+ data.id).attr("src", photo);
+                }else{
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Tipe file tidak diizinkan!',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+                  });  
+                } 
+
+
+               
+
+                  
+              })
+              fileReader.readAsDataURL(files[0])
+
+             }); 
+
+
+          $("#btn-update").click(() => {
           $("#btn-update").hide();
           $("#load-update").show();
 
-          var data = $("#FormSubmit").serializeArray();
-         
+          var data = $("#FormUpdate").serializeArray();
+          console.log(data)
           var form = {
             'username': username,
             'daerah_id': daerah_id,
@@ -149,109 +256,7 @@
           });
         });
 
-
-        function GetFormModal(data)
-        {
-          var row ='';
- 
-            
-
-              row +='<div id="username-alert" class="form-group has-feedback">';
-             row +='<label>Username</label>';
-             row +='<input type="text" disabled class="form-control" name="username" placeholder="Username" value="'+ data.username +'">';
-             row +='<span id="username-messages"></span>';
-           row +='</div>';
-
-           row +='<div id="name-alert" class="form-group has-feedback">';
-             row +='<label>Name</label>';
-             row +='<input type="text" class="form-control" name="name" placeholder="Name" value="'+ data.name +'">';
-             row +='<span id="name-messages"></span>';
-           row +='</div>';
-
-
-           row +='<div id="email-alert" class="form-group has-feedback">';
-             row +='<label>Email</label>';
-             row +='<input type="email" class="form-control" name="email" placeholder="email" value="'+ data.email +'">';
-             row +='<span id="email-messages"></span>';
-           row +='</div>';
-
-           row +='<div id="phone-alert" class="form-group has-feedback">';
-             row +='<label>Phone</label>';
-             row +='<input type="number" min="0" oninput="this.value = Math.abs(this.value)"  class="form-control" name="phone" placeholder="phone" value="'+ data.phone +'">';
-             row +='<span id="phone-messages"></span>';
-           row +='</div>';
-
-
-           row +='<div id="nip-alert" class="form-group has-feedback">';
-             row +='<label>NIP</label>';
-             row +='<input type="number" min="0" oninput="this.value = Math.abs(this.value)"  class="form-control" name="nip" placeholder="NIP" value="'+ data.nip +'">';
-             row +='<span id="nip-messages"></span>';
-           row +='</div>';
-
-           row +='<div id="leader-name-alert" class="form-group has-feedback">';
-             row +='<label>Penanggung Jawab</label>';
-             row +='<input type="text" class="form-control" name="leader_name" placeholder="Penanggung Jawab " value="'+ data.leader_name +'">';
-             row +='<span id="leader-name-messages"></span>';
-           row +='</div>';
-
-           row +='<div id="leader-nip-alert" class="form-group has-feedback">';
-             row +='<label>NIP Penanggung Jawab</label>';
-             row +='<input type="number" min="0" oninput="this.value = Math.abs(this.value)"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="'+ data.leader_nip +'">';
-             row +='<span id="leader-nip-messages"></span>';
-           row +='</div>';
-
-
-            row +=`<div  class="form-group has-feedback">`;
-              row +=`<label>Photo </label>`;
-              row +=`<div  class="user-photo camera_upload">`;
-                row +=`<img id="user-photo" width="130" src="`+ data.photo +`" alt="admin sidak">`;
-                row +=`<i id="addPhotos" class="icon fa fa-camera"></i>`;
-                row +=`<input id="AddFiles" type="file" name="upload_photo" style="display:none">`;
-              row +=`</div>`;
-            row +=`</div>`;
-
-           $('#listProfile').html(row);
-
-           $("#addPhotos").click(()=> {
-               $("#AddFiles").trigger("click");
-            
-            });
-
-            $("#AddFiles").change((event)=> {     
-            
-            const files = event.target.files
-              let filename = files[0].name
-              const fileReader = new FileReader()
-              fileReader.addEventListener('load', () => {
-
-                if(files[0].name.toUpperCase().includes(".PNG"))
-                {
-                    photo = fileReader.result;
-                    $('#user-photo').attr("src", photo);
-                }else if(files[0].name.toUpperCase().includes(".JPEG")){
-                    photo = fileReader.result;
-                    $('#user-photo').attr("src", photo);
-                }else if(files[0].name.toUpperCase().includes(".JPG")){
-                    photo = fileReader.result;
-                    $('#user-photo').attr("src", photo);
-                }else{
-                  Swal.fire({
-                    icon: 'info',
-                    title: 'Tipe file tidak diizinkan!',
-                    confirmButtonColor: '#000',
-                    confirmButtonText: 'OK'
-                  });  
-                } 
-
-
-               
-
-                  
-              })
-              fileReader.readAsDataURL(files[0])
-
-      }); 
-        }
+            }
 
 
 
