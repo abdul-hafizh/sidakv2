@@ -25,19 +25,15 @@ class PerencanaanController extends Controller
         );
         RequestSystemLog::CreateLog($log);  
         $with =  ['title' => $title,'template'=>'template/'.$this->template];
-        if($_COOKIE['access'] =="admin")
-        {
+        if($_COOKIE['access'] =="admin") {
             return view('template/' . $this->template . '.perencanaan.admin')->with($with);
-        }else if($_COOKIE['access'] =="pusat"){
+        } else if ($_COOKIE['access'] == "pusat") {
             return view('template/' . $this->template . '.perencanaan.pusat')->with($with);
-        }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){
+        } else if ($_COOKIE['access'] == "province") {
+            return view('template/' . $this->template . '.perencanaan.daerah')->with($with);        
+        } else if ($_COOKIE['access'] == "daerah") {
             return view('template/' . $this->template . '.perencanaan.daerah')->with($with);
-
         }    
-
-
-       
-       
     }
 
     public function add(Request $request)
