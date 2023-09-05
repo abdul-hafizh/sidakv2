@@ -305,7 +305,15 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+
+               if(item.deleted == true)
+               {
+               	  
+               	  row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+               }else{
+               	  row +=`<td><input disabled  type="checkbox"></td></td>`;	
+               }	
+               
                row +=`<td class="padding-text-table">${item.number}</td>`;
 
                row +=`<td class="padding-text-table">${item.username}</td>`;
@@ -322,9 +330,17 @@
                 row +=`<div id="FormEdit-${item.id}"></div>`;
                 row +=`</div>`;
 
-       
+                if(item.deleted == true)
+               {
+                   
+                  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                 
+               }else{
+                    row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+               	    
 
-                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                   
+               } 
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -419,7 +435,7 @@
 
 				                   row +=`<label>Phone</label>`;
 
-				                   row +=`<input type="number" class="form-control" name="phone" placeholder="phone" min="0" oninput="this.value = Math.abs(this.value)" value="`+ item.phone +`">`;
+				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone"  value="`+ item.phone +`">`;
 
 				                   row +=`<span id="phone-messages-`+ item.id +`"></span>`;
 
@@ -431,7 +447,7 @@
 
 				                   row +=`<label>NIP</label>`;
 
-				                   row +=`<input type="number" class="form-control" name="nip" placeholder="NIP" min="0" oninput="this.value = Math.abs(this.value)" value="`+ item.nip +`">`;
+				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP"  value="`+ item.nip +`">`;
 
 				                   row +=`<span id="nip-messages-`+ item.id +`"></span>`;
 
@@ -453,19 +469,18 @@
 
 				                   row +=`<label>NIP Penanggung Jawab</label>`;
 
-				                   row +=`<input type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
+				                   row +=`<input type="text"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
 				                    row +=`<span id="leader-nip-messages-`+ item.id +`"></span>`;
 
 				                 row +=`</div>`;
 
 
 				                 row +=`<div id="daerah-alert-`+ item.id +`" class="form-group has-feedback">`;
-                                 if(item.role_id == 'province')
-		                         {
-				                     row +=`<label >Provinsi</label>`;
-                                 }else{
-                                      row +=`<label >Kabupaten / Kota</label>`;
-                                 } 
+                                
+				                     
+                                 
+                                      row +=`<label id="text_label"></label>`;
+                                
 				                   row +=`<select id="daerah_id-`+ item.id +`" class="select-edit form-control"  name="daerah_id" ></select>`;
 
 				                   row +=`<span id="daerah-messages-`+ item.id +`"></span>`;
@@ -512,7 +527,7 @@
 
             $("#AddFiles").change((event)=> {     
             
-            const files = event.target.files
+              const files = event.target.files
               let filename = files[0].name
               const fileReader = new FileReader()
               fileReader.addEventListener('load', () => {
@@ -543,89 +558,57 @@
               })
               fileReader.readAsDataURL(files[0])
 
-      });
+            });
 
             
-            	if(item.role_id =='admin' || item.role_id =='pusat')
-                {
-            	   $('#daerah-alert-'+ item.id).hide();
-            	    
+        	if(item.role_id =='admin' || item.role_id =='pusat')
+            {
+        	   $('#daerah-alert-'+ item.id).hide();
+        	    
+            }else{
+               $('#daerah-alert-'+ item.id).show();
+               if(item.role_id == 'province')
+		       {		
+		            text_label = 'Provinsi';
+	                SelectProvinsi(item,text_label)
+		            $('#text_label').text(text_label);
                 }else{
-                  $('#daerah-alert-'+ item.id).show();
-                  
-                } 	
+	                text_label = 'Kabupaten / Kota';
+	                SelectKabupaten(item,text_label)
+                    $('#text_label').text(text_label);
+                }
+
+            } 	
            	
 
-             $('#role-'+ item.id).change(function() {
+            $('#role-'+ item.id).change(function() {
 	          var selectedText = $(this).find("option:selected").text();
 	              
 	            if(selectedText =='Admin' || selectedText =='Pusat')
 	            {
 	              $('#daerah-alert-'+ item.id).hide();
 	            }else{
-	              $('#daerah-alert-'+ item.id).show();
-	            }  
+                   $('#daerah-alert-'+ item.id).show();
+                   if(selectedText =='Provinsi')
+                   {
+                   	  
+		              text_label = 'Provinsi';
+		              SelectProvinsi(item,text_label);
+		              $('#text_label').text(text_label);
+		            }else if(selectedText =='Kabupaten'){
+		            	
+		               text_label = 'Kabupaten / Kota';
+		              SelectKabupaten(item,text_label);
+		              $('#text_label').text(text_label);
+		            }
+
+	            }
+
+	              
 	        });  
 
                 // Fetch data using AJAX
 			  
-
-			if(item.role_id == 'province')
-		    {		
-	            text_label = 'Provinsi';
-               
-	            $('.select-edit').select2({
-			        data: [{ id: '', text: '' }],
-			        placeholder: 'Pilih '+ text_label,
-			        ajax: {
-			            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
-			            dataType: 'json',
-			            //delay: 250, // Delay before sending the request (milliseconds)
-			            processResults: function(data) {
-			                
-			                // Transform the data to match Select2's expected format
-			                return {
-			                    results: data.map(function(item) {
-			                        return { id: item.value, text: item.text };
-			                    })
-			                };
-			            },
-			            cache: true // Cache the results to improve performance
-			        },
-			        minimumInputLength: 1 // Minimum number of characters required for a search
-			    });	
-
-        }else{
-                text_label = 'Kabupaten / Kota';
-              
-               $('.select-edit').select2({
-			        data: [{ id: '', text: '' }],
-			        placeholder: 'Pilih '+ text_label,
-			        ajax: {
-			            url: BASE_URL+'/api/select-province', // URL to your server-side endpoint
-			            dataType: 'json',
-			            //delay: 250, // Delay before sending the request (milliseconds)
-			            processResults: function(data) {
-			                
-			                // Transform the data to match Select2's expected format
-			                return {
-			                    results: data.map(function(item) {
-			                        return { id: item.value, text: item.text };
-			                    })
-			                };
-			            },
-			            cache: true // Cache the results to improve performance
-			        },
-			        minimumInputLength: 1 // Minimum number of characters required for a search
-			    });	 
-
-        }
-
-            $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
-
-          
-		     
-
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
@@ -800,6 +783,64 @@
 
        
         
+    }
+
+    function SelectProvinsi(item,text_label){
+           
+    	    $('.select-edit').select2({
+			        data: [{ id: '', text: '' }],
+			        placeholder: 'Pilih '+ text_label,
+			        ajax: {
+			            url: BASE_URL+'/api/select-province', // URL to your server-side endpoint
+			            dataType: 'json',
+			            //delay: 250, // Delay before sending the request (milliseconds)
+			            processResults: function(data) {
+			                
+			                // Transform the data to match Select2's expected format
+			                return {
+			                    results: data.map(function(item) {
+			                        return { id: item.value, text: item.text };
+			                    })
+			                };
+			            },
+			            cache: true // Cache the results to improve performance
+			        },
+			        minimumInputLength: 1 // Minimum number of characters required for a search
+			    });
+
+    	$('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
+
+          
+
+    }
+
+    function SelectKabupaten(item,text_label){
+       
+    	$('.select-edit').select2({
+			        data: [{ id: '', text: '' }],
+			        placeholder: 'Pilih '+ text_label,
+			        ajax: {
+			            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
+			            dataType: 'json',
+			            //delay: 250, // Delay before sending the request (milliseconds)
+			            processResults: function(data) {
+			                
+			                // Transform the data to match Select2's expected format
+			                return {
+			                    results: data.map(function(item) {
+			                        return { id: item.value, text: item.text };
+			                    })
+			                };
+			            },
+			            cache: true // Cache the results to improve performance
+			        },
+			        minimumInputLength: 1 // Minimum number of characters required for a search
+			    });	
+
+    	   $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
+
+          
+
     }
 
     function SelectRole(item){

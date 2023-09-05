@@ -27,11 +27,9 @@ class PerencanaanController extends Controller
         $with =  ['title' => $title,'template'=>'template/'.$this->template];
         if($_COOKIE['access'] =="admin") {
             return view('template/' . $this->template . '.perencanaan.admin')->with($with);
-        } else if ($_COOKIE['access'] == "pusat") {
+        }else if($_COOKIE['access'] =="pusat"){
             return view('template/' . $this->template . '.perencanaan.pusat')->with($with);
-        } else if ($_COOKIE['access'] == "province") {
-            return view('template/' . $this->template . '.perencanaan.daerah')->with($with);        
-        } else if ($_COOKIE['access'] == "daerah") {
+        }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){
             return view('template/' . $this->template . '.perencanaan.daerah')->with($with);
         }    
     }

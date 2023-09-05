@@ -40,14 +40,14 @@
 
           <div id="phone-alert" class="form-group has-feedback">
             <label>Phone</label>
-            <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" name="phone" placeholder="phone" value="">
+            <input type="text" class="form-control"  name="phone" placeholder="phone" value="">
             <span id="phone-messages"></span>
           </div>
 
 
           <div id="nip-alert" class="form-group has-feedback">
             <label>NIP</label>
-            <input type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-control" name="nip" placeholder="NIP" value="">
+            <input type="text" class="form-control" name="nip" placeholder="NIP" value="">
             <span id="nip-messages"></span>
           </div>
 
@@ -59,7 +59,7 @@
 
           <div id="leader-nip-alert" class="form-group has-feedback">
             <label>NIP Penanggung Jawab</label>
-            <input type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="">
+            <input type="text" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="">
             <span id="leader-nip-messages"></span>
           </div>
 
@@ -356,7 +356,7 @@
 
           if(role_id == 'province')
        { 
-           text_label = 'Provisi';
+           text_label = 'Provinsi';
            $('#text_label').text(text_label);
         $('.select').select2({
           data: [{
