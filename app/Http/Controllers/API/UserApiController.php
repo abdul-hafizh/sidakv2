@@ -9,7 +9,8 @@ use App\Models\Roles;
 use App\Http\Request\RequestUser;
 use App\Helpers\GeneralPaginate;
 use App\Http\Request\Validation\ValidationUser;
-use Yajra\DataTables\DataTables;
+// use Yajra\DataTables\DataTables;
+use App\Http\Request\RequestAuth;
 use File;
 use Auth;
 
@@ -65,21 +66,53 @@ class UserApiController extends Controller
     }
 
     public function GetUserID(){
-        $user = User::select('id','username','name','email','phone','nip','leader_name','leader_nip')->where('id',Auth::User()->id)->first();
-        return response()->json(['status'=>true,'data'=>$user,'message'=>'Get data user ID sucessfully']);
+        $user = User::select('id','username','daerah_id','name','email','phone','nip','leader_name','leader_nip','photo')->where('id',Auth::User()->id)->first();
+        
+        $data = RequestUser::getProfile($user);
+        return response()->json(['status'=>true,'data'=>$data,'message'=>'Get data user ID sucessfully']);
     }
 
     public function updateProfile(Request $request)
     {
-
+        $photo = '';
         $validation = ValidationUser::validationProfile($request);
         if($validation)
         {
           return response()->json($validation,400);  
         }else{
-           $update = RequestUser::fieldsProfile($request); 
-           $UpdateData = User::where('id',Auth::User()->id)->update($update);
-           return response()->json(['status'=>true,'message'=>'Update data sucessfully']);
+              $update = RequestUser::fieldsProfile($request);
+             if($request->photo)
+             {   
+                $slug = Auth::User()->username;
+                $source = explode(";base64,", $request->photo);
+                $extFile = explode("image/", $source[0]);
+                $extentions = $extFile[1];
+                $fileDir = '/images/profile/';
+                $image = base64_decode($source[1]);
+                $filePath = public_path() .$fileDir;
+                $photo = time() . '-' . $slug.'.'.$extentions;
+                $success = file_put_contents($filePath.$photo, $image);
+                
+                $check = User::where('username',Auth::User()->username)->first();
+                if($check)
+                { 
+                   File::delete(public_path() .$fileDir.Auth::User()->photo);
+                } 
+                $user_photo = ['photo'=> $photo];
+                $merge = array_merge($update,$user_photo);
+                
+            }else{
+                $merge = $update;
+
+            }
+     
+           
+            $UpdateData = User::where('id',Auth::User()->id)->update($merge);
+
+            $data = User::select('id','username','daerah_id','name','status','photo')->where('username',$request->username)->first();
+            $userSidebar = RequestAuth::requestSidebar($data); 
+           
+            return response()->json(['status'=>true,'user_sidebar'=>$userSidebar,'message'=>'Update data sucessfully']);
         }    
 
     }    
@@ -92,11 +125,29 @@ class UserApiController extends Controller
         {
           return response()->json($validation,400);  
         }else{
+              $insert = RequestUser::fieldsData($request,'insert');  
+            if($request->photo)
+            {   
+                $slug = $request->username;
+                $source = explode(";base64,", $request->photo);
+                $extFile = explode("image/", $source[0]);
+                $extentions = $extFile[1];
+                $fileDir = '/images/profile/';
+                $image = base64_decode($source[1]);
+                $filePath = public_path() .$fileDir;
+                $photo = time() . '-' . $slug.'.'.$extentions;
+                $success = file_put_contents($filePath.$photo, $image);
+             
+                $user_photo = ["photo"=>$photo];
+                $merge = array_merge($insert,$user_photo);
+            }else{
+                $merge = $insert;
+            }
 
             
-           $insert = RequestUser::fieldsData($request,'insert');  
+         
             //create menu
-           $saveData = User::create($insert);
+           $saveData = User::create($merge);
            $role = Roles::where('slug',$request->role_id)->first();
            if(!$role)
            {
@@ -114,15 +165,44 @@ class UserApiController extends Controller
 
      public function update($id,Request $request){
      
-        $validation = ValidationUser::validationUpdate($request);
+        $validation = ValidationUser::validationUpdate($request,$id);
         if($validation)
         {
           return response()->json($validation,400);  
         }else{
-            
-               $update = RequestUser::fieldsData($request,'update');
+           
+           
+              
+                $update = RequestUser::fieldsData($request,'update');  
+                 if($request->photo)
+                 {   
+                    $slug = $request->username;
+                    $source = explode(";base64,", $request->photo);
+                    $extFile = explode("image/", $source[0]);
+                    $extentions = $extFile[1];
+                    $fileDir = '/images/profile/';
+                    $image = base64_decode($source[1]);
+                    $filePath = public_path() .$fileDir;
+                    $photo = time() . '-' . $slug.'.'.$extentions;
+                    $success = file_put_contents($filePath.$photo, $image);
+                    
+                    $check = User::where('username',$request->username)->first();
+                    if($check)
+                    { 
+                       File::delete(public_path() .$fileDir.$check->photo);
+                    } 
+
+                    $user_photo = ["photo"=>$photo];
+                    $merge = array_merge($update,$user_photo);
+                    
+                }else{
+                    $merge = $update; 
+                }
+
+              
+             
                 //update account
-               $UpdateData = User::where('id',$id)->update($update);
+               $UpdateData = User::where('id',$id)->update($merge);
                $role = Roles::where('slug',$request->role_id)->first();
                if(!$role)
                {
@@ -136,8 +216,13 @@ class UserApiController extends Controller
                    } 
 
                     //result
-                    return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+                   return response()->json(['status'=>true,'message'=>'Update data sucessfully']);
                }
+
+                
+            
+            
+               
           
         }   
 
