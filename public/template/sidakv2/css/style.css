@@ -424,7 +424,7 @@
         padding: 5px 16px!important;
 }    
 .height-35{
-    height: 40px!important;
+    height: 34px!important;
 }
 .margin-top-bottom-20{
     margin: 20px 0px!important;
@@ -434,6 +434,7 @@
 }
 .width-25{
     width: 25%!important;
+
 }
 .width-40{
     width: 40%!important;
@@ -448,6 +449,10 @@
 
 .padding-8-0{
    padding: 8px 0px;
+}
+
+.padding-0-8{
+   padding: 0px 8px; 
 }
 
 .grup-checkbox {

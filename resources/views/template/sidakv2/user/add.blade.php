@@ -395,7 +395,7 @@
           }],
           placeholder: 'Pilih '+text_label,
           ajax: {
-            url: BASE_URL + '/api/select-daerah', // URL to your server-side endpoint
+            url: BASE_URL + '/api/select-kabupaten', // URL to your server-side endpoint
             dataType: 'json',
             //delay: 250, // Delay before sending the request (milliseconds)
             processResults: function(data) {

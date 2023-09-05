@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\RoleUser;
 use App\Models\Roles;
+use App\Models\Provinces;
+use App\Models\Regencies;
 use App\Http\Request\RequestUser;
 use App\Helpers\GeneralPaginate;
 use App\Http\Request\Validation\ValidationUser;
@@ -230,23 +232,49 @@ class UserApiController extends Controller
 
      public function search(Request $request){
         $search = $request->search;
+        $search_daerah = $request->daerah_id;
         $_res = array();
         $column_search  = array('username', 'name','email','phone');
+        
+        $province = Provinces::select('id')->where('id',$search_daerah);
+        $daerah_id = Regencies::select('id')->union($province)->where('province_id',$search_daerah)->get();
 
-        $i = 0;
-        $query  = User::orderBy('id','DESC');
-        foreach ($column_search as $item)
+        if($search == '')
         {
-            if ($search) 
-            {                
-                if ($i === 0) {   
-                   $query->where($item,'LIKE','%'.$search.'%');
-                } else {
-                   $query->orWhere($item,'LIKE','%'.$search.'%');
-                }   
-            }
-            $i++;
-        }
+             $query  = User::whereIn('daerah_id',$daerah_id)->orderBy('id','DESC');
+        }else{
+
+            $i = 0;
+            $query  = User::orderBy('id','DESC');
+            foreach ($column_search as $item)
+            {
+                if ($search) 
+                {    if($search_daerah)
+                     {
+                        if ($i === 0) {   
+                           $query->where($item,'LIKE','%'.$search.'%')->whereIn('daerah_id',$daerah_id);
+                        } else {
+                           $query->orWhere($item,'LIKE','%'.$search.'%')->whereIn('daerah_id',$daerah_id);
+                        } 
+                    }else{
+
+                        if ($i === 0) {   
+                           $query->where($item,'LIKE','%'.$search.'%');
+                        } else {
+                           $query->orWhere($item,'LIKE','%'.$search.'%');
+                        } 
+
+                    }      
+                }
+                $i++;
+            }   
+             
+
+
+
+        } 
+
+        
        
         $data = $query->paginate($this->perPage);
         $description = $search;

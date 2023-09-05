@@ -2,14 +2,22 @@
 @section('content')
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
-        <div class="pull-right width-25">
-            <div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
-				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
-				</span>
-			</div>
-        </div> 	
+       
+        <div class="pull-right width-50">
+        	 <div class="pull-left width-50 padding-0-8">
+			    		<select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi / Kabupaten"></select>
+	        </div>
+	         <div class="pull-left width-50">
+	         	
+	            <div class="input-group input-group-sm border-radius-20">
+					<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
+					<span class="input-group-btn">
+					<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+					</span>
+				</div>
+	        </div>
+	         	
+        </div>	
     </div> 	
 
 	<div class="col-sm-4 pull-left padding-default full">
@@ -107,6 +115,67 @@
     const total = 0;
     var text_label = '';
     var photo = '';
+    var daerah_id = '';
+    var search = '';
+
+    $.ajax({
+        url: BASE_URL +'/api/select-daerah',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Populate SelectPicker options using received data
+            $.each(data, function(index, option) {
+                $('#daerah_id').append($('<option>', {
+                  value: option.value,
+                  text: option.text
+                }));
+            });
+
+            // Refresh the SelectPicker to apply the new options
+            $('#daerah_id').selectpicker('refresh');
+        },
+        error: function(error) {
+            console.error(error);
+        }
+    });
+
+    
+    $('#daerah_id').on('change', function() {
+       var value = $(this).val();         
+            if(value)
+            {   
+            	 var per_page = $('#row_page').val();
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+                  daerah_id = $('#daerah_id').val();
+
+                  if(daerah_id !='')
+                  {
+                  	var url = BASE_URL + `/api/user/search?page=${page}&per_page=${per_page}`;
+                  	var method = 'POST';
+                  }	
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data:{'search':search,'daerah_id':daerah_id},
+                    success: function(response) {
+                    	list = response.data;
+                        resultTotal(response.total);
+                        updateContent(response.data);
+                        updatePagination(response.current_page, response.last_page);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+
+    }); 	
 
     $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -213,9 +282,9 @@
 
 
     $('#Search').click( () => {
- 		 let search = $('#search-input').val();
+ 		 search = $('#search-input').val();
  		 
- 		 if(search)
+ 		 if(search !='' || daerah_id !='')
  		 { 	
 	 		 const content = $('#content');
         	 content.empty();
@@ -224,7 +293,7 @@
               content.append(row);
 	         $.ajax({
 	            url: BASE_URL + `/api/user/search?page=${page}&per_page=${itemsPerPage}`,
-	            data:{'search':search},
+	            data:{'search':search,'daerah_id':daerah_id},
 	            method: 'POST',
 	            success: function(response) {
 	            	list = response.data;
@@ -275,9 +344,19 @@
               row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 
+         if(daerah_id)
+         {
+            var url = BASE_URL + `/api/user/search?page=${page}&per_page=${itemsPerPage}`;
+            var method = 'POST';
+         }else{
+           var url = BASE_URL+ `/api/user?page=${page}&per_page=${itemsPerPage}`;
+           var method = 'GET';
+         } 	
+
         $.ajax({
-            url: BASE_URL+ `/api/user?page=${page}&per_page=${itemsPerPage}`,
-            method: 'GET',
+            url: url,
+            method: method,
+            data:{'search':search,'daerah_id':daerah_id},
             success: function(response) {
             	list = response.data;
             	resultTotal(response.total);
@@ -820,7 +899,7 @@
 			        data: [{ id: '', text: '' }],
 			        placeholder: 'Pilih '+ text_label,
 			        ajax: {
-			            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
+			            url: BASE_URL+'/api/select-kabupaten', // URL to your server-side endpoint
 			            dataType: 'json',
 			            //delay: 250, // Delay before sending the request (milliseconds)
 			            processResults: function(data) {
