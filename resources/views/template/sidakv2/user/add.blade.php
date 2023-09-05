@@ -40,14 +40,14 @@
 
           <div id="phone-alert" class="form-group has-feedback">
             <label>Phone</label>
-            <input type="text" class="form-control" name="phone" placeholder="phone" value="">
+            <input type="number" class="form-control" min="0" oninput="this.value = Math.abs(this.value)" name="phone" placeholder="phone" value="">
             <span id="phone-messages"></span>
           </div>
 
 
           <div id="nip-alert" class="form-group has-feedback">
             <label>NIP</label>
-            <input type="text" class="form-control" name="nip" placeholder="NIP" value="">
+            <input type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-control" name="nip" placeholder="NIP" value="">
             <span id="nip-messages"></span>
           </div>
 
@@ -59,14 +59,14 @@
 
           <div id="leader-nip-alert" class="form-group has-feedback">
             <label>NIP Penanggung Jawab</label>
-            <input type="text" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="">
+            <input type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="">
             <span id="leader-nip-messages"></span>
           </div>
 
          
 
           <div id="daerah-alert" class="form-group has-feedback">
-            <label>Daerah </label>
+            <label id="text_label"> </label>
             <select id="daerah_id" class="select form-control" name="daerah_id">
             </select>
             <span id="daerah-messages"></span>
@@ -88,6 +88,16 @@
             <span id="password-confirmation-messages"></span>
           </div>
 
+
+            <div  class="form-group has-feedback">
+              <label>Photo </label>
+              <div  class="user-photo camera_upload">
+                <img id="user-photo" width="130" src="{{ url('template/sidakv2/img/user.png') }}" alt="admin sidak">
+                <i id="addPhotos" class="icon fa fa-camera"></i>
+                <input id="AddFiles" type="file" name="upload_photo" style="display:none">
+              </div>
+            </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -102,43 +112,67 @@
 
     <script type="text/javascript">
       $(function() {
+        var role_id = ''; 
+        var text_label = '';
+        var photo = '';
+        $('#daerah-alert').hide(); 
         $('#role_id').change(function() {
-          var selectedText = $(this).find("option:selected").text();
-            
+           selectedText = $(this).find("option:selected").text();
+            role_id = $('#role_id').val(); 
+
             if(selectedText =='Admin' || selectedText =='Pusat')
             {
               $('#daerah-alert').hide();
             }else{
               $('#daerah-alert').show();
             }  
-        });  
+             
+             selectDaerah();
 
-        $('.select').select2({
-          data: [{
-            id: '',
-            text: ''
-          }],
-          placeholder: 'Pilih Daerah',
-          ajax: {
-            url: BASE_URL + '/api/select-daerah', // URL to your server-side endpoint
-            dataType: 'json',
-            //delay: 250, // Delay before sending the request (milliseconds)
-            processResults: function(data) {
-
-              // Transform the data to match Select2's expected format
-              return {
-                results: data.map(function(item) {
-                  return {
-                    id: item.value,
-                    text: item.text
-                  };
-                })
-              };
-            },
-            cache: true // Cache the results to improve performance
-          },
-          minimumInputLength: 1 // Minimum number of characters required for a search
         });
+
+         $("#addPhotos").click(()=> {
+             $("#AddFiles").trigger("click");
+            
+          });
+
+         $("#AddFiles").change((event)=> {     
+            
+            const files = event.target.files
+              let filename = files[0].name
+              const fileReader = new FileReader()
+              fileReader.addEventListener('load', () => {
+
+                if(files[0].name.toUpperCase().includes(".PNG"))
+                {
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPEG")){
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPG")){
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else{
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Tipe file tidak diizinkan!',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+                  });  
+                } 
+
+
+               
+
+                  
+              })
+              fileReader.readAsDataURL(files[0])
+
+      });
+
+          
+       
 
         $('.select2').on('select2:select', function(e) {
           var selectedOption = e.params.data;
@@ -184,6 +218,7 @@
           $("#load-simpan").show();
 
           var data = $("#FormSubmit").serializeArray();
+          
           var form = {
             'role_id': data[0].value,
             'username': data[1].value,
@@ -196,6 +231,7 @@
             'daerah_id': data[8].value,
             'password': data[9].value,
             'password_confirmation': data[10].value,
+            'photo':photo,
           };
           $.ajax({
             type: "POST",
@@ -315,6 +351,74 @@
             }
           });
         });
+
+        function selectDaerah(){
+
+          if(role_id == 'province')
+       { 
+           text_label = 'Provisi';
+           $('#text_label').text(text_label);
+        $('.select').select2({
+          data: [{
+            id: '',
+            text: ''
+          }],
+          placeholder: 'Pilih '+text_label,
+          ajax: {
+            url: BASE_URL + '/api/select-province', // URL to your server-side endpoint
+            dataType: 'json',
+            //delay: 250, // Delay before sending the request (milliseconds)
+            processResults: function(data) {
+
+              // Transform the data to match Select2's expected format
+              return {
+                results: data.map(function(item) {
+                  return {
+                    id: item.value,
+                    text: item.text
+                  };
+                })
+              };
+            },
+            cache: true // Cache the results to improve performance
+          },
+          minimumInputLength: 1 // Minimum number of characters required for a search
+        });
+
+      }else{
+        text_label = 'Kabupaten / Kota';
+        $('#text_label').text(text_label);
+         $('.select').select2({
+          data: [{
+            id: '',
+            text: ''
+          }],
+          placeholder: 'Pilih '+text_label,
+          ajax: {
+            url: BASE_URL + '/api/select-daerah', // URL to your server-side endpoint
+            dataType: 'json',
+            //delay: 250, // Delay before sending the request (milliseconds)
+            processResults: function(data) {
+
+              // Transform the data to match Select2's expected format
+              return {
+                results: data.map(function(item) {
+                  return {
+                    id: item.value,
+                    text: item.text
+                  };
+                })
+              };
+            },
+            cache: true // Cache the results to improve performance
+          },
+          minimumInputLength: 1 // Minimum number of characters required for a search
+        });
+
+
+      }  
+
+        }
 
       });
     </script>

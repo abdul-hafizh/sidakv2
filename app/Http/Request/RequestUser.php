@@ -10,6 +10,7 @@ use App\Models\Roles;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestRoles;
 use App\Http\Request\RequestDaerah;
+use App\Models\Perencanaan;
 class RequestUser 
 {
    
@@ -49,7 +50,7 @@ class RequestUser
             $temp[$key]['daerah_id'] = $val->daerah_id;
             $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $temp[$key]['role_id'] = RequestRoles::GetRoleWhere($val->id,'name');
-            
+            $temp[$key]['deleted'] = RequestUser::checkValidate($val->daerah_id);
             $temp[$key]['username'] = $val->username;
             $temp[$key]['email'] = $val->email;
             $temp[$key]['phone'] = $val->phone;
@@ -77,6 +78,45 @@ class RequestUser
 
    }
 
+   public static function checkValidate($daerah_id){
+
+       $data = Perencanaan::where('daerah_id',$daerah_id)->count();
+       if($data > 0)
+       {
+          $result = true;
+       }else{
+          $result = false;
+       } 
+
+       return $result;
+  }
+
+
+   public static function getProfile($data)
+   {
+        $template = RequestSettingApps::AppsTemplate();
+        if($data->photo =="")
+        {
+            $photo = url('/template/'.$template.'/img/user.png');
+        }else{
+            $photo = url('/images/profile/'.$data->photo);
+        }  
+
+       $temp = array();
+       $temp['id'] = $data->id;
+       $temp['username'] = $data->username;
+       $temp['daerah_id'] = $data->daerah_id;
+       $temp['name'] = $data->name;
+       $temp['email'] = $data->email;
+       $temp['phone'] = $data->phone;
+       $temp['nip'] = $data->nip;
+       $temp['leader_name'] = $data->leader_name;
+       $temp['leader_nip'] = $data->leader_nip;
+       $temp['photo'] = $photo;
+
+       return $temp;
+   }
+
    
    
 
@@ -101,13 +141,19 @@ class RequestUser
             'leader_nip'     => $request->leader_nip,
             'daerah_id'     => $daerah_id,
             'status' =>'Y',
+            
             'created_by' => $request->username,
             'created_at' => date('Y-m-d H:i:s'),
         ];
 
+        
+
+       
+
+
        if($type =="insert")
        {
-            $fieldsPassword = ['username'  => $request->username,'password'  => bcrypt($request->password),];
+            $fieldsPassword = ['username'  => $request->username,'password'  => bcrypt($request->password)];
             return array_merge($fields,$fieldsPassword);
        }else{
             return $fields;
@@ -118,7 +164,7 @@ class RequestUser
 
     public static function fieldsProfile($request)
    {
-       
+
     
         $fields = [    
             'name'  => $request->name,
@@ -128,8 +174,11 @@ class RequestUser
             'leader_name'     => $request->leader_name,
             'leader_nip'     => $request->leader_nip,
             'created_by' => $request->username,
+
             'updated_at' => date('Y-m-d H:i:s'),
          ];
+
+        
 
 
         return $fields;

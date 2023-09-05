@@ -79,6 +79,50 @@ class RequestAuth
 
     }
 
+
+    public static function requestSidebar($data)
+    {
+       
+
+        $template = RequestSettingApps::AppsTemplate();
+        if($data->photo =="")
+        {
+            $photo = url('/template/'.$template.'/img/user.png');
+        }else{
+            $photo = url('/images/profile/'.$data->photo);
+        }
+
+        if($data->status =="Y")
+        {
+            $status = 'Aktif';
+        }
+
+        if($data->name !="")
+        {
+           $name = $data->name;
+        }else{
+           $name = 'Default'; 
+        }    
+
+        $province = DB::table('provinces')->select('id as daerah_id','name as daerah_name')->where('id',$data->daerah_id);
+        $regency = DB::table('regencies')->select('id as daerah_id','name as daerah_name')->union($province)->where('id',$data->daerah_id)->orderBy('daerah_id','ASC')->first();
+
+        
+        if($data->daerah_id !=0)
+        {
+             $user = array('id'=>$data->id,'username'=>$data->username,'fullname'=>$name,'daerah_name'=>$regency->daerah_name,'status'=>$status,'photo'=>$photo);
+        }else{
+             $user = array('id'=>$data->id,'username'=>$data->username,'fullname'=>$name,'daerah_name'=>'Admin','status'=>$status,'photo'=>$photo);
+        } 
+
+        
+
+        return  $user ;     
+
+    }
+
+   
+
     public static function UpdateUserSidebar($file)
     {
        

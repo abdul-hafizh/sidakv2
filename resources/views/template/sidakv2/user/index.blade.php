@@ -67,6 +67,7 @@
 						<tr>
 							<th><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							
 							<th><div class="split-table"></div><span class="span-title"> Username </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Nama </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Email </span></th>
@@ -104,6 +105,8 @@
     let page = 1;
     var list = [];
     const total = 0;
+    var text_label = '';
+    var photo = '';
 
     $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -304,6 +307,7 @@
              row +=`<tr>`;
                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
                row +=`<td class="padding-text-table">${item.number}</td>`;
+
                row +=`<td class="padding-text-table">${item.username}</td>`;
                row +=`<td class="padding-text-table">${item.name}</td>`;
                row +=`<td class="padding-text-table">${item.email}</td>`;
@@ -312,7 +316,7 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button id="Edit"  data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
                 row +=`<div id="FormEdit-${item.id}"></div>`;
@@ -348,14 +352,15 @@
            $('#delete-selected').prop("disabled", true);
          } 	
    		});
-
+        
 
         
 
  		$( "#content" ).on( "click", "#Edit", (e) => {
              
-            let index = e.currentTarget.dataset.param_id;
-            const item = list[index];
+            let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id === id); 
+            SelectRole(item);
 
 		    // Event handler when an item is selected
 		    $('.select-edit').on('select-edit:select', function(e) {
@@ -414,7 +419,7 @@
 
 				                   row +=`<label>Phone</label>`;
 
-				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone" value="`+ item.phone +`">`;
+				                   row +=`<input type="number" class="form-control" name="phone" placeholder="phone" min="0" oninput="this.value = Math.abs(this.value)" value="`+ item.phone +`">`;
 
 				                   row +=`<span id="phone-messages-`+ item.id +`"></span>`;
 
@@ -426,7 +431,7 @@
 
 				                   row +=`<label>NIP</label>`;
 
-				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP" value="`+ item.nip +`">`;
+				                   row +=`<input type="number" class="form-control" name="nip" placeholder="NIP" min="0" oninput="this.value = Math.abs(this.value)" value="`+ item.nip +`">`;
 
 				                   row +=`<span id="nip-messages-`+ item.id +`"></span>`;
 
@@ -448,20 +453,32 @@
 
 				                   row +=`<label>NIP Penanggung Jawab</label>`;
 
-				                   row +=`<input type="text" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
+				                   row +=`<input type="number" min="0" oninput="this.value = Math.abs(this.value)" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
 				                    row +=`<span id="leader-nip-messages-`+ item.id +`"></span>`;
 
 				                 row +=`</div>`;
 
 
 				                 row +=`<div id="daerah-alert-`+ item.id +`" class="form-group has-feedback">`;
-
-				                     row +=`<label>Daerah </label>`;
-
+                                 if(item.role_id == 'province')
+		                         {
+				                     row +=`<label >Provinsi</label>`;
+                                 }else{
+                                      row +=`<label >Kabupaten / Kota</label>`;
+                                 } 
 				                   row +=`<select id="daerah_id-`+ item.id +`" class="select-edit form-control"  name="daerah_id" ></select>`;
 
 				                   row +=`<span id="daerah-messages-`+ item.id +`"></span>`;
 				                 row +=`</div>`;
+
+				                 row +=`<div  class="form-group has-feedback">`;
+					              row +=`<label>Photo </label>`;
+					              row +=`<div  class="user-photo camera_upload">`;
+					                row +=`<img id="user-photo" width="130" src="`+ item.photo +`" alt="admin sidak">`;
+					                row +=`<i id="addPhotos" class="icon fa fa-camera"></i>`;
+					                row +=`<input id="AddFiles" type="file" name="upload_photo" style="display:none">`;
+					              row +=`</div>`;
+					            row +=`</div>`;
 
 				                
 
@@ -472,7 +489,7 @@
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
-						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
+						            row +=`<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
      						</div>`;
 						    row +=`</div>`;
 
@@ -485,16 +502,59 @@
           
 
             $('#FormEdit-'+ item.id).html(row);
-
+           
            // let role = $('#role-'+ item.id).val();
-            if(item.role_id !='admin' || item.role_id !='pusat')
-            {
-            	$('#daerah-alert-'+ item.id).hide();
-            	$('#daerah_id-'+ item.id).val(0);
-            }else{
-            	
-            	$('#daerah-alert-'+ item.id).show();
-            } 	
+
+            $("#addPhotos").click(()=> {
+               $("#AddFiles").trigger("click");
+            
+            });
+
+            $("#AddFiles").change((event)=> {     
+            
+            const files = event.target.files
+              let filename = files[0].name
+              const fileReader = new FileReader()
+              fileReader.addEventListener('load', () => {
+
+                if(files[0].name.toUpperCase().includes(".PNG"))
+                {
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPEG")){
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPG")){
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else{
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Tipe file tidak diizinkan!',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+                  });  
+                } 
+
+
+               
+
+                  
+              })
+              fileReader.readAsDataURL(files[0])
+
+      });
+
+            
+            	if(item.role_id =='admin' || item.role_id =='pusat')
+                {
+            	   $('#daerah-alert-'+ item.id).hide();
+            	    
+                }else{
+                  $('#daerah-alert-'+ item.id).show();
+                  
+                } 	
+           	
 
              $('#role-'+ item.id).change(function() {
 	          var selectedText = $(this).find("option:selected").text();
@@ -508,56 +568,58 @@
 	        });  
 
                 // Fetch data using AJAX
-			  $.ajax({
-			    url: BASE_URL +'/api/select-role',
-			    method: 'GET',
-			    dataType: 'json',
-			    success: function(data) {
-			      var select =  $('#role-'+item.id)
+			  
 
-			     // Clear existing options
-			     //select.empty();
+			if(item.role_id == 'province')
+		    {		
+	            text_label = 'Provinsi';
+               
+	            $('.select-edit').select2({
+			        data: [{ id: '', text: '' }],
+			        placeholder: 'Pilih '+ text_label,
+			        ajax: {
+			            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
+			            dataType: 'json',
+			            //delay: 250, // Delay before sending the request (milliseconds)
+			            processResults: function(data) {
+			                
+			                // Transform the data to match Select2's expected format
+			                return {
+			                    results: data.map(function(item) {
+			                        return { id: item.value, text: item.text };
+			                    })
+			                };
+			            },
+			            cache: true // Cache the results to improve performance
+			        },
+			        minimumInputLength: 1 // Minimum number of characters required for a search
+			    });	
 
-			      // Populate options from the received data
-			      $.each(data, function(index, option) {
-			        select.append($('<option>', {
-			          value: option.value,
-			          text: option.text
-			        }));
-			      });
+        }else{
+                text_label = 'Kabupaten / Kota';
+              
+               $('.select-edit').select2({
+			        data: [{ id: '', text: '' }],
+			        placeholder: 'Pilih '+ text_label,
+			        ajax: {
+			            url: BASE_URL+'/api/select-province', // URL to your server-side endpoint
+			            dataType: 'json',
+			            //delay: 250, // Delay before sending the request (milliseconds)
+			            processResults: function(data) {
+			                
+			                // Transform the data to match Select2's expected format
+			                return {
+			                    results: data.map(function(item) {
+			                        return { id: item.value, text: item.text };
+			                    })
+			                };
+			            },
+			            cache: true // Cache the results to improve performance
+			        },
+			        minimumInputLength: 1 // Minimum number of characters required for a search
+			    });	 
 
-			     // Set a specific option as selected
-			       var selectedValue = item.role_id;
-			       select.val(selectedValue);
-			      // Refresh the SelectPicker
-			      select.selectpicker('refresh');
-
-			    },
-			    error: function() {
-			      console.error('Failed to fetch data.');
-			    }
-			  });
-           
-            $('.select-edit').select2({
-		        data: [{ id: '', text: '' }],
-		        placeholder: 'Pilih Daerah',
-		        ajax: {
-		            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
-		            dataType: 'json',
-		            //delay: 250, // Delay before sending the request (milliseconds)
-		            processResults: function(data) {
-		                
-		                // Transform the data to match Select2's expected format
-		                return {
-		                    results: data.map(function(item) {
-		                        return { id: item.value, text: item.text };
-		                    })
-		                };
-		            },
-		            cache: true // Cache the results to improve performance
-		        },
-		        minimumInputLength: 1 // Minimum number of characters required for a search
-		    });	
+        }
 
             $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
 
@@ -567,22 +629,28 @@
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
+		          let find = list.find(o => o.id === id); 
+          
+
+
 	              var data = $("#FormSubmit-"+ id).serializeArray();
 	              $("#update").hide();
-	              $("#load-simpan").show();
+	              $("#load-update").show();
 
-	              console.log(data);
-	              
+	             
+	                
 		          var form = {
-		              'role_id':data[0].value,
+		          	  
+                      'role_id':data[0].value, 
 		              'name':data[1].value,
 		              'email':data[2].value,
 		              'phone':data[3].value,
 		              'nip':data[4].value,
 		              'leader_name':data[5].value,
 		              'leader_nip':data[6].value,
-		              'daerah_id':data[7].value,
-		              
+		              'daerah_id':find.daerah_id,
+                      'photo':photo, 
+                      'username':find.username,		   
 		          };
 
 
@@ -594,6 +662,7 @@
 			            cache: false,
 			            dataType: "json",
 			            success: (respons) =>{
+
 			                   Swal.fire({
 			                        title: 'Sukses!',
 			                        text: 'Berhasil Diupdate',
@@ -611,8 +680,9 @@
 			            },
 			            error: (respons)=>{
 			                errors = respons.responseJSON;
+			                SelectRole(find);
 			                 $("#update").show();
-			                 $("#load-simpan").hide();
+			                 $("#load-update").hide();
  
 			                if(errors.messages.name)
 			                {
@@ -730,6 +800,40 @@
 
        
         
+    }
+
+    function SelectRole(item){
+
+    	$.ajax({
+			    url: BASE_URL +'/api/select-role',
+			    method: 'GET',
+			    dataType: 'json',
+			    success: function(data) {
+			      var select =  $('#role-'+item.id)
+
+			     // Clear existing options
+			     //select.empty();
+
+			      // Populate options from the received data
+			      $.each(data, function(index, option) {
+			        select.append($('<option>', {
+			          value: option.value,
+			          text: option.text
+			        }));
+			      });
+
+			     // Set a specific option as selected
+			       var selectedValue = item.role_id;
+			       select.val(selectedValue);
+			      // Refresh the SelectPicker
+			      select.selectpicker('refresh');
+
+			    },
+			    error: function() {
+			      console.error('Failed to fetch data.');
+			    }
+			  });
+
     }
 
     function deleteItem(id){

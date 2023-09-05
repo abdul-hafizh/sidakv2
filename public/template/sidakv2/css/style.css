@@ -801,6 +801,19 @@
   resize: none;
 }
 
+#user-photo{
+     border: 1px solid #ddd;
+    border-radius: 65px; 
+    width: 130px;
+    height: 130px;
+}
+
+.user-photo{
+    width: 23%!important;
+   
+}
+
+
 
 .title-menu-sub{
   padding: 12px 94px 12px 32px;

@@ -1,5 +1,5 @@
 <!-- Modal -->
-<div id="modal-profile" class="modal fade" role="dialog">
+<div id="modal-profile-x" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -17,8 +17,8 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
-          <button id="simpan" type="button" class="btn btn-primary">Update</button>
-          <button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
+          <button id="btn-update" type="button" class="btn btn-primary">Update</button>
+          <button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
         </div>
     </div>
 
@@ -27,8 +27,9 @@
 
     <script type="text/javascript">
       $(function() {
-        
-
+       var photo = '';
+       var username = '';
+       var daerah_id = '';
        $.ajax({
             url: BASE_URL +'/api/user/profile',
             method: 'GET',
@@ -36,26 +37,30 @@
             success: function(response) {
                
                GetFormModal(response.data);
+               username = response.data.username;
+               daerah_id = response.data.daerah_id;
             },
             error: function(error) {
             console.error(error);
             }
         });
         
-        $("#simpan").click(() => {
-          $("#simpan").hide();
-          $("#load-simpan").show();
+        $("#btn-update").click(() => {
+          $("#btn-update").hide();
+          $("#load-update").show();
 
           var data = $("#FormSubmit").serializeArray();
          
           var form = {
-           
+            'username': username,
+            'daerah_id': daerah_id,
             'name': data[0].value,
             'email': data[1].value,
             'phone': data[2].value,
             'nip': data[3].value,
             'leader_name': data[4].value,
             'leader_nip': data[5].value,
+            'photo':photo,
             
           };
           $.ajax({
@@ -65,6 +70,9 @@
             cache: false,
             dataType: "json",
             success: (respons) => {
+              
+              localStorage.setItem('user_sidebar', JSON.stringify(respons.user_sidebar));
+
               Swal.fire({
                 title: 'Sukses!',
                 text: 'Berhasil Diupdate',
@@ -82,8 +90,8 @@
             },
             error: (respons) => {
               var errors = respons.responseJSON;
-              $("#simpan").show();
-              $("#load-simpan").hide();
+              $("#btn-update").show();
+              $("#load-update").hide();
               
 
               if (errors.messages.name) {
@@ -169,14 +177,14 @@
 
            row +='<div id="phone-alert" class="form-group has-feedback">';
              row +='<label>Phone</label>';
-             row +='<input type="text" class="form-control" name="phone" placeholder="phone" value="'+ data.phone +'">';
+             row +='<input type="number" min="0" oninput="this.value = Math.abs(this.value)"  class="form-control" name="phone" placeholder="phone" value="'+ data.phone +'">';
              row +='<span id="phone-messages"></span>';
            row +='</div>';
 
 
            row +='<div id="nip-alert" class="form-group has-feedback">';
              row +='<label>NIP</label>';
-             row +='<input type="text" class="form-control" name="nip" placeholder="NIP" value="'+ data.nip +'">';
+             row +='<input type="number" min="0" oninput="this.value = Math.abs(this.value)"  class="form-control" name="nip" placeholder="NIP" value="'+ data.nip +'">';
              row +='<span id="nip-messages"></span>';
            row +='</div>';
 
@@ -188,14 +196,65 @@
 
            row +='<div id="leader-nip-alert" class="form-group has-feedback">';
              row +='<label>NIP Penanggung Jawab</label>';
-             row +='<input type="text" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="'+ data.leader_nip +'">';
+             row +='<input type="number" min="0" oninput="this.value = Math.abs(this.value)"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="'+ data.leader_nip +'">';
              row +='<span id="leader-nip-messages"></span>';
            row +='</div>';
 
+
+            row +=`<div  class="form-group has-feedback">`;
+              row +=`<label>Photo </label>`;
+              row +=`<div  class="user-photo camera_upload">`;
+                row +=`<img id="user-photo" width="130" src="`+ data.photo +`" alt="admin sidak">`;
+                row +=`<i id="addPhotos" class="icon fa fa-camera"></i>`;
+                row +=`<input id="AddFiles" type="file" name="upload_photo" style="display:none">`;
+              row +=`</div>`;
+            row +=`</div>`;
+
            $('#listProfile').html(row);
 
+           $("#addPhotos").click(()=> {
+               $("#AddFiles").trigger("click");
+            
+            });
 
+            $("#AddFiles").change((event)=> {     
+            
+            const files = event.target.files
+              let filename = files[0].name
+              const fileReader = new FileReader()
+              fileReader.addEventListener('load', () => {
+
+                if(files[0].name.toUpperCase().includes(".PNG"))
+                {
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPEG")){
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPG")){
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else{
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Tipe file tidak diizinkan!',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+                  });  
+                } 
+
+
+               
+
+                  
+              })
+              fileReader.readAsDataURL(files[0])
+
+      }); 
         }
+
+
+
 
       });
 
