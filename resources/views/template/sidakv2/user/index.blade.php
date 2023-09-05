@@ -435,7 +435,7 @@
 
 				                   row +=`<label>Phone</label>`;
 
-				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone"  value="`+ item.phone +`">`;
+				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="`+ item.phone +`">`;
 
 				                   row +=`<span id="phone-messages-`+ item.id +`"></span>`;
 
@@ -447,7 +447,7 @@
 
 				                   row +=`<label>NIP</label>`;
 
-				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP"  value="`+ item.nip +`">`;
+				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP"  oninput="this.value = this.value.replace(/[^0-9.]/g, '')" value="`+ item.nip +`">`;
 
 				                   row +=`<span id="nip-messages-`+ item.id +`"></span>`;
 
@@ -469,7 +469,7 @@
 
 				                   row +=`<label>NIP Penanggung Jawab</label>`;
 
-				                   row +=`<input type="text"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
+				                   row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
 				                    row +=`<span id="leader-nip-messages-`+ item.id +`"></span>`;
 
 				                 row +=`</div>`;

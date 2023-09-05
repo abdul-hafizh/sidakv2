@@ -66,14 +66,14 @@
 
            row +='<div id="phone-alert" class="form-group has-feedback">';
              row +='<label>Phone</label>';
-             row +='<input type="text"   class="form-control" name="phone" placeholder="phone" value="'+ data.phone +'">';
+             row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  class="form-control" name="phone" placeholder="phone" value="`+ data.phone +`">`;
              row +='<span id="phone-messages"></span>';
            row +='</div>';
 
 
            row +='<div id="nip-alert" class="form-group has-feedback">';
              row +='<label>NIP</label>';
-             row +='<input type="text" class="form-control" name="nip" placeholder="NIP" value="'+ data.nip +'">';
+             row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')" class="form-control" name="nip" placeholder="NIP" value="`+ data.nip +`">`;
              row +='<span id="nip-messages"></span>';
            row +='</div>';
 
@@ -85,7 +85,7 @@
 
            row +='<div id="leader-nip-alert" class="form-group has-feedback">';
              row +='<label>NIP Penanggung Jawab</label>';
-             row +='<input type="text"   class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="'+ data.leader_nip +'">';
+             row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ data.leader_nip +`">`;
              row +='<span id="leader-nip-messages"></span>';
            row +='</div>';
 
