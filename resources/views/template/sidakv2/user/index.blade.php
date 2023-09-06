@@ -40,7 +40,14 @@
 			</div>
 
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+				<button type="button" id="printButton"  class="btn btn-info border-radius-10">
+					 Print
+				</button>
+			</div>
+
+
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
 					 Refresh
 				</button>
 			</div>
@@ -98,7 +105,7 @@
 	    </div>
 	</div>
      @include('template/sidakv2/user.add')
-
+     @include('template/sidakv2/user.print', $data)
      <script type="text/javascript">
  
 
@@ -117,6 +124,10 @@
     var photo = '';
     var daerah_id = '';
     var search = '';
+
+     $("#printButton").click(function() {
+	    PrintData();
+	  });
 
     $.ajax({
         url: BASE_URL +'/api/select-daerah',
@@ -969,6 +980,21 @@
 		        console.error('Error deleting items:', error);
 		    }
 		});
+
+    }
+
+    function PrintData()
+    {
+    	var dt = new Date();
+       var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+	  var table = document.getElementById("myTable");
+	  var ws = XLSX.utils.table_to_sheet(table);
+	  var wb = XLSX.utils.book_new();
+	  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+	  XLSX.writeFile(wb, "Repot-data-user-"+ time +".xlsx");
 
     }
 

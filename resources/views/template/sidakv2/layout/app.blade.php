@@ -13,7 +13,7 @@
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="description" content="">
     <meta name="author" content="">
-
+    
     <meta name="csrf-token" content="{{ Session::token() }}">
     <title> {{ config('app.name') }} | {{ $title  }}</title>
     <script type="text/javascript">
@@ -131,7 +131,7 @@
     <script src="{{ config('app.url').$template.'/plugin/select2/js/select2.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/plugin/selectpicker/js/bootstrap-select.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/accounting.min.js' }}"></script>
-
+    <script src="{{ config('app.url').$template.'/plugin/excel/js/dist_xlsx.full.min.js' }}"></script>
     
 
 

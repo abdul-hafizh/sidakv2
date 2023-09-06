@@ -15,7 +15,7 @@ use App\Http\Request\Validation\ValidationUser;
 use App\Http\Request\RequestAuth;
 use File;
 use Auth;
-
+use DB;
 class UserApiController extends Controller
 {
 
@@ -41,6 +41,8 @@ class UserApiController extends Controller
          $result = RequestUser::GetDataAll($data,$request->per_page,$request);
          return response()->json($result);
     }
+
+    
 
 
      public function register(Request $request)

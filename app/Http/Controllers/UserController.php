@@ -30,12 +30,16 @@ class UserController extends Controller
             'url'=>'user'
         );
         RequestSystemLog::CreateLog($log);
+
+        $query = User::select('id','username','daerah_id','name','email','phone','nip','leader_name','leader_nip','status','created_at')->orderBy('created_at', 'DESC')->get();
+        $result = RequestUser::GetDataPrint($query);
        
 
         return view('template/' . $this->template . '.user.index')
         ->with(
             [
               'title' =>  $title,
+              'data' => $result,
               'template'=>'template/'.$this->template
             ]);
     }
