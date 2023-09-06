@@ -17,6 +17,8 @@ class Periode extends Model
         'slug',
         'semester',
         'year',
+        'startdate',
+        'enddate',
         'status',
         'created_by'
        

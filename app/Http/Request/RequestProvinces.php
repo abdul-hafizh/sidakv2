@@ -48,16 +48,33 @@ class RequestProvinces
     return $result;
   }
 
-  
+  public static function GetDataPrint($data){
+
+          
+
+        $i = 1;    
+        foreach ($data as $key => $val)
+        { 
+            
+            $temp[$key]['number'] = $i;
+            $temp[$key]['id'] = $val->id;
+            $temp[$key]['name'] = $val->name;
+            $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
+
+            $i++;
+        }  
+
+        return json_decode(json_encode($temp), FALSE);
+   }
 
 
 
 
   public static function fieldsData($request)
   {
-    $uuid = Str::uuid()->toString();
+    //$uuid = Str::uuid()->toString();
     $fields = [
-      'id' => $uuid,
+      'id' =>  $request->id,
       'name'  =>  $request->name,
       'created_by' => Auth::User()->username,
       'created_at' => date('Y-m-d H:i:s'),

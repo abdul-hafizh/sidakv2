@@ -31,7 +31,13 @@
 			</div>
 
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+				<button type="button" id="printButton"  class="btn btn-info border-radius-10">
+					 Print
+				</button>
+			</div>
+
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
 					 Refresh
 				</button>
 			</div>
@@ -64,7 +70,9 @@
 						<tr>
 							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
-							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
+							<th><div class="split-table"></div> <span class="span-title"> Kode Provinsi </span></th>
+							
+							<th><div class="split-table"></div> <span class="span-title"> Nama Provinsi</span></th>
 							
 							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
@@ -83,7 +91,7 @@
 	    </div>
 	</div>
      @include('template/sidakv2/province.add')
-
+      @include('template/sidakv2/province.print', $data)
 <script type="text/javascript">
 
  $(document).ready(function() {
@@ -97,6 +105,11 @@
     let page = 1;
     var list = [];
     const total = 0;
+
+    $("#printButton").click(function() {
+	    PrintData();
+	  });
+
 
     $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -272,8 +285,17 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" ${item.deleted} data-id="${item.id}"  type="checkbox"></td></td>`;
+              
+               if(item.deleted == true)
+               {
+
+               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+
+               }else{
+               	  row +=`<td><input disabled  type="checkbox"></td></td>`;	
+               }
                row +=`<td class="padding-text-table">${item.number}</td>`;
+               row +=`<td class="padding-text-table">${item.id}</td>`;
                row +=`<td class="padding-text-table">${item.name}</td>`;
        
                row +=`<td>`; 
@@ -287,9 +309,14 @@
                 row +=`</div>`;
 
 
-       
+               if(item.deleted == true)
+               {
 
                 row +=`<button id="Destroy" data-placement="top" ${item.deleted} data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+            }else{
+
+            	 row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+            }
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -337,16 +364,24 @@
 
 				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
 					        row +=`<div class="modal-body">`;
+
+
+					            row +=`<div id="kode-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                row +=`<label>Kode Provinsi</label>`;
+
+				                row +=`<input type="text" class="form-control" name="id" placeholder="Kode Provinsi" value="`+ item.id +`" oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
+				                  <span id="kode-messages-`+ item.id +`"></span>`;
+
+				                row +=`</div>`;
                                
                                  
-				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                row +=`<label>Nama Provinsi</label>`;
 
-				                  row +=`<label>Nama</label>`;
-
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
+				                row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
 				                  <span id="name-messages-`+ item.id +`"></span>`;
 
-				                 row +=`</div>`;
+				                row +=`</div>`;
 
 				                
 
@@ -375,7 +410,7 @@
 	              $("#update").hide();
 	              $("#load-simpan").show();
 	              
-		          var form = {'name':data[0].value};
+		          var form = {'id':data[0].value,'name':data[1].value};
 
 
 
@@ -395,7 +430,7 @@
 			                    }).then((result) => {
 			                        if (result.isConfirmed) {
 			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/province');
+			                            window.location.replace('/provinsi');
 			                        }
 			                    });
 
@@ -405,6 +440,16 @@
 			                errors = respons.responseJSON;
 			                $("#update").show();
 			                $("#load-simpan").hide();
+
+
+			               if(errors.messages.id)
+			                {
+			                     $('#kode-alert-'+id).addClass('has-error');
+			                     $('#kode-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.id +'</strong>');
+			                }else{
+			                    $('#kode-alert-'+id).removeClass('has-error');
+			                    $('#kode-messages-'+id).removeClass('help-block').html('');
+			                }
  
 			                if(errors.messages.name)
 			                {
@@ -431,63 +476,6 @@
 
 
 
-
-        $( ".modal-content" ).on( "click", "#update", (e) => {
-		          let id = e.currentTarget.dataset.param_id;
-	              var data = $("#FormSubmit-"+ id).serializeArray();
-	             
-		          var form = {
-		              
-		              'name':data[0].value
-		              
-		            
-		            
-		          };
-
-
-
-					$.ajax({
-			            type:"PUT",
-			            url: BASE_URL+'/api/province/'+ id,
-			            data:form,
-			            cache: false,
-			            dataType: "json",
-			            success: (respons) =>{
-			                   Swal.fire({
-			                        title: 'Sukses!',
-			                        text: 'Berhasil Diupdate',
-			                        icon: 'success',
-			                        confirmButtonText: 'OK'
-			                        
-			                    }).then((result) => {
-			                        if (result.isConfirmed) {
-			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/province');
-			                        }
-			                    });
-
-			                   //
-			            },
-			            error: (respons)=>{
-			                errors = respons.responseJSON;
-			                
-			               
-
-			                if(errors.messages.name)
-			                {
-			                     $('#name-alert').addClass('has-error');
-			                     $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
-			                }else{
-			                    $('#name-alert').removeClass('has-error');
-			                    $('#name-messages').removeClass('help-block').html('');
-			                }
-
-			                
-			            }
-			          });
- 
-		        
-	    }); 
 
 
         $( "#content" ).on( "click", "#Destroy", (e) => {
@@ -560,6 +548,21 @@
 		        console.error('Error deleting items:', error);
 		    }
 		});
+
+    }
+
+     function PrintData()
+    {
+    	var dt = new Date();
+       var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+	  var table = document.getElementById("myTable");
+	  var ws = XLSX.utils.table_to_sheet(table);
+	  var wb = XLSX.utils.book_new();
+	  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+	  XLSX.writeFile(wb, "Repot-data-provinsi-"+ time +".xlsx");
 
     }
 

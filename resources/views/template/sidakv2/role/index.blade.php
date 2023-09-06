@@ -31,7 +31,7 @@
 			</div>
 
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
 					 Refresh
 				</button>
 			</div>

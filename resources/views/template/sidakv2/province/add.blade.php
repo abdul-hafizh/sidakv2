@@ -14,11 +14,15 @@
       <div class="modal-body">
         
            
-
+              <div id="kode-alert-add" class="form-group has-feedback" >
+              <label>Kode Provinsi</label>
+              <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"  name="id" placeholder="Kode Provinsi" value="">
+              <span id="kode-messages-add"></span>
+            </div> 
                
 
             <div id="name-alert-add" class="form-group has-feedback" >
-              <label>Nama</label>
+              <label>Nama Provinsi</label>
               <input type="text" class="form-control" name="name" placeholder="Nama" value="">
               <span id="name-messages-add"></span>
             </div>
@@ -53,8 +57,8 @@
 
           var data = $("#FormSubmit").serializeArray();
           var form = {
-              'name':data[0].value
-             
+              'id':data[0].value,
+              'name':data[1].value
           };
 
 
@@ -74,7 +78,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // User clicked "Yes, proceed!" button
-                            window.location.replace('/province');
+                            window.location.replace('/provinsi');
                         }
                     });
 
@@ -83,7 +87,14 @@
             error: (respons)=>{
                 errors = respons.responseJSON;
                 
-               
+                if(errors.messages.id)
+                {
+                     $('#kode-alert-add').addClass('has-error');
+                     $('#kode-messages-add').addClass('help-block').html('<strong>'+ errors.messages.id +'</strong>');
+                }else{
+                    $('#kode-alert-add').removeClass('has-error');
+                    $('#kode-messages-add').removeClass('help-block').html('');
+                }
 
                 if(errors.messages.name)
                 {

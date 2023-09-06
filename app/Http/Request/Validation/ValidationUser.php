@@ -99,9 +99,9 @@ class ValidationUser
         $fields = [
            
             'name'  => 'Nama',
-            // 'email'  => 'Email',
-            // 'phone'  => 'No Telp',
-            // 'nip'  => 'NIP',
+            'email'  => 'Email',
+            'phone'  => 'No Telp',
+            'nip'  => 'NIP',
             'leader_name'  => 'Penanggung Jawab',
             'leader_nip'=>'NIP Penanggung Jawab',
             'daerah_id'  => 'Daerah',

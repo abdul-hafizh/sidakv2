@@ -1,5 +1,5 @@
 
-<table id="myTable">
+<table id="myTable" style="display:none;">
   <thead>
    <tr>
 		<th><b>No</b></th>

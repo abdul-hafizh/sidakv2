@@ -278,7 +278,12 @@ class UserApiController extends Controller
 
         
        
-        $data = $query->paginate($this->perPage);
+        if($request->per_page !='all')
+        {
+           $data = $query->paginate($request->per_page);
+        }else{   
+           $data = $query->get(); 
+        } 
         $description = $search;
         $result = RequestUser::GetDataAll($data,$this->perPage,$request);
         return response()->json($result);

@@ -197,9 +197,9 @@
                  let row = ``;
                  row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
                   content.append(row);
-                  let search = $('#search-input').val();
+                 
 
-                  if(search !='')
+                  if(search !='' || daerah_id !='')
                   {
                   	var url = BASE_URL + `/api/user/search?page=${page}&per_page=${value}`;
                   	var method = 'POST';
@@ -211,7 +211,7 @@
                 $.ajax({
                     url: url,
                     method: method,
-                    data:{'search':search},
+                    data:{'search':search,'daerah_id':daerah_id},
                     success: function(response) {
                     	list = response.data;
                         resultTotal(response.total);

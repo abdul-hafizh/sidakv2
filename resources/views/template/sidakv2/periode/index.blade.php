@@ -31,7 +31,13 @@
 			</div>
 
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+				<button type="button" id="printButton"  class="btn btn-info border-radius-10">
+					 Print
+				</button>
+			</div>
+
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
 					 Refresh
 				</button>
 			</div>
@@ -66,6 +72,8 @@
 							<th><div class="split-table"></div><span class="span-title"> Nama </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Semester </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Tahun </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Tanggal Mulai </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Tanggal Berahir </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Status </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Aksi </span></th> 
 							
@@ -85,7 +93,7 @@
 	    </div>
 	</div>
      @include('template/sidakv2/periode.add')
-
+     @include('template/sidakv2/periode.print', $data)
 <script type="text/javascript">
 
  $(document).ready(function() {
@@ -98,6 +106,10 @@
     let page = 1;
     var list = [];
     const total = 0;
+
+     $("#printButton").click(function() {
+	    PrintData();
+	  });
 
     $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -266,7 +278,7 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-             if(item.deleted == false)
+             if(item.deleted == true)
              {
              	 row +=`<td><input  class="item-checkbox"  data-id="${item.id}"  type="checkbox"></td></td>`;
              }else{
@@ -277,11 +289,13 @@
                row +=`<td>${item.name}</td>`;
                row +=`<td>${item.semester}</td>`;
                row +=`<td>${item.year}</td>`;
+               row +=`<td>${item.startdate_convert}</td>`;
+               row +=`<td>${item.enddate_convert}</td>`;
                row +=`<td>${item.status.status_convert}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button  id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button  id="Edit"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
@@ -289,13 +303,13 @@
                 row +=`</div>`;
 
 
-                if(item.deleted == false)
+                if(item.deleted == true)
                 {   
 
                 	row +=`<button  id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
 	            }else{
-                   row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-default"><i class="fa fa-trash" ></i></button>`;
+                   row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 	            }
 
                 row +=`</div>`;
@@ -328,9 +342,9 @@
 
         $( "#content" ).on( "click", "#Edit", (e) => {
              
-            let index = e.currentTarget.dataset.param_id;
-            const item = list[index];
-          
+            let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id === id); 
+           
             
             let row = ``;
             row +=`<div class="modal-dialog">`;
@@ -365,9 +379,27 @@
 
 					            row +=`<div id="year-alert-`+ item.id +`" class="form-group has-feedback" >`;
 					              row +=`<label>Tahun</label>`;
-					              row +=`<input type="text" class="form-control" name="year" placeholder="Year" value="`+ item.year +`">`;
+					              row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Year" value="`+ item.year +`">`;
 					              row +=`<span id="year-messages-`+ item.id +`"></span>`;
 					            row +=`</div>`;
+
+                                 row +=`<div id="startdate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Tanggal Mulai</label>`;
+				                  row +=`<input type="date" class="form-control" name="startdate" placeholder="Tanggal Mulai" value="`+ item.startdate +`">
+				                  <span id="startdate-messages-`+ item.id +`"></span>`;
+				                  row +=`</div>`;
+
+
+				                    row +=`<div id="enddate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Tanggal Berahir</label>`;
+				                  row +=`<input type="date" class="form-control" name="enddate" placeholder="Tanggal Berahir" value="`+ item.enddate +`">
+				                  <span id="enddate-messages-`+ item.id +`"></span>`;
+				                  row +=`</div>`;
+
+
+				                 
 
 
 			                    row +=`<div class="radio">`;
@@ -428,7 +460,14 @@
 	              $("#update").hide();
 	              $("#load-simpan").show();
 	              
-		          var form = {'name':data[0].value,'semester':data[1].value,'year':data[2].value,'status':data[3].value};
+		          var form = {
+		          	     'name':data[0].value,
+		          	     'semester':data[1].value,
+		          	     'year':data[2].value,
+		          	     'startdate':data[3].value,
+		          	     'enddate':data[4].value,
+		          	     'status':data[5].value
+		          	    };
 
 
 
@@ -484,6 +523,24 @@
 			                }else{
 			                    $('#year-alert-'+id).removeClass('has-error');
 			                    $('#year-messages-'+id).removeClass('help-block').html('');
+			                }
+
+			                if(errors.messages.startdate)
+			                {
+			                     $('#startdate-alert-'+id).addClass('has-error');
+			                     $('#startdate-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.startdate +'</strong>');
+			                }else{
+			                    $('#startdate-alert-'+id).removeClass('has-error');
+			                    $('#startdate-messages-'+id).removeClass('help-block').html('');
+			                }
+
+			                if(errors.messages.enddate)
+			                {
+			                     $('#enddate-alert-'+id).addClass('has-error');
+			                     $('#enddate-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.enddate +'</strong>');
+			                }else{
+			                    $('#enddate-alert-'+id).removeClass('has-error');
+			                    $('#enddate-messages-'+id).removeClass('help-block').html('');
 			                }
 
 			                
@@ -570,6 +627,21 @@
 		        console.error('Error deleting items:', error);
 		    }
 		});
+
+    }
+
+     function PrintData()
+    {
+    	var dt = new Date();
+       var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+	  var table = document.getElementById("myTable");
+	  var ws = XLSX.utils.table_to_sheet(table);
+	  var wb = XLSX.utils.book_new();
+	  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+	  XLSX.writeFile(wb, "Repot-data-periode-"+ time +".xlsx");
 
     }
 

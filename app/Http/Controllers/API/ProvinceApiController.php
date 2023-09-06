@@ -37,7 +37,7 @@ class ProvinceApiController extends Controller
     public function store(Request $request)
     {
 
-        $validation = ValidationProvinces::validation($request);
+        $validation = ValidationProvinces::validationInsert($request);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
@@ -75,9 +75,14 @@ class ProvinceApiController extends Controller
             $i++;
         }
 
-        $Data = $query->paginate($this->perPage);
+        if($request->per_page !='all')
+        {
+           $data = $query->paginate($request->per_page);
+        }else{   
+           $data = $query->get(); 
+        } 
         $description = $search;
-        $_res = RequestProvinces::GetDataAll($Data, $this->perPage, $request);
+        $_res = RequestProvinces::GetDataAll($data, $this->perPage, $request);
 
 
         return response()->json($_res);
@@ -92,7 +97,7 @@ class ProvinceApiController extends Controller
     public function update($id, Request $request)
     {
 
-        $validation = ValidationProvinces::validation($request);
+        $validation = ValidationProvinces::validationUpdate($request,$id);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
