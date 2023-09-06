@@ -46,7 +46,14 @@ class PerencanaanApiController extends Controller
 
     public function edit($id)
     { 
-        $data = Perencanaan::where('id',$id)->first();
+        $data = Perencanaan::leftJoin('pagu_target', function($join) {
+            $join->on('perencanaan.periode_id', '=', 'pagu_target.periode_id')
+                 ->on('perencanaan.daerah_id', '=', 'pagu_target.daerah_id');
+        })
+        ->select('perencanaan.*', 'pagu_target.pagu_apbn', 'pagu_target.pagu_promosi', 'pagu_target.target_pengawasan', 'pagu_target.target_penyelesaian_permasalahan', 'pagu_target.target_bimbingan_teknis', 'pagu_target.target_video_promosi', 'pagu_target.pagu_dalak')
+        ->where('perencanaan.id', $id)
+        ->first();        
+
         $result = RequestPerencanaan::GetDetailID($data); 
         return response()->json($result);
     }
