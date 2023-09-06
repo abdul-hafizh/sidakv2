@@ -78,6 +78,36 @@ class RequestUser
 
    }
 
+   public static function GetDataPrint($data){
+
+          
+
+        $i = 1;    
+        foreach ($data as $key => $val)
+        { 
+            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "NonAktif"; }
+            $temp[$key]['number'] = $i;
+          
+            $temp[$key]['id'] = $val->id;
+            $temp[$key]['username'] = $val->username;
+            $temp[$key]['name'] = $val->name;
+            $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+            $temp[$key]['role'] = RequestRoles::GetRoleWhere($val->id,'name');
+            $temp[$key]['email'] = $val->email;
+            $temp[$key]['phone'] = $val->phone;
+            $temp[$key]['nip'] = $val->nip;
+            $temp[$key]['leader_nip'] = $val->leader_nip;
+            $temp[$key]['leader_name'] = $val->leader_name;
+            $temp[$key]['status'] = $status;
+          
+            $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
+
+            $i++;
+        }  
+
+        return json_decode(json_encode($temp), FALSE);
+   }
+
    public static function checkValidate($username){
 
        $data = Perencanaan::where('created_by',$username)->count();
