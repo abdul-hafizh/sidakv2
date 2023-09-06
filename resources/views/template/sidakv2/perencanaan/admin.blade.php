@@ -119,7 +119,7 @@
       
 
         $.ajax({
-            url: BASE_URL +'/api/perencanaan/periode',
+            url: BASE_URL +'/api/select-periode?type=GET',
             method: 'GET',
             dataType: 'json',
             success: function(data) {

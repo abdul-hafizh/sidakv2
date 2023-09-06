@@ -77,12 +77,12 @@ class RequestPerencanaan
        $temp['id'] = $data->id;
        $temp['periode_id'] = $data->periode_id;
        $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
-       $temp['pagu_apbn'] = RequestPeriode::getDetailPagu($data->periode_id,'APBN');
-       $temp['pagu_promosi'] = RequestPeriode::getDetailPagu($data->periode_id,'promosi');
+       $temp['pagu_apbn'] = GeneralHelpers::formatRupiah($data->pagu_apbn);
+       $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->pagu_promosi);
 
-       $temp['target_pengawasan'] = RequestPeriode::getDetailPagu($data->periode_id,'pengawasan');
-       $temp['target_bimtek'] = RequestPeriode::getDetailPagu($data->periode_id,'bimtek');
-       $temp['target_penyelesaian'] = RequestPeriode::getDetailPagu($data->periode_id,'penyelesaian');
+       $temp['target_pengawasan'] = $data->target_pengawasan;
+       $temp['target_bimtek'] = $data->target_bimbingan_teknis;
+       $temp['target_penyelesaian'] = $data->target_penyelesaian_permasalahan;
 
        $temp['pengawas_analisa_target'] = $data->pengawas_analisa_target;
        $temp['pengawas_analisa_pagu'] = $data->pengawas_analisa_pagu;
@@ -92,11 +92,8 @@ class RequestPerencanaan
        $temp['pengawas_evaluasi_pagu'] = $data->pengawas_evaluasi_pagu;
        
        $temp['total_target_pengawasan'] = $data->pengawas_analisa_target + $data->pengawas_inspeksi_target + $data->pengawas_evaluasi_target;
-       
        $temp['total_pagu_pengawasan'] = $data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu;
        $temp['total_pagu_pengawasan_convert'] = GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu);
-
-
        
        $temp['bimtek_perizinan_target'] = $data->bimtek_perizinan_target;
        $temp['bimtek_perizinan_pagu'] = $data->bimtek_perizinan_pagu;

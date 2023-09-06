@@ -251,13 +251,8 @@
                 row +=`<td>`; 
                     row +=`<div class="btn-group">`;
                     row +=`<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
-                
-                     row +=`<button id="Detail" data-param_id="${item.id}"  type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                 
+                    row +=`<button id="Detail" data-param_id="${item.id}"  type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
                     row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
-
-                 
-                   
                     row +=`</div>`;
                     row +=`</td>`;
                 row +=`</tr>`; 

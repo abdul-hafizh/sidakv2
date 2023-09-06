@@ -43,7 +43,8 @@ class PeriodeApiController extends Controller
       
         $query =  DB::table('periode as a')
             ->select('a.id','a.slug', 'a.year','c.pagu_apbn','c.pagu_promosi','c.target_pengawasan','c.target_bimbingan_teknis','c.target_penyelesaian_permasalahan')
-            ->where('a.status', 'Y');
+            ->where('a.status', 'Y')
+            ->where('c.daerah_id', Auth::User()->daerah_id);
         if($request->type =='POST')
         {    
             $query->whereNotIn(
