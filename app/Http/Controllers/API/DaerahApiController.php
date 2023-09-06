@@ -16,14 +16,23 @@ class DaerahApiController extends Controller
     }
 
   
-    public  function listProvince()
-    {
+    // public  function listProvince()
+    // {
 
-        $data = RequestDaerah::GetProvinceID();
-        return response()->json($data);
-    }
+    //     $data = RequestDaerah::GetProvinceID();
+    //     return response()->json($data);
+    // }
        
     public  function listAllDaerah(Request $request)
+    {
+        
+        $province = Provinces::select('id as value','name as text');
+        $regency = Regencies::select('id as value','name as text')->union($province)->orderBy('value','ASC')->get();
+       
+        return response()->json($regency);
+    }
+
+    public  function listAllKabupaten(Request $request)
     {
         if($request->term)
         {

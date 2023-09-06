@@ -9,13 +9,13 @@ use DB;
 
 class RequestDaerah
 {
-    public static function GetProvinceID()
-    {
+    // public static function GetProvinceID()
+    // {
        
-        $province = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
+    //     $province = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
 
-        return $province;
-    }
+    //     return $province;
+    // }
 
      public static function GetDaerahID()
     {
@@ -34,16 +34,21 @@ class RequestDaerah
 
      public static function GetDaerahWhereName($id)
     {
-       
-        $province = DB::table('provinces as a')->select('a.name');
-        $regency = DB::table('regencies as b')->select('b.name')->where('b.id',$id)->union($province)->first();
-        if($id !=0)
-        {
-           $result = $regency->name;
-        }else{
-           $result =  '';   
-        }    
+        $result = array();
+        $province = DB::table('provinces')->select('name')->where('id',$id)->first();
+        if($province){
+           $result = $province->name;
 
+        }else{
+             $regency = DB::table('regencies')->select('name')->where('id',$id)->first();
+             if($regency)
+             {
+                $result = $regency->name;
+
+             }
+        }
+
+   
         return $result;
     }
 
