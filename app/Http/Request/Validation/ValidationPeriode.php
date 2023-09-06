@@ -12,6 +12,8 @@ class ValidationPeriode
             'name'  => 'Nama',
             'semester'  => 'Semester',
             'year'  => 'Tahun',
+            'startdate'  => 'Tanggal Mulai',
+            'enddate'  => 'Tanggal Berahir',
            
         ];
 
@@ -20,6 +22,8 @@ class ValidationPeriode
             'name'  => 'required|max:255',
             'semester'  => 'required|max:10',
             'year'  => 'required|max:10',
+            'startdate'  => 'required',
+            'enddate'  => 'required',  
         ]);
 
         $validator->setAttributeNames($fields); 
@@ -37,6 +41,14 @@ class ValidationPeriode
 
             if($errors->has('year')){
                 $err['messages']['year'] = $errors->first('year');
+            }
+
+            if($errors->has('startdate')){
+                $err['messages']['startdate'] = $errors->first('startdate');
+            }
+
+             if($errors->has('enddate')){
+                $err['messages']['enddate'] = $errors->first('enddate');
             }
 
             return $err;

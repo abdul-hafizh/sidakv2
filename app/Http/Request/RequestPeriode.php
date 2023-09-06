@@ -25,7 +25,7 @@ class RequestPeriode
       }  
       foreach ($data as $key => $val)
       {
-         if ($val->status == 'A') {
+         if ($val->status == 'Y') {
             $status = 'Aktif';
          } else {
             $status = 'Non Aktif';
@@ -36,8 +36,13 @@ class RequestPeriode
          $temp[$key]['name'] = $val->name;
          $temp[$key]['semester'] = $val->semester;
          $temp[$key]['year'] = $val->year;
+         $temp[$key]['startdate'] = $val->startdate;
+         $temp[$key]['enddate'] = $val->enddate;
+
+         $temp[$key]['startdate_convert'] = GeneralHelpers::formatDate($val->startdate);
+         $temp[$key]['enddate_convert'] = GeneralHelpers::formatDate($val->enddate);
          $temp[$key]['slug'] = $val->slug;
-         $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->slug);
+         $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->year);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
 
       }
@@ -55,6 +60,32 @@ class RequestPeriode
 
        return $result; 
 
+   }
+
+   public static function GetDataPrint($data){
+
+          
+
+        $i = 1;    
+        foreach ($data as $key => $val)
+        { 
+            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "NonAktif"; }
+            $temp[$key]['number'] = $i;
+          
+            $temp[$key]['id'] = $val->id;
+            $temp[$key]['name'] = $val->name;
+            $temp[$key]['slug'] = $val->slug;
+            $temp[$key]['semester'] = $val->semester;
+            $temp[$key]['year'] = $val->year;
+            $temp[$key]['startdate'] = GeneralHelpers::formatExcel($val->startdate);
+            $temp[$key]['enddate'] = GeneralHelpers::formatExcel($val->enddate);
+            $temp[$key]['status'] = $status;
+            $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
+
+            $i++;
+        }  
+
+        return json_decode(json_encode($temp), FALSE);
    }
 
    public static function SelectAll($data,$type)
@@ -93,12 +124,12 @@ class RequestPeriode
 
    public static function checkValidate($slug){
 
-       $data = Perencanaan::where('periode_id',$slug)->first();
+       $data = Perencanaan::where(DB::raw("LEFT(periode_id,4)"), $slug)->first();
        if($data)
        {
-          $result = 'disabled';
+          $result = false;
        }else{
-          $result = '';
+          $result = true;
        } 
 
        return $result;
@@ -171,6 +202,8 @@ class RequestPeriode
          'slug' =>  $request->year.$request->semester,
          'semester' => $request->semester,
          'year' => $request->year,
+         'startdate' => $request->startdate,
+         'enddate' => $request->enddate,
          'status' => $request->status,
          'created_by' => Auth::User()->username,
          'created_at' => date('Y-m-d H:i:s'),

@@ -191,6 +191,60 @@ class GeneralHelpers
     return $hasil_rupiah;
  
 }
+    
+    public static function formatDate($tanggal=null, $time=true, $day=true) 
+    {   
+
+        $date = strtotime($tanggal);
+        $tgl =date('d', $date);
+        $bln =date('m', $date);
+        $thn =date('Y', $date);
+
+        switch($bln){       
+            case 1 :
+                $bln='Januari';
+                break;
+            case 2 :
+                $bln='Februari';
+                break;
+            case 3 :
+                $bln='Maret';
+                break;
+            case 4 :
+                $bln='April';
+                break;
+            case 5 :
+                $bln='Mei';
+                break;
+            case 6 :
+                $bln="Juni";
+                break;
+            case 7 :
+                $bln='Juli';
+                break;
+            case 8 :
+                $bln='Agustus';
+                break;
+            case 9 :
+                $bln='September';
+                break;
+            case 10 :
+                $bln='Oktober';
+                break;      
+            case 11 :
+                $bln='November';
+                break;
+            case 12 :
+                $bln='Desember';
+                break;
+            default:
+                $bln='UnKnown';
+                break;
+        }
+          
+        $format = $tgl." ".$bln." ".$thn;
+        return $format;
+    }
 
     public static function formatExcel($tgl, $hari_tampil = true)
     {

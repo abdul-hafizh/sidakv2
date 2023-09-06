@@ -40,14 +40,14 @@
 
           <div id="phone-alert" class="form-group has-feedback">
             <label>Phone</label>
-            <input type="text" class="form-control"  oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  name="phone" placeholder="phone" value="">
+            <input type="text" class="form-control"  oninput="this.value = this.value.replace(/[^0-9.]/g, '');"  name="phone" placeholder="phone" value="">
             <span id="phone-messages"></span>
           </div>
 
 
           <div id="nip-alert" class="form-group has-feedback">
             <label>NIP</label>
-            <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="nip" placeholder="NIP" value="">
+            <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" name="nip" placeholder="NIP" value="">
             <span id="nip-messages"></span>
           </div>
 
@@ -59,7 +59,7 @@
 
           <div id="leader-nip-alert" class="form-group has-feedback">
             <label>NIP Penanggung Jawab</label>
-            <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" name="leader_nip" placeholder="NIP Penanggung Jawab" value="">
+            <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" name="leader_nip" placeholder="NIP Penanggung Jawab" value="">
             <span id="leader-nip-messages"></span>
           </div>
 
