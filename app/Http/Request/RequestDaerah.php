@@ -34,7 +34,7 @@ class RequestDaerah
 
      public static function GetDaerahWhereName($id)
     {
-        $result = array();
+        $result = '';
         $province = DB::table('provinces')->select('name')->where('id',$id)->first();
         if($province){
            $result = $province->name;

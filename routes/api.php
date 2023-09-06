@@ -47,7 +47,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::post('user/photo', [AuthApiController::class, 'updatePhoto']);
-
+   
    
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
 
@@ -67,10 +67,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('user/search', [UserApiController::class, 'search']);
     Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
     Route::delete('user/{id}', [UserApiController::class, 'delete']);
-
+ 
     Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     Route::post('user/update', [UserApiController::class, 'updateProfile']);
-
+    
 
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
     Route::get('pengawasan/datalist', [PengawasanApiController::class, 'jsonData']);
