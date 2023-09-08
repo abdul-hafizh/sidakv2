@@ -3,11 +3,39 @@
     color: #a94442;
 }
 
+@keyframes blink {
+    0% {
+        visibility: hidden;
+    }
+    50% {
+        visibility: visible;
+    }
+    100% {
+        visibility: hidden;
+    }
+}
+
+.blinking-text {
+    animation: blink 1s step-end infinite;
+}
+
 .form-group.has-error .form-control {
     border-color: #dd4b39!important;
     box-shadow: none;
 }
 
+.text-capitalize{
+    text-transform: capitalize;
+}
+
+.loading-position{
+        margin: 89px 0px;
+    font-size: 14px;
+}
+
+.text-center{
+    text-align: center;
+}
 
 .modal-body {
     padding: 15px 15px 0px!important;
@@ -22,12 +50,79 @@
 .pd-left-right-15{
     padding: 0px 15px 0 15px!important;
 }
+.pd-top-bottom-15{
+ padding: 15px 0px;
+}
+.pd-top-bottom-5{
+ padding: 5px 0px;
+}
+
+.pd-top-bottom-6{
+ padding: 6px 0px;
+}
+
+.mrg-left-10{
+    margin: 0px 0px 0px 10px;
+}
+   
+
+.label-header-box{
+    padding: 4px 0px;
+    top: 2px;
+    
+}
+
+
+.camera_upload {
+    display: block;
+    position: relative;
+    cursor: pointer
+}
+
+.camera_upload .icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 1em;
+    height: 1em;
+    color: #fff;
+    font-size: 2em;
+    text-shadow: 0 0 3px #464646;
+    opacity: 0
+}
+
+.camera_upload:hover img {
+    opacity: .6
+}
+
+.camera_upload:hover .icon {
+    opacity: 1
+}
+
+.align-right{
+   text-align: right; 
+}
+
+.align-left{
+   text-align: left; 
+}
+
 .col-12 {
     flex: 0 0 100%;
     max-width: 100%;
 }
 
+.navbar-custom-menu .navbar-nav>li>a {
+     padding: 6px 12px!important; 
 
+    
+}
+.label-black {
+    background-color: #000000 !important;
+}
 .mc-10{
     margin-left: 10px;
     margin-right: 10px;
@@ -345,7 +440,7 @@
         padding: 5px 16px!important;
 }    
 .height-35{
-    height: 40px!important;
+    height: 34px!important;
 }
 .margin-top-bottom-20{
     margin: 20px 0px!important;
@@ -355,6 +450,7 @@
 }
 .width-25{
     width: 25%!important;
+
 }
 .width-40{
     width: 40%!important;
@@ -369,6 +465,10 @@
 
 .padding-8-0{
    padding: 8px 0px;
+}
+
+.padding-0-8{
+   padding: 0px 8px; 
 }
 
 .grup-checkbox {
@@ -722,6 +822,19 @@
   resize: none;
 }
 
+#user-photo{
+     border: 1px solid #ddd;
+    border-radius: 65px; 
+    width: 130px;
+    height: 130px;
+}
+
+.user-photo{
+    width: 23%!important;
+   
+}
+
+
 
 .title-menu-sub{
   padding: 12px 94px 12px 32px;
@@ -836,8 +949,9 @@
 }
 
 .img-circle {
-    background: #fff;
-   width: 100%;
+   background: #fff;
+   width: 128px;
+   height: 128px;
     
 }
 
@@ -1007,8 +1121,18 @@
     box-shadow: 0px 2px 0px 0px #fff;
 }
 
+.padding-top-bottom-com{
+   padding: 4px 16px 10px; 
+}
+
+
 .btn-delete-chat{
         width: 8%!important;
+    padding: 0px 7px!important;
+    float: left;
+}
+
+.btn-group-forum{
     padding: 0px 7px!important;
     float: left;
 }

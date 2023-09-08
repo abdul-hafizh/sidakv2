@@ -4,7 +4,7 @@ $(function () {
             let segments = currentUrl.split( '/' );
             if(segments[3] =='login')
             {
-                $('body').addClass('login-page');
+                $('body').addClass('login-page ');
             }else{
                  $('body').addClass('skin-blue sidebar-mini'); 
             }   

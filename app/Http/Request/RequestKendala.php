@@ -92,7 +92,7 @@ class RequestKendala
        } 
 
         $first = Kendala::where('id',$id)->first();
-        $messages = array(['id'=>$first->id,'username'=>RequestAuth::fullname($val->from),'photo'=>RequestAuth::photoUser($first->from),'messages'=>$first->messages,'deleted'=>false]);
+        $messages = array(['id'=>$first->id,'username'=>RequestAuth::fullname($first->from),'photo'=>RequestAuth::photoUser($first->from),'messages'=>$first->messages,'deleted'=>false]);
         $merge = array_merge($temp,$messages);
         return $merge;
    }

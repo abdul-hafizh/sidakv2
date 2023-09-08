@@ -176,4 +176,123 @@ class GeneralHelpers
         $hasil_rupiah = "Rp " . number_format($angka, 0, ',', '.');
         return $hasil_rupiah;
     }
+
+    public static function formatDate($tanggal = null, $time = true, $day = true)
+    {
+
+        $date = strtotime($tanggal);
+        $tgl = date('d', $date);
+        $bln = date('m', $date);
+        $thn = date('Y', $date);
+
+        switch ($bln) {
+            case 1:
+                $bln = 'Januari';
+                break;
+            case 2:
+                $bln = 'Februari';
+                break;
+            case 3:
+                $bln = 'Maret';
+                break;
+            case 4:
+                $bln = 'April';
+                break;
+            case 5:
+                $bln = 'Mei';
+                break;
+            case 6:
+                $bln = "Juni";
+                break;
+            case 7:
+                $bln = 'Juli';
+                break;
+            case 8:
+                $bln = 'Agustus';
+                break;
+            case 9:
+                $bln = 'September';
+                break;
+            case 10:
+                $bln = 'Oktober';
+                break;
+            case 11:
+                $bln = 'November';
+                break;
+            case 12:
+                $bln = 'Desember';
+                break;
+            default:
+                $bln = 'UnKnown';
+                break;
+        }
+
+        $format = $tgl . " " . $bln . " " . $thn;
+        return $format;
+    }
+
+    public static function formatExcel($tgl, $hari_tampil = true)
+    {
+
+        $tahun_split    = substr($tgl, 0, 4);
+        $bulan_split    = substr($tgl, 5, 2);
+        $hari_split     = substr($tgl, 8, 2);
+        $tmpstamp       = mktime(0, 0, 0, $bulan_split, $hari_split, $tahun_split);
+        return date('d/m/Y ', $tmpstamp);
+    }
+
+    public static function  timeAgo($tanggal)
+    {
+        $dify = strtotime($tanggal);
+
+        $diff     = time() - $dify;
+        $sec     = $diff;
+        $min     = round($diff / 60);
+        $hrs     = round($diff / 3600);
+        $days     = round($diff / 86400);
+        $weeks     = round($diff / 604800);
+        $mnths     = round($diff / 2600640);
+        $yrs     = round($diff / 31207680);
+
+
+        if ($sec <= 60) {
+            return "$sec seconds ago";
+        } else if ($min <= 60) {
+            if ($min == 1) {
+                return "one minute ago";
+            } else {
+                return "$min minutes ago";
+            }
+        } else if ($hrs <= 24) {
+            if ($hrs == 1) {
+                return "an hour ago";
+            } else {
+                return "$hrs hours ago";
+            }
+        } else if ($days <= 7) {
+            if ($days == 1) {
+                return "Yesterday";
+            } else {
+                return "$days days ago";
+            }
+        } else if ($weeks <= 4.3) {
+            if ($weeks == 1) {
+                return "a week ago";
+            } else {
+                return "$weeks weeks ago";
+            }
+        } else if ($mnths <= 12) {
+            if ($mnths == 1) {
+                return "a month ago";
+            } else {
+                return "$mnths months ago";
+            }
+        } else {
+            if ($yrs == 1) {
+                return "one year ago";
+            } else {
+                return "$yrs years ago";
+            }
+        }
+    }
 }

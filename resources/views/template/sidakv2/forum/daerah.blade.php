@@ -18,7 +18,7 @@
 			
 
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
 					 Refresh
 				</button>
 			</div>
@@ -169,17 +169,14 @@
 	               row +=`<td>${item.description}</td>`;
 	               
 	               row +=`<td>`; 
-	               row +=`<div class="btn-group">`;
+	             
 
-	              
-	           
-
-	                row +=`<button id="Replay"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Replay Forum" type="button" class="btn btn-primary"><i class="fa fa-comment" ></i></button>`;
+	                row +=`<button id="Replay"  data-param_id="`+ index +`"  data-toggle="tooltip" data-placement="top" title="Replay Forum" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
 	            
 	               
 	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
 	                row +=`<div id="FormEdit-${item.id}"></div>`;
-	                row +=`</div>`;
+	               
 
 
 	            
@@ -207,18 +204,8 @@
              
             let index = e.currentTarget.dataset.param_id;
             const item = list[index];
-
-            $.ajax({
-			    url:  BASE_URL +`/api/forum/list-replay/`+ item.id,
-			    method: 'GET',
-			    success: function(response) {
-			        getlistforum(response,item);
-			        
-			    },
-			    error: function(error) {
-			        console.error('Error deleting items:', error);
-			    }
-			});
+            window.location.replace('/forum/'+ item.slug);  
+            
             
         });
 

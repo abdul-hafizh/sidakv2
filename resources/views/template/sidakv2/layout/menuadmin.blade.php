@@ -112,7 +112,7 @@
     <li >
         <a href="{!! url('pengawasan') !!}">
             <i class="po-top-menu fa-icon fa-img-pengawasan"></i>
-               pengawasan
+               Pengawasan
            
         </a>
     </li>
@@ -211,7 +211,7 @@
     <li>
         <a href="{!! url('pengawasan') !!}">
             <i class="po-top-menu fa-icon fa-img-pengawasan"></i>
-            pengawasan
+            Pengawasan
          
         </a>
     </li>

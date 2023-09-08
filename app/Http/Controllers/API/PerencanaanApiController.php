@@ -11,6 +11,7 @@ use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPerencanaan;
 use App\Helpers\GeneralPaginate;
 use App\Models\Perencanaan;
+use App\Models\PaguTarget;
 
 class PerencanaanApiController extends Controller
 {
@@ -18,31 +19,46 @@ class PerencanaanApiController extends Controller
     {   
         $this->perPage = GeneralPaginate::limit();
         $this->UploadFolder = GeneralPaginate::uploadPhotoFolder();
+       
     }
 
     public function index(Request $request)
     {                
-        $access = RequestAuth::access();
-        $data = Perencanaan::join('regencies', 'perencanaan.daerah_id', '=', 'regencies.id')
-            ->orderBy('perencanaan.created_at', 'DESC')
-            ->select('perencanaan.*', 'regencies.name as nama_daerah')
-            ->paginate($this->perPage);    
+        $access = RequestAuth::Access(); 
+        if($access == 'daerah' ||  $access == 'province') { 
+             $query = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('created_at', 'DESC');
+        }else{
+             $query = Perencanaan::orderBy('created_at', 'DESC');
+        }
 
-        $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
-
-        if($access == 'daerah' || $access == 'province') {
-            $data = Perencanaan::join('regencies', 'perencanaan.daerah_id', '=', 'regencies.id')
-                ->where('perencanaan.daerah_id', Auth::user()->daerah_id)
-                ->orderBy('perencanaan.id', 'DESC')
-                ->select('perencanaan.*', 'regencies.name as nama_daerah')
-                ->paginate($this->perPage);
-
-            $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);            
-        } 
-
+        if($request->per_page !='all')
+        {
+           $data = $query->paginate($request->per_page);
+        }else{   
+           $data = $query->get(); 
+        }   
+        
+        $result = RequestPerencanaan::GetDataAll($data,$request->per_page,$request);    
         return response()->json($result);
         
+        
     }
+
+    public function edit($id)
+    { 
+        $data = Perencanaan::leftJoin('pagu_target', function($join) {
+            $join->on('perencanaan.periode_id', '=', 'pagu_target.periode_id')
+                 ->on('perencanaan.daerah_id', '=', 'pagu_target.daerah_id');
+        })
+        ->select('perencanaan.*', 'pagu_target.pagu_apbn', 'pagu_target.pagu_promosi', 'pagu_target.target_pengawasan', 'pagu_target.target_penyelesaian_permasalahan', 'pagu_target.target_bimbingan_teknis', 'pagu_target.target_video_promosi', 'pagu_target.pagu_dalak')
+        ->where('perencanaan.id', $id)
+        ->first();        
+
+        $result = RequestPerencanaan::GetDetailID($data); 
+        return response()->json($result);
+    }
+
+    
     
     public function search(Request $request)
     {
@@ -94,20 +110,22 @@ class PerencanaanApiController extends Controller
         } 
     }
 
-    public function deleteSelected(Request $request){
-        $messages['messages'] = false;
+    public function update($id, Request $request){
+     
+        $validation = ValidationPerencanaan::validation($request);
 
-        foreach($request->data as $key)
+        if($validation)
         {
-            $results = Perencanaan::where('id',(int)$key)->delete();
-        }
+        
+            return response()->json($validation, 400);  
+            
+        } else {            
 
-        if($results){
-            $messages['messages'] = true;
-        }
-
-        return response()->json($messages);
-    
+            $update = RequestPerencanaan::fieldsData($request);            
+            $UpdateData = Perencanaan::where('id',$id)->update($update);
+            
+            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);            
+        }   
     }
 
     public function approve($id){
@@ -130,6 +148,22 @@ class PerencanaanApiController extends Controller
         return response()->json($messages);
 
     }
+
+    public function deleteSelected(Request $request){
+        $messages['messages'] = false;
+
+        foreach($request->data as $key)
+        {
+            $results = Perencanaan::where('id',(int)$key)->delete();
+        }
+
+        if($results){
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    
+    }    
 
     public function delete($id){
 

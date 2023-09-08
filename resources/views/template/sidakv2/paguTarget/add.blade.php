@@ -29,7 +29,7 @@
                 <option value="">Pilih</option>
               </select>
               <span id="daerah_id-messages"></span>
-              <input type="text" class="form-control" name="nama_daerah" id="nama_daerah" placeholder="APBN" value="">
+              <input type="hidden" class="form-control" name="nama_daerah" id="nama_daerah" placeholder="APBN" value="">
             </div>
 
           </div>

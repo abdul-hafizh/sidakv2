@@ -23,9 +23,11 @@ class Notification extends Model
         'from',
         'sender',
         'messages',
-        'view',
+        'view_from',
+        'view_sender',
         'status',
-        'created_by'
+        'created_by',
+        'updated_by',
        
     ];
 

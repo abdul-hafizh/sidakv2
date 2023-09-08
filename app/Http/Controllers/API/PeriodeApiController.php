@@ -38,6 +38,7 @@ class PeriodeApiController extends Controller
 
     public function listAll(Request $request)
     {
+<<<<<<< HEAD
 
         $query =  DB::table('periode as a')
             ->select('a.id', 'a.slug', 'a.year')
@@ -65,18 +66,46 @@ class PeriodeApiController extends Controller
             ->select('slug', 'year')
             ->where('status', 'Y')
             ->whereIn(
+=======
+      
+        $query =  DB::table('periode as a')
+            ->select('a.id','a.slug', 'a.year','c.pagu_apbn','c.pagu_promosi','c.target_pengawasan','c.target_bimbingan_teknis','c.target_penyelesaian_permasalahan')
+            ->where('a.status', 'Y')
+            ->where('c.daerah_id', Auth::User()->daerah_id);
+        if($request->type =='POST')
+        {    
+            $query->whereNotIn(
+>>>>>>> 904b433594153969a7f6916a69cf5d44e75580f5
                 'slug',
                 DB::table('perencanaan')
                     ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-            )
-            ->groupBy('year')
-            ->get();
+            );
+        }else{
+            $query->whereIn(
+                'slug',
+                DB::table('perencanaan')
+                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+            );
 
+        }
+            $query->join('pagu_target as c','a.slug','=','c.periode_id')
+            ->groupBy('year');
 
-        $periode = RequestPeriode::SelectAll($data);
-        return response()->json($periode);
+           
+
+        $data = $query->get();
+        if($data->count() !=0)
+        {
+            $selected = false;
+        }else{
+             $selected = true;
+        }    
+        $periode = RequestPeriode::SelectAll($data,$request->type);
+        return response()->json(['selected'=> $selected,'result'=>$periode]);
     }
 
+
+   
 
 
     public function search(Request $request)

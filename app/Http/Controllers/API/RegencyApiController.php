@@ -40,7 +40,7 @@ class RegencyApiController extends Controller
     public function store(Request $request)
     {
 
-        $validation = ValidationRegency::validation($request);
+        $validation = ValidationRegency::validationInsert($request);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
@@ -62,29 +62,39 @@ class RegencyApiController extends Controller
     public function search(Request $request)
     {
         $search = $request->search;
+        $search_daerah = $request->daerah_id;
         $_res = array();
         $column_search  = array('name');
 
-        $i = 0;
-        $query  = Regencies::select('id','name','province_id','created_by','created_at')->orderBy('id','ASC');
-        $check = Provinces::where('name','LIKE','%' . $search . '%')->first();
-        if($check)
+        if($search == '')
         {
-            $query->where('province_id',$check->id);
+             $query  = Regencies::where('province_id',$search_daerah)->orderBy('id','DESC');
         }else{
 
-            foreach ($column_search as $item) {
-                if ($search) {
-                    if ($i === 0) {
-                        $query->where($item, 'LIKE', '%' . $search . '%');
-                    } else {
-                        $query->orWhere($item, 'LIKE', '%' . $search . '%');
+            $i = 0;
+            $query  = Regencies::select('id','name','province_id','created_by','created_at')->orderBy('id','ASC');
+            $check = Provinces::where('name','LIKE','%' . $search . '%')->first();
+            if($check)
+            {
+                $query->where('province_id',$check->id);
+            }else{
+
+                foreach ($column_search as $item) {
+                    if ($search) {
+                        if ($i === 0) {
+                            $query->where($item, 'LIKE', '%' . $search . '%');
+                        } else {
+                            $query->orWhere($item, 'LIKE', '%' . $search . '%');
+                        }
                     }
-                }
-                $i++;
-            } 
-        
-        }
+                    $i++;
+                } 
+            
+            }
+
+        }    
+
+       
 
         if($request->per_page !='all')
         {
@@ -105,7 +115,7 @@ class RegencyApiController extends Controller
     public function update($id, Request $request)
     {
 
-        $validation = ValidationRegency::validation($request);
+        $validation = ValidationRegency::validationUpdate($request,$id);
         if ($validation) {
             return response()->json($validation, 400);
         } else {

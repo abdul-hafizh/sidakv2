@@ -46,7 +46,7 @@ return [
     'file' => 'The :attribute must be a file.',
     'filled' => 'The :attribute field must have a value.',
     'gt' => [
-        'numeric' => 'The :attribute must be greater than :value.',
+        'numeric' => 'Harus lebih besar :value',
         'file' => 'The :attribute must be greater than :value kilobytes.',
         'string' => 'The :attribute must be greater than :value characters.',
         'array' => 'The :attribute must have more than :value items.',
@@ -92,7 +92,7 @@ return [
         'array' => 'The :attribute must have at least :min items.',
     ],
     'multiple_of' => 'The :attribute must be a multiple of :value.',
-    'not_in' => 'The selected :attribute is invalid.',
+    'not_in' => ':attribute tidak valid',
     'not_regex' => 'The :attribute format is invalid.',
     'numeric' => 'The :attribute must be a number.',
     'password' => 'Kata sandi is incorrect.',

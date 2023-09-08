@@ -52,6 +52,27 @@ class RequestRegency
     return $result;
   }
 
+  public static function GetDataPrint($data){
+
+          
+
+        $i = 1;    
+        foreach ($data as $key => $val)
+        { 
+           
+            $temp[$key]['number'] = $i;
+            $temp[$key]['id'] = $val->id;
+            $temp[$key]['name'] = $val->name;
+            $temp[$key]['province_id'] = $val->province_id;
+            $temp[$key]['province_name'] = $val->province->name;
+            $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
+
+            $i++;
+        }  
+
+        return json_decode(json_encode($temp), FALSE);
+   }
+
 
  public static function GetProvinsiName($province_id)
  {
@@ -75,9 +96,9 @@ class RequestRegency
 
   public static function fieldsData($request)
   {
-    $uuid = Str::uuid()->toString();
+    // $uuid = Str::uuid()->toString();
     $fields = [
-      'id' => $uuid,
+      'id' => $request->id,
       'name'  =>  $request->name,
       'province_id'  =>  $request->province_id,
       'created_by' => Auth::User()->username,

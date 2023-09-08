@@ -31,27 +31,29 @@ use App\Http\Controllers\API\DaerahApiController;
 use App\Http\Controllers\API\AuditLogApiController;
 use App\Http\Controllers\API\KendalaApiController;
 use App\Http\Controllers\API\ForumApiController;
-
+use App\Http\Controllers\API\NotificationApiController;
 
 
 
 Route::middleware(['jwt.auth'])->group(function () {
 
-    Route::get('select-province', [DaerahApiController::class, 'listProvince']);
-    Route::get('select-daerah', [DaerahApiController::class, 'listAll']);
-    Route::get('select-daerah2', [DaerahApiController::class, 'listDaerah']);
+
+    Route::get('select-daerah', [DaerahApiController::class, 'listAllDaerah']);
+    Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
+    Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
     Route::get('select-periode', [PeriodeApiController::class, 'listAll']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
-
+    Route::post('user/photo', [AuthApiController::class, 'updatePhoto']);
 
 
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
-    Route::get('perencanaan/periode', [PeriodeApiController::class, 'periode']);
+
     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
     Route::post('perencanaan', [PerencanaanApiController::class, 'store']);
+    Route::put('perencanaan/{id}', [PerencanaanApiController::class, 'update']);
     Route::put('perencanaan/approve/{id}', [PerencanaanApiController::class, 'approve']);
     Route::get('perencanaan/edit/{id}', [PerencanaanApiController::class, 'edit']);
     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']);
@@ -65,6 +67,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('user/search', [UserApiController::class, 'search']);
     Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
     Route::delete('user/{id}', [UserApiController::class, 'delete']);
+
+    Route::get('user/profile', [UserApiController::class, 'GetUserID']);
+    Route::post('user/update', [UserApiController::class, 'updateProfile']);
+
 
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
     Route::post('pagutarget/total_pagu', [PaguTargetApiController::class, 'total_pagu']);
@@ -122,11 +128,23 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('forum', [ForumApiController::class, 'index']);
     Route::post('forum', [ForumApiController::class, 'store']);
-    Route::post('forum/search', [ForumApiController::class, 'search']);
+    Route::post('forum/search', [ForumApiController::class, 'searchForum']);
     Route::put('forum/{id}', [ForumApiController::class, 'update']);
     Route::post('forum/selected', [ForumApiController::class, 'deleteSelected']);
     Route::delete('forum/{id}', [ForumApiController::class, 'delete']);
 
+    Route::get('topic/{id}', [ForumApiController::class, 'show']);
+    Route::get('topic/comment/{id}', [ForumApiController::class, 'commentDetail']);
+    Route::post('topic/search', [ForumApiController::class, 'searchTopic']);
+    Route::post('topic', [ForumApiController::class, 'saveTopic']);
+    Route::get('topic/list-replay/{id}', [ForumApiController::class, 'listreplay']);
+    Route::post('topic/comment', [ForumApiController::class, 'saveComment']);
+    Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
+    Route::delete('topic/delete-replay/{id}', [ForumApiController::class, 'deletereplay']);
+
+    Route::get('notification', [NotificationApiController::class, 'index']);
+    Route::get('notif', [NotificationApiController::class, 'show']);
+    Route::get('notif-update', [NotificationApiController::class, 'update']);
 
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);

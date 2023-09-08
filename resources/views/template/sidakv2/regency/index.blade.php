@@ -2,14 +2,21 @@
 @section('content')
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
-        <div class="pull-right width-25">
-            <div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
-				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
-				</span>
-			</div>
-        </div> 	
+        <div class="pull-right width-50">
+        	 <div class="pull-left width-50 padding-0-8">
+			    		<select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi "></select>
+	        </div>
+	         <div class="pull-left width-50">
+	         	
+	            <div class="input-group input-group-sm border-radius-20">
+					<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
+					<span class="input-group-btn">
+					<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+					</span>
+				</div>
+	        </div>
+	         	
+        </div>
     </div> 	
 
 	<div class="col-sm-4 pull-left padding-default full">
@@ -31,11 +38,17 @@
 				</button>
 			</div>
 
+            <div class="pull-left padding-9-0 margin-left-button">
+                <button type="button" id="printButton"  class="btn btn-info border-radius-10">
+                     Print
+                </button>
+            </div>
+
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-info border-radius-10">
-					 Refresh
-				</button>
-			</div>
+                <button type="button"  id="refresh" class="btn btn-success border-radius-10">
+                     Refresh
+                </button>
+            </div>
 
 
 				
@@ -67,7 +80,8 @@
 						<tr>
 							<th class="th-checkbox"><input  id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
-							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
+                            <th><div class="split-table"></div><span class="span-title">Kode Kabupaten</span>  </th>
+							<th><div class="split-table"></div> <span class="span-title"> Nama Kabupaten </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Provinsi </span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
@@ -88,7 +102,7 @@
 	    </div>
 	</div>
      @include('template/sidakv2/regency.add')
-
+     @include('template/sidakv2/regency.print')
      <script type="text/javascript">
  
 
@@ -102,6 +116,70 @@
     let page = 1;
     var list = [];
     const total = 0;
+     var daerah_id = '';
+    var search = '';
+
+    $("#printButton").click(function() {
+        PrintData();
+      });
+
+    $.ajax({
+        url: BASE_URL +'/api/select-province',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Populate SelectPicker options using received data
+            $.each(data, function(index, option) {
+                $('#daerah_id').append($('<option>', {
+                  value: option.value,
+                  text: option.text
+                }));
+            });
+
+            // Refresh the SelectPicker to apply the new options
+            $('#daerah_id').selectpicker('refresh');
+        },
+        error: function(error) {
+            console.error(error);
+        }
+    });
+
+    $('#daerah_id').on('change', function() {
+       var value = $(this).val();         
+            if(value)
+            {   
+            	 var per_page = $('#row_page').val();
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+                  daerah_id = $('#daerah_id').val();
+
+                  if(daerah_id !='')
+                  {
+                  	var url = BASE_URL + `/api/regency/search?page=${page}&per_page=${per_page}`;
+                  	var method = 'POST';
+                  }	
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data:{'search':search,'daerah_id':daerah_id},
+                    success: function(response) {
+                    	list = response.data;
+                        resultTotal(response.total);
+                        updateContent(response.data);
+                        updatePagination(response.current_page, response.last_page);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+
+    }); 
   
 
 
@@ -114,8 +192,8 @@
                  let row = ``;
                  row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
                   content.append(row);
-                  let search = $('#search-input').val();
-                  if(search !='')
+                  
+                  if(search !='' || daerah_id !='')
                   {
                   	var url = BASE_URL + `/api/regency/search?page=${page}&per_page=${value}`;
                   	var method = 'POST';
@@ -127,7 +205,7 @@
                 $.ajax({
                     url: url,
                     method: method,
-                    data:{'search':search},
+                    data:{'search':search,'daerah_id':daerah_id},
                     success: function(response) {
                     	list = response.data;
                         resultTotal(response.total);
@@ -215,9 +293,9 @@
 
 
     $('#Search').click( () => {
- 		 let search = $('#search-input').val();
+ 		 search = $('#search-input').val();
  		 
- 		 if(search)
+ 		 if(search !='' || daerah_id !='')
  		 { 	
 	 		 const content = $('#content');
         	 content.empty();
@@ -226,7 +304,7 @@
               content.append(row);
 	         $.ajax({
 	            url: BASE_URL + `/api/regency/search?page=${page}&per_page=${itemsPerPage}`,
-	            data:{'search':search},
+	            data:{'search':search,'daerah_id':daerah_id},
 	            method: 'POST',
 	            success: function(response) {
 	            	list = response.data;
@@ -272,11 +350,18 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 
-
+         if(daerah_id)
+         {
+            var url = BASE_URL + `/api/regency/search?page=${page}&per_page=${itemsPerPage}`;
+            var method = 'POST';
+         }else{
+           var url = BASE_URL+ `/api/regency?page=${page}&per_page=${itemsPerPage}`;
+           var method = 'GET';
+         } 	 
 
         $.ajax({
-            url: BASE_URL+ `/api/regency?page=${page}&per_page=${itemsPerPage}`,
-            method: 'GET',
+            url: url,
+            method: method,
             success: function(response) {
             	list = response.data;
             	resultTotal(response.total);
@@ -306,9 +391,16 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" ${item.deleted} data-id="${item.id}"  type="checkbox"></td></td>`;
+
+               if(item.deleted == true)
+               {
+               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+
+               }else{
+                  row +=`<td><input disabled  type="checkbox"></td></td>`;  
+               }
                row +=`<td class="padding-text-table">${item.number}</td>`;
-           
+               row +=`<td class="padding-text-table">${item.id}</td>`;
                row +=`<td class="padding-text-table">${item.name}</td>`;
                row +=`<td class="padding-text-table">${item.province_name}</td>`;
                row +=`<td>`; 
@@ -320,9 +412,13 @@
                 row +=`<div id="FormEdit-${item.id}"></div>`;
                 row +=`</div>`;
 
-       
+               if(item.deleted == true)
+               {
 
-                row +=`<button id="Destroy" data-placement="top" ${item.deleted}  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                  row +=`<button id="Destroy" data-placement="top" ${item.deleted}  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+               }else{
+                  row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+               }  
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -373,15 +469,17 @@
 
 				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
 					        row +=`<div class="modal-body">`;
-                               
+                                 
+                                  row +=`<div id="kode-alert-`+ item.id +`" class="form-group has-feedback" >`;
+                                  row +=`<label>Kode Kabupaten</label>`;
+                                  row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="id" placeholder="Kode Kabupaten" value="`+ item.id +`">
+                                  <span id="kode-messages-`+ item.id +`"></span>`;
+                                 row +=`</div>`;
                              
 				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
-
 				                  row +=`<label>Nama</label>`;
-
 				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
 				                  <span id="name-messages-`+ item.id +`"></span>`;
-
 				                 row +=`</div>`;
 
 
@@ -447,9 +545,9 @@
 	              $("#load-simpan").show();
 	              
 		          var form = {
-		              
-		              'name':data[0].value,
-		              'province_id':data[1].value,
+		              'id':data[0].value,
+		              'name':data[1].value,
+		              'province_id':data[2].value,
 		            
 		          };
 
@@ -471,7 +569,7 @@
 			                    }).then((result) => {
 			                        if (result.isConfirmed) {
 			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/regency');
+			                            window.location.replace('/kabupaten');
 			                        }
 			                    });
 
@@ -481,6 +579,15 @@
 			                errors = respons.responseJSON;
 			                 $("#update").show();
 			                 $("#load-simpan").hide();
+
+                             if(errors.messages.id)
+                            {
+                                 $('#kode-alert-'+id).addClass('has-error');
+                                 $('#kode-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.id +'</strong>');
+                            }else{
+                                $('#kode-alert-'+id).removeClass('has-error');
+                                $('#kode-messages-'+id).removeClass('help-block').html('');
+                            }
  
 			                if(errors.messages.name)
 			                {
@@ -565,6 +672,22 @@
 		});
 
     }
+
+    function PrintData()
+    {
+        var dt = new Date();
+       var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+      var table = document.getElementById("myTable");
+      var ws = XLSX.utils.table_to_sheet(table);
+      var wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+      XLSX.writeFile(wb, "Repot-data-kabupaten-"+ time +".xlsx");
+
+    }
+
 
  
     // Function to update pagination controls

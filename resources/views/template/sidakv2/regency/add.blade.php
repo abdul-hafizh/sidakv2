@@ -13,7 +13,12 @@
       <form  id="FormSubmit" >
       <div class="modal-body">
         
-           
+            <div id="kode-alert" class="form-group has-feedback" >
+              <label>Kode Kabupaten</label>
+              <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"  name="id" placeholder="Kode Kabupaten" value="">
+              <span id="kode-messages"></span>
+            </div>
+
             <div id="name-alert" class="form-group has-feedback" >
               <label>Nama</label>
               <input type="text" class="form-control" name="name" placeholder="Nama" value="">
@@ -75,8 +80,9 @@
           var data = $("#FormSubmit").serializeArray();
           
           var form = {
-              'name':data[0].value,
-              'province_id':data[1].value,
+              'id':data[0].value,
+              'name':data[1].value,
+              'province_id':data[2].value,
               
              
           };
@@ -97,7 +103,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // User clicked "Yes, proceed!" button
-                            window.location.replace('/regency');
+                            window.location.replace('/kabupaten');
                         }
                     });
 
@@ -106,7 +112,14 @@
             error: (respons)=>{
                 errors = respons.responseJSON;
                 
-               
+                if(errors.messages.id)
+                {
+                     $('#kode-alert').addClass('has-error');
+                     $('#kode-messages').addClass('help-block').html('<strong>'+ errors.messages.id +'</strong>');
+                }else{
+                    $('#kode-alert').removeClass('has-error');
+                    $('#kode-messages').removeClass('help-block').html('');
+                }
 
                 if(errors.messages.name)
                 {

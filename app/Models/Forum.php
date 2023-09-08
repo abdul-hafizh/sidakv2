@@ -20,6 +20,7 @@ class Forum extends Model
     public $fillable = [
      
         'category',
+        'slug',
         'description',
         'status',
         'created_by'

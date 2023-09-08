@@ -3,14 +3,14 @@
 namespace App\Models;
 
 use Eloquent as Model;
-use App\Traits\Uuids;
+// use App\Traits\Uuids;
 
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Provinces extends Model
 {
      // use SoftDeletes;
-    use Uuids;
+    // use Uuids;
     public $table = 'provinces';
     
 
@@ -18,7 +18,7 @@ class Provinces extends Model
 
 
     public $fillable = [
-     
+        'id',
         'name',
         'created_by',
        

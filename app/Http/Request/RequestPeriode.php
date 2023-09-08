@@ -23,7 +23,7 @@ class RequestPeriode
          $numberNext = (($page * $data->count()) - ($data->count() - 1));
       }
       foreach ($data as $key => $val) {
-         if ($val->status == 'A') {
+         if ($val->status == 'Y') {
             $status = 'Aktif';
          } else {
             $status = 'Non Aktif';
@@ -34,8 +34,13 @@ class RequestPeriode
          $temp[$key]['name'] = $val->name;
          $temp[$key]['semester'] = $val->semester;
          $temp[$key]['year'] = $val->year;
+         $temp[$key]['startdate'] = $val->startdate;
+         $temp[$key]['enddate'] = $val->enddate;
+
+         $temp[$key]['startdate_convert'] = GeneralHelpers::formatDate($val->startdate);
+         $temp[$key]['enddate_convert'] = GeneralHelpers::formatDate($val->enddate);
          $temp[$key]['slug'] = $val->slug;
-         $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->slug);
+         $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->year);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
       }
       $result['data'] = $temp;
@@ -52,17 +57,51 @@ class RequestPeriode
       return $result;
    }
 
-   public static function SelectAll($data)
+   public static function GetDataPrint($data)
+   {
+
+
+
+      $i = 1;
+      foreach ($data as $key => $val) {
+         if ($val->status == "Y") {
+            $status = "Aktif";
+         } else {
+            $status = "NonAktif";
+         }
+         $temp[$key]['number'] = $i;
+
+         $temp[$key]['id'] = $val->id;
+         $temp[$key]['name'] = $val->name;
+         $temp[$key]['slug'] = $val->slug;
+         $temp[$key]['semester'] = $val->semester;
+         $temp[$key]['year'] = $val->year;
+         $temp[$key]['startdate'] = GeneralHelpers::formatExcel($val->startdate);
+         $temp[$key]['enddate'] = GeneralHelpers::formatExcel($val->enddate);
+         $temp[$key]['status'] = $status;
+         $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
+
+         $i++;
+      }
+
+      return json_decode(json_encode($temp), FALSE);
+   }
+
+   public static function SelectAll($data, $type)
    {
       $temp = array();
 
-
       foreach ($data as $key => $val) {
 
-         $temp[$key]['value'] = (string)$val->year;
+         $temp[$key]['value'] = $val->slug;
          $temp[$key]['text'] = 'Periode ' . $val->year;
-         $temp[$key]['pagu_apbn'] = RequestPeriode::Pagu('APBN', substr((string)$val->slug, 0, 4));
-         $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
+         if ($type == "POST") {
+            $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
+            $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
+            $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
+            $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
+            $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan;
+         }
       }
 
 
@@ -70,18 +109,29 @@ class RequestPeriode
       return  $temp;
    }
 
+   public static function getDetailPagu($slug, $type)
+   {
+
+      $pagu = RequestPeriode::Pagu($type, substr((string)$slug, 0, 4));
+      return $pagu;
+   }
+
+
+
    public static function checkValidate($slug)
    {
 
-      $data = Perencanaan::where('periode_id', $slug)->first();
+      $data = Perencanaan::where(DB::raw("LEFT(periode_id,4)"), $slug)->first();
       if ($data) {
-         $result = 'disabled';
+         $result = false;
       } else {
-         $result = '';
+         $result = true;
       }
 
       return $result;
    }
+
+
 
    public static function Pagu($type, $periode_id)
    {
@@ -93,18 +143,38 @@ class RequestPeriode
             } else {
                $result = 'Rp 0';
             }
-         } else {
+         } else if ($type == 'promosi') {
             if ($pagu->pagu_promosi != 0) {
                $result = GeneralHelpers::formatRupiah($pagu->pagu_promosi);
             } else {
                $result = 'Rp 0';
             }
+         } else if ($type == 'pengawasan') {
+            if ($pagu->target_pengawasan != 0) {
+               $result = $pagu->target_pengawasan;
+            } else {
+               $result = '0';
+            }
+         } else if ($type == 'bimtek') {
+            if ($pagu->target_bimbingan_teknis != 0) {
+               $result = $pagu->target_bimbingan_teknis;
+            } else {
+               $result = '0';
+            }
+         } else if ($type == 'penyelesaian') {
+            if ($pagu->target_penyelesaian_permasalahan != 0) {
+               $result = $pagu->target_penyelesaian_permasalahan;
+            } else {
+               $result = '0';
+            }
          }
       } else {
-         $result = 'Rp 0';
+         $result = null;
       }
       return $result;
    }
+
+
 
    public static function GetDataID($data)
    {
@@ -128,12 +198,26 @@ class RequestPeriode
          'slug' =>  $request->year . $request->semester,
          'semester' => $request->semester,
          'year' => $request->year,
+         'startdate' => $request->startdate,
+         'enddate' => $request->enddate,
          'status' => $request->status,
          'created_by' => Auth::User()->username,
          'created_at' => date('Y-m-d H:i:s'),
       ];
 
       return $fields;
+   }
+
+   public function GetPeriodeName($slug)
+   {
+
+      $periode = Periode::where('slug', $slug)->first();
+      if ($periode) {
+         $result = 'Periode ' . $periode->year;
+      } else {
+         $result = Null;
+      }
+      return $result;
    }
 
 

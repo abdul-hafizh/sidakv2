@@ -19,49 +19,67 @@ class PerencanaanController extends Controller
     {      
         $title = 'Perencanaan Tahun Anggaran';
         $log = array(             
-            'menu'=>$title,
-            'slug'=>'perencanaan',
-            'url'=>'perencanaan'
+            'menu' => $title,
+            'slug' => 'perencanaan',
+            'url' => 'perencanaan'
         );
         RequestSystemLog::CreateLog($log);  
-
-        return view('template/' . $this->template . '.perencanaan.index')
-        ->with([
-            'title' => $title,
-            'access' => RequestAuth::access(),
-            'template'=>'template/'.$this->template ]);
+        $with =  ['title' => $title,'template'=>'template/'.$this->template];
+        if($_COOKIE['access'] =="admin") {
+            return view('template/' . $this->template . '.perencanaan.admin')->with($with);
+        }else if($_COOKIE['access'] =="pusat"){
+            return view('template/' . $this->template . '.perencanaan.pusat')->with($with);
+        }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){
+            return view('template/' . $this->template . '.perencanaan.daerah')->with($with);
+        }    
     }
 
     public function add(Request $request)
     {
-        $title = 'Tambah Perencanaan Tahun Anggaran';
+        $title = 'Tambah Perencanaan Anggaran';
         $log = array(             
-            'menu'=>$title,
-            'slug'=>'perencanaan',
-            'url'=>'perencanaan'
+            'menu' => $title,
+            'slug' => 'perencanaan',
+            'url' =>' perencanaan'
         );
         RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.add')
         ->with([
             'title' => $title,
-            'template'=>'template/'.$this->template ]);
+            'template' => 'template/'.$this->template ]);
     }
 
     public function edit(Request $request)
     {
-        $title = 'Edit Perencanaan Tahun Anggaran';
+        $title = 'Edit Perencanaan Anggaran';
         $log = array(             
-            'menu'=>$title,
-            'slug'=>'perencanaan',
-            'url'=>'perencanaan'
+            'menu' => $title,
+            'slug' => 'perencanaan',
+            'url' => 'perencanaan'
         );
         RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.edit')
         ->with([
-            'title' =>$title,
-            'template'=>'template/'.$this->template ]);
+            'title' => $title,
+            'template' => 'template/'.$this->template ]);
+    }
+
+     public function show(Request $request)
+    {
+        $title = 'Detail Perencanaan Anggaran';
+        $log = array(             
+            'menu' => $title,
+            'slug' => 'perencanaan',
+            'url' => 'perencanaan'
+        );
+        RequestSystemLog::CreateLog($log);  
+
+        return view('template/' . $this->template . '.perencanaan.detail')
+        ->with([
+            'title' => $title,
+            'template' => 'template/'.$this->template ]);
     }
 
 }

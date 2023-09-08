@@ -63,7 +63,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo('App\Models\RoleUser','user_id');
     }
 
-    
 
     
 

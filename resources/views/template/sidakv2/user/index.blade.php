@@ -2,14 +2,22 @@
 @section('content')
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
-        <div class="pull-right width-25">
-            <div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
-				<span class="input-group-btn">
-				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
-				</span>
-			</div>
-        </div> 	
+       
+        <div class="pull-right width-50">
+        	 <div class="pull-left width-50 padding-0-8">
+			    		<select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi / Kabupaten"></select>
+	        </div>
+	         <div class="pull-left width-50">
+	         	
+	            <div class="input-group input-group-sm border-radius-20">
+					<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
+					<span class="input-group-btn">
+					<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+					</span>
+				</div>
+	        </div>
+	         	
+        </div>	
     </div> 	
 
 	<div class="col-sm-4 pull-left padding-default full">
@@ -32,7 +40,14 @@
 			</div>
 
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
+				<button type="button" id="printButton"  class="btn btn-info border-radius-10">
+					 Print
+				</button>
+			</div>
+
+
+			<div class="pull-left padding-9-0 margin-left-button">
+				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
 					 Refresh
 				</button>
 			</div>
@@ -67,6 +82,7 @@
 						<tr>
 							<th><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							
 							<th><div class="split-table"></div><span class="span-title"> Username </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Nama </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Email </span></th>
@@ -89,7 +105,7 @@
 	    </div>
 	</div>
      @include('template/sidakv2/user.add')
-
+     @include('template/sidakv2/user.print', $data)
      <script type="text/javascript">
  
 
@@ -104,6 +120,73 @@
     let page = 1;
     var list = [];
     const total = 0;
+    var text_label = '';
+    var photo = '';
+    var daerah_id = '';
+    var search = '';
+
+     $("#printButton").click(function() {
+	    PrintData();
+	  });
+
+    $.ajax({
+        url: BASE_URL +'/api/select-daerah',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Populate SelectPicker options using received data
+            $.each(data, function(index, option) {
+                $('#daerah_id').append($('<option>', {
+                  value: option.value,
+                  text: option.text
+                }));
+            });
+
+            // Refresh the SelectPicker to apply the new options
+            $('#daerah_id').selectpicker('refresh');
+        },
+        error: function(error) {
+            console.error(error);
+        }
+    });
+
+    
+    $('#daerah_id').on('change', function() {
+       var value = $(this).val();         
+            if(value)
+            {   
+            	 var per_page = $('#row_page').val();
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+                  daerah_id = $('#daerah_id').val();
+
+                  if(daerah_id !='')
+                  {
+                  	var url = BASE_URL + `/api/user/search?page=${page}&per_page=${per_page}`;
+                  	var method = 'POST';
+                  }	
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data:{'search':search,'daerah_id':daerah_id},
+                    success: function(response) {
+                    	list = response.data;
+                        resultTotal(response.total);
+                        updateContent(response.data);
+                        updatePagination(response.current_page, response.last_page);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+
+    }); 	
 
     $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -114,9 +197,9 @@
                  let row = ``;
                  row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
                   content.append(row);
-                  let search = $('#search-input').val();
+                 
 
-                  if(search !='')
+                  if(search !='' || daerah_id !='')
                   {
                   	var url = BASE_URL + `/api/user/search?page=${page}&per_page=${value}`;
                   	var method = 'POST';
@@ -128,7 +211,7 @@
                 $.ajax({
                     url: url,
                     method: method,
-                    data:{'search':search},
+                    data:{'search':search,'daerah_id':daerah_id},
                     success: function(response) {
                     	list = response.data;
                         resultTotal(response.total);
@@ -210,9 +293,9 @@
 
 
     $('#Search').click( () => {
- 		 let search = $('#search-input').val();
+ 		 search = $('#search-input').val();
  		 
- 		 if(search)
+ 		 if(search !='' || daerah_id !='')
  		 { 	
 	 		 const content = $('#content');
         	 content.empty();
@@ -221,7 +304,7 @@
               content.append(row);
 	         $.ajax({
 	            url: BASE_URL + `/api/user/search?page=${page}&per_page=${itemsPerPage}`,
-	            data:{'search':search},
+	            data:{'search':search,'daerah_id':daerah_id},
 	            method: 'POST',
 	            success: function(response) {
 	            	list = response.data;
@@ -272,9 +355,19 @@
               row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 
+         if(daerah_id)
+         {
+            var url = BASE_URL + `/api/user/search?page=${page}&per_page=${itemsPerPage}`;
+            var method = 'POST';
+         }else{
+           var url = BASE_URL+ `/api/user?page=${page}&per_page=${itemsPerPage}`;
+           var method = 'GET';
+         } 	
+
         $.ajax({
-            url: BASE_URL+ `/api/user?page=${page}&per_page=${itemsPerPage}`,
-            method: 'GET',
+            url: url,
+            method: method,
+            data:{'search':search,'daerah_id':daerah_id},
             success: function(response) {
             	list = response.data;
             	resultTotal(response.total);
@@ -302,8 +395,17 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+
+               if(item.deleted == true)
+               {
+               	  
+               	  row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+               }else{
+               	  row +=`<td><input disabled  type="checkbox"></td></td>`;	
+               }	
+               
                row +=`<td class="padding-text-table">${item.number}</td>`;
+
                row +=`<td class="padding-text-table">${item.username}</td>`;
                row +=`<td class="padding-text-table">${item.name}</td>`;
                row +=`<td class="padding-text-table">${item.email}</td>`;
@@ -312,15 +414,23 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                row +=`<button id="Edit"  data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
                 row +=`<div id="FormEdit-${item.id}"></div>`;
                 row +=`</div>`;
 
-       
+                if(item.deleted == true)
+               {
+                   
+                  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                 
+               }else{
+                    row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+               	    
 
-                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                   
+               } 
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -348,14 +458,15 @@
            $('#delete-selected').prop("disabled", true);
          } 	
    		});
-
+        
 
         
 
  		$( "#content" ).on( "click", "#Edit", (e) => {
              
-            let index = e.currentTarget.dataset.param_id;
-            const item = list[index];
+            let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id === id); 
+            SelectRole(item);
 
 		    // Event handler when an item is selected
 		    $('.select-edit').on('select-edit:select', function(e) {
@@ -414,7 +525,7 @@
 
 				                   row +=`<label>Phone</label>`;
 
-				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone" value="`+ item.phone +`">`;
+				                   row +=`<input type="text" class="form-control" name="phone" placeholder="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="`+ item.phone +`">`;
 
 				                   row +=`<span id="phone-messages-`+ item.id +`"></span>`;
 
@@ -426,7 +537,7 @@
 
 				                   row +=`<label>NIP</label>`;
 
-				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP" value="`+ item.nip +`">`;
+				                   row +=`<input type="text" class="form-control" name="nip" placeholder="NIP"  oninput="this.value = this.value.replace(/[^0-9.]/g, '')" value="`+ item.nip +`">`;
 
 				                   row +=`<span id="nip-messages-`+ item.id +`"></span>`;
 
@@ -448,20 +559,31 @@
 
 				                   row +=`<label>NIP Penanggung Jawab</label>`;
 
-				                   row +=`<input type="text" class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
+				                   row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
 				                    row +=`<span id="leader-nip-messages-`+ item.id +`"></span>`;
 
 				                 row +=`</div>`;
 
 
 				                 row +=`<div id="daerah-alert-`+ item.id +`" class="form-group has-feedback">`;
-
-				                     row +=`<label>Daerah </label>`;
-
+                                
+				                     
+                                 
+                                      row +=`<label id="text_label"></label>`;
+                                
 				                   row +=`<select id="daerah_id-`+ item.id +`" class="select-edit form-control"  name="daerah_id" ></select>`;
 
 				                   row +=`<span id="daerah-messages-`+ item.id +`"></span>`;
 				                 row +=`</div>`;
+
+				                 row +=`<div  class="form-group has-feedback">`;
+					              row +=`<label>Photo </label>`;
+					              row +=`<div  class="user-photo camera_upload">`;
+					                row +=`<img id="user-photo" width="130" src="`+ item.photo +`" alt="admin sidak">`;
+					                row +=`<i id="addPhotos" class="icon fa fa-camera"></i>`;
+					                row +=`<input id="AddFiles" type="file" name="upload_photo" style="display:none">`;
+					              row +=`</div>`;
+					            row +=`</div>`;
 
 				                
 
@@ -472,7 +594,7 @@
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
-						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
+						            row +=`<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
      						</div>`;
 						    row +=`</div>`;
 
@@ -485,104 +607,123 @@
           
 
             $('#FormEdit-'+ item.id).html(row);
-
+           
            // let role = $('#role-'+ item.id).val();
-            if(item.role_id !='admin' || item.role_id !='pusat')
-            {
-            	$('#daerah-alert-'+ item.id).hide();
-            	$('#daerah_id-'+ item.id).val(0);
-            }else{
-            	
-            	$('#daerah-alert-'+ item.id).show();
-            } 	
 
-             $('#role-'+ item.id).change(function() {
+            $("#addPhotos").click(()=> {
+               $("#AddFiles").trigger("click");
+            
+            });
+
+            $("#AddFiles").change((event)=> {     
+            
+              const files = event.target.files
+              let filename = files[0].name
+              const fileReader = new FileReader()
+              fileReader.addEventListener('load', () => {
+
+                if(files[0].name.toUpperCase().includes(".PNG"))
+                {
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPEG")){
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else if(files[0].name.toUpperCase().includes(".JPG")){
+                    photo = fileReader.result;
+                    $('#user-photo').attr("src", photo);
+                }else{
+                  Swal.fire({
+                    icon: 'info',
+                    title: 'Tipe file tidak diizinkan!',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+                  });  
+                } 
+
+
+               
+
+                  
+              })
+              fileReader.readAsDataURL(files[0])
+
+            });
+
+            
+        	if(item.role_id =='admin' || item.role_id =='pusat')
+            {
+        	   $('#daerah-alert-'+ item.id).hide();
+        	    
+            }else{
+               $('#daerah-alert-'+ item.id).show();
+               if(item.role_id == 'province')
+		       {		
+		            text_label = 'Provinsi';
+	                SelectProvinsi(item,text_label)
+		            $('#text_label').text(text_label);
+                }else{
+	                text_label = 'Kabupaten / Kota';
+	                SelectKabupaten(item,text_label)
+                    $('#text_label').text(text_label);
+                }
+
+            } 	
+           	
+
+            $('#role-'+ item.id).change(function() {
 	          var selectedText = $(this).find("option:selected").text();
 	              
 	            if(selectedText =='Admin' || selectedText =='Pusat')
 	            {
 	              $('#daerah-alert-'+ item.id).hide();
 	            }else{
-	              $('#daerah-alert-'+ item.id).show();
-	            }  
+                   $('#daerah-alert-'+ item.id).show();
+                   if(selectedText =='Provinsi')
+                   {
+                   	  
+		              text_label = 'Provinsi';
+		              SelectProvinsi(item,text_label);
+		              $('#text_label').text(text_label);
+		            }else if(selectedText =='Kabupaten'){
+		            	
+		               text_label = 'Kabupaten / Kota';
+		              SelectKabupaten(item,text_label);
+		              $('#text_label').text(text_label);
+		            }
+
+	            }
+
+	              
 	        });  
 
                 // Fetch data using AJAX
-			  $.ajax({
-			    url: BASE_URL +'/api/select-role',
-			    method: 'GET',
-			    dataType: 'json',
-			    success: function(data) {
-			      var select =  $('#role-'+item.id)
-
-			     // Clear existing options
-			     select.empty();
-
-			      // Populate options from the received data
-			      $.each(data, function(index, option) {
-			        select.append($('<option>', {
-			          value: option.value,
-			          text: option.text
-			        }));
-			      });
-
-			     // Set a specific option as selected
-			       var selectedValue = item.role_id;
-			       select.val(selectedValue);
-			      // Refresh the SelectPicker
-			      select.selectpicker('refresh');
-
-			    },
-			    error: function() {
-			      console.error('Failed to fetch data.');
-			    }
-			  });
-           
-            $('.select-edit').select2({
-		        data: [{ id: '', text: '' }],
-		        placeholder: 'Pilih Daerah',
-		        ajax: {
-		            url: BASE_URL+'/api/select-daerah', // URL to your server-side endpoint
-		            dataType: 'json',
-		            //delay: 250, // Delay before sending the request (milliseconds)
-		            processResults: function(data) {
-		                
-		                // Transform the data to match Select2's expected format
-		                return {
-		                    results: data.map(function(item) {
-		                        return { id: item.value, text: item.text };
-		                    })
-		                };
-		            },
-		            cache: true // Cache the results to improve performance
-		        },
-		        minimumInputLength: 1 // Minimum number of characters required for a search
-		    });	
-
-            $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
-
-          
-		     
-
+			  
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
+		          let find = list.find(o => o.id === id); 
+          
+
+
 	              var data = $("#FormSubmit-"+ id).serializeArray();
 	              $("#update").hide();
-	              $("#load-simpan").show();
+	              $("#load-update").show();
 
-	              console.log(data);
-	              
+	             
+	                
 		          var form = {
-		              'role_id':data[0].value,
+		          	  
+                      'role_id':data[0].value, 
 		              'name':data[1].value,
 		              'email':data[2].value,
 		              'phone':data[3].value,
 		              'nip':data[4].value,
 		              'leader_name':data[5].value,
 		              'leader_nip':data[6].value,
-		              'daerah_id':data[7].value,
-		              
+		              'daerah_id':find.daerah_id,
+                      'photo':photo, 
+                      'username':find.username,		   
 		          };
 
 
@@ -594,6 +735,7 @@
 			            cache: false,
 			            dataType: "json",
 			            success: (respons) =>{
+
 			                   Swal.fire({
 			                        title: 'Sukses!',
 			                        text: 'Berhasil Diupdate',
@@ -611,8 +753,9 @@
 			            },
 			            error: (respons)=>{
 			                errors = respons.responseJSON;
+			                SelectRole(find);
 			                 $("#update").show();
-			                 $("#load-simpan").hide();
+			                 $("#load-update").hide();
  
 			                if(errors.messages.name)
 			                {
@@ -732,6 +875,98 @@
         
     }
 
+    function SelectProvinsi(item,text_label){
+           
+    	    $('.select-edit').select2({
+			        data: [{ id: '', text: '' }],
+			        placeholder: 'Pilih '+ text_label,
+			        ajax: {
+			            url: BASE_URL+'/api/select-province', // URL to your server-side endpoint
+			            dataType: 'json',
+			            //delay: 250, // Delay before sending the request (milliseconds)
+			            processResults: function(data) {
+			                
+			                // Transform the data to match Select2's expected format
+			                return {
+			                    results: data.map(function(item) {
+			                        return { id: item.value, text: item.text };
+			                    })
+			                };
+			            },
+			            cache: true // Cache the results to improve performance
+			        },
+			        minimumInputLength: 1 // Minimum number of characters required for a search
+			    });
+
+    	$('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
+
+          
+
+    }
+
+    function SelectKabupaten(item,text_label){
+       
+    	$('.select-edit').select2({
+			        data: [{ id: '', text: '' }],
+			        placeholder: 'Pilih '+ text_label,
+			        ajax: {
+			            url: BASE_URL+'/api/select-kabupaten', // URL to your server-side endpoint
+			            dataType: 'json',
+			            //delay: 250, // Delay before sending the request (milliseconds)
+			            processResults: function(data) {
+			                
+			                // Transform the data to match Select2's expected format
+			                return {
+			                    results: data.map(function(item) {
+			                        return { id: item.value, text: item.text };
+			                    })
+			                };
+			            },
+			            cache: true // Cache the results to improve performance
+			        },
+			        minimumInputLength: 1 // Minimum number of characters required for a search
+			    });	
+
+    	   $('#daerah_id-'+item.id).append(new Option(item.daerah_name, item.daerah_id, true, true));
+
+          
+
+    }
+
+    function SelectRole(item){
+
+    	$.ajax({
+			    url: BASE_URL +'/api/select-role',
+			    method: 'GET',
+			    dataType: 'json',
+			    success: function(data) {
+			      var select =  $('#role-'+item.id)
+
+			     // Clear existing options
+			     //select.empty();
+
+			      // Populate options from the received data
+			      $.each(data, function(index, option) {
+			        select.append($('<option>', {
+			          value: option.value,
+			          text: option.text
+			        }));
+			      });
+
+			     // Set a specific option as selected
+			       var selectedValue = item.role_id;
+			       select.val(selectedValue);
+			      // Refresh the SelectPicker
+			      select.selectpicker('refresh');
+
+			    },
+			    error: function() {
+			      console.error('Failed to fetch data.');
+			    }
+			  });
+
+    }
+
     function deleteItem(id){
 
 		$.ajax({
@@ -745,6 +980,21 @@
 		        console.error('Error deleting items:', error);
 		    }
 		});
+
+    }
+
+    function PrintData()
+    {
+    	var dt = new Date();
+       var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+	  var table = document.getElementById("myTable");
+	  var ws = XLSX.utils.table_to_sheet(table);
+	  var wb = XLSX.utils.book_new();
+	  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+	  XLSX.writeFile(wb, "Repot-data-user-"+ time +".xlsx");
 
     }
 

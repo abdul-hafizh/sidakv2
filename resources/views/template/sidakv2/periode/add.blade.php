@@ -32,8 +32,20 @@
 
             <div id="year-alert" class="form-group has-feedback" >
               <label>Tahun</label>
-              <input type="text" class="form-control" name="year" placeholder="Year" value="">
+              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Tahun" value="">
               <span id="year-messages"></span>
+            </div>
+
+            <div id="startdate-alert" class="form-group has-feedback" >
+              <label>Tanggal Mulai</label>
+              <input type="date" class="form-control" name="startdate" placeholder="Tanggal Mulai" value="">
+              <span id="startdate-messages"></span>
+            </div>
+
+            <div id="enddate-alert" class="form-group has-feedback" >
+              <label>Tanggal Berahir</label>
+              <input type="date" class="form-control" name="enddate" placeholder="Tanggal Berahir" value="">
+              <span id="enddate-messages"></span>
             </div>
 
          
@@ -87,7 +99,9 @@
               'name':data[0].value,
               'semester':data[1].value,
               'year':data[2].value,
-              'status':data[3].value,
+              'startdate':data[3].value,
+              'enddate':data[4].value,
+              'status':data[5].value,
              
           };
 
@@ -144,6 +158,24 @@
                 }else{
                     $('#year-alert').removeClass('has-error');
                     $('#year-messages').removeClass('help-block').html('');
+                }
+
+                if(errors.messages.startdate)
+                {
+                     $('#startdate-alert').addClass('has-error');
+                     $('#startdate-messages').addClass('help-block').html('<strong>'+ errors.messages.startdate +'</strong>');
+                }else{
+                    $('#startdate-alert').removeClass('has-error');
+                    $('#startdate-messages').removeClass('help-block').html('');
+                }
+
+                if(errors.messages.enddate)
+                {
+                     $('#enddate-alert').addClass('has-error');
+                     $('#enddate-messages').addClass('help-block').html('<strong>'+ errors.messages.enddate +'</strong>');
+                }else{
+                    $('#enddate-alert').removeClass('has-error');
+                    $('#enddate-messages').removeClass('help-block').html('');
                 }
 
                  if(errors.messages.status)
