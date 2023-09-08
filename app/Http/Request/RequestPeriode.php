@@ -208,7 +208,7 @@ class RequestPeriode
       return $fields;
    }
 
-   public function GetPeriodeName($slug)
+   public static function GetPeriodeName($slug)
    {
 
       $periode = Periode::where('slug', $slug)->first();
@@ -221,7 +221,7 @@ class RequestPeriode
    }
 
 
-   public function GetPeriodeID()
+   public static function GetPeriodeID()
    {
 
       $periode = Periode::select('id as value', 'name as text', 'slug')->orderBy('slug', 'ASC')->get();

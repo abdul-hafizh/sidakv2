@@ -6,7 +6,7 @@ use Auth;
 use File;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Request\validation\ValidationPerencanaan;
+use App\Http\Request\Validation\ValidationPerencanaan;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPerencanaan;
 use App\Helpers\GeneralPaginate;
