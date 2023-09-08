@@ -23,50 +23,23 @@ class PeriodeApiController extends Controller
     public function index(Request $request)
     {
         // $_res = array();
-        $query = Periode::orderBy('created_at', 'DESC');
-        if ($request->per_page != 'all') {
-            $data = $query->paginate($request->per_page);
-        } else {
-            $data = $query->get();
-        }
+         $query = Periode::orderBy('created_at', 'DESC');
+         if($request->per_page !='all')
+         {
+           $data = $query->paginate($request->per_page);
+         }else{   
+           $data = $query->get(); 
+         }   
+        
+         $result = RequestPeriode::GetDataAll($data,$request->per_page,$request);
+         return response()->json($result);
 
-        $result = RequestPeriode::GetDataAll($data, $request->per_page, $request);
-        return response()->json($result);
     }
 
 
 
     public function listAll(Request $request)
     {
-<<<<<<< HEAD
-
-        $query =  DB::table('periode as a')
-            ->select('a.id', 'a.slug', 'a.year')
-            ->where('a.status', 'Y')
-            // ->whereIn(
-            //     'slug',
-            //     DB::table('perencanaan')
-            //         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-            // )
-            ->groupBy('year');
-
-
-
-        $data = $query->get();
-
-        $periode = RequestPeriode::SelectAll($data);
-        return response()->json($periode);
-    }
-
-
-    public function periode(Request $request)
-    {
-
-        $data =  DB::table('periode')
-            ->select('slug', 'year')
-            ->where('status', 'Y')
-            ->whereIn(
-=======
       
         $query =  DB::table('periode as a')
             ->select('a.id','a.slug', 'a.year','c.pagu_apbn','c.pagu_promosi','c.target_pengawasan','c.target_bimbingan_teknis','c.target_penyelesaian_permasalahan')
@@ -75,7 +48,6 @@ class PeriodeApiController extends Controller
         if($request->type =='POST')
         {    
             $query->whereNotIn(
->>>>>>> 904b433594153969a7f6916a69cf5d44e75580f5
                 'slug',
                 DB::table('perencanaan')
                     ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
