@@ -39,7 +39,7 @@ use App\Http\Controllers\API\ActionApiController;
 
 Route::middleware(['jwt.auth'])->group(function () {
 
-    
+
     Route::get('select-daerah', [DaerahApiController::class, 'listAllDaerah']);
     Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
     Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
@@ -49,8 +49,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::post('user/photo', [AuthApiController::class, 'updatePhoto']);
-   
-   
+
+
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
 
     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
@@ -69,13 +69,18 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('user/search', [UserApiController::class, 'search']);
     Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
     Route::delete('user/{id}', [UserApiController::class, 'delete']);
- 
+
     Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     Route::post('user/update', [UserApiController::class, 'updateProfile']);
-    
+
 
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
+    Route::post('pagutarget/total_pagu', [PaguTargetApiController::class, 'total_pagu']);
     Route::get('pengawasan/datalist', [PengawasanApiController::class, 'jsonData']);
+    Route::post('pagutarget', [PaguTargetApiController::class, 'store']);
+    Route::post('pagutarget/import_excel', [PaguTargetApiController::class, 'import_excel']);
+    Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
+
 
     Route::get('province', [ProvinceApiController::class, 'index']);
     Route::post('province', [ProvinceApiController::class, 'store']);
@@ -94,7 +99,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
 
     Route::get('select-role', [RolesApiController::class, 'listAll']);
- 
+
     Route::get('role', [RolesApiController::class, 'index']);
     Route::get('role/edit/{id}', [RolesApiController::class, 'edit']);
     Route::post('role', [RolesApiController::class, 'store']);
@@ -129,17 +134,17 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('forum/{id}', [ForumApiController::class, 'update']);
     Route::post('forum/selected', [ForumApiController::class, 'deleteSelected']);
     Route::delete('forum/{id}', [ForumApiController::class, 'delete']);
-    
+
     Route::get('topic/{id}', [ForumApiController::class, 'show']);
     Route::get('topic/comment/{id}', [ForumApiController::class, 'commentDetail']);
     Route::post('topic/search', [ForumApiController::class, 'searchTopic']);
-    Route::post('topic', [ForumApiController::class, 'saveTopic']); 
+    Route::post('topic', [ForumApiController::class, 'saveTopic']);
     Route::get('topic/list-replay/{id}', [ForumApiController::class, 'listreplay']);
-    Route::post('topic/comment', [ForumApiController::class, 'saveComment']); 
+    Route::post('topic/comment', [ForumApiController::class, 'saveComment']);
     Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
     Route::delete('topic/delete-replay/{id}', [ForumApiController::class, 'deletereplay']);
-    
-     Route::get('notification', [NotificationApiController::class, 'index']);
+
+    Route::get('notification', [NotificationApiController::class, 'index']);
     Route::get('notif', [NotificationApiController::class, 'show']);
     Route::get('notif-update', [NotificationApiController::class, 'update']);
 

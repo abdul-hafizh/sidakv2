@@ -13,7 +13,7 @@
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="description" content="">
     <meta name="author" content="">
-    
+
     <meta name="csrf-token" content="{{ Session::token() }}">
     <title> {{ config('app.name') }} | {{ $title  }}</title>
     <script type="text/javascript">
@@ -36,10 +36,11 @@
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/sweetalert2.min.css'}}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-    
+
+
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
- 
-    <body class="hold-transition "> 
+
+<body class="hold-transition ">
 
     @if (!Auth::guest())
     <div class="wrapper">
@@ -59,56 +60,56 @@
 
                 <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
                 <div class="navbar-custom-menu mt-10 mc-15">
-                   
-
-                        
-                   
-                      <ul class="nav navbar-nav"> 
-                        <li class="dropdown messages-menu"> 
-                        <a id="update-notif"  data-toggle="dropdown" class="btn btn-danger margin-0-12-0-0  border-radius-10" aria-expanded="false">
-                            <i aria-hidden="true" class="fa fa-bell"></i>
-                            <span id="total-notif" class="label label-black"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li id="total-notif-all" class="header"></li>
-                            <li>
-                                <ul id="menu-notif" class="menu"></ul>
-                            </li>
-
-                            <li class="footer"><a href="{{ url('notification') }}">See All Messages</a></li>
-                        </ul> 
-                         </li>
-                         <li>
-                                <a  data-toggle="modal" data-target="#modal-profile-x" class="btn btn-primary margin-0-12-0-0  border-radius-10">
-                                    <i aria-hidden="true" class="fa fa-user"></i> Profile
-                                </a>
 
 
-                         </li>   
 
-                         <li>
-                           <a href="{{ url('logout') }}" class="btn btn-danger  border-radius-10">
-                            <i aria-hidden="true" class="fa fa-sign-out"></i> Logout
-                            </a>  
 
-                         </li>
-                       </ul> 
-              
-                     
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown messages-menu">
+                            <a id="update-notif" data-toggle="dropdown" class="btn btn-danger margin-0-12-0-0  border-radius-10" aria-expanded="false">
+                                <i aria-hidden="true" class="fa fa-bell"></i>
+                                <span id="total-notif" class="label label-black"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li id="total-notif-all" class="header"></li>
+                                <li>
+                                    <ul id="menu-notif" class="menu"></ul>
+                                </li>
 
-                        
-                  
+                                <li class="footer"><a href="{{ url('notification') }}">See All Messages</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a data-toggle="modal" data-target="#modal-profile-x" class="btn btn-primary margin-0-12-0-0  border-radius-10">
+                                <i aria-hidden="true" class="fa fa-user"></i> Profile
+                            </a>
+
+
+                        </li>
+
+                        <li>
+                            <a href="{{ url('logout') }}" class="btn btn-danger  border-radius-10">
+                                <i aria-hidden="true" class="fa fa-sign-out"></i> Logout
+                            </a>
+
+                        </li>
+                    </ul>
+
+
+
+
+
                 </div>
             </nav>
-             
+
         </header>
-     
+
         @include('template/sidakv2/layout.sidebar')
         <div class="content-wrapper">
             @yield('content')
-              
+
         </div>
-       
+
 
     </div>
     @else
@@ -128,19 +129,28 @@
     <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/slimscroll.min.js' }}"></script>
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js"></script>
     <script src="{{ config('app.url').$template.'/plugin/select2/js/select2.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/plugin/selectpicker/js/bootstrap-select.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/accounting.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/plugin/excel/js/dist_xlsx.full.min.js' }}"></script>
-    
+
 
 
     <script>
         $(function() {
-           
-            $('[data-toggle="tooltip"]').tooltip();
-            
-                $("#update-notif").click( () => {    
+
+            $('[data-toggle="tooltip"]').tooltip(); <<
+            <<
+            << < HEAD
+
+                ===
+                ===
+                =
+
+                $("#update-notif").click(() => {
                     UpdateData();
                 });
 
@@ -149,69 +159,70 @@
 
 
 
-            getNotif();  
+            getNotif();
 
 
-            function UpdateData(){
-               
-               $.ajax({
-                url: BASE_URL+ `/api/notif-update`,
-                method: 'GET',
-                success: function(response) {
-                   $('#total-notif').html('');
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                }
-            });
-
-
-            }  
-
-            function getNotif(){
+            function UpdateData() {
 
                 $.ajax({
-                url: BASE_URL+ `/api/notif`,
-                method: 'GET',
-                success: function(response) {
-                   var row = ``;
+                    url: BASE_URL + `/api/notif-update`,
+                    method: 'GET',
+                    success: function(response) {
+                        $('#total-notif').html('');
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
 
-                    if(response.data.length>0)
-                    {
-                        // Populate content with new data
-                        response.data.forEach(function(item, index) {  
 
-                                    row += `<li>`;
-                                        row += `<a href="#">`;
-                                           row += `<div class="pull-left">`;
-                                                row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
-                                            row += `</div>`;
-                                            row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
-                                            row += `<p>${item.messages}</p>`;
-                                        row += `</a>`;
-
-                                    row += `</li>`;
-
-                        }); 
-                          $('#total-notif').append(response.total_not_show);
-                          $('#total-notif-all').append('You have '+response.total_all+' messages');
-                          $('#menu-notif').append(row);
-                    }else{
-
-                        
-                         row +=`<li>`;
-                         row +=`<a>Data Kosong</a>`;
-                         row +=`</li>`;
-                         content.append(row);
-                    }                   
-
-                  
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                }
-            });
             }
+
+            function getNotif() {
+
+                $.ajax({
+                    url: BASE_URL + `/api/notif`,
+                    method: 'GET',
+                    success: function(response) {
+                        var row = ``;
+
+                        if (response.data.length > 0) {
+                            // Populate content with new data
+                            response.data.forEach(function(item, index) {
+
+                                row += `<li>`;
+                                row += `<a href="#">`;
+                                row += `<div class="pull-left">`;
+                                row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
+                                row += `</div>`;
+                                row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
+                                row += `<p>${item.messages}</p>`;
+                                row += `</a>`;
+
+                                row += `</li>`;
+
+                            });
+                            $('#total-notif').append(response.total_not_show);
+                            $('#total-notif-all').append('You have ' + response.total_all + ' messages');
+                            $('#menu-notif').append(row);
+                        } else {
+
+
+                            row += `<li>`;
+                            row += `<a>Data Kosong</a>`;
+                            row += `</li>`;
+                            content.append(row);
+                        }
+
+
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            } >>>
+            >>>
+            > 904 b433594153969a7f6916a69cf5d44e75580f5
         });
     </script>
     <script type="text/javascript">
@@ -223,5 +234,6 @@
     @stack('scripts')
 
 </body>
- @include('template/sidakv2/layout.profile')
+@include('template/sidakv2/layout.profile')
+
 </html>

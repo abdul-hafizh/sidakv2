@@ -83,6 +83,12 @@ class RequestPaguTarget
         //dd($data);
         $result = $data->get();
         foreach ($result as $key => $val) {
+            $edit_url = "";
+            $delete_url = "";
+
+            $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+
+            $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
             $row    = array();
             $row[]  = $numberNext++;
@@ -90,13 +96,14 @@ class RequestPaguTarget
             $row[]  = $val->nama_daerah;
             $row[]  = $val->type_daerah;
             $row[]  = $val->periode_id;
-            $row[]  = $val->pagu_apbn;
-            $row[]  = $val->pagu_promosi;
+            $row[]  = GeneralHelpers::formatRupiah($val->pagu_apbn);
+            $row[]  = GeneralHelpers::formatRupiah($val->pagu_promosi);
+            $row[]  = GeneralHelpers::formatRupiah($val->pagu_dalak);
             $row[]  = $val->target_pengawasan;
             $row[]  = $val->target_penyelesaian_permasalahan;
             $row[]  = $val->target_bimbingan_teknis;
             $row[]  = $val->target_video_promosi;
-            $row[]  = $val->pagu_dalak;
+            $row[]  = $edit_url . " " . $delete_url;
 
             $temp[] = $row;
         }

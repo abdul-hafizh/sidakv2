@@ -3,6 +3,26 @@
     color: #a94442;
 }
 
+@keyframes blink {
+    0% {
+        visibility: hidden;
+    }
+    50% {
+        visibility: visible;
+    }
+    100% {
+        visibility: hidden;
+    }
+}
+
+.blinking-text {
+    animation: blink 1s step-end infinite;
+}
+
+.just-center { 
+    display: flex; justify-content: center; 
+}
+
 .form-group.has-error .form-control {
     border-color: #dd4b39!important;
     box-shadow: none;

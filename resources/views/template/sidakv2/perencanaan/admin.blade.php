@@ -3,105 +3,115 @@
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
-		    <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
-        </div> 	
-    </div> 	
+            <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
+        </div>
+    </div>
 
-	<div class="col-sm-4 pull-left padding-default full">
-		<div class="width-50 pull-left">
+    <div class="col-sm-4 pull-left padding-default full">
+        <div class="width-50 pull-left">
             <div class="pull-left padding-9-0 margin-left-button">
-                <select id="row_page" class="selectpicker" data-style="btn-default" >
+                <select id="row_page" class="selectpicker" data-style="btn-default">
                     <option value="10" selected>10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
                     <option value="100">100</option>
                     <option value="all">All</option>
                 </select>
-            </div>  
+            </div>
 
-           
-         
+
+
             <div class="pull-left padding-9-0 margin-left-button">
-                <button type="button"  id="refresh" class="btn btn-primary border-radius-10">
-                     Refresh
+                <button type="button" id="refresh" class="btn btn-primary border-radius-10">
+                    Refresh
                 </button>
             </div>
 
-          
-              
-          
-		</div> 
 
-		<div class="pull-right width-50">
-			<ul id="pagination" class="pagination-table pagination"></ul>
-		</div>
-	</div>
+
+
+        </div>
+
+        <div class="pull-right width-50">
+            <ul id="pagination" class="pagination-table pagination"></ul>
+        </div>
+    </div>
 </section>
 
 <div class="content">
-	<div class="clearfix"></div>
-	<div class="clearfix"></div> 
+    <div class="clearfix"></div>
+    <div class="clearfix"></div>
 
-	<div class="box box-solid box-primary">
-		<div class="box-body">
-			<div class="card-body table-responsive p-0">
-				<table class="table table-hover text-nowrap">
-					<thead>
-						<tr>
-							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
-							<th><div class="split-table"></div><span class="span-title">No</span></th>
-							
-							<th><div class="split-table"></div><span class="span-title">Periode </span></th>
-							<th><div class="split-table"></div><span class="span-title">Status </span></th>
-							<th><div class="split-table"></div><span class="span-title">Tanggal </span></th>
-							<th><div class="split-table"></div><span class="span-title"> Aksi </span> </th>
-						</tr>
-					</thead>
+    <div class="box box-solid box-primary">
+        <div class="box-body">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">No</span>
+                            </th>
 
-					<tbody id="content"></tbody>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">Periode </span>
+                            </th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">Status </span>
+                            </th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">Tanggal </span>
+                            </th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title"> Aksi </span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="content"></tbody>
 
                 </table>
             </div>
         </div>
     </div>
     <div class="pull-left full">
-      <div id="total-data" class="pull-left width-25"></div>    
+        <div id="total-data" class="pull-left width-25"></div>
     </div>
 </div>
 
 <script type="text/javascript">
     $(document).ready(function() {
         const itemsPerPage = 10;
-        let currentPage = 1; 
-        let previousPage = 1; 
-        const visiblePages = 5; 
+        let currentPage = 1;
+        let previousPage = 1;
+        const visiblePages = 5;
         let page = 1;
         var periode = [];
         var list = [];
 
         $('#row_page').on('change', function() {
-            var value = $(this).val();         
-            if(value)
-            {   
-                 const content = $('#content');
-                 content.empty();
-                 let row = ``;
-                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                  content.append(row);
-                  let search = $('#periode_id').val();
-                  if(search !='')
-                  {
+            var value = $(this).val();
+            if (value) {
+                const content = $('#content');
+                content.empty();
+                let row = ``;
+                row += `<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                content.append(row);
+                let search = $('#periode_id').val();
+                if (search != '') {
                     var url = BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${value}`;
                     var method = 'POST';
-                  }else{
+                } else {
                     var url = BASE_URL + `/api/perencanaan?page=${page}&per_page=${value}`;
                     var method = 'GET';
-                  }     
+                }
 
                 $.ajax({
                     url: url,
                     method: method,
-                    data:{'search':search},
+                    data: {
+                        'search': search
+                    },
                     success: function(response) {
                         list = response.data;
                         resultTotal(response.total);
@@ -112,22 +122,22 @@
                         console.error('Error fetching data:', error);
                     }
                 });
-            }    
-    // Perform other actions based on the selected value
-    });
+            }
+            // Perform other actions based on the selected value
+        });
 
-      
+
 
         $.ajax({
-            url: BASE_URL +'/api/select-periode?type=GET',
+            url: BASE_URL + '/api/select-periode?type=GET',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
                 // Populate SelectPicker options using received data
                 $.each(data, function(index, option) {
                     $('#periode_id').append($('<option>', {
-                      value: option.value,
-                      text: option.text
+                        value: option.value,
+                        text: option.text
                     }));
                 });
 
@@ -140,18 +150,19 @@
         });
 
         $('#periode_id').on('change', function() {
-            var value = $(this).val();         
-            if(value)
-            {   
-                 const content = $('#content');
-                 content.empty();
-                 let row = ``;
-                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                  content.append(row);
+            var value = $(this).val();
+            if (value) {
+                const content = $('#content');
+                content.empty();
+                let row = ``;
+                row += `<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                content.append(row);
 
                 $.ajax({
                     url: BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}`,
-                    data:{'search':value},
+                    data: {
+                        'search': value
+                    },
                     method: 'POST',
                     success: function(response) {
                         resultTotal(response.total);
@@ -162,15 +173,14 @@
                         console.error('Error fetching data:', error);
                     }
                 });
-            }    
+            }
         });
 
         $('#select-all').on('change', function() {
             var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
             nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
-            const checkedCount =  $('.item-checkbox:checked').length;
-            if(checkedCount >0)
-            {
+            const checkedCount = $('.item-checkbox:checked').length;
+            if (checkedCount > 0) {
                 $('#delete-selected').prop("disabled", false);
             } else {
                 $('#delete-selected').prop("disabled", true);
@@ -197,13 +207,15 @@
             $('.select-all').prop('checked', allChecked);
         });
 
-       
 
-        function deleteItems(ids) {        
+
+        function deleteItems(ids) {
             $.ajax({
-                url:  BASE_URL +`/api/perencanaan/selected`,
+                url: BASE_URL + `/api/perencanaan/selected`,
                 method: 'POST',
-                data: { data: ids },
+                data: {
+                    data: ids
+                },
                 success: function(response) {
                     fetchData(page);
                 },
@@ -216,13 +228,13 @@
         function fetchData(page) {
             const content = $('#content');
             content.empty();
-          
+
             let row = ``;
-                row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                content.append(row);
+            row += `<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+            content.append(row);
 
             $.ajax({
-                url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
+                url: BASE_URL + `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
                 method: 'GET',
                 success: function(response) {
                     list = response.data;
@@ -242,75 +254,43 @@
             content.empty();
             data.forEach(function(item, index) {
                 let row = ``;
-                row +=`<tr>`;
-                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-                row +=`<td class="table-padding-second">${item.number}</td>`;
-                row +=`<td class="table-padding-second">${item.periode}</td>`;
-                row +=`<td class="table-padding-second">${item.status}</td>`;
-                row +=`<td class="table-padding-second">${item.created_at}</td>`;
-                row +=`<td>`; 
-                    row +=`<div class="btn-group">`;
-                    row +=`<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
-                
-                     row +=`<button id="Detail" data-param_id="${item.id}"  type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                 
-                    row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
+                row += `<tr>`;
+                row += `<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                row += `<td class="table-padding-second">${item.number}</td>`;
+                row += `<td class="table-padding-second">${item.periode}</td>`;
+                row += `<td class="table-padding-second">${item.status}</td>`;
+                row += `<td class="table-padding-second">${item.created_at}</td>`;
+                row += `<td>`;
+                row += `<div class="btn-group">`;
+                row += `<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
 
-                 
-                   
-                    row +=`</div>`;
-                    row +=`</td>`;
-                row +=`</tr>`; 
+                row += `<button id="Detail" data-param_id="${item.id}"  type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+
+                row += `<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+
+
+
+                row += `</div>`;
+                row += `</td>`;
+                row += `</tr>`;
                 content.append(row);
             });
 
             $('.item-checkbox').on('click', function() {
                 const checkedCount = $('.item-checkbox:checked').length;
-                if(checkedCount>0)
-                {
+                if (checkedCount > 0) {
                     $('#delete-selected').prop("disabled", false);
                 } else {
                     $('#delete-selected').prop("disabled", true);
-                }  
+                }
             });
 
-            $( "#content" ).on( "click", "#Approve", (e) => {
-             
+            $("#content").on("click", "#Approve", (e) => {
+
                 let id = e.currentTarget.dataset.param_id;
-                
+
                 Swal.fire({
-			      title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
-			      icon: 'warning',
-			      showCancelButton: true,
-			      confirmButtonColor: '#d33',
-			      cancelButtonColor: '#3085d6',
-			      confirmButtonText: 'Ya'
-			    }).then((result) => {
-			        if (result.isConfirmed) {
-                        approveItem(id);
-                        Swal.fire(
-                            'Approved!',
-                            'Data berhasil diapprove.',
-                            'success'
-                        );
-			        }
-			    });
-            });
-
-            $( "#content" ).on( "click", "#Detail", (e) => {
-                let id = e.currentTarget.dataset.param_id;
-                window.location.replace('/perencanaan/detail/'+ id);   
-            });
-
-            $( "#content" ).on( "click", "#Edit", (e) => {
-                let id = e.currentTarget.dataset.param_id;
-                window.location.replace('/perencanaan/edit/'+ id);   
-            }); 
-
-            $( "#content" ).on( "click", "#Destroy", (e) => {
-                let id = e.currentTarget.dataset.param_id;
-                Swal.fire({
-                    title: 'Apakah anda yakin hapus?',                    
+                    title: 'Apakah Anda Yakin Approve Perencanaan Ini?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
@@ -318,7 +298,38 @@
                     confirmButtonText: 'Ya'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        deleteItem(id);                        
+                        approveItem(id);
+                        Swal.fire(
+                            'Approved!',
+                            'Data berhasil diapprove.',
+                            'success'
+                        );
+                    }
+                });
+            });
+
+            $("#content").on("click", "#Detail", (e) => {
+                let id = e.currentTarget.dataset.param_id;
+                window.location.replace('/perencanaan/detail/' + id);
+            });
+
+            $("#content").on("click", "#Edit", (e) => {
+                let id = e.currentTarget.dataset.param_id;
+                window.location.replace('/perencanaan/edit/' + id);
+            });
+
+            $("#content").on("click", "#Destroy", (e) => {
+                let id = e.currentTarget.dataset.param_id;
+                Swal.fire({
+                    title: 'Apakah anda yakin hapus?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteItem(id);
                         Swal.fire(
                             'Deleted!',
                             'Data berhasil dihapus.',
@@ -326,12 +337,12 @@
                         );
                     }
                 });
-            }); 
+            });
         }
 
-        function approveItem(id){
+        function approveItem(id) {
             $.ajax({
-                url:  BASE_URL +`/api/perencanaan/approve/`+ id,
+                url: BASE_URL + `/api/perencanaan/approve/` + id,
                 method: 'PUT',
                 success: function(response) {
                     fetchData(page);
@@ -342,9 +353,9 @@
             });
         }
 
-        function deleteItem(id){
+        function deleteItem(id) {
             $.ajax({
-                url:  BASE_URL +`/api/perencanaan/`+ id,
+                url: BASE_URL + `/api/perencanaan/` + id,
                 method: 'DELETE',
                 success: function(response) {
                     fetchData(page);
@@ -355,8 +366,8 @@
             });
         }
 
-        function resultTotal(total){
-           $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
+        function resultTotal(total) {
+            $('#total-data').html('<span><b>Total Data : ' + total + '</b></span>');
         }
 
         function updatePagination(currentPage, totalPages) {
@@ -404,8 +415,6 @@
         fetchData(currentPage);
 
     });
-
 </script>
 
 @stop
-
