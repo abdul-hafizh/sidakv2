@@ -9,31 +9,29 @@
                <div class="box-body">
                     <div class="card-body">
                          <div class="row pd-top-bottom-15">  
-                              <div class="col-sm-4">
+                              <div class="col-lg-8">
                                    <div class="form-group">
-                                        <label  class="col-sm-3 label-header-box align-left">Pagu APBN :</label>
-                                        <div class="col-sm-9">
-                                             <div id="pagu_apbn" class="align-left pd-top-bottom-6" ></div>
-                                        </div>
+                                        <label class="col-lg-4 label-header-box align-left">
+                                             Pagu APBN : 
+                                             <span id="pagu_apbn" class="align-left pd-top-bottom-5"></span>
+                                             <input type="hidden" id="pagu_apbn_inp">
+                                        </label>
+                                        <label class="col-lg-6 label-header-box align-left">
+                                             Total Perencanaan :
+                                             <span id="total_rencana" class="align-left pd-top-bottom-5"></span>
+                                             <input type="hidden" id="total_rencana_inp">
+                                        </label>
                                    </div>
                               </div>
-                              <div class="col-sm-4">
-                                        <div class="form-group">
-                                        <label  class="col-sm-4 label-header-box align-left">Total Rencana :</label>
-                                        <div class="col-sm-8">
-                                             <div id="total_rencana" class="align-left pd-top-bottom-6" ></div>
-                                        </div>
-                                   </div>
-                              </div>
-                              <div class="col-sm-4">
-                                   <div class="form-group">
-                                        <label  class="col-sm-5 label-header-box align-right">Periode :</label>
+                              <div class="col-lg-4">
+                                   <div id="periode-alert" class="form-group">
+                                        <label class="col-sm-5 label-header-box align-right form-group margin-none">Pilih Periode :</label>
                                         <div class="col-sm-7">
-                                             <div id="periode_selected" class="align-left pd-top-bottom-6"></div>
+                                             <div id="selectPeriode" class="form-group margin-none"></div>
                                         </div>
                                    </div>
                               </div>
-                         </div> 
+                         </div>                          
                     </div>
                </div>
           </div>

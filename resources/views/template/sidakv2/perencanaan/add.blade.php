@@ -1,7 +1,7 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 
-<style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } .just-center { display: flex; justify-content: center; } </style>
+<style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
      <form id="FormSubmit">
@@ -17,7 +17,7 @@
                                              <input type="hidden" id="pagu_apbn_inp">
                                         </label>
                                         <label class="col-lg-6 label-header-box align-left">
-                                             Total Rencana :
+                                             Total Perencanaan :
                                              <span id="total_rencana" class="align-left pd-top-bottom-5"></span>
                                              <input type="hidden" id="total_rencana_inp">
                                         </label>
