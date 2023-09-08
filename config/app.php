@@ -178,6 +178,7 @@ return [
         EloquentFilter\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
     ],
 
     /*

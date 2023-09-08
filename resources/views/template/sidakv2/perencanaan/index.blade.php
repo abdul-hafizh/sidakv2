@@ -3,62 +3,74 @@
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
-		    <select id="periode_id" class="selectpicker" data-style="btn-primary" title="Pilih Periode"></select>
-        </div> 	
-    </div> 	
+            <select id="periode_id" class="selectpicker" data-style="btn-primary" title="Pilih Periode"></select>
+        </div>
+    </div>
 
-	<div class="col-sm-4 pull-left padding-default full">
-		<div class="width-50 pull-left">
+    <div class="col-sm-4 pull-left padding-default full">
+        <div class="width-50 pull-left">
             @if($access != 'daerah' || $access != 'province')
-                <div class="pull-left padding-9-0 margin-left-button">
-                    <button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
-                         Hapus
-                    </button>
-                </div>
+            <div class="pull-left padding-9-0 margin-left-button">
+                <button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
+                    Hapus
+                </button>
+            </div>
             @endif
 
             <div class="pull-left padding-9-0 margin-left-button">
-                <button type="button"  id="refresh" class="btn btn-primary border-radius-10">
-                     Refresh
+                <button type="button" id="refresh" class="btn btn-primary border-radius-10">
+                    Refresh
                 </button>
             </div>
 
             @if($access == 'daerah' || $access == 'province')
-                <div class="pull-left padding-9-0">
-                    <a href="{{ url('perencanaan/add') }}" class="btn btn-primary border-radius-10" >
-                        Tambah Data
-                    </a> 
-                </div>		
+            <div class="pull-left padding-9-0">
+                <a href="{{ url('perencanaan/add') }}" class="btn btn-primary border-radius-10">
+                    Tambah Data
+                </a>
+            </div>
             @endif
-		</div> 
+        </div>
 
-		<div class="pull-right width-50">
-			<ul id="pagination" class="pagination-table pagination"></ul>
-		</div>
-	</div>
+        <div class="pull-right width-50">
+            <ul id="pagination" class="pagination-table pagination"></ul>
+        </div>
+    </div>
 </section>
 
 <div class="content">
-	<div class="clearfix"></div>
-	<div class="clearfix"></div> 
+    <div class="clearfix"></div>
+    <div class="clearfix"></div>
 
-	<div class="box box-solid box-primary">
-		<div class="box-body">
-			<div class="card-body table-responsive p-0">
-				<table class="table table-hover text-nowrap">
-					<thead>
-						<tr>
-							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
-							<th><div class="split-table"></div><span class="span-title">No</span></th>
-							<th><div class="split-table"></div><span class="span-title">Nama Daerah </span></th>
-							<th><div class="split-table"></div><span class="span-title">Periode </span></th>
-							<th><div class="split-table"></div><span class="span-title">Status </span></th>
-							<th><div class="split-table"></div><span class="span-title">Tanggal </span></th>
-							<th><div class="split-table"></div><span class="span-title"> Aksi </span> </th>
-						</tr>
-					</thead>
+    <div class="box box-solid box-primary">
+        <div class="box-body">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">No</span>
+                            </th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">Nama Daerah </span>
+                            </th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">Periode </span>
+                            </th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">Status </span>
+                            </th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title">Tanggal </span>
+                            </th>
+                            <th>
+                                <div class="split-table"></div><span class="span-title"> Aksi </span>
+                            </th>
+                        </tr>
+                    </thead>
 
-					<tbody id="content"></tbody>
+                    <tbody id="content"></tbody>
 
                 </table>
             </div>
@@ -69,9 +81,9 @@
 <script type="text/javascript">
     $(document).ready(function() {
         const itemsPerPage = 10;
-        let currentPage = 1; 
-        let previousPage = 1; 
-        const visiblePages = 5; 
+        let currentPage = 1;
+        let previousPage = 1;
+        const visiblePages = 5;
         let page = 1;
         var periode = [];
         var list = [];
@@ -79,15 +91,15 @@
         $('.selectpicker').selectpicker();
 
         $.ajax({
-            url: BASE_URL +'/api/perencanaan/periode',
+            url: BASE_URL + '/api/perencanaan/periode',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
                 // Populate SelectPicker options using received data
                 $.each(data, function(index, option) {
                     $('.selectpicker').append($('<option>', {
-                      value: option.value,
-                      text: option.text
+                        value: option.value,
+                        text: option.text
                     }));
                 });
 
@@ -100,18 +112,19 @@
         });
 
         $('#periode_id').on('change', function() {
-            var value = $(this).val();         
-            if(value)
-            {   
-                 const content = $('#content');
-                 content.empty();
-                 let row = ``;
-                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                  content.append(row);
+            var value = $(this).val();
+            if (value) {
+                const content = $('#content');
+                content.empty();
+                let row = ``;
+                row += `<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                content.append(row);
 
                 $.ajax({
                     url: BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}`,
-                    data:{'search':value},
+                    data: {
+                        'search': value
+                    },
                     method: 'POST',
                     success: function(response) {
                         updateContent(response.data);
@@ -121,15 +134,14 @@
                         console.error('Error fetching data:', error);
                     }
                 });
-            }    
+            }
         });
 
         $('#select-all').on('change', function() {
             var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
             nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
-            const checkedCount =  $('.item-checkbox:checked').length;
-            if(checkedCount >0)
-            {
+            const checkedCount = $('.item-checkbox:checked').length;
+            if (checkedCount > 0) {
                 $('#delete-selected').prop("disabled", false);
             } else {
                 $('#delete-selected').prop("disabled", true);
@@ -160,19 +172,21 @@
             const content = $('#periode_id');
             content.empty();
             let row = ``;
-            row +=`<option value="">Pilih Periode</option>`;
+            row += `<option value="">Pilih Periode</option>`;
             data.forEach(item => {
-                
-                row +=`<option value="${item.value}">${item.text}</option>`;
-                content.html(row);
-            });     
-        } 
 
-        function deleteItems(ids) {        
+                row += `<option value="${item.value}">${item.text}</option>`;
+                content.html(row);
+            });
+        }
+
+        function deleteItems(ids) {
             $.ajax({
-                url:  BASE_URL +`/api/perencanaan/selected`,
+                url: BASE_URL + `/api/perencanaan/selected`,
                 method: 'POST',
-                data: { data: ids },
+                data: {
+                    data: ids
+                },
                 success: function(response) {
                     fetchData(page);
                 },
@@ -185,13 +199,13 @@
         function fetchData(page) {
             const content = $('#content');
             content.empty();
-          
+
             let row = ``;
-                row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                content.append(row);
+            row += `<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+            content.append(row);
 
             $.ajax({
-                url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
+                url: BASE_URL + `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
                 method: 'GET',
                 success: function(response) {
                     list = response.data;
@@ -210,66 +224,39 @@
             content.empty();
             data.forEach(function(item, index) {
                 let row = ``;
-                row +=`<tr>`;
-                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-                row +=`<td class="table-padding-second">${item.number}</td>`;
-                row +=`<td class="table-padding-second">${item.nama_daerah}</td>`;
-                row +=`<td class="table-padding-second">${item.periode}</td>`;
-                row +=`<td class="table-padding-second">${item.status}</td>`;
-                row +=`<td class="table-padding-second">${item.created_at}</td>`;
-                row +=`<td>`; 
-                    row +=`<div class="btn-group">`;
-                    row +=`<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
-                    row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-warning" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                    row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-danger" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
-                    row +=`</div>`;
-                    row +=`</td>`;
-                row +=`</tr>`; 
+                row += `<tr>`;
+                row += `<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                row += `<td class="table-padding-second">${item.number}</td>`;
+                row += `<td class="table-padding-second">${item.nama_daerah}</td>`;
+                row += `<td class="table-padding-second">${item.periode}</td>`;
+                row += `<td class="table-padding-second">${item.status}</td>`;
+                row += `<td class="table-padding-second">${item.created_at}</td>`;
+                row += `<td>`;
+                row += `<div class="btn-group">`;
+                row += `<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
+                row += `<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-warning" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                row += `<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-danger" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+                row += `</div>`;
+                row += `</td>`;
+                row += `</tr>`;
                 content.append(row);
             });
 
             $('.item-checkbox').on('click', function() {
                 const checkedCount = $('.item-checkbox:checked').length;
-                if(checkedCount>0)
-                {
+                if (checkedCount > 0) {
                     $('#delete-selected').prop("disabled", false);
                 } else {
                     $('#delete-selected').prop("disabled", true);
-                }  
+                }
             });
 
-            $( "#content" ).on( "click", "#Approve", (e) => {
-             
-                let id = e.currentTarget.dataset.param_id;
-                
-                Swal.fire({
-			      title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
-			      icon: 'warning',
-			      showCancelButton: true,
-			      confirmButtonColor: '#d33',
-			      cancelButtonColor: '#3085d6',
-			      confirmButtonText: 'Ya'
-			    }).then((result) => {
-			        if (result.isConfirmed) {
-                        approveItem(id);
-                        Swal.fire(
-                            'Approved!',
-                            'Data berhasil diapprove.',
-                            'success'
-                        );
-			        }
-			    });
-            });
+            $("#content").on("click", "#Approve", (e) => {
 
-            $( "#content" ).on( "click", "#Edit", (e) => {
                 let id = e.currentTarget.dataset.param_id;
-                window.location.replace('/perencanaan/edit/'+ id);   
-            }); 
 
-            $( "#content" ).on( "click", "#Destroy", (e) => {
-                let id = e.currentTarget.dataset.param_id;
                 Swal.fire({
-                    title: 'Apakah anda yakin hapus?',                    
+                    title: 'Apakah Anda Yakin Approve Perencanaan Ini?',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
@@ -277,7 +264,33 @@
                     confirmButtonText: 'Ya'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        deleteItem(id);                        
+                        approveItem(id);
+                        Swal.fire(
+                            'Approved!',
+                            'Data berhasil diapprove.',
+                            'success'
+                        );
+                    }
+                });
+            });
+
+            $("#content").on("click", "#Edit", (e) => {
+                let id = e.currentTarget.dataset.param_id;
+                window.location.replace('/perencanaan/edit/' + id);
+            });
+
+            $("#content").on("click", "#Destroy", (e) => {
+                let id = e.currentTarget.dataset.param_id;
+                Swal.fire({
+                    title: 'Apakah anda yakin hapus?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteItem(id);
                         Swal.fire(
                             'Deleted!',
                             'Data berhasil dihapus.',
@@ -285,12 +298,12 @@
                         );
                     }
                 });
-            }); 
+            });
         }
 
-        function approveItem(id){
+        function approveItem(id) {
             $.ajax({
-                url:  BASE_URL +`/api/perencanaan/approve/`+ id,
+                url: BASE_URL + `/api/perencanaan/approve/` + id,
                 method: 'PUT',
                 success: function(response) {
                     fetchData(page);
@@ -301,9 +314,9 @@
             });
         }
 
-        function deleteItem(id){
+        function deleteItem(id) {
             $.ajax({
-                url:  BASE_URL +`/api/perencanaan/`+ id,
+                url: BASE_URL + `/api/perencanaan/` + id,
                 method: 'DELETE',
                 success: function(response) {
                     fetchData(page);
@@ -359,8 +372,6 @@
         fetchData(currentPage);
 
     });
-
 </script>
 
 @stop
-

@@ -17,14 +17,12 @@ class RequestPeriode
       $temp = array();
       $getRequest = $request->all();
       $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
-      if($perPage !='all')
-      {
-            $numberNext = (($page * $perPage) - ($perPage - 1));
-      }else{
-            $numberNext = (($page * $data->count()) - ($data->count() - 1));
-      }  
-      foreach ($data as $key => $val)
-      {
+      if ($perPage != 'all') {
+         $numberNext = (($page * $perPage) - ($perPage - 1));
+      } else {
+         $numberNext = (($page * $data->count()) - ($data->count() - 1));
+      }
+      foreach ($data as $key => $val) {
          if ($val->status == 'A') {
             $status = 'Aktif';
          } else {
@@ -39,54 +37,51 @@ class RequestPeriode
          $temp[$key]['slug'] = $val->slug;
          $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->slug);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
-
       }
-       $result['data'] = $temp;
-       if($perPage !='all')
-       {
-           $result['current_page'] = $data->currentPage();
-           $result['last_page'] = $data->lastPage();
-           $result['total'] = $data->total(); 
-       }else{
-           $result['current_page'] = 1;
-           $result['last_page'] = 1;
-           $result['total'] = $data->count(); 
-       } 
+      $result['data'] = $temp;
+      if ($perPage != 'all') {
+         $result['current_page'] = $data->currentPage();
+         $result['last_page'] = $data->lastPage();
+         $result['total'] = $data->total();
+      } else {
+         $result['current_page'] = 1;
+         $result['last_page'] = 1;
+         $result['total'] = $data->count();
+      }
 
-       return $result; 
-
+      return $result;
    }
 
    public static function SelectAll($data)
    {
-         $temp = array();
-       
+      $temp = array();
 
-         foreach ($data as $key => $val) {
 
-            $temp[$key]['value'] = (string)$val->slug;
-            $temp[$key]['text'] = 'Periode '.$val->year;
-            $temp[$key]['pagu_apbn'] = RequestPeriode::Pagu('APBN', substr((string)$val->slug, 0, 4));
-            $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
-         }
-       
+      foreach ($data as $key => $val) {
+
+         $temp[$key]['value'] = (string)$val->year;
+         $temp[$key]['text'] = 'Periode ' . $val->year;
+         $temp[$key]['pagu_apbn'] = RequestPeriode::Pagu('APBN', substr((string)$val->slug, 0, 4));
+         $temp[$key]['pagu_promosi'] = RequestPeriode::Pagu('promosi', substr((string)$val->slug, 0, 4));
+      }
+
 
 
       return  $temp;
    }
 
-   public static function checkValidate($slug){
+   public static function checkValidate($slug)
+   {
 
-       $data = Perencanaan::where('periode_id',$slug)->first();
-       if($data)
-       {
-          $result = 'disabled';
-       }else{
-          $result = '';
-       } 
+      $data = Perencanaan::where('periode_id', $slug)->first();
+      if ($data) {
+         $result = 'disabled';
+      } else {
+         $result = '';
+      }
 
-       return $result;
-  }
+      return $result;
+   }
 
    public static function Pagu($type, $periode_id)
    {
@@ -130,7 +125,7 @@ class RequestPeriode
 
       $fields = [
          'name'  =>  $request->name,
-         'slug' =>  $request->year.$request->semester,
+         'slug' =>  $request->year . $request->semester,
          'semester' => $request->semester,
          'year' => $request->year,
          'status' => $request->status,

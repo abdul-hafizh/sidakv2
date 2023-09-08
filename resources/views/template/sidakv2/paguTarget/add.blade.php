@@ -6,7 +6,7 @@
     <div class="modal-content">
       <div class="modal-header bg-primary">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Tambah Pagu Target</h4>
+        <h4 class="modal-title" id="judulModalLabel">Tambah Pagu Target</h4>
       </div>
       <form id="FormSubmit">
         <div class="modal-body">
@@ -14,9 +14,8 @@
           <div class="row">
             <div id="type_daerah-alert" class="form-group has-feedback col-md-6">
               <label>Tipe </label>
-              <select class="form-control" name="type_daerah">
+              <select class="form-control" name="type_daerah" id="type_daerah">
                 <option value="">-Pilih Tipe-</option>
-                <option value="Pusat">Pusat</option>
                 <option value="Provinsi">Provinsi</option>
                 <option value="Kabupaten">Kabupaten</option>
               </select>
@@ -26,10 +25,12 @@
           <div class="row">
             <div id="daerah_id-alert" class="form-group has-feedback col-md-6">
               <label>Daerah </label>
-              <select id="daerah_id" class="select-daerah form-control" name="daerah_id"></select>
+              <select id="daerah_id" class="select-daerah form-control" name="daerah_id" disabled>
+                <option value="">Pilih</option>
+              </select>
               <span id="daerah_id-messages"></span>
+              <input type="text" class="form-control" name="nama_daerah" id="nama_daerah" placeholder="APBN" value="">
             </div>
-            <input type="hidden" class="form-control" name="nama_daerah" id="nama_daerah" placeholder="APBN" value="">
 
           </div>
           <div class="row">
@@ -109,26 +110,49 @@
 <script type="text/javascript">
   $(function() {
 
-    $('.select-daerah').select2({
-      ajax: {
-        url: BASE_URL + '/api/select-daerah', // URL to your server-side endpoint
-        dataType: 'json',
-        delay: 250, // Delay before sending the request (milliseconds)
-        processResults: function(data) {
+    $("#datatable").on("click", ".modalUbah", function() {
+      $('#judulModalLabel').html('Form Ubah')
+      $('.modal-footer button[type=submit]').html('Ubah Data');
 
-          // Transform the data to match Select2's expected format
-          return {
-            results: data.map(function(item) {
-              return {
-                id: item.value,
-                text: item.text
-              };
-            })
-          };
+      const id = $(this).data('param_id');
+      $.ajax({
+        url: BASE_URL + '/api/pagutarget/edit',
+        data: {
+          id: id
         },
-        cache: true // Cache the results to improve performance
-      }
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          $('#nama_daerah').val(data.nama_daerah);
+
+        }
+
+      })
     });
+
+    $('#type_daerah').on('change', function() {
+      let type_daerah = $('#type_daerah').val();
+      if (type_daerah == 'Provinsi')
+        url = "select-province";
+      else
+        url = "select-daerah2";
+      $.ajax({
+        url: BASE_URL + '/api/' + url,
+        method: 'get',
+        dataType: 'json',
+        success: function(data) {
+          console.log(data);
+          jenis = '<option value="">- Pilih -</option>';
+          $.each(data, function(key, val) {
+            jenis += '<option value="' + val.value + '">' + val.text + '</option>';
+          });
+          $('#daerah_id').html(jenis).removeAttr('disabled');;
+        }
+      })
+      $('.select-daerah').select2();
+    })
+
+
 
     $('.select-daerah').on('select2:select', function(e) {
       var selectedOption = e.params.data;
@@ -147,7 +171,7 @@
           return {
             results: data.map(function(item) {
               return {
-                id: item.slug,
+                id: item.value,
                 text: item.text
               };
             })

@@ -23,17 +23,15 @@ class PeriodeApiController extends Controller
     public function index(Request $request)
     {
         // $_res = array();
-         $query = Periode::orderBy('created_at', 'DESC');
-         if($request->per_page !='all')
-         {
-           $data = $query->paginate($request->per_page);
-         }else{   
-           $data = $query->get(); 
-         }   
-        
-         $result = RequestPeriode::GetDataAll($data,$request->per_page,$request);
-         return response()->json($result);
+        $query = Periode::orderBy('created_at', 'DESC');
+        if ($request->per_page != 'all') {
+            $data = $query->paginate($request->per_page);
+        } else {
+            $data = $query->get();
+        }
 
+        $result = RequestPeriode::GetDataAll($data, $request->per_page, $request);
+        return response()->json($result);
     }
 
 
@@ -41,18 +39,19 @@ class PeriodeApiController extends Controller
     public function listAll(Request $request)
     {
 
-        $data =  DB::table('periode as a')
-            ->select('a.slug', 'a.year')
+        $query =  DB::table('periode as a')
+            ->select('a.id', 'a.slug', 'a.year')
             ->where('a.status', 'Y')
-            ->groupBy('a.year')
-            ->whereNotIn(
-                'a.year',
-                DB::table('perencanaan as c')
-                    ->select(DB::raw("LEFT(c.periode_id,4) AS periode_id"))
-                    ->where('c.daerah_id', Auth::User()->daerah_id)
+            // ->whereIn(
+            //     'slug',
+            //     DB::table('perencanaan')
+            //         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+            // )
+            ->groupBy('year');
 
-            )
-            ->get();
+
+
+        $data = $query->get();
 
         $periode = RequestPeriode::SelectAll($data);
         return response()->json($periode);
