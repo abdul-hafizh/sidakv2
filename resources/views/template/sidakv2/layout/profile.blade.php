@@ -157,7 +157,7 @@
           $("#load-update").show();
 
           var data = $("#FormUpdate").serializeArray();
-          console.log(data)
+        
           var form = {
             'username': username,
             'daerah_id': daerah_id,

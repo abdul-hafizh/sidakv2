@@ -40,9 +40,31 @@
 .pd-top-bottom-5{
  padding: 5px 0px;
 }
+.box-body-menu{
+    padding: 12px 12px!important;
+}
+.padding-menu{
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    
+}
+
+ .tab-text-role{
+    padding: 0px 6px 0px 0px;
+    position: relative;
+    top: 4px;
+    cursor: pointer;
+ }
+
 
 .pd-top-bottom-6{
  padding: 6px 0px;
+}
+
+.padding-06-10{
+    padding: 6px 10px!important;
 }
 
 .mrg-left-10{
@@ -136,6 +158,10 @@
 
 .font-12{
     font-size: 12px!important;
+}
+
+.font-14{
+    font-size: 14px!important;
 }
 
 .font-label-login{
@@ -494,7 +520,7 @@
 }
 
 .nav-tabs-custom>.tab-content {
-    padding: 0px 10px 10px!important;
+    padding: 12px 12px!important;
 }
 
 
@@ -557,6 +583,11 @@
 .margin-0-0-50-0
 {
     margin: 0px 0px 50px;
+}
+
+.margin-0-0-20-0
+{
+    margin: 0px 0px 20px;
 }
 
 .margin-0-12-0-0
@@ -661,6 +692,12 @@
     cursor: pointer;
     
 }
+.black{
+    background: #000;
+}
+.pointer{
+    cursor: pointer;
+}
 
 .menus .icon {
     position: absolute;
@@ -745,9 +782,9 @@
     padding: 0px 8px!important;
 }
 
-.box-body {
+/*.box-body {
     padding: 0px 24px!important;
-}
+}*/
 
 .table>thead>tr>th {
     padding: 14px 8px!important;
@@ -954,8 +991,16 @@
     color: #fff;
 }
 
+.disabled-span {
+    color: #999;
+    pointer-events: none; 
+}
+
 .text-center{
     text-align: center;
+}
+.text-normal{
+    font-weight: 100;
 }
 .logo-lg{
     margin: 0px auto;

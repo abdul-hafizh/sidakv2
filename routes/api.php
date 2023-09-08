@@ -32,6 +32,8 @@ use App\Http\Controllers\API\AuditLogApiController;
 use App\Http\Controllers\API\KendalaApiController;
 use App\Http\Controllers\API\ForumApiController;
 use App\Http\Controllers\API\NotificationApiController;
+use App\Http\Controllers\API\ActionApiController;
+
 
 
 
@@ -141,6 +143,24 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('notif', [NotificationApiController::class, 'show']);
     Route::get('notif-update', [NotificationApiController::class, 'update']);
 
+    Route::get('menu', [MenusApiController::class, 'index']);
+    Route::post('menu', [MenusApiController::class, 'store']);
+     Route::post('menu/search', [MenusApiController::class, 'search']);
+    Route::put('menu/{id}', [MenusApiController::class, 'update']);
+    Route::delete('menu/{id}', [MenusApiController::class, 'delete']); 
+
+
+     Route::get('action', [ActionApiController::class, 'index']);
+    Route::get('action/edit/{id}', [ActionApiController::class, 'edit']);
+    Route::post('action', [ActionApiController::class, 'store']);
+    Route::post('action/search', [ActionApiController::class, 'search']);
+    Route::put('action/{id}', [ActionApiController::class, 'update']);
+    Route::delete('action/{id}', [ActionApiController::class, 'delete']);
+    Route::post('action/selected', [ActionApiController::class, 'deleteSelected']);
+
+    Route::get('menu/role', [MenusApiController::class, 'menuRole']);
+    Route::post('menu/role/save', [MenusRoleApiController::class, 'store']);
+     Route::get('menu/action', [ActionApiController::class, 'actionList']);
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);

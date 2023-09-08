@@ -15,6 +15,8 @@ use App\Http\Controllers\AuditLogController;
 use App\Http\Controllers\KendalaController;
 use App\Http\Controllers\ForumController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OptionsController;
+use App\Http\Controllers\ActionController;
    
     Route::get('/', function () {
         return redirect('login');
@@ -41,11 +43,13 @@ use App\Http\Controllers\NotificationController;
         Route::get('/user',  [UserController::class,'index']); 
         Route::get('/role', [RoleController::class,'index']);      
         Route::get('/apps', [SettingWebController::class,'index']);
-
+         
         Route::get('/provinsi', [ProvinceController::class,'index']); 
         Route::get('/kabupaten', [RegencyController::class,'index']);
         Route::get('/periode', [PeriodeController::class,'index']);
-         Route::get('/auditlog', [AuditLogController::class,'index']);           
+         Route::get('/auditlog', [AuditLogController::class,'index']);
+        Route::get('/options', [OptionsController::class,'index']);
+        Route::get('/action', [ActionController::class,'index']);        
     });
 
     Route::middleware(['auth','pusat'])->group(function () {

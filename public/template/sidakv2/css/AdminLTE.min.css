@@ -1670,7 +1670,7 @@ a:hover,a:active,a:focus {
 }
 
 .box.box-solid>.box-header .btn:hover,.box.box-solid>.box-header a:hover {
-    background: rgba(0,0,0,0.1)
+   /* background: rgba(0,0,0,0.1)*/
 }
 
 .box.box-solid.box-default {
@@ -2636,7 +2636,7 @@ a:hover,a:active,a:focus {
     margin-bottom: 20px;
     background: #fff;
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
-    border-radius: 3px
+    border-radius: 0px 12px 0px 0px;
 }
 
 .nav-tabs-custom>.nav-tabs {
@@ -2736,8 +2736,8 @@ a:hover,a:active,a:focus {
 .nav-tabs-custom>.tab-content {
     background: #fff;
     padding: 10px;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px
+    border-bottom-right-radius: 12px;
+    border-bottom-left-radius: 12px
 }
 
 .nav-tabs-custom .dropdown.open>a:active,.nav-tabs-custom .dropdown.open>a:focus {
