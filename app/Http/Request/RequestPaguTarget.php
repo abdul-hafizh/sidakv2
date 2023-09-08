@@ -168,7 +168,7 @@ class RequestPaguTarget
                 'target_penyelesaian_permasalahan'  => $request->target_penyelesaian_permasalahan,
                 'target_bimbingan_teknis'  => $request->target_bimbingan_teknis,
                 'target_video_promosi'  => $request->target_video_promosi,
-                'pagu_dalak'  => $request->pagu_dalak,
+                'pagu_dalak'  => $request->pagu_promosi + $request->pagu_apbn,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
