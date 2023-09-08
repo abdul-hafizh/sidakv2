@@ -218,8 +218,26 @@
           $("#load-simpan").show();
 
           var data = $("#FormSubmit").serializeArray();
-          console.log(data);
-          var form = {
+           console.log(data.length)
+          if(data.length == 10)
+          {
+              var form = {
+              'role_id': data[0].value,
+              'username': data[1].value,
+              'name': data[2].value,
+              'email': data[3].value,
+              'phone': data[4].value,
+              'nip': data[5].value,
+              'leader_name': data[6].value,
+              'leader_nip': data[7].value,
+              'daerah_id': data[8].value,
+              'password_confirmation': data[9].value,
+              'photo':photo,
+            }; 
+
+          }else{
+
+             var form = {
             'role_id': data[0].value,
             'username': data[1].value,
             'name': data[2].value,
@@ -229,10 +247,13 @@
             'leader_name': data[6].value,
             'leader_nip': data[7].value,
             'daerah_id': data[8].value,
-            'password_confirmation': data[9].value,
-          
+            'password': data[9].value,
+            'password_confirmation': data[10].value,
             'photo':photo,
           };
+
+          }  
+         
           $.ajax({
             type: "POST",
             url: BASE_URL + '/api/user',
