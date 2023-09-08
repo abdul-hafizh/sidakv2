@@ -17,14 +17,12 @@ class RequestPeriode
       $temp = array();
       $getRequest = $request->all();
       $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
-      if($perPage !='all')
-      {
-            $numberNext = (($page * $perPage) - ($perPage - 1));
-      }else{
-            $numberNext = (($page * $data->count()) - ($data->count() - 1));
-      }  
-      foreach ($data as $key => $val)
-      {
+      if ($perPage != 'all') {
+         $numberNext = (($page * $perPage) - ($perPage - 1));
+      } else {
+         $numberNext = (($page * $data->count()) - ($data->count() - 1));
+      }
+      foreach ($data as $key => $val) {
          if ($val->status == 'Y') {
             $status = 'Aktif';
          } else {
@@ -44,98 +42,96 @@ class RequestPeriode
          $temp[$key]['slug'] = $val->slug;
          $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->year);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
-
       }
-       $result['data'] = $temp;
-       if($perPage !='all')
-       {
-           $result['current_page'] = $data->currentPage();
-           $result['last_page'] = $data->lastPage();
-           $result['total'] = $data->total(); 
-       }else{
-           $result['current_page'] = 1;
-           $result['last_page'] = 1;
-           $result['total'] = $data->count(); 
-       } 
+      $result['data'] = $temp;
+      if ($perPage != 'all') {
+         $result['current_page'] = $data->currentPage();
+         $result['last_page'] = $data->lastPage();
+         $result['total'] = $data->total();
+      } else {
+         $result['current_page'] = 1;
+         $result['last_page'] = 1;
+         $result['total'] = $data->count();
+      }
 
-       return $result; 
-
+      return $result;
    }
 
-   public static function GetDataPrint($data){
-
-          
-
-        $i = 1;    
-        foreach ($data as $key => $val)
-        { 
-            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "NonAktif"; }
-            $temp[$key]['number'] = $i;
-          
-            $temp[$key]['id'] = $val->id;
-            $temp[$key]['name'] = $val->name;
-            $temp[$key]['slug'] = $val->slug;
-            $temp[$key]['semester'] = $val->semester;
-            $temp[$key]['year'] = $val->year;
-            $temp[$key]['startdate'] = GeneralHelpers::formatExcel($val->startdate);
-            $temp[$key]['enddate'] = GeneralHelpers::formatExcel($val->enddate);
-            $temp[$key]['status'] = $status;
-            $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
-
-            $i++;
-        }  
-
-        return json_decode(json_encode($temp), FALSE);
-   }
-
-   public static function SelectAll($data,$type)
+   public static function GetDataPrint($data)
    {
-         $temp = array();
-       
 
-         foreach ($data as $key => $val)
-         {
 
-            $temp[$key]['value'] = $val->slug;
-            $temp[$key]['text'] = 'Periode '.$val->year;
-            if($type =="POST")
-            {
-               $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
-               $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
-               $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
-               $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
-               $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan; 
-            }   
-           
+
+      $i = 1;
+      foreach ($data as $key => $val) {
+         if ($val->status == "Y") {
+            $status = "Aktif";
+         } else {
+            $status = "NonAktif";
          }
-       
+         $temp[$key]['number'] = $i;
+
+         $temp[$key]['id'] = $val->id;
+         $temp[$key]['name'] = $val->name;
+         $temp[$key]['slug'] = $val->slug;
+         $temp[$key]['semester'] = $val->semester;
+         $temp[$key]['year'] = $val->year;
+         $temp[$key]['startdate'] = GeneralHelpers::formatExcel($val->startdate);
+         $temp[$key]['enddate'] = GeneralHelpers::formatExcel($val->enddate);
+         $temp[$key]['status'] = $status;
+         $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
+
+         $i++;
+      }
+
+      return json_decode(json_encode($temp), FALSE);
+   }
+
+   public static function SelectAll($data, $type)
+   {
+      $temp = array();
+
+      foreach ($data as $key => $val) {
+
+         $temp[$key]['value'] = $val->slug;
+         $temp[$key]['text'] = 'Periode ' . $val->year;
+         if ($type == "POST") {
+            $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
+            $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
+            $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
+            $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
+            $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan;
+         }
+      }
+
 
 
       return  $temp;
    }
 
-   public static function getDetailPagu($slug,$type){
+   public static function getDetailPagu($slug, $type)
+   {
 
-       $pagu = RequestPeriode::Pagu($type, substr((string)$slug, 0, 4));
-       return $pagu;
+      $pagu = RequestPeriode::Pagu($type, substr((string)$slug, 0, 4));
+      return $pagu;
    }
 
- 
 
-   public static function checkValidate($slug){
 
-       $data = Perencanaan::where(DB::raw("LEFT(periode_id,4)"), $slug)->first();
-       if($data)
-       {
-          $result = false;
-       }else{
-          $result = true;
-       } 
+   public static function checkValidate($slug)
+   {
 
-       return $result;
-  }
+      $data = Perencanaan::where(DB::raw("LEFT(periode_id,4)"), $slug)->first();
+      if ($data) {
+         $result = false;
+      } else {
+         $result = true;
+      }
 
- 
+      return $result;
+   }
+
+
 
    public static function Pagu($type, $periode_id)
    {
@@ -147,38 +143,38 @@ class RequestPeriode
             } else {
                $result = 'Rp 0';
             }
-         }else if ($type == 'promosi')  {
+         } else if ($type == 'promosi') {
             if ($pagu->pagu_promosi != 0) {
                $result = GeneralHelpers::formatRupiah($pagu->pagu_promosi);
             } else {
                $result = 'Rp 0';
             }
-         }else if ($type == 'pengawasan')  {
+         } else if ($type == 'pengawasan') {
             if ($pagu->target_pengawasan != 0) {
                $result = $pagu->target_pengawasan;
             } else {
                $result = '0';
             }
-         }else if ($type == 'bimtek')  {
+         } else if ($type == 'bimtek') {
             if ($pagu->target_bimbingan_teknis != 0) {
                $result = $pagu->target_bimbingan_teknis;
             } else {
                $result = '0';
             }
-         }else if ($type == 'penyelesaian')  {  
+         } else if ($type == 'penyelesaian') {
             if ($pagu->target_penyelesaian_permasalahan != 0) {
                $result = $pagu->target_penyelesaian_permasalahan;
             } else {
                $result = '0';
             }
-         }  
+         }
       } else {
          $result = null;
       }
       return $result;
    }
 
-  
+
 
    public static function GetDataID($data)
    {
@@ -199,7 +195,7 @@ class RequestPeriode
 
       $fields = [
          'name'  =>  $request->name,
-         'slug' =>  $request->year.$request->semester,
+         'slug' =>  $request->year . $request->semester,
          'semester' => $request->semester,
          'year' => $request->year,
          'startdate' => $request->startdate,
@@ -212,16 +208,15 @@ class RequestPeriode
       return $fields;
    }
 
-    public function GetPeriodeName($slug)
+   public function GetPeriodeName($slug)
    {
 
-      $periode = Periode::where('slug',$slug)->first();
-      if($periode)
-      {
-        $result = 'Periode '.$periode->year;
-      }else{
+      $periode = Periode::where('slug', $slug)->first();
+      if ($periode) {
+         $result = 'Periode ' . $periode->year;
+      } else {
          $result = Null;
-      }   
+      }
       return $result;
    }
 

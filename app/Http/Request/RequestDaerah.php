@@ -9,65 +9,61 @@ use DB;
 
 class RequestDaerah
 {
-    // public static function GetProvinceID()
-    // {
-       
-    //     $province = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
+   // public static function GetProvinceID()
+   // {
 
-    //     return $province;
-    // }
+   //     $province = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
 
-     public static function GetDaerahID()
-    {
-       
-       // if($type =="Province")
-       // {
-       //   $data = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
-       // }else if($type =="Daerah"){
-       //   $data = Regencies::select('id as value','name as text')->orderBy('value','ASC')->get()
-       // }
-        //$province = Provinces::select('id as value','name as text');
-        // $regency = Regencies::select('id as value','name as text')->union($province)->orderBy('value','ASC')->get();
+   //     return $province;
+   // }
 
-        //return $data;
-    }
+   public static function GetDaerahID()
+   {
 
-     public static function GetDaerahWhereName($id)
-    {
-        $result = '';
-        $province = DB::table('provinces')->select('name')->where('id',$id)->first();
-        if($province){
-           $result = $province->name;
+      // if($type =="Province")
+      // {
+      //   $data = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
+      // }else if($type =="Daerah"){
+      //   $data = Regencies::select('id as value','name as text')->orderBy('value','ASC')->get()
+      // }
+      //$province = Provinces::select('id as value','name as text');
+      // $regency = Regencies::select('id as value','name as text')->union($province)->orderBy('value','ASC')->get();
 
-        }else{
-             $regency = DB::table('regencies')->select('name')->where('id',$id)->first();
-             if($regency)
-             {
-                $result = $regency->name;
+      //return $data;
+   }
 
-             }
-        }
+   public function GetDaerah2ID()
+   {
 
-   
-        return $result;
-    }
+      $regency = Regencies::select('id as value', 'name as text')->orderBy('value', 'ASC')->get();
 
-    public static function checkValidate($daerah_id){
+      return $regency;
+   }
 
-       $data = User::where('daerah_id',$daerah_id)->first();
-       if($data)
-       {
-          $result = false;
-       }else{
-          $result = true;
-       } 
+   public function GetDaerahWhereName($id)
+   {
 
-       return $result;
-  }
+      $province = DB::table('provinces as a')->select('a.name');
+      $regency = DB::table('regencies as b')->select('b.name')->where('b.id', $id)->union($province)->first();
+      if ($id != 0) {
+         $result = $regency->name;
+      } else {
+         $result =  '';
+      }
 
-   
+      return $result;
+   }
 
-   
+   public static function checkValidate($daerah_id)
+   {
 
+      $data = User::where('daerah_id', $daerah_id)->first();
+      if ($data) {
+         $result = false;
+      } else {
+         $result = true;
+      }
 
+      return $result;
+   }
 }
