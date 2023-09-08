@@ -218,7 +218,7 @@
           $("#load-simpan").show();
 
           var data = $("#FormSubmit").serializeArray();
-          
+          console.log(data);
           var form = {
             'role_id': data[0].value,
             'username': data[1].value,
@@ -229,8 +229,8 @@
             'leader_name': data[6].value,
             'leader_nip': data[7].value,
             'daerah_id': data[8].value,
-            'password': data[9].value,
-            'password_confirmation': data[10].value,
+            'password_confirmation': data[9].value,
+          
             'photo':photo,
           };
           $.ajax({

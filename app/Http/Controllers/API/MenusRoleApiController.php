@@ -47,7 +47,8 @@ class MenusRoleApiController extends Controller
     public function store(Request $request)
     {
         $objectMenu = json_decode(json_encode($request->menu), FALSE);
-         RequestMenuRoles::getMenuAllSave($objectMenu);
+       
+         // RequestMenuRoles::getMenuAllSave($objectMenu);
         $check = MenusRole::where('role_id',$request->role_id)->first();
         
         if($check)
@@ -60,17 +61,17 @@ class MenusRoleApiController extends Controller
            MenusRole::create($fields);
         }    
         
-        $role = RequestMenuRoles::Roles($request->role_id);
-        if($role)
-        {
-                $dataMenu = json_decode($role);
-                $path = RequestMenuRoles::PathVue($role);
-                $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
-                $condition =  RequestMenuRoles::Condition($path); 
+        // $role = RequestMenuRoles::Roles($request->role_id);
+        // if($role)
+        // {
+        //         $dataMenu = json_decode($role);
+        //         $path = RequestMenuRoles::PathVue($role);
+        //         $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
+        //         $condition =  RequestMenuRoles::Condition($path); 
                
-        } 
+        // } 
 
-       return response()->json(['status'=>true,'condition'=>$condition,'path'=> $path,'menu_sidebar'=>$sidebar,'message'=>'Success update menu']);
+       return response()->json(['status'=>true,'message'=>'Success menu']);
         
     }
 
