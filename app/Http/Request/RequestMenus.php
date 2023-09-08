@@ -17,41 +17,38 @@ class RequestMenus
    public static function GetDataAll($data,$description)
    {
 
-        $__temp_ = array();
+        $temp = array();
         
    	    foreach ($data as $key => $val)
         {
-            if($val->type_icon =='file'){ $icon = 'images/menu/'.$val->icon; }else{ $icon = $val->icon; }
+            if($val->icon =="")
+            {
+                $icon = url('/template/'.$template.'/img/user.png');
+            }else{
+                $icon = url('/images/menu/'.$val->icon);
+            }  
+
+            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "Non Aktif"; }
           
-            $__temp_[$key]['id'] = $val->id;
-            $__temp_[$key]['name'] = $val->name;
-            $__temp_[$key]['slug'] = $val->slug;
-            $__temp_[$key]['path_web'] = $val->path_web;
-            $__temp_[$key]['path_vue'] = $val->path_vue;
-            $__temp_[$key]['path_api'] = $val->path_api;
-            $__temp_[$key]['foldername'] = $val->foldername;
-            $__temp_[$key]['filename'] = $val->filename;
-            $__temp_[$key]['type'] = $val->type;
-            $__temp_[$key]['type_icon'] = $val->type_icon;
-            $__temp_[$key]['icon'] = $icon;
-            $__temp_[$key]['edit'] = false;
-            $__temp_[$key]['tasks'] = [];
-            $__temp_[$key]['status'] = $val->status;
+            $temp[$key]['id'] = $val->id;
+            $temp[$key]['name'] = $val->name;
+            $temp[$key]['slug'] = $val->slug;
+            $temp[$key]['path_web'] = $val->path_web;
+            // $__temp_[$key]['path_vue'] = $val->path_vue;
+            // $__temp_[$key]['path_api'] = $val->path_api;
+            // $__temp_[$key]['foldername'] = $val->foldername;
+            // $__temp_[$key]['filename'] = $val->filename;
+            // $__temp_[$key]['type'] = $val->type;
+            // $__temp_[$key]['type_icon'] = $val->type_icon;
+            $temp[$key]['icon'] = $icon;
+            $temp[$key]['edit'] = false;
+            $temp[$key]['tasks'] = [];
+            $temp[$key]['status'] = $status;
+            $temp[$key]['status_ori'] = $val->status;
            // $__temp_[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
         }
 
-        $results['result'] = $__temp_;
-        if($description !="")
-        {  if(count($data) !=0)
-           {
-             $results['cari'] = 'Pencarian "'.$description.'" berhasil ditemukan'; 
-           }else{
-             $results['cari'] = 'Pencarian tidak ditemukan "'.$description.'" '; 
-           } 
-            
-        }else{
-            $results['cari'] = ''; 
-        }   
+        $results['result'] = $temp;
         $results['total'] = count($data);
         return $results;
 
@@ -69,10 +66,10 @@ class RequestMenus
             }
 
             $rolr[$key]['id'] = $val->id;
-            $rolr[$key]['name'] = $val->name;
+            $rolr[$key]['name'] = $val->role->slug;
             $rolr[$key]['show'] = $active;
-            $rolr[$key]['tasks'] = RequestMenuRoles::ConvertMenu(RequestMenuRoles::Roles($val->id));
-            // $rolr[$key]['tasks2'] =RequestMenuRoles::Roles($val->id);
+            $rolr[$key]['tasks'] = json_decode(json_encode($val->menu_json), FALSE);
+            
         }
 
           return  $rolr;  
@@ -104,14 +101,13 @@ class RequestMenus
    public static function fieldsData($request)
    {
         
-        if($request->path_vue =="" || $request->path_vue =="/"){ $path_vue =''; }else{ $path_vue = $request->path_vue; }
+        // if($request->path_vue =="" || $request->path_vue =="/"){ $path_vue =''; }else{ $path_vue = $request->path_vue; }
         if($request->path_web =="" || $request->path_web =="/"){ $path_web =''; }else{ $path_web = $request->path_web; }
-        if($request->path_api ==""){ $path_api =''; }else{ $path_api = $request->path_api; }
+        // if($request->path_api ==""){ $path_api =''; }else{ $path_api = $request->path_api; }
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name)));
-        $filename = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '', $request->filename)));
-        $foldername = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '', $request->foldername)));
-        if($request->type_icon == 'file')
-        {
+        // $filename = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '', $request->filename)));
+        // $foldername = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '', $request->foldername)));
+      
             
                 $source = explode(";base64,", $request->icon);
                 $extFile = explode("image/", $source[0]);
@@ -124,20 +120,18 @@ class RequestMenus
                 
 
                 
-        }else{
-                $fileIcon = $request->icon;
-        }
+    
         
         $fields = [  
                 'name'  =>  $request->name,
                 'slug' =>  $slug,
-                'path_vue'  =>  $path_vue,
+                // 'path_vue'  =>  $path_vue,
                 'path_web'  =>  $path_web,
-                'path_api'  =>  $path_api,
-                'type'  => $request->type,
-                'type_icon'  => $request->type_icon,
-                'foldername'  =>$foldername,
-                'filename'  => $filename,
+                // 'path_api'  =>  $path_api,
+                // 'type'  => $request->type,
+                // 'type_icon'  => $request->type_icon,
+                // 'foldername'  =>$foldername,
+                // 'filename'  => $filename,
                 'icon'  => $fileIcon,
                 'status'  => 'unlock',
                 'created_by' => Auth::User()->username,

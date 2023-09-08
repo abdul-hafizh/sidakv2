@@ -67,12 +67,24 @@
         </a>
     </li>
 
-    <li>
+     <li>
+        <a href="{!! url('options') !!}">
+            <i class="po-top-menu fa-icon fa-img-user"></i> Role
+        </a>
+    </li>
+
+     <li>
+        <a href="{!! url('action') !!}">
+            <i class="po-top-menu fa-icon fa-img-user"></i> Aksi
+        </a>
+    </li>
+
+   <!--  <li>
         <a href="{!! url('role') !!}">  
             <i class="po-top-menu fa-icon fa-img-role"></i>
                 Role
         </a>
-    </li>
+    </li> -->
 
   </ul>
 </li>

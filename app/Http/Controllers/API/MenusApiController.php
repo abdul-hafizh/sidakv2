@@ -28,19 +28,29 @@ class MenusApiController extends Controller
     {
         $_res = array();
         $menu = Menus::orderBy('id', 'ASC')->get();
-        $role = Roles::where('status','Y')->orderBy('id', 'ASC')->get();
+        //$role = Roles::where('status','Y')->orderBy('id', 'ASC')->get();
         $description = '';
         $resultMenu = RequestMenus::GetDataAll($menu,$description);
+       // $resultRole = RequestMenus::RoleMenu($role);
+
+        return response()->json($resultMenu );
+
+    }
+
+    public function menuRole()
+    {
+        $_res = array();
+        $role = RoleMenu::orderBy('id', 'ASC')->get();
         $resultRole = RequestMenus::RoleMenu($role);
 
-        return response()->json(['menu'=>$resultMenu,'role'=>$resultRole]);
+        return response()->json($resultRole );
 
     }
 
     public function search(Request $request){
         $search = $request->search;
         $_res = array();
-        $column_search  = array('name','type','foldername');
+        $column_search  = array('name','slug');
 
         $i = 0;
         $query  = Menus::orderBy('id','DESC');
@@ -57,9 +67,9 @@ class MenusApiController extends Controller
             $i++;
         }
        
-        $Data = $query->get();
+        $data = $query->get();
         $description = $search;
-        $_res = RequestMenus::GetDataAll($Data,$description);
+        $_res = RequestMenus::GetDataAll($data,$description);
                
     
         return response()->json($_res);
@@ -91,7 +101,7 @@ class MenusApiController extends Controller
           
      
         $validation = ValidationMenus::validation($request);
-        if($validation !=null || $validation !="")
+        if($validation)
         {
           return response()->json($validation,400);  
         }else{

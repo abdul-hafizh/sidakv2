@@ -3,11 +3,11 @@
 namespace App\Http\Request;
 use Auth;
 use App\Helpers\GeneralHelpers;
-use App\Models\Roles;
-use App\Models\RoleUser;
+use App\Models\Action;
+
 use Illuminate\Support\Str;
 
-class RequestRoles 
+class RequestAction 
 {
    
    public static function GetDataAll($data,$perPage,$request)
@@ -31,7 +31,7 @@ class RequestRoles
             $temp[$key]['id'] = $val->id;
             $temp[$key]['name'] = $val->name;
             $temp[$key]['slug'] = $val->slug;
-            $temp[$key]['deleted'] = RequestRoles::checkValidate($val->id);
+            $temp[$key]['deleted'] = RequestAction::checkValidate($val->id);
             $temp[$key]['status'] = $status;
             $temp[$key]['status_ori'] = $val->status;
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
@@ -53,51 +53,16 @@ class RequestRoles
    }
 
   
-  public static function GetRoles($data){
-        $temp = array();
-        foreach ($data as $key => $val)
-        {
-            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "Non Aktif"; }
-            $temp[$key]['id'] = $val->id;
-            $temp[$key]['text'] = $val->text;
-            $temp[$key]['value'] = $val->value;
-            $temp[$key]['status'] = $status;
-            $temp[$key]['status_ori'] = $val->status;
-            $temp[$key]['deleted'] = RequestRoles::checkValidate($val->id);
-          
-        }
-        return $temp; 
-  }
+  
 
 
-  public static function GetRoleWhere($id,$type){
-
-    $data = RoleUser::where('user_id',$id)->first();
-    if($data)
-    {
-       if($type =='id')
-       {
-          $result = $data->role->id;
-       }else{
-          $result = $data->role->slug;
-       }  
-      
-    }else{
-       $result = null;
-    }    
-    return $result; 
-  }
+ 
 
    public static function checkValidate($role_id){
 
-       $data = RoleUser::where('role_id',$role_id)->count();
-       if($data > 0)
-       {
-          $result = false;
-       }else{
-          $result = true;
-       } 
-
+      
+        $result = true;
+     
        return $result;
   }
   
