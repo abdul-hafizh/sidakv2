@@ -44,6 +44,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
     Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
     Route::get('select-periode', [PeriodeApiController::class, 'listAll']);
+    Route::get('select-periode2', [PeriodeApiController::class, 'listAll2']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);

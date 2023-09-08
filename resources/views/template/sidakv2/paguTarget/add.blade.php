@@ -77,13 +77,7 @@
               <span id="target_video_promosi-messages"></span>
             </div>
           </div>
-          <div class="row">
-            <div id="pagu_dalak-alert" class="form-group has-feedback col-md-6">
-              <label>Pagu Dalak</label>
-              <input type="text" class="form-control" name="pagu_dalak" placeholder="Dalak" value="">
-              <span id="pagu_dalak-messages"></span>
-            </div>
-          </div>
+
 
 
 
@@ -135,7 +129,7 @@
       if (type_daerah == 'Provinsi')
         url = "select-province";
       else
-        url = "select-daerah2";
+        url = "select-kabupaten";
       $.ajax({
         url: BASE_URL + '/api/' + url,
         method: 'get',
@@ -162,7 +156,7 @@
 
     $('.select-periode').select2({
       ajax: {
-        url: BASE_URL + '/api/select-periode', // URL to your server-side endpoint
+        url: BASE_URL + '/api/select-periode2', // URL to your server-side endpoint
         dataType: 'json',
         delay: 250, // Delay before sending the request (milliseconds)
         processResults: function(data) {
@@ -198,8 +192,7 @@
         'target_pengawasan',
         'target_penyelesaian_permasalahan',
         'target_bimbingan_teknis',
-        'target_video_promosi',
-        'pagu_dalak',
+        'target_video_promosi'
       ];
 
       $.ajax({

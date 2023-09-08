@@ -228,4 +228,16 @@ class RequestPeriode
 
       return $periode;
    }
+
+   public static function SelectAll2($data)
+   {
+      $temp = array();
+
+      foreach ($data as $key => $val) {
+
+         $temp[$key]['value'] = $val->year;
+         $temp[$key]['text'] = 'Periode ' . $val->year;
+      }
+      return  $temp;
+   }
 }

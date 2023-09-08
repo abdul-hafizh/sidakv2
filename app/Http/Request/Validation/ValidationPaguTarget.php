@@ -20,7 +20,6 @@ class ValidationPaguTarget
             'target_penyelesaian_permasalahan'  => 'Target Penyelesaian Permasalahan',
             'target_bimbingan_teknis'  => 'Target Bimbingan Teknis',
             'target_video_promosi'  => 'Target Video Promosi',
-            'pagu_dalak'  => 'Pagu Dalak',
         ];
 
         $validator =  Validator::make(
@@ -35,7 +34,6 @@ class ValidationPaguTarget
                 'target_penyelesaian_permasalahan'  => 'required',
                 'target_bimbingan_teknis'  => 'required',
                 'target_video_promosi'  => 'required',
-                'pagu_dalak'  => 'required',
             ]
         );
 
