@@ -9,19 +9,20 @@ class ValidationPeriode
         $err = array(); 
         
         $fields = [
-            'name'  => 'Nama',
+           
             'semester'  => 'Semester',
             'year'  => 'Tahun',
             'startdate'  => 'Tanggal Mulai',
             'enddate'  => 'Tanggal Berahir',
+            
            
         ];
 
         $validator =  Validator::make($request->all(), 
         [
-            'name'  => 'required|max:255',
-            'semester'  => 'required|max:10',
-            'year'  => 'required|max:10',
+           
+            'semester'  => 'required|max:2',
+            'year'  => 'required|max:4',
             'startdate'  => 'required',
             'enddate'  => 'required',  
         ]);
@@ -30,10 +31,7 @@ class ValidationPeriode
         if ($validator->fails()) {
          
             $errors = $validator->errors();
-            
-            if($errors->has('name')){
-                $err['messages']['name'] = $errors->first('name');
-            }
+           
 
             if($errors->has('semester')){
                 $err['messages']['semester'] = $errors->first('semester');

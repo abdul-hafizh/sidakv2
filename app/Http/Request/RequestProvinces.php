@@ -7,7 +7,8 @@ use App\Helpers\GeneralHelpers;
 use App\Models\Provinces;
 use Illuminate\Support\Str;
 use App\Http\Request\RequestDaerah;
-
+use App\Models\RoleMenu;
+use App\Http\Request\RequestAuth;
 
 class RequestProvinces
 {
@@ -28,6 +29,7 @@ class RequestProvinces
       $temp[$key]['number'] = $numberNext++;
       $temp[$key]['id'] = $val->id;
       $temp[$key]['name'] = $val->name;
+      $temp[$key]['action'] = RequestProvinces::ActionPage($val->slug);
       $temp[$key]['deleted'] = RequestDaerah::checkValidate($val->id);
       $temp[$key]['created_by'] = $val->created_by;
       $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
@@ -48,6 +50,12 @@ class RequestProvinces
     return $result;
   }
 
+  public static function ActionPage($slug)
+  {  
+
+   return false;
+  }
+
   public static function GetDataPrint($data){
 
           
@@ -65,6 +73,13 @@ class RequestProvinces
         }  
 
         return json_decode(json_encode($temp), FALSE);
+   }
+
+   public static function ActionPage($slug)
+   {
+  
+
+
    }
 
 

@@ -1,6 +1,6 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
-
+<script src="{{ config('app.url').$template.'/js/sortable.js' }}"></script>
 <div class="content">
 <div class="row">
 
@@ -62,13 +62,57 @@
 
 <script>
    $( function() {
+   	  var roleid_old ='';
+   	  var roleid_new ='';
       var menu_list = [];
       var role_list = [];
       var role_menu = [];
       var menu = localStorage.getItem('root_menu');
       var temp =  JSON.parse(menu);  
 
-     
+     //menu
+    $( "#ContentMenu" ).on( "click", "#Move-Menu", (e) => {
+   		 let id = e.currentTarget.dataset.param_id;
+   	     const item = menu_list.find(o => o.id === id);
+         MoveAction(item)
+   	});
+
+   	$( "#ContentMenu" ).on( "click", "#Edit-Menu", (e) => {
+	   	let id = e.currentTarget.dataset.param_id;
+	   	const item = menu_list.find(o => o.id === id);
+        editMenuView(item)
+	});
+
+	$( "#ContentMenu" ).on( "click", "#Destroy", (e) => {
+	        let id = e.currentTarget.dataset.param_id;
+
+
+	        Swal.fire({
+			      title: 'Apakah anda yakin hapus?',
+			    
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#d33',
+			      cancelButtonColor: '#3085d6',
+			      confirmButtonText: 'Ya'
+			    }).then((result) => {
+			      if (result.isConfirmed) {
+			        // Perform the delete action here, e.g., using an AJAX request
+			        // You can use the itemId to identify the item to be deleted
+			        deleteItemMenu(id);
+			        
+			        Swal.fire(
+			          'Deleted!',
+			          'Data berhasil dihapus.',
+			          'success'
+			        );
+			      }
+			    });
+
+    }); 
+
+
+    //role  
 
     function SelectRole(){
         
@@ -88,13 +132,20 @@
                     }));
                 });
 
-               let find = role_list.find(o => o.value === 'admin'); 
+               //
                 
-		       var selectedValue = find.value;
+		       var selectedValue = 'admin';
+		       let find = role_list.find(o => o.value === selectedValue);
+		       roleid_old = find.id; 
+		       roleid_new = find.id;
+		       console.log(roleid_old)
+
 		       select.val(selectedValue);
 
 		        
                 ViewTabMenu(find)
+                GetMenu(find.id);
+
 
                // Refresh the SelectPicker to apply the new options
                select.selectpicker('refresh');
@@ -105,7 +156,7 @@
         });
 
 
-         $( "#viewRole" ).on( "click", "#Edit-Role", (e) => {
+        $( "#viewRole" ).on( "click", "#Edit-Role", (e) => {
              let id = e.currentTarget.dataset.param_id;
              const item = role_list.find(o => o.id === id); 
             
@@ -177,11 +228,7 @@
             $('#FormEdit-'+ item.id).html(row); 
 				
             UpdateRole(item.id) 
-               
-                    
-           
-
-           
+                          
         }); 
 
         $( "#viewRole" ).on( "click", "#DestroyRole", (e) => {
@@ -312,16 +359,15 @@
     }
 
     function ChangeRole(){
+    	
 
-    	 $('#role_id').change(function() {
+    	$('#role_id').change(function() {
            selectedVal = $(this).find("option:selected").val();
            let find = role_list.find(o => o.value === selectedVal);
-          
-           ViewTabMenu(find)
-
-          
-
-
+           roleid_new = find.id;
+           var role_menu = [];
+           GetMenu(find.id);
+           ViewTabMenu(find);
 
         });
 
@@ -377,12 +423,13 @@
         row +=`<div class="tab-content pull-left full form-group">`;
             row +=`<div id="tabRole" class="tab-pane active">`;
 
-            
+            GetSettingRole(find.value);
+
 
             row +=`</div>`;	
 
 			row +=`<div class="group-list-btn-save col-sm-12">`;
-			row +=`<button disabled id="SaveRole" data-toggle="modal" type="button" class="btn btn-default" >Simpan Role</button>`;
+			row +=`<button disabled id="SaveRole" data-toggle="modal" type="button" class="btn btn-default" >Simpan Menu</button>`;
 			row +=`</div> `;
 
         row +=`</div>`;
@@ -395,53 +442,107 @@
 
         $('#viewRole').html(row);
 
-       GetSettingRole(find.value);
-
+       
         $('#SaveRole').on('click', function() {
-          
+             
     	     var menu = localStorage.getItem('root_menu');
        		 var temp =  JSON.parse(menu);
-             var role_id = $('#role_id').val();
-             let find = role_list.find(o => o.value === role_id); 
-                
+             
 	   		 var form = {
-	           'menu':temp.menu,
-	           'role_id':find.id,
+	           'menu':JSON.stringify(temp.menu),
+	           'role_id':temp.role_id,
 	         };
+             
+              loadingRole();
+            
+	 
+	          $.ajax({
+	            type:"POST",
+	            url: BASE_URL+'/api/menu/role/save',
+	            data:form,
+	            cache: false,
+	            dataType: "json",
+	            success: (respons) =>{
 
+	            	
 
-          $.ajax({
-            type:"POST",
-            url: BASE_URL+'/api/menu/role/save',
-            data:form,
-            cache: false,
-            dataType: "json",
-            success: (respons) =>{
-                  
-                   $('#SaveRole').prop("disabled", true).text('Simpan Role').removeClass('btn-primary').addClass('btn-default');
+		             setTimeout(function() { 
+		             	localStorage.removeItem('root_menu');
+	             		let find = role_list.find(o => o.id === temp.role_id);
+	             		GetMenu(find.id);
+	             		GetSettingRole(find.value);
+	             		$('#SaveRole').prop("disabled", true).text('Simpan Role').removeClass('btn-primary').addClass('btn-default');
+	               }, 1000);  
+	                  
+	                   
+	            },
+	            error: (respons)=>{
+	                errors = respons.responseJSON;
+	                
+	                
+	            }
+	          });  
+	    });
 
-                   //
-            },
-            error: (respons)=>{
-                errors = respons.responseJSON;
-                
-                
-            }
-          });
-	       
+	    $( "#tabRole" ).on( "click", "#Edit-Temp", (e) => {
+               var menu = localStorage.getItem('root_menu');
+       		   var temp =  JSON.parse(menu);
+
+	           let index = e.currentTarget.dataset.param_id;
+	           let item = temp.menu[index]; 
+	          
+			   formAction(index,item,temp.menu);  
 	    });
 
 
+	     $( "#tabRole" ).on( "click", "#Edit-Real", (e) => {
+            let slug = e.currentTarget.dataset.param_id; 
+            var menu = localStorage.getItem('root_menu');
+       		var temp =  JSON.parse(menu);
+            
+            if(temp)
+            {
+	           let item = temp.menu.find(o => o.slug === slug);
+			   formAction(slug,item,temp.menu);
+            }else{
+               let item = role_menu.find(o => o.slug === slug);   
+		       formAction(slug,item,role_menu);
+            }	
+	  
+        }); 
+
+        $( "#tabRole" ).on( "click", "#Hapus-Real", (e) => {
+            let slug = e.currentTarget.dataset.param_id;
+            var menu = localStorage.getItem('root_menu');
+       		var temp =  JSON.parse(menu);
+            
+            if(temp)
+            {
+	           let item = temp.menu.find(o => o.slug === slug);
+			   DeleteSetting(slug,item,temp.menu);
+            }else{
+               let item = role_menu.find(o => o.slug === slug);   
+		       DeleteSetting(slug,item,role_menu);
+            }
+            
+        }); 
+      
     }
 
+
+
    function GetSettingRole(role){
+   	   
        var menu = localStorage.getItem('root_menu');
        var temp =  JSON.parse(menu);  
        const content = $('#tabRole');
        content.empty();
+
+        
       
        if(temp)
        { 
+       	  
             temp.menu.forEach(function(item, index) {
  
                        var row = '';
@@ -464,16 +565,20 @@
 
 
                                 row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`; 
-                                            row +=`<span class="padding-05-05">`; 
+                                            row +=`<span id="Edit-Temp" data-param_id="`+ index +`"   data-toggle="modal" data-target="#modal-edit-`+ index +`"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
                                                 row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
                                                 row +=`<i class="border-right-white"></i>`; 
                                             row +=`</span>`;  
 
 
-                                            row +=`<span class="padding-05-05">`; 
-                                            row +=`<i class="fa fa-lock"></i>`; 
+                                            row +=`<span id="Hapus-Real" data-param_id="${item.slug}" class="padding-05-05">`; 
+                                            row +=`<i class="fa fa-trash"></i>`; 
                                             row +=`</span>`; 
                                 row +=`</div>`; 
+
+                                row +=`<div id="modal-edit-`+ index +`" class="modal fade" role="dialog">`;
+							    row +=`<div id="FormEdit-`+ index +`"></div>`;
+							    row +=`</div>`;
 
 
                             row +=`</div> `; 
@@ -484,18 +589,12 @@
                  content.append(row);
             });
 
-           
         }else{     
-
-         
 
            GetDataRoleMenu(role)
         } 	
    	     
   
-             	
- 
-      
    }
 
    function GetDataRoleMenu(role){
@@ -506,8 +605,8 @@
 	        dataType: 'json',
 	        success: function(data) {
 	           
-               let find = data.find(o => o.name === role);
-           	   listMenuRole(find)
+               let findtask = data.find(o => o.name === role);
+           	   listMenuRole(findtask)
 	        },
 	        error: function(error) {
 	            console.error(error);
@@ -521,8 +620,7 @@
    {
            const content = $('#tabRole');
            content.empty();
-         
-           
+
           if(data) 
           { 	
           	var result = JSON.parse(data.tasks);
@@ -549,7 +647,7 @@
 
 
                                 row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`; 
-                                            row +=`<span id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-`+ index +`"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
+                                            row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
                                                 row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
                                                 row +=`<i class="border-right-white"></i>`; 
                                             row +=`</span>`;  
@@ -558,14 +656,14 @@
 
 
 
-                                            row +=`<span class="padding-05-05">`; 
+                                            row +=`<span id="Hapus-Real" data-param_id="${item.slug}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
                                             row +=`<i class="fa fa-trash"></i>`; 
                                             row +=`</span>`; 
                                 row +=`</div>`; 
 
 
-                            row +=`<div id="modal-edit-`+ index +`" class="modal fade" role="dialog">`;
-							row +=`<div id="FormEdit-`+ index +`"></div>`;
+                            row +=`<div id="modal-edit-${item.slug}" class="modal fade" role="dialog">`;
+							row +=`<div id="FormEdit-${item.slug}"></div>`;
 							row +=`</div>`;
 
                             row +=`</div> `; 
@@ -587,31 +685,15 @@
 
         }
 
-        $( "#tabRole" ).on( "click", "#Edit", (e) => {
-             
-            let index = e.currentTarget.dataset.param_id;
-            let item = role_menu[index];
-            
-            $.ajax({
-		        url: BASE_URL +'/api/menu/action',
-		        method: 'GET',
-		        dataType: 'json',
-		        success: function(data) {
-		           formAction(index,item,data)
-	              
-		        },
-		        error: function(error) {
-		            console.error(error);
-		        }
-	        });
-              
+       
+ 
 
-
-        });    
+           
 
    }
 
-   function formAction(index,item,data){
+   function formAction(slug,item,role_menu){
+       
 
 
    	 let row = ``;
@@ -623,8 +705,8 @@
 				         row +=`<h4 class="modal-title">Edit Aksi `+ item.name +`</h4>`;
 				       row +=`</div>`;
 
-				       row +=`<form   id="FormSubmit-`+ index +`">`;
-					        row +=`<div class="modal-body">`;
+				       row +=`<form   id="FormSubmit-`+ slug +`">`;
+					        row +=`<div id="TableAction-`+ slug +`" class="modal-body">`;
                                
                                  
 							 row +=`<table class="table table-bordered">`;
@@ -634,13 +716,25 @@
 									 row +=`<th>Aksi</th>`;
 								 row +=`</tr>`;
 
-								 for(let i=0; i<data.length; i++)
+								 for(let i=0; i<item.option.length; i++)
 								 { 	
+
+								 	if(item.option[i].checked == true)
+								    {		
 							 	 
 								 	 row +=`<tr>`;
-										 row +=`<td><input  type="checkbox" name="status" id="status" value="`+ data[i].slug +`" ></td>`;
-										 row +=`<td>`+ data[i].name +`</td>`;
+										 row +=`<td><input id="action-`+ i +`" type="checkbox" checked  name="status" id="status" value="`+ item.option[i].action +`" ></td>`;
+										 row +=`<td>`+ item.option[i].name +`</td>`;
 									 row +=`</tr>`;
+
+									}else{
+                                      
+                                      row +=`<tr>`;
+										 row +=`<td><input  type="checkbox"  name="status" id="status" value="`+ item.option[i].action +`" ></td>`;
+										 row +=`<td>`+ item.option[i].name +`</td>`;
+									 row +=`</tr>`; 
+
+									} 
 
 								}
 
@@ -648,42 +742,117 @@
 							 row +=`</tbody>`;
 							  row +=`</table> `;
 
-				               
-
-
+				           
+                             
+                            row +=`</div>`; 
 
                             row +=`<div class="modal-footer">`;
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
-						          row +=`<button id="update" data-param_id="`+ index +`" type="button" class="btn btn-primary" >Update</button>`;
-						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
-     						</div>`;
-						    row +=`</div>`;
+						          row +=`<button id="update_action-`+ slug +`" data-param_id="`+ slug +`" type="button" class="btn btn-primary">Update</button>`;
+						            row +=`<button id="load-action-`+ slug +`" type="button" disabled class="btn btn-default" style="display:none;">`;
+						             row +=`<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>`;
+     						 row +=`</div>`;
+						   
 
 
 					    row +=`</form>`;     
                 row +=`</div>`;
             row +=`</div>`   
 
-            $('#FormEdit-'+ index).html(row); 
+            $('#FormEdit-'+ slug).html(row); 
 
 
-            $(".modal-content").on( "click", "#update", (e) => {
-		          let id = e.currentTarget.dataset.param_id;
-	              var data = $("#FormSubmit-"+ id).serializeArray();
-                  var result = [];
+            $(".modal-content").on( "click", "#update_action-"+ slug, (e) => {
+		        var menu = localStorage.getItem('root_menu');
+       		    var temp =  JSON.parse(menu);
+		        let id = e.currentTarget.dataset.param_id;
+	            var input = $("#FormSubmit-"+ id).serializeArray();
+                $('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
+	             
 
-	              for(let i =0; i<data.length; i++)
-	              {
-                      result.push({
-                         'action':data[i].value,
-                         'access':true,
-                      });
-                      
-	              } 
+                var result_input = [];
+                var result_in = [];
+                var result = [];
+                var listnew = [];
+                var listold = [];
+                var merge = []; 
 
-	              console.log(item)
-                   
+
+                for(let i =0; i<input.length; i++)
+	            {
+                    result_input.push(input[i].value);
+	            } 
+
+	            for(let i =0; i<item.option.length; i++)
+	            {
+                    result_in.push(item.option[i].action);
+	            } 
+
+                var bool = $.map(result_in, function(element1) {
+				    return $.inArray(element1, result_input) !== -1;
+				});
+
+                for(let i =0; i<item.option.length; i++)
+	            {
+                    result.push({
+                  	  'action':item.option[i].action,
+                  	  'name':item.option[i].name,
+                  	  'checked':bool[i]
+                    })
+
+	            }	
+                 
+               
+                listnew.push({
+	                 'icon':item.icon,
+	                 'name':item.name,
+	                 'slug':item.slug,
+	                 'tasks':[],
+	                 'path_web':item.path_web,
+	                 'option':result,
+                });
+
+                for(let x =0; x<role_menu.length; x++)
+                {
+              	   
+              	    
+                 if(listnew[0].slug != role_menu[x].slug)
+                 {
+
+                 	 listold.push({
+	                     'icon':role_menu[x].icon,
+	                     'tasks':[],
+	                     'name':role_menu[x].name,
+	                     'slug':role_menu[x].slug,
+	                     'option':role_menu[x].option,
+	                     'path_web':role_menu[x].path_web
+	                    
+	                  });
+                  } 	
+
+                }
+
+
+                merge = [...listnew,...listold];
+               
+	            var role_id = $('#role_id').val();
+	            let find = role_list.find(o => o.value === role_id); 
+
+		   		var form = {
+		           'menu':merge,
+		           'role_id':find.id,
+		        };
+
+                loadingModal(id);
+                $('#update_action-'+ id).hide();
+                $('#load-action-'+ id).show();
+
+                setTimeout(function() { 
+	                localStorage.setItem('root_menu', JSON.stringify(form));
+                    $('#modal-edit-'+ id).modal('toggle');  
+	   			}, 1000);
+		       
                 
 	        });       
 
@@ -691,9 +860,126 @@
 
    }
 
-   	function GetMenu(){
+
+   function DeleteSetting(slug,item,role_menu){
+            
+            var listold = [];
+             
+            for(let x =0; x<role_menu.length; x++)
+            {    
+                if(slug != role_menu[x].slug)
+                {
+
+                 	 listold.push({
+                 	 	 'id':role_menu[x].id,
+	                     'icon':role_menu[x].icon,
+	                     'tasks':[],
+	                     'name':role_menu[x].name,
+	                     'slug':role_menu[x].slug,
+	                     'option':role_menu[x].option,
+	                     'path_web':role_menu[x].path_web
+	                    
+	                  });
+                   	
+
+                }
+            }
+
+            var role_id = $('#role_id').val();
+            let find = role_list.find(o => o.value === role_id); 
+
+	   		var form = {
+	           'menu':JSON.stringify(listold),
+	           'role_id':find.id,
+	        };
+            
+	       
+	        if(listold.length >0)
+	        {
+	        	loadingRole();
+	        	localStorage.removeItem('root_menu'); 
+                UpdateListItem(form,find.id)
+	        }else{
+	        	localStorage.removeItem('root_menu'); 
+	        	DeleteMenuRole(item,find.id);
+	        } 	
+ 
+
+       
+
+   }
+
+   function UpdateListItem(form,role_id){
+                  
+
+     
+	          $.ajax({
+	            type:"POST",
+	            url: BASE_URL+'/api/menu/role/save',
+	            data:form,
+	            cache: false,
+	            dataType: "json",
+	            success: (respons) =>{
+
+		            setTimeout(function() { 
+		             	localStorage.removeItem('root_menu');
+	             		let find = role_list.find(o => o.id === role_id);
+	             		GetMenu(role_id);
+	             		GetSettingRole(find.value);
+	             		//location.reload();
+	             		
+	                }, 1000);  
+	                     
+	            },
+	            error: (respons)=>{
+	                errors = respons.responseJSON;
+	            }
+	          });
+
+   }
+
+   function DeleteMenuRole(item,role_id){
+            console.log(item)
+   	        $.ajax({
+	            type:"DELETE",
+	            url: BASE_URL+'/api/menu/role/'+ role_id,
+	            cache: false,
+	            dataType: "json",
+	            success: (respons) =>{
+	               
+	                    
+	             		localStorage.removeItem('root_menu');
+	             		let find = role_list.find(o => o.id === role_id);
+	             		GetSettingRole(find.value); 
+	             		roleid_old = role_id;
+                        roleid_new = role_id;
+                        role_menu = [];
+	             		
+
+	             		var val = '';
+				        val +='<i class="fa fa-arrow-left"></i>'; 
+				        val +='<i class="border-right-white"></i>';
+		                $('#Move-Disabled').attr("id", "Move-Menu").removeClass('disabled-span').html(val);
+	                    $('#Move-Menu').attr("data-param_id", item.id);  
+	            },
+	            error: (respons)=>{
+	                errors = respons.responseJSON;
+	            }
+	          });
+   }
+
+   function loadingModal(id){
+          row = '';
+          row +=`<div class="text-bold text-center margin-top-bottom-50 font-16">Loading ...</div>`; 
+          $('#TableAction-' + id).html(row);
+                               
+   }
+
+   	function GetMenu(id){
+
+   		
         $.ajax({
-	        url: BASE_URL +'/api/menu',
+	        url: BASE_URL +'/api/menu?role='+ id,
 	        method: 'GET',
 	        dataType: 'json',
 	        success: function(data) {
@@ -731,10 +1017,19 @@
 
 	   	        		row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
                             
+                          if(item.move == true)
+                          {  
                             row +=`<span id="Move-Menu" class="padding-05-05" data-toggle="tooltip" data-placement="top" title="Pindah Ke Menu Setting" data-toggle="modal"   data-param_id="${item.id}" >`;
 	   	        				row +=`<i   class="fa fa-arrow-left"></i> `;
 	   	        				row +=`<i class="border-right-white"></i>`;
 	   	        			row +=`</span>`;
+	   	        	      }else{
+
+	   	        	      	row +=`<span id="Move-Disabled"  class="padding-05-05 disabled-span" data-toggle="tooltip" data-placement="top" title="Pindah Ke Menu Setting" data-toggle="modal"    >`;
+	   	        				row +=`<i   class="fa fa-arrow-left"></i> `;
+	   	        				row +=`<i class="border-right-white"></i>`;
+	   	        			row +=`</span>`;
+	   	        	      }		
 	   	        			
 	   	        			row +=`<span id="Edit-Menu" data-toggle="modal" data-target="#modal-edit-${item.id}" class="padding-05-05" data-toggle="tooltip" data-placement="top" title="Edit Data Menu" data-toggle="modal"   data-param_id="${item.id}" >`;
 	   	        				row +=`<i   class="fa fa-pencil-square-o"></i> `;
@@ -767,91 +1062,111 @@
          content.append(row);
     }    
 
-        $( "#ContentMenu" ).on( "click", "#Move-Menu", (e) => {
-	   		 let id = e.currentTarget.dataset.param_id;
-	   	     const item = menu_list.find(o => o.id === id);
-             MoveAction(item)
-	   	});
-
-	   	$( "#ContentMenu" ).on( "click", "#Edit-Menu", (e) => {
-	   		 let id = e.currentTarget.dataset.param_id;
-	   	     const item = menu_list.find(o => o.id === id);
-             editMenuView(item)
-	   	});
-
-	   	$( "#ContentMenu" ).on( "click", "#Destroy", (e) => {
-	        let id = e.currentTarget.dataset.param_id;
-
-
-	        Swal.fire({
-			      title: 'Apakah anda yakin hapus?',
-			    
-			      icon: 'warning',
-			      showCancelButton: true,
-			      confirmButtonColor: '#d33',
-			      cancelButtonColor: '#3085d6',
-			      confirmButtonText: 'Ya'
-			    }).then((result) => {
-			      if (result.isConfirmed) {
-			        // Perform the delete action here, e.g., using an AJAX request
-			        // You can use the itemId to identify the item to be deleted
-			        deleteItemMenu(id);
-			        
-			        Swal.fire(
-			          'Deleted!',
-			          'Data berhasil dihapus.',
-			          'success'
-			        );
-			      }
-			    });
-
-        });   
-
-
-
+       
 
    	}
 
    	function MoveAction(item)
    	{ 
+   		  
           var menu = localStorage.getItem('root_menu');
           var temp =  JSON.parse(menu);       
           var form = [];
           var merge = [];
+
+          var role_id = $('#role_id').val();
+          let find = role_list.find(o => o.value === role_id); 
+   		  
+
+          
+          
           loadingRole();
-          $('#loading-role').show();
+          
           $('#list-role').hide();
           $('#role-null').hide();
           if(temp)
           {
-          	 form = [{
-              'name':item.name,
-              'path_web':item.path_web,
-              'icon':item.icon,
-              'tasks':[],
-            }];
-
-              merge = [...temp.menu,...form];
+	          	 form = [{
+	          	  'id': item.id,	
+	              'name':item.name,
+	              'slug':item.slug,
+	              'path_web':item.path_web,
+	              'icon':item.icon,
+	              'option':item.option,
+	              'tasks':[],
+	            }];
+	             
+	              //roleid_old = temp.role_id;  
+	              merge = [...temp.menu,...form];
+	             	
+             
+              
           }else{
+
+          	 //roleid_old = find.role_id; 
+          	 //isi baru
           	 merge = [{
+          	  'id': item.id, 	
               'name':item.name,
+              'slug':item.slug,
               'path_web':item.path_web,
               'icon':item.icon,
+              'option':item.option,
               'tasks':[],
             }];
           } 	
-
+           
          
             
 	    setTimeout(function() { 
-	           $('#loading-role').hide();
+	            
+	            $('#list-role').show();
+	            
+	            if(temp)
+	            {
+	            	console.log('temp')
+                    var send = merge;
+	            }else{
+	            	
+	            	console.log(roleid_old)
+	            	console.log(roleid_new)
+	            	if(roleid_old != roleid_new)
+	                {
+	                   console.log(role_menu)
+	                   if(role_menu)
+	                   {
+	                   	 console.log('temp + real')
+	                   	 var send = [...role_menu,...merge];	
+	                   }else{
+	                   	  console.log('temp')
+	                   	  var send = merge;
+	                   }	
+	                   roleid_old = roleid_new;	
+                       
+	                }else{
+	                   console.log('temp + real')
+	                    console.log(role_menu)	
+	                   var send = [...role_menu,...merge];	
+	                }		
+	              	
+	            } 	
+	              		
+	          	
+	           
+              var form = {
+	           'menu':send,
+	           'role_id':find.id,
+	          };
 
-	           $('#list-role').show();
-	           var send = {'menu':merge};
-               localStorage.setItem('root_menu', JSON.stringify(send));
-               GetSettingRole();
+		       localStorage.setItem('root_menu', JSON.stringify(form));
+		       var val = '';
+		       val +='<i class="fa fa-arrow-left"></i>'; 
+		       val +='<i class="border-right-white"></i>';
+               $('#Move-Menu').attr("id", "Move-Disabled").addClass('disabled-span').html(val);
+               GetSettingRole(find.value);
+
                $('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
-             //  ViewTabMenu(item)
+             
 	    }, 500);
          
    	}
@@ -859,7 +1174,7 @@
    	function loadingRole(){
 
    	 var val = '';
-	 val +=`<div id="loading-role" style="display:none;" class="mt-20 ">`; 
+	 val +=`<div id="loading-role"  class="mt-20 ">`; 
 	        val +=`<div class="list-group">`;
 	                 val +=`<div class="text-bold text-center">Loading ...</div>`;
 	         val +=`</div>`;   
@@ -899,7 +1214,7 @@
 
 					             row +=`<div id="icon-alert-`+ item.id +`" class="form-group has-feedback">`;
 					                 row +=`<label>Icon :</label>`;
-					                 row +=`<input id="AddFiles" type="file" name="upload_photo" >`;
+					                 row +=`<input id="AddFiles" type="file"  name="upload_photo" >`;
 					                 row +=`<span id="icon-messages-`+ item.id +`"></span>`;
 					             row +=`</div>`;
 
@@ -1061,7 +1376,7 @@
    	SelectRole();
    	SearchMenu();
    	ChangeRole();
-    GetMenu();
+   
      
   });
 </script> 

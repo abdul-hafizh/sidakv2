@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Kabupaten</h4>
       </div>
       <form  id="FormSubmit" >
@@ -27,14 +27,14 @@
 
             <div id="province-id-alert" class="form-group has-feedback">
                     <label>Provinsi </label>
-                  <select id="province_id" class="select-add form-control"  name="province_id" ></select>
+                  <select id="province_id" class="selectpicker form-control" data-live-search="true" title="Pilih Provinsi"  name="province_id" ></select>
                   <span id="province-id-messages"></span>
             </div>
             
        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" id="close2" class="btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>
@@ -49,28 +49,39 @@
 <script type="text/javascript">
  $(function(){
 
-  $('.select-add').select2({
-        data: [{ id: '', text: '' }],
-        placeholder: 'Pilih Provinsi',
-        ajax: {
-            url: BASE_URL+'/api/select-province', // URL to your server-side endpoint
-            dataType: 'json',
-            //delay: 250, // Delay before sending the request (milliseconds)
-            processResults: function(data) {
-                
-                // Transform the data to match Select2's expected format
-                return {
-                    results: data.map(function(item) {
-                        return { id: item.value, text: item.text };
-                    })
-                };
-            },
-            cache: true // Cache the results to improve performance
-        },
-        minimumInputLength: 1 // Minimum number of characters required for a search
-    });
 
-    $('.select-add').on('select:select', function(e) {
+   $("#close1").click(()=> {  
+      DefaultNull();
+   });
+
+   $("#close2").click(()=> {  
+      DefaultNull();
+   });
+
+
+        $.ajax({
+          url: BASE_URL +'/api/select-province',
+          method: 'GET',
+          dataType: 'json',
+          success: function(data) {
+              // Populate SelectPicker options using received data
+              var select =  $('#province_id')
+              $.each(data, function(index, option) {
+                  select.append($('<option>', {
+                    value: option.value,
+                    text: option.text
+                  }));
+              });
+
+             // Refresh the SelectPicker to apply the new options
+             select.selectpicker('refresh');
+          },
+          error: function(error) {
+          console.error(error);
+          }
+      });
+
+    $('#province_id').on('select:select', function(e) {
         var selectedOption = e.params.data;
         $('#province_id').val(selectedOption.id);
     });
@@ -143,6 +154,15 @@
             }
           });
      });
+
+       function DefaultNull()
+       {
+   
+           $("input").val(null);
+           $('#province_id').selectpicker('val', 'null');
+           $('#modal-add').modal('toggle');
+
+        }
 
   });
 </script>

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Action;
-use App\Http\Request\RequestAction;
-use App\Http\Request\Validation\ValidationAction;
+use App\Models\Kriteria;
+use App\Http\Request\RequestKriteria;
+use App\Http\Request\Validation\ValidationKriteria;
 use DB;
 
-
-class ActionApiController extends Controller
+class KriteriaApiController extends Controller
 {
 
    
@@ -23,7 +22,7 @@ class ActionApiController extends Controller
        
 
         // $_res = array();
-         $query = Action::orderBy('created_at', 'DESC');
+         $query = Kriteria::orderBy('created_at', 'DESC');
          if($request->per_page !='all')
          {
            $data = $query->paginate($request->per_page);
@@ -31,19 +30,17 @@ class ActionApiController extends Controller
            $data = $query->get(); 
          }   
         
-         $result = RequestAction::GetDataAll($data,$request->per_page,$request);
+         $result = RequestKriteria::GetDataAll($data,$request->per_page,$request);
          return response()->json($result);
 
 
     }
 
-   
-
     
       public function listAll(Request $request)
     {
-        $query = Action::select('id','slug as value','name as text','status')->orderBy('created_at', 'DESC')->get();
-        $data = RequestAction::GetAction($query);
+        $query = Kriteria::select('id','slug as value','name as text','status')->orderBy('created_at', 'DESC')->get();
+        $data = RequestKriteria::GetKriteria($query);
         return response()->json($data);
 
     }
@@ -59,7 +56,7 @@ class ActionApiController extends Controller
         $column_search  = array('name', 'slug');
 
         $i = 0;
-        $query  = Action::orderBy('id','DESC');
+        $query  = Kriteria::orderBy('id','DESC');
         foreach ($column_search as $item)
         {
             if ($search) 
@@ -75,7 +72,7 @@ class ActionApiController extends Controller
        
         $Data = $query->paginate($this->perPage);
         $description = $search;
-        $_res = RequestAction::GetDataAll($Data,$this->perPage,$request,$description);
+        $_res = RequestKriteria::GetDataAll($Data,$this->perPage,$request,$description);
                
     
         return response()->json($_res);
@@ -87,16 +84,16 @@ class ActionApiController extends Controller
        
     public function store(Request $request){
 
-        $validation = ValidationAction::validation($request);
+        $validation = ValidationKriteria::validation($request);
         if($validation)
         {
           return response()->json($validation,400);  
         }else{
 
             
-           $insert = RequestAction::fieldsData($request);  
+           $insert = RequestKriteria::fieldsData($request);  
             //create menu
-           $saveData = Action::create($insert);
+           $saveData = Kriteria::create($insert);
             //result
             return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);    
             
@@ -105,15 +102,15 @@ class ActionApiController extends Controller
 
     public function update($id,Request $request){
      
-        $validation = ValidationAction::validation($request);
+        $validation = ValidationKriteria::validation($request);
         if($validation)
         {
           return response()->json($validation,400);  
         }else{
             
-               $update = RequestAction::fieldsData($request);
+               $update = RequestKriteria::fieldsData($request);
                 //update account
-               $UpdateData = Action::where('id',$id)->update($update);
+               $UpdateData = Kriteria::where('id',$id)->update($update);
                 //result
                return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
             
@@ -126,7 +123,7 @@ class ActionApiController extends Controller
         $messages['messages'] = false;
         foreach($request->data as $key)
         {
-            $results = Action::where('id',(int)$key)->delete();
+            $results = Kriteria::where('id',(int)$key)->delete();
         }
 
         if($results){
@@ -139,7 +136,7 @@ class ActionApiController extends Controller
 
     public function delete($id){
         $messages['messages'] = false;
-        $_res = Action::find($id);
+        $_res = Kriteria::find($id);
           
         if(empty($_res)){
             return response()->json(['messages' => false]);

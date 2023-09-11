@@ -135,6 +135,7 @@ class RequestKendala
 
         $fields = [ 
                 'id'=> $uuid,
+                'kriteria_id'  =>  $request->kriteria_id,
                 'permasalahan'  =>  $request->permasalahan,
                 'messages'  =>  $request->messages,
                 'from'  =>  Auth::User()->username,

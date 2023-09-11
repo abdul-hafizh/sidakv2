@@ -251,7 +251,7 @@ class RequestMenuRoles
         $fields = [  
             'id'=> $uuid,
             'role_id'  => $request->role_id,
-            'menu_json'  =>  json_encode($request->menu),
+            'menu_json'  =>  $request->menu,
             'created_by' => Auth::User()->username,
             'created_at' => date('Y-m-d H:i:s'),
         ];

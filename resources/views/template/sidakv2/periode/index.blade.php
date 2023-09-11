@@ -32,15 +32,11 @@
 
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button" id="printButton"  class="btn btn-info border-radius-10">
-					 Print
+					 Export
 				</button>
 			</div>
 
-			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
-					 Refresh
-				</button>
-			</div>
+			
 
 			<div class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
@@ -70,8 +66,7 @@
 							<th><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
 							<th><div class="split-table"></div><span class="span-title"> Nama </span></th>
-							<th><div class="split-table"></div><span class="span-title"> Semester </span></th>
-							<th><div class="split-table"></div><span class="span-title"> Tahun </span></th>
+							
 							<th><div class="split-table"></div><span class="span-title"> Tanggal Mulai </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Tanggal Berahir </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Status </span></th>
@@ -287,8 +282,7 @@
               
                row +=`<td>${item.number}</td>`;
                row +=`<td>${item.name}</td>`;
-               row +=`<td>${item.semester}</td>`;
-               row +=`<td>${item.year}</td>`;
+              
                row +=`<td>${item.startdate_convert}</td>`;
                row +=`<td>${item.enddate_convert}</td>`;
                row +=`<td>${item.status.status_convert}</td>`;
@@ -359,12 +353,7 @@
 					        row +=`<div class="modal-body">`;
                                
                                  
-				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Nama</label>`;
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
-				                  <span id="name-messages-`+ item.id +`"></span>`;
-				                  row +=`</div>`;
+				                 
 
 				                  row +=`<div id="semester-alert-`+ item.id +`" class="form-group has-feedback" >`;
 					              row +=`<label>Semester</label>`;
@@ -399,7 +388,12 @@
 				                  row +=`</div>`;
 
 
-				                 
+				                  row +=`<div id="description-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Keterangan</label>`;
+				                  row +=`<textarea type="text" name="description" class="form-control">`+ item.description +`</textarea>`;
+				                  row +=`<span id="description-messages-`+ item.id +`"></span>`;
+				                  row +=`</div>`;
 
 
 			                    row +=`<div class="radio">`;
@@ -460,13 +454,15 @@
 	              $("#update").hide();
 	              $("#load-simpan").show();
 	              
-		          var form = {
-		          	     'name':data[0].value,
-		          	     'semester':data[1].value,
-		          	     'year':data[2].value,
-		          	     'startdate':data[3].value,
-		          	     'enddate':data[4].value,
-		          	     'status':data[5].value
+		                var form = {
+		          	     
+		          	      'semester':data[0].value,
+			              'year':data[1].value,
+			              'startdate':data[2].value,
+			              'enddate':data[3].value,
+			              'description':data[4].value,
+			              'status':data[5].value,
+
 		          	    };
 
 
