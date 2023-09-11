@@ -15,6 +15,7 @@
                                              Pagu APBN : 
                                              <span id="pagu_apbn" class="align-left pd-top-bottom-5"></span>
                                              <input type="hidden" id="pagu_apbn_inp">
+                                             <input type="hidden" id="total_target_bimtek_inp">
                                         </label>
                                         <label class="col-lg-6 label-header-box align-left">
                                              Total Perencanaan :
@@ -336,6 +337,8 @@
                var periode_id = $('#periode_id').val();
                var totalRencana = parseFloat($('#total_rencana_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
+               var total_target_bimtek = $('#total_target_bimtek_inp').val();
+               var total_target_bimtek_inp = $("#bimtek_perizinan_target").val() + $("#bimtek_pengawasan_target").val();
 
                var form = {
                     "pengawas_analisa_target": $("#pengawas_analisa_target").val(),
@@ -376,7 +379,19 @@
                          confirmButtonText: 'OK',
                     });
                } else {
-                    SendingData(form);
+                    if (total_target_bimtek != total_target_bimtek_inp) {
+                         Swal.fire({
+                              icon: 'info',
+                              title: 'Peringatan',
+                              text: 'Maaf, Total Target Bimtek Belum Sesuai.',
+                              confirmButtonColor: '#000',
+                              showConfirmButton: true,
+                              confirmButtonText: 'OK',
+                         });
+                    } else {
+
+                         SendingData(form);
+                    }
                }
                
           });
@@ -386,6 +401,8 @@
                var periode_id = $('#periode_id').val(); 
                var totalRencana = parseFloat($('#total_rencana_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
+               var total_target_bimtek = $('#total_target_bimtek_inp').val();
+               var total_target_bimtek_inp = $("#bimtek_perizinan_target").val() + $("#bimtek_pengawasan_target").val();
                
                var form = {
                     "pengawas_analisa_target": $("#pengawas_analisa_target").val(),
@@ -426,7 +443,19 @@
                          confirmButtonText: 'OK',
                     });
                } else {
-                    SendingData(form);
+                    if (total_target_bimtek != total_target_bimtek_inp) {
+                         Swal.fire({
+                              icon: 'info',
+                              title: 'Peringatan',
+                              text: 'Maaf, Total Target Bimtek Belum Sesuai.',
+                              confirmButtonColor: '#000',
+                              showConfirmButton: true,
+                              confirmButtonText: 'OK',
+                         });
+                    } else {
+
+                         SendingData(form);
+                    }
                }
 
           });
@@ -582,6 +611,7 @@
                     $(".bimtek_nilai_target").prop("disabled", false);
                     $(".bimtek_nilai_pagu").prop("disabled", false);
                     $("#total_bimtek_target").text(bimtek);
+                    $("#total_target_bimtek_inp").val(bimtek);
 
                     if (bimtek % 2 === 0) {
                          $(".bimtek_perizinan_target").val(bimtek/2);

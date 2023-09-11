@@ -11,17 +11,18 @@ use DB;
 
 class RequestPeriode
 {
-
    public static function GetDataAll($data, $perPage, $request)
    {
       $temp = array();
       $getRequest = $request->all();
       $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
+
       if ($perPage != 'all') {
          $numberNext = (($page * $perPage) - ($perPage - 1));
       } else {
          $numberNext = (($page * $data->count()) - ($data->count() - 1));
       }
+
       foreach ($data as $key => $val) {
          if ($val->status == 'Y') {
             $status = 'Aktif';
@@ -43,6 +44,7 @@ class RequestPeriode
          $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->year);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
       }
+
       $result['data'] = $temp;
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();
@@ -60,17 +62,18 @@ class RequestPeriode
    public static function GetDataPrint($data)
    {
 
-     $temp = array();
-
       $i = 1;
+      $temp = array();
+
       foreach ($data as $key => $val) {
+         
          if ($val->status == "Y") {
             $status = "Aktif";
          } else {
             $status = "NonAktif";
          }
-         $temp[$key]['number'] = $i;
 
+         $temp[$key]['number'] = $i;
          $temp[$key]['id'] = $val->id;
          $temp[$key]['name'] = $val->name;
          $temp[$key]['slug'] = $val->slug;
@@ -94,7 +97,7 @@ class RequestPeriode
 
       foreach ($data as $key => $val) {
 
-         $temp[$key]['value'] = $val->slug;
+         $temp[$key]['value'] = $val->year;
          $temp[$key]['text'] = 'Periode ' . $val->year;
          if ($type == "POST") {
             $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
@@ -105,8 +108,6 @@ class RequestPeriode
          }
       }
 
-
-
       return  $temp;
    }
 
@@ -116,8 +117,6 @@ class RequestPeriode
       $pagu = RequestPeriode::Pagu($type, substr((string)$slug, 0, 4));
       return $pagu;
    }
-
-
 
    public static function checkValidate($slug)
    {
@@ -131,8 +130,6 @@ class RequestPeriode
 
       return $result;
    }
-
-
 
    public static function Pagu($type, $periode_id)
    {
@@ -175,8 +172,6 @@ class RequestPeriode
       return $result;
    }
 
-
-
    public static function GetDataID($data)
    {
       $temp = array();
@@ -188,8 +183,6 @@ class RequestPeriode
       $temp['status'] = $data->status;
       return $temp;
    }
-
-
 
    public static function fieldsData($request)
    {
@@ -226,7 +219,6 @@ class RequestPeriode
       }
       return $result;
    }
-
 
    public static function GetPeriodeID()
    {

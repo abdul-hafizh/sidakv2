@@ -4,66 +4,110 @@
 <style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
-     <form id="FormSubmit">
-          <div class="box box-solid box-primary">
-               <div class="box-body">
-                    <div class="card-body">
-                         <div class="row pd-top-bottom-15">  
-                              <div class="col-lg-8">
-                                   <div class="form-group">
-                                        <label class="col-lg-4 label-header-box align-left">
-                                             Pagu APBN : 
-                                             <span id="pagu_apbn" class="align-left pd-top-bottom-5"></span>
-                                             <input type="hidden" id="pagu_apbn_inp">
-                                        </label>
-                                        <label class="col-lg-6 label-header-box align-left">
-                                             Total Perencanaan :
-                                             <span id="total_rencana" class="align-left pd-top-bottom-5"></span>
-                                             <input type="hidden" id="total_rencana_inp">
-                                        </label>
-                                   </div>
+     <div class="box box-solid box-primary">
+          <div class="box-body">
+               <div class="card-body">
+                    <div class="row pd-top-bottom-15">  
+                         <div class="col-lg-8">
+                              <div class="form-group">
+                                   <label class="col-lg-4">
+                                        Pagu APBN : 
+                                        <span id="pagu_apbn" class="pd-top-bottom-5"></span>
+                                   </label>
+                                   <label class="col-lg-5">
+                                        Total Perencanaan :
+                                        <span id="total_rencana" class="pd-top-bottom-5"></span>
+                                   </label>                                        
                               </div>
-                              <div class="col-lg-4">
-                                   <div id="periode-alert" class="form-group">
-                                        <label class="col-sm-5 label-header-box align-right form-group margin-none">Pilih Periode :</label>
-                                        <div class="col-sm-7">
-                                             <div id="selectPeriode" class="form-group margin-none"></div>
-                                        </div>
-                                   </div>
+                         </div>
+                         <div class="col-lg-4">
+                              <div class="pull-right">
+                                   <label class="col-lg-12">
+                                        Periode :
+                                        <span id="selectPeriode" class="pd-top-bottom-5"></span>
+                                   </label>
                               </div>
-                         </div>                          
+                         </div>
+                    </div>                          
+               </div>
+          </div>
+     </div>
+
+     <div class="box box-solid box-primary">
+          <div class="box-body">
+               <div class="card-body table-responsive">
+                    <table class="table table-hover text-nowrap">
+                         <thead>
+                              <tr>
+                                   <th><div></div><span class="span-title">No</span></th>
+                                   <th><div class="split-table"></div><span class="span-title">Kegiatan/Sub Kegiatan</span></th>
+                                   <th><div class="split-table"></div><span class="span-title">Target</span></th>
+                                   <th><div class="split-table"></div><span class="span-title">Satuan</span></th>
+                                   <th><div class="split-table"></div><span class="span-title">Pagu APBN (Rp)</span></th>
+                              </tr>
+                         </thead>
+                         <tbody id="showDetail"></tbody>
+                    </table>
+               </div>
+          </div>
+     </div>
+
+     <div class="box box-solid box-primary">
+          <div class="box-body">
+               <div class="card-body">
+                    <div id="Attr" class="row pd-top-bottom-15"></div>
+               </div>
+          </div>
+     </div> 
+
+     <div class="box box-solid box-primary">
+          <div class="box-body">
+               <div class="card-body">
+                    <div class="form-group col-lg-6">
+                         <form method="post" action="/api/perencanaan/upload_laporan" enctype="multipart/form-data">                         
+                              <div class="form-group">
+                                   <label>Upload File : </label>
+                                   <input type="file" class="form-control" name="lap_rencana">
+                              </div>                         
+                              <button type="submit" class="btn btn-primary">Upload</button>                              
+                         </form>                              
+                         <div class="form-group"> <br/>
+                              <a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>
+                         </div>
                     </div>
                </div>
           </div>
+     </div>
 
-          <div class="box box-solid box-primary">
-               <div class="box-body">
-                    <div class="card-body table-responsive">
-                         <table class="table table-hover text-nowrap">
-                              <thead>
-                                   <tr>
-                                        <th><div></div><span class="span-title">No</span></th>
-                                        <th><div class="split-table"></div><span class="span-title">Kegiatan/Sub Kegiatan</span></th>
-                                        <th><div class="split-table"></div><span class="span-title">Target</span></th>
-                                        <th><div class="split-table"></div><span class="span-title">Satuan</span></th>
-                                        <th><div class="split-table"></div><span class="span-title">Pagu APBN (Rp)</span></th>
-                                   </tr>
-                              </thead>
-                              <tbody id="showDetail"></tbody>
-                         </table>
-                    </div>
-               </div>
-          </div>
-
-          <div class="box box-solid box-primary">
-               <div class="box-body">
-                    <div class="card-body">
-                         <div id="Attr" class="row pd-top-bottom-15"></div>
-                    </div>
-               </div>
+     <div class="box-footer">
+          <div class="btn-group just-center">
+               <button id="download" type="button" class="btn btn-success col-md-2">Download</button>
+               <button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>
+               <button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>
           </div> 
-     </form>
+     </div> 
 </div>
+
+<!-- <div id="modal-unapprove" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Unapprove Perencanaan</h4>
+               </div>
+               <div class="modal-body">
+                    <div class="form-group">
+                         <label>Alasan Unapprove</label>
+                         <textarea rows="4" cols="50" class="form-control" id="alasan_unapprove_inp" name="alasan_unapprove" placeholder="Alasan Unapprove" required>
+                    </div>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" id="unapprove" class="btn btn-danger">Unapprove</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+               </div>
+          </div>
+     </div>
+</div> -->
 
 <script type="text/javascript">
 
@@ -79,7 +123,6 @@
                url: BASE_URL +'/api/perencanaan/edit/' + segments[5],
                success: function(response) {
                     list = response;  
-                    $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');    
                     getdataid(list);              
                },
                error: function( error) { }
@@ -89,16 +132,17 @@
           {
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
-               $('#periode_selected').html('<b>'+data.periode_name+'</b>');
-               
+               $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
+
                var row = '';
                var rows = '';
+
                row+= '<tr>';
                     row+= '<td><strong>1</strong></td>';
                     row+= '<td class="text-left"><strong>Pengawasan Penanaman Modal</strong></td>';
-                    row+= '<td class="text-center"><strong id="total_pengawasan_target">'+data.target_pengawasan +'</strong></td>';
+                    row+= '<td class="text-center"><strong id="total_pengawasan_target">' + data.target_pengawasan +'</strong></td>';
                     row+= '<td class="text-center"><strong>Kegiatan Usaha</strong></td>';
-                    row+= '<td class="text-right"><strong id="total_pengawasan_pagu">'+data.total_pagu_pengawasan +'</strong></td>';
+                    row+= '<td class="text-right"><strong id="total_pengawasan_pagu">' + data.total_pagu_pengawasan_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
@@ -112,7 +156,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_analisa_pagu +'">';
+                         row+= '<input disabled id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_analisa_pagu_convert +'">';
                          row+= '<span id="pengawas-analisa-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -128,7 +172,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu +'">';                                      
+                         row+= '<input disabled id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu_convert +'">';                                      
                          row+= '<span id="pengawas-inspeksi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -144,18 +188,17 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_evaluasi_pagu +'">';
+                         row+= '<input disabled id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_evaluasi_pagu_convert +'">';
                          row+= '<span id="pengawas-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
-
 
                row+= '<tr>';
                     row+= '<td><strong>2</strong></td>';
                     row+= '<td class="text-left"><strong>Bimbingan Teknis Kepada Pelaku Usaha</strong></td>';
                     row+= '<td class="text-center"><strong id="total_bimtek_target">'+data.target_bimtek +'</strong></td>';
                     row+= '<td class="text-center"><strong>Pelaku Usaha</strong></td>';
-                    row+= '<td class="text-right"><strong id="total_bimtek_pagu">'+ data.total_pagu_bimtek +'</strong></td>';
+                    row+= '<td class="text-right"><strong id="total_bimtek_pagu">'+ data.total_pagu_bimtek_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
@@ -169,7 +212,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Pelaku Usaha" value="Pelaku Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_perizinan_pagu +'">';
+                         row+= '<input disabled id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="text" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_perizinan_pagu_convert +'">';
                          row+= '<span id="bimtek-perizinan-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -185,7 +228,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Pelaku Usaha" value="Pelaku Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_pengawasan_pagu +'">';
+                         row+= '<input disabled id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="text" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_pengawasan_pagu_convert +'">';
                          row+= '<span id="bimtek-pengawasan-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -195,7 +238,7 @@
                     row+= '<td class="text-left"><strong>Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</strong></td>';
                     row+= '<td class="text-center"><strong id="total_penyelesaian_target">'+ data.target_penyelesaian +'</strong></td>';
                     row+= '<td class="text-center"><strong>Kegiatan Usaha</strong></td>';
-                    row+= '<td class="text-right"><strong id="total_penyelesaian_pagu">'+ data.total_pagu_penyelesaian +'</strong></td>';
+                    row+= '<td class="text-right"><strong id="total_penyelesaian_pagu">'+ data.total_pagu_penyelesaian_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
@@ -209,7 +252,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_identifikasi_pagu +'">';
+                         row+= '<input disabled id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_identifikasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-identifikasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -225,7 +268,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_realisasi_pagu +'">';
+                         row+= '<input disabled id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_realisasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-realisasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -241,9 +284,20 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_evaluasi_pagu +'">';
+                         row+= '<input disabled id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_evaluasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
+               row+= '</tr>';
+
+               row+= '<tr>';
+                    row+= '<td colspan="3">&nbsp;</td>';
+                    row+= '<td class="text-right"><strong>Total PAGU :</strong></td>';
+                    row+= '<td class="text-right">' + data.pagu_apbn + '</td>';
+               row+= '</tr>';
+               row+= '<tr>';
+                    row+= '<td colspan="3">&nbsp;</td>';
+                    row+= '<td class="text-right"><strong>Total Perencanaan :</strong></td>';
+                    row+= '<td class="text-right">' + data.total_rencana + '</td>';
                row+= '</tr>';
 
                $('#showDetail').html(row);
@@ -281,44 +335,82 @@
                rows+= '</div>';
 
                $('#Attr').html(rows);
-               getperiode(data.periode_id);
           }
 
-          function getperiode(periode){
-               
+          $("#approve").click( () => {                            
+               Swal.fire({
+                    title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+               }).then((result) => {
+                    if (result.isConfirmed) {
+                         approveItem(segments[5]);
+                         Swal.fire(
+                              'Approved!',
+                              'Data berhasil diapprove.',
+                              'success'
+                         );
+                    }
+               });
+          });
+
+          $("#unapprove").click( () => {                            
+               Swal.fire({
+                    title: 'Apakah Anda Yakin Unapprove Perencanaan Ini?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+               }).then((result) => {
+                    if (result.isConfirmed) {
+                         var form = {
+                              "alasan_unapprove": $("#alasan_unapprove_inp").val()
+                         };
+                         unapproveItem(form);
+                    }
+               });
+          });
+
+          function unapproveItem(form) {
+
                $.ajax({
-                    type: 'POST',
-                    data:{'type':'edit'},
-                    dataType: 'json',
-                    url: BASE_URL +'/api/select-periode',
-                    success: function(data) {
-                         
-                         var select =  $('#periode_id');
-
-                         $.each(data, function(index, option) {
-                              select.append($('<option>', {
-                                   value: option.value,
-                                   text: option.text
-                              }));
+                    type:"PUT",
+                    url: BASE_URL+'/api/perencanaan/unapprove/' + segments[5],
+                    data:form,
+                    cache: false,
+                    dataType: "json",
+                    success: (respons) =>{
+                         Swal.fire({
+                              title: 'Sukses!',
+                              text: 'Berhasil Unapprove Data Perencanaan.',
+                              icon: 'success',
+                              confirmButtonText: 'OK'                        
+                         }).then((result) => {
+                              if (result.isConfirmed) {
+                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                              }
                          });
-                         
-                         var selectedValue = periode;
-                         select.val(selectedValue);                    
-                         select.selectpicker('refresh');
-                         periode = data; 
                     },
-
-                    error: function( error) {}
-               });
-
-               $('#periode_id').on('change', function() {
-                    var index = $(this).val();
-                    let find = periode.find(o => o.value === index); 
-                    
-                    $('#pagu_apbn').html('<b>'+find.pagu_apbn+'</b>');
                });
           }
 
+          function approveItem(id){
+            
+            $.ajax({
+                url:  BASE_URL +`/api/perencanaan/approve/`+ id,
+                method: 'PUT',
+                success: function(response) {
+                    fetchData(page);
+                },
+                error: function(error) {
+                    console.error('Error approving data:', error);
+                }
+            });
+        }
      });
 
 </script>

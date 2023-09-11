@@ -10,7 +10,7 @@
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
             <div class="pull-left padding-9-0 margin-left-button">
-                <select id="row_page" class="selectpicker" data-style="btn-default" >
+                <select id="row_page" class="selectpicker" data-style="btn-default">
                     <option value="10" selected>10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -18,18 +18,12 @@
                     <option value="all">All</option>
                 </select>
             </div>  
-
-           
          
             <div class="pull-left padding-9-0 margin-left-button">
                 <button type="button"  id="refresh" class="btn btn-primary border-radius-10">
                      Refresh
                 </button>
             </div>
-
-          
-              
-          
 		</div> 
 
 		<div class="pull-right width-50">
@@ -83,20 +77,25 @@
             var value = $(this).val();         
             if(value)
             {   
-                 const content = $('#content');
-                 content.empty();
-                 let row = ``;
-                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                  content.append(row);
-                  let search = $('#periode_id').val();
-                  if(search !='')
-                  {
+                const content = $('#content');
+                content.empty();
+
+                let row = ``;
+                
+                row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                content.append(row);
+
+                let search = $('#periode_id').val();
+
+                if(search !='')
+                {
                     var url = BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${value}`;
                     var method = 'POST';
-                  }else{
+
+                } else {
                     var url = BASE_URL + `/api/perencanaan?page=${page}&per_page=${value}`;
                     var method = 'GET';
-                  }     
+                }     
 
                 $.ajax({
                     url: url,
@@ -113,17 +112,13 @@
                     }
                 });
             }    
-    // Perform other actions based on the selected value
-    });
-
-      
+        });
 
         $.ajax({
             url: BASE_URL +'/api/select-periode?type=GET',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                // Populate SelectPicker options using received data
                 $.each(data.result, function(index, option) {
                     $('#periode_id').append($('<option>', {
                       value: option.value,
@@ -131,7 +126,6 @@
                     }));
                 });
 
-                // Refresh the SelectPicker to apply the new options
                 $('#periode_id').selectpicker('refresh');
             },
             error: function(error) {
@@ -182,7 +176,6 @@
             $('#search-input').val('');
         });
 
-
         $('#delete-selected').on('click', function() {
             const selectedIds = [];
             $('.item-checkbox:checked').each(function() {
@@ -196,8 +189,6 @@
             const allChecked = $('.item-checkbox:checked').length === $('.item-checkbox').length;
             $('.select-all').prop('checked', allChecked);
         });
-
-       
 
         function deleteItems(ids) {        
             $.ajax({
@@ -250,7 +241,6 @@
                 row +=`<td class="table-padding-second">${item.created_at}</td>`;
                 row +=`<td>`; 
                     row +=`<div class="btn-group">`;
-                    row +=`<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
                     row +=`<button id="Detail" data-param_id="${item.id}"  type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
                     row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
                     row +=`</div>`;
@@ -267,29 +257,6 @@
                 } else {
                     $('#delete-selected').prop("disabled", true);
                 }  
-            });
-
-            $( "#content" ).on( "click", "#Approve", (e) => {
-             
-                let id = e.currentTarget.dataset.param_id;
-                
-                Swal.fire({
-			      title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
-			      icon: 'warning',
-			      showCancelButton: true,
-			      confirmButtonColor: '#d33',
-			      cancelButtonColor: '#3085d6',
-			      confirmButtonText: 'Ya'
-			    }).then((result) => {
-			        if (result.isConfirmed) {
-                        approveItem(id);
-                        Swal.fire(
-                            'Approved!',
-                            'Data berhasil diapprove.',
-                            'success'
-                        );
-			        }
-			    });
             });
 
             $( "#content" ).on( "click", "#Detail", (e) => {
@@ -322,19 +289,6 @@
                     }
                 });
             }); 
-        }
-
-        function approveItem(id){
-            $.ajax({
-                url:  BASE_URL +`/api/perencanaan/approve/`+ id,
-                method: 'PUT',
-                success: function(response) {
-                    fetchData(page);
-                },
-                error: function(error) {
-                    console.error('Error approving data:', error);
-                }
-            });
         }
 
         function deleteItem(id){
@@ -381,13 +335,13 @@
             if (currentPage < totalPages) {
                 pagination.append(`<li class="pagination-item"><button class="pagination-link page-link" data-page="${currentPage + 1}">›</button></li>`);
             } else {
-                pagination.append(`<li class="pagination-item"><button class="pagination-link pagination-disable" >›</button></li>`);
+                pagination.append(`<li class="pagination-item"><button class="pagination-link pagination-disable">›</button></li>`);
             }
 
             if (currentPage < totalPages) {
                 pagination.append(`<li class="pagination-item"><button class="pagination-link page-link" data-page="${totalPages}">»</button></li>`);
             } else {
-                pagination.append(`<li class="pagination-item"><button class="pagination-link pagination-disable" >»</button></li>`);
+                pagination.append(`<li class="pagination-item"><button class="pagination-link pagination-disable">»</button></li>`);
             }
 
             pagination.find('.page-link').on('click', function() {

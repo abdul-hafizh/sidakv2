@@ -19,7 +19,6 @@ use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\ActionController;
 use App\Http\Controllers\KriteriaController;
 
-   
     Route::get('/', function () {
         return redirect('login');
     }); 
@@ -27,7 +26,6 @@ use App\Http\Controllers\KriteriaController;
     Route::get('/login', [AuthController::class,'index'])->name('login');    
     Route::post('/login', [AuthController::class,'store']);  
  
-
     Route::middleware(['auth'])->group(function () {
         Route::get('/dashboard', [DashboardController::class,'index']);
         Route::get('/perencanaan', [PerencanaanController::class,'index']);
@@ -49,7 +47,7 @@ use App\Http\Controllers\KriteriaController;
         Route::get('/provinsi', [ProvinceController::class,'index']); 
         Route::get('/kabupaten', [RegencyController::class,'index']);
         Route::get('/periode', [PeriodeController::class,'index']);
-         Route::get('/auditlog', [AuditLogController::class,'index']);
+        Route::get('/auditlog', [AuditLogController::class,'index']);
         Route::get('/options', [OptionsController::class,'index']);
         Route::get('/action', [ActionController::class,'index']);        
     });
@@ -62,18 +60,15 @@ use App\Http\Controllers\KriteriaController;
                          
     });
 
-
     Route::middleware(['auth','daerah'])->group(function () {
              
     });
 
     Route::get('/logout', function () {
-
-            Auth::logout();
-            setcookie('token', '', -1, '/');
-            setcookie('access', '', -1, '/');
-            return redirect('login');
-       
+        Auth::logout();
+        setcookie('token', '', -1, '/');
+        setcookie('access', '', -1, '/');
+        return redirect('login');
     });
 
 
