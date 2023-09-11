@@ -17,15 +17,19 @@ class RequestPerencanaan
     
     public static function GetDataAll($data, $perPage, $request)
     {
-    $temp = array();
-    $getRequest = $request->all();
-    $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
-    if($perPage !='all')
-    {
-         $numberNext = (($page * $perPage) - ($perPage - 1));
-    }else{
-         $numberNext = (($page * $data->count()) - ($data->count() - 1));
-    }  
+        $temp = array();
+        $getRequest = $request->all();
+        $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
+
+        if($perPage !='all')
+        {
+
+            $numberNext = (($page * $perPage) - ($perPage - 1));
+
+        } else {
+
+            $numberNext = (($page * $data->count()) - ($data->count() - 1));
+        }  
         
         foreach ($data as $key => $val)
         {           
@@ -38,7 +42,6 @@ class RequestPerencanaan
                 $temp[$key]['periode'] =  $periode;
                 $temp[$key]['status'] = $status;
                 $temp[$key]['action_status'] = RequestPerencanaan::CheckStatus($val->status);
-
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
             }
         }       
@@ -58,81 +61,82 @@ class RequestPerencanaan
        return $result;
     }
 
-    public static function CheckStatus($status){
+    public static function CheckStatus($status) {
 
-       
         if($status == '13')
         {
            $result =  false;
-        }else{
+        } else {
            $result =  true;
         } 
 
         return  $result;   
-
     }
 
-    public static function GetDetailID($data){
-       $temp = array();
-       $temp['id'] = $data->id;
-       $temp['periode_id'] = $data->periode_id;
-       $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
-       $temp['pagu_apbn'] = GeneralHelpers::formatRupiah($data->pagu_apbn);
-       $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->pagu_promosi);
-
-       $temp['target_pengawasan'] = $data->target_pengawasan;
-       $temp['target_bimtek'] = $data->target_bimbingan_teknis;
-       $temp['target_penyelesaian'] = $data->target_penyelesaian_permasalahan;
-
-       $temp['pengawas_analisa_target'] = $data->pengawas_analisa_target;
-       $temp['pengawas_analisa_pagu'] = $data->pengawas_analisa_pagu;
-       $temp['pengawas_inspeksi_target'] = $data->pengawas_inspeksi_target;
-       $temp['pengawas_inspeksi_pagu'] = $data->pengawas_inspeksi_pagu;
-       $temp['pengawas_evaluasi_target'] = $data->pengawas_evaluasi_target;
-       $temp['pengawas_evaluasi_pagu'] = $data->pengawas_evaluasi_pagu;
-       
-       $temp['total_target_pengawasan'] = $data->pengawas_analisa_target + $data->pengawas_inspeksi_target + $data->pengawas_evaluasi_target;
-       $temp['total_pagu_pengawasan'] = $data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu;
-       $temp['total_pagu_pengawasan_convert'] = GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu);
-       
-       $temp['bimtek_perizinan_target'] = $data->bimtek_perizinan_target;
-       $temp['bimtek_perizinan_pagu'] = $data->bimtek_perizinan_pagu;
-       $temp['bimtek_pengawasan_target'] = $data->bimtek_pengawasan_target;
-       $temp['bimtek_pengawasan_pagu'] = $data->bimtek_pengawasan_pagu;
-
-       $temp['total_target_bimtek'] = $data->bimtek_perizinan_target + $data->bimtek_pengawasan_target;
-       $temp['total_pagu_bimtek'] = $data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu;
-       $temp['total_pagu_bimtek_convert'] = GeneralHelpers::formatRupiah($data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu);
-
-
-
-       $temp['penyelesaian_identifikasi_target'] = $data->penyelesaian_identifikasi_target;
-       $temp['penyelesaian_identifikasi_pagu'] = $data->penyelesaian_identifikasi_pagu;
-       $temp['penyelesaian_realisasi_target'] = $data->penyelesaian_realisasi_target;
-       $temp['penyelesaian_realisasi_pagu'] = $data->penyelesaian_realisasi_pagu;
-       $temp['penyelesaian_evaluasi_target'] = $data->penyelesaian_evaluasi_target;
-       $temp['penyelesaian_evaluasi_pagu'] = $data->penyelesaian_evaluasi_pagu;
-       
-       $temp['total_target_penyelesaian'] = $data->penyelesaian_identifikasi_target + $data->penyelesaian_realisasi_target + $data->penyelesaian_evaluasi_target;
-        $temp['total_pagu_penyelesaian'] = $data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu;
-       $temp['total_pagu_penyelesaian_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu);
-       
-       
+    public static function GetDetailID($data) {
+        $temp = array();
+        
+        $temp['id'] = $data->id;
+        $temp['periode_id'] = $data->periode_id;
+        $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
+        $temp['pagu_apbn'] = GeneralHelpers::formatRupiah($data->pagu_apbn);
+        $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->pagu_promosi);
         $temp['total_rencana'] =  GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu + $data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu + $data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu); 
 
+        $temp['target_pengawasan'] = $data->target_pengawasan;
+        $temp['target_bimtek'] = $data->target_bimbingan_teknis;
+        $temp['target_penyelesaian'] = $data->target_penyelesaian_permasalahan;
+
+        $temp['pengawas_analisa_target'] = $data->pengawas_analisa_target;
+        $temp['pengawas_analisa_pagu'] = $data->pengawas_analisa_pagu;
+        $temp['pengawas_analisa_pagu_convert'] = GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu);
+        $temp['pengawas_inspeksi_target'] = $data->pengawas_inspeksi_target;
+        $temp['pengawas_inspeksi_pagu'] = $data->pengawas_inspeksi_pagu;
+        $temp['pengawas_inspeksi_pagu_convert'] = GeneralHelpers::formatRupiah($data->pengawas_inspeksi_pagu);
+        $temp['pengawas_evaluasi_target'] = $data->pengawas_evaluasi_target;
+        $temp['pengawas_evaluasi_pagu'] = $data->pengawas_evaluasi_pagu;
+        $temp['pengawas_evaluasi_pagu_convert'] = GeneralHelpers::formatRupiah($data->pengawas_evaluasi_pagu);
+        
+        $temp['total_target_pengawasan'] = $data->pengawas_analisa_target + $data->pengawas_inspeksi_target + $data->pengawas_evaluasi_target;
+        $temp['total_pagu_pengawasan'] = $data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu;
+        $temp['total_pagu_pengawasan_convert'] = GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu+$data->pengawas_evaluasi_pagu);
+        
+        $temp['bimtek_perizinan_target'] = $data->bimtek_perizinan_target;
+        $temp['bimtek_perizinan_pagu'] = $data->bimtek_perizinan_pagu;
+        $temp['bimtek_perizinan_pagu_convert'] = GeneralHelpers::formatRupiah($data->bimtek_perizinan_pagu);
+        $temp['bimtek_pengawasan_target'] = $data->bimtek_pengawasan_target;
+        $temp['bimtek_pengawasan_pagu'] = $data->bimtek_pengawasan_pagu;
+        $temp['bimtek_pengawasan_pagu_convert'] = GeneralHelpers::formatRupiah($data->bimtek_pengawasan_pagu);
+
+        $temp['total_target_bimtek'] = $data->bimtek_perizinan_target + $data->bimtek_pengawasan_target;
+        $temp['total_pagu_bimtek'] = $data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu;
+        $temp['total_pagu_bimtek_convert'] = GeneralHelpers::formatRupiah($data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu);
+
+        $temp['penyelesaian_identifikasi_target'] = $data->penyelesaian_identifikasi_target;
+        $temp['penyelesaian_identifikasi_pagu'] = $data->penyelesaian_identifikasi_pagu;
+        $temp['penyelesaian_identifikasi_pagu_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_identifikasi_pagu);
+        $temp['penyelesaian_realisasi_target'] = $data->penyelesaian_realisasi_target;
+        $temp['penyelesaian_realisasi_pagu'] = $data->penyelesaian_realisasi_pagu;
+        $temp['penyelesaian_realisasi_pagu_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_realisasi_pagu);
+        $temp['penyelesaian_evaluasi_target'] = $data->penyelesaian_evaluasi_target;
+        $temp['penyelesaian_evaluasi_pagu'] = $data->penyelesaian_evaluasi_pagu;
+        $temp['penyelesaian_evaluasi_pagu_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_evaluasi_pagu);
        
-       $temp['lokasi'] = $data->lokasi;
-       $temp['tgl_tandatangan'] = $data->tgl_tandatangan;
-       $temp['nama_pejabat'] = $data->nama_pejabat;
-       $temp['nip_pejabat'] = $data->nip_pejabat;
+        $temp['total_target_penyelesaian'] = $data->penyelesaian_identifikasi_target + $data->penyelesaian_realisasi_target + $data->penyelesaian_evaluasi_target;
+        $temp['total_pagu_penyelesaian'] = $data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu;
+        $temp['total_pagu_penyelesaian_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu);
 
-      return $temp; 
+        $temp['lokasi'] = $data->lokasi;
+        $temp['tgl_tandatangan'] = $data->tgl_tandatangan;
+        $temp['nama_pejabat'] = $data->nama_pejabat;
+        $temp['nip_pejabat'] = $data->nip_pejabat;
 
+        return $temp; 
     }
 
-    public static function GetPeriodeYear($periode_id){
+    public static function GetPeriodeYear($periode_id) {
 
-        $periode = Periode::where('slug',$periode_id)->first();
+        $periode = Periode::where('year',$periode_id)->first();
 
         if($periode)
         {
@@ -171,30 +175,30 @@ class RequestPerencanaan
         $status = ($request->type == "draft") ? 13 : 14;
     
         $fields = [  
-                'pengawas_analisa_target'  =>  $request->pengawas_analisa_target,
-                'pengawas_analisa_pagu'    =>  $request->pengawas_analisa_pagu,
-                'pengawas_inspeksi_target'  =>  $request->pengawas_inspeksi_target,
-                'pengawas_inspeksi_pagu'  =>  $request->pengawas_inspeksi_pagu,
-                'pengawas_evaluasi_target'  =>  $request->pengawas_evaluasi_target,
-                'pengawas_evaluasi_pagu'  =>  $request->pengawas_evaluasi_pagu,
+                'pengawas_analisa_target' => $request->pengawas_analisa_target,
+                'pengawas_analisa_pagu' => $request->pengawas_analisa_pagu,
+                'pengawas_inspeksi_target' => $request->pengawas_inspeksi_target,
+                'pengawas_inspeksi_pagu' => $request->pengawas_inspeksi_pagu,
+                'pengawas_evaluasi_target' => $request->pengawas_evaluasi_target,
+                'pengawas_evaluasi_pagu' => $request->pengawas_evaluasi_pagu,
 
-                'bimtek_perizinan_target'  =>  $request->bimtek_perizinan_target,
-                'bimtek_perizinan_pagu'    =>  $request->bimtek_perizinan_pagu,
-                'bimtek_pengawasan_target'  =>  $request->bimtek_pengawasan_target,
-                'bimtek_pengawasan_pagu'  =>  $request->bimtek_pengawasan_pagu,
+                'bimtek_perizinan_target' => $request->bimtek_perizinan_target,
+                'bimtek_perizinan_pagu' => $request->bimtek_perizinan_pagu,
+                'bimtek_pengawasan_target' => $request->bimtek_pengawasan_target,
+                'bimtek_pengawasan_pagu' => $request->bimtek_pengawasan_pagu,
 
-                'penyelesaian_identifikasi_target'  =>  $request->penyelesaian_identifikasi_target,
-                'penyelesaian_identifikasi_pagu'    =>  $request->penyelesaian_identifikasi_pagu,
-                'penyelesaian_realisasi_target'  =>  $request->penyelesaian_realisasi_target,
-                'penyelesaian_realisasi_pagu'  =>  $request->penyelesaian_realisasi_pagu,
-                'penyelesaian_evaluasi_target'  =>  $request->penyelesaian_evaluasi_target,
-                'penyelesaian_evaluasi_pagu'  =>  $request->penyelesaian_evaluasi_pagu,
+                'penyelesaian_identifikasi_target' => $request->penyelesaian_identifikasi_target,
+                'penyelesaian_identifikasi_pagu' => $request->penyelesaian_identifikasi_pagu,
+                'penyelesaian_realisasi_target' => $request->penyelesaian_realisasi_target,
+                'penyelesaian_realisasi_pagu' => $request->penyelesaian_realisasi_pagu,
+                'penyelesaian_evaluasi_target' => $request->penyelesaian_evaluasi_target,
+                'penyelesaian_evaluasi_pagu' => $request->penyelesaian_evaluasi_pagu,
 
-                'periode_id'  =>  $request->periode_id,
-                'nama_pejabat'  =>  $request->nama_pejabat,
-                'nip_pejabat'  =>  $request->nip_pejabat,
-                'tgl_tandatangan'  =>  $request->tgl_tandatangan,
-                'lokasi'  =>  $request->lokasi,
+                'periode_id' => $request->periode_id,
+                'nama_pejabat' => $request->nama_pejabat,
+                'nip_pejabat' => $request->nip_pejabat,
+                'tgl_tandatangan' => $request->tgl_tandatangan,
+                'lokasi' => $request->lokasi,
                 'request_edit' =>'false',
                 'status' => $status,
                 
@@ -207,12 +211,26 @@ class RequestPerencanaan
 
     }
 
-    public static function Rupiah($angka){
+    public static function fieldAlasan($request)
+    {    
+        $fields = [  
+                'alasan_unapprove' => $request->alasan_unapprove,
+                'request_edit' =>'false',
+                'status' => 13,                
+                'created_by' => Auth::User()->username,
+                'daerah_id' => Auth::User()->daerah_id,
+                'created_at' => date('Y-m-d H:i:s'),
+        ];
+  
+        return $fields;
+
+    }
+
+    public static function Rupiah($angka) {
     
         $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
 
         return $hasil_rupiah;
- 
     }
 
 }

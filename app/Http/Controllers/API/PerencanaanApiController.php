@@ -6,7 +6,8 @@ use Auth;
 use File;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Request\validation\ValidationPerencanaan;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Request\Validation\ValidationPerencanaan;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPerencanaan;
 use App\Helpers\GeneralPaginate;
@@ -27,21 +28,19 @@ class PerencanaanApiController extends Controller
         $access = RequestAuth::Access(); 
         if($access == 'daerah' ||  $access == 'province') { 
              $query = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('created_at', 'DESC');
-        }else{
+        } else {
              $query = Perencanaan::orderBy('created_at', 'DESC');
         }
 
         if($request->per_page !='all')
         {
            $data = $query->paginate($request->per_page);
-        }else{   
+        } else {   
            $data = $query->get(); 
         }   
         
         $result = RequestPerencanaan::GetDataAll($data,$request->per_page,$request);    
-        return response()->json($result);
-        
-        
+        return response()->json($result);        
     }
 
     public function edit($id)
@@ -57,8 +56,6 @@ class PerencanaanApiController extends Controller
         $result = RequestPerencanaan::GetDetailID($data); 
         return response()->json($result);
     }
-
-    
     
     public function search(Request $request)
     {
@@ -149,6 +146,28 @@ class PerencanaanApiController extends Controller
 
     }
 
+    public function unapprove($id, Request $request){
+
+        $messages['messages'] = false;
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            
+            return response()->json(['messages' => false]);
+
+        }
+
+        $update = RequestPerencanaan::fieldAlasan($request);            
+        $results = Perencanaan::where('id', $id)->update($update);
+
+        if($results){
+            $messages['messages'] = true;
+        }
+        
+        return response()->json($messages);
+
+    }
+
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
 
@@ -162,7 +181,6 @@ class PerencanaanApiController extends Controller
         }
 
         return response()->json($messages);
-    
     }    
 
     public function delete($id){
@@ -188,6 +206,23 @@ class PerencanaanApiController extends Controller
         }
         
         return response()->json($messages);
+    }
 
+    public function upload_laporan(Request $request)
+    {        
+        $this->validate($request, [
+            'file' => 'required|mimes:pdf'
+        ]);
+
+        $path = $request->file('lap_rencana')->store('temp');
+
+        return response()->json(['status' => true, 'id' => 1, 'message' => 'Perencanaan Berhasil Diupload!']);
+    }
+
+    public function download_file(Request $request)
+    {
+        $myFile = public_path("/perencanaan/test.pdf");
+
+        return response()->download($myFile);
     }
 }    

@@ -142,13 +142,7 @@
     <script>
         $(function() {
 
-            $('[data-toggle="tooltip"]').tooltip(); <<
-            <<
-            << < HEAD
-
-                ===
-                ===
-                =
+                $('[data-toggle="tooltip"]').tooltip();
 
                 $("#update-notif").click(() => {
                     UpdateData();
@@ -220,9 +214,7 @@
                         console.error('Error fetching data:', error);
                     }
                 });
-            } >>>
-            >>>
-            > 904 b433594153969a7f6916a69cf5d44e75580f5
+            } 
         });
     </script>
     <script type="text/javascript">

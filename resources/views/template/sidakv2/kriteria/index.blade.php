@@ -2,26 +2,19 @@
 @section('content')
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
-        <div class="pull-right width-50">
-        	 <div class="pull-left width-50 padding-0-8">
-			    		<select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi "></select>
-	        </div>
-	         <div class="pull-left width-50">
-	         	
-	            <div class="input-group input-group-sm border-radius-20">
-					<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
-					<span class="input-group-btn">
-					<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
-					</span>
-				</div>
-	        </div>
-	         	
-        </div>
+        <div class="pull-right width-25">
+            <div class="input-group input-group-sm border-radius-20">
+				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
+				<span class="input-group-btn">
+				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+				</span>
+			</div>
+        </div> 	
     </div> 	
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
-            <div class="pull-left padding-9-0 margin-left-button">
+			<div class="pull-left padding-9-0 margin-left-button">
                
 				<select id="row_page" class="selectpicker" data-style="btn-default" >
 					<option value="10" selected>10</option>
@@ -31,22 +24,14 @@
 					<option value="all">All</option>
 				</select>
             </div> 	
-
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
 			</div>
 
-            <div class="pull-left padding-9-0 margin-left-button">
-                <button type="button" id="printButton"  class="btn btn-info border-radius-10">
-                     Export
-                </button>
-            </div>
-
 			
 
-				
 
 			<div class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
@@ -73,12 +58,11 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th class="th-checkbox"><input  id="select-all" class="span-title" type="checkbox"></th>
+							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
-                            <th><div class="split-table"></div><span class="span-title">Kode Kabupaten</span>  </th>
-							<th><div class="split-table"></div> <span class="span-title"> Nama Kabupaten </span></th>
-							<th><div class="split-table"></div><span class="span-title"> Provinsi </span></th>
-							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
+							<th><div class="split-table"></div> <span class="span-title"> Status </span></th>
+								<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -86,9 +70,7 @@
 						
 					
 					 </tbody>
-				</table>
-
-							
+					</table>
 				</div>
 			</div>
 		</div>
@@ -96,87 +78,19 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	    </div>
 	</div>
-     @include('template/sidakv2/regency.add')
-     @include('template/sidakv2/regency.print')
-     <script type="text/javascript">
- 
+     @include('template/sidakv2/kriteria.add')
+
+<script type="text/javascript">
 
  $(document).ready(function() {
 
-
-    const itemsPerPage = $('#row_page').val(); // Number of items to display per page
+    const itemsPerPage = 10; // Number of items to display per page
     let currentPage = 1; // Current page number
     let previousPage = 1; // Previous page number
     const visiblePages = 5; // Number of visible page links in pagination
     let page = 1;
     var list = [];
     const total = 0;
-     var daerah_id = '';
-    var search = '';
-
-    $("#printButton").click(function() {
-        PrintData();
-      });
-
-    $.ajax({
-        url: BASE_URL +'/api/select-province',
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Populate SelectPicker options using received data
-            $.each(data, function(index, option) {
-                $('#daerah_id').append($('<option>', {
-                  value: option.value,
-                  text: option.text
-                }));
-            });
-
-            // Refresh the SelectPicker to apply the new options
-            $('#daerah_id').selectpicker('refresh');
-        },
-        error: function(error) {
-            console.error(error);
-        }
-    });
-
-    $('#daerah_id').on('change', function() {
-       var value = $(this).val();         
-            if(value)
-            {   
-            	 var per_page = $('#row_page').val();
-                 const content = $('#content');
-                 content.empty();
-                 let row = ``;
-                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                  content.append(row);
-                  daerah_id = $('#daerah_id').val();
-
-                  if(daerah_id !='')
-                  {
-                  	var url = BASE_URL + `/api/regency/search?page=${page}&per_page=${per_page}`;
-                  	var method = 'POST';
-                  }	
-
-                $.ajax({
-                    url: url,
-                    method: method,
-                    data:{'search':search,'daerah_id':daerah_id},
-                    success: function(response) {
-                    	list = response.data;
-                        resultTotal(response.total);
-                        updateContent(response.data);
-                        updatePagination(response.current_page, response.last_page);
-                    },
-                    error: function(error) {
-                        console.error('Error fetching data:', error);
-                    }
-                });
-            }
-
-
-    }); 
-  
-
 
     $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -187,20 +101,21 @@
                  let row = ``;
                  row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
                   content.append(row);
-                  
-                  if(search !='' || daerah_id !='')
+                  let search = $('#search-input').val();
+
+                  if(search !='')
                   {
-                  	var url = BASE_URL + `/api/regency/search?page=${page}&per_page=${value}`;
+                  	var url = BASE_URL + `/api/kriteria/search?page=${page}&per_page=${value}`;
                   	var method = 'POST';
                   }else{
-                    var url = BASE_URL + `/api/regency?page=${page}&per_page=${value}`;
+                    var url = BASE_URL + `/api/kriteria?page=${page}&per_page=${value}`;
                     var method = 'GET';
                   } 	
 
                 $.ajax({
                     url: url,
                     method: method,
-                    data:{'search':search,'daerah_id':daerah_id},
+                    data:{'search':search},
                     success: function(response) {
                     	list = response.data;
                         resultTotal(response.total);
@@ -215,28 +130,23 @@
     // Perform other actions based on the selected value
     });
 
+
+
      // "Select All" checkbox
-     $('#select-all').on('change', function() {
-        var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
-        nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
-        const checkedCount =  $('.item-checkbox:checked').length;
-   
+    $('#select-all').on('change', function() {
+        $('.item-checkbox').prop('checked', $(this).is(':checked'));
+
+         const checkedCount = $('.item-checkbox:checked').length;
          if(checkedCount >0)
          {
          	$('#delete-selected').prop("disabled", false);
          }else{
          	$('#delete-selected').prop("disabled", true);
-         }
+         } 
+
     });
 
-     // Delete selected button
-    $('#refresh').on('click', function() {
-    	
-        fetchData(page);
-        $('#search-input').val('');
-    });
-
-     // Refresh selected button
+    // Refresh selected button
     $('#refresh').on('click', function() {
     	
         fetchData(page);
@@ -271,7 +181,7 @@
 		        );
 		      }
 		    });
-        
+		    
     });
 
     // Individual item checkboxes
@@ -280,17 +190,11 @@
         $('.select-all').prop('checked', allChecked);
     });
 
-   
-
-
-   
-
-
 
     $('#Search').click( () => {
- 		 search = $('#search-input').val();
+ 		 let search = $('#search-input').val();
  		 
- 		 if(search !='' || daerah_id !='')
+ 		 if(search)
  		 { 	
 	 		 const content = $('#content');
         	 content.empty();
@@ -298,8 +202,8 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 	         $.ajax({
-	            url: BASE_URL + `/api/regency/search?page=${page}&per_page=${itemsPerPage}`,
-	            data:{'search':search,'daerah_id':daerah_id},
+	            url: BASE_URL + `/api/kriteria/search?page=${page}&per_page=${itemsPerPage}`,
+	            data:{'search':search},
 	            method: 'POST',
 	            success: function(response) {
 	            	list = response.data;
@@ -317,16 +221,15 @@
 	     }    
     });
 
-     // Function to delete items
+    // Function to delete items
     function deleteItems(ids) {
         // Send the selected IDs for deletion using AJAX
-        
+       
         $.ajax({
-            url:  BASE_URL +`/api/regency/selected`,
+            url:  BASE_URL +`/api/kriteria/selected`,
             method: 'POST',
             data: { data: ids },
             success: function(response) {
-
                 // Handle success (e.g., remove deleted items from the list)
                 fetchData(page);
             },
@@ -336,27 +239,21 @@
         });
     }
 
+    function resultTotal(total){
+       $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
+    }
+
     // Function to fetch data from the API
     function fetchData(page) {
-    	   const content = $('#content');
+    	 const content = $('#content');
            content.empty();
     	  
     	 	let row = ``;
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
-
-         if(daerah_id)
-         {
-            var url = BASE_URL + `/api/regency/search?page=${page}&per_page=${itemsPerPage}`;
-            var method = 'POST';
-         }else{
-           var url = BASE_URL+ `/api/regency?page=${page}&per_page=${itemsPerPage}`;
-           var method = 'GET';
-         } 	 
-
         $.ajax({
-            url: url,
-            method: method,
+            url: BASE_URL+ `/api/kriteria?page=${page}&per_page=${itemsPerPage}`,
+            method: 'GET',
             success: function(response) {
             	list = response.data;
             	resultTotal(response.total);
@@ -378,60 +275,54 @@
 
         // Clear previous data
         content.empty();
-
-        if(data.length > 0)
-        { 	
-
+    if(data.length>0)
+    { 
         // Populate content with new data
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-
-               if(item.deleted == true)
-               {
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-
-               }else{
-                  row +=`<td><input disabled  type="checkbox"></td></td>`;  
-               }
+            
+               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;	
+             
+               
                row +=`<td class="padding-text-table">${item.number}</td>`;
-               row +=`<td class="padding-text-table">${item.id}</td>`;
                row +=`<td class="padding-text-table">${item.name}</td>`;
-               row +=`<td class="padding-text-table">${item.province_name}</td>`;
+               row +=`<td class="padding-text-table">${item.status}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                
 
+                  row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+               
+               
                 row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
                 row +=`<div id="FormEdit-${item.id}"></div>`;
                 row +=`</div>`;
 
-               if(item.deleted == true)
-               {
 
-                  row +=`<button id="Destroy" data-placement="top" ${item.deleted}  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-               }else{
-                  row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-               }  
+                
+
+                    row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+               	
 
                 row +=`</div>`;
                 row +=`</td>`;
               row +=`</tr>`; 
 
             content.append(row);
-
         });
 
-	    }else{
+    }else{
+         let row = ``;
+         row +=`<tr>`;
+         row +=`<td colspan="5" align="center">Data Kosong</td>`;
+         row +=`</tr>`;
+         content.append(row);
+    }    
 
-
-    	 	let row = ``;
-             row +=`<tr><td colspan="5" align="center"> <b>Data Kosong</b></td></tr>`;
-              content.html(row);
-	    }
-
-       $('.item-checkbox').on('click', function() {
+        $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
 	         if(checkedCount>0)
 	         {
@@ -442,52 +333,66 @@
    		});
 
 
- 		$( "#content" ).on( "click", "#Edit", (e) => {
+        $( "#content" ).on( "click", "#Edit", (e) => {
              
             let id = e.currentTarget.dataset.param_id;
             const item = list.find(o => o.id === id); 
-
-		   
+              
+		  
             
             let row = ``;
             row +=`<div class="modal-dialog">`;
                 row +=`<div class="modal-content">`;
 
 				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" id="close1" data-dismiss="modal" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit Kabupaten</h4>`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Edit Kriteria</h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
 					        row +=`<div class="modal-body">`;
+                               
                                  
-                                  row +=`<div id="kode-alert-`+ item.id +`" class="form-group has-feedback" >`;
-                                  row +=`<label>Kode Kabupaten</label>`;
-                                  row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="id" placeholder="Kode Kabupaten" value="`+ item.id +`">
-                                  <span id="kode-messages-`+ item.id +`"></span>`;
-                                 row +=`</div>`;
-                             
 				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
 				                  row +=`<label>Nama</label>`;
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
-				                  <span id="name-messages-`+ item.id +`"></span>`;
+
+				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">`;
+				                  row +=`<span id="name-messages-`+ item.id +`"></span>`;
+
 				                 row +=`</div>`;
 
+				                    row +=`<div class="radio">`;
+					                    row +=`<label>`;
+					                    if(item.status_ori =='Y')
+					                    {
+					                        row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
+					                    }else{
+					                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
+					                    } 	
+					                 
+					                      row +=`Aktif`;
+					                    row +=`</label>`;
+					                row +=`</div>`;
+					                row +=`<div class="radio">`;
+					                    row +=`<label>`;
+					                      if(item.status_ori =='N')
+					                    {
+					                        row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
+					                    }else{
+					                    	row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
+					                    } 
 
-				                 row +=`<div id="province-id-alert-`+ item.id +`" class="form-group has-feedback">`;
-
-				                     row +=`<label>Provinsi </label>`;
-
-				                   row +=`<select id="province-id-`+ item.id +`" class="selectpicker form-control" title="Pilih Provinsi" data-live-search="true"   name="province_id" ></select>`;
-
-				                   row +=`<span id="province-id-messages-`+ item.id +`"></span>`;
-				                 row +=`</div>`;
+					                     
+					                     row +=`Non Aktif`;
+					                    row +=`</label>`;
+					                row +=`</div>`;
 
 
-					        row +=`</div>`;
+
 
                             row +=`<div class="modal-footer">`;
-						        row +=`<button id="close2" type="button" class="btn btn-default" id="close" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
@@ -497,44 +402,25 @@
 
 					    row +=`</form>`;     
                 row +=`</div>`;
-            row +=`</div>`;
+            row +=`</div>`   
 
+            $('#FormEdit-'+ item.id).html(row);    
 
-            $('#FormEdit-'+ item.id).html(row);
+               
 
-
-            SelectProvinsi(item);
-            $("#close1").click(()=> {  
-              DefaultNull(item.id);
-           });
-
-            $("#close2").click(()=> {  
-              DefaultNull(item.id);
-           });
-
-          
-           
-            
-
-
-        $( ".modal-content" ).on( "click", "#update", (e) => {
+            $( ".modal-content" ).on( "click", "#update", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
 	              var data = $("#FormSubmit-"+ id).serializeArray();
 	              $("#update").hide();
 	              $("#load-simpan").show();
 	              
-		          var form = {
-		              'id':data[0].value,
-		              'name':data[1].value,
-		              'province_id':data[2].value,
-		            
-		          };
+		          var form = {'name':data[0].value,'status':data[1].value};
 
 
 
 					$.ajax({
 			            type:"PUT",
-			            url: BASE_URL+'/api/regency/'+ id,
+			            url: BASE_URL+'/api/kriteria/'+ id,
 			            data:form,
 			            cache: false,
 			            dataType: "json",
@@ -548,7 +434,7 @@
 			                    }).then((result) => {
 			                        if (result.isConfirmed) {
 			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/kabupaten');
+			                            window.location.replace('/kriteria-kendala');
 			                        }
 			                    });
 
@@ -556,17 +442,8 @@
 			            },
 			            error: (respons)=>{
 			                errors = respons.responseJSON;
-			                 $("#update").show();
-			                 $("#load-simpan").hide();
-
-                             if(errors.messages.id)
-                            {
-                                 $('#kode-alert-'+id).addClass('has-error');
-                                 $('#kode-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.id +'</strong>');
-                            }else{
-                                $('#kode-alert-'+id).removeClass('has-error');
-                                $('#kode-messages-'+id).removeClass('help-block').html('');
-                            }
+			                $("#update").show();
+			                $("#load-simpan").hide();
  
 			                if(errors.messages.name)
 			                {
@@ -577,26 +454,22 @@
 			                    $('#name-messages-'+id).removeClass('help-block').html('');
 			                }
 
-			                if(errors.messages.province_id)
-			                {
-			                     $('#province-id-alert-'+id).addClass('has-error');
-			                     $('#province-id-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.province_id +'</strong>');
-			                }else{
-			                    $('#province-id-alert-'+id).removeClass('has-error');
-			                    $('#province-id-messages-'+id).removeClass('help-block').html('');
-			                }  
+			                
+
+			               
+
 			                
 			            }
-			     });
+			          });
  
 		        
-	    });  
+	        });  
             
         });
 
-  
 
-       
+
+    
 
 
         $( "#content" ).on( "click", "#Destroy", (e) => {
@@ -625,7 +498,6 @@
 			      }
 			    });
 
-	        
         }); 
 
 
@@ -634,57 +506,11 @@
         
     }
 
-    function DefaultNull(id){
-
-           
-           $("input").val(null);
-           $('#province-id-'+ id).selectpicker('val', 'null');          
-           $('#modal-edit-'+ id).modal('toggle');
-
-    }
-
-    function SelectProvinsi(item){
-        console.log(SelectProvinsi)
-        $.ajax({
-                url: BASE_URL +'/api/select-province',
-                method: 'GET',
-                dataType: 'json',
-                success: function(data) {
-                  var select =  $('#province-id-'+item.id)
-
-                 // Clear existing options
-                 //select.empty();
-
-                  // Populate options from the received data
-                  $.each(data, function(index, option) {
-                    select.append($('<option>', {
-                      value: option.value,
-                      text: option.text
-                    }));
-                  });
-
-                 // Set a specific option as selected
-                   var selectedValue = item.province_id;
-                   select.val(selectedValue);
-                  // Refresh the SelectPicker
-                  select.selectpicker('refresh');
-
-                },
-                error: function() {
-                  console.error('Failed to fetch data.');
-                }
-              });
-
-    }
-
-    function resultTotal(total){
-       $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
-    }
 
     function deleteItem(id){
 
 		$.ajax({
-		    url:  BASE_URL +`/api/regency/`+ id,
+		    url:  BASE_URL +`/api/kriteria/`+ id,
 		    method: 'DELETE',
 		    success: function(response) {
 		        // Handle success (e.g., remove deleted items from the list)
@@ -697,23 +523,7 @@
 
     }
 
-    function PrintData()
-    {
-        var dt = new Date();
-       var time =  dt.getDate() + "-"
-                + (dt.getMonth()+1)  + "-" 
-                + dt.getFullYear();
 
-      var table = document.getElementById("myTable");
-      var ws = XLSX.utils.table_to_sheet(table);
-      var wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-      XLSX.writeFile(wb, "Repot-data-kabupaten-"+ time +".xlsx");
-
-    }
-
-
- 
     // Function to update pagination controls
     function updatePagination(currentPage, totalPages) {
         const pagination = $('#pagination');
@@ -766,8 +576,6 @@
         // Add click event to pagination links
         pagination.find('.page-link').on('click', function() {
             currentPage = parseInt($(this).data('page'));
-             const content = $('#content');
-             content.empty();
             fetchData(currentPage);
         });
     }

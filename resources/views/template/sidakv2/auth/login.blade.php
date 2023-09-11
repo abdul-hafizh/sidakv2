@@ -59,8 +59,10 @@
                                                           
                                                         </div>
 
+
+
                                                         <div class="pull-left full form-group">
-                                                            <a href="#" class="pull-right font-10-link">Lupa Kata Sandi?</a>
+                                                            <a id="forgot" class="pointer pull-right font-10-link">Lupa Kata Sandi?</a>
                                                         </div> 
 
                                                         <div id="loginLoad" class="pull-left full form-group mgn-top-bottom-10">
@@ -101,6 +103,36 @@
 
 <script type="text/javascript">
 $(function(){
+
+    
+
+   $("#forgot").click( () => { 
+       var row = '';
+
+         row +='<form id="FormLogin">';
+         row +='<div  id="username-alert" class="pull-left full form-group has-feedback">';  
+                                                          
+              row +='<div  id="username-alert" class="pull-left full form-group has-feedback">  '; 
+                row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Email Pengguna </label>';
+                 row +='<input value=""  name="Email" type="text" class="form-control mb-3 border-radius-10 font-12"  placeholder="Email">';
+                 row +='<span id="username-messages"></span>';
+                                                             
+                row +='</div>';
+        row +='</form>';   
+        
+
+             row +='<div id="loginLoad" class="pull-left full form-group mgn-top-bottom-10">';
+                row +='<button  type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Kirim</button>';
+
+                row +='<button style="display:none;" id="btnloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';
+                                                           
+                        row +='</div> ';
+
+
+       $('#FormLogin').html(row);
+     
+      
+   }); 
      
   $("#Submitlogin").click( () => {
 

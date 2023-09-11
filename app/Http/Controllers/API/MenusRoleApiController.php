@@ -46,11 +46,9 @@ class MenusRoleApiController extends Controller
 
     public function store(Request $request)
     {
-        $objectMenu = json_decode(json_encode($request->menu), FALSE);
-       
-         // RequestMenuRoles::getMenuAllSave($objectMenu);
-        $check = MenusRole::where('role_id',$request->role_id)->first();
         
+        $objectMenu = json_decode(json_encode($request->menu), FALSE);
+        $check = MenusRole::where('role_id',$request->role_id)->first();
         if($check)
         {
            MenusRole::where('role_id',$request->role_id)->update(['menu_json'=>$objectMenu]);

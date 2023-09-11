@@ -11,17 +11,18 @@ use DB;
 
 class RequestPeriode
 {
-
    public static function GetDataAll($data, $perPage, $request)
    {
       $temp = array();
       $getRequest = $request->all();
       $page = isset($getRequest['page']) ? $getRequest['page'] : 1;
+
       if ($perPage != 'all') {
          $numberNext = (($page * $perPage) - ($perPage - 1));
       } else {
          $numberNext = (($page * $data->count()) - ($data->count() - 1));
       }
+
       foreach ($data as $key => $val) {
          if ($val->status == 'Y') {
             $status = 'Aktif';
@@ -36,13 +37,14 @@ class RequestPeriode
          $temp[$key]['year'] = $val->year;
          $temp[$key]['startdate'] = $val->startdate;
          $temp[$key]['enddate'] = $val->enddate;
-
+         $temp[$key]['description'] = $val->description;
          $temp[$key]['startdate_convert'] = GeneralHelpers::formatDate($val->startdate);
          $temp[$key]['enddate_convert'] = GeneralHelpers::formatDate($val->enddate);
          $temp[$key]['slug'] = $val->slug;
          $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->year);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
       }
+
       $result['data'] = $temp;
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();
@@ -60,21 +62,23 @@ class RequestPeriode
    public static function GetDataPrint($data)
    {
 
-
-
       $i = 1;
+      $temp = array();
+
       foreach ($data as $key => $val) {
+         
          if ($val->status == "Y") {
             $status = "Aktif";
          } else {
             $status = "NonAktif";
          }
-         $temp[$key]['number'] = $i;
 
+         $temp[$key]['number'] = $i;
          $temp[$key]['id'] = $val->id;
          $temp[$key]['name'] = $val->name;
          $temp[$key]['slug'] = $val->slug;
          $temp[$key]['semester'] = $val->semester;
+         $temp[$key]['description'] = $val->description;
          $temp[$key]['year'] = $val->year;
          $temp[$key]['startdate'] = GeneralHelpers::formatExcel($val->startdate);
          $temp[$key]['enddate'] = GeneralHelpers::formatExcel($val->enddate);
@@ -93,7 +97,7 @@ class RequestPeriode
 
       foreach ($data as $key => $val) {
 
-         $temp[$key]['value'] = $val->slug;
+         $temp[$key]['value'] = $val->year;
          $temp[$key]['text'] = 'Periode ' . $val->year;
          if ($type == "POST") {
             $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
@@ -104,8 +108,6 @@ class RequestPeriode
          }
       }
 
-
-
       return  $temp;
    }
 
@@ -115,8 +117,6 @@ class RequestPeriode
       $pagu = RequestPeriode::Pagu($type, substr((string)$slug, 0, 4));
       return $pagu;
    }
-
-
 
    public static function checkValidate($slug)
    {
@@ -130,8 +130,6 @@ class RequestPeriode
 
       return $result;
    }
-
-
 
    public static function Pagu($type, $periode_id)
    {
@@ -174,27 +172,29 @@ class RequestPeriode
       return $result;
    }
 
-
-
    public static function GetDataID($data)
    {
-
-      $__temp_['id'] = $data->id;
-      $__temp_['name'] = $data->name;
-      $__temp_['slug'] = $data->slug;
-      $__temp_['semester'] = $data->semester;
-      $__temp_['year'] = $data->year;
-      $__temp_['status'] = $data->status;
-      return $__temp_;
+      $temp = array();
+      $temp['id'] = $data->id;
+      $temp['name'] = $data->name;
+      $temp['slug'] = $data->slug;
+      $temp['semester'] = $data->semester;
+      $temp['year'] = $data->year;
+      $temp['status'] = $data->status;
+      return $temp;
    }
-
-
 
    public static function fieldsData($request)
    {
+      if($request->semester =='01')
+      {
+         $name = 'Semester 1 Tahun '.$request->year;
+      }else{
+         $name = 'Semester 2 Tahun '.$request->year;
+      }   
 
       $fields = [
-         'name'  =>  $request->name,
+         'name'  =>  $name,
          'slug' =>  $request->year . $request->semester,
          'semester' => $request->semester,
          'year' => $request->year,
@@ -208,7 +208,7 @@ class RequestPeriode
       return $fields;
    }
 
-   public function GetPeriodeName($slug)
+   public static function GetPeriodeName($slug)
    {
 
       $periode = Periode::where('slug', $slug)->first();
@@ -220,8 +220,7 @@ class RequestPeriode
       return $result;
    }
 
-
-   public function GetPeriodeID()
+   public static function GetPeriodeID()
    {
 
       $periode = Periode::select('id as value', 'name as text', 'slug')->orderBy('slug', 'ASC')->get();

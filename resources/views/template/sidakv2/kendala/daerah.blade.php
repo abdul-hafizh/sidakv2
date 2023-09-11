@@ -30,11 +30,7 @@
 
 			</div>
 
-			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
-					 Refresh
-				</button>
-			</div>
+			
 
 			<div class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">

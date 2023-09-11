@@ -1,5 +1,5 @@
 
-<li class="treeview" style="height: auto;">
+<li class="treeview " style="height: auto;">
   <a href="#">
     <i class="fa-icon fa-img-ma-user"></i>
         <span class="title-menu" >Manajemen Data</span>
@@ -23,7 +23,7 @@
     </li>
 
     <li>
-        <a href="{!! url('kendala') !!}">
+        <a href="{!! url('kriteria-kendala') !!}">
             <i class="po-top-menu fa-icon fa-img-kendala"></i> Kriteria Kendala
         </a>
     </li>

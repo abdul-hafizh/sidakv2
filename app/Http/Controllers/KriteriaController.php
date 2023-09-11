@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestSystemLog;
 
-class OptionsController extends Controller
+class KriteriaController extends Controller
 {
    
    
@@ -19,15 +19,15 @@ class OptionsController extends Controller
 
     public function index(Request $request)
     {
-        $title = 'Data Option';
+        $title = 'Data Kriteria Kendala';
         $log = array(             
             'menu'=> $title,
-            'slug'=>'options',
-            'url'=>'options'
+            'slug'=>'kriteria-kendala',
+            'url'=>'kriteria-kendala'
         );
         RequestSystemLog::CreateLog($log);
         
-        return view('template/' . $this->template . '.options.index')
+        return view('template/' . $this->template . '.kriteria.index')
         ->with(
             [
               'title' => $title,

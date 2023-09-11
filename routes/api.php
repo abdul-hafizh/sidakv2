@@ -33,13 +33,11 @@ use App\Http\Controllers\API\KendalaApiController;
 use App\Http\Controllers\API\ForumApiController;
 use App\Http\Controllers\API\NotificationApiController;
 use App\Http\Controllers\API\ActionApiController;
-
-
-
+use App\Http\Controllers\API\KriteriaApiController;
 
 Route::middleware(['jwt.auth'])->group(function () {
-
-
+    Route::get('select-kriteria', [KriteriaApiController::class, 'listAll']);
+    Route::get('select-role', [RolesApiController::class, 'listAll']);
     Route::get('select-daerah', [DaerahApiController::class, 'listAllDaerah']);
     Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
     Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
@@ -50,19 +48,19 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::post('user/photo', [AuthApiController::class, 'updatePhoto']);
-
-
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
 
     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
     Route::post('perencanaan', [PerencanaanApiController::class, 'store']);
     Route::put('perencanaan/{id}', [PerencanaanApiController::class, 'update']);
     Route::put('perencanaan/approve/{id}', [PerencanaanApiController::class, 'approve']);
+    Route::put('perencanaan/unapprove/{id}', [PerencanaanApiController::class, 'unapprove']);
     Route::get('perencanaan/edit/{id}', [PerencanaanApiController::class, 'edit']);
     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']);
     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
+    Route::post('perencanaan/upload_laporan', [PerencanaanApiController::class, 'upload_laporan']);
+    Route::get('perencanaan/download_file', [PerencanaanApiController::class, 'download_file']);
     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
-    Route::post('pagu/check', [PaguTargetApiController::class, 'check']);
 
     Route::get('user', [UserApiController::class, 'index']);
     Route::post('user', [UserApiController::class, 'store']);
@@ -70,11 +68,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('user/search', [UserApiController::class, 'search']);
     Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
     Route::delete('user/{id}', [UserApiController::class, 'delete']);
-
     Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     Route::post('user/update', [UserApiController::class, 'updateProfile']);
 
-
+    Route::post('pagu/check', [PaguTargetApiController::class, 'check']);
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
     Route::post('pagutarget/total_pagu', [PaguTargetApiController::class, 'total_pagu']);
     Route::get('pengawasan/datalist', [PengawasanApiController::class, 'jsonData']);
@@ -82,7 +79,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('pagutarget/import_excel', [PaguTargetApiController::class, 'import_excel']);
     Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
     Route::get('pagutarget/edit/{id}', [PaguTargetApiController::class, 'edit']);
-
 
     Route::get('province', [ProvinceApiController::class, 'index']);
     Route::post('province', [ProvinceApiController::class, 'store']);
@@ -98,9 +94,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('regency/selected', [RegencyApiController::class, 'deleteSelected']);
     Route::delete('regency/{id}', [RegencyApiController::class, 'delete']);
     Route::get('dashboard', [DashboardApiController::class, 'index']);
-
-
-    Route::get('select-role', [RolesApiController::class, 'listAll']);
 
     Route::get('role', [RolesApiController::class, 'index']);
     Route::get('role/edit/{id}', [RolesApiController::class, 'edit']);
@@ -128,7 +121,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('kendala/{id}', [KendalaApiController::class, 'update']);
     Route::post('kendala/selected', [KendalaApiController::class, 'deleteSelected']);
     Route::delete('kendala/{id}', [KendalaApiController::class, 'delete']);
-
 
     Route::get('forum', [ForumApiController::class, 'index']);
     Route::post('forum', [ForumApiController::class, 'store']);
@@ -168,6 +160,15 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('menu/role', [MenusApiController::class, 'menuRole']);
     Route::post('menu/role/save', [MenusRoleApiController::class, 'store']);
     Route::get('menu/action', [ActionApiController::class, 'actionList']);
+    Route::delete('menu/role/{id}', [MenusRoleApiController::class, 'delete']);
+
+    Route::get('kriteria', [KriteriaApiController::class, 'index']);
+    Route::get('kriteria/edit/{id}', [KriteriaApiController::class, 'edit']);
+    Route::post('kriteria', [KriteriaApiController::class, 'store']);
+    Route::post('kriteria/search', [KriteriaApiController::class, 'search']);
+    Route::put('kriteria/{id}', [KriteriaApiController::class, 'update']);
+    Route::delete('kriteria/{id}', [KriteriaApiController::class, 'delete']);
+    Route::post('kriteria/selected', [KriteriaApiController::class, 'deleteSelected']);
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);

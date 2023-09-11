@@ -56,7 +56,7 @@ class PeriodeApiController extends Controller
                     ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
             );
         }
-        $query->join('pagu_target as c', 'a.slug', '=', 'c.periode_id')
+        $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id')
             ->groupBy('year');
 
 

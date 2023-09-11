@@ -20,6 +20,7 @@ class Periode extends Model
         'startdate',
         'enddate',
         'status',
+        'description',
         'created_by'
        
     ];

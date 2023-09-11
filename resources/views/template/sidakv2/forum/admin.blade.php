@@ -31,12 +31,7 @@
 
 			</div>
 
-			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
-					 Refresh
-				</button>
-			</div>
-
+			
 			<div class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
 				 Tambah Data
@@ -278,6 +273,8 @@
 		           row +=`<td>${item.created_at}</td>`;
 	               row +=`<td>`; 
 	               row +=`<div class="btn-group">`;
+
+	               row +=`<button id="Export"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Export Data" type="button" class="btn btn-primary"><i class="fa fa-file-excel-o" ></i></button>`;	
     
 	                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;	
 
@@ -327,7 +324,7 @@
                 row +=`<div class="modal-content ">`;
 
 				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>`;
 				         row +=`<h4 class="modal-title">Edit Forum</h4>`;
 				       row +=`</div>`;
 
@@ -381,7 +378,7 @@
                             row +=`</div>`;
 
                             row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button id="close2" type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="simpan" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
 						           
@@ -394,6 +391,8 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ item.id).html(row); 
+
+  
                 
 
             $( ".modal-content" ).on( "click", "#simpan", (e) => {
@@ -533,6 +532,8 @@
        
         
     }
+
+   
 
     function getlistforum(data,item){
        
