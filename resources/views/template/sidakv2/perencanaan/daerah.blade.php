@@ -31,12 +31,11 @@
                 </button>
             </div>
 
-          
-                <div class="pull-left padding-9-0">
-                    <a href="{{ url('perencanaan/add') }}" class="btn btn-primary border-radius-10" >
-                        Tambah Data
-                    </a> 
-                </div>		
+            <div class="pull-left padding-9-0">
+                <a href="{{ url('perencanaan/add') }}" class="btn btn-primary border-radius-10" >
+                    Tambah Data
+                </a> 
+            </div>		
           
 		</div> 
 
@@ -121,17 +120,13 @@
                     }
                 });
             }    
-    // Perform other actions based on the selected value
-    });
-
-      
+        });
 
         $.ajax({
             url: BASE_URL +'/api/select-periode?type=GET',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
-                // Populate SelectPicker options using received data
                 $.each(data.result, function(index, option) {
                     $('#periode_id').append($('<option>', {
                       value: option.value,
@@ -139,7 +134,6 @@
                     }));
                 });
 
-                // Refresh the SelectPicker to apply the new options
                 $('#periode_id').selectpicker('refresh');
             },
             error: function(error) {
@@ -190,7 +184,6 @@
             $('#search-input').val('');
         });
 
-
         $('#delete-selected').on('click', function() {
             const selectedIds = [];
             $('.item-checkbox:checked').each(function() {
@@ -204,8 +197,6 @@
             const allChecked = $('.item-checkbox:checked').length === $('.item-checkbox').length;
             $('.select-all').prop('checked', allChecked);
         });
-
-       
 
         function deleteItems(ids) {        
             $.ajax({
@@ -258,19 +249,17 @@
                 row +=`<td class="table-padding-second">${item.created_at}</td>`;
                 row +=`<td>`; 
                     row +=`<div class="btn-group">`;
-                    // row +=`<button id="Approve" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Approve Data"><i class="fa fa-file"></i></button>`;
-                  if(item.action_status == false)
-                  {
-                     row +=`<button id="Detail" data-param_id="${item.id}"  type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                    row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                    row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
+                    if(item.action_status == false)
+                    {
+                        row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+                        row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                        row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
 
-                  }else{
-                    row +=`<button  id="Detail"  type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                    row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                    row +=`<button disabled  type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
-                  }  
-                   
+                    } else {
+                        row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+                        row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                        row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+                    }  
                     row +=`</div>`;
                     row +=`</td>`;
                 row +=`</tr>`; 
@@ -340,19 +329,6 @@
                     }
                 });
             }); 
-        }
-
-        function approveItem(id){
-            $.ajax({
-                url:  BASE_URL +`/api/perencanaan/approve/`+ id,
-                method: 'PUT',
-                success: function(response) {
-                    fetchData(page);
-                },
-                error: function(error) {
-                    console.error('Error approving data:', error);
-                }
-            });
         }
 
         function deleteItem(id){
