@@ -14,11 +14,7 @@
       <div class="modal-body">
          
 
-            <div id="name-alert" class="form-group has-feedback" >
-              <label>Nama</label>
-              <input type="text" class="form-control" name="name" placeholder="Nama" value="">
-              <span id="name-messages"></span>
-            </div>
+            
 
             <div id="semester-alert" class="form-group has-feedback" >
               <label>Semester</label>
@@ -49,6 +45,11 @@
             </div>
 
          
+            <div id="description-alert" class="form-group has-feedback" >
+              <label>Keterangan</label>
+              <textarea class="textarea-fixed-replay" name="description" placeholder="Tambahkan keterangan"> </textarea>
+              <span id="description-messages"></span>
+            </div>
 
             <div  id="status-alert" class="form-group has-feedback" >
                <label>Status  :</label>
@@ -95,12 +96,14 @@
   $("#simpan").click( () => {
 
           var data = $("#FormSubmit").serializeArray();
+          console.log(data)
           var form = {
-              'name':data[0].value,
-              'semester':data[1].value,
-              'year':data[2].value,
-              'startdate':data[3].value,
-              'enddate':data[4].value,
+              
+              'semester':data[0].value,
+              'year':data[1].value,
+              'startdate':data[2].value,
+              'enddate':data[3].value,
+              'description':data[4].value,
               'status':data[5].value,
              
           };

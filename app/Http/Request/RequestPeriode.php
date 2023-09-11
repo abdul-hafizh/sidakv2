@@ -36,7 +36,7 @@ class RequestPeriode
          $temp[$key]['year'] = $val->year;
          $temp[$key]['startdate'] = $val->startdate;
          $temp[$key]['enddate'] = $val->enddate;
-
+         $temp[$key]['description'] = $val->description;
          $temp[$key]['startdate_convert'] = GeneralHelpers::formatDate($val->startdate);
          $temp[$key]['enddate_convert'] = GeneralHelpers::formatDate($val->enddate);
          $temp[$key]['slug'] = $val->slug;
@@ -60,7 +60,7 @@ class RequestPeriode
    public static function GetDataPrint($data)
    {
 
-
+     $temp = array();
 
       $i = 1;
       foreach ($data as $key => $val) {
@@ -75,6 +75,7 @@ class RequestPeriode
          $temp[$key]['name'] = $val->name;
          $temp[$key]['slug'] = $val->slug;
          $temp[$key]['semester'] = $val->semester;
+         $temp[$key]['description'] = $val->description;
          $temp[$key]['year'] = $val->year;
          $temp[$key]['startdate'] = GeneralHelpers::formatExcel($val->startdate);
          $temp[$key]['enddate'] = GeneralHelpers::formatExcel($val->enddate);
@@ -178,23 +179,29 @@ class RequestPeriode
 
    public static function GetDataID($data)
    {
-
-      $__temp_['id'] = $data->id;
-      $__temp_['name'] = $data->name;
-      $__temp_['slug'] = $data->slug;
-      $__temp_['semester'] = $data->semester;
-      $__temp_['year'] = $data->year;
-      $__temp_['status'] = $data->status;
-      return $__temp_;
+      $temp = array();
+      $temp['id'] = $data->id;
+      $temp['name'] = $data->name;
+      $temp['slug'] = $data->slug;
+      $temp['semester'] = $data->semester;
+      $temp['year'] = $data->year;
+      $temp['status'] = $data->status;
+      return $temp;
    }
 
 
 
    public static function fieldsData($request)
    {
+      if($request->semester =='01')
+      {
+         $name = 'Semester 1 Tahun '.$request->year;
+      }else{
+         $name = 'Semester 2 Tahun '.$request->year;
+      }   
 
       $fields = [
-         'name'  =>  $request->name,
+         'name'  =>  $name,
          'slug' =>  $request->year . $request->semester,
          'semester' => $request->semester,
          'year' => $request->year,

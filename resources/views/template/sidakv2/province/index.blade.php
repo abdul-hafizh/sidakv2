@@ -32,15 +32,11 @@
 
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button" id="printButton"  class="btn btn-info border-radius-10">
-					 Print
+					 Export
 				</button>
 			</div>
 
-			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
-					 Refresh
-				</button>
-			</div>
+			
 
 
 			<div class="pull-left padding-9-0">
@@ -358,7 +354,7 @@
                 row +=`<div class="modal-content">`;
 
 				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<button id="close1" data-dismiss="modal" type="button" class="close">&times;</button>`;
 				         row +=`<h4 class="modal-title">Edit Provinsi</h4>`;
 				       row +=`</div>`;
 
@@ -389,7 +385,7 @@
 
 
                             row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button type="button" class="btn btn-default" id="close2" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
@@ -401,7 +397,15 @@
                 row +=`</div>`;
             row +=`</div>`   
 
-            $('#FormEdit-'+ item.id).html(row);    
+            $('#FormEdit-'+ item.id).html(row);  
+
+            $("#close1").click(()=> {  
+              DefaultNull(item.id);
+           });
+
+            $("#close2").click(()=> {  
+              DefaultNull(item.id);
+           });
 
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
@@ -510,6 +514,14 @@
 
        
         
+    }
+
+    function DefaultNull(id)
+    {
+
+       $("input").val(null);    
+       $('#modal-edit-'+ id).modal('toggle');
+
     }
 
      function resultTotal(total){

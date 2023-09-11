@@ -33,13 +33,13 @@ use App\Http\Controllers\API\KendalaApiController;
 use App\Http\Controllers\API\ForumApiController;
 use App\Http\Controllers\API\NotificationApiController;
 use App\Http\Controllers\API\ActionApiController;
-
+use App\Http\Controllers\API\KriteriaApiController;
 
 
 
 Route::middleware(['jwt.auth'])->group(function () {
-
-
+    Route::get('select-kriteria', [KriteriaApiController::class, 'listAll']);
+    Route::get('select-role', [RolesApiController::class, 'listAll']);
     Route::get('select-daerah', [DaerahApiController::class, 'listAllDaerah']);
     Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
     Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
@@ -98,7 +98,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('dashboard', [DashboardApiController::class, 'index']);
 
 
-    Route::get('select-role', [RolesApiController::class, 'listAll']);
+   
 
     Route::get('role', [RolesApiController::class, 'index']);
     Route::get('role/edit/{id}', [RolesApiController::class, 'edit']);
@@ -165,7 +165,16 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('menu/role', [MenusApiController::class, 'menuRole']);
     Route::post('menu/role/save', [MenusRoleApiController::class, 'store']);
-     Route::get('menu/action', [ActionApiController::class, 'actionList']);
+    Route::delete('menu/role/{id}', [MenusRoleApiController::class, 'delete']);
+
+
+    Route::get('kriteria', [KriteriaApiController::class, 'index']);
+    Route::get('kriteria/edit/{id}', [KriteriaApiController::class, 'edit']);
+    Route::post('kriteria', [KriteriaApiController::class, 'store']);
+    Route::post('kriteria/search', [KriteriaApiController::class, 'search']);
+    Route::put('kriteria/{id}', [KriteriaApiController::class, 'update']);
+    Route::delete('kriteria/{id}', [KriteriaApiController::class, 'delete']);
+    Route::post('kriteria/selected', [KriteriaApiController::class, 'deleteSelected']);
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);

@@ -24,6 +24,13 @@
             </div>
 
 
+             <div id="permasalahan-alert" class="form-group has-feedback" >
+              <label>Kriteria Kendala</label>
+              <select id="kriteria_id" class="form-control" name="kriteria_id" title="Kriteria Kendala" data-live-search="true"></select>
+              <span id="permasalahan-messages"></span>
+            </div>
+
+
              <div id="messages-alert" class="form-group has-feedback" >
               <label>Pesan</label>
               <textarea class="form-control textarea-fixed" placeholder="Pesan Kendala" name="messages"></textarea>
@@ -53,13 +60,34 @@
 <script type="text/javascript">
  $(function(){
 
-   
+    $.ajax({
+          url: BASE_URL +'/api/select-kriteria',
+          method: 'GET',
+          dataType: 'json',
+          success: function(data) {
+              // Populate SelectPicker options using received data
+              var select =  $('#kriteria_id')
+              $.each(data, function(index, option) {
+                  select.append($('<option>', {
+                    value: option.value,
+                    text: option.text
+                  }));
+              });
+
+             // Refresh the SelectPicker to apply the new options
+             select.selectpicker('refresh');
+          },
+          error: function(error) {
+          console.error(error);
+          }
+      });
      
   $("#simpan").click( () => {
           var data = $("#FormSubmit").serializeArray();
           var form = {
               'permasalahan':data[0].value,
-              'messages':data[1].value,
+              'kriteria_id':data[1].value,
+              'messages':data[2].value,
               'status':'draft',
           };
         SendData(form);
@@ -69,7 +97,8 @@
           var data = $("#FormSubmit").serializeArray();
           var form = {
               'permasalahan':data[0].value,
-              'messages':data[1].value,
+              'kriteria_id':data[1].value,
+              'messages':data[2].value,
               'status':'sent',
           };
           SendData(form);

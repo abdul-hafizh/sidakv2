@@ -19,7 +19,7 @@ class ValidationProvinces
         $validator =  Validator::make(
             $request->all(),
             [
-                'id'  => 'required|unique:provinces,id',
+                'id'  => 'required|unique:provinces,id|max:2',
                 'name'  => 'required'
                 
             ]
@@ -57,8 +57,11 @@ class ValidationProvinces
             [
                 'id' => [
                 'required',
+                'max:2',
                     Rule::unique('provinces')->ignore($id),
+                  
                 ],
+
                 'name'  => 'required'
                 
             ]

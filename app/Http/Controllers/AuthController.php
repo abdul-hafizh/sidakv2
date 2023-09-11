@@ -35,7 +35,13 @@ class AuthController extends Controller
     if (Auth::check()) {
         // User is authenticated
         $log = SystemLog::where('created_by',Auth::user()->username)->first();
-        return redirect($log->url);
+        if($log)
+        {
+          return redirect($log->url);  
+      }else{
+          return redirect('dashboard');  
+      }
+        
 
     }else{
         

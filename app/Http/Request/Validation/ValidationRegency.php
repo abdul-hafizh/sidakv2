@@ -20,7 +20,7 @@ class ValidationRegency
         $validator =  Validator::make(
             $request->all(),
             [
-                'id'  => 'required|unique:regencies,id',
+                'id'  => 'required|unique:regencies,id|max:4',
                 'name'  => 'required',
                 'province_id'  => 'required'
                 
@@ -65,6 +65,7 @@ class ValidationRegency
             [
                 'id' => [
                 'required',
+                'max:4',
                     Rule::unique('regencies')->ignore($id),
                 ],
                 'name'  => 'required',

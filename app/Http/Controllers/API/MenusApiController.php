@@ -13,6 +13,8 @@ use App\Models\User;
 use App\Models\Roles;
 use App\Models\MenuPosition;
 use DB;
+use File;
+use Auth;
 
 class MenusApiController extends Controller
 {
@@ -24,15 +26,11 @@ class MenusApiController extends Controller
         $this->UploadFolder = GeneralPaginate::uploadPhotoFolder();
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $_res = array();
         $menu = Menus::orderBy('id', 'ASC')->get();
-        //$role = Roles::where('status','Y')->orderBy('id', 'ASC')->get();
-        $description = '';
-        $resultMenu = RequestMenus::GetDataAll($menu,$description);
-       // $resultRole = RequestMenus::RoleMenu($role);
-
+        $resultMenu = RequestMenus::GetDataAll($menu,$request->role);
         return response()->json($resultMenu );
 
     }
@@ -100,14 +98,33 @@ class MenusApiController extends Controller
     public function store(Request $request){
           
      
-        $validation = ValidationMenus::validation($request);
+        $validation = ValidationMenus::validationInsert($request);
         if($validation)
         {
           return response()->json($validation,400);  
         }else{
             
-           $fields = RequestMenus::fieldsData($request);  
-           $saveAccount = Menus::create($fields);
+           $insert = RequestMenus::fieldsData($request);  
+
+           if($request->icon)
+            {   
+                $slug =  Auth::User()->username;
+                $source = explode(";base64,", $request->icon);
+                $extFile = explode("image/", $source[0]);
+                $extentions = $extFile[1];
+                $fileDir = '/images/menu/';
+                $image = base64_decode($source[1]);
+                $filePath = public_path() .$fileDir;
+                $photo = time() . '-' . $slug.'.'.$extentions;
+                $success = file_put_contents($filePath.$photo, $image);
+             
+                $user_photo = ["icon"=>$photo];
+                $merge = array_merge($insert,$user_photo);
+            }else{
+                $merge = $insert;
+            }
+
+           $saveAccount = Menus::create($merge);
            return response()->json(['status'=>true,'id'=>$saveAccount,'message'=>'Insert data sucessfully']);    
             
         }    
@@ -116,18 +133,40 @@ class MenusApiController extends Controller
 
     public function update($id,Request $request)
     {
-        $type = "update";
-        $validation = ValidationMenus::validation($request);
+        
+        $validation = ValidationMenus::validationUpdate($request,$id);
         if($validation !=null || $validation !="")
         {
             return response()->json($validation,400);  
         }else{
 
-            $CheckIcon = RequestMenus::CheckIcon($id);//delete file icon
-            $update = RequestMenus::fieldsData($request);
-            //update account
-            $UpdateAccount = Menus::where('id',$id)->update($update);
-          
+             $update = RequestMenus::fieldsData($request);
+             if($request->icon)
+             {   
+                $slug = Auth::User()->username;
+                $source = explode(";base64,", $request->icon);
+                $extFile = explode("image/", $source[0]);
+                $extentions = $extFile[1];
+                $fileDir = '/images/menu/';
+                $image = base64_decode($source[1]);
+                $filePath = public_path() .$fileDir;
+                $photo = time() . '-' . $slug.'.'.$extentions;
+                $success = file_put_contents($filePath.$photo, $image);
+                
+                $check = Menus::find($id);
+                if($check)
+                { 
+                   File::delete(public_path() .$fileDir.$check->icon);
+                } 
+                $user_photo = ['icon'=> $photo];
+                $merge = array_merge($update,$user_photo);
+                
+            }else{
+                $merge = $update;
+
+            }
+
+            $UpdateAccount = Menus::where('id',$id)->update($merge);
             return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
         
           
@@ -143,9 +182,14 @@ class MenusApiController extends Controller
           
         if(empty($_res)){
             return response()->json(['messages' => false]);
+        }else{
+             $fileDir = '/images/menu/';
+            if(file_exists(public_path() .$fileDir.$_res->icon)) {
+               File::delete(public_path() .$fileDir.$_res->icon);
+            } 
         }
 
-        $CheckIcon = RequestMenus::CheckIcon($id);
+        
 
         $results = $_res->delete();
         if($results){

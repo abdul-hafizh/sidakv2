@@ -7,22 +7,20 @@ use App\Traits\Uuids;
 
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Kendala extends Model
+class Kriteria extends Model
 {
      // use SoftDeletes;
     use Uuids;
-    public $table = 'kendala';
+    public $table = 'kriteria';
     
 
    // protected $dates = ['deleted_at'];
 
 
     public $fillable = [
-        'kriteria_id',
-        'permasalahan',
-        'from',
-        'sender',
-        'messages',
+     
+        'name',
+        'slug',
         'status',
         'created_by'
        

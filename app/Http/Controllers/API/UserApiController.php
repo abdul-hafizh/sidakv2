@@ -316,9 +316,9 @@ class UserApiController extends Controller
             return response()->json(['messages' => false]);
         }else{
 
-
-            if(file_exists($this->UploadFolder.$_res['photo'])) {
-                File::delete($this->UploadFolder.$_res['photo']);
+            $fileDir = '/images/profile/';
+            if(file_exists(public_path() .$fileDir.$_res->photo)) {
+                File::delete(public_path() .$fileDir.$_res->photo);
             } 
         }
         $roleuser = RoleUser::where('user_id',$id)->delete();

@@ -8,13 +8,14 @@ use App\Models\User;
 use App\Helpers\GeneralPaginate;
 use App\Models\Menus;
 use App\Models\RoleMenu;
+use App\Models\Action;
 use App\Http\Request\RequestMenuRoles;
 class RequestMenus
 {
 
   
    
-   public static function GetDataAll($data,$description)
+   public static function GetDataAll($data,$role_id)
    {
 
         $temp = array();
@@ -28,24 +29,18 @@ class RequestMenus
                 $icon = url('/images/menu/'.$val->icon);
             }  
 
-            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "Non Aktif"; }
-          
             $temp[$key]['id'] = $val->id;
             $temp[$key]['name'] = $val->name;
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['path_web'] = $val->path_web;
-            // $__temp_[$key]['path_vue'] = $val->path_vue;
-            // $__temp_[$key]['path_api'] = $val->path_api;
-            // $__temp_[$key]['foldername'] = $val->foldername;
-            // $__temp_[$key]['filename'] = $val->filename;
-            // $__temp_[$key]['type'] = $val->type;
-            // $__temp_[$key]['type_icon'] = $val->type_icon;
+            $temp[$key]['option'] = RequestMenus::ActionList();
             $temp[$key]['icon'] = $icon;
             $temp[$key]['edit'] = false;
             $temp[$key]['tasks'] = [];
-            $temp[$key]['status'] = $status;
-            $temp[$key]['status_ori'] = $val->status;
-           // $__temp_[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+            $temp[$key]['move'] = RequestMenus::MoveCheck($role_id,$val->slug);
+            $temp[$key]['status'] = $val->status;
+
+           
         }
 
         $results['result'] = $temp;
@@ -74,6 +69,47 @@ class RequestMenus
 
           return  $rolr;  
 
+
+   }
+
+   public static function MoveCheck($role_id,$slug){
+      $temp = array();
+      $result = true;
+      $query = RoleMenu::where('role_id',$role_id)->first();
+      if($query)
+      {
+          $data = json_decode($query->menu_json);
+          foreach($data as $key =>$val)
+          {
+            if($slug == $val->slug)
+            {
+               $temp[$key] = $val->slug;
+            }      
+          }
+
+          if (in_array($slug, $temp)) {
+            $result = false;
+          } else {
+            $result = true;
+          } 
+
+      }  
+
+
+      return $result;
+   }
+
+   public static function ActionList(){
+      $temp = array();
+      $query = Action::Select('id','name','slug')->orderBy('created_at', 'DESC')->get();
+      foreach($query as $key =>$val)
+      {
+         $temp[$key]['action'] = $val->slug;
+         $temp[$key]['name'] = $val->name; 
+         $temp[$key]['checked'] = false; 
+      }
+
+      return $temp;
 
    }
 
@@ -108,17 +144,7 @@ class RequestMenus
         // $filename = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '', $request->filename)));
         // $foldername = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '', $request->foldername)));
       
-            
-                $source = explode(";base64,", $request->icon);
-                $extFile = explode("image/", $source[0]);
-                $extentions = $extFile[1];
-                $fileDir = '/images/menu/';
-                $image = base64_decode($source[1]);
-                $filePath = public_path() .$fileDir;
-                $fileIcon = time() . '-' . $slug.'.'.$extentions;
-                $success = file_put_contents($filePath.$fileIcon, $image);
-                
-
+          
                 
     
         
@@ -132,7 +158,7 @@ class RequestMenus
                 // 'type_icon'  => $request->type_icon,
                 // 'foldername'  =>$foldername,
                 // 'filename'  => $filename,
-                'icon'  => $fileIcon,
+                
                 'status'  => 'unlock',
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),

@@ -78,6 +78,14 @@
     cursor: pointer;
  }
 
+.margin-top-bottom-50{
+    margin: 50px 0px;
+   
+}
+
+.font-16{
+     font-size: 16px;
+}
 
 .pd-top-bottom-6{
  padding: 6px 0px;

@@ -38,10 +38,10 @@
         }
 
         if (!sortable) {
-            throw new Error('SortableJS is required for jquery-sortablejs (https://github.com/SortableJS/Sortable)');
+            throw new Error('');
         }
     }
-    checkErrors();
+    // checkErrors();
     factory(sortable, jq);
 })(function (Sortable, $) {
     "use strict";

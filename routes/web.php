@@ -17,6 +17,8 @@ use App\Http\Controllers\ForumController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\ActionController;
+use App\Http\Controllers\KriteriaController;
+
    
     Route::get('/', function () {
         return redirect('login');
@@ -43,7 +45,7 @@ use App\Http\Controllers\ActionController;
         Route::get('/user',  [UserController::class,'index']); 
         Route::get('/role', [RoleController::class,'index']);      
         Route::get('/apps', [SettingWebController::class,'index']);
-         
+        Route::get('/kriteria-kendala', [KriteriaController::class,'index']); 
         Route::get('/provinsi', [ProvinceController::class,'index']); 
         Route::get('/kabupaten', [RegencyController::class,'index']);
         Route::get('/periode', [PeriodeController::class,'index']);
