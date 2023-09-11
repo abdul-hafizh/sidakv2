@@ -81,6 +81,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('pagutarget', [PaguTargetApiController::class, 'store']);
     Route::post('pagutarget/import_excel', [PaguTargetApiController::class, 'import_excel']);
     Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
+    Route::get('pagutarget/edit/{id}', [PaguTargetApiController::class, 'edit']);
 
 
     Route::get('province', [ProvinceApiController::class, 'index']);
@@ -151,12 +152,12 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('menu', [MenusApiController::class, 'index']);
     Route::post('menu', [MenusApiController::class, 'store']);
-     Route::post('menu/search', [MenusApiController::class, 'search']);
+    Route::post('menu/search', [MenusApiController::class, 'search']);
     Route::put('menu/{id}', [MenusApiController::class, 'update']);
-    Route::delete('menu/{id}', [MenusApiController::class, 'delete']); 
+    Route::delete('menu/{id}', [MenusApiController::class, 'delete']);
 
 
-     Route::get('action', [ActionApiController::class, 'index']);
+    Route::get('action', [ActionApiController::class, 'index']);
     Route::get('action/edit/{id}', [ActionApiController::class, 'edit']);
     Route::post('action', [ActionApiController::class, 'store']);
     Route::post('action/search', [ActionApiController::class, 'search']);
@@ -166,7 +167,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('menu/role', [MenusApiController::class, 'menuRole']);
     Route::post('menu/role/save', [MenusRoleApiController::class, 'store']);
-     Route::get('menu/action', [ActionApiController::class, 'actionList']);
+    Route::get('menu/action', [ActionApiController::class, 'actionList']);
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);
