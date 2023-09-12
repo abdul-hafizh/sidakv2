@@ -102,4 +102,10 @@ class PaguTargetApiController extends Controller
 
         return response()->download($myFile);
     }
+
+    public function edit($id)
+    {
+        $result = PaguTarget::where(['id' => $id])->first();
+        return response()->json($result);
+    }
 }

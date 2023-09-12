@@ -57,6 +57,21 @@ class RequestPaguTarget
         if ($request->length > 0)
             $data->offset($request->start)->limit($request->length);
 
+        $searchColumn = $request->columns;
+        if (!empty($searchColumn[0]['search']['value'])) {
+            $value = $searchColumn[0]['search']['value'];
+            $filterjs = json_decode($value);
+
+            if ($filterjs[0]->type_daerah) {
+                $data->where('type_daerah', $filterjs[0]->type_daerah);
+            }
+            if ($filterjs[0]->daerah_id) {
+                $data->where('daerah_id', $filterjs[0]->daerah_id);
+            }
+            if ($filterjs[0]->periode_id) {
+                $data->where('periode_id', $filterjs[0]->periode_id);
+            }
+        }
 
         $i = 0;
         $search = $request->search['value'];
@@ -108,7 +123,7 @@ class RequestPaguTarget
             $temp[] = $row;
         }
         $temp2['data'] = $temp;
-        $temp2['total'] = DB::table('pagu_target')->count();
+        $temp2['total'] = $data->count();
         return json_decode(json_encode($temp2), FALSE);
     }
 
@@ -122,6 +137,21 @@ class RequestPaguTarget
         $order = array('nama_daerah' => 'ASC');
 
         $data = DB::table('pagu_target');
+        $searchColumn = $request->columns;
+        if (!empty($searchColumn[0]['search']['value'])) {
+            $value = $searchColumn[0]['search']['value'];
+            $filterjs = json_decode($value);
+
+            if ($filterjs[0]->type_daerah) {
+                $data->where('type_daerah', $filterjs[0]->type_daerah);
+            }
+            if ($filterjs[0]->daerah_id) {
+                $data->where('daerah_id', $filterjs[0]->daerah_id);
+            }
+            if ($filterjs[0]->periode_id) {
+                $data->where('periode_id', $filterjs[0]->periode_id);
+            }
+        }
         $i = 0;
         $search = $request->search['value'];
         if ($request->search['value']) {

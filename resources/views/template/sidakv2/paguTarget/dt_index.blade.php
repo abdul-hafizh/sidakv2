@@ -85,28 +85,72 @@
 </div>
 
 <section class="content-header pd-left-right-15">
-	<div class="width-50 pull-left">
-		<div class="box box-solid box-primary">
-			<div class="box-body">
-				<div class="card-body table-responsive p-0">
-					<table id="table_sum" class="table-hover text-nowrap ">
-						<thead>
-							<tr>
-								<th class="dt-head-second"><span class="border-left-table">Pagu APBN </span> </th>
-								<th class="dt-head-second"><span class="border-left-table">Pagu Promosi </span> </th>
-								<th class="dt-head-second"><span class="border-left-table">Pagu Total </span> </th>
-							</tr>
-						</thead>
-						<tbody id="hasil_sum">
-
-						</tbody>
-					</table>
+	<div class="row">
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary ">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Pagu APBN</span>
+								<h3 class="card-text" id="pagu_apbn"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Pagu Promosi</span>
+								<h3 class="card-text" id="pagu_promosi"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Pagu Total</span>
+								<h3 class="card-text" id="pagu_total"></h3>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="pull-right width-25">
-		<div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+	<div class="form-group row">
+		<div class="col-sm-3">
+			<label>Tipe</label>
+			<select class="form-control" name="type_daerah" id="type_daerah">
+				<option value="">-Pilih Tipe-</option>
+				<option value="Provinsi">Provinsi</option>
+				<option value="Kabupaten">Kabupaten</option>
+			</select>
+		</div>
+		<div class="col-sm-3">
+			<label>Daerah </label>
+			<select id="daerah_id" class="select-daerah form-control" name="daerah_id" disabled>
+				<option value="">Pilih</option>
+			</select>
+		</div>
+		<div class="col-sm-3">
+			<label>Periode </label>
+			<select id="periode_id" class="select-periode form-control" name="periode_id"></select>
+			<span id="periode_id-messages"></span>
+		</div>
+		<div class="col-sm-3">
+			<label>Search</label>
 			<div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
@@ -205,9 +249,9 @@
 			},
 			dataType: 'json',
 			success: function(result) {
-				var data = '';
-				data += '<tr><td class="dt-body-second" align="right">' + result.total_apbn + ' </td><td class="dt-body-second" align="right">' + result.total_promosi + '</td><td class="dt-body-second" align="right">' + result.total_all + ' </td></tr>'
-				$('#hasil_sum').html(data);
+				$('#pagu_apbn').html(result.total_apbn);
+				$('#pagu_promosi').html(result.total_promosi);
+				$('#pagu_total').html(result.total_all);
 			},
 			error: function(error) {
 				console.error(error);
@@ -314,6 +358,20 @@
 			table.search(this.value).draw();
 			hasil_sum(this.value);
 		}, 1000));
+
+		$("#Search").on("click", function() {
+			var filter = [{
+				search_input: $("#search-input").val(),
+				type_daerah: $("#type_daerah").val(),
+				daerah_id: $("#daerah_id").val(),
+				periode_id: $("#periode_id").val()
+			}, ];
+
+			//var email = $("#email").val();
+			//filter = filter[0];
+			table.column(0).search(JSON.stringify(filter), true, true);
+			table.draw();
+		});
 
 		$('#row_page').on('change', function() {
 			table.page.len(this.value).draw();

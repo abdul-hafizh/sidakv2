@@ -61,7 +61,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('perencanaan/upload_laporan', [PerencanaanApiController::class, 'upload_laporan']);
     Route::get('perencanaan/download_file', [PerencanaanApiController::class, 'download_file']);
     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
-    
+
     Route::get('user', [UserApiController::class, 'index']);
     Route::post('user', [UserApiController::class, 'store']);
     Route::put('user/{id}', [UserApiController::class, 'update']);
@@ -70,7 +70,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::delete('user/{id}', [UserApiController::class, 'delete']);
     Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     Route::post('user/update', [UserApiController::class, 'updateProfile']);
- 
+
     Route::post('pagu/check', [PaguTargetApiController::class, 'check']);
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
     Route::post('pagutarget/total_pagu', [PaguTargetApiController::class, 'total_pagu']);
@@ -78,6 +78,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('pagutarget', [PaguTargetApiController::class, 'store']);
     Route::post('pagutarget/import_excel', [PaguTargetApiController::class, 'import_excel']);
     Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
+    Route::get('pagutarget/edit/{id}', [PaguTargetApiController::class, 'edit']);
 
     Route::get('province', [ProvinceApiController::class, 'index']);
     Route::post('province', [ProvinceApiController::class, 'store']);
@@ -145,7 +146,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('menu', [MenusApiController::class, 'store']);
     Route::post('menu/search', [MenusApiController::class, 'search']);
     Route::put('menu/{id}', [MenusApiController::class, 'update']);
-    Route::delete('menu/{id}', [MenusApiController::class, 'delete']); 
+    Route::delete('menu/{id}', [MenusApiController::class, 'delete']);
+
 
     Route::get('action', [ActionApiController::class, 'index']);
     Route::get('action/edit/{id}', [ActionApiController::class, 'edit']);
@@ -157,6 +159,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('menu/role', [MenusApiController::class, 'menuRole']);
     Route::post('menu/role/save', [MenusRoleApiController::class, 'store']);
+    Route::get('menu/action', [ActionApiController::class, 'actionList']);
     Route::delete('menu/role/{id}', [MenusRoleApiController::class, 'delete']);
 
     Route::get('kriteria', [KriteriaApiController::class, 'index']);
