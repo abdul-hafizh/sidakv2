@@ -221,7 +221,6 @@ class RequestPerencanaan
                 'request_edit' =>'false',
                 'status' => 13,                
                 'created_by' => Auth::User()->username,
-                'daerah_id' => Auth::User()->daerah_id,
                 'created_at' => date('Y-m-d H:i:s'),
         ];
   
