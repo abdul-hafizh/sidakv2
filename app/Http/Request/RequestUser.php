@@ -11,6 +11,9 @@ use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestRoles;
 use App\Http\Request\RequestDaerah;
 use App\Models\Perencanaan;
+use App\Models\RoleMenu;
+use App\Http\Request\RequestMenuRoles;
+
 class RequestUser 
 {
    
@@ -44,14 +47,16 @@ class RequestUser
          
 
             $temp[$key]['number'] = $numberNext++;
-          
+            
             $temp[$key]['id'] = $val->id;
             $temp[$key]['name'] = $val->name;
             $temp[$key]['daerah_id'] = $val->daerah_id;
             $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $temp[$key]['role_id'] = RequestRoles::GetRoleWhere($val->id,'name');
             $temp[$key]['deleted'] = RequestUser::checkValidate($val->username);
+            
             $temp[$key]['username'] = $val->username;
+
             $temp[$key]['email'] = $val->email;
             $temp[$key]['phone'] = $val->phone;
             $temp[$key]['nip'] = $val->nip;
@@ -63,6 +68,7 @@ class RequestUser
         }
 
        $result['data'] = $temp;
+       $result['options'] = RequestMenuRoles::ActionPage('user');
        if($perPage !='all')
        {
            $result['current_page'] = $data->currentPage();
@@ -71,12 +77,15 @@ class RequestUser
        }else{
            $result['current_page'] = 1;
            $result['last_page'] = 1;
-           $result['total'] = $data->count(); 
+           $result['total'] = $data->count();
+           
        }
         return $result;
        
 
    }
+
+  
 
    public static function GetDataPrint($data){
 

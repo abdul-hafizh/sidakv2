@@ -73,6 +73,7 @@
      //menu
     $( "#ContentMenu" ).on( "click", "#Move-Menu", (e) => {
    		 let id = e.currentTarget.dataset.param_id;
+   		 console.log(id)
    	     const item = menu_list.find(o => o.id === id);
          MoveAction(item)
    	});
@@ -1133,18 +1134,13 @@
 	            	if(roleid_old != roleid_new)
 	                {
 	                   console.log(role_menu)
-	                   if(role_menu)
-	                   {
-	                   	 console.log('temp + real')
-	                   	 var send = [...role_menu,...merge];	
-	                   }else{
-	                   	  console.log('temp')
-	                   	  var send = merge;
-	                   }	
+	                   console.log('temp')
+	                   var send = merge;
+	                   	
 	                   roleid_old = roleid_new;	
                        
 	                }else{
-	                   console.log('temp + real')
+	                    console.log('temp + reales')
 	                    console.log(role_menu)	
 	                   var send = [...role_menu,...merge];	
 	                }		
