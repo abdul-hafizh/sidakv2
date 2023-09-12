@@ -3,6 +3,7 @@
 namespace App\Http\Request\Validation;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ValidationPaguTarget
 {
@@ -19,13 +20,15 @@ class ValidationPaguTarget
             'target_pengawasan' => 'Target Pengawasan',
             'target_penyelesaian_permasalahan'  => 'Target Penyelesaian Permasalahan',
             'target_bimbingan_teknis'  => 'Target Bimbingan Teknis',
-            'target_video_promosi'  => 'Target Video Promosi',
         ];
 
         $validator =  Validator::make(
             $request->all(),
             [
-                'periode_id'  => 'required',
+                'periode_id'  => [
+                    'required',
+                    Rule::unique('pagu_target', 'periode_id')->where('daerah_id', $request->daerah_id),
+                ],
                 'daerah_id'  => 'required',
                 'pagu_apbn'  => 'required',
                 'pagu_promosi'  => 'required',
@@ -33,7 +36,6 @@ class ValidationPaguTarget
                 'target_pengawasan'  => 'required',
                 'target_penyelesaian_permasalahan'  => 'required',
                 'target_bimbingan_teknis'  => 'required',
-                'target_video_promosi'  => 'required',
             ]
         );
 

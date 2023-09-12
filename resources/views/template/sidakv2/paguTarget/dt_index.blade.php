@@ -50,39 +50,7 @@
 	}
 </style>
 </script>
-<!-- Import Excel -->
-<div class="modal fade" id="importExcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<form method="post" action="/api/pagutarget/import_excel" id="file-upload" enctype="multipart/form-data">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
-				</div>
-				<div class="modal-body">
 
-					{{ csrf_field() }}
-
-					<label>Pilih file excel</label>
-					<div class="form-group">
-						<input type="file" name="file" required="required">
-						<span class="text-danger" id="file-input-error"></span>
-					</div>
-					<a class="btn btn-warning" href="/api/pagutarget/download_file">Template data</a>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Import</button>
-				</div>
-				<div class="form-group">
-					<div class="progress">
-						<div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
 
 <section class="content-header pd-left-right-15">
 	<div class="row">
@@ -132,7 +100,7 @@
 	<div class="form-group row">
 		<div class="col-sm-3">
 			<label>Tipe</label>
-			<select class="form-control" name="type_daerah" id="type_daerah">
+			<select class="form-control" name="type_daerah2" id="type_daerah2">
 				<option value="">-Pilih Tipe-</option>
 				<option value="Provinsi">Provinsi</option>
 				<option value="Kabupaten">Kabupaten</option>
@@ -140,14 +108,13 @@
 		</div>
 		<div class="col-sm-3">
 			<label>Daerah </label>
-			<select id="daerah_id" class="select-daerah form-control" name="daerah_id" disabled>
+			<select id="daerah_id2" class="select-daerah2 form-control" name="daerah_id2" disabled>
 				<option value="">Pilih</option>
 			</select>
 		</div>
 		<div class="col-sm-3">
 			<label>Periode </label>
-			<select id="periode_id" class="select-periode form-control" name="periode_id"></select>
-			<span id="periode_id-messages"></span>
+			<select id="periode_id2" class="select-periode2 form-control" name="periode_id2"></select>
 		</div>
 		<div class="col-sm-3">
 			<label>Search</label>
@@ -184,9 +151,8 @@
 				<button type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#importExcel">
 					IMPORT EXCEL
 				</button>
-			</div>
-			<div class="pull-left padding-9-0">
-				<div id="exportData"></div>
+				<button type="button" class="btn btn-info border-radius-10" id="exportData">
+				</button>
 			</div>
 
 
@@ -232,7 +198,42 @@
 	</div>
 </div>
 @include('template/sidakv2/paguTarget.add')
+<!-- Import Excel -->
+<div id="importExcel" class="modal fade" role="dialog">
 
+	<div class="modal-dialog" role="document">
+		<form method="post" action="/api/pagutarget/import_excel" id="file-upload" enctype="multipart/form-data">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+				</div>
+				<div class="modal-body">
+
+					{{ csrf_field() }}
+
+					<label>Pilih file excel</label>
+					<div class="form-group">
+						<input type="file" name="file" required="required">
+						<span class="text-danger" id="file-input-error"></span>
+					</div>
+					<a class="btn btn-warning" href="/api/pagutarget/download_file">Template data</a>
+					<a class="btn btn-info" href="/api/pagutarget/download_daerah">data wilayah</a>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Import</button>
+				</div>
+				<div class="form-group">
+					<div class="progress">
+						<div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
 @stop
 
 @push('scripts')
@@ -241,11 +242,13 @@
 	hasil_sum(search);
 
 	function hasil_sum(search) {
+		if (search !== "")
+			var filter = JSON.stringify(search);
 		$.ajax({
 			url: BASE_URL + '/api/pagutarget/total_pagu',
 			method: 'POST',
 			data: {
-				data: search
+				data: filter
 			},
 			dataType: 'json',
 			success: function(result) {
@@ -291,6 +294,7 @@
 	});
 
 	$(function() {
+
 		var table = $('#datatable').DataTable({
 			processing: true,
 			serverSide: true,
@@ -308,7 +312,13 @@
 			buttons: [{
 				extend: 'excel',
 				text: 'Export excel',
-				className: 'btn btn-info border-radius-10'
+				exportOptions: {
+					format: {
+						body: function(data, row, column, node) {
+							return reformatNumber(data, row, column, node);
+						}
+					}
+				}
 			}],
 			dom: 'Bprti',
 			scrollCollapse: true,
@@ -340,6 +350,16 @@
 			}
 		});
 
+		function reformatNumber(data, row, column, node) {
+			// replace spaces with nothing; replace commas with points.
+			if (column == 4 || column == 5 || column == 6) {
+				var newData = data.replace('Rp ', '').replaceAll('.', '');
+				return newData;
+			} else if (column != 0 && column != 11) {
+				return data;
+			}
+		}
+
 		table.buttons(0, null).containers().appendTo('#exportData');
 
 		function delay(callback, ms) {
@@ -354,6 +374,44 @@
 			};
 		}
 
+		$('#type_daerah2').on('change', function() {
+			let type_daerah = $('#type_daerah2').val();
+			if (type_daerah == 'Provinsi') {
+				url = "select-province";
+			} else {
+				url = "select-kabupaten";
+			}
+			$.ajax({
+				url: BASE_URL + '/api/' + url,
+				method: 'get',
+				dataType: 'json',
+				success: function(data) {
+					jenis = '<option value="">- Pilih -</option>';
+					$.each(data, function(key, val) {
+						jenis += '<option value="' + val.value + '">' + val.text + '</option>';
+					});
+					$('#daerah_id2').html(jenis).removeAttr('disabled');
+				}
+			})
+			$('.select-daerah2').select2();
+		})
+
+		$('.select-periode2').select2(
+			$.ajax({
+				url: BASE_URL + '/api/select-periode2',
+				method: 'get',
+				dataType: 'json',
+				success: function(data) {
+					periode = '<option value="">- Pilih -</option>';
+					$.each(data, function(key, val) {
+						periode += '<option value="' + val.value + '" >' + val.text + '</option>';
+
+					});
+					$('#periode_id2').html(periode);
+				}
+			})
+		);
+
 		$('#search-input').keyup(delay(function(e) {
 			table.search(this.value).draw();
 			hasil_sum(this.value);
@@ -362,13 +420,14 @@
 		$("#Search").on("click", function() {
 			var filter = [{
 				search_input: $("#search-input").val(),
-				type_daerah: $("#type_daerah").val(),
-				daerah_id: $("#daerah_id").val(),
-				periode_id: $("#periode_id").val()
+				type_daerah: $("#type_daerah2").val(),
+				daerah_id: $("#daerah_id2").val(),
+				periode_id: $("#periode_id2").val()
 			}, ];
 
 			//var email = $("#email").val();
 			//filter = filter[0];
+			hasil_sum(filter);
 			table.column(0).search(JSON.stringify(filter), true, true);
 			table.draw();
 		});
