@@ -3,7 +3,7 @@
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
        
-        <div class="pull-right width-50">
+        <div class="pull-right width-50" id="ShowSearch" style="display:none;">
              <div class="pull-left width-50 padding-0-8">
                         <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi / Kabupaten"></select>
             </div>
@@ -33,13 +33,13 @@
                 </select>
             </div>  
 
-            <div class="pull-left padding-9-0 margin-left-button">
+            <div id="ShowChecklist" style="display:none;" class="pull-left padding-9-0 margin-left-button">
                 <button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
                      Hapus
                 </button>
             </div>
 
-            <div class="pull-left padding-9-0 margin-left-button">
+            <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
                 <button type="button" id="printButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -50,14 +50,14 @@
 
                 
 
-            <div class="pull-left padding-9-0">
+            <div id="ShowAdd" style="display:none;" class="pull-left padding-9-0" >
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
                  Tambah Data
                 </button> 
             </div>      
         </div> 
 
-        <div class="pull-right width-50">
+        <div id="ShowPagination" class="pull-right width-50" style="display:none;">
             <ul id="pagination" class="pagination-table pagination"></ul>
         </div>
     </div>
@@ -75,15 +75,15 @@
                 <table class="table table-hover text-nowrap">
                     <thead>
                         <tr>
-                            <th><input id="select-all" class="span-title" type="checkbox"></th>
-                            <th><div class="split-table"></div><span class="span-title">No</span>  </th>
+                            <th id="ShowChecklistAll" style="display:none;"  ><input id="select-all" class="span-title" type="checkbox"></th>
+                            <th><div  id="ShowChecklistAll" style="display:none;"   class="split-table"></div><span class="span-title">No</span>  </th>
                             
                             <th><div class="split-table"></div><span class="span-title"> Username </span></th>
                             <th><div class="split-table"></div><span class="span-title"> Nama </span></th>
                             <th><div class="split-table"></div><span class="span-title"> Email </span></th>
                             <th><div class="split-table"></div><span class="span-title"> Phone </span></th>
                             <th><div class="split-table"></div><span class="span-title"> Status </span></th> 
-                            <th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+                            <th id="ShowAction" style="display:none;"><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
                         </tr>
                     </thead>
 
@@ -240,7 +240,6 @@
 
      // Refresh selected button
     $('#refresh').on('click', function() {
-        
         fetchData(page);
         $('#search-input').val('');
     });
@@ -368,8 +367,9 @@
             success: function(response) {
                 list = response.data;
                 resultTotal(response.total);
+                listOptions(response.options);
                 // Update content area with fetched data
-                updateContent(response.data);
+                updateContent(response.data,response.options);
 
                 // Update pagination controls
                 updatePagination(response.current_page, response.last_page);
@@ -381,8 +381,11 @@
     }
 
     // Function to update the content area with data
-    function updateContent(data) {
+    function updateContent(data,options) {
         const content = $('#content');
+        const edited = options.find(o => o.action === 'edit');
+        const deleted = options.find(o => o.action === 'delete');
+        const checklist = options.find(o => o.action === 'checklist');
 
         // Clear previous data
         content.empty();
@@ -395,14 +398,19 @@
 
                if(item.deleted == true)
                {
+                  if(checklist.checked == true)
+                  {
+                     row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                  }
                   
-                  row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
                }else{
+                  if(checklist.checked == true)
+                  {
                   row +=`<td><input disabled  type="checkbox"></td></td>`;  
+                  }
                }    
                
                row +=`<td class="padding-text-table">${item.number}</td>`;
-
                row +=`<td class="padding-text-table">${item.username}</td>`;
                row +=`<td class="padding-text-table">${item.name}</td>`;
                row +=`<td class="padding-text-table">${item.email}</td>`;
@@ -411,20 +419,31 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit"  data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                if(edited.checked == true)
+                {
+                    row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
-                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=`<div id="FormEdit-${item.id}"></div>`;
-                row +=`</div>`;
+                    row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+                    row +=`<div id="FormEdit-${item.id}"></div>`;
+                    row +=`</div>`;
+
+                }
 
                 if(item.deleted == true)
                {
                    
-                  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                 if(deleted.checked == true) 
+                 {
+                    row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+                 } 
+                  
                  
                }else{
+                  if(deleted.checked == true) 
+                  {
+
                     row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-                    
+                  }   
 
                    
                } 
@@ -875,7 +894,8 @@
         }); 
 
 
-
+        
+           
        
         
     }
@@ -1022,6 +1042,84 @@
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       XLSX.writeFile(wb, "Repot-data-user-"+ time +".xlsx");
 
+    }
+
+
+    function listOptions(data){
+        const edited = data.find(o => o.action === 'edit');
+        const deleted = data.find(o => o.action === 'delete');
+        const detail = data.find(o => o.action === 'delete');
+         const checklist = data.find(o => o.action === 'checklist');
+
+         if(checklist.action =='checklist')
+           {
+               if(checklist.checked ==true)
+               {
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
+                   
+                  
+               }else{
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               }    
+           }
+       
+        if(edited.checked == false && deleted.checked == false && detail.checked == false)
+        {
+            $('#ShowAction').hide();
+        }else{
+             $('#ShowAction').show();
+        }    
+       data.forEach(function(item, index) 
+       {
+           if(item.action =='add')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowAdd').show();
+               }else{
+                  $('#ShowAdd').hide();
+               }    
+           }
+
+          
+
+
+
+            if(item.action =='export')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowExport').show();
+               }else{
+                  $('#ShowExport').hide();
+               }    
+           }     
+
+            if(item.action =='search')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowSearch').show();
+               }else{
+                  $('#ShowSearch').hide();
+               }    
+           }   
+
+            if(item.action =='perpage')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowPagination').show();
+               }else{
+                  $('#ShowPagination').hide();
+               }    
+           }     
+
+           
+
+       });
     }
 
  

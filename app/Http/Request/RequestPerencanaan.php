@@ -11,6 +11,7 @@ use App\Models\Roles;
 use App\Models\Periode;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestPeriode;
+use App\Http\Request\RequestMenuRoles;
 
 class RequestPerencanaan 
 {
@@ -41,12 +42,13 @@ class RequestPerencanaan
                 $temp[$key]['id'] = $val->id;
                 $temp[$key]['periode'] =  $periode;
                 $temp[$key]['status'] = $status;
-                $temp[$key]['action_status'] = RequestPerencanaan::CheckStatus($val->status);
+                $temp[$key]['deleted'] = RequestPerencanaan::checkValidate($val->status);
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
             }
         }       
        
        $result['data'] = $temp;
+       $result['options'] = RequestMenuRoles::ActionPage('perencanaan');
        if($perPage !='all')
        {
            $result['current_page'] = $data->currentPage();
@@ -56,12 +58,13 @@ class RequestPerencanaan
            $result['current_page'] = 1;
            $result['last_page'] = 1;
            $result['total'] = $data->count(); 
+
        } 
-   
+       
        return $result;
     }
 
-    public static function CheckStatus($status) {
+    public static function checkValidate($status) {
 
         if($status == '13')
         {
@@ -218,7 +221,6 @@ class RequestPerencanaan
                 'request_edit' =>'false',
                 'status' => 13,                
                 'created_by' => Auth::User()->username,
-                'daerah_id' => Auth::User()->daerah_id,
                 'created_at' => date('Y-m-d H:i:s'),
         ];
   

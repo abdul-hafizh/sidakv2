@@ -88,7 +88,7 @@
      </div> 
 </div>
 
-<!-- <div id="modal-unapprove" class="modal fade" role="dialog">
+<div id="modal-unapprove" class="modal fade" role="dialog">
      <div class="modal-dialog">
           <div class="modal-content">
                <div class="modal-header">
@@ -98,7 +98,7 @@
                <div class="modal-body">
                     <div class="form-group">
                          <label>Alasan Unapprove</label>
-                         <textarea rows="4" cols="50" class="form-control" id="alasan_unapprove_inp" name="alasan_unapprove" placeholder="Alasan Unapprove" required>
+                         <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_unapprove_inp" name="alasan_unapprove" placeholder="Alasan Unapprove"></textarea>
                     </div>
                </div>
                <div class="modal-footer">
@@ -107,12 +107,10 @@
                </div>
           </div>
      </div>
-</div> -->
+</div>
 
 <script type="text/javascript">
-
-     $(document).ready(function() {
-          
+     $(document).ready(function() {          
           var periode =[];
           var pagu_apbn = 0;             
           var url = window.location.href; 
@@ -408,7 +406,7 @@
                 },
                 error: function(error) {
                     console.error('Error approving data:', error);
-                }
+                }                
             });
         }
      });

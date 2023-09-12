@@ -9,8 +9,10 @@ use Illuminate\Support\Str;
 use App\Models\RoleMenu;
 use App\Models\SettingApps;
 use App\Models\Roles;
+use App\Models\Action;
 use App\Models\Pages;
 use App\Http\Request\RequestSettingApps;
+use App\Http\Request\RequestAuth;
 
 class RequestMenuRoles 
 {
@@ -206,6 +208,46 @@ class RequestMenuRoles
         }
         return $result;
 
+   }
+
+   public static function ActionPage($slug)
+   {
+     $access = RequestAuth::AccessID();
+     $res = array();
+     $roleMenu = RoleMenu::where('role_id',$access)->first();
+     if($roleMenu)
+     {
+           $result = json_decode($roleMenu->menu_json);
+           if($result)
+           {
+              foreach($result as $key =>$val)
+              {
+                if($slug == $val->slug)
+                {
+                   $res = $val->option;
+                }    
+
+              }
+           } 
+           
+     }else{
+         $res = RequestMenuRoles::DefaultChacked();
+     }   
+     return $res;
+
+   }
+
+   public static function DefaultChacked(){
+      $result = array();
+      $data = Action::select('name','slug')->get();
+      foreach($data as $key =>$val)
+      {
+        $result[$key]['action'] =  $val->slug;
+        $result[$key]['name'] =  $val->name;
+        $result[$key]['checked'] =  false;
+      } 
+
+      return $result; 
    }
 
    public static function CreatePages($slug)
