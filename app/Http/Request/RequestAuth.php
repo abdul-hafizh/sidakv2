@@ -38,6 +38,14 @@ class RequestAuth
         return $access;
     }
 
+     public static function AccessID()
+    {
+
+        $RoleUser = RoleUser::where('user_id',Auth::User()->id)->first();
+        $access =  $RoleUser->role_id;
+        return $access;
+    }
+
     public static function requestUserSidebar()
     {
        

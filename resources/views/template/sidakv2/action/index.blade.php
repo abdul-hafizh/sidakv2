@@ -2,7 +2,7 @@
 @section('content')
 <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
-        <div class="pull-right width-25">
+        <div id="showSearch" class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
@@ -30,21 +30,17 @@
 				</button>
 			</div>
 
-			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button"  id="refresh" class="btn btn-success border-radius-10">
-					 Refresh
-				</button>
-			</div>
+			
 
 
-			<div class="pull-left padding-9-0">
+			<div id="ShowAdd"  class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
 				 Tambah Data
 				</button> 
 		    </div>		
 		</div> 
 
-		<div class="pull-right width-50">
+		<div id="ShowPagination" class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -66,15 +62,12 @@
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
 							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Status </span></th>
-								<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
-
 					<tbody id="content">
-						
-					
-					 </tbody>
-					</table>
+					</tbody>
+				</table>
 				</div>
 			</div>
 		</div>
@@ -122,6 +115,7 @@
                     data:{'search':search},
                     success: function(response) {
                     	list = response.data;
+                    	listOptions(response.options);
                         resultTotal(response.total);
                         updateContent(response.data);
                         updatePagination(response.current_page, response.last_page);
@@ -279,64 +273,64 @@
 
         // Clear previous data
         content.empty();
-    if(data.length>0)
-    { 
-        // Populate content with new data
-        data.forEach(function(item, index) {
-           	let row = ``;
-             row +=`<tr>`;
-             if(item.deleted ==true)
-             {
-                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;	
-             }else{
-             	row +=`<td><input disabled type="checkbox"></td></td>`;
-             }
-               
-               row +=`<td class="padding-text-table">${item.number}</td>`;
-               row +=`<td class="padding-text-table">${item.name}</td>`;
-               row +=`<td class="padding-text-table">${item.status}</td>`;
-               row +=`<td>`; 
-                row +=`<div class="btn-group">`;
+	    if(data.length>0)
+	    { 
+	        // Populate content with new data
+	        data.forEach(function(item, index) {
+	           	let row = ``;
+	             row +=`<tr>`;
+	             if(item.deleted ==true)
+	             {
+	                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;	
+	             }else{
+	             	row +=`<td><input disabled type="checkbox"></td></td>`;
+	             }
+	               
+	               row +=`<td class="padding-text-table">${item.number}</td>`;
+	               row +=`<td class="padding-text-table">${item.name}</td>`;
+	               row +=`<td class="padding-text-table">${item.status}</td>`;
+	               row +=`<td>`; 
+	                row +=`<div class="btn-group">`;
 
-              if(item.deleted ==true)
-              {  
+	              if(item.deleted ==true)
+	              {  
 
-                  row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
-                }else{
-                   row +=`<button disabled data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-default"><i class="fa fa-pencil" ></i></button>`;
+	                  row +=`<button id="ShowEdit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+	                }else{
+	                   row +=`<button disabled data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-default"><i class="fa fa-pencil" ></i></button>`;
 
-                }
-               
-                row +=`<div id="modal-edit-${item.id}" class="modal fade" action="dialog">`;
-                row +=`<div id="FormEdit-${item.id}"></div>`;
-                row +=`</div>`;
+	                }
+	               
+	                row +=`<div id="modal-edit-${item.id}" class="modal fade" action="dialog">`;
+	                row +=`<div id="FormEdit-${item.id}"></div>`;
+	                row +=`</div>`;
 
 
-                if(item.deleted ==true)
-                {
+	                if(item.deleted ==true)
+	                {
 
-                    row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                    row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
-                 }else{
+	                 }else{
 
-                    row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"   type="button" class="btn btn-default"><i class="fa fa-trash" ></i></button>`; 
+	                    row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"   type="button" class="btn btn-default"><i class="fa fa-trash" ></i></button>`; 
 
-                 } 	
+	                 } 	
 
-                row +=`</div>`;
-                row +=`</td>`;
-              row +=`</tr>`; 
+	                row +=`</div>`;
+	                row +=`</td>`;
+	              row +=`</tr>`; 
 
-            content.append(row);
-        });
+	            content.append(row);
+	        });
 
-    }else{
-         let row = ``;
-         row +=`<tr>`;
-         row +=`<td colspan="5" align="center">Data Kosong</td>`;
-         row +=`</tr>`;
-         content.append(row);
-    }    
+	    }else{
+	         let row = ``;
+	         row +=`<tr>`;
+	         row +=`<td colspan="5" align="center">Data Kosong</td>`;
+	         row +=`</tr>`;
+	         content.append(row);
+	    }    
 
         $('.item-checkbox').on('click', function() {
 	         const checkedCount = $('.item-checkbox:checked').length;
@@ -349,7 +343,7 @@
    		});
 
 
-        $( "#content" ).on( "click", "#Edit", (e) => {
+        $( "#content" ).on( "click", "#ShowEdit", (e) => {
              
             let id = e.currentTarget.dataset.param_id;
             const item = list.find(o => o.id === id); 
@@ -484,10 +478,6 @@
         });
 
 
-
-    
-
-
         $( "#content" ).on( "click", "#Destroy", (e) => {
 	        let id = e.currentTarget.dataset.param_id;
 
@@ -515,11 +505,7 @@
 			    });
 
         }); 
-
-
-
-       
-        
+    
     }
 
 
@@ -537,6 +523,34 @@
 		    }
 		});
 
+    }
+
+
+    function listOptions(data){
+       
+       data.forEach(function(item, index) 
+       {
+           if(item.action =='add')
+           {
+           	   if(item.checked ==true)
+           	   {
+                   $('#ShowAdd').show();
+           	   }else{
+                  $('#ShowAdd').hide();
+           	   }	
+           }
+
+           if(item.action =='edit')
+           {
+           	   if(item.checked ==true)
+           	   {
+                   $('#ShowEdit').show();
+           	   }else{
+                  $('#ShowEdit').hide();
+           	   }	
+           }	
+
+       });
     }
 
 
