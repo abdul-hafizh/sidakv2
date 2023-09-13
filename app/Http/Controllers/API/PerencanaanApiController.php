@@ -146,6 +146,27 @@ class PerencanaanApiController extends Controller
 
     }
 
+    public function approve_edit($id){
+
+        $messages['messages'] = false;
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            
+            return response()->json(['messages' => false]);
+
+        }
+
+        $results = $_res->where('id', $id)->update([ 'status' => 13, 'request_edit' => 'false']);
+
+        if($results){
+            $messages['messages'] = true;
+        }
+        
+        return response()->json($messages);
+
+    }
+
     public function unapprove($id, Request $request){
 
         $messages['messages'] = false;
@@ -158,6 +179,28 @@ class PerencanaanApiController extends Controller
         }
 
         $update = RequestPerencanaan::fieldAlasan($request);            
+        $results = Perencanaan::where('id', $id)->update($update);
+
+        if($results){
+            $messages['messages'] = true;
+        }
+        
+        return response()->json($messages);
+
+    }
+
+    public function reqedit($id, Request $request){
+
+        $messages['messages'] = false;
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            
+            return response()->json(['messages' => false]);
+
+        }
+
+        $update = RequestPerencanaan::fieldReqedit($request);            
         $results = Perencanaan::where('id', $id)->update($update);
 
         if($results){
