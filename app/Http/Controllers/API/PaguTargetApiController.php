@@ -78,6 +78,22 @@ class PaguTargetApiController extends Controller
         }
     }
 
+    public function update($id, Request $request)
+    {
+
+        $validation = ValidationPaguTarget::validationUpdate($request, $id);
+        if ($validation) {
+            return response()->json($validation, 400);
+        } else {
+
+            $update = RequestPaguTarget::fieldsData($request);
+            //update account
+            $UpdateData = PaguTarget::where('id', $id)->update($update);
+            //result
+            return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+        }
+    }
+
     public function import_excel(Request $request)
     {
         // validasi

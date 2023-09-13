@@ -61,7 +61,7 @@
 						<div class="media">
 							<div class="media-body text-left">
 								<span>Pagu APBN</span>
-								<h3 class="card-text" id="pagu_apbn"></h3>
+								<h3 class="card-text" id="total_apbn"></h3>
 							</div>
 						</div>
 					</div>
@@ -75,7 +75,7 @@
 						<div class="media">
 							<div class="media-body text-left">
 								<span>Pagu Promosi</span>
-								<h3 class="card-text" id="pagu_promosi"></h3>
+								<h3 class="card-text" id="total_promosi"></h3>
 							</div>
 						</div>
 					</div>
@@ -89,7 +89,7 @@
 						<div class="media">
 							<div class="media-body text-left">
 								<span>Pagu Total</span>
-								<h3 class="card-text" id="pagu_total"></h3>
+								<h3 class="card-text" id="total_all"></h3>
 							</div>
 						</div>
 					</div>
@@ -145,7 +145,7 @@
 				<!-- <button type="button" class="btn btn-primary">
 					<i aria-hidden="true" class="fa fa-search"></i> Search
 				</button> -->
-				<button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
+				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
 				<button type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#importExcel">
@@ -252,9 +252,9 @@
 			},
 			dataType: 'json',
 			success: function(result) {
-				$('#pagu_apbn').html(result.total_apbn);
-				$('#pagu_promosi').html(result.total_promosi);
-				$('#pagu_total').html(result.total_all);
+				$('#total_apbn').html(result.total_apbn);
+				$('#total_promosi').html(result.total_promosi);
+				$('#total_all').html(result.total_all);
 			},
 			error: function(error) {
 				console.error(error);
@@ -413,8 +413,14 @@
 		);
 
 		$('#search-input').keyup(delay(function(e) {
+			var filter = [{
+				search_input: $("#search-input").val(),
+				type_daerah: $("#type_daerah2").val(),
+				daerah_id: $("#daerah_id2").val(),
+				periode_id: $("#periode_id2").val()
+			}, ];
 			table.search(this.value).draw();
-			hasil_sum(this.value);
+			hasil_sum(filter);
 		}, 1000));
 
 		$("#Search").on("click", function() {

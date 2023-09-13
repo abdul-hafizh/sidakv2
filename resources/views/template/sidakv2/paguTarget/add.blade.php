@@ -80,7 +80,8 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-default" data-dismiss="modal">Close</button>
-          <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
+          <button id="simpan" type="button" class="btn btn-primary" style="display: none;">Simpan</button>
+          <button id="update" type="button" class="btn btn-info" style="display: none;">Ubah</button>
 
         </div>
       </form>
@@ -95,10 +96,40 @@
 <script type="text/javascript">
   $(function() {
 
+    $('#tambah').on('click', function() {
+      $('#judulModalLabel').html('Tambah Pagu Target')
+
+      var form = [
+        'periode_id',
+        'daerah_id',
+        'nama_daerah',
+        'pagu_apbn',
+        'pagu_promosi',
+        'type_daerah',
+        'target_pengawasan',
+        'target_penyelesaian_permasalahan',
+        'target_bimbingan_teknis'
+      ];
+      for (let i = 0; i < form.length; i++) {
+        const field = form[i];
+        if (field == 'daerah_id')
+          $('#daerah_id').html('<option value="">- Pilih -</option>').prop('disabled', true);
+        else
+          $('#' + field).val('');
+        $('#' + field + '-alert').removeClass('has-error');
+        $('#' + field + '-messages').removeClass('help-block').html('');
+      }
+      $('#simpan').show();
+      $('#update').hide();
+      $('#target_video_promosi-alert').hide();
+    })
+
     $("#datatable").on("click", ".modalUbah", function() {
-      $('#judulModalLabel').html('Form Ubah')
-      $('.modal-footer button[type=button]').html('Ubah Data');
-      document.getElementById('simpan').id = 'ubah';
+      $('#judulModalLabel').html('Form Ubah');
+      //  $('.modal-footer button[type=button]').html('Ubah Data');
+      $('#simpan').hide();
+      $('#update').show();
+
       const id = $(this).data('param_id');
       $.ajax({
         url: BASE_URL + '/api/pagutarget/edit/' + id,
@@ -163,6 +194,60 @@
       }
 
 
+      $("#update").click(() => {
+        var data = $("#FormSubmit").serializeArray();
+        var form = [
+          'periode_id',
+          'daerah_id',
+          'nama_daerah',
+          'pagu_apbn',
+          'pagu_promosi',
+          'type_daerah',
+          'target_pengawasan',
+          'target_penyelesaian_permasalahan',
+          'target_bimbingan_teknis',
+          'target_video_promosi'
+        ];
+
+        $.ajax({
+          type: "PUT",
+          url: BASE_URL + '/api/pagutarget/' + id,
+          data: data,
+          cache: false,
+          dataType: "json",
+          success: (respons) => {
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Berhasil Disimpan',
+              icon: 'success',
+              confirmButtonText: 'OK'
+
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // User clicked "Yes, proceed!" button
+                window.location.replace('/pagutarget');
+              }
+            });
+
+            //
+          },
+          error: (respons) => {
+            errors = respons.responseJSON;
+            for (let i = 0; i < form.length; i++) {
+              const field = form[i];
+              if (errors.messages[field]) {
+                $('#' + field + '-alert').addClass('has-error');
+                $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
+              } else {
+                $('#' + field + '-alert').removeClass('has-error');
+                $('#' + field + '-messages').removeClass('help-block').html('');
+              }
+            }
+          }
+        });
+      });
+
+
     });
 
     $('#type_daerah').on('change', function() {
@@ -220,6 +305,7 @@
 
 
     $("#simpan").click(() => {
+      // alert(id);
       var data = $("#FormSubmit").serializeArray();
       var form = [
         'periode_id',
