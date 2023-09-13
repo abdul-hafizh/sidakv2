@@ -228,6 +228,19 @@ class RequestPerencanaan
 
     }
 
+    public static function fieldReqedit($request)
+    {    
+        $fields = [  
+                'alasan_edit' => $request->alasan_edit,
+                'request_edit' =>'true',
+                'created_by' => Auth::User()->username,
+                'created_at' => date('Y-m-d H:i:s'),
+        ];
+  
+        return $fields;
+
+    }
+
     public static function Rupiah($angka) {
     
         $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
