@@ -71,16 +71,16 @@
               <input type="text" class="form-control" name="target_bimbingan_teknis" id="target_bimbingan_teknis" placeholder="Bimbingan Teknis" value="">
               <span id="target_bimbingan_teknis-messages"></span>
             </div>
-            <div id="target_video_promosi-alert" class="form-group has-feedback col-md-6">
+            <div id="target_video_promosi-alert" class="form-group has-feedback col-md-6" style="display: none">
               <label>Target Video Promosi</label>
-              <input type="text" class="form-control" name="target_video_promosi" id="target_video_promosi" placeholder="Video Promosi" value="">
+              <input type="text" class="form-control" name="target_video_promosi" id="target_video_promosi" placeholder="Video Promosi" value="" readonly>
               <span id="target_video_promosi-messages"></span>
             </div>
           </div>
         </div>
         <div class="modal-footer">
           <button class="btn btn-default" data-dismiss="modal">Close</button>
-          <button id="ubah" type="button" class="btn btn-primary">Simpan</button>
+          <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
 
         </div>
       </form>
@@ -167,10 +167,16 @@
 
     $('#type_daerah').on('change', function() {
       let type_daerah = $('#type_daerah').val();
-      if (type_daerah == 'Provinsi')
+      var x = document.getElementById("target_video_promosi-alert");
+      if (type_daerah == 'Provinsi') {
         url = "select-province";
-      else
+        x.style.display = "block";
+        $('#target_video_promosi').val(1);
+      } else {
         url = "select-kabupaten";
+        x.style.display = "none";
+        $('#target_video_promosi').val(0);
+      }
       $.ajax({
         url: BASE_URL + '/api/' + url,
         method: 'get',
@@ -195,33 +201,25 @@
       $('#nama_daerah').val(selectedOption.text);
     });
 
-    $('.select-periode').select2({
-      ajax: {
-        url: BASE_URL + '/api/select-periode2', // URL to your server-side endpoint
+
+    $('.select-periode').select2(
+      $.ajax({
+        url: BASE_URL + '/api/select-periode2',
+        method: 'get',
         dataType: 'json',
-        delay: 250, // Delay before sending the request (milliseconds)
-        processResults: function(data) {
+        success: function(data) {
+          periode = '<option value="">- Pilih -</option>';
+          $.each(data, function(key, val) {
+            periode += '<option value="' + val.value + '" >' + val.text + '</option>';
 
-          // Transform the data to match Select2's expected format
-          return {
-            results: data.map(function(item) {
-              return {
-                id: item.value,
-                text: item.text
-              };
-            })
-          };
-        },
-        cache: true // Cache the results to improve performance
-      }
-    });
+          });
+          $('#periode_id').html(periode);
+        }
+      })
+    );
 
-    $('.select-periode').on('select2:select', function(e) {
-      var selectedOption = e.params.data;
-      $('#periode_id').val(selectedOption.id);
-    });
 
-    $("#simpan2").click(() => {
+    $("#simpan").click(() => {
       var data = $("#FormSubmit").serializeArray();
       var form = [
         'periode_id',
