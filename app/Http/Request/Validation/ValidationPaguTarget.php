@@ -30,12 +30,12 @@ class ValidationPaguTarget
                     Rule::unique('pagu_target', 'periode_id')->where('daerah_id', $request->daerah_id),
                 ],
                 'daerah_id'  => 'required',
-                'pagu_apbn'  => 'required',
-                'pagu_promosi'  => 'required',
+                'pagu_apbn'  => 'required|integer',
+                'pagu_promosi'  => 'required|integer',
                 'type_daerah'  => 'required',
-                'target_pengawasan'  => 'required',
-                'target_penyelesaian_permasalahan'  => 'required',
-                'target_bimbingan_teknis'  => 'required',
+                'target_pengawasan'  => 'required|integer',
+                'target_penyelesaian_permasalahan'  => 'required|integer',
+                'target_bimbingan_teknis'  => 'required|integer',
             ]
         );
 
@@ -78,12 +78,12 @@ class ValidationPaguTarget
                 ],
 
                 'daerah_id'  => 'required',
-                'pagu_apbn'  => 'required',
-                'pagu_promosi'  => 'required',
+                'pagu_apbn'  => 'required|integer',
+                'pagu_promosi'  => 'required|integer',
                 'type_daerah'  => 'required',
-                'target_pengawasan'  => 'required',
-                'target_penyelesaian_permasalahan'  => 'required',
-                'target_bimbingan_teknis'  => 'required',
+                'target_pengawasan'  => 'required|integer',
+                'target_penyelesaian_permasalahan'  => 'required|integer',
+                'target_bimbingan_teknis'  => 'required|integer',
             ]
         );
 
