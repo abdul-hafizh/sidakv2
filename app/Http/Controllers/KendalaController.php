@@ -36,6 +36,27 @@ class KendalaController extends Controller
      
     }
 
+    public function show($topic)
+    {
+        $title = 'Kendala '.$topic;
+        $log = array(             
+            'menu'=>$title,
+            'slug'=>'kendala-category',
+            'url'=>'kendala/'.$topic.''
+        );
+        RequestSystemLog::CreateLog($log);
+        $with =  ['title' => $title,'template'=>'template/'.$this->template];
+        if($_COOKIE['access'] =="admin")
+        {
+            return view('template/' . $this->template . '.kendala.admin')->with($with);
+        }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){
+            return view('template/' . $this->template . '.kendala.masalah')->with($with);
+
+        }    
+
+     
+    }
+
  
    
 }

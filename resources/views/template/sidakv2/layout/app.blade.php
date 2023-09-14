@@ -134,9 +134,9 @@
     <script src="{{ config('app.url').$template.'/plugin/select2/js/select2.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/plugin/selectpicker/js/bootstrap-select.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/accounting.min.js' }}"></script>
-    <script src="{{ config('app.url').$template.'/plugin/excel/js/dist_xlsx.full.min.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/xlsx.full.min.js' }}"></script>
 
-
+   
 
     <script>
         $(function() {

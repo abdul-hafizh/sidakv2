@@ -15,7 +15,7 @@
         
             <div id="kode-alert" class="form-group has-feedback" >
               <label>Kode Kabupaten</label>
-              <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"  name="id" placeholder="Kode Kabupaten" value="">
+              <input type="text" maxlength="4" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"  name="id" placeholder="Kode Kabupaten" value="">
               <span id="kode-messages"></span>
             </div>
 

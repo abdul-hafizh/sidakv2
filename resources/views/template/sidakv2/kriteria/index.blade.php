@@ -61,6 +61,7 @@
 							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
 							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
+							<th><div class="split-table"></div> <span class="span-title"> Keterangan </span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Status </span></th>
 								<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
@@ -286,7 +287,8 @@
              
                
                row +=`<td class="padding-text-table">${item.number}</td>`;
-               row +=`<td class="padding-text-table">${item.name}</td>`;
+               row +=`<td class="padding-text-table">${item.category}</td>`;
+               row +=`<td class="padding-text-table">${item.description}</td>`;
                row +=`<td class="padding-text-table">${item.status}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
@@ -353,14 +355,20 @@
 					        row +=`<div class="modal-body">`;
                                
                                  
-				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                 row +=`<div id="category-alert-`+ item.id +`" class="form-group has-feedback" >`;
 
-				                  row +=`<label>Nama</label>`;
+				                  row +=`<label>Kategori</label>`;
 
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">`;
-				                  row +=`<span id="name-messages-`+ item.id +`"></span>`;
+				                  row +=`<input type="text" class="form-control" name="category" placeholder="Kategori" value="`+ item.category +`">`;
+				                  row +=`<span id="category-messages-`+ item.id +`"></span>`;
 
 				                 row +=`</div>`;
+
+				                   row +=`<div id="description-alert" class="form-group has-feedback" >`;
+						              row +=`<label>Keterangan</label>`;
+						              row +=`<textarea class="form-control textarea-fixed" placeholder="Keterangan" name="description">`+ item.description +`</textarea>`;
+						              row +=`<span id="description-messages"></span>`;
+						            row +=`</div>`;
 
 				                    row +=`<div class="radio">`;
 					                    row +=`<label>`;
@@ -414,7 +422,7 @@
 	              $("#update").hide();
 	              $("#load-simpan").show();
 	              
-		          var form = {'name':data[0].value,'status':data[1].value};
+		          var form = {'category':data[0].value,'description':data[1].value,'status':data[1].value};
 
 
 

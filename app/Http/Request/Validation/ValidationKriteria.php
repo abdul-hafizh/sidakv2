@@ -9,13 +9,15 @@ class ValidationKriteria
         $err = array(); 
         
         $fields = [
-            'name'  => 'Nama',
+            'category'  => 'Kategori',
+            'description'=>'Keterangan',
             'status'=>'Status',
         ];
 
         $validator =  Validator::make($request->all(), 
         [
-            'name'  => 'required|max:255',
+            'category'  => 'required|max:255',
+             'description'  => 'required',
             'status'  => 'required',
         ]);
 
@@ -26,6 +28,10 @@ class ValidationKriteria
             
             if($errors->has('name')){
                 $err['messages']['name'] = $errors->first('name');
+            }
+
+            if($errors->has('description')){
+                $err['messages']['description'] = $errors->first('description');
             }
 
             if($errors->has('status')){

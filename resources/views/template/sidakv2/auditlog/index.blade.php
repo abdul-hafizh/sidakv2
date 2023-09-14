@@ -45,9 +45,9 @@
 						<tr>
 							
 							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
-							<th><div class="split-table"></div> <span class="span-title"> Username </span></th>
+							<th><div class="split-table"></div> <span class="span-title"> Aksi </span></th>
+							<th><div class="split-table"></div> <span class="span-title"> Data </span></th>
 							
-							<th><div class="split-table"></div> <span class="span-title"> Total Aktifitas </span> </th>
 							<th><div class="split-table"></div> <span class="span-title"> Terahir Update </span> </th>
 						</tr>
 					</thead>
@@ -157,8 +157,8 @@
              row +=`<tr>`;
              
                row +=`<td class="padding-text-table">${item.number}</td>`;
-               row +=`<td class="padding-text-table">${item.username}</td>`;
-               row +=`<td class="padding-text-table">${item.total_activity}</td>`;
+               row +=`<td class="padding-text-table">${item.action}</td>`;
+               row +=`<td class="padding-text-table">${item.json_data}</td>`;
                row +=`<td class="padding-text-table">${item.last_update}</td>`;
               row +=`</tr>`; 
 

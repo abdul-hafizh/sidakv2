@@ -8,7 +8,9 @@ use App\Models\RoleUser;
 use App\Models\Roles;
 use App\Models\Provinces;
 use App\Models\Regencies;
+use App\Models\AuditLog;
 use App\Http\Request\RequestUser;
+use App\Http\Request\RequestAuditLog;
 use App\Helpers\GeneralPaginate;
 use App\Http\Request\Validation\ValidationUser;
 // use Yajra\DataTables\DataTables;
@@ -148,7 +150,16 @@ class UserApiController extends Controller
                 $merge = $insert;
             }
 
-            
+            $json = json_encode($merge);
+            $log = array(             
+            'action'=> 'Insert User',
+            'slug'=>'insert-user',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/user'
+            );
+
+            $data = RequestAuditLog::fieldsData($log);
          
             //create menu
            $saveData = User::create($merge);
@@ -202,6 +213,17 @@ class UserApiController extends Controller
                 }else{
                     $merge = $update; 
                 }
+                 $json = json_encode($merge);
+                //Audit Log
+                $log = array(             
+                'action'=> 'Update User',
+                'slug'=>'update-user',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'api/user/'.$id
+                );
+
+                RequestAuditLog::fieldsData($log);
 
               
              
@@ -311,7 +333,19 @@ class UserApiController extends Controller
 
        $messages['messages'] = false;
         $_res = User::find($id);
-          
+        
+        $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Update User',
+        'slug'=>'delete-user',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/user/'.$id
+        );
+
+        RequestAuditLog::fieldsData($log);
+
         if(empty($_res)){
             return response()->json(['messages' => false]);
         }else{

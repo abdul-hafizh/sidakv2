@@ -56,9 +56,9 @@
 						<tr>
 							<th><input id="select-all" class="span-title" type="checkbox"></th>
 							<th><div class="split-table"></div><span class="span-title">No</span></th>
-							<th><div class="split-table"></div><span class="span-title">Dari</span></th>
-							<th><div class="split-table"></div><span class="span-title">Permasalahan</span></th>
-							<th><div class="split-table"></div><span class="span-title">Pesan Kendala</span></th>
+							<th><div class="split-table"></div><span class="span-title">Kriteria</span></th>
+							<th><div class="split-table"></div><span class="span-title">Keterangan</span></th>
+							
 							<th><div class="split-table"></div><span class="span-title">Status</span></th>
 							<th><div class="split-table"></div><span class="span-title">Dibuat</span></th>  
 							<th> Aksi </th>
@@ -106,10 +106,10 @@
                   let search = $('#search-input').val();
                   if(search !='')
                   {
-                  	var url = BASE_URL + `/api/kendala/search?page=${page}&per_page=${value}`;
+                  	var url = BASE_URL + `/api/kriteria/search?page=${page}&per_page=${value}`;
                   	var method = 'POST';
                   }else{
-                    var url = BASE_URL + `/api/kendala?page=${page}&per_page=${value}`;
+                    var url = BASE_URL + `/api/kriteria?page=${page}&per_page=${value}`;
                     var method = 'GET';
                   } 	
 
@@ -231,7 +231,7 @@
 		content.append(row);
 
         $.ajax({
-            url: BASE_URL+ `/api/kendala?page=${page}&per_page=${itemsPerPage}`,
+            url: BASE_URL+ `/api/kriteria?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
             	list = response.data;
@@ -262,9 +262,9 @@
 	             row +=`<tr>`;
 	               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
 	               row +=`<td>${item.number}</td>`;
-	               row +=`<td>${item.username }</td>`;
-	               row +=`<td>${item.permasalahan}</td>`;
-		           row +=`<td>${item.messages}</td>`;
+	               row +=`<td>${item.category }</td>`;
+	               row +=`<td>${item.description}</td>`;
+		           
 		           row +=`<td>${item.status}</td>`;
 		           row +=`<td>${item.created_at}</td>`;
 	               row +=`<td>`; 
@@ -310,7 +310,7 @@
             
              	let row = ``;
 	             row +=`<tr>`;
-	             row +=`<td colspan="6" align="center">Data Kosong</td>`;
+	             row +=`<td colspan="8" align="center">Data Kosong</td>`;
                  row +=`</tr>`;
                  content.append(row);
 
