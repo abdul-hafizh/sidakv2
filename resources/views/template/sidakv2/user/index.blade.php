@@ -40,7 +40,7 @@
             </div>
 
             <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
-                <button type="button" id="printButton"  class="btn btn-info border-radius-10">
+                <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
             </div>
@@ -72,7 +72,7 @@
     <div class="box box-solid box-primary">
         <div class="box-body">
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
+                <table  class="table table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th id="ShowChecklistAll" style="display:none;"  ><input id="select-all" class="span-title" type="checkbox"></th>
@@ -100,7 +100,7 @@
         </div>
     </div>
      @include('template/sidakv2/user.add')
-     @include('template/sidakv2/user.print', $data)
+     @include('template/sidakv2/user.print')
      <script type="text/javascript">
  
 
@@ -120,8 +120,8 @@
     var daerah_id = '';
     var search = '';
 
-     $("#printButton").click(function() {
-        PrintData();
+     $("#ExportButton").click(function() {
+        ExportData();
       });
 
 
@@ -368,7 +368,7 @@
                 list = response.data;
                 resultTotal(response.total);
                 listOptions(response.options);
-                // Update content area with fetched data
+                listDataPrint(response.data);
                 updateContent(response.data,response.options);
 
                 // Update pagination controls
@@ -1029,7 +1029,7 @@
 
     }
 
-    function PrintData()
+    function ExportData()
     {
         var dt = new Date();
        var time =  dt.getDate() + "-"
@@ -1041,6 +1041,8 @@
       var wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       XLSX.writeFile(wb, "Repot-data-user-"+ time +".xlsx");
+
+    
 
     }
 
@@ -1120,6 +1122,39 @@
            
 
        });
+    }
+
+    function listDataPrint(data){
+         
+          const content = $('#printView');
+        
+         content.empty();
+         if(data.length>0)
+         {
+            // Populate content with new data
+            data.forEach(function(item, index) {
+                let row = ``;
+                 row +=`<tr>`;
+
+                   row +=`<td class="padding-text-table">${item.number}</td>`;
+                   row +=`<td class="padding-text-table">${item.username}</td>`;
+                   row +=`<td class="padding-text-table">${item.name}</td>`;
+                   row +=`<td class="padding-text-table">${item.email}</td>`;
+                   row +=`<td class="padding-text-table">${item.phone}</td>`;
+                   row +=`<td class="padding-text-table">${item.nip}</td>`;
+                   row +=`<td class="padding-text-table">${item.leader_name}</td>`;
+                   row +=`<td class="padding-text-table">${item.leader_nip}</td>`;
+                   row +=`<td class="padding-text-table">${item.daerah_name}</td>`;
+                   row +=`<td class="padding-text-table">${item.role}</td>`;
+                   row +=`<td class="padding-text-table">${item.status}</td>`;
+                   row +=`<td class="padding-text-table">${item.created_at_format}</td>`;
+                 row +=`</tr>`;
+
+               content.append(row);
+             });     
+
+         }        
+         
     }
 
  

@@ -274,13 +274,19 @@
 	               row +=`<td>`; 
 	               row +=`<div class="btn-group">`;
 
-	               row +=`<button id="Export"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Export Data" type="button" class="btn btn-primary"><i class="fa fa-file-excel-o" ></i></button>`;	
+	               // row +=`<button id="Export"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Export Data" type="button" class="btn btn-primary"><i class="fa fa-file-excel-o" ></i></button>`;
+
+	                row +=`<button id="Detail"  data-param_id="${item.id}"  data-toggle="tooltip" data-placement="top" title="Detail Data" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;	
     
 	                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;	
 
 	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
 	                row +=`<div id="FormEdit-${item.id}"></div>`;
 	                row +=`</div>`;
+
+	                
+
+
 
 	                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
@@ -480,20 +486,10 @@
         //list chat
          $( "#content" ).on( "click", "#Detail", (e) => {
              
-            let index = e.currentTarget.dataset.param_id;
-            const item = list[index];
+            let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id === id);
+            window.location.replace('/forum/'+ item.slug); 
 
-            $.ajax({
-			    url:  BASE_URL +`/api/forum/list-replay/`+ item.id,
-			    method: 'GET',
-			    success: function(response) {
-			        getlistforum(response,item);
-			        
-			    },
-			    error: function(error) {
-			        console.error('Error deleting items:', error);
-			    }
-			});
             
         });
     
@@ -543,7 +539,7 @@
 
 				       row +=`<div class="modal-header pull-left full">`;
 				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Balas Pesan `+ item.username +`</h4>`;
+				         row +=`<h4 class="modal-title">Forum `+ item.category +`</h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form  id="FormSubmit-`+ item.id +`">`;
@@ -617,7 +613,7 @@
                 row +=`</div>`;
             row +=`</div>`   
 
-            $('#FormEdit-'+ item.id).html(row); 
+            $('#FormDetail-'+ item.id).html(row); 
              
             $('#replay').on('input', function() {
               $('#balas').removeClass('btn-default').addClass('btn-primary');	
@@ -639,7 +635,7 @@
 		          let index = e.currentTarget.dataset.param_index; 
 
                 $.ajax({
-				    url:  BASE_URL +`/api/forum/delete-replay/`+ id,
+				    url:  BASE_URL +`/api/topic/delete-replay/`+ id,
 				    method: 'DELETE',
 				    success: function(response) {
 				        
@@ -690,7 +686,7 @@
 
 					$.ajax({
 			            type:"POST",
-			            url: BASE_URL+'/api/forum/replay',
+			            url: BASE_URL+'/api/topic/comment',
 			            data:form,
 			            cache: false,
 			            dataType: "json",

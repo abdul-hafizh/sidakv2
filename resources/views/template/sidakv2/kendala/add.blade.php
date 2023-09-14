@@ -24,11 +24,7 @@
             </div>
 
 
-             <div id="permasalahan-alert" class="form-group has-feedback" >
-              <label>Kriteria Kendala</label>
-              <select id="kriteria_id" class="form-control" name="kriteria_id" title="Kriteria Kendala" data-live-search="true"></select>
-              <span id="permasalahan-messages"></span>
-            </div>
+            
 
 
              <div id="messages-alert" class="form-group has-feedback" >

@@ -184,31 +184,31 @@
 
 				                 row +=`</div>`;
 
-				                    row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                    if(item.status_ori =='Y')
-					                    {
-					                        row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
-					                    }else{
-					                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
-					                    } 	
+				                 //    row +=`<div class="radio">`;
+					                //     row +=`<label>`;
+					                //     if(item.status_ori =='Y')
+					                //     {
+					                //         row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
+					                //     }else{
+					                //     	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
+					                //     } 	
 					                 
-					                      row +=`Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
-					                row +=`<div class="radio">`;
-					                    row +=`<label>`;
-					                      if(item.status_ori =='N')
-					                    {
-					                        row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
-					                    }else{
-					                    	row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
-					                    } 
+					                //       row +=`Aktif`;
+					                //     row +=`</label>`;
+					                // row +=`</div>`;
+					                // row +=`<div class="radio">`;
+					                //     row +=`<label>`;
+					                //       if(item.status_ori =='N')
+					                //     {
+					                //         row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
+					                //     }else{
+					                //     	row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
+					                //     } 
 
 					                     
-					                     row +=`Non Aktif`;
-					                    row +=`</label>`;
-					                row +=`</div>`;
+					                //      row +=`Non Aktif`;
+					                //     row +=`</label>`;
+					                // row +=`</div>`;
 
 
 
@@ -306,7 +306,7 @@
 	              $("#update-role").hide();
 	              $("#load-update-role").show();
 	              
-		          var form = {'name':data[0].value,'status':data[1].value};
+		          var form = {'name':data[0].value,'status':'Y'};
 
 
 

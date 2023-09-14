@@ -54,9 +54,7 @@ class RequestUser
             $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $temp[$key]['role_id'] = RequestRoles::GetRoleWhere($val->id,'name');
             $temp[$key]['deleted'] = RequestUser::checkValidate($val->username);
-            
             $temp[$key]['username'] = $val->username;
-
             $temp[$key]['email'] = $val->email;
             $temp[$key]['phone'] = $val->phone;
             $temp[$key]['nip'] = $val->nip;
@@ -65,6 +63,13 @@ class RequestUser
             $temp[$key]['status'] = $status;
             $temp[$key]['photo'] = $photo;
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+            //format exel
+
+            $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+            $temp[$key]['role'] = RequestRoles::GetRoleWhere($val->id,'name');
+            $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
+
+
         }
 
        $result['data'] = $temp;
@@ -97,19 +102,7 @@ class RequestUser
             if($val->status =="Y") { $status = "Aktif";  }else{ $status = "NonAktif"; }
             $temp[$key]['number'] = $i;
           
-            $temp[$key]['id'] = $val->id;
-            $temp[$key]['username'] = $val->username;
-            $temp[$key]['name'] = $val->name;
-            $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
-            $temp[$key]['role'] = RequestRoles::GetRoleWhere($val->id,'name');
-            $temp[$key]['email'] = $val->email;
-            $temp[$key]['phone'] = $val->phone;
-            $temp[$key]['nip'] = $val->nip;
-            $temp[$key]['leader_nip'] = $val->leader_nip;
-            $temp[$key]['leader_name'] = $val->leader_name;
-            $temp[$key]['status'] = $status;
-          
-            $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
+           
 
             $i++;
         }  

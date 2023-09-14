@@ -17,27 +17,9 @@
    </tr>
 
   </thead>
-  <tbody >
+  <tbody id="printView">
   	
-  	@foreach($data as $item)
-
-  	      <tr>
-             <td>{{ $item->number }}</td>
-             <td>{{ $item->username }}</td>
-             <td>{{ $item->name }}</td>
-             <td>{{ $item->email }}</td>
-             <td>{{ $item->phone }}</td>
-             <td>{{ $item->nip }}</td>
-             <td>{{ $item->leader_name }}</td>
-             <td>{{ $item->leader_nip }}</td>
-             <td>{{ $item->daerah_name }}</td>
-             <td>{{ $item->role }}</td>
-             <td>{{ $item->status }}</td>
-             <td>{{ $item->created_at }}</td>
-           </tr>
-
-   
-@endforeach
+ 
   	
   </tbody> 
   

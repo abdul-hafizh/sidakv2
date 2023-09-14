@@ -41,7 +41,7 @@
 					<thead>
 						<tr>
 						
-							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th><span class="span-title">No</span>  </th>
 							<th><div class="split-table"></div><span class="span-title">Kategori</span></th>
 							<th><div class="split-table"></div><span class="span-title"> Keterangan</span></th>
 						

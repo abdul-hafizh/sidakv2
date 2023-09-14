@@ -28,9 +28,9 @@ class RequestKriteria
 
             $temp[$key]['number'] = $numberNext++;
             $temp[$key]['id'] = $val->id;
-            $temp[$key]['name'] = $val->name;
+            $temp[$key]['category'] = $val->category;
             $temp[$key]['slug'] = $val->slug;
-           
+            $temp[$key]['description'] = $val->description;
             $temp[$key]['status'] = $status;
             $temp[$key]['status_ori'] = $val->status;
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
@@ -76,9 +76,10 @@ class RequestKriteria
         $uuid = Str::uuid()->toString();
         $fields = [ 
                 'id'=> $uuid,
-                'name'  =>  $request->name,
+                'category'  =>  $request->category,
                 'status'  =>  $request->status,
-                'slug' =>  strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name))),
+                'description'=> $request->description,
+                'slug' =>  strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->category))),
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
         ];

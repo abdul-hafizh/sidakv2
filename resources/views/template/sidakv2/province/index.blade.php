@@ -365,7 +365,7 @@
 					            row +=`<div id="kode-alert-`+ item.id +`" class="form-group has-feedback" >`;
 				                row +=`<label>Kode Provinsi</label>`;
 
-				                row +=`<input type="text" class="form-control" name="id" placeholder="Kode Provinsi" value="`+ item.id +`" oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
+				                row +=`<input maxlength="2" type="text" class="form-control" name="id" placeholder="Kode Provinsi" value="`+ item.id +`" oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
 				                  <span id="kode-messages-`+ item.id +`"></span>`;
 
 				                row +=`</div>`;
