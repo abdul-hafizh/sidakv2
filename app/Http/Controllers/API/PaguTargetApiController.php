@@ -46,22 +46,18 @@ class PaguTargetApiController extends Controller
             "recordsTotal" => $result->total,
             "recordsFiltered" => $count->total,
             "data" => $result->data,
-            "total_apbn" => 1000,
-            "total_promosi" => 2000,
         );
         return response()->json($output);
     }
 
     public function total_pagu(Request $request)
     {
-        $total_apbn = PaguTarget::where('nama_daerah', 'LIKE', '%' . $request->data . '%')->sum('pagu_apbn');
-        $total_promosi = PaguTarget::where('nama_daerah', 'LIKE', '%' . $request->data . '%')->sum('pagu_promosi');
-        $total_all = $total_apbn + $total_promosi;
+        $result = RequestPaguTarget::GetTotalPagu($request);
 
         $output = array(
-            "total_apbn" => GeneralHelpers::formatRupiah($total_apbn),
-            "total_promosi" => GeneralHelpers::formatRupiah($total_promosi),
-            "total_all" => GeneralHelpers::formatRupiah($total_all)
+            "total_apbn" => GeneralHelpers::formatRupiah($result->total_apbn),
+            "total_promosi" => GeneralHelpers::formatRupiah($result->total_promosi),
+            "total_all" => GeneralHelpers::formatRupiah($result->total_promosi + $result->total_apbn)
         );
         return response()->json($output);
     }
@@ -101,5 +97,17 @@ class PaguTargetApiController extends Controller
         $myFile = public_path("/pagu_target/template.xlsx");
 
         return response()->download($myFile);
+    }
+    public function download_daerah(Request $request)
+    {
+        $myFile = public_path("/pagu_target/data_daerah.xlsx");
+
+        return response()->download($myFile);
+    }
+
+    public function edit($id)
+    {
+        $result = PaguTarget::where(['id' => $id])->first();
+        return response()->json($result);
     }
 }

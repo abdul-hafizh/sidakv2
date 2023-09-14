@@ -54,7 +54,9 @@ class RequestUser
             $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $temp[$key]['role_id'] = RequestRoles::GetRoleWhere($val->id,'name');
             $temp[$key]['deleted'] = RequestUser::checkValidate($val->username);
+            
             $temp[$key]['username'] = $val->username;
+
             $temp[$key]['email'] = $val->email;
             $temp[$key]['phone'] = $val->phone;
             $temp[$key]['nip'] = $val->nip;

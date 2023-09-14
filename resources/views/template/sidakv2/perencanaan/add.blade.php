@@ -338,7 +338,7 @@
                var totalRencana = parseFloat($('#total_rencana_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
                var total_target_bimtek = $('#total_target_bimtek_inp').val();
-               var total_target_bimtek_inp = $("#bimtek_perizinan_target").val() + $("#bimtek_pengawasan_target").val();
+               var total_target_bimtek_inp = parseInt($("#bimtek_perizinan_target").val()) + parseInt($("#bimtek_pengawasan_target").val());
 
                var form = {
                     "pengawas_analisa_target": $("#pengawas_analisa_target").val(),
@@ -402,8 +402,8 @@
                var totalRencana = parseFloat($('#total_rencana_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
                var total_target_bimtek = $('#total_target_bimtek_inp').val();
-               var total_target_bimtek_inp = $("#bimtek_perizinan_target").val() + $("#bimtek_pengawasan_target").val();
-               
+               var total_target_bimtek_inp = parseInt($("#bimtek_perizinan_target").val()) + parseInt($("#bimtek_pengawasan_target").val());
+
                var form = {
                     "pengawas_analisa_target": $("#pengawas_analisa_target").val(),
                     "pengawas_analisa_pagu": $("#pengawas_analisa_pagu").val(),

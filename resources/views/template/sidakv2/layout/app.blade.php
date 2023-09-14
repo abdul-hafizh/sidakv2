@@ -36,9 +36,8 @@
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/sweetalert2.min.css'}}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
-
-
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
+    <script src="{{ config('app.url').$template.'/js/jspdf.min.js' }}"></script>
 
 <body class="hold-transition ">
 

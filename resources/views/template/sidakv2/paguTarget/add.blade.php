@@ -44,51 +44,42 @@
           <div class="row">
             <div id="pagu_apbn-alert" class="form-group has-feedback col-md-6">
               <label>Pagu APBN</label>
-              <input type="text" class="form-control" name="pagu_apbn" placeholder="APBN" value="">
+              <input type="text" class="form-control" name="pagu_apbn" id="pagu_apbn" placeholder="APBN" value="">
               <span id="pagu_apbn-messages"></span>
             </div>
             <div id="pagu_promosi-alert" class="form-group has-feedback col-md-6">
               <label>Pagu Promosi</label>
-              <input type="text" class="form-control" name="pagu_promosi" placeholder="Promosi" value="">
+              <input type="text" class="form-control" name="pagu_promosi" id="pagu_promosi" placeholder="Promosi" value="">
               <span id="pagu_promosi-messages"></span>
             </div>
           </div>
           <div class="row">
             <div id="target_pengawasan-alert" class="form-group has-feedback col-md-6">
               <label>Target Pengawasan</label>
-              <input type="text" class="form-control" name="target_pengawasan" placeholder="Pengawasan" value="">
+              <input type="text" class="form-control" name="target_pengawasan" id="target_pengawasan" placeholder="Pengawasan" value="">
               <span id="target_pengawasan-messages"></span>
             </div>
             <div id="target_penyelesaian_permasalahan-alert" class="form-group has-feedback col-md-6">
               <label>Target Penyelesaian Masalah</label>
-              <input type="text" class="form-control" name="target_penyelesaian_permasalahan" placeholder="Penyelesaian Masalah" value="">
+              <input type="text" class="form-control" name="target_penyelesaian_permasalahan" id="target_penyelesaian_permasalahan" placeholder="Penyelesaian Masalah" value="">
               <span id="target_penyelesaian_permasalahan-messages"></span>
             </div>
           </div>
           <div class="row">
             <div id="target_bimbingan_teknis-alert" class="form-group has-feedback col-md-6">
               <label>Target Bimbingan Teknis</label>
-              <input type="text" class="form-control" name="target_bimbingan_teknis" placeholder="Bimbingan Teknis" value="">
+              <input type="text" class="form-control" name="target_bimbingan_teknis" id="target_bimbingan_teknis" placeholder="Bimbingan Teknis" value="">
               <span id="target_bimbingan_teknis-messages"></span>
             </div>
-            <div id="target_video_promosi-alert" class="form-group has-feedback col-md-6">
+            <div id="target_video_promosi-alert" class="form-group has-feedback col-md-6" style="display: none">
               <label>Target Video Promosi</label>
-              <input type="text" class="form-control" name="target_video_promosi" placeholder="Video Promosi" value="">
+              <input type="text" class="form-control" name="target_video_promosi" id="target_video_promosi" placeholder="Video Promosi" value="" readonly>
               <span id="target_video_promosi-messages"></span>
             </div>
           </div>
-
-
-
-
-
-
-
-
-
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button class="btn btn-default" data-dismiss="modal">Close</button>
           <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
 
         </div>
@@ -106,30 +97,86 @@
 
     $("#datatable").on("click", ".modalUbah", function() {
       $('#judulModalLabel').html('Form Ubah')
-      $('.modal-footer button[type=submit]').html('Ubah Data');
-
+      $('.modal-footer button[type=button]').html('Ubah Data');
+      document.getElementById('simpan').id = 'ubah';
       const id = $(this).data('param_id');
       $.ajax({
-        url: BASE_URL + '/api/pagutarget/edit',
-        data: {
-          id: id
-        },
+        url: BASE_URL + '/api/pagutarget/edit/' + id,
         method: 'GET',
-        dataType: 'json',
         success: function(data) {
+          $('#type_daerah').val(data.type_daerah);
+          $('#daerah_id').val(data.daerah_id);
           $('#nama_daerah').val(data.nama_daerah);
-
+          $('#periode_id').val(data.periode_id);
+          $('#pagu_apbn').val(data.pagu_apbn);
+          $('#pagu_promosi').val(data.pagu_promosi);
+          $('#target_pengawasan').val(data.target_pengawasan);
+          $('#target_penyelesaian_permasalahan').val(data.target_penyelesaian_permasalahan);
+          $('#target_bimbingan_teknis').val(data.target_bimbingan_teknis);
+          $('#target_video_promosi').val(data.target_video_promosi);
+          getPeriode(data.periode_id);
+          getDaerah(data.type_daerah, data.daerah_id);
         }
 
       })
+
+      function getPeriode(periode_id) {
+        $.ajax({
+          url: BASE_URL + '/api/select-periode2',
+          method: 'get',
+          dataType: 'json',
+          success: function(data) {
+            periode = '<option value="">- Pilih -</option>';
+            $.each(data, function(key, val) {
+              var select = '';
+              if (val.value == periode_id)
+                select = 'selected';
+              periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+            });
+            $('#periode_id').html(periode)
+          }
+        })
+        $('.select-periode').select2();
+      }
+
+      function getDaerah(type_daerah, daerah_id) {
+        if (type_daerah == 'Provinsi')
+          url = "select-province";
+        else
+          url = "select-kabupaten";
+        $.ajax({
+          url: BASE_URL + '/api/' + url,
+          method: 'get',
+          dataType: 'json',
+          success: function(data) {
+            daerah = '<option value="">- Pilih -</option>';
+            $.each(data, function(key, val) {
+              var select = '';
+              if (val.value == daerah_id)
+                select = 'selected';
+              daerah += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+            });
+            $('#daerah_id').html(daerah).removeAttr('disabled');
+          }
+        })
+        $('.select-daerah').select2();
+      }
+
+
     });
 
     $('#type_daerah').on('change', function() {
       let type_daerah = $('#type_daerah').val();
-      if (type_daerah == 'Provinsi')
+      var x = document.getElementById("target_video_promosi-alert");
+      if (type_daerah == 'Provinsi') {
         url = "select-province";
-      else
+        x.style.display = "block";
+        $('#target_video_promosi').val(1);
+      } else {
         url = "select-kabupaten";
+        x.style.display = "none";
+        $('#target_video_promosi').val(0);
+      }
       $.ajax({
         url: BASE_URL + '/api/' + url,
         method: 'get',
@@ -140,7 +187,7 @@
           $.each(data, function(key, val) {
             jenis += '<option value="' + val.value + '">' + val.text + '</option>';
           });
-          $('#daerah_id').html(jenis).removeAttr('disabled');;
+          $('#daerah_id').html(jenis).removeAttr('disabled');
         }
       })
       $('.select-daerah').select2();
@@ -154,31 +201,23 @@
       $('#nama_daerah').val(selectedOption.text);
     });
 
-    $('.select-periode').select2({
-      ajax: {
-        url: BASE_URL + '/api/select-periode2', // URL to your server-side endpoint
+
+    $('.select-periode').select2(
+      $.ajax({
+        url: BASE_URL + '/api/select-periode2',
+        method: 'get',
         dataType: 'json',
-        delay: 250, // Delay before sending the request (milliseconds)
-        processResults: function(data) {
+        success: function(data) {
+          periode = '<option value="">- Pilih -</option>';
+          $.each(data, function(key, val) {
+            periode += '<option value="' + val.value + '" >' + val.text + '</option>';
 
-          // Transform the data to match Select2's expected format
-          return {
-            results: data.map(function(item) {
-              return {
-                id: item.value,
-                text: item.text
-              };
-            })
-          };
-        },
-        cache: true // Cache the results to improve performance
-      }
-    });
+          });
+          $('#periode_id').html(periode);
+        }
+      })
+    );
 
-    $('.select-periode').on('select2:select', function(e) {
-      var selectedOption = e.params.data;
-      $('#periode_id').val(selectedOption.id);
-    });
 
     $("#simpan").click(() => {
       var data = $("#FormSubmit").serializeArray();
@@ -231,6 +270,13 @@
           }
         }
       });
+    });
+
+    $("#ubah").click(() => {
+
+      alert('asd');
+
+
     });
 
 
