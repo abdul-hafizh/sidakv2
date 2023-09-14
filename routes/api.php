@@ -82,6 +82,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
     Route::get('pagutarget/edit/{id}', [PaguTargetApiController::class, 'edit']);
     Route::get('pagutarget/download_daerah', [PaguTargetApiController::class, 'download_daerah']);
+    Route::put('pagutarget/{id}', [PaguTargetApiController::class, 'update']);
 
     Route::get('province', [ProvinceApiController::class, 'index']);
     Route::post('province', [ProvinceApiController::class, 'store']);
