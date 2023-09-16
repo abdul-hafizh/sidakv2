@@ -31,8 +31,8 @@ class ValidationPaguTarget
                 ],
                 'daerah_id'  => 'required',
                 'pagu_apbn'  => 'required|integer',
-                'pagu_promosi'  => 'required|integer',
                 'type_daerah'  => 'required',
+                'pagu_promosi'  => 'required_if:type_daerah,Provinsi|nullable|integer',
                 'target_pengawasan'  => 'required|integer',
                 'target_penyelesaian_permasalahan'  => 'required|integer',
                 'target_bimbingan_teknis'  => 'required|integer',
@@ -79,7 +79,7 @@ class ValidationPaguTarget
 
                 'daerah_id'  => 'required',
                 'pagu_apbn'  => 'required|integer',
-                'pagu_promosi'  => 'required|integer',
+                'pagu_promosi'  => 'required_if:type_daerah,Provinsi|nullable|integer',
                 'type_daerah'  => 'required',
                 'target_pengawasan'  => 'required|integer',
                 'target_penyelesaian_permasalahan'  => 'required|integer',

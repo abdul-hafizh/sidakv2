@@ -126,4 +126,35 @@ class PaguTargetApiController extends Controller
         $result = PaguTarget::where(['id' => $id])->first();
         return response()->json($result);
     }
+
+    public function delete($id)
+    {
+        $messages['messages'] = false;
+        $_res = PaguTarget::find($id);
+
+        if (empty($_res)) {
+            return response()->json(['messages' => false]);
+        }
+
+        $results = $_res->delete();
+        if ($results) {
+            $messages['messages'] = true;
+        }
+        return response()->json($messages);
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        $messages['messages'] = false;
+
+        foreach ($request->data as $key) {
+            $results = PaguTarget::where('id', (int)$key)->delete();
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    }
 }
