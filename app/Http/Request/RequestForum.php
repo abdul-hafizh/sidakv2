@@ -43,7 +43,6 @@ class RequestForum
             $temp[$key]['category'] = $val->category;
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['description'] = $description;
-            $temp[$key]['photo'] = $val->photo;
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
         }

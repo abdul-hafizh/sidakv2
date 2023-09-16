@@ -40,7 +40,7 @@
             </div>
 
             <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
-                <button type="button" id="printButton"  class="btn btn-info border-radius-10">
+                <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
             </div>
@@ -72,7 +72,7 @@
     <div class="box box-solid box-primary">
         <div class="box-body">
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
+                <table  class="table table-hover text-nowrap">
                     <thead>
                         <tr>
                             <th id="ShowChecklistAll" style="display:none;"  ><input id="select-all" class="span-title" type="checkbox"></th>
@@ -100,7 +100,7 @@
         </div>
     </div>
      @include('template/sidakv2/user.add')
-     @include('template/sidakv2/user.print', $data)
+     @include('template/sidakv2/user.print')
      <script type="text/javascript">
  
 
@@ -120,8 +120,8 @@
     var daerah_id = '';
     var search = '';
 
-     $("#printButton").click(function() {
-        PrintData();
+     $("#ExportButton").click(function() {
+        ExportData();
       });
 
 
@@ -368,6 +368,7 @@
                 list = response.data;
                 resultTotal(response.total);
                 listOptions(response.options);
+                listDataPrint(response.data);
                 // Update content area with fetched data
                 updateContent(response.data,response.options);
 
@@ -1029,7 +1030,7 @@
 
     }
 
-    function PrintData()
+    function ExportData()
     {
         var dt = new Date();
        var time =  dt.getDate() + "-"
@@ -1042,6 +1043,119 @@
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       XLSX.writeFile(wb, "Repot-data-user-"+ time +".xlsx");
 
+    
+
+    }
+
+
+    function listOptions(data){
+        const edited = data.find(o => o.action === 'edit');
+        const deleted = data.find(o => o.action === 'delete');
+        const detail = data.find(o => o.action === 'delete');
+         const checklist = data.find(o => o.action === 'checklist');
+
+         if(checklist.action =='checklist')
+           {
+               if(checklist.checked ==true)
+               {
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
+                   
+                  
+               }else{
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               }    
+           }
+       
+        if(edited.checked == false && deleted.checked == false && detail.checked == false)
+        {
+            $('#ShowAction').hide();
+        }else{
+             $('#ShowAction').show();
+        }    
+       data.forEach(function(item, index) 
+       {
+           if(item.action =='add')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowAdd').show();
+               }else{
+                  $('#ShowAdd').hide();
+               }    
+           }
+
+          
+
+
+
+            if(item.action =='export')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowExport').show();
+               }else{
+                  $('#ShowExport').hide();
+               }    
+           }     
+
+            if(item.action =='search')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowSearch').show();
+               }else{
+                  $('#ShowSearch').hide();
+               }    
+           }   
+
+            if(item.action =='perpage')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowPagination').show();
+               }else{
+                  $('#ShowPagination').hide();
+               }    
+           }     
+
+           
+
+       });
+    }
+
+    function listDataPrint(data){
+         
+          const content = $('#printView');
+        
+         content.empty();
+         if(data.length>0)
+         {
+            // Populate content with new data
+            data.forEach(function(item, index) {
+                let row = ``;
+                 row +=`<tr>`;
+
+                   row +=`<td class="padding-text-table">${item.number}</td>`;
+                   row +=`<td class="padding-text-table">${item.username}</td>`;
+                   row +=`<td class="padding-text-table">${item.name}</td>`;
+                   row +=`<td class="padding-text-table">${item.email}</td>`;
+                   row +=`<td class="padding-text-table">${item.phone}</td>`;
+                   row +=`<td class="padding-text-table">${item.nip}</td>`;
+                   row +=`<td class="padding-text-table">${item.leader_name}</td>`;
+                   row +=`<td class="padding-text-table">${item.leader_nip}</td>`;
+                   row +=`<td class="padding-text-table">${item.daerah_name}</td>`;
+                   row +=`<td class="padding-text-table">${item.role}</td>`;
+                   row +=`<td class="padding-text-table">${item.status}</td>`;
+                   row +=`<td class="padding-text-table">${item.created_at_format}</td>`;
+                 row +=`</tr>`;
+
+               content.append(row);
+             });     
+
+         }        
+         
     }
 
 

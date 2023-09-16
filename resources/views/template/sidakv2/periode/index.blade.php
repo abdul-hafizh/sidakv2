@@ -368,7 +368,7 @@
 
 					            row +=`<div id="year-alert-`+ item.id +`" class="form-group has-feedback" >`;
 					              row +=`<label>Tahun</label>`;
-					              row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Year" value="`+ item.year +`">`;
+					              row +=`<input maxlength="4" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Year" value="`+ item.year +`">`;
 					              row +=`<span id="year-messages-`+ item.id +`"></span>`;
 					            row +=`</div>`;
 

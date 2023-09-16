@@ -24,7 +24,7 @@
             </div>
 
 
-            <div  id="status-role-alert" class="form-group has-feedback" >
+            <!-- <div  id="status-role-alert" class="form-group has-feedback" >
                <label>Status  :</label>
                 <div class="radio">
                     <label>
@@ -40,7 +40,7 @@
                 </div>
                 <span id="status-role-messages"></span>
             
-            </div>
+            </div> -->
 
 
 
@@ -71,7 +71,7 @@
           var data = $("#FormSubmitRole").serializeArray();
           var form = {
               'name':data[0].value,
-              'status':data[1].value,
+              'status':'Y',
              
           };
 

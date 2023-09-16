@@ -17,10 +17,17 @@
 
                
 
-            <div id="name-alert" class="form-group has-feedback" >
-              <label>Nama</label>
-              <input type="text" class="form-control" name="name" placeholder="Nama" value="">
-              <span id="name-messages"></span>
+            <div id="category-alert" class="form-group has-feedback" >
+              <label>Kategori</label>
+              <input type="text" class="form-control" name="category" placeholder="Kategori" value="">
+              <span id="category-messages"></span>
+            </div>
+
+
+             <div id="description-alert" class="form-group has-feedback" >
+              <label>Keterangan</label>
+              <textarea class="form-control textarea-fixed" placeholder="Keterangan" name="description"></textarea>
+              <span id="description-messages"></span>
             </div>
 
 
@@ -76,8 +83,9 @@
 
           var data = $("#FormSubmit").serializeArray();
           var form = {
-              'name':data[0].value,
-              'status':data[1].value,
+              'category':data[0].value,
+              'description':data[1].value,
+              'status':data[2].value,
              
           };
 
@@ -109,13 +117,13 @@
                 
                
 
-                if(errors.messages.name)
+                if(errors.messages.category)
                 {
-                     $('#name-alert').addClass('has-error');
-                     $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
+                     $('#category-alert').addClass('has-error');
+                     $('#category-messages').addClass('help-block').html('<strong>'+ errors.messages.category +'</strong>');
                 }else{
-                    $('#name-alert').removeClass('has-error');
-                    $('#name-messages').removeClass('help-block').html('');
+                    $('#category-alert').removeClass('has-error');
+                    $('#category-messages').removeClass('help-block').html('');
                 }
 
                  if(errors.messages.status)

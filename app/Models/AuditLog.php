@@ -20,6 +20,7 @@ class AuditLog extends Model
     public $fillable = [
      
         'action',
+        'type',
         'json_field',
         'slug',
         'url',

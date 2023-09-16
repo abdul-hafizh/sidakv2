@@ -34,6 +34,7 @@ use App\Http\Controllers\KriteriaController;
         Route::get('/perencanaan/detail/{id}', [PerencanaanController::class,'show']);
         Route::get('/pagutarget', [PaguTargetController::class,'index']);
         Route::get('/kendala', [KendalaController::class,'index']);
+        Route::get('/kendala/{topic}', [KendalaController::class,'show']);
         Route::get('/forum', [ForumController::class,'index']);
         Route::get('/forum/{topic}', [ForumController::class,'show']); 
         Route::get('/notification', [NotificationController::class,'index']);            

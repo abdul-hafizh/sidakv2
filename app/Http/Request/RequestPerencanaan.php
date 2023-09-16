@@ -130,9 +130,12 @@ class RequestPerencanaan
         $temp['total_pagu_penyelesaian_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu);
 
         $temp['lokasi'] = $data->lokasi;
+        $temp['status'] = $data->status;
         $temp['tgl_tandatangan'] = $data->tgl_tandatangan;
         $temp['nama_pejabat'] = $data->nama_pejabat;
         $temp['nip_pejabat'] = $data->nip_pejabat;
+        $temp['alasan_unapprove'] = $data->alasan_unapprove;
+        $temp['alasan_edit'] = $data->alasan_edit;
 
         return $temp; 
     }

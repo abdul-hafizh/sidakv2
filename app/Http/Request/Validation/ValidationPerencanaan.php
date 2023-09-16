@@ -37,11 +37,11 @@ class ValidationPerencanaan
 
         $validator =  Validator::make($request->all(), 
         [
-            'pengawas_analisa_target' => 'required|numeric|min:0|gt:0',
+            'pengawas_analisa_target' => 'numeric',
             'pengawas_analisa_pagu' => 'required|numeric|min:0|gt:0',
             'pengawas_inspeksi_target' => 'required|numeric|min:0|gt:0',
             'pengawas_inspeksi_pagu' => 'required|numeric|min:0|gt:0',
-            'pengawas_evaluasi_target' => 'required|numeric|min:0|gt:0',
+            'pengawas_evaluasi_target' => 'numeric',
             'pengawas_evaluasi_pagu' => 'required|numeric|min:0|gt:0',
 
             'bimtek_perizinan_target' => 'required|numeric|min:0|gt:0',
@@ -49,11 +49,11 @@ class ValidationPerencanaan
             'bimtek_pengawasan_target' => 'required|numeric|min:0|gt:0',
             'bimtek_pengawasan_pagu' => 'required|numeric|min:0|gt:0',
 
-            'penyelesaian_identifikasi_target' => 'required|numeric|min:0|gt:0',
+            'penyelesaian_identifikasi_target' => 'numeric',
             'penyelesaian_identifikasi_pagu' => 'required|numeric|min:0|gt:0',
             'penyelesaian_realisasi_target' => 'required|numeric|min:0|gt:0',
             'penyelesaian_realisasi_pagu' => 'required|numeric|min:0|gt:0',
-            'penyelesaian_evaluasi_target' => 'required|numeric|min:0|gt:0',
+            'penyelesaian_evaluasi_target' => 'numeric',
             'penyelesaian_evaluasi_pagu' => 'required|numeric|min:0|gt:0',
 
             'periode_id' => 'required|required_if:param,update',

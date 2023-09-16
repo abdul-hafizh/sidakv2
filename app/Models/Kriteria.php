@@ -11,7 +11,7 @@ class Kriteria extends Model
 {
      // use SoftDeletes;
     use Uuids;
-    public $table = 'kriteria';
+    public $table = 'kriteria_kendala';
     
 
    // protected $dates = ['deleted_at'];
@@ -19,7 +19,8 @@ class Kriteria extends Model
 
     public $fillable = [
      
-        'name',
+        'category',
+        'description',
         'slug',
         'status',
         'created_by'

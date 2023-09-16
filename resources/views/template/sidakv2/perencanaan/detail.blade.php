@@ -23,8 +23,8 @@
                          <div class="col-lg-4">
                               <div class="pull-right">
                                    <label class="col-lg-12">
-                                        Periode :
-                                        <span id="selectPeriode" class="pd-top-bottom-5"></span>
+                                        <span class="label-header-box form-group margin-none align-right" id="status-view"></span>
+                                        Periode : <span id="selectPeriode" class="pd-top-bottom-5"></span>
                                    </label>
                               </div>
                          </div>
@@ -91,7 +91,6 @@
 </div>
 
 @include('template/sidakv2/perencanaan.print')
-
 
 <div id="modal-unapprove" class="modal fade" role="dialog">
      <div class="modal-dialog">
@@ -168,6 +167,19 @@
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
+
+               const status = data.status;
+               const statusMap = {
+                    13: { label: 'Draft', color: 'badge-info' },
+                    14: { label: 'Terkirim/Waiting Approve', color: 'badge-warning' },
+                    15: { label: 'Approved', color: 'badge-success' }
+               };
+               const statusInfo = statusMap[status];
+
+               if (statusInfo) {
+                    const badgeHtml = `<span class="badge ${statusInfo.color}">${statusInfo.label}</span>`;
+                    $('#status-view').html(badgeHtml);
+               }
 
                var row = '';
                var rows = '';

@@ -28,7 +28,7 @@
 
             <div id="year-alert" class="form-group has-feedback" >
               <label>Tahun</label>
-              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Tahun" value="">
+              <input type="text" maxlength="4" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Tahun" value="">
               <span id="year-messages"></span>
             </div>
 

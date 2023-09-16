@@ -463,7 +463,7 @@
                                  
                                   row +=`<div id="kode-alert-`+ item.id +`" class="form-group has-feedback" >`;
                                   row +=`<label>Kode Kabupaten</label>`;
-                                  row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="id" placeholder="Kode Kabupaten" value="`+ item.id +`">
+                                  row +=`<input maxlength="4" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="id" placeholder="Kode Kabupaten" value="`+ item.id +`">
                                   <span id="kode-messages-`+ item.id +`"></span>`;
                                  row +=`</div>`;
                              
