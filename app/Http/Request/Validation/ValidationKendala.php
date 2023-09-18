@@ -11,12 +11,14 @@ class ValidationKendala
         $fields = [
             'permasalahan'  => 'Permasalahan',
             'messages'=>'Pesan',
+           
         ];
 
         $validator =  Validator::make($request->all(), 
         [
-            'permasalahan'  => 'required|max:100',
+            'permasalahan'  => 'required',
             'messages'  => 'required',
+           
         ]);
 
         $validator->setAttributeNames($fields); 
@@ -32,6 +34,7 @@ class ValidationKendala
                 $err['messages']['messages'] = $errors->first('messages');
             }
 
+
             
 
             return $err;
@@ -39,32 +42,31 @@ class ValidationKendala
     }
 
 
-    public static function validationReplay($request){
+    public static function validationComment($request){
         $err = array(); 
         
         $fields = [
-            'messages'=>'Pesan',
+            'messages'=>'Pesan'
         ];
 
         $validator =  Validator::make($request->all(), 
-        [
-            'messages'  => 'required',
+        [ 
+            'messages'  => 'required'
         ]);
 
         $validator->setAttributeNames($fields); 
         if ($validator->fails()) {
          
             $errors = $validator->errors();
-            
             if($errors->has('messages')){
                 $err['messages']['messages'] = $errors->first('messages');
             }
-
-            
-
             return $err;
        }
     }
+
+
+    
 
 
    

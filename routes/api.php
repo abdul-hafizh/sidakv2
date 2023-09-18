@@ -36,7 +36,7 @@ use App\Http\Controllers\API\ActionApiController;
 use App\Http\Controllers\API\KriteriaApiController;
 
 Route::middleware(['jwt.auth'])->group(function () {
-    Route::get('select-kriteria', [KriteriaApiController::class, 'listAll']);
+   
     Route::get('select-role', [RolesApiController::class, 'listAll']);
     Route::get('select-daerah', [DaerahApiController::class, 'listAllDaerah']);
     Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
@@ -107,19 +107,32 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('periode/search', [PeriodeApiController::class, 'search']);
     Route::put('periode/{id}', [PeriodeApiController::class, 'update']);
     Route::delete('periode/{id}', [PeriodeApiController::class, 'delete']);
+    Route::post('periode/selected', [PeriodeApiController::class, 'deleteSelected']);
+    
 
     Route::get('auditlog', [AuditLogApiController::class, 'index']);
     Route::post('auditlog/search', [AuditLogApiController::class, 'search']);
+    Route::delete('auditlog/{id}', [AuditLogApiController::class, 'delete']);
+    Route::post('auditlog/selected', [AuditLogApiController::class, 'deleteSelected']);
+
 
     Route::get('kendala', [KendalaApiController::class, 'index']);
     Route::post('kendala', [KendalaApiController::class, 'store']);
-    Route::post('kendala/replay', [KendalaApiController::class, 'replay']);
-    Route::get('kendala/list-replay/{id}', [KendalaApiController::class, 'listreplay']);
-    Route::delete('kendala/delete-replay/{id}', [KendalaApiController::class, 'deletereplay']);
-    Route::post('kendala/search', [KendalaApiController::class, 'search']);
+    Route::post('kendala/search', [KendalaApiController::class, 'searchKendala']);
     Route::put('kendala/{id}', [KendalaApiController::class, 'update']);
     Route::post('kendala/selected', [KendalaApiController::class, 'deleteSelected']);
     Route::delete('kendala/{id}', [KendalaApiController::class, 'delete']);
+
+    Route::get('kendala/{id}', [KendalaApiController::class, 'show']);
+    Route::get('masalah/comment/{id}', [KendalaApiController::class, 'commentDetail']);
+    Route::post('kendala/{id}/search', [KendalaApiController::class, 'searchKriteria']);
+    Route::post('masalah', [KendalaApiController::class, 'saveKendala']);
+    Route::get('masalah/list-replay/{id}', [KendalaApiController::class, 'listreplay']);
+    Route::post('masalah/comment', [KendalaApiController::class, 'saveComment']);
+    Route::put('masalah/update-replay/{id}', [KendalaApiController::class, 'updatereplay']);
+    Route::delete('masalah/delete-replay/{id}', [KendalaApiController::class, 'deletereplay']);
+    
+
 
     Route::get('forum', [ForumApiController::class, 'index']);
     Route::post('forum', [ForumApiController::class, 'store']);

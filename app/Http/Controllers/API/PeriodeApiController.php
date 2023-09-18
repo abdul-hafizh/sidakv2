@@ -17,7 +17,7 @@ class PeriodeApiController extends Controller
 
     public function __construct()
     {
-        $this->perPage = GeneralPaginate::limit();
+       
     }
 
     public function index(Request $request)
@@ -75,19 +75,31 @@ class PeriodeApiController extends Controller
 
 
 
-    public function search(Request $request)
-    {
+     public function search(Request $request){
         $search = $request->search;
         $_res = array();
-        $AccountValidate = SearchGeneration::Search($search);
-        if (count($AccountValidate) > 0) {
-            $label = $AccountValidate['label'];
-            $value = $AccountValidate['value'];
-            $Data = Periode::where($label, 'LIKE', '%' . $value . '%')->orderBy('id', 'DESC')->paginate($this->perPage);
-            $description = $search;
-            $_res = RequestPeriode::GetDataAll($Data, $this->perPage, $request, $description);
+        $column_search  = array('name', 'slug','year');
+
+        $i = 0;
+        $query  = Periode::orderBy('id','DESC');
+        foreach ($column_search as $item)
+        {
+            if ($search) 
+            {                
+                if ($i === 0) {   
+                   $query->where($item,'LIKE','%'.$search.'%');
+                } else {
+                   $query->orWhere($item,'LIKE','%'.$search.'%');
+                }   
+            }
+            $i++;
         }
+       
+        $data = $query->paginate($request->per_page);
+        $description = $search;
+        $_res = RequestPeriode::GetDataAll($data,$request->per_page,$request,$description);
         return response()->json($_res);
+
     }
 
 
@@ -107,11 +119,23 @@ class PeriodeApiController extends Controller
             return response()->json($validation, 400);
         } else {
 
-            $insert = RequestPeriode::fieldsData($request);
-            //create menu
-            $saveData = Periode::create($insert);
-            //result
-            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Insert data sucessfully']);
+            $check = Periode::where(['semester'=>$request->semester,'year'=>$request->semester])->first();
+            if(!$check)
+            { 
+
+               
+                $err['messages']['semester'] = 'Semester dan tahun sudah pernah dibuat.';
+                $err['messages']['year'] = 'Semester dan tahun sudah pernah dibuat.';
+ 
+               
+               return response()->json($err, 400);
+            }else{ 
+                $insert = RequestPeriode::fieldsData($request);
+                //create menu
+                $saveData = Periode::create($insert);
+                //result
+                return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Insert data sucessfully']);
+            }
         }
     }
 
@@ -144,6 +168,20 @@ class PeriodeApiController extends Controller
         if ($results) {
             $messages['messages'] = true;
         }
+        return response()->json($messages);
+    }
+
+     public function deleteSelected(Request $request)
+    {
+        $messages['messages'] = false;
+        foreach ($request->data as $key) {
+            $results = Periode::where('id', (int)$key)->delete();
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
         return response()->json($messages);
     }
 

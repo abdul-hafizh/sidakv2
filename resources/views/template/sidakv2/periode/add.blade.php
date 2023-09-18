@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Periode</h4>
       </div>
       <form  id="FormSubmit" >
@@ -23,7 +23,7 @@
                   <option value="01">Semester 1</option>
                   <option value="02">Semester 2</option>
               </select>
-              <span id="semester-messages"></span>
+              <span id="semester-messages" class="span-messages"></span>
             </div>
 
             <div id="year-alert" class="form-group has-feedback" >
@@ -35,20 +35,20 @@
             <div id="startdate-alert" class="form-group has-feedback" >
               <label>Tanggal Mulai</label>
               <input type="date" class="form-control" name="startdate" placeholder="Tanggal Mulai" value="">
-              <span id="startdate-messages"></span>
+              <span id="startdate-messages" class="span-messages"></span>
             </div>
 
             <div id="enddate-alert" class="form-group has-feedback" >
               <label>Tanggal Berahir</label>
               <input type="date" class="form-control" name="enddate" placeholder="Tanggal Berahir" value="">
-              <span id="enddate-messages"></span>
+              <span id="enddate-messages" class="span-messages"></span>
             </div>
 
          
             <div id="description-alert" class="form-group has-feedback" >
               <label>Keterangan</label>
               <textarea class="textarea-fixed-replay" name="description" placeholder="Tambahkan keterangan"> </textarea>
-              <span id="description-messages"></span>
+              <span id="description-messages" class="span-messages"></span>
             </div>
 
             <div  id="status-alert" class="form-group has-feedback" >
@@ -76,7 +76,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" id="close2" class="btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>
@@ -96,7 +96,7 @@
   $("#simpan").click( () => {
 
           var data = $("#FormSubmit").serializeArray();
-          console.log(data)
+         
           var form = {
               
               'semester':data[0].value,

@@ -178,12 +178,12 @@
                     url: BASE_URL + `/api/notif`,
                     method: 'GET',
                     success: function(response) {
-                        var row = ``;
+                       
 
                         if (response.data.length > 0) {
                             // Populate content with new data
                             response.data.forEach(function(item, index) {
-
+                                var row = ``;
                                 row += `<li>`;
                                 row += `<a href="#">`;
                                 row += `<div class="pull-left">`;
@@ -200,12 +200,12 @@
                             $('#total-notif-all').append('You have ' + response.total_all + ' messages');
                             $('#menu-notif').append(row);
                         } else {
-
-
+                            
+                            var row = ``;
                             row += `<li>`;
                             row += `<a>Data Kosong</a>`;
                             row += `</li>`;
-                            content.append(row);
+                            $('#menu-notif').append(row);
                         }
 
 
@@ -222,6 +222,31 @@
         const template = JSON.parse(apps);
         $('.logo-mini').html('<img src="' + template.logo_sm + '" class="full">');
         $('.logo-lg').html('<img src="' + template.logo_lg + '" class="full">');
+
+
+        $("#close1").click(()=> {   
+          DefaultNull();
+        });
+
+         $("#close2").click(()=> {   
+          DefaultNull();
+        });
+
+         function DefaultNull()
+       {
+            $('.selectpicker').selectpicker('refresh');
+           $("input").val(null);
+           $("textarea").val(null);
+           $('#daerah-alert-add').hide();
+           $('#semester').selectpicker('val', 'null');
+           $('#role_id').selectpicker('val', 'null');
+           $('#kabupaten_id').selectpicker('val', 'null');
+           $('#province_id').selectpicker('val', 'null');
+           $('.form-group').removeClass('has-error');
+           $('.span-messages').removeClass('help-block').html('');
+           
+        }
+
     </script>
     @stack('scripts')
 

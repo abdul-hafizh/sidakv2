@@ -1,7 +1,7 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15">
-    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+    <div id="ShowSearch" style="display:none;" class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
@@ -14,25 +14,55 @@
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
-			
+
+			<div  class="pull-left padding-9-0 margin-left-button">
+                <button type="button"  id="Back" class="btn bg-navy border-radius-10">
+                  <i class="fa fa-undo" aria-hidden="true"></i>   Kembali 
+                </button>
+            </div>
+
+			 <div class="pull-left padding-9-0 margin-left-button">
+               
+                <select id="row_page" class="selectpicker" data-style="btn-default" >
+                    <option value="10" selected>10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="all">All</option>
+                </select>
+            </div>  
 			
 
-			<div class="pull-left padding-9-0 margin-left-button">
+			<div id="ShowChecklist" style="display:none;" class="pull-left padding-9-0 margin-left-button">
+                <button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
+                     Hapus
+                </button>
+            </div>
+
+			<!-- <div class="pull-left padding-9-0 margin-left-button">
 				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
 					 Refresh
 				</button>
-			</div>
+			</div> -->
 
-			<div class="pull-left padding-9-0">
+			<div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+                <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
+                     Export
+                </button>
+            </div>
+
+			<div id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
 				 Tambah
 				</button> 
 		    </div>	
 
+
+
 				
 		</div> 
 
-		<div class="pull-right width-50">
+		<div  id="ShowPagination" style="display:none;" class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -51,11 +81,15 @@
 					<thead>
 						<tr>
 						
-							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
-							<th><div class="split-table"></div><span class="span-title">Permasalahan</span></th>
-							<th><div class="split-table"></div><span class="span-title">Total Diskusi</span></th>
+							<th id="ShowChecklistAll" style="display:none;"  ><input id="select-all" class="span-title" type="checkbox"></th>
+                            <th><div  id="ShowChecklistAll" style="display:none;"   class="split-table"></div><span class="span-title">No</span>  </th>
+                            
+							
+							<th><div class="split-table"></div><span class="span-title">Nama</span></th>
+							<th><div class="split-table"></div><span class="span-title">Kriteria</span></th>
+							<th><div class="split-table"></div><span class="span-title">Total Pesan</span></th>
 						
-							<th><div class="split-table"></div><span class="span-title"> Aksi </span></th>
+							<th id="ShowAction" style="display:none;"><div class="split-table"></div><span class="span-title"> Aksi </span></th>
 						</tr>
 					</thead>
 
@@ -71,8 +105,8 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	    </div>
 	</div>
-     @include('template/sidakv2/forum.topicAdd')  
-
+     @include('template/sidakv2/kendala.masalahAdd')  
+     @include('template/sidakv2/kendala.exportKendala') 
 <script type="text/javascript">
 
  $(document).ready(function() {
@@ -85,8 +119,26 @@
     let page = 1;
     var list = [];
     const total = 0;
-
+    var search = '';
+    var url = window.location.href; // Get the current URL
+    var segments = url.split('/');   // Split the URL by '/'
+    var topic = segments[4]; // Index 4 corresponds to the second segment
+    var category = '';
     
+    $("#ExportButton").click(function() {
+        $.ajax({
+             url: BASE_URL+ `/api/kendala/`+ topic +`?page=${page}&per_page=all`,
+            method: 'GET',
+            success: function(response) {
+            	
+            	 exportData(response.data);
+            },
+            error: function(error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    });
+
 
     
      // Refresh selected button
@@ -96,9 +148,51 @@
         $('#search-input').val('');
     });
 
-  
+     $('#Back').on('click', function() {
+    	  window.location.replace('/kendala/'); 
+       
+    });
 
-    
+    $('#row_page').on('change', function() {
+            var value = $(this).val();         
+            if(value)
+            {   
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+                 
+
+                  if(search !='')
+                  {
+                    var url = BASE_URL + `/api/kendala/`+ topic +`/search?page=${page}&per_page=${value}`;
+                    var method = 'POST';
+                  }else{
+                    var url = BASE_URL + `/api/kendala/`+ topic +`?page=${page}&per_page=${value}`;
+                    var method = 'GET';
+                  }     
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data:{'search':search},
+                    success: function(response) {
+                        list = response.data;
+                        resultTotal(response.total);
+                        listOptions(response.options);
+                        updateContent(response.data,response.options);
+                        updatePagination(response.current_page, response.last_page);
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }    
+    // Perform other actions based on the selected value
+    });
+
+    // search btn
     $('#Search').click( () => {
  		 let search = $('#search-input').val();
  		 
@@ -110,23 +204,50 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 	         $.ajax({
-	            url: BASE_URL + `/api/topic/search?page=${page}&per_page=${itemsPerPage}`,
+	            url: BASE_URL + `/api/kendala/`+ topic +`/search?page=${page}&per_page=${itemsPerPage}`,
 	            data:{'search':search},
 	            method: 'POST',
 	            success: function(response) {
 	            	list = response.data;
                     resultTotal(response.total);
-	                // Update content area with fetched data
-	                updateContent(response.data);
-
-	                // Update pagination controls
-	                updatePagination(response.current_page, response.last_page);
+	            	listOptions(response.options);
+	            	updateContent(response.data,response.options);
+	            	updatePagination(response.current_page, response.last_page);
 	            },
 	            error: function(error) {
 	                console.error('Error fetching data:', error);
 	            }
 	        });
 	     }    
+    });
+
+    // search keyup
+     $('#search-input').keyup( () => {
+         search = $('#search-input').val();
+         
+         if(search)
+         {  
+             const content = $('#content');
+             content.empty();
+             let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
+             $.ajax({
+                url: BASE_URL + `/api/kendala/`+ topic +`/search?page=${page}&per_page=${itemsPerPage}`,
+                data:{'search':search},
+                method: 'POST',
+                success: function(response) {
+                    list = response.data;
+                    resultTotal(response.total);
+                    listOptions(response.options);
+                    updateContent(response.data,response.options);
+                    updatePagination(response.current_page, response.last_page);
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+         }    
     });
 
     // Function to fetch data from the API
@@ -139,21 +260,17 @@
 		row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
 		content.append(row);
 
-		var url = window.location.href; // Get the current URL
-        var segments = url.split('/');   // Split the URL by '/'
-        var topic = segments[4]; // Index 4 corresponds to the second segment
+		
 
         $.ajax({
-            url: BASE_URL+ `/api/topic/`+ topic +`?page=${page}&per_page=${itemsPerPage}`,
+            url: BASE_URL+ `/api/kendala/`+ topic +`?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
             	list = response.data;
                 resultTotal(response.total);
-                // Update content area with fetched data
-                updateContent(response.data);
-
-                // Update pagination controls
-                updatePagination(response.current_page, response.last_page);
+	            listOptions(response.options);
+	            updateContent(response.data,response.options);
+	            updatePagination(response.current_page, response.last_page);
             },
             error: function(error) {
                 console.error('Error fetching data:', error);
@@ -162,10 +279,14 @@
     }
 
     // Function to update the content area with data
-    function updateContent(data) {
-        const content = $('#content');
-
+    function updateContent(data,options) {
+       
+        const edited = options.find(o => o.action === 'edit');
+        const deleted = options.find(o => o.action === 'delete');
+        const detail = options.find(o => o.action === 'detail');
+        const checklist = options.find(o => o.action === 'checklist');
         // Clear previous data
+         const content = $('#content');
         content.empty();
         if(data.length>0)
         { 	
@@ -173,23 +294,33 @@
 	        data.forEach(function(item, index) {
 	           	let row = ``;
 	             row +=`<tr>`;
-	             
+	               if(checklist.checked == true)
+                   {
+                     row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                   }
 	               row +=`<td>${item.number}</td>`;
-	               row +=`<td>${item.name}</td>`;
+	               row +=`<td>${item.from}</td>`;
+	               row +=`<td>${item.category}</td>`;  
 	               row +=`<td>${item.total_messsage}</td>`;
 	               
 	               row +=`<td>`; 
+
+	                
+                  if(detail.checked == true) 
+                  {
 	             
-	                row +=`<button id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Komentar" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
-	            
+	                row +=`<button id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Pesan" type="button" class="btn btn-primary margin-left-button pull-left"><i class="fa fa-eye" ></i></button>`;
 	               
 	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-	                row +=`<div id="FormEdit-${item.id}"></div>`;
-	               
-
+	                 row +=`<div id="FormEdit-${item.id}"></div>`;
 	                row +=`</div>`;
+
+                    }
+
 	                row +=`</td>`;
 	              row +=`</tr>`; 
+
+	             
 
 	            content.append(row);
 
@@ -200,7 +331,7 @@
 	             row +=`<tr>`;
 	             row +=`<td colspan="5" align="center">Data Kosong</td>`;
                  row +=`</tr>`;
-                 content.append(row);
+                 content.html(row);
 
 	    }    
 
@@ -215,6 +346,8 @@
             
         });
 
+       
+
 
         
        
@@ -222,13 +355,14 @@
     }
 
     function getlistComment(item){
-
+         
            $.ajax({
-			    url:  BASE_URL +`/api/topic/list-replay/`+ item.id,
+			    url:  BASE_URL +`/api/masalah/list-replay/`+ item.id,
 			    method: 'GET',
 			    success: function(response) {
 			    	
 			        viewComment(response,item);
+			       
 			        
 			    },
 			    error: function(error) {
@@ -247,7 +381,7 @@
 
 				       row +=`<div class="modal-header pull-left full">`;
 				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Forum `+ item.category +` </h4>`;
+				         row +=`<h4 class="modal-title">Kendala | `+ item.category +` </h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form  id="FormSubmit-`+ item.id +`">`;
@@ -255,7 +389,7 @@
 
 					               row +=`<div id="succes"></div>`;    
                                    row +=`<div  class="pull-left full form-group ">`;
-		                           row +=`<label >Topik : `+ item.name +`</label>`;
+		                           row +=`<label >Masalah : `+ item.permasalahan +`</label>`;
 		                           row +=`</div>`;	
 
 
@@ -304,8 +438,8 @@
                                    row +=`</div>`;
 
                                       row +=`<div class="form-group has-feedback pull-left full" >`;
-						              row +=`<label>Komentar :</label>`;
-						              row +=`<textarea id="comment" class="form-control textarea-fixed-replay" placeholder="Komentar" name="messages"></textarea>`;
+						              row +=`<label>Pesan :</label>`;
+						              row +=`<textarea id="comment" class="form-control textarea-fixed-replay" placeholder="Pesan" name="messages"></textarea>`;
 						              row +=`<span id="messages-messages"></span>`;
 						              row +=`</div>`;
                          
@@ -346,9 +480,10 @@
 		          let item = data.find(o => o.id === id)
 
 		          $.ajax({
-		            url: BASE_URL+ `/api/topic/comment/`+ id +``,
+		            url: BASE_URL+ `/api/masalah/comment/`+ id +``,
 		            method: 'GET',
 		            success: function(response) {
+		            	
 
 		                 $('#comment-edit-'+ item.id).val(response.messages).prop("disabled", false).removeClass('text-message');
 		                 $('.update-topic-'+ item.id).prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
@@ -395,14 +530,14 @@
 		           let id = e.currentTarget.dataset.param_id; 
 		           let item = data.find(o => o.id === id)
 		          
-                   var comment = $('#comment-edit-'+ item.id).val();
+                   var messages = $('#comment-edit-'+ item.id).val();
 		           var form = {
-			        	'comment':comment,
-			        	'topic_id':item.id
+			        	'messages':messages,
+			        	'kendala_id':item.id
 			        };
 
 		          $.ajax({
-				    url:  BASE_URL +`/api/topic/update-replay/`+ id,
+				    url:  BASE_URL +`/api/masalah/update-replay/`+ id,
 				    method: 'PUT',
 				    data:form,
 				    success: function(response) {
@@ -417,7 +552,7 @@
 							al +=`</div>`;
 							$('#succes').append(al);
 
-							       $('#comment-edit-'+ item.id).val(comment).prop("disabled", true).addClass('text-message');
+							       $('#comment-edit-'+ item.id).val(messages).prop("disabled", true).addClass('text-message');
 						          $('#divclose-'+ item.id).hide();
 						          $('#btn-update-'+ item.id).hide();
 						          $('#option-'+ item.id).show();
@@ -442,7 +577,7 @@
 		          let index = e.currentTarget.dataset.param_index; 
 
                 $.ajax({
-				    url:  BASE_URL +`/api/topic/delete-replay/`+ id,
+				    url:  BASE_URL +`/api/masalah/delete-replay/`+ id,
 				    method: 'DELETE',
 				    success: function(response) {
 				        
@@ -453,7 +588,7 @@
 		                    al +=`<div class="alert alert-success alert-dismissible">`;
 								al +=`<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>`;
 								al +=`<i class="icon fa fa-check"></i>`;
-								al +=`Sukses menghapus topic`;
+								al +=`Sukses menghapus kendala`;
 							al +=`</div>`;
 							$('#succes').append(al);
 
@@ -480,20 +615,21 @@
                 $( ".modal-content" ).on( "click", "#kirim", (e) => {
 		          let id = e.currentTarget.dataset.param_id;
 		          const item = list.find(o => o.id === id);
-
+                 
 		          var data = $("#FormSubmit-"+ item.id).serializeArray();
-	             
+	            
 	              
 			        var form = {
-			        	'comment':data[0].value,
-			        	'topic_id':item.id
+			        	'messages':data[0].value,
+			        	'kendala_id':item.id,
+			        	'permasalahan':item.permasalahan,
 			        };
-
+                   
 
 
 					$.ajax({
 			            type:"POST",
-			            url: BASE_URL+'/api/topic/comment',
+			            url: BASE_URL+'/api/masalah/comment',
 			            data:form,
 			            cache: false,
 			            dataType: "json",
@@ -563,7 +699,7 @@
 	      }  
     	 $.ajax({
 			            type:"PUT",
-			            url: BASE_URL+'/api/topic/'+ id,
+			            url: BASE_URL+'/api/masalah/'+ id,
 			            data:form,
 			            cache: false,
 			            dataType: "json",
@@ -577,7 +713,7 @@
 			                    }).then((result) => {
 			                        if (result.isConfirmed) {
 			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/topic');
+			                            window.location.replace('/kendala');
 			                        }
 			                    });
 
@@ -618,6 +754,135 @@
     function resultTotal(total){
        $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
     }
+
+    function exportData(data){
+          
+          const content = $('#exportView');
+        
+         content.empty();
+         if(data.length>0)
+         {
+            // Populate content with new data
+            data.forEach(function(item, index) {
+                let row = ``;
+                 row +=`<tr>`;
+
+                   row +=`<td class="padding-text-table">${item.number}</td>`;
+                   row +=`<td class="padding-text-table">${item.from}</td>`;
+                   row +=`<td class="padding-text-table">${item.category}</td>`;
+                   row +=`<td class="padding-text-table">${item.permasalahan}</td>`;
+                   row +=`<td class="padding-text-table">${item.total_messsage}</td>`;
+    
+                   row +=`<td class="padding-text-table">${item.created_at_format}</td>`;
+                 row +=`</tr>`;
+
+               content.append(row);
+             });     
+
+         }  
+
+         ExportExel();    
+         
+    }
+    
+
+    function ExportExel()
+    {
+        var dt = new Date();
+        var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+       var table = document.getElementById("myTable");
+       var ws = XLSX.utils.table_to_sheet(table);
+       var wb = XLSX.utils.book_new();
+       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+       XLSX.writeFile(wb, "Repot-data-kendala-"+ time +".xlsx");
+
+         
+
+    }
+
+    function listOptions(data){
+        const edited = data.find(o => o.action === 'edit');
+        const deleted = data.find(o => o.action === 'delete');
+        const detail = data.find(o => o.action === 'detail');
+         const checklist = data.find(o => o.action === 'checklist');
+
+         if(checklist.action =='checklist')
+           {
+               if(checklist.checked ==true)
+               {
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
+                   
+                  
+               }else{
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               }    
+           }
+
+
+       
+        if(edited.checked == false && deleted.checked == false && detail.checked == false)
+        {
+            $('#ShowAction').hide();
+        }else{
+             $('#ShowAction').show();
+        }    
+       data.forEach(function(item, index) 
+       {
+           if(item.action =='add')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowAdd').show();
+               }else{
+                  $('#ShowAdd').hide();
+               }    
+           }
+
+          
+
+
+
+            if(item.action =='export')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowExport').show();
+               }else{
+                  $('#ShowExport').hide();
+               }    
+           }     
+
+            if(item.action =='search')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowSearch').show();
+               }else{
+                  $('#ShowSearch').hide();
+               }    
+           }   
+
+            if(item.action =='perpage')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowPagination').show();
+               }else{
+                  $('#ShowPagination').hide();
+               }    
+           }     
+
+           
+
+       });
+    }
+
+    
 
     
 

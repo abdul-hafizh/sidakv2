@@ -1,7 +1,7 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
-<section class="content-header pd-left-right-15">
-    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+<section class="content-header pd-left-right-15" >
+    <div id="ShowSearch" style="display:none;" class="col-sm-4 pull-left padding-default full margin-top-bottom-20" >
         <div class="pull-right width-50">
         	 <div class="pull-left width-50 padding-0-8">
 			    		<select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi "></select>
@@ -32,14 +32,14 @@
 				</select>
             </div> 	
 
-			<div class="pull-left padding-9-0 margin-left-button">
+			<div id="ShowChecklist" style="display:none;" class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
 			</div>
 
-            <div class="pull-left padding-9-0 margin-left-button">
-                <button type="button" id="printButton"  class="btn btn-info border-radius-10">
+            <div id="ShowExport" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
+                <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
             </div>
@@ -48,14 +48,14 @@
 
 				
 
-			<div class="pull-left padding-9-0">
+			<div id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
 				 Tambah Data
 				</button> 
 		    </div>		
 		</div> 
 
-		<div class="pull-right width-50">
+		<div id="ShowPagination" style="display:none;" class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -73,12 +73,12 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th class="th-checkbox"><input  id="select-all" class="span-title" type="checkbox"></th>
-							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th id="ShowChecklistAll" style="display:none;"  class="th-checkbox"><input  id="select-all" class="span-title" type="checkbox"></th>
+							<th><div id="ShowChecklistAll" style="display:none;"  class="split-table"></div><span class="span-title">No</span>  </th>
                             <th><div class="split-table"></div><span class="span-title">Kode Kabupaten</span>  </th>
 							<th><div class="split-table"></div> <span class="span-title"> Nama Kabupaten </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Provinsi </span></th>
-							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+							<th id="ShowAction" style="display:none;"><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -97,7 +97,7 @@
 	    </div>
 	</div>
      @include('template/sidakv2/regency.add')
-     @include('template/sidakv2/regency.print')
+     @include('template/sidakv2/regency.export')
      <script type="text/javascript">
  
 
@@ -114,9 +114,23 @@
      var daerah_id = '';
     var search = '';
 
-    $("#printButton").click(function() {
-        PrintData();
-      });
+    $("#ExportButton").click(function() {
+         
+         $.ajax({
+            url: BASE_URL+ `/api/regency?page=${page}&per_page=all`,
+            method: 'GET',
+            success: function(response) {
+                
+                 exportData(response.data);
+            },
+            error: function(error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+
+        
+    });
+
 
     $.ajax({
         url: BASE_URL +'/api/select-province',
@@ -164,7 +178,8 @@
                     success: function(response) {
                     	list = response.data;
                         resultTotal(response.total);
-                        updateContent(response.data);
+                        listOptions(response.options);
+                        updateContent(response.data,response.options);
                         updatePagination(response.current_page, response.last_page);
                     },
                     error: function(error) {
@@ -204,7 +219,8 @@
                     success: function(response) {
                     	list = response.data;
                         resultTotal(response.total);
-                        updateContent(response.data);
+                        listOptions(response.options);
+                        updateContent(response.data,response.options);
                         updatePagination(response.current_page, response.last_page);
                     },
                     error: function(error) {
@@ -236,12 +252,7 @@
         $('#search-input').val('');
     });
 
-     // Refresh selected button
-    $('#refresh').on('click', function() {
-    	
-        fetchData(page);
-        $('#search-input').val('');
-    });
+  
 
     // Delete selected button
     $('#delete-selected').on('click', function() {
@@ -281,12 +292,38 @@
     });
 
    
-
-
+     //keyup search
+     $('#search-input').keyup( () => {
+         search = $('#search-input').val();
+         
+         if(search !='' || daerah_id !='')
+         {  
+             const content = $('#content');
+             content.empty();
+             let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
+             $.ajax({
+                url: BASE_URL + `/api/regency/search?page=${page}&per_page=${itemsPerPage}`,
+                data:{'search':search,'daerah_id':daerah_id},
+                method: 'POST',
+                success: function(response) {
+                    list = response.data;
+                    resultTotal(response.total);
+                    listOptions(response.options);
+                    updateContent(response.data,response.options);
+                    updatePagination(response.current_page, response.last_page);
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+         }    
+    });
    
 
 
-
+    // btn search
     $('#Search').click( () => {
  		 search = $('#search-input').val();
  		 
@@ -304,10 +341,8 @@
 	            success: function(response) {
 	            	list = response.data;
 	            	resultTotal(response.total);
-	                // Update content area with fetched data
-	                updateContent(response.data);
-
-	                // Update pagination controls
+	                listOptions(response.options);
+                    updateContent(response.data,response.options);
 	                updatePagination(response.current_page, response.last_page);
 	            },
 	            error: function(error) {
@@ -360,10 +395,8 @@
             success: function(response) {
             	list = response.data;
             	resultTotal(response.total);
-                // Update content area with fetched data
-                updateContent(response.data);
-
-                // Update pagination controls
+                listOptions(response.options);
+                updateContent(response.data,response.options);
                 updatePagination(response.current_page, response.last_page);
             },
             error: function(error) {
@@ -373,9 +406,11 @@
     }
 
     // Function to update the content area with data
-    function updateContent(data) {
+    function updateContent(data,options) {
         const content = $('#content');
-
+        const edited = options.find(o => o.action === 'edit');
+        const deleted = options.find(o => o.action === 'delete');
+        const checklist = options.find(o => o.action === 'checklist');  
         // Clear previous data
         content.empty();
 
@@ -389,10 +424,19 @@
 
                if(item.deleted == true)
                {
-               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
 
+                 if(checklist.checked == true)
+                 {
+                    row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                 }
                }else{
+
+                 if(checklist.checked == true)
+                 {
+
                   row +=`<td><input disabled  type="checkbox"></td></td>`;  
+
+                 } 
                }
                row +=`<td class="padding-text-table">${item.number}</td>`;
                row +=`<td class="padding-text-table">${item.id}</td>`;
@@ -401,18 +445,34 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                row +=`<button id="Edit"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                if(edited.checked == true)
+                {
 
-                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=`<div id="FormEdit-${item.id}"></div>`;
-                row +=`</div>`;
+                    row +=`<button id="Edit"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+
+                    row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+                        row +=`<div id="FormEdit-${item.id}"></div>`;
+                    row +=`</div>`;
+
+                }
 
                if(item.deleted == true)
                {
 
-                  row +=`<button id="Destroy" data-placement="top" ${item.deleted}  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                  if(deleted.checked == true) 
+                  {
+
+                     row +=`<button id="Destroy" data-placement="top" ${item.deleted}  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                  }
+                     
                }else{
+
+                 if(deleted.checked == true) 
+                 {
+
                   row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+                  }
                }  
 
                 row +=`</div>`;
@@ -697,7 +757,112 @@
 
     }
 
-    function PrintData()
+    function listOptions(data){
+        const edited = data.find(o => o.action === 'edit');
+        const deleted = data.find(o => o.action === 'delete');
+        const detail = data.find(o => o.action === 'detail');
+         const checklist = data.find(o => o.action === 'checklist');
+
+         if(checklist.action =='checklist')
+           {
+               if(checklist.checked ==true)
+               {
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
+                   
+                  
+               }else{
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               }    
+           }
+       
+        if(edited.checked == false && deleted.checked == false && detail.checked == false)
+        {
+            $('#ShowAction').hide();
+        }else{
+             $('#ShowAction').show();
+        }    
+       data.forEach(function(item, index) 
+       {
+           if(item.action =='add')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowAdd').show();
+               }else{
+                  $('#ShowAdd').hide();
+               }    
+           }
+
+          
+
+
+
+            if(item.action =='export')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowExport').show();
+               }else{
+                  $('#ShowExport').hide();
+               }    
+           }     
+
+            if(item.action =='search')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowSearch').show();
+               }else{
+                  $('#ShowSearch').hide();
+               }    
+           }   
+
+            if(item.action =='perpage')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowPagination').show();
+               }else{
+                  $('#ShowPagination').hide();
+               }    
+           }     
+
+           
+
+       });
+    }
+
+    function exportData(data){
+
+         const content = $('#exportView');
+         content.empty();
+         if(data.length>0)
+         {
+            // Populate content with new data
+            data.forEach(function(item, index) {
+                let row = ``;
+                 row +=`<tr>`;
+
+                   row +=`<td class="padding-text-table">${item.number}</td>`;
+                   row +=`<td class="padding-text-table">${item.id}</td>`;
+                   row +=`<td class="padding-text-table">${item.name}</td>`;
+                   row +=`<td class="padding-text-table">${item.province_id}</td>`;
+                   row +=`<td class="padding-text-table">${item.province_name}</td>`;
+                   row +=`<td class="padding-text-table">${item.created_at_format}</td>`;
+                 row +=`</tr>`;
+
+               content.append(row);
+             });     
+
+         }     
+
+         ExportExel();   
+          
+    }
+
+    function ExportExel()
     {
         var dt = new Date();
        var time =  dt.getDate() + "-"

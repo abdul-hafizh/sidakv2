@@ -12,6 +12,7 @@ use App\Http\Request\RequestForum;
 use App\Http\Request\RequestNotification;
 use App\Http\Request\Validation\ValidationForum;
 use App\Http\Request\Validation\ValidationTopic;
+use App\Http\Request\RequestAuditLog;
 use DB;
 use Auth;
 
@@ -102,6 +103,18 @@ class ForumApiController extends Controller
         }else{
 
            $insert = RequestForum::fieldsDataTopic($request);  
+
+
+            $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Topik',
+            'slug'=>'insert-topik',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/topic'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);
             //create menu
            $saveData = Topic::create($insert);
            $messages = RequestForum::fieldsDataTopicDetail($saveData->id,$request);
@@ -128,7 +141,21 @@ class ForumApiController extends Controller
           return response()->json($validation,400);  
         }else{
 
-           $insert = RequestForum::fieldsDataTopicDetail($request->topic_id,$request);  
+           $insert = RequestForum::fieldsDataTopicDetail($request->topic_id,$request); 
+
+            
+
+            $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Komentar',
+            'slug'=>'insert-komentar',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/topic/comment'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);
+
             //create menu
            $saveData = TopicDetail::create($insert);
            $last = RequestForum::MessagesLast($saveData->id,$request->topic_id);
@@ -217,7 +244,18 @@ class ForumApiController extends Controller
         }else{
 
             
-           $insert = RequestForum::fieldsData($request);  
+            $insert = RequestForum::fieldsData($request); 
+            $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Forum',
+            'slug'=>'insert-forum',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/forum'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);
+
             //create menu
            $saveData = Forum::create($insert);
             //result
@@ -236,6 +274,19 @@ class ForumApiController extends Controller
         }else{
             
                $update = RequestForum::fieldsData($request);
+               //Audit Log
+                $json = json_encode($update);
+                
+                $log = array(             
+                'action'=> 'Update Forum',
+                'slug'=>'update-forum',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'api/forum/'.$id
+                );
+
+                $datalog =  RequestAuditLog::fieldsData($log);
+
                 //update account
                $UpdateData = Forum::where('id',$id)->update($update);
                 //result
@@ -269,6 +320,18 @@ class ForumApiController extends Controller
     public function deletereplay($id){
         $messages['messages'] = false;
         $_res = TopicDetail::find($id);
+
+         $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Replay',
+        'slug'=>'delete-replay',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/topic/'.$id
+        );
+
+        RequestAuditLog::fieldsData($log);
           
         if(empty($_res)){
             return response()->json(['messages' => false]);
@@ -303,6 +366,18 @@ class ForumApiController extends Controller
     public function delete($id){
         $messages['messages'] = false;
         $_res = Forum::find($id);
+
+        $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Forum',
+        'slug'=>'delete-forum',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/forum/'.$id
+        );
+
+        RequestAuditLog::fieldsData($log);
           
         if(empty($_res)){
             return response()->json(['messages' => false]);

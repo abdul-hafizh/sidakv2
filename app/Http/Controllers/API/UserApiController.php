@@ -24,7 +24,7 @@ class UserApiController extends Controller
    
     public function __construct()
     {   
-        $this->perPage = GeneralPaginate::limit();
+
         $this->UploadFolder = GeneralPaginate::uploadPhotoFolder();
        
     }
@@ -159,7 +159,7 @@ class UserApiController extends Controller
             'url'=>'api/user'
             );
 
-            $data = RequestAuditLog::fieldsData($log);
+            $datalog = RequestAuditLog::fieldsData($log);
          
             //create menu
            $saveData = User::create($merge);
@@ -213,8 +213,10 @@ class UserApiController extends Controller
                 }else{
                     $merge = $update; 
                 }
-                 $json = json_encode($merge);
+                
                 //Audit Log
+                $json = json_encode($merge);
+                
                 $log = array(             
                 'action'=> 'Update User',
                 'slug'=>'update-user',
@@ -223,10 +225,9 @@ class UserApiController extends Controller
                 'url'=>'api/user/'.$id
                 );
 
-                RequestAuditLog::fieldsData($log);
+                $datalog =  RequestAuditLog::fieldsData($log);
+                //Audit Log
 
-              
-             
                 //update account
                $UpdateData = User::where('id',$id)->update($merge);
                $role = Roles::where('slug',$request->role_id)->first();
@@ -307,7 +308,7 @@ class UserApiController extends Controller
            $data = $query->get(); 
         } 
         $description = $search;
-        $result = RequestUser::GetDataAll($data,$this->perPage,$request);
+        $result = RequestUser::GetDataAll($data,$request->per_page,$request);
         return response()->json($result);
 
     }
@@ -337,7 +338,7 @@ class UserApiController extends Controller
         $json = json_encode($_res);
         //Audit Log
         $log = array(             
-        'action'=> 'Update User',
+        'action'=> 'Delete User',
         'slug'=>'delete-user',
         'type'=>'delete',
         'json_field'=> $json,

@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Http\Request\RequestDaerah;
 use App\Models\RoleMenu;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestMenuRoles;
 
 class RequestProvinces
 {
@@ -32,10 +33,12 @@ class RequestProvinces
       
       $temp[$key]['deleted'] = RequestDaerah::checkValidate($val->id);
       $temp[$key]['created_by'] = $val->created_by;
-      $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+      $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
+      $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
     }
-
+       
        $result['data'] = $temp;
+       $result['options'] = RequestMenuRoles::ActionPage('provinsi');
        if($perPage !='all')
        {
            $result['current_page'] = $data->currentPage();
@@ -49,32 +52,6 @@ class RequestProvinces
    
     return $result;
   }
-
-  
-
-  public static function GetDataPrint($data){
-
-          
-
-        $i = 1;    
-        foreach ($data as $key => $val)
-        { 
-            
-            $temp[$key]['number'] = $i;
-            $temp[$key]['id'] = $val->id;
-            $temp[$key]['name'] = $val->name;
-            $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
-
-            $i++;
-        }  
-
-        return json_decode(json_encode($temp), FALSE);
-   }
-
-  
-
-
-
 
   public static function fieldsData($request)
   {

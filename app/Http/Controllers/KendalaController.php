@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestSystemLog;
-
+use DB;
 class KendalaController extends Controller
 {
    
@@ -25,37 +25,38 @@ class KendalaController extends Controller
         );
         RequestSystemLog::CreateLog($log);
         $with =  ['title' => $title,'template'=>'template/'.$this->template];
-        if($_COOKIE['access'] =="admin")
-        {
-            return view('template/' . $this->template . '.kendala.admin')->with($with);
-        }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){
-            return view('template/' . $this->template . '.kendala.daerah')->with($with);
-
-        }    
-
+       
+        return view('template/' . $this->template . '.kendala.index')->with($with);
+       
      
     }
 
     public function show($topic)
     {
-        $title = 'Kendala '.$topic;
-        $log = array(             
-            'menu'=>$title,
-            'slug'=>'kendala-category',
-            'url'=>'kendala/'.$topic.''
-        );
-        RequestSystemLog::CreateLog($log);
-        $with =  ['title' => $title,'template'=>'template/'.$this->template];
-        if($_COOKIE['access'] =="admin")
-        {
-            return view('template/' . $this->template . '.kendala.admin')->with($with);
-        }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){
+        
+        $query = DB::table('kriteria_kendala')->where('slug',$topic)->first(); 
+         if($query)
+        { 
+
+            $title = 'Kriteria '.$query->category; 
+            $log = array(             
+                'menu'=>$title,
+                'slug'=>'kriteria-topik',
+                'url'=>'kriteria/'.$topic.'',
+            );
+            RequestSystemLog::CreateLog($log);
+            $with =  ['title' => $title,'template'=>'template/'.$this->template];
             return view('template/' . $this->template . '.kendala.masalah')->with($with);
 
-        }    
+                
+        }else{
+            abort(404);
+        }
+  
 
-     
     }
+
+
 
  
    

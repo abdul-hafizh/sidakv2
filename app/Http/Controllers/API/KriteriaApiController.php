@@ -19,8 +19,6 @@ class KriteriaApiController extends Controller
 
     public function index(Request $request)
     {
-       
-
         // $_res = array();
          $query = Kriteria::orderBy('created_at', 'DESC');
          if($request->per_page !='all')
@@ -32,19 +30,10 @@ class KriteriaApiController extends Controller
         
          $result = RequestKriteria::GetDataAll($data,$request->per_page,$request);
          return response()->json($result);
-
-
     }
 
     
-      public function listAll(Request $request)
-    {
-        $query = Kriteria::select('id','slug as value','name as text','status')->orderBy('created_at', 'DESC')->get();
-        $data = RequestKriteria::GetKriteria($query);
-        return response()->json($data);
-
-    }
-   
+    
 
    
 
@@ -53,7 +42,7 @@ class KriteriaApiController extends Controller
     public function search(Request $request){
         $search = $request->search;
         $_res = array();
-        $column_search  = array('name', 'slug');
+        $column_search  = array('category', 'slug');
 
         $i = 0;
         $query  = Kriteria::orderBy('id','DESC');
@@ -70,9 +59,9 @@ class KriteriaApiController extends Controller
             $i++;
         }
        
-        $Data = $query->paginate($this->perPage);
+        $Data = $query->paginate($request->per_page);
         $description = $search;
-        $_res = RequestKriteria::GetDataAll($Data,$this->perPage,$request,$description);
+        $_res = RequestKriteria::GetDataAll($Data,$request->per_page,$request,$description);
                
     
         return response()->json($_res);

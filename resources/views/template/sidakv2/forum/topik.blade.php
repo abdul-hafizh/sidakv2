@@ -1,7 +1,7 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15">
-    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+    <div id="ShowSearch" style="display:none;" class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
@@ -16,14 +16,27 @@
 		<div class="width-50 pull-left">
 			
 			
-
+<!-- 
 			<div class="pull-left padding-9-0 margin-left-button">
 				<button type="button"  id="refresh" class="btn btn-primary border-radius-10">
 					 Refresh
 				</button>
-			</div>
+			</div> -->
 
-			<div class="pull-left padding-9-0">
+			<div id="ShowChecklist" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
+                <button type="button"  id="Back" class="btn bg-navy border-radius-10">
+                  <i class="fa fa-undo" aria-hidden="true"></i> Kembali 
+                </button>
+            </div>
+
+            <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+                <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
+                     Export
+                </button>
+            </div>
+
+
+			<div id="ShowAdd" style="display:none;"  class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
 				 Tambah
 				</button> 
@@ -32,7 +45,7 @@
 				
 		</div> 
 
-		<div class="pull-right width-50">
+		<div  id="ShowPagination" style="display:none;" class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -51,11 +64,13 @@
 					<thead>
 						<tr>
 						
-							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th id="ShowChecklistAll" style="display:none;"  ><input id="select-all" class="span-title" type="checkbox"></th>
+                            <th><div  id="ShowChecklistAll" style="display:none;"   class="split-table"></div><span class="span-title">No</span>  </th>
+
 							<th><div class="split-table"></div><span class="span-title">Topik</span></th>
 							<th><div class="split-table"></div><span class="span-title">Total Komentar</span></th>
 						
-							<th><div class="split-table"></div><span class="span-title"> Aksi </span></th>
+							<th id="ShowAction" style="display:none;"><div class="split-table"></div><span class="span-title"> Aksi </span></th>
 						</tr>
 					</thead>
 
@@ -72,7 +87,7 @@
 	    </div>
 	</div>
      @include('template/sidakv2/forum.topicAdd')  
-
+     @include('template/sidakv2/forum.exportTopik') 
 <script type="text/javascript">
 
  $(document).ready(function() {
@@ -85,7 +100,9 @@
     let page = 1;
     var list = [];
     const total = 0;
-
+    var url = window.location.href; // Get the current URL
+    var segments = url.split('/');   // Split the URL by '/'
+    var topic = segments[4]; // Index 4 corresponds to the second segment
     
 
     
@@ -96,7 +113,25 @@
         $('#search-input').val('');
     });
 
-  
+     $('#Back').on('click', function() {
+    	  window.location.replace('/forum/'); 
+       
+    });
+
+
+    $("#ExportButton").click(function() {
+        $.ajax({
+            url: BASE_URL+ `/api/topic/`+ topic +`?page=${page}&per_page=all`,	
+            method: 'GET',
+            success: function(response) {
+            	
+            	 exportData(response.data);
+            },
+            error: function(error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    });
 
     
     $('#Search').click( () => {
@@ -116,10 +151,8 @@
 	            success: function(response) {
 	            	list = response.data;
                     resultTotal(response.total);
-	                // Update content area with fetched data
-	                updateContent(response.data);
-
-	                // Update pagination controls
+	                listOptions(response.options);
+                    updateContent(response.data,response.options);
 	                updatePagination(response.current_page, response.last_page);
 	            },
 	            error: function(error) {
@@ -139,9 +172,7 @@
 		row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
 		content.append(row);
 
-		var url = window.location.href; // Get the current URL
-        var segments = url.split('/');   // Split the URL by '/'
-        var topic = segments[4]; // Index 4 corresponds to the second segment
+		
 
         $.ajax({
             url: BASE_URL+ `/api/topic/`+ topic +`?page=${page}&per_page=${itemsPerPage}`,
@@ -149,10 +180,8 @@
             success: function(response) {
             	list = response.data;
                 resultTotal(response.total);
-                // Update content area with fetched data
-                updateContent(response.data);
-
-                // Update pagination controls
+                listOptions(response.options);
+                updateContent(response.data,response.options);
                 updatePagination(response.current_page, response.last_page);
             },
             error: function(error) {
@@ -162,8 +191,13 @@
     }
 
     // Function to update the content area with data
-    function updateContent(data) {
+    function updateContent(data,options) {
         const content = $('#content');
+
+        const edited = options.find(o => o.action === 'edit');
+        const deleted = options.find(o => o.action === 'delete');
+        const detail = options.find(o => o.action === 'detail');
+        const checklist = options.find(o => o.action === 'checklist');
 
         // Clear previous data
         content.empty();
@@ -173,7 +207,10 @@
 	        data.forEach(function(item, index) {
 	           	let row = ``;
 	             row +=`<tr>`;
-	             
+	               if(checklist.checked == true)
+                   {
+                      row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                   }
 	               row +=`<td>${item.number}</td>`;
 	               row +=`<td>${item.name}</td>`;
 	               row +=`<td>${item.total_messsage}</td>`;
@@ -620,7 +657,129 @@
     }
 
     
+    function exportData(data){
+          
+          const content = $('#exportView');
+        
+         content.empty();
+         if(data.length>0)
+         {
+            // Populate content with new data
+            data.forEach(function(item, index) {
+                let row = ``;
+                 row +=`<tr>`;
 
+                   row +=`<td class="padding-text-table">${item.number}</td>`;
+                   row +=`<td class="padding-text-table">${item.name}</td>`;
+                   row +=`<td class="padding-text-table">${item.total_messsage}</td>`;
+                   row +=`<td class="padding-text-table">${item.created_at_format}</td>`;
+                 row +=`</tr>`;
+
+               content.append(row);
+             });     
+
+         }  
+
+         ExportExel();    
+         
+    }
+
+     function ExportExel()
+    {
+        var dt = new Date();
+        var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+       var table = document.getElementById("myTable");
+       var ws = XLSX.utils.table_to_sheet(table);
+       var wb = XLSX.utils.book_new();
+       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+       XLSX.writeFile(wb, "Repot-data-topik-"+ time +".xlsx");
+
+         
+
+    }
+
+    function listOptions(data){
+        const edited = data.find(o => o.action === 'edit');
+        const deleted = data.find(o => o.action === 'delete');
+        const detail = data.find(o => o.action === 'detail');
+         const checklist = data.find(o => o.action === 'checklist');
+
+         if(checklist.action =='checklist')
+           {
+               if(checklist.checked ==true)
+               {
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
+                   
+                  
+               }else{
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               }    
+           }
+
+
+       
+        if(edited.checked == false && deleted.checked == false && detail.checked == false)
+        {
+            $('#ShowAction').hide();
+        }else{
+             $('#ShowAction').show();
+        }    
+       data.forEach(function(item, index) 
+       {
+           if(item.action =='add')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowAdd').show();
+               }else{
+                  $('#ShowAdd').hide();
+               }    
+           }
+
+          
+
+
+
+            if(item.action =='export')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowExport').show();
+               }else{
+                  $('#ShowExport').hide();
+               }    
+           }     
+
+            if(item.action =='search')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowSearch').show();
+               }else{
+                  $('#ShowSearch').hide();
+               }    
+           }   
+
+            if(item.action =='perpage')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowPagination').show();
+               }else{
+                  $('#ShowPagination').hide();
+               }    
+           }     
+
+           
+
+       });
+    }
+    
 
     // Function to update pagination controls
     function updatePagination(currentPage, totalPages) {

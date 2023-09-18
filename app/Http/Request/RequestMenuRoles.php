@@ -146,29 +146,840 @@ class RequestMenuRoles
 
    }
    
-    public static function MenuSidebar($array){
+    public static function MenuSidebarAdmin(){
         
 
-        foreach ($array as $key => $value) 
-        {
-           if($key == 0)
-           {
-              $status = 'menu-open active';
-           }else{
-              $status = '';
-           }
+       //  foreach ($array as $key => $value) 
+       //  {
+       //     if($key == 0)
+       //     {
+       //        $status = 'menu-open active';
+       //     }else{
+       //        $status = '';
+       //     }
 
-           $arr[$key]['name'] = $value->name;
-           $arr[$key]['icon'] = $value->icon;
-           $arr[$key]['path_vue'] = $value->path_vue;
-           $arr[$key]['status'] = $status;
-           $arr[$key]['count'] =  count($value->tasks);
-           $arr[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ;      
-        }
+       //     $arr[$key]['name'] = $value->name;
+       //     $arr[$key]['icon'] = $value->icon;
+       //     $arr[$key]['path_vue'] = $value->path_vue;
+       //     $arr[$key]['status'] = $status;
+       //     $arr[$key]['count'] =  count($value->tasks);
+       //     $arr[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ;      
+       //  }
  
-       $result =  json_encode($arr);
-       return json_decode($result);
+       // $result =  json_encode($arr);
+       // return json_decode($result);
 
+        $data = array(
+        [
+            
+            'name'=>'Dashboard',
+            'slug'=>'dashboard',
+            'icon'=>'fa-img-home',
+            'url'=>'/dashboard',
+            'count'=>0,
+            'active'=>true,
+            'class'=>'treeview menu-open active',
+            'tasks'=>[], // dashboard
+        ],
+        [
+            'name'=>'Manajemen Data',
+            'slug'=>'manajemen-data',
+            'icon'=>'fa-img-ma-user',
+            'url'=>'#',
+            'count'=>6,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Provinsi',
+                    'slug'=>'province',
+                    'icon'=>'fa-img-province',
+                    'url'=>'/provinsi',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Kabupaten',
+                    'slug'=>'kabupaten',
+                    'icon'=>'fa-img-role',
+                    'url'=>'/kabupaten',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Kriteria Kendala',
+                'slug'=>'kriteria-kendala',
+                'icon'=>'fa-img-kendala',
+                'url'=>'/kriteria-kendala',
+                'tasks'=>[],
+               ],[
+                'name'=>'Forum',
+                'slug'=>'forum',
+                'icon'=>'fa-img-forum',
+                'url'=>'/forum',
+                'tasks'=>[],
+             ],[
+                'name'=>'Status',
+                'slug'=>'status',
+                'icon'=>'fa-img-status',
+                'url'=>'/',
+                'tasks'=>[],
+            ],[
+                'name'=>'Batas Periode',
+                'slug'=>'batas-periode',
+                'icon'=>'fa-img-status',
+                'url'=>'/periode',
+                'tasks'=>[],
+            ]
+
+           ), // management data
+                 
+        ],
+        [
+            'name'=>'Manajemen User',
+            'slug'=>'manajemen-user',
+            'icon'=>'fa-img-ma-user',
+            'url'=>'#',
+            'count'=>3,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'User',
+                    'slug'=>'user',
+                    'icon'=>'fa-img-user',
+                    'url'=>'/user',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Role',
+                    'slug'=>'role',
+                    'icon'=>'fa-img-user',
+                    'url'=>'/options',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Aksi',
+                'slug'=>'aksi',
+                'icon'=>'fa-img-user',
+                'url'=>'/action',
+                'tasks'=>[],
+               ]
+
+           ), // management user
+            
+        ],
+        [ 
+            'name'=>'Pagu APBN',
+            'slug'=>'pagu-apbn',
+            'icon'=>'fa-img-pagu',
+            'url'=>'/pagutarget',
+            'count'=>0,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=>[], //pagu apbn
+
+        ],
+        [
+            'name'=>'Monitoring',
+            'slug'=>'monitoring',
+            'icon'=>'fa-img-monitoring',
+            'url'=>'#',
+            'count'=>7,
+            'active'=>false,
+            'class'=>'',
+            'tasks'=> array(
+                [
+                    'name'=>'Pagu APBN',
+                    'slug'=>'pagu-apbn',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/pagutarget',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Perencanaan',
+                    'slug'=>'perencanaan',
+                    'icon'=>'fa-img-perencanaan',
+                    'url'=>'/perencanaan',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Pengawasan',
+                'slug'=>'pengawasan',
+                'icon'=>'fa-img-pengawasan',
+                'url'=>'/pengawasan',
+                'tasks'=>[],
+               ],[
+                'name'=>'Bimbingan/Sosialisasi',
+                'slug'=>'bimsos',
+                'icon'=>'fa-img-bimsos',
+                'url'=>'/bimsos',
+                'tasks'=>[],
+             ],[
+                'name'=>'Penyelesaian Masalah',
+                'slug'=>'penyelesaian-masalah',
+                'icon'=>'fa-img-penyelesaian',
+                'url'=>'/',
+                'tasks'=>[],
+            ],[
+                'name'=>'Promosi',
+                'slug'=>'promosi',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/promosi',
+                'tasks'=>[],
+            ],[
+                'name'=>'Imap',
+                'slug'=>'imap',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/imap',
+                'tasks'=>[],
+            ]
+
+           ), //monitoring
+            
+        ],
+        [
+            'name'=>'Tools',
+            'slug'=>'tools',
+            'icon'=>'fa-img-ma-user',
+            'url'=>'#',
+            'count'=>3,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Kendala',
+                    'slug'=>'kendala',
+                    'icon'=>'fa-img-kendala',
+                    'url'=>'/kendala',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Forum',
+                    'slug'=>'forum',
+                    'icon'=>'fa-img-forum',
+                    'url'=>'/forum',
+                    'tasks'=>[],
+             
+               ]
+
+           ), // tools
+            
+        ],
+        [
+            'name'=>'Pelaporan',
+            'slug'=>'pelaporan',
+            'icon'=>'fa-img-monitoring',
+            'url'=>'#',
+            'count'=>7,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Rekapitulasi',
+                    'slug'=>'rekapitulasi',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/rekapitulasi',
+                    'tasks'=>[],  
+                ],
+                [
+                    'name'=>'Pagu APBN',
+                    'slug'=>'pagu-apbn',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/pagutarget',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Perencanaan',
+                    'slug'=>'perencanaan',
+                    'icon'=>'fa-img-perencanaan',
+                    'url'=>'/perencanaan',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Pengawasan',
+                'slug'=>'pengawasan',
+                'icon'=>'fa-img-pengawasan',
+                'url'=>'/pengawasan',
+                'tasks'=>[],
+               ],[
+                'name'=>'Bimbingan/Sosialisasi',
+                'slug'=>'bimsos',
+                'icon'=>'fa-img-bimsos',
+                'url'=>'/bimsos',
+                'tasks'=>[],
+             ],[
+                'name'=>'Penyelesaian Masalah',
+                'slug'=>'penyelesaian-masalah',
+                'icon'=>'fa-img-penyelesaian',
+                'url'=>'/',
+                'tasks'=>[],
+            ],[
+                'name'=>'Promosi',
+                'slug'=>'promosi',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/promosi',
+                'tasks'=>[],
+            ],[
+                'name'=>'Imap',
+                'slug'=>'imap',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/imap',
+                'tasks'=>[],
+            ]
+            ,[
+                'name'=>'Kendala',
+                'slug'=>'kendala',
+                'icon'=>'fa-img-kendala',
+                'url'=>'/kendala',
+                'tasks'=>[],
+            ]
+
+           ), // Pelaporan
+            
+        ],
+        [
+            
+            'name'=>'Audit Log',
+            'slug'=>'auditlog',
+            'icon'=>'fa-img-pagu',
+            'url'=>'/auditlog',
+            'count'=>0,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=>[], 
+
+        ], // auditlog
+
+
+    );
+
+    return json_decode(json_encode($data),true);
+
+   }
+
+    public static function MenuSidebarPusat(){
+        
+
+       
+        $data = array(
+        [
+            
+            'name'=>'Dashboard',
+            'slug'=>'dashboard',
+            'icon'=>'fa-img-home',
+            'url'=>'/dashboard',
+            'count'=>0,
+            'active'=>true,
+            'class'=>'treeview menu-open active',
+            'tasks'=>[], // dashboard
+        ],
+        [ 
+            'name'=>'Pagu APBN',
+            'slug'=>'pagu-apbn',
+            'icon'=>'fa-img-pagu',
+            'url'=>'/pagutarget',
+            'count'=>0,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=>[], //pagu apbn
+
+        ],
+        [
+            'name'=>'Monitoring',
+            'slug'=>'monitoring',
+            'icon'=>'fa-img-monitoring',
+            'url'=>'#',
+            'count'=>7,
+            'active'=>false,
+            'class'=>'',
+            'tasks'=> array(
+                [
+                    'name'=>'Pagu APBN',
+                    'slug'=>'pagu-apbn',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/pagutarget',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Perencanaan',
+                    'slug'=>'perencanaan',
+                    'icon'=>'fa-img-perencanaan',
+                    'url'=>'/perencanaan',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Pengawasan',
+                'slug'=>'pengawasan',
+                'icon'=>'fa-img-pengawasan',
+                'url'=>'/pengawasan',
+                'tasks'=>[],
+               ],[
+                'name'=>'Bimbingan/Sosialisasi',
+                'slug'=>'bimsos',
+                'icon'=>'fa-img-bimsos',
+                'url'=>'/bimsos',
+                'tasks'=>[],
+             ],[
+                'name'=>'Penyelesaian Masalah',
+                'slug'=>'penyelesaian-masalah',
+                'icon'=>'fa-img-penyelesaian',
+                'url'=>'/',
+                'tasks'=>[],
+            ],[
+                'name'=>'Promosi',
+                'slug'=>'promosi',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/promosi',
+                'tasks'=>[],
+            ],[
+                'name'=>'Imap',
+                'slug'=>'imap',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/imap',
+                'tasks'=>[],
+            ]
+
+           ), //monitoring
+            
+        ],
+        [
+            'name'=>'Tools',
+            'slug'=>'tools',
+            'icon'=>'fa-img-ma-user',
+            'url'=>'#',
+            'count'=>3,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Kendala',
+                    'slug'=>'kendala',
+                    'icon'=>'fa-img-kendala',
+                    'url'=>'/kendala',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Forum',
+                    'slug'=>'forum',
+                    'icon'=>'fa-img-forum',
+                    'url'=>'/forum',
+                    'tasks'=>[],
+             
+               ]
+
+           ), // tools
+            
+        ],
+        [
+            'name'=>'Pelaporan',
+            'slug'=>'pelaporan',
+            'icon'=>'fa-img-monitoring',
+            'url'=>'#',
+            'count'=>7,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Rekapitulasi',
+                    'slug'=>'rekapitulasi',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/rekapitulasi',
+                    'tasks'=>[],  
+                ],
+                [
+                    'name'=>'Pagu APBN',
+                    'slug'=>'pagu-apbn',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/pagutarget',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Perencanaan',
+                    'slug'=>'perencanaan',
+                    'icon'=>'fa-img-perencanaan',
+                    'url'=>'/perencanaan',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Pengawasan',
+                'slug'=>'pengawasan',
+                'icon'=>'fa-img-pengawasan',
+                'url'=>'/pengawasan',
+                'tasks'=>[],
+               ],[
+                'name'=>'Bimbingan/Sosialisasi',
+                'slug'=>'bimsos',
+                'icon'=>'fa-img-bimsos',
+                'url'=>'/bimsos',
+                'tasks'=>[],
+             ],[
+                'name'=>'Penyelesaian Masalah',
+                'slug'=>'penyelesaian-masalah',
+                'icon'=>'fa-img-penyelesaian',
+                'url'=>'/',
+                'tasks'=>[],
+            ],[
+                'name'=>'Promosi',
+                'slug'=>'promosi',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/promosi',
+                'tasks'=>[],
+            ],[
+                'name'=>'Imap',
+                'slug'=>'imap',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/imap',
+                'tasks'=>[],
+            ]
+            ,[
+                'name'=>'Kendala',
+                'slug'=>'kendala',
+                'icon'=>'fa-img-kendala',
+                'url'=>'/kendala',
+                'tasks'=>[],
+            ]
+
+           ), // Pelaporan
+            
+        ],
+        
+
+
+    );
+
+    return json_decode(json_encode($data),true);
+
+   }
+
+
+    public static function MenuSidebarProvinsi(){
+        
+
+       
+        $data = array(
+        [
+            
+            'name'=>'Dashboard',
+            'slug'=>'dashboard',
+            'icon'=>'fa-img-home',
+            'url'=>'/dashboard',
+            'count'=>0,
+            'active'=>true,
+            'class'=>'treeview menu-open active',
+            'tasks'=>[], // dashboard
+        ],
+       
+        [
+            'name'=>'Updating Data',
+            'slug'=>'updating-data',
+            'icon'=>'fa-img-monitoring',
+            'url'=>'#',
+            'count'=>7,
+            'active'=>false,
+            'class'=>'',
+            'tasks'=> array(
+               [
+
+                    'name'=>'Perencanaan',
+                    'slug'=>'perencanaan',
+                    'icon'=>'fa-img-perencanaan',
+                    'url'=>'/perencanaan',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Pengawasan',
+                'slug'=>'pengawasan',
+                'icon'=>'fa-img-pengawasan',
+                'url'=>'/pengawasan',
+                'tasks'=>[],
+               ],[
+                'name'=>'Bimbingan/Sosialisasi',
+                'slug'=>'bimsos',
+                'icon'=>'fa-img-bimsos',
+                'url'=>'/bimsos',
+                'tasks'=>[],
+             ],[
+                'name'=>'Penyelesaian Masalah',
+                'slug'=>'penyelesaian-masalah',
+                'icon'=>'fa-img-penyelesaian',
+                'url'=>'/',
+                'tasks'=>[],
+            ],[
+                'name'=>'Promosi',
+                'slug'=>'promosi',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/promosi',
+                'tasks'=>[],
+            ],[
+                'name'=>'Imap',
+                'slug'=>'imap',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/imap',
+                'tasks'=>[],
+            ]
+
+           ), //updating data
+            
+        ],
+        [
+            'name'=>'Tools',
+            'slug'=>'tools',
+            'icon'=>'fa-img-ma-user',
+            'url'=>'#',
+            'count'=>3,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Kendala',
+                    'slug'=>'kendala',
+                    'icon'=>'fa-img-kendala',
+                    'url'=>'/kendala',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Forum',
+                    'slug'=>'forum',
+                    'icon'=>'fa-img-forum',
+                    'url'=>'/forum',
+                    'tasks'=>[],
+             
+               ]
+
+           ), // tools
+            
+        ],
+        [
+            'name'=>'Pelaporan',
+            'slug'=>'pelaporan',
+            'icon'=>'fa-img-monitoring',
+            'url'=>'#',
+            'count'=>7,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Rekapitulasi',
+                    'slug'=>'rekapitulasi',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/rekapitulasi',
+                    'tasks'=>[],  
+                ],
+                [
+                    'name'=>'Pagu APBN',
+                    'slug'=>'pagu-apbn',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/pagutarget',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Perencanaan',
+                    'slug'=>'perencanaan',
+                    'icon'=>'fa-img-perencanaan',
+                    'url'=>'/perencanaan',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Pengawasan',
+                'slug'=>'pengawasan',
+                'icon'=>'fa-img-pengawasan',
+                'url'=>'/pengawasan',
+                'tasks'=>[],
+               ],[
+                'name'=>'Bimbingan/Sosialisasi',
+                'slug'=>'bimsos',
+                'icon'=>'fa-img-bimsos',
+                'url'=>'/bimsos',
+                'tasks'=>[],
+             ],[
+                'name'=>'Penyelesaian Masalah',
+                'slug'=>'penyelesaian-masalah',
+                'icon'=>'fa-img-penyelesaian',
+                'url'=>'/',
+                'tasks'=>[],
+            ],[
+                'name'=>'Promosi',
+                'slug'=>'promosi',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/promosi',
+                'tasks'=>[],
+            ],[
+                'name'=>'Imap',
+                'slug'=>'imap',
+                'icon'=>'fa-img-promosi',
+                'url'=>'/imap',
+                'tasks'=>[],
+            ]
+            ,[
+                'name'=>'Kendala',
+                'slug'=>'kendala',
+                'icon'=>'fa-img-kendala',
+                'url'=>'/kendala',
+                'tasks'=>[],
+            ]
+
+           ), // Pelaporan
+            
+        ],
+        
+
+
+    );
+
+    return json_decode(json_encode($data),true);
+
+   }
+
+   public static function MenuSidebarKabupaten(){
+        
+
+       
+        $data = array(
+        [
+            
+            'name'=>'Dashboard',
+            'slug'=>'dashboard',
+            'icon'=>'fa-img-home',
+            'url'=>'/dashboard',
+            'count'=>0,
+            'active'=>true,
+            'class'=>'treeview menu-open active',
+            'tasks'=>[], // dashboard
+        ],
+       
+        [
+            'name'=>'Updating Data',
+            'slug'=>'updating-data',
+            'icon'=>'fa-img-monitoring',
+            'url'=>'#',
+            'count'=>7,
+            'active'=>false,
+            'class'=>'',
+            'tasks'=> array(
+               [
+
+                    'name'=>'Perencanaan',
+                    'slug'=>'perencanaan',
+                    'icon'=>'fa-img-perencanaan',
+                    'url'=>'/perencanaan',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Pengawasan',
+                'slug'=>'pengawasan',
+                'icon'=>'fa-img-pengawasan',
+                'url'=>'/pengawasan',
+                'tasks'=>[],
+               ],[
+                'name'=>'Bimbingan/Sosialisasi',
+                'slug'=>'bimsos',
+                'icon'=>'fa-img-bimsos',
+                'url'=>'/bimsos',
+                'tasks'=>[],
+             ],[
+                'name'=>'Penyelesaian Masalah',
+                'slug'=>'penyelesaian-masalah',
+                'icon'=>'fa-img-penyelesaian',
+                'url'=>'/',
+                'tasks'=>[],
+            ]
+
+           ), //updating data
+            
+        ],
+        [
+            'name'=>'Tools',
+            'slug'=>'tools',
+            'icon'=>'fa-img-ma-user',
+            'url'=>'#',
+            'count'=>3,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Kendala',
+                    'slug'=>'kendala',
+                    'icon'=>'fa-img-kendala',
+                    'url'=>'/kendala',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Forum',
+                    'slug'=>'forum',
+                    'icon'=>'fa-img-forum',
+                    'url'=>'/forum',
+                    'tasks'=>[],
+             
+               ]
+
+           ), // tools
+            
+        ],
+        [
+            'name'=>'Pelaporan',
+            'slug'=>'pelaporan',
+            'icon'=>'fa-img-monitoring',
+            'url'=>'#',
+            'count'=>7,
+            'active'=>false,
+            'class'=>'treeview',
+            'tasks'=> array(
+                [
+                    'name'=>'Rekapitulasi',
+                    'slug'=>'rekapitulasi',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/rekapitulasi',
+                    'tasks'=>[],  
+                ],
+                [
+                    'name'=>'Pagu APBN',
+                    'slug'=>'pagu-apbn',
+                    'icon'=>'fa-img-pagu',
+                    'url'=>'/pagutarget',
+                    'tasks'=>[],  
+               ],[
+
+                    'name'=>'Perencanaan',
+                    'slug'=>'perencanaan',
+                    'icon'=>'fa-img-perencanaan',
+                    'url'=>'/perencanaan',
+                    'tasks'=>[],
+             
+               ],[
+                'name'=>'Pengawasan',
+                'slug'=>'pengawasan',
+                'icon'=>'fa-img-pengawasan',
+                'url'=>'/pengawasan',
+                'tasks'=>[],
+               ],[
+                'name'=>'Bimbingan/Sosialisasi',
+                'slug'=>'bimsos',
+                'icon'=>'fa-img-bimsos',
+                'url'=>'/bimsos',
+                'tasks'=>[],
+             ],[
+                'name'=>'Penyelesaian Masalah',
+                'slug'=>'penyelesaian-masalah',
+                'icon'=>'fa-img-penyelesaian',
+                'url'=>'/',
+                'tasks'=>[],
+            ]
+            ,[
+                'name'=>'Kendala',
+                'slug'=>'kendala',
+                'icon'=>'fa-img-kendala',
+                'url'=>'/kendala',
+                'tasks'=>[],
+            ]
+
+           ), // Pelaporan
+            
+        ],
+        
+
+
+    );
+
+    return json_decode(json_encode($data),true);
 
    }
 
@@ -222,17 +1033,22 @@ class RequestMenuRoles
            {
               foreach($result as $key =>$val)
               {
-                if($slug == $val->slug)
+                if($val->slug == $slug)
                 {
                    $res = $val->option;
-                }    
+                }   
 
               }
            } 
            
-     }else{
-         $res = RequestMenuRoles::DefaultChacked();
+     }
+
+     if(!$res)
+     {
+        $res = RequestMenuRoles::DefaultChacked();
      }   
+ 
+       
      return $res;
 
    }

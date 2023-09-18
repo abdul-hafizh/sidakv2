@@ -63,7 +63,7 @@ class RequestNotification
    
    public static function GetDataLimit($data)
    {
-          $tmp = array();
+          $temp = array();
           foreach($data as $key => $val)
           {
              $messages =  $val->messages;

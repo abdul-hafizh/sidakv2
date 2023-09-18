@@ -1,5 +1,5 @@
 
-<li class="treeview " style="height: auto;">
+<li  class="treeview " style="height: auto;">
   <a href="#">
     <i class="fa-icon fa-img-ma-user"></i>
         <span class="title-menu" >Manajemen Data</span>
@@ -8,7 +8,7 @@
           <i class="fa fa-angle-left pull-right"></i>
         </span>
   </a>
-  <ul class="treeview-menu" style="display: none;">
+  <ul  class="treeview-menu" style="display: none;">
 
     <li>
         <a href="{!! url('provinsi') !!}">
@@ -50,7 +50,7 @@
 </li>
 
 
-<li class="treeview" style="height: auto;">
+<li  class="treeview" style="height: auto;">
   <a href="#">
     <i class="fa-icon fa-img-ma-user"></i>
         <span class="title-menu" >Manajemen User</span>
@@ -59,7 +59,7 @@
           <i class="fa fa-angle-left pull-right"></i>
         </span>
   </a>
-  <ul class="treeview-menu" style="display: none;">
+  <ul  class="treeview-menu" style="display: none;">
 
     <li>
         <a href="{!! url('user') !!}">

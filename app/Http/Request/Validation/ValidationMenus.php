@@ -12,7 +12,7 @@ class ValidationMenus
        
         $fields = [
             'name'  => 'Name',  
-            'icon'  => 'Icon',
+           
             
            
         ];
@@ -20,7 +20,7 @@ class ValidationMenus
         $validator =  Validator::make($request->all(), 
         [
             'name'  => 'required|unique:menus,name',
-            'icon'  => 'required',
+         
           
             
         ]);
@@ -34,9 +34,7 @@ class ValidationMenus
                 $err['messages']['name'] = $errors->first('name');
             }
 
-            if($errors->has('icon')){
-                $err['messages']['icon'] = $errors->first('icon');
-            }
+           
 
 
             return $err;
@@ -49,7 +47,7 @@ class ValidationMenus
        
         $fields = [
             'name'  => 'Name',  
-            'icon'  => 'Icon',
+           
             
            
         ];

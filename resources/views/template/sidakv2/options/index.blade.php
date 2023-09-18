@@ -1,6 +1,9 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
-<script src="{{ config('app.url').$template.'/js/sortable.js' }}"></script>
+ 
+  
+  <!-- Latest Sortable -->
+
 <div class="content">
 <div class="row">
 
@@ -22,8 +25,10 @@
 
    <section class="col-lg-7 connectedSortable ui-sortable margin-0-0-50-0 pull-left full">
       
-     <div id="viewRole" class="nav-tabs-custom">  	
+     <div id="viewRole" class="nav-tabs-custom ">  	
      </div> 
+
+  
 
    </section>
 
@@ -59,7 +64,10 @@
 </div>
 @include('template/sidakv2/options.menu-add')
 @include('template/sidakv2/options.role-add')
+  <!-- <script src="http://sortablejs.github.io/Sortable/Sortable.js"></script>
 
+  -->
+    
 <script>
    $( function() {
    	  var roleid_old ='';
@@ -69,6 +77,9 @@
       var role_menu = [];
       var menu = localStorage.getItem('root_menu');
       var temp =  JSON.parse(menu);  
+
+
+
 
      //menu
     $( "#ContentMenu" ).on( "click", "#Move-Menu", (e) => {
@@ -366,6 +377,8 @@
            selectedVal = $(this).find("option:selected").val();
            let find = role_list.find(o => o.value === selectedVal);
            roleid_new = find.id;
+           roleid_old = find.id;
+           console.log(find.id)
            var role_menu = [];
            GetMenu(find.id);
            ViewTabMenu(find);
@@ -422,10 +435,10 @@
            row +=`</ul>`;
 
         row +=`<div class="tab-content pull-left full form-group">`;
-            row +=`<div id="tabRole" class="tab-pane active">`;
-
-            GetSettingRole(find.value);
-
+            row +=`<div id="tabDrag"  class="tab-pane active">`;
+	            row +=`<div id="tabRole" class="nested-sortable">`;
+	            GetSettingRole(find.value);
+	            row +=`</div>`;	
 
             row +=`</div>`;	
 
@@ -547,7 +560,7 @@
             temp.menu.forEach(function(item, index) {
  
                        var row = '';
-                        row +=`<div id="list-role" class="pull-left full">`; 
+                        row +=`<div id="list-role" class="pull-left full ">`; 
                         row +=`<div class="list-group">`;  
                           
                         row +=`<div class="form-group col-sm-12 grup-checkbox group-sub">`; 
@@ -594,6 +607,8 @@
 
            GetDataRoleMenu(role)
         } 	
+
+
    	     
   
    }
@@ -621,6 +636,8 @@
    {
            const content = $('#tabRole');
            content.empty();
+            
+            
 
           if(data) 
           { 	
@@ -629,66 +646,181 @@
             result.forEach(function(item, index) {
  
                        var row = '';
-                        row +=`<div id="list-role" class="pull-left full">`; 
-                        row +=`<div class="list-group">`;  
+       //                  row +=`<div id="list-role" class="pull-left full ">`; 
+       //                  row +=`<div class="list-group pull-left full nested-sortable">`;  
                           
-                        row +=`<div class="form-group col-sm-12 grup-checkbox group-sub">`; 
-                            row +=`<div class="row-checkbox">`; 
-                                        row +=`<div class="pull-left checkbox-form">`; 
-                                             row +=`<span class="black pull-left padding-05-05">`;
-                                                row +=`<img width="20" src="${item.icon}">`;
-                                             row +=`</span>`;
-                                        row +=`</div>`;  
+       //                  row +=`<div class="form-group col-sm-12 grup-checkbox group-sub">`; 
+       //                      row +=`<div class="row-checkbox">`; 
+       //                                  row +=`<div class="pull-left checkbox-form">`; 
+       //                                       row +=`<span class="black pull-left padding-05-05">`;
+       //                                          row +=`<img width="20" src="${item.icon}">`;
+       //                                       row +=`</span>`;
+       //                                  row +=`</div>`;  
 
-                                        row +=`<div class="pull-left checkbox-label">`; 
-                                        row +=`<span class="pull-left text-bold font-16">${item.name}</span>`; 
-                                        row +=` </div>`;  
-
-
+       //                                  row +=`<div class="pull-left checkbox-label">`; 
+       //                                  row +=`<span class="pull-left text-bold font-16">${item.name}</span>`; 
+       //                                  row +=` </div>`;  
 
 
-                                row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`; 
-                                            row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
-                                                row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
-                                                row +=`<i class="border-right-white"></i>`; 
-                                            row +=`</span>`;  
+
+
+       //                          row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`; 
+       //                                      row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
+       //                                          row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
+       //                                          row +=`<i class="border-right-white"></i>`; 
+       //                                      row +=`</span>`;  
 
 											
 
 
 
-                                            row +=`<span id="Hapus-Real" data-param_id="${item.slug}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
+       //                                      row +=`<span id="Hapus-Real" data-param_id="${item.slug}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
+       //                                      row +=`<i class="fa fa-trash"></i>`; 
+       //                                      row +=`</span>`; 
+       //                          row +=`</div>`; 
+
+
+       //                      row +=`<div id="modal-edit-${item.slug}" class="modal fade" role="dialog">`;
+							// row +=`<div id="FormEdit-${item.slug}"></div>`;
+							// row +=`</div>`;
+
+       //                      row +=`</div> `; 
+       //                  row +=`</div>`; 
+
+       //                  row +=`</div>`;   
+       //                  row +=`</div>`; 
+
+                   	row +=`<div id="list-role" data-id="${item.slug}" class="list-group-item pull-left full" style="" draggable="false">`;
+                   	    
+                   	   row +=`<div class="list-group pointer margin-none">`; 
+                            row +=`<div class="row-checkbox pull-left full">`; 
+	                       
+                                row +=`<div class="checkbox-form pull-left">`; 
+                                     row +=`<span class="black pull-left padding-05-05">`;
+                                        row +=`<img width="20" src="${item.icon}">`;
+                                     row +=`</span>`;
+                                row +=`</div>`;  
+
+		                        row +=`<div class="pull-left checkbox-label">`; 
+		                          row +=`${item.name}`; 
+		                        row +=`</div>`;
+
+		                        row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
+
+		                            row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
+                                                row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
+                                                row +=`<i class="border-right-white"></i>`; 
+                                            row +=`</span>`;  
+
+
+                                    row +=`<span id="Hapus-Real" data-param_id="${item.slug}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
                                             row +=`<i class="fa fa-trash"></i>`; 
-                                            row +=`</span>`; 
-                                row +=`</div>`; 
+                                            row +=`</span>`;          
 
+                                row +=`</div>`;
 
+                                
                             row +=`<div id="modal-edit-${item.slug}" class="modal fade" role="dialog">`;
 							row +=`<div id="FormEdit-${item.slug}"></div>`;
 							row +=`</div>`;
 
-                            row +=`</div> `; 
-                        row +=`</div>`; 
+                            row +=`</div>`;
 
-                        row +=`</div>`;   
-                        row +=`</div>`;               
+                      row +=`</div>`;
+
+
+
+                       row +=`<div class="list-group pointer  nested-sortable"></div>`;
+		            row +=`</div>`;
+
+
                  content.append(row);
             });
-        }else{
+       }else{
 
-            var row = '';
-            row +=`<div id="role-null"  class="mt-20 ">`; 
-                    row +=`<div class="list-group">`;
-                            row +=`<div class="text-bold text-center">Data Kosong</div>`;
-                    row +=`</div>`;   
-                row +=`</div>`;
-           content.append(row);
+           var row = '';
+           row +=`<div id="role-null"  class="mt-20 ">`; 
+                   row +=`<div class="list-group">`;
+                           row +=`<div class="text-bold text-center">Data Kosong</div>`;
+                   row +=`</div>`;   
+               row +=`</div>`;
+          content.append(row);
 
-        }
+       }
 
        
- 
+ //    var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
+ //     const sortableContainer = document.getElementById('tabDrag');
+	// // Loop through each nested sortable element
+	// for (var i = 0; i < nestedSortables.length; i++) {
+	// 	new Sortable(nestedSortables[i], {
+	// 		group: 'nested',
+	// 		animation: 500,
+	// 		ghostClass: 'moving-card',
+	// 		onEnd: function (evt) {
+	//             // Callback when sorting is finished
+	//             const sortedData = getSortedData(sortableContainer);
+	//             console.log(sortedData);
+ //           }
+			
+	// 	});
+	// }
 
+   
+     // Function to collect sorted data
+    // function getSortedData(container) {
+    //     const sortedData = [];
+
+    //     const lists = container.querySelectorAll('#tabRole');
+    //     const items = [];
+    //     const find = [];
+    //     lists.forEach(function (list) {
+    //         const listId = list.getAttribute('data-id');
+    //         const listItems = list.querySelectorAll('#list-role');
+
+    //         listItems.forEach(function (item, index) {
+    //             const name = item.getAttribute('data-id');
+       
+    //             items.push({
+    //                 name: name,
+    //                 tasks: getNestedSortedData(item),
+    //             });
+    //         });
+
+         
+    //     });
+
+
+
+
+    //     return items;
+    // }
+
+    // Function to collect nested sorted data
+    // function getNestedSortedData(parentItem) {
+    //     const nestedData = [];
+
+    //     const nestedLists = parentItem.querySelectorAll('.nested-sortable');
+    //     const items = [];
+
+    //     nestedLists.forEach(function (list) {
+    //         const listId = list.getAttribute('data-id');
+           
+    //         const listItems = list.querySelectorAll('#list-role');
+
+    //         listItems.forEach(function (item, index) {
+
+    //             const itemId = item.getAttribute('data-id');
+    //             items.push({
+    //                 name: itemId,
+                   
+    //             });
+    //         });
+    //     });
+
+    //     return items;
+    // }
+    
            
 
    }
@@ -750,7 +882,7 @@
                             row +=`<div class="modal-footer">`;
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
-						          row +=`<button id="update_action-`+ slug +`" data-param_id="`+ slug +`" type="button" class="btn btn-primary">Update</button>`;
+						          row +=`<button id="update_action-`+ slug +`" data-param_id="`+ slug +`" type="button" class="btn btn-primary">OK</button>`;
 						            row +=`<button id="load-action-`+ slug +`" type="button" disabled class="btn btn-default" style="display:none;">`;
 						             row +=`<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>`;
      						 row +=`</div>`;
@@ -845,14 +977,14 @@
 		           'role_id':find.id,
 		        };
 
-                loadingModal(id);
-                $('#update_action-'+ id).hide();
-                $('#load-action-'+ id).show();
+                //loadingModal(id);
+                // $('#update_action-'+ id).hide();
+                // $('#load-action-'+ id).show();
 
-                setTimeout(function() { 
+               // setTimeout(function() { 
 	                localStorage.setItem('root_menu', JSON.stringify(form));
                     $('#modal-edit-'+ id).modal('toggle');  
-	   			}, 1000);
+	   			//}, 1000);
 		       
                 
 	        });       
