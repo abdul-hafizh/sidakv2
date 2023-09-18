@@ -34,6 +34,20 @@
                          </div>
                     </div>
                </div>
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box box-solid box-primary">
+                         <div class="box-body bg-primary">
+                              <div class="card-body table-responsive p-0">
+                                   <div class="media">
+                                        <div class="media-body text-left">
+                                             <span>Status</span>
+                                             <h3 class="card-text" id="status-view"></h3>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
           </div>
 
           <div class="box box-solid box-primary">
@@ -44,8 +58,7 @@
                                    <div id="periode-alert" class="form-group">
                                         <label class="col-lg-2 label-header-box form-group margin-none">Periode Perencanaan :</label>                                        
                                         <div class="col-lg-2 form-group margin-none" id="selectPeriode"></div>
-                                        <span class="col-lg-6 label-header-box form-group margin-none text-red" id="alasan-view"></span>
-                                        <span class="col-lg-2 label-header-box form-group margin-none align-right" id="status-view"></span>
+                                        <span class="col-lg-8 label-header-box form-group margin-none text-red align-right" id="alasan-view"></span>
                                         <input type="hidden" id="pagu_apbn_inp">
                                         <input type="hidden" id="total_target_bimtek_inp">
                                         <input type="hidden" id="total_rencana_inp">
@@ -271,8 +284,8 @@
                const statusInfo = statusMap[status];
 
                if (statusInfo) {
-                    const badgeHtml = `<span class="badge ${statusInfo.color}">${statusInfo.label}</span>`;
-                    $('#status-view').html(badgeHtml);
+                    const badgeHtml = `<span>${statusInfo.label}</span>`;
+                    $('#status-view').html('<b>'+badgeHtml+'</b>');
                }
 
                if(data.status == 13 && data.alasan_unapprove != null) {
