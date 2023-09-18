@@ -50,39 +50,7 @@
 	}
 </style>
 </script>
-<!-- Import Excel -->
-<div class="modal fade" id="importExcel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<form method="post" action="/api/pagutarget/import_excel" id="file-upload" enctype="multipart/form-data">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
-				</div>
-				<div class="modal-body">
 
-					{{ csrf_field() }}
-
-					<label>Pilih file excel</label>
-					<div class="form-group">
-						<input type="file" name="file" required="required">
-						<span class="text-danger" id="file-input-error"></span>
-					</div>
-					<a class="btn btn-warning" href="/api/pagutarget/download_file">Template data</a>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Import</button>
-				</div>
-				<div class="form-group">
-					<div class="progress">
-						<div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
 
 <section class="content-header pd-left-right-15">
 	<div class="row">
@@ -93,7 +61,7 @@
 						<div class="media">
 							<div class="media-body text-left">
 								<span>Pagu APBN</span>
-								<h3 class="card-text" id="pagu_apbn"></h3>
+								<h3 class="card-text" id="total_apbn"></h3>
 							</div>
 						</div>
 					</div>
@@ -107,7 +75,7 @@
 						<div class="media">
 							<div class="media-body text-left">
 								<span>Pagu Promosi</span>
-								<h3 class="card-text" id="pagu_promosi"></h3>
+								<h3 class="card-text" id="total_promosi"></h3>
 							</div>
 						</div>
 					</div>
@@ -121,7 +89,7 @@
 						<div class="media">
 							<div class="media-body text-left">
 								<span>Pagu Total</span>
-								<h3 class="card-text" id="pagu_total"></h3>
+								<h3 class="card-text" id="total_all"></h3>
 							</div>
 						</div>
 					</div>
@@ -132,7 +100,7 @@
 	<div class="form-group row">
 		<div class="col-sm-3">
 			<label>Tipe</label>
-			<select class="form-control" name="type_daerah" id="type_daerah">
+			<select class="form-control" name="type_daerah2" id="type_daerah2">
 				<option value="">-Pilih Tipe-</option>
 				<option value="Provinsi">Provinsi</option>
 				<option value="Kabupaten">Kabupaten</option>
@@ -140,22 +108,23 @@
 		</div>
 		<div class="col-sm-3">
 			<label>Daerah </label>
-			<select id="daerah_id" class="select-daerah form-control" name="daerah_id" disabled>
+			<select id="daerah_id2" class="select-daerah2 form-control" name="daerah_id2" disabled>
 				<option value="">Pilih</option>
 			</select>
 		</div>
 		<div class="col-sm-3">
 			<label>Periode </label>
-			<select id="periode_id" class="select-periode form-control" name="periode_id"></select>
-			<span id="periode_id-messages"></span>
+			<select id="periode_id2" class="select-periode2 form-control" name="periode_id2"></select>
 		</div>
 		<div class="col-sm-3">
 			<label>Search</label>
 			<div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
-					<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
+					<button id="Search" type="button" class="btn btn-search btn-flat height-35"><i class="fa fa-search"></i></button>
+					<button id="Clear" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-times-circle"></i></button>
 				</span>
+
 			</div>
 		</div>
 	</div>
@@ -172,21 +141,20 @@
 				</select>
 			</div>
 			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button" disabled="disabled" class="btn btn-danger border-radius-10">
+				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
 					Hapus
 				</button>
 				<!-- <button type="button" class="btn btn-primary">
 					<i aria-hidden="true" class="fa fa-search"></i> Search
 				</button> -->
-				<button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
+				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
 				<button type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#importExcel">
 					IMPORT EXCEL
 				</button>
-			</div>
-			<div class="pull-left padding-9-0">
-				<div id="exportData"></div>
+				<button type="button" class="btn btn-info border-radius-10" id="exportData">
+				</button>
 			</div>
 
 
@@ -207,7 +175,7 @@
 				<table id="datatable" class="table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th rowspan="2"><input type="checkbox" name="select_all" value="1" id="example-select-all"></th>
+							<th rowspan="2"><input type="checkbox" id="checkAll"></th>
 							<th rowspan="2"><span class="border-left-table">Nama Daerah </span> </th>
 							<th rowspan="2"><span class="border-left-table">Type </span> </th>
 							<th rowspan="2"><span class="border-left-table">Periode </span></th>
@@ -232,7 +200,42 @@
 	</div>
 </div>
 @include('template/sidakv2/paguTarget.add')
+<!-- Import Excel -->
+<div id="importExcel" class="modal fade" role="dialog">
 
+	<div class="modal-dialog" role="document">
+		<form method="post" action="/api/pagutarget/import_excel" id="file-upload" enctype="multipart/form-data">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
+				</div>
+				<div class="modal-body">
+
+					{{ csrf_field() }}
+
+					<label>Pilih file excel</label>
+					<div class="form-group">
+						<input type="file" name="file" required="required">
+						<span class="text-danger" id="file-input-error"></span>
+					</div>
+					<a class="btn btn-warning" href="/api/pagutarget/download_file">Template data</a>
+					<a class="btn btn-info" href="/api/pagutarget/download_daerah">data wilayah</a>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Import</button>
+				</div>
+				<div class="form-group">
+					<div class="progress">
+						<div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
 @stop
 
 @push('scripts')
@@ -241,17 +244,19 @@
 	hasil_sum(search);
 
 	function hasil_sum(search) {
+		if (search !== "")
+			var filter = JSON.stringify(search);
 		$.ajax({
 			url: BASE_URL + '/api/pagutarget/total_pagu',
 			method: 'POST',
 			data: {
-				data: search
+				data: filter
 			},
 			dataType: 'json',
 			success: function(result) {
-				$('#pagu_apbn').html(result.total_apbn);
-				$('#pagu_promosi').html(result.total_promosi);
-				$('#pagu_total').html(result.total_all);
+				$('#total_apbn').html(result.total_apbn);
+				$('#total_promosi').html(result.total_promosi);
+				$('#total_all').html(result.total_all);
 			},
 			error: function(error) {
 				console.error(error);
@@ -291,6 +296,7 @@
 	});
 
 	$(function() {
+
 		var table = $('#datatable').DataTable({
 			processing: true,
 			serverSide: true,
@@ -308,7 +314,13 @@
 			buttons: [{
 				extend: 'excel',
 				text: 'Export excel',
-				className: 'btn btn-info border-radius-10'
+				exportOptions: {
+					format: {
+						body: function(data, row, column, node) {
+							return reformatNumber(data, row, column, node);
+						}
+					}
+				}
 			}],
 			dom: 'Bprti',
 			scrollCollapse: true,
@@ -320,7 +332,7 @@
 					'orderable': false,
 					'className': 'dt-body-center',
 					'render': function(data, type, full, meta) {
-						return '<input type="checkbox" name="id[]" value="' + $('<div/>').text(data).html() + '">';
+						return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
 					}
 				},
 				{
@@ -340,6 +352,16 @@
 			}
 		});
 
+		function reformatNumber(data, row, column, node) {
+			// replace spaces with nothing; replace commas with points.
+			if (column == 4 || column == 5 || column == 6) {
+				var newData = data.replace('Rp ', '').replaceAll('.', '');
+				return newData;
+			} else if (column != 0 && column != 11) {
+				return data;
+			}
+		}
+
 		table.buttons(0, null).containers().appendTo('#exportData');
 
 		function delay(callback, ms) {
@@ -354,43 +376,171 @@
 			};
 		}
 
+		$('#type_daerah2').on('change', function() {
+			let type_daerah = $('#type_daerah2').val();
+			if (type_daerah == 'Provinsi') {
+				url = "select-province";
+			} else {
+				url = "select-kabupaten";
+			}
+			$.ajax({
+				url: BASE_URL + '/api/' + url,
+				method: 'get',
+				dataType: 'json',
+				success: function(data) {
+					jenis = '<option value="">- Pilih -</option>';
+					$.each(data, function(key, val) {
+						jenis += '<option value="' + val.value + '">' + val.text + '</option>';
+					});
+					$('#daerah_id2').html(jenis).removeAttr('disabled');
+				}
+			})
+			$('.select-daerah2').select2();
+		})
+
+		$('.select-periode2').select2(
+			$.ajax({
+				url: BASE_URL + '/api/select-periode2',
+				method: 'get',
+				dataType: 'json',
+				success: function(data) {
+					periode = '<option value="">- Pilih -</option>';
+					$.each(data, function(key, val) {
+						periode += '<option value="' + val.value + '" >' + val.text + '</option>';
+
+					});
+					$('#periode_id2').html(periode);
+				}
+			})
+		);
+
 		$('#search-input').keyup(delay(function(e) {
+			var filter = [{
+				search_input: $("#search-input").val(),
+				type_daerah: $("#type_daerah2").val(),
+				daerah_id: $("#daerah_id2").val(),
+				periode_id: $("#periode_id2").val()
+			}, ];
 			table.search(this.value).draw();
-			hasil_sum(this.value);
+			hasil_sum(filter);
 		}, 1000));
 
 		$("#Search").on("click", function() {
 			var filter = [{
 				search_input: $("#search-input").val(),
-				type_daerah: $("#type_daerah").val(),
-				daerah_id: $("#daerah_id").val(),
-				periode_id: $("#periode_id").val()
+				type_daerah: $("#type_daerah2").val(),
+				daerah_id: $("#daerah_id2").val(),
+				periode_id: $("#periode_id2").val()
 			}, ];
 
 			//var email = $("#email").val();
 			//filter = filter[0];
+			hasil_sum(filter);
 			table.column(0).search(JSON.stringify(filter), true, true);
 			table.draw();
+		});
+
+
+		$("#datatable").on("click", "#Destroy", (e) => {
+			let id = e.currentTarget.dataset.param_id;
+			Swal.fire({
+				title: 'Apakah anda yakin hapus?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#3085d6',
+				confirmButtonText: 'Ya'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					deleteItem(id);
+					Swal.fire(
+						'Deleted!',
+						'Data berhasil dihapus.',
+						'success'
+					);
+				}
+			});
+		});
+
+		function deleteItem(id) {
+			$.ajax({
+				url: BASE_URL + `/api/pagutarget/` + id,
+				method: 'DELETE',
+				success: function(response) {
+					table.search("").columns().search("").draw();
+				},
+				error: function(error) {
+					console.error('Error deleting items:', error);
+				}
+			});
+		}
+
+		$('#delete-selected').on('click', function() {
+			const selectedIds = [];
+			Swal.fire({
+				title: 'Apakah anda yakin hapus?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#3085d6',
+				confirmButtonText: 'Ya'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$('.item-checkbox:checked').each(function() {
+						selectedIds.push($(this).data('id'));
+					});
+					deleteItems(selectedIds);
+					Swal.fire(
+						'Deleted!',
+						'Data berhasil dihapus.',
+						'success'
+					);
+				}
+			});
+		});
+
+		function deleteItems(ids) {
+			$.ajax({
+				url: BASE_URL + `/api/pagutarget/selected`,
+				method: 'POST',
+				data: {
+					data: ids
+				},
+				success: function(response) {
+					table.search("").columns().search("").draw();
+				},
+				error: function(error) {
+					console.error('Error deleting items:', error);
+				}
+			});
+		}
+
+		$("#Clear").on("click", function() {
+
+			var filter = '';
+			$("#type_daerah2").val("").trigger("change");
+			$("#daerah_id2").val("").trigger("change");
+			$("#periode_id2").val("").trigger("change");
+			$("#search-input").val("");
+
+			hasil_sum(filter);
+			table.search("").columns().search("").draw();
 		});
 
 		$('#row_page').on('change', function() {
 			table.page.len(this.value).draw();
 		});
-		// Handle click on "Select all" control
-		$('#example-select-all').on('click', function() {
-			// Get all rows with search applied
-			var rows = table.rows({
-				'search': 'applied'
-			}).nodes();
-			// Check/uncheck checkboxes for all rows in the table
-			$('input[type="checkbox"]', rows).prop('checked', this.checked);
+
+
+		$("#checkAll").click(function() {
+			$('input:checkbox').not(this).prop('checked', this.checked);
 		});
 
 		// Handle click on checkbox to set state of "Select all" control
-		$('#example tbody').on('change', 'input[type="checkbox"]', function() {
+		$('#datatable tbody').on('change', 'input[type="checkbox"]', function() {
 			// If checkbox is not checked
 			if (!this.checked) {
-				var el = $('#example-select-all').get(0);
+				var el = $('#checkAll').get(0);
 				// If "Select all" control is checked and has 'indeterminate' property
 				if (el && el.checked && ('indeterminate' in el)) {
 					// Set visual state of "Select all" control

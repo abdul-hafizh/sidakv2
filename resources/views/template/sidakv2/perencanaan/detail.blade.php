@@ -4,34 +4,50 @@
 <style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
-     <div class="box box-solid box-primary">
-          <div class="box-body">
-               <div class="card-body">
-                    <div class="row pd-top-bottom-15">  
-                         <div class="col-lg-8">
-                              <div class="form-group">
-                                   <label class="col-lg-4">
-                                        Pagu APBN : 
-                                        <span id="pagu_apbn" class="pd-top-bottom-5"></span>
-                                   </label>
-                                   <label class="col-lg-5">
-                                        Total Perencanaan :
-                                        <span id="total_rencana" class="pd-top-bottom-5"></span>
-                                   </label>                                        
-                              </div>
-                         </div>
-                         <div class="col-lg-4">
-                              <div class="pull-right">
-                                   <label class="col-lg-12">
-                                        Periode :
-                                        <span id="selectPeriode" class="pd-top-bottom-5"></span>
-                                   </label>
-                              </div>
-                         </div>
-                    </div>                          
-               </div>
-          </div>
-     </div>
+     <div class="row">
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary ">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Pagu APBN</span>
+								<h3 class="card-text" id="pagu_apbn"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Total Perencanaan</span>
+								<h3 class="card-text" id="total_rencana"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Periode <span id="selectPeriode" class="pd-top-bottom-5"></span></span>
+								<h3 class="card-text" id="status-view"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
      <div class="box box-solid box-primary">
           <div class="box-body">
@@ -81,12 +97,16 @@
 
      <div class="box-footer">
           <div class="btn-group just-center">
-               <button id="download" type="button" class="btn btn-success col-md-2">Download</button>
+               <button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>
                <button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>
+               <button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>
                <button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>
+               <button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>
           </div> 
      </div> 
 </div>
+
+@include('template/sidakv2/perencanaan.print')
 
 <div id="modal-unapprove" class="modal fade" role="dialog">
      <div class="modal-dialog">
@@ -109,12 +129,44 @@
      </div>
 </div>
 
+<div id="modal-reqedit" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Request Edit Perencanaan</h4>
+               </div>
+               <div class="modal-body">
+                    <div class="form-group">
+                         <label>Alasan Permintaan Edit Data</label>
+                         <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_edit_inp" name="alasan_edit" placeholder="Alasan Edit"></textarea>
+                    </div>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" id="reqedit" class="btn btn-warning">Request Edit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+               </div>
+          </div>
+     </div>
+</div>
+
 <script type="text/javascript">
      $(document).ready(function() {          
           var periode =[];
           var pagu_apbn = 0;             
           var url = window.location.href; 
           var segments = url.split('/');  
+
+          $("#downloadPdf").click(function() {       
+               // const pdf = new jsPDF();
+               // pdf.autoTable({ html: '#dataPrPdf' });
+               // pdf.save('dataPrPdf.pdf');
+
+               const doc = new jsPDF();
+
+               doc.text("Hello world!");
+               doc.save("SIDAK_Perencanaan_Tahun_2023.pdf");
+          });
 
           $.ajax({
                type: 'GET',
@@ -131,6 +183,19 @@
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
+
+               const status = data.status;
+               const statusMap = {
+                    13: { label: 'Draft', color: 'badge-info' },
+                    14: { label: 'Terkirim/Waiting Approve', color: 'badge-warning' },
+                    15: { label: 'Approved', color: 'badge-success' }
+               };
+               const statusInfo = statusMap[status];
+
+               if (statusInfo) {
+                    const badgeHtml = `<span>Status : ${statusInfo.label}</span>`;
+                    $('#status-view').html('<b>'+badgeHtml+'</b>');
+               }
 
                var row = '';
                var rows = '';
@@ -335,7 +400,7 @@
                $('#Attr').html(rows);
           }
 
-          $("#approve").click( () => {                            
+          $("#approve").click( () => {
                Swal.fire({
                     title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
                     icon: 'warning',
@@ -350,12 +415,16 @@
                               'Approved!',
                               'Data berhasil diapprove.',
                               'success'
-                         );
+                         ).then((act) => {
+                              if (act.isConfirmed) {
+                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                              }
+                         });
                     }
                });
           });
 
-          $("#unapprove").click( () => {                            
+          $("#unapprove").click( () => {
                Swal.fire({
                     title: 'Apakah Anda Yakin Unapprove Perencanaan Ini?',			    
                     icon: 'warning',
@@ -368,10 +437,81 @@
                          var form = {
                               "alasan_unapprove": $("#alasan_unapprove_inp").val()
                          };
-                         unapproveItem(form);
+                         if($("#alasan_unapprove_inp").val() != '') {  
+                              unapproveItem(form);
+                         } else {
+                              Swal.fire(
+                                   'Gagal.',
+                                   'Alasan belum diisi.',
+                                   'error'
+                              );
+                         }
                     }
                });
           });
+
+          $("#reqedit").click( () => {
+               Swal.fire({
+                    title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+               }).then((result) => {
+                    if (result.isConfirmed) {
+                         var form = {
+                              "alasan_edit": $("#alasan_edit_inp").val()
+                         };
+                         if($("#alasan_edit_inp").val() != '') {  
+                              reqeditItem(form);
+                         } else {
+                              Swal.fire(
+                                   'Gagal.',
+                                   'Alasan belum diisi.',
+                                   'error'
+                              );
+                         }
+                    }
+               });
+          });
+
+          $("#approve_edit").click( () => {
+               Swal.fire({
+                    title: 'Apakah Anda Yakin Approve Request Edit?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+               }).then((result) => {
+                    if (result.isConfirmed) {
+                         approveItem(segments[5]);
+                         Swal.fire(
+                              'Approved!',
+                              'Data berhasil diapprove.',
+                              'success'
+                         ).then((act) => {
+                              if (act.isConfirmed) {
+                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                              }
+                         });
+                    }
+               });
+          });
+
+          function approveItem(id) {
+               $.ajax({
+                    url:  BASE_URL +`/api/perencanaan/approve/`+ id,
+                    method: 'PUT',
+                    success: function(response) {
+                         fetchData(page);
+                    },
+                    error: function(error) {
+                         console.error('Error approving data:', error);
+                    }                
+               });
+          }
 
           function unapproveItem(form) {
 
@@ -396,19 +536,41 @@
                });
           }
 
-          function approveItem(id){
-            
-            $.ajax({
-                url:  BASE_URL +`/api/perencanaan/approve/`+ id,
-                method: 'PUT',
-                success: function(response) {
-                    fetchData(page);
-                },
-                error: function(error) {
-                    console.error('Error approving data:', error);
-                }                
-            });
-        }
+          function reqeditItem(form) {
+
+               $.ajax({
+                    type:"PUT",
+                    url: BASE_URL+'/api/perencanaan/reqedit/' + segments[5],
+                    data:form,
+                    cache: false,
+                    dataType: "json",
+                    success: (respons) =>{
+                         Swal.fire({
+                              title: 'Sukses!',
+                              text: 'Berhasil Request Edit Data Perencanaan.',
+                              icon: 'success',
+                              confirmButtonText: 'OK'                        
+                         }).then((result) => {
+                              if (result.isConfirmed) {
+                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                              }
+                         });
+                    },
+               });
+          }
+          
+          function approveEditItem(id) {
+               $.ajax({
+                    url:  BASE_URL +`/api/perencanaan/approve_edit/`+ id,
+                    method: 'PUT',
+                    success: function(response) {
+                         fetchData(page);
+                    },
+                    error: function(error) {
+                         console.error('Error approving data:', error);
+                    }                
+               });
+          }
      });
 
 </script>

@@ -5,31 +5,63 @@
 
 <div class="content">
      <form id="FormSubmit">
+          <div class="row">
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box box-solid box-primary ">
+                         <div class="box-body bg-primary">
+                              <div class="card-body table-responsive p-0">
+                                   <div class="media">
+                                        <div class="media-body text-left">
+                                             <span>Pagu APBN</span>
+                                             <h3 class="card-text" id="pagu_apbn"></h3>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box box-solid box-primary">
+                         <div class="box-body bg-primary">
+                              <div class="card-body table-responsive p-0">
+                                   <div class="media">
+                                        <div class="media-body text-left">
+                                             <span>Total Perencanaan</span>
+                                             <h3 class="card-text" id="total_rencana"></h3>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box box-solid box-primary">
+                         <div class="box-body bg-primary">
+                              <div class="card-body table-responsive p-0">
+                                   <div class="media">
+                                        <div class="media-body text-left">
+                                             <span>Status</span>
+                                             <h3 class="card-text" id="status-view"></h3>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+
           <div class="box box-solid box-primary">
                <div class="box-body">
                     <div class="card-body">
-                         <div class="row pd-top-bottom-15">  
-                              <div class="col-lg-8">
-                                   <div class="form-group">
-                                        <label class="col-lg-4 label-header-box align-left">
-                                             Pagu APBN : 
-                                             <span id="pagu_apbn" class="align-left pd-top-bottom-5"></span>
-                                             <input type="hidden" id="pagu_apbn_inp">
-                                             <input type="hidden" id="total_target_bimtek_inp">
-                                        </label>
-                                        <label class="col-lg-6 label-header-box align-left">
-                                             Total Perencanaan :
-                                             <span id="total_rencana" class="align-left pd-top-bottom-5"></span>
-                                             <input type="hidden" id="total_rencana_inp">
-                                        </label>
-                                   </div>
-                              </div>
-                              <div class="col-lg-4">
+                         <div class="row pd-top-bottom-15">                                
+                              <div class="col-lg-12">
                                    <div id="periode-alert" class="form-group">
-                                        <label class="col-sm-5 label-header-box align-right form-group margin-none">Periode :</label>
-                                        <div class="col-sm-7">
-                                             <div id="selectPeriode" class="form-group margin-none"></div>
-                                        </div>
+                                        <label class="col-lg-2 label-header-box form-group margin-none">Periode Perencanaan :</label>                                        
+                                        <div class="col-lg-2 form-group margin-none" id="selectPeriode"></div>
+                                        <span class="col-lg-8 label-header-box form-group margin-none text-red align-right" id="alasan-view"></span>
+                                        <input type="hidden" id="pagu_apbn_inp">
+                                        <input type="hidden" id="total_target_bimtek_inp">
+                                        <input type="hidden" id="total_rencana_inp">
                                    </div>
                               </div>
                          </div>                          
@@ -88,10 +120,11 @@
           var temp_total_pengawasan = 0;
           var temp_total_bimtek = 0;
           var temp_total_penyelesaian = 0;
+          var temp_total_pagu_inp = 0;
 
           var url = window.location.href; 
-          var segments = url.split('/');  
-
+          var segments = url.split('/');        
+                    
           getperiode(); 
 
           $.ajax({
@@ -100,19 +133,18 @@
                success: function(response) {
                     list = response;  
                     $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');    
-                    getdataid(list);              
+                    getdataid(list);
                },
                error: function( error) { }
           });
 
-
           $("#kirim").click( () => {
 
                var periode_id = $('#periode_id').val();
-               var totalRencana = parseFloat($('#total_rencana_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
-               var totalBimtek = $('#total_target_bimtek_inp').val();
-               var total_target_bimtek = $("#bimtek_perizinan_target").val() + $("#bimtek_pengawasan_target").val();
+               var totalBimtek = parseInt($('#total_target_bimtek_inp').val());
+               var total_target_bimtek = parseInt($("#bimtek_perizinan_target").val()) + parseInt($("#bimtek_pengawasan_target").val());
+               var totalPaguRencana = parseInt($("#pengawas_analisa_pagu").val()) + parseInt($("#pengawas_inspeksi_pagu").val()) + parseInt($("#pengawas_evaluasi_pagu").val()) + parseInt($("#bimtek_perizinan_pagu").val()) + parseInt($("#bimtek_pengawasan_pagu").val()) + parseInt($("#penyelesaian_identifikasi_pagu").val()) + parseInt($("#penyelesaian_realisasi_pagu").val()) + parseInt($("#penyelesaian_evaluasi_pagu").val());
 
                var form = {
                     "pengawas_analisa_target": $("#pengawas_analisa_target").val(),
@@ -143,7 +175,7 @@
                     "param": "update"
                };
                     
-               if (totalRencana != paguApbn) {
+               if (totalPaguRencana != paguApbn) {
                     Swal.fire({
                          icon: 'info',
                          title: 'Peringatan',
@@ -153,20 +185,19 @@
                          confirmButtonText: 'OK',
                     });
                } else {
-                    // if (totalBimtek != total_target_bimtek) {
-                    //      Swal.fire({
-                    //           icon: 'info',
-                    //           title: 'Peringatan',
-                    //           text: 'Maaf, Total Target Bimtek Belum Sesuai.',
-                    //           confirmButtonColor: '#000',
-                    //           showConfirmButton: true,
-                    //           confirmButtonText: 'OK',
-                    //      });
-                    // } else {
+                    if (totalBimtek != total_target_bimtek) {
+                         Swal.fire({
+                              icon: 'info',
+                              title: 'Peringatan',
+                              text: 'Maaf, Total Target Bimtek Belum Sesuai.',
+                              confirmButtonColor: '#000',
+                              showConfirmButton: true,
+                              confirmButtonText: 'OK',
+                         });
+                    } else {
 
-                    //      SendingData(form);
-                    // }
-                    SendingData(form);
+                         SendingData(form);
+                    }
                }
 
           });
@@ -174,10 +205,10 @@
           $("#update").click( () => {
 
                var periode_id = $('#periode_id').val(); 
-               var totalRencana = parseFloat($('#total_rencana_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
-               var totalBimtek = $('#total_target_bimtek_inp').val();
-               var total_target_bimtek = $("#bimtek_perizinan_target").val() + $("#bimtek_pengawasan_target").val();
+               var totalBimtek = parseInt($('#total_target_bimtek_inp').val());
+               var total_target_bimtek = parseInt($("#bimtek_perizinan_target").val()) + parseInt($("#bimtek_pengawasan_target").val());
+               var totalPaguRencana = parseInt($("#pengawas_analisa_pagu").val()) + parseInt($("#pengawas_inspeksi_pagu").val()) + parseInt($("#pengawas_evaluasi_pagu").val()) + parseInt($("#bimtek_perizinan_pagu").val()) + parseInt($("#bimtek_pengawasan_pagu").val()) + parseInt($("#penyelesaian_identifikasi_pagu").val()) + parseInt($("#penyelesaian_realisasi_pagu").val()) + parseInt($("#penyelesaian_evaluasi_pagu").val());
 
                var form = {
                     "pengawas_analisa_target": $("#pengawas_analisa_target").val(),
@@ -206,9 +237,9 @@
                     "periode_id": periode_id,
                     "type": "draft",
                     "param": "update"
-               };                              
+               };                    
 
-               if (totalRencana > paguApbn) {
+               if (totalPaguRencana > paguApbn) {
                     Swal.fire({
                          icon: 'info',
                          title: 'Peringatan',
@@ -219,21 +250,19 @@
                     });
                } else {
                     
-                    // if (totalBimtek != total_target_bimtek) {
-                    //      Swal.fire({
-                    //           icon: 'info',
-                    //           title: 'Peringatan',
-                    //           text: 'Maaf, Total Target Bimtek Belum Sesuai.',
-                    //           confirmButtonColor: '#000',
-                    //           showConfirmButton: true,
-                    //           confirmButtonText: 'OK',
-                    //      });
-                    // } else {
+                    if (totalBimtek != total_target_bimtek) {
+                         Swal.fire({
+                              icon: 'info',
+                              title: 'Peringatan',
+                              text: 'Maaf, Total Target Bimtek Belum Sesuai.',
+                              confirmButtonColor: '#000',
+                              showConfirmButton: true,
+                              confirmButtonText: 'OK',
+                         });
+                    } else {
 
-                    //      SendingData(form);
-                    // }
-
-                    SendingData(form);
+                         SendingData(form);
+                    }
                }
 
           });
@@ -242,8 +271,26 @@
           {
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
+               $('#total_rencana_sec').html('<b>'+data.total_rencana+'</b>');
                $('#pagu_apbn_inp').val(data.pagu_apbn.replace(/[^0-9]/g, ''));
                $('#total_target_bimtek_inp').val(data.target_bimtek);
+               
+               const status = data.status;
+               const statusMap = {
+                    13: { label: 'Draft', color: 'badge-info' },
+                    14: { label: 'Terkirim/Waiting Approve', color: 'badge-warning' },
+                    15: { label: 'Approved', color: 'badge-success' }
+               };
+               const statusInfo = statusMap[status];
+
+               if (statusInfo) {
+                    const badgeHtml = `<span>${statusInfo.label}</span>`;
+                    $('#status-view').html('<b>'+badgeHtml+'</b>');
+               }
+
+               if(data.status == 13 && data.alasan_unapprove != null) {
+                    $('#alasan-view').html('<b>Alasan Tidak Disetujui : '+data.alasan_unapprove+'</b>');
+               }
 
                total_pengawasan_pagu = data.total_pagu_pengawasan;
                total_bimtek_pagu = data.total_pagu_bimtek;
@@ -251,7 +298,7 @@
 
                pengawasan = data.target_pengawasan;
                bimtek = data.target_bimtek;
-               penyelesaian = data.target_penyelesaian;               
+               penyelesaian = data.target_penyelesaian;     
 
                var row = '';
                var rows = '';
@@ -274,7 +321,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_analisa_pagu +'" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control rencana_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_analisa_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-analisa-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -290,7 +337,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu +'" oninput="this.value = Math.abs(this.value)">';                                      
+                         row+= '<input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control rencana_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu +'" oninput="this.value = Math.abs(this.value)">';                            
                          row+= '<span id="pengawas-inspeksi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -306,7 +353,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_evaluasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control rencana_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_evaluasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -330,7 +377,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Pelaku Usaha" value="Pelaku Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_perizinan_pagu +'" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control rencana_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_perizinan_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="bimtek-perizinan-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -346,7 +393,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Pelaku Usaha" value="Pelaku Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_pengawasan_pagu +'" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control rencana_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_pengawasan_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="bimtek-pengawasan-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -370,7 +417,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" min="0" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_identifikasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" min="0" class="form-control rencana_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_identifikasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-identifikasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -386,7 +433,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" min="0" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_realisasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" min="0" class="form-control rencana_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_realisasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-realisasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -402,7 +449,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_evaluasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" min="0" class="form-control rencana_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_evaluasi_pagu +'" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -410,12 +457,12 @@
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
                     row+= '<td class="text-right"><strong>Total PAGU :</strong></td>';
-                    row+= '<td class="text-right">' + data.pagu_apbn + '</td>';
+                    row+= '<td class="text-right"><strong>' + data.pagu_apbn + '</strong></td>';
                row+= '</tr>';
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
                     row+= '<td class="text-right"><strong>Total Perencanaan :</strong></td>';
-                    row+= '<td class="text-right">' + data.total_rencana + '</td>';
+                    row+= '<td class="text-right"><strong><span id="total_rencana_sec">' + data.total_rencana + '</span></strong></td>';
                row+= '</tr>';
                
                $('#ShowEdit').html(row);
@@ -437,7 +484,7 @@
                rows+= '</div>';
 
                rows+= '<div class="col-sm-3">';
-                   rows+= '<div id="nama-pejabat-alert"  class="form-group">';
+                   rows+= '<div id="nama-pejabat-alert" class="form-group">';
                          rows+= '<label>Nama Pejabat :</label>';
                          rows+= '<input id="nama_pejabat" value="'+data.nama_pejabat+'" name="nama_pejabat" type="text" class="form-control" placeholder="Nama Pejabat">';
                          rows+= '<span id="nama-pejabat-messages"></span>';
@@ -447,7 +494,7 @@
                rows+= '<div class="col-sm-3">';
                    rows+= '<div id="nip-pejabat-alert" class="form-group">';
                          rows+= '<label>NIP Pejabat :</label>';
-                         rows+= '<input id="nip_pejabat" value="'+data.nip_pejabat+'"  name="nip_pejabat" type="text" class="form-control" placeholder="NIP Pejabat">';
+                         rows+= '<input id="nip_pejabat" value="'+data.nip_pejabat+'" name="nip_pejabat" type="number" class="form-control" placeholder="NIP Pejabat">';
                           rows+= '<span id="nip-pejabat-messages"></span>';
                     rows+= '</div>'; 
                rows+= '</div>';
@@ -456,21 +503,15 @@
 
                getperiode(data.periode_id);
 
-               $(".pengawasan_nilai_pagu").on("input", function() {
-                    calculatePengawasanPagu();
-               });
+               $(".rencana_inp").on("input", updateTotalPaguRencana);
 
-               $(".bimtek_nilai_target").on("input", function() {
-                    calculateBimtekTarget();
-               });
+               $(".pengawasan_nilai_pagu").on("input", calculatePengawasanPagu);
 
-               $(".bimtek_nilai_pagu").on("input", function() {
-                    calculateBimtekPagu();
-               });
+               $(".bimtek_nilai_target").on("input", calculateBimtekTarget);
 
-               $(".penyelesaian_nilai_pagu").on("input", function() {
-                    calculatePenyelesaianPagu();
-               });
+               $(".bimtek_nilai_pagu").on("input", calculateBimtekPagu);
+
+               $(".penyelesaian_nilai_pagu").on("input", calculatePenyelesaianPagu);
           }
 
           function calculatePengawasanPagu() {
@@ -484,9 +525,6 @@
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
 
                $("#total_pengawasan_pagu").text('Rp '+ formattedNumber);
-               
-               temp_total_pengawasan = number;
-               totalRencana();
           }
 
           function calculateBimtekTarget() {
@@ -525,9 +563,6 @@
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
 
                $("#total_bimtek_pagu").text('Rp '+ formattedNumber);
-              
-               temp_total_bimtek = number;
-               totalRencana();
           }
 
           function calculatePenyelesaianPagu() {
@@ -541,9 +576,6 @@
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
 
                $("#total_penyelesaian_pagu").text('Rp '+ formattedNumber);
-     
-               temp_total_penyelesaian = number;
-               totalRencana();
           }
 
           function getperiode(periode) {
@@ -607,9 +639,19 @@
 
           }
 
+          function updateTotalPaguRencana() {
+               var total_pagu_inp = 0;
+               $(".rencana_inp").each(function() {
+                    total_pagu_inp += parseInt($(this).val());
+               });
+
+               temp_total_pagu_inp = total_pagu_inp;
+               totalRencana();
+          }              
+
           function totalRencana() {
                
-               var total_rencana = temp_total_pengawasan + temp_total_bimtek + temp_total_penyelesaian;
+               var total_rencana = temp_total_pagu_inp;
                var number = total_rencana;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
                var periode_id = $('#periode_id').val();
@@ -632,8 +674,8 @@
 
                     } else {
 
-                         $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
-                         $('#total_rencana_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
+                         $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
+                         $('#total_rencana_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                     }
                }
                
@@ -641,6 +683,8 @@
                $('#total_rencana_sec').html('<b>Rp. '+formattedNumber+'</b>');
                $('#total_rencana_inp').val(number);
           }
+
+          updateTotalPaguRencana();
 
           function SendingData(form) {
 

@@ -24,44 +24,62 @@ class RequestPerencanaan
 
         if($perPage !='all')
         {
-
             $numberNext = (($page * $perPage) - ($perPage - 1));
-
         } else {
-
             $numberNext = (($page * $data->count()) - ($data->count() - 1));
         }  
         
         foreach ($data as $key => $val)
-        {           
+        {
             $periode = RequestPerencanaan::GetPeriodeYear($val->periode_id);
             if($periode !="")
             {   
                 $status = ($val->status == "13") ? 'Draft' : 'Terkirim';
                 $temp[$key]['number'] = $numberNext++;
                 $temp[$key]['id'] = $val->id;
+                $temp[$key]['nama_daerah'] = 'nama_daerah';
+                $temp[$key]['pengawas_analisa_pagu'] = $val->pengawas_analisa_pagu;
+                $temp[$key]['pengawas_analisa_pagu_convert'] = GeneralHelpers::formatRupiah($val->pengawas_analisa_pagu);
+                $temp[$key]['pengawas_inspeksi_pagu'] = $val->pengawas_inspeksi_pagu;
+                $temp[$key]['pengawas_inspeksi_pagu_convert'] = GeneralHelpers::formatRupiah($val->pengawas_inspeksi_pagu);
+                $temp[$key]['pengawas_evaluasi_pagu'] = $val->pengawas_evaluasi_pagu;
+                $temp[$key]['pengawas_evaluasi_pagu_convert'] = GeneralHelpers::formatRupiah($val->pengawas_evaluasi_pagu);
+                $temp[$key]['bimtek_perizinan_pagu'] = $val->bimtek_perizinan_pagu;
+                $temp[$key]['bimtek_perizinan_pagu_convert'] = GeneralHelpers::formatRupiah($val->bimtek_perizinan_pagu);
+                $temp[$key]['bimtek_pengawasan_pagu'] = $val->bimtek_pengawasan_pagu;
+                $temp[$key]['bimtek_pengawasan_pagu_convert'] = GeneralHelpers::formatRupiah($val->bimtek_pengawasan_pagu);
+                $temp[$key]['penyelesaian_identifikasi_pagu'] = $val->penyelesaian_identifikasi_pagu;
+                $temp[$key]['penyelesaian_identifikasi_pagu_convert'] = GeneralHelpers::formatRupiah($val->penyelesaian_identifikasi_pagu);
+                $temp[$key]['penyelesaian_realisasi_pagu'] = $val->penyelesaian_realisasi_pagu;
+                $temp[$key]['penyelesaian_realisasi_pagu_convert'] = GeneralHelpers::formatRupiah($val->penyelesaian_realisasi_pagu);
+                $temp[$key]['penyelesaian_evaluasi_pagu'] = $val->penyelesaian_evaluasi_pagu;
+                $temp[$key]['penyelesaian_evaluasi_pagu_convert'] = GeneralHelpers::formatRupiah($val->penyelesaian_evaluasi_pagu);
+                $temp[$key]['promosi_pengadaan_pagu'] = $val->promosi_pengadaan_pagu;
+                $temp[$key]['promosi_pengadaan_pagu_convert'] = GeneralHelpers::formatRupiah($val->promosi_pengadaan_pagu);
                 $temp[$key]['periode'] =  $periode;
+                $temp[$key]['total_pagu'] =  GeneralHelpers::formatRupiah($val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu);
                 $temp[$key]['status'] = $status;
                 $temp[$key]['deleted'] = RequestPerencanaan::checkValidate($val->status);
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
+                $temp[$key]['updated_at'] = GeneralHelpers::tanggal_indo($val->updated_at);
             }
-        }       
+        }
        
-       $result['data'] = $temp;
-       $result['options'] = RequestMenuRoles::ActionPage('perencanaan');
-       if($perPage !='all')
-       {
-           $result['current_page'] = $data->currentPage();
-           $result['last_page'] = $data->lastPage();
-           $result['total'] = $data->total(); 
-       }else{
-           $result['current_page'] = 1;
-           $result['last_page'] = 1;
-           $result['total'] = $data->count(); 
+        $result['data'] = $temp;
+        $result['options'] = RequestMenuRoles::ActionPage('perencanaan');
+        if($perPage !='all')
+        {
+            $result['current_page'] = $data->currentPage();
+            $result['last_page'] = $data->lastPage();
+            $result['total'] = $data->total(); 
+        } else {
+            $result['current_page'] = 1;
+            $result['last_page'] = 1;
+            $result['total'] = $data->count(); 
 
-       } 
-       
-       return $result;
+        } 
+        
+        return $result;
     }
 
     public static function checkValidate($status) {
@@ -130,9 +148,12 @@ class RequestPerencanaan
         $temp['total_pagu_penyelesaian_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu);
 
         $temp['lokasi'] = $data->lokasi;
+        $temp['status'] = $data->status;
         $temp['tgl_tandatangan'] = $data->tgl_tandatangan;
         $temp['nama_pejabat'] = $data->nama_pejabat;
         $temp['nip_pejabat'] = $data->nip_pejabat;
+        $temp['alasan_unapprove'] = $data->alasan_unapprove;
+        $temp['alasan_edit'] = $data->alasan_edit;
 
         return $temp; 
     }
@@ -220,6 +241,19 @@ class RequestPerencanaan
                 'alasan_unapprove' => $request->alasan_unapprove,
                 'request_edit' =>'false',
                 'status' => 13,                
+                'created_by' => Auth::User()->username,
+                'created_at' => date('Y-m-d H:i:s'),
+        ];
+  
+        return $fields;
+
+    }
+
+    public static function fieldReqedit($request)
+    {    
+        $fields = [  
+                'alasan_edit' => $request->alasan_edit,
+                'request_edit' =>'true',
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
         ];

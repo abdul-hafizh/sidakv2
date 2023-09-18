@@ -63,7 +63,7 @@
                                         <td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>
                                         <td>
                                            <div id="pengawas-analisa-target-alert" class="margin-none form-group">  
-                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target"  placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-analisa-target-messages"></span>
                                            </div>  
                                         </td>
@@ -271,7 +271,7 @@
                               <div class="col-sm-3">
                                    <div id="nip-pejabat-alert" class="margin-none form-group">
                                         <label>NIP Pejabat :</label>
-                                        <input id="nip_pejabat" value="" name="nip_pejabat" type="text" class="form-control" placeholder="NIP Pejabat">
+                                        <input id="nip_pejabat" value="" name="nip_pejabat" type="number" class="form-control" placeholder="NIP Pejabat">
                                         <span id="nip-pejabat-messages"></span>
                                    </div>
                               </div>   
@@ -338,7 +338,7 @@
                var totalRencana = parseFloat($('#total_rencana_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
                var total_target_bimtek = $('#total_target_bimtek_inp').val();
-               var total_target_bimtek_inp = $("#bimtek_perizinan_target").val() + $("#bimtek_pengawasan_target").val();
+               var total_target_bimtek_inp = parseInt($("#bimtek_perizinan_target").val()) + parseInt($("#bimtek_pengawasan_target").val());
 
                var form = {
                     "pengawas_analisa_target": $("#pengawas_analisa_target").val(),
@@ -402,8 +402,8 @@
                var totalRencana = parseFloat($('#total_rencana_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
                var total_target_bimtek = $('#total_target_bimtek_inp').val();
-               var total_target_bimtek_inp = $("#bimtek_perizinan_target").val() + $("#bimtek_pengawasan_target").val();
-               
+               var total_target_bimtek_inp = parseInt($("#bimtek_perizinan_target").val()) + parseInt($("#bimtek_pengawasan_target").val());
+
                var form = {
                     "pengawas_analisa_target": $("#pengawas_analisa_target").val(),
                     "pengawas_analisa_pagu": $("#pengawas_analisa_pagu").val(),

@@ -46,22 +46,18 @@ class PaguTargetApiController extends Controller
             "recordsTotal" => $result->total,
             "recordsFiltered" => $count->total,
             "data" => $result->data,
-            "total_apbn" => 1000,
-            "total_promosi" => 2000,
         );
         return response()->json($output);
     }
 
     public function total_pagu(Request $request)
     {
-        $total_apbn = PaguTarget::where('nama_daerah', 'LIKE', '%' . $request->data . '%')->sum('pagu_apbn');
-        $total_promosi = PaguTarget::where('nama_daerah', 'LIKE', '%' . $request->data . '%')->sum('pagu_promosi');
-        $total_all = $total_apbn + $total_promosi;
+        $result = RequestPaguTarget::GetTotalPagu($request);
 
         $output = array(
-            "total_apbn" => GeneralHelpers::formatRupiah($total_apbn),
-            "total_promosi" => GeneralHelpers::formatRupiah($total_promosi),
-            "total_all" => GeneralHelpers::formatRupiah($total_all)
+            "total_apbn" => GeneralHelpers::formatRupiah($result->total_apbn),
+            "total_promosi" => GeneralHelpers::formatRupiah($result->total_promosi),
+            "total_all" => GeneralHelpers::formatRupiah($result->total_promosi + $result->total_apbn)
         );
         return response()->json($output);
     }
@@ -79,6 +75,22 @@ class PaguTargetApiController extends Controller
             $saveData = PaguTarget::create($insert);
             //result
             return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Insert data sucessfully']);
+        }
+    }
+
+    public function update($id, Request $request)
+    {
+
+        $validation = ValidationPaguTarget::validationUpdate($request, $id);
+        if ($validation) {
+            return response()->json($validation, 400);
+        } else {
+
+            $update = RequestPaguTarget::fieldsData($request);
+            //update account
+            $UpdateData = PaguTarget::where('id', $id)->update($update);
+            //result
+            return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
         }
     }
 
@@ -101,5 +113,48 @@ class PaguTargetApiController extends Controller
         $myFile = public_path("/pagu_target/template.xlsx");
 
         return response()->download($myFile);
+    }
+    public function download_daerah(Request $request)
+    {
+        $myFile = public_path("/pagu_target/data_daerah.xlsx");
+
+        return response()->download($myFile);
+    }
+
+    public function edit($id)
+    {
+        $result = PaguTarget::where(['id' => $id])->first();
+        return response()->json($result);
+    }
+
+    public function delete($id)
+    {
+        $messages['messages'] = false;
+        $_res = PaguTarget::find($id);
+
+        if (empty($_res)) {
+            return response()->json(['messages' => false]);
+        }
+
+        $results = $_res->delete();
+        if ($results) {
+            $messages['messages'] = true;
+        }
+        return response()->json($messages);
+    }
+
+    public function deleteSelected(Request $request)
+    {
+        $messages['messages'] = false;
+
+        foreach ($request->data as $key) {
+            $results = PaguTarget::where('id', (int)$key)->delete();
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
     }
 }

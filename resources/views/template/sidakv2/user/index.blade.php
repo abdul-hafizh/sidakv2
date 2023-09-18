@@ -1201,6 +1201,84 @@
 
     
 
+
+    function listOptions(data){
+        const edited = data.find(o => o.action === 'edit');
+        const deleted = data.find(o => o.action === 'delete');
+        const detail = data.find(o => o.action === 'delete');
+         const checklist = data.find(o => o.action === 'checklist');
+
+         if(checklist.action =='checklist')
+           {
+               if(checklist.checked ==true)
+               {
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
+                   
+                  
+               }else{
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               }    
+           }
+       
+        if(edited.checked == false && deleted.checked == false && detail.checked == false)
+        {
+            $('#ShowAction').hide();
+        }else{
+             $('#ShowAction').show();
+        }    
+       data.forEach(function(item, index) 
+       {
+           if(item.action =='add')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowAdd').show();
+               }else{
+                  $('#ShowAdd').hide();
+               }    
+           }
+
+          
+
+
+
+            if(item.action =='export')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowExport').show();
+               }else{
+                  $('#ShowExport').hide();
+               }    
+           }     
+
+            if(item.action =='search')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowSearch').show();
+               }else{
+                  $('#ShowSearch').hide();
+               }    
+           }   
+
+            if(item.action =='perpage')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowPagination').show();
+               }else{
+                  $('#ShowPagination').hide();
+               }    
+           }     
+
+           
+
+       });
+    }
+
  
     // Function to update pagination controls
     function updatePagination(currentPage, totalPages) {
