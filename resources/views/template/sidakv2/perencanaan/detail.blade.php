@@ -33,25 +33,21 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Periode <span id="selectPeriode" class="pd-top-bottom-5"></span></span>
+								<h3 class="card-text" id="status-view"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
-     <div class="box box-solid box-primary">
-          <div class="box-body">
-               <div class="card-body">
-                    <div class="row pd-top-bottom-15">  
-                         <div class="col-lg-4">
-                              <label class="pull-left">
-                                   Periode : <span id="selectPeriode" class="pd-top-bottom-5"></span>
-                              </label>
-                         </div>
-                         <div class="col-lg-8">
-                              <div class="pull-right">
-                                   <span class="label-header-box form-group margin-none align-right" id="status-view"></span>
-                              </div>
-                         </div>
-                    </div>                          
-               </div>
-          </div>
-     </div>
 
      <div class="box box-solid box-primary">
           <div class="box-body">
@@ -197,8 +193,8 @@
                const statusInfo = statusMap[status];
 
                if (statusInfo) {
-                    const badgeHtml = `<span class="badge ${statusInfo.color}">${statusInfo.label}</span>`;
-                    $('#status-view').html(badgeHtml);
+                    const badgeHtml = `<span>Status : ${statusInfo.label}</span>`;
+                    $('#status-view').html('<b>'+badgeHtml+'</b>');
                }
 
                var row = '';
