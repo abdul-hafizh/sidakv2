@@ -29,6 +29,9 @@ class Kendala extends Model
     ];
 
 
-    
+     public function kriteria()
+    {
+        return $this->belongsTo('App\Models\Kriteria','kriteria_id');
+    }
     
 }

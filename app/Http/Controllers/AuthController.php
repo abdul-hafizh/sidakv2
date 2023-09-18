@@ -14,7 +14,7 @@ use App\Models\RoleUser;
 use App\Models\User;
 use App\Models\SettingApps;
 use App\Models\SystemLog;
-
+use App\Http\Request\RequestMenuRoles;
 use JWTAuth;
 
 
@@ -120,9 +120,20 @@ class AuthController extends Controller
                            );
                RequestSystemLog::CreateLog($log);
 
+               if($access =='admin')
+               {
+                    $sidebar = RequestMenuRoles::MenuSidebarAdmin();
+               }else if($access =='pusat'){
+                   $sidebar = RequestMenuRoles::MenuSidebarPusat();
+               }else if($access =='province'){
+                    $sidebar = RequestMenuRoles::MenuSidebarProvinsi();
+               }else if($access =='daerah'){
+                   $sidebar = RequestMenuRoles::MenuSidebarKabupaten();
+               } 
 
+            
 
-              return response()->json(['status'=>true,'template'=>$template,'user_sidebar'=>$userSidebar,'access'=>$access,'token'=>$token['token']],200);  
+              return response()->json(['status'=>true,'menu_sidebar'=>$sidebar,'template'=>$template,'user_sidebar'=>$userSidebar,'access'=>$access,'token'=>$token['token']],200);  
                
                
 

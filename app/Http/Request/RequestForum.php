@@ -8,6 +8,8 @@ use App\Models\Forum;
 use App\Models\Topic;
 use App\Models\TopicDetail;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestMenuRoles;
+
 class RequestForum 
 {
    
@@ -44,10 +46,12 @@ class RequestForum
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['description'] = $description;
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
-            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
+            $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at); 
         }
 
        $result['data'] = $temp;
+       $result['options'] = RequestMenuRoles::ActionPage('forum');
        if($perPage !='all')
        {
            $result['current_page'] = $data->currentPage();
@@ -97,10 +101,12 @@ class RequestForum
             $temp[$key]['category'] = RequestForum::categoryForum($val->forum_id);
             $temp[$key]['total_messsage'] = RequestForum::TotalMessage($val->id).' Komentar';
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
-            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+            $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
+            $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at); 
         }
 
        $result['data'] = $temp;
+       $result['options'] = RequestMenuRoles::ActionPage('forum');
        if($perPage !='all')
        {
            $result['current_page'] = $data->currentPage();

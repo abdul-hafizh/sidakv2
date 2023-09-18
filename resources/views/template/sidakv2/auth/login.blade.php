@@ -156,6 +156,7 @@ $(function(){
 
                  localStorage.setItem('user_sidebar', JSON.stringify(respons.user_sidebar));
                  localStorage.setItem('apps', JSON.stringify(respons.template));
+                 localStorage.setItem('menu_sidebar', JSON.stringify(respons.menu_sidebar));
                  window.location.href = BASE_URL+ '/dashboard'; 
                   
             },

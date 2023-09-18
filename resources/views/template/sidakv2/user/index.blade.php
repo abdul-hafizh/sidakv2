@@ -1,16 +1,16 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15">
-    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20" id="ShowSearch" style="display:none;">
        
-        <div class="pull-right width-50" id="ShowSearch" style="display:none;">
+        <div class="pull-right width-50" >
              <div class="pull-left width-50 padding-0-8">
                         <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi / Kabupaten"></select>
             </div>
              <div class="pull-left width-50">
                 
                 <div class="input-group input-group-sm border-radius-20">
-                    <input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
+                    <input id="search-input" type="text"  placeholder="Cari" class="form-control height-35 border-radius-left">
                     <span class="input-group-btn">
                     <button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
                     </span>
@@ -39,7 +39,7 @@
                 </button>
             </div>
 
-            <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
+            <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -57,7 +57,7 @@
             </div>      
         </div> 
 
-        <div id="ShowPagination" class="pull-right width-50" style="display:none;">
+        <div id="ShowPagination" style="display:none;" class="pull-right width-50" >
             <ul id="pagination" class="pagination-table pagination"></ul>
         </div>
     </div>
@@ -100,7 +100,7 @@
         </div>
     </div>
      @include('template/sidakv2/user.add')
-     @include('template/sidakv2/user.print')
+     @include('template/sidakv2/user.export')
      <script type="text/javascript">
  
 
@@ -120,9 +120,19 @@
     var daerah_id = '';
     var search = '';
 
-     $("#ExportButton").click(function() {
-        ExportData();
-      });
+    $("#ExportButton").click(function() {
+          $.ajax({
+            url: BASE_URL+ `/api/user?page=${page}&per_page=all`,
+            method: 'GET',
+            success: function(response) {
+                
+                 exportData(response.data);
+            },
+            error: function(error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+    });
 
 
 
@@ -173,8 +183,11 @@
                     success: function(response) {
                         list = response.data;
                         resultTotal(response.total);
-                        updateContent(response.data);
+                        listOptions(response.options);
+                        
+                        updateContent(response.data,response.options);
                         updatePagination(response.current_page, response.last_page);
+
                     },
                     error: function(error) {
                         console.error('Error fetching data:', error);
@@ -212,7 +225,9 @@
                     success: function(response) {
                         list = response.data;
                         resultTotal(response.total);
-                        updateContent(response.data);
+                        listOptions(response.options);
+                      
+                        updateContent(response.data,response.options);
                         updatePagination(response.current_page, response.last_page);
                     },
                     error: function(error) {
@@ -287,7 +302,7 @@
    
 
 
-
+   // search btn
     $('#Search').click( () => {
          search = $('#search-input').val();
          
@@ -305,10 +320,39 @@
                 success: function(response) {
                     list = response.data;
                     resultTotal(response.total);
-                    // Update content area with fetched data
-                    updateContent(response.data);
+                    listOptions(response.options);
+                   
+                    updateContent(response.data,response.options);
+                    updatePagination(response.current_page, response.last_page);
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+         }    
+    });
 
-                    // Update pagination controls
+     // search keyup
+     $('#search-input').keyup( () => {
+         search = $('#search-input').val();
+         
+         if(search !='' || daerah_id !='')
+         {  
+             const content = $('#content');
+             content.empty();
+             let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
+             $.ajax({
+                url: BASE_URL + `/api/user/search?page=${page}&per_page=${itemsPerPage}`,
+                data:{'search':search,'daerah_id':daerah_id},
+                method: 'POST',
+                success: function(response) {
+                    list = response.data;
+                    resultTotal(response.total);
+                    listOptions(response.options);
+                   
+                    updateContent(response.data,response.options);
                     updatePagination(response.current_page, response.last_page);
                 },
                 error: function(error) {
@@ -347,9 +391,9 @@
            const content = $('#content');
            content.empty();
           
-             let row = ``;
-              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-              content.append(row);
+        let row = ``;
+        row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+        content.append(row);
 
          if(daerah_id)
          {
@@ -368,11 +412,7 @@
                 list = response.data;
                 resultTotal(response.total);
                 listOptions(response.options);
-                listDataPrint(response.data);
-                // Update content area with fetched data
                 updateContent(response.data,response.options);
-
-                // Update pagination controls
                 updatePagination(response.current_page, response.last_page);
             },
             error: function(error) {
@@ -1030,7 +1070,43 @@
 
     }
 
-    function ExportData()
+    function exportData(data)
+    {
+        
+         const content = $('#exportView');
+        
+         content.empty();
+         if(data.length>0)
+         {
+            // Populate content with new data
+            data.forEach(function(item, index) {
+                let row = ``;
+                 row +=`<tr>`;
+
+                   row +=`<td class="padding-text-table">${item.number}</td>`;
+                   row +=`<td class="padding-text-table">${item.username}</td>`;
+                   row +=`<td class="padding-text-table">${item.name}</td>`;
+                   row +=`<td class="padding-text-table">${item.email}</td>`;
+                   row +=`<td class="padding-text-table">${item.phone}</td>`;
+                   row +=`<td class="padding-text-table">${item.nip}</td>`;
+                   row +=`<td class="padding-text-table">${item.leader_name}</td>`;
+                   row +=`<td class="padding-text-table">${item.leader_nip}</td>`;
+                   row +=`<td class="padding-text-table">${item.daerah_name}</td>`;
+                   row +=`<td class="padding-text-table">${item.role}</td>`;
+                   row +=`<td class="padding-text-table">${item.status}</td>`;
+                   row +=`<td class="padding-text-table">${item.created_at_format}</td>`;
+                 row +=`</tr>`;
+
+               content.append(row);
+             });     
+
+         }     
+
+         ExportExel();   
+
+    }
+
+     function ExportExel()
     {
         var dt = new Date();
        var time =  dt.getDate() + "-"
@@ -1043,15 +1119,13 @@
       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
       XLSX.writeFile(wb, "Repot-data-user-"+ time +".xlsx");
 
-    
-
     }
 
 
     function listOptions(data){
         const edited = data.find(o => o.action === 'edit');
         const deleted = data.find(o => o.action === 'delete');
-        const detail = data.find(o => o.action === 'delete');
+        const detail = data.find(o => o.action === 'detail');
          const checklist = data.find(o => o.action === 'checklist');
 
          if(checklist.action =='checklist')
@@ -1125,38 +1199,7 @@
        });
     }
 
-    function listDataPrint(data){
-         
-          const content = $('#printView');
-        
-         content.empty();
-         if(data.length>0)
-         {
-            // Populate content with new data
-            data.forEach(function(item, index) {
-                let row = ``;
-                 row +=`<tr>`;
-
-                   row +=`<td class="padding-text-table">${item.number}</td>`;
-                   row +=`<td class="padding-text-table">${item.username}</td>`;
-                   row +=`<td class="padding-text-table">${item.name}</td>`;
-                   row +=`<td class="padding-text-table">${item.email}</td>`;
-                   row +=`<td class="padding-text-table">${item.phone}</td>`;
-                   row +=`<td class="padding-text-table">${item.nip}</td>`;
-                   row +=`<td class="padding-text-table">${item.leader_name}</td>`;
-                   row +=`<td class="padding-text-table">${item.leader_nip}</td>`;
-                   row +=`<td class="padding-text-table">${item.daerah_name}</td>`;
-                   row +=`<td class="padding-text-table">${item.role}</td>`;
-                   row +=`<td class="padding-text-table">${item.status}</td>`;
-                   row +=`<td class="padding-text-table">${item.created_at_format}</td>`;
-                 row +=`</tr>`;
-
-               content.append(row);
-             });     
-
-         }        
-         
-    }
+    
 
 
     function listOptions(data){
@@ -1294,7 +1337,7 @@
             fetchData(currentPage);
         });
     }
-
+    localStorage.removeItem('sidebar_active');
     // Initial data fetch
     fetchData(currentPage);
 });

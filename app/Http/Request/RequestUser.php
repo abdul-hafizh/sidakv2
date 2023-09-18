@@ -94,23 +94,7 @@ class RequestUser
 
   
 
-   public static function GetDataPrint($data){
-
-          
-
-        $i = 1;    
-        foreach ($data as $key => $val)
-        { 
-            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "NonAktif"; }
-            $temp[$key]['number'] = $i;
-          
-           
-
-            $i++;
-        }  
-
-        return json_decode(json_encode($temp), FALSE);
-   }
+   
 
    public static function checkValidate($username){
 

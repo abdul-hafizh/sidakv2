@@ -17,7 +17,7 @@
    </tr>
 
   </thead>
-  <tbody id="printView">
+  <tbody id="exportView">
   	
  
   	
