@@ -18,29 +18,22 @@
                     <option value="all">All</option>
                 </select>
             </div>  
-
             <div id="ShowChecklist" style="display:none;" class="pull-left padding-9-0 margin-left-button">
                 <button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
                      Hapus
                 </button>
             </div>
-
              <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
-                <button type="button" id="printButton"  class="btn btn-info border-radius-10">
+                <button type="button" id="printButton" class="btn btn-info border-radius-10">
                      Export
                 </button>
-            </div>
-         
-           
-
+            </div>                    
             <div id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
                 <a href="{{ url('perencanaan/add') }}" class="btn btn-primary border-radius-10" >
                     Tambah Data
                 </a> 
-            </div>		
-          
-		</div> 
-
+            </div>
+		</div>
 		<div id="ShowPagination" class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
@@ -57,13 +50,28 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th id="ShowChecklistAll" style="display:none;"  class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
-							<th><div id="ShowChecklistAll" style="display:none;"  class="split-table"></div><span class="span-title">No</span></th>
-							
-							<th><div class="split-table"></div><span class="span-title">Periode </span></th>
-							<th><div class="split-table"></div><span class="span-title">Status </span></th>
-							<th><div class="split-table"></div><span class="span-title">Tanggal </span></th>
-							<th id="ShowAction" style="display:none;"><div class="split-table"></div><span class="span-title"> Aksi </span> </th>
+							<th rowspan="2" id="ShowChecklistAll" style="display:none;" class="th-checkbox"><input id="select-all" class="border-left-table" type="checkbox"></th>
+							<th rowspan="2"><div id="ShowChecklistAll" style="display:none;" class="split-table"></div>No</span></th>							
+							<th rowspan="2"><span class="border-left-table">Nama Daerah </span></th>
+							<th rowspan="2"><span class="border-left-table">Periode </span></th>
+							<th colspan="3"><span class="border-left-table">Pengawasan </span></th>
+							<th colspan="2"><span class="border-left-table">Bimsos </span></th>
+							<th colspan="3"><span class="border-left-table">Penyelesaian Masalah </span></th>
+							<th rowspan="2"><span class="border-left-table">Promosi </span></th>
+							<th rowspan="2"><span class="border-left-table">Total </span></th>
+							<th rowspan="2"><span class="border-left-table">Status </span></th>
+							<th rowspan="2"><span class="border-left-table">Update </span></th>
+							<th rowspan="2"><span class="border-left-table">Aksi </span> </th>
+						</tr>
+						<tr>							
+							<th><span class="border-left-table">Analisa </span></th>
+							<th><span class="border-left-table">Inspeksi </span></th>
+							<th><span class="border-left-table">Evaluasi </span></th>
+							<th><span class="border-left-table">Perizinan </span></th>
+							<th><span class="border-left-table">Pengawasan </span></th>
+							<th><span class="border-left-table">Identifikasi </span></th>
+							<th><span class="border-left-table">Realisasi </span></th>
+							<th><span class="border-left-table">Evaluasi </span></th>
 						</tr>
 					</thead>
 
@@ -92,20 +100,21 @@
             var value = $(this).val();         
             if(value)
             {   
-                 const content = $('#content');
-                 content.empty();
-                 let row = ``;
-                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                  content.append(row);
-                  let search = $('#periode_id').val();
-                  if(search !='')
-                  {
+                const content = $('#content');
+                content.empty();
+                let row = ``;
+                row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                content.append(row);
+                let search = $('#periode_id').val();
+
+                if(search !='')
+                {
                     var url = BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${value}`;
                     var method = 'POST';
-                  }else{
+                } else {
                     var url = BASE_URL + `/api/perencanaan?page=${page}&per_page=${value}`;
                     var method = 'GET';
-                  }     
+                }
 
                 $.ajax({
                     url: url,
@@ -247,66 +256,73 @@
             const detailed = options.find(o => o.action === 'detail');
             
             content.empty();
+
             data.forEach(function(item, index) {
                 let row = ``;
                 row +=`<tr>`;
                 if(item.deleted == false)
-               {
-                  if(checklist.checked == true)
-                  {
-                     row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-                  }
+                {
+                    if(checklist.checked == true)
+                    {
+                        row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
+                    }
                   
-               }else{
-                  if(checklist.checked == true)
-                  {
-                  row +=`<td><input disabled  type="checkbox"></td></td>`;  
-                  }
-               }   
+                } else {
+                    if(checklist.checked == true)
+                    {
+                        row +=`<td><input disabled  type="checkbox"></td></td>`;  
+                    }
+                }   
+
                 row +=`<td class="table-padding-second">${item.number}</td>`;
+                row +=`<td class="table-padding-second">${item.nama_daerah}</td>`;
                 row +=`<td class="table-padding-second">${item.periode}</td>`;
+                row +=`<td class="table-padding-second">${item.pengawas_analisa_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.pengawas_inspeksi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.pengawas_evaluasi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.bimtek_perizinan_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.bimtek_pengawasan_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.penyelesaian_identifikasi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.penyelesaian_realisasi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.penyelesaian_evaluasi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.promosi_pengadaan_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second">${item.total_pagu}</td>`;
                 row +=`<td class="table-padding-second">${item.status}</td>`;
-                row +=`<td class="table-padding-second">${item.created_at}</td>`;
+                row +=`<td class="table-padding-second">${item.updated_at}</td>`;
                 row +=`<td>`; 
                     row +=`<div class="btn-group">`;
                     if(item.deleted == false)
                     {
-                         if(detailed.checked == true)
-                         {  
-                           row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-
-                         }   
-                         if(edited.checked == true)
-                         { 
+                        if(detailed.checked == true)
+                        {  
+                            row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+                        }   
+                        if(edited.checked == true)
+                        { 
                             row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                         }
-
-
-                         if(deleted.checked == true)
-                         {
+                        }
+                        if(deleted.checked == true)
+                        {
                             row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
-                         }
-
+                        }
                     } else {
 
-                       if(detailed.checked == true)
-                       {   
-                          row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                       }
-
-                       if(edited.checked == true)
-                       { 
-                          
-                          row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                       }
-                       
-                       if(deleted.checked == true)
-                       { 
-                           row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
-                       } 
+                        if(detailed.checked == true)
+                        {   
+                            row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+                        }
+                        if(edited.checked == true)
+                        {                            
+                            row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                        }                        
+                        if(deleted.checked == true)
+                        { 
+                            row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+                        } 
                     }  
                     row +=`</div>`;
                     row +=`</td>`;
+
                 row +=`</tr>`; 
                 content.append(row);
             });
@@ -323,15 +339,14 @@
 
             $( "#content" ).on( "click", "#Approve", (e) => {
              
-                let id = e.currentTarget.dataset.param_id;
-                
+                let id = e.currentTarget.dataset.param_id;                
                 Swal.fire({
-			      title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
-			      icon: 'warning',
-			      showCancelButton: true,
-			      confirmButtonColor: '#d33',
-			      cancelButtonColor: '#3085d6',
-			      confirmButtonText: 'Ya'
+                    title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
 			    }).then((result) => {
 			        if (result.isConfirmed) {
                         approveItem(id);
@@ -394,81 +409,62 @@
         }
 
         function listOptions(data){
-        const edited = data.find(o => o.action === 'edit');
-        const deleted = data.find(o => o.action === 'delete');
-        const detail = data.find(o => o.action === 'delete');
-         const checklist = data.find(o => o.action === 'checklist');
+            const edited = data.find(o => o.action === 'edit');
+            const deleted = data.find(o => o.action === 'delete');
+            const detail = data.find(o => o.action === 'delete');
+            const checklist = data.find(o => o.action === 'checklist');
 
-         if(checklist.action =='checklist')
-           {
-               if(checklist.checked ==true)
-               {
-                   $('#ShowChecklist').show();
-                   $('#ShowChecklistAll').show();
-                   
-                  
-               }else{
-                   $('#ShowChecklist').hide();
-                   $('#ShowChecklistAll').hide();
-               }    
-           }
-       
-        if(edited.checked == false && deleted.checked == false && detail.checked == false)
-        {
-            $('#ShowAction').hide();
-        }else{
-             $('#ShowAction').show();
-        }    
-       data.forEach(function(item, index) 
-       {
-           if(item.action =='add')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowAdd').show();
-               }else{
-                  $('#ShowAdd').hide();
-               }    
-           }
+            if(checklist.action =='checklist')
+            {
+                if(checklist.checked ==true)
+                {
+                    $('#ShowChecklist').show();
+                    $('#ShowChecklistAll').show();                                
+                } else {
+                    $('#ShowChecklist').hide();
+                    $('#ShowChecklistAll').hide();
+                }    
+            }
 
-          
-
-
-
-            if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           }     
-
-            if(item.action =='search')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowSearch').show();
-               }else{
-                  $('#ShowSearch').hide();
-               }    
-           }   
-
-            if(item.action =='perpage')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowPagination').show();
-               }else{
-                  $('#ShowPagination').hide();
-               }    
-           }     
-
-           
-
-       });
-    }
+            data.forEach(function(item, index) {
+                if(item.action =='add')
+                {
+                    if(item.checked ==true)
+                    {
+                        $('#ShowAdd').show();
+                    } else {
+                        $('#ShowAdd').hide();
+                    }    
+                }
+                if(item.action =='export')
+                {
+                    if(item.checked ==true)
+                    {
+                        $('#ShowExport').show();
+                    } else {
+                        $('#ShowExport').hide();
+                    }    
+                }     
+                if(item.action =='search')
+                {
+                    if(item.checked ==true)
+                    {
+                        $('#ShowSearch').show();
+                    } else {
+                        $('#ShowSearch').hide();
+                    }    
+                }   
+                if(item.action =='perpage')
+                {
+                    if(item.checked ==true)
+                    {
+                        $('#ShowPagination').show();
+                    } else {
+                        $('#ShowPagination').hide();
+                    }    
+                }     
+            });
+        }
 
         function updatePagination(currentPage, totalPages) {
             const pagination = $('#pagination');

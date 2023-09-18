@@ -4,28 +4,48 @@
 <style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
+     <div class="row">
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary ">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Pagu APBN</span>
+								<h3 class="card-text" id="pagu_apbn"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary">
+				<div class="box-body bg-primary">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Total Perencanaan</span>
+								<h3 class="card-text" id="total_rencana"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
      <div class="box box-solid box-primary">
           <div class="box-body">
                <div class="card-body">
                     <div class="row pd-top-bottom-15">  
-                         <div class="col-lg-8">
-                              <div class="form-group">
-                                   <label class="col-lg-4">
-                                        Pagu APBN : 
-                                        <span id="pagu_apbn" class="pd-top-bottom-5"></span>
-                                   </label>
-                                   <label class="col-lg-5">
-                                        Total Perencanaan :
-                                        <span id="total_rencana" class="pd-top-bottom-5"></span>
-                                   </label>                                        
-                              </div>
-                         </div>
                          <div class="col-lg-4">
+                              <label class="pull-left">
+                                   Periode : <span id="selectPeriode" class="pd-top-bottom-5"></span>
+                              </label>
+                         </div>
+                         <div class="col-lg-8">
                               <div class="pull-right">
-                                   <label class="col-lg-12">
-                                        <span class="label-header-box form-group margin-none align-right" id="status-view"></span>
-                                        Periode : <span id="selectPeriode" class="pd-top-bottom-5"></span>
-                                   </label>
+                                   <span class="label-header-box form-group margin-none align-right" id="status-view"></span>
                               </div>
                          </div>
                     </div>                          
