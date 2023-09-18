@@ -44,36 +44,36 @@
           <div class="row">
             <div id="pagu_apbn-alert" class="form-group has-feedback col-md-6">
               <label>Pagu APBN</label>
-              <input type="text" class="form-control" name="pagu_apbn" id="pagu_apbn" placeholder="APBN" value="">
+              <input type="number" class="form-control" name="pagu_apbn" id="pagu_apbn" placeholder="APBN" value="">
               <span id="pagu_apbn-messages"></span>
             </div>
-            <div id="pagu_promosi-alert" class="form-group has-feedback col-md-6">
+            <div id="pagu_promosi-alert" class="form-group has-feedback col-md-6" style="display: none;">
               <label>Pagu Promosi</label>
-              <input type="text" class="form-control" name="pagu_promosi" id="pagu_promosi" placeholder="Promosi" value="">
+              <input type="number" class="form-control" name="pagu_promosi" id="pagu_promosi" placeholder="Promosi" value="">
               <span id="pagu_promosi-messages"></span>
             </div>
           </div>
           <div class="row">
             <div id="target_pengawasan-alert" class="form-group has-feedback col-md-6">
               <label>Target Pengawasan</label>
-              <input type="text" class="form-control" name="target_pengawasan" id="target_pengawasan" placeholder="Pengawasan" value="">
+              <input type="number" class="form-control" name="target_pengawasan" id="target_pengawasan" placeholder="Pengawasan" value="">
               <span id="target_pengawasan-messages"></span>
             </div>
             <div id="target_penyelesaian_permasalahan-alert" class="form-group has-feedback col-md-6">
               <label>Target Penyelesaian Masalah</label>
-              <input type="text" class="form-control" name="target_penyelesaian_permasalahan" id="target_penyelesaian_permasalahan" placeholder="Penyelesaian Masalah" value="">
+              <input type="number" class="form-control" name="target_penyelesaian_permasalahan" id="target_penyelesaian_permasalahan" placeholder="Penyelesaian Masalah" value="">
               <span id="target_penyelesaian_permasalahan-messages"></span>
             </div>
           </div>
           <div class="row">
             <div id="target_bimbingan_teknis-alert" class="form-group has-feedback col-md-6">
               <label>Target Bimbingan Teknis</label>
-              <input type="text" class="form-control" name="target_bimbingan_teknis" id="target_bimbingan_teknis" placeholder="Bimbingan Teknis" value="">
+              <input type="number" class="form-control" name="target_bimbingan_teknis" id="target_bimbingan_teknis" placeholder="Bimbingan Teknis" value="">
               <span id="target_bimbingan_teknis-messages"></span>
             </div>
             <div id="target_video_promosi-alert" class="form-group has-feedback col-md-6" style="display: none">
               <label>Target Video Promosi</label>
-              <input type="text" class="form-control" name="target_video_promosi" id="target_video_promosi" placeholder="Video Promosi" value="" readonly>
+              <input type="number" class="form-control" name="target_video_promosi" id="target_video_promosi" placeholder="Video Promosi" value="" readonly>
               <span id="target_video_promosi-messages"></span>
             </div>
           </div>
@@ -108,12 +108,15 @@
         'type_daerah',
         'target_pengawasan',
         'target_penyelesaian_permasalahan',
-        'target_bimbingan_teknis'
+        'target_bimbingan_teknis',
+        'target_video_promosi'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
         if (field == 'daerah_id')
-          $('#daerah_id').html('<option value="">- Pilih -</option>').prop('disabled', true);
+          $('#daerah_id').val("").trigger("change").prop('disabled', true);
+        else if (field == 'periode_id')
+          $('#periode_id').val("").trigger("change");
         else
           $('#' + field).val('');
         $('#' + field + '-alert').removeClass('has-error');
@@ -129,6 +132,9 @@
       //  $('.modal-footer button[type=button]').html('Ubah Data');
       $('#simpan').hide();
       $('#update').show();
+      $('#periode_id-alert').removeClass('has-error');
+      $('#periode_id-messages').removeClass('help-block').html('');
+
 
       const id = $(this).data('param_id');
       $.ajax({
@@ -171,10 +177,15 @@
       }
 
       function getDaerah(type_daerah, daerah_id) {
-        if (type_daerah == 'Provinsi')
+        if (type_daerah == 'Provinsi') {
           url = "select-province";
-        else
+          $('#pagu_promosi-alert').show();
+          $('#target_video_promosi-alert').show();
+        } else {
           url = "select-kabupaten";
+          $('#pagu_promosi-alert').hide();
+          $('#target_video_promosi-alert').hide();
+        }
         $.ajax({
           url: BASE_URL + '/api/' + url,
           method: 'get',
@@ -252,15 +263,22 @@
 
     $('#type_daerah').on('change', function() {
       let type_daerah = $('#type_daerah').val();
-      var x = document.getElementById("target_video_promosi-alert");
       if (type_daerah == 'Provinsi') {
         url = "select-province";
-        x.style.display = "block";
         $('#target_video_promosi').val(1);
-      } else {
+        $('#pagu_promosi-alert').show();
+        $('#target_video_promosi-alert').show();
+      } else if (type_daerah == 'Kabupaten') {
         url = "select-kabupaten";
-        x.style.display = "none";
         $('#target_video_promosi').val(0);
+        $('#pagu_promosi-alert').hide();
+        $('#target_video_promosi-alert').hide();
+      } else {
+        url = "";
+        $('#target_video_promosi').val(0);
+        $('#pagu_promosi-alert').hide();
+        $('#target_video_promosi-alert').hide();
+        $('#daerah_id').val("").trigger("change").prop('disabled', true);
       }
       $.ajax({
         url: BASE_URL + '/api/' + url,
@@ -357,15 +375,6 @@
         }
       });
     });
-
-    $("#ubah").click(() => {
-
-      alert('asd');
-
-
-    });
-
-
 
   });
 </script>
