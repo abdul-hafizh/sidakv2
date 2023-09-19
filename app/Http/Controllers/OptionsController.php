@@ -19,7 +19,7 @@ class OptionsController extends Controller
 
     public function index(Request $request)
     {
-        $title = 'Data Option';
+        $title = 'Data Role';
         $log = array(             
             'menu'=> $title,
             'slug'=>'options',
