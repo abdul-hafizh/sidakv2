@@ -366,7 +366,7 @@
                               rows_doc+= '<div class="card-body">';
                                    rows_doc+= '<div class="form-group col-lg-6">';                                        
                                         rows_doc+= '<div class="form-group">';
-                                             rows_doc+= '<a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>';
+                                             rows_doc+= '<button type="button" class="btn btn-warning" href="">File Perencanaan PDF</button>';
                                         rows_doc+= '</div>';
                                    rows_doc+= '</div>';
                               rows_doc+= '</div>';
@@ -385,9 +385,13 @@
                                              rows_doc+= '<span id="file-pdf-alert-messages"></span>';
                                         rows_doc+= '</div>';
                                         rows_doc+= '<button id="upload_file" class="btn btn-primary">Upload PDF</button>';
+
+                                         rows_doc+= '';
+
+ 
                                         rows_doc+='<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';                                        
                                         rows_doc+= '<div class="form-group"> <br/>';
-                                             rows_doc+= '<a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>';
+                                             rows_doc+= '<div id="ShowPDF"></div>';
                                         rows_doc+= '</div>';
                                    rows_doc+= '</div>';
                               rows_doc+= '</div>';
@@ -569,6 +573,15 @@
                          if(files[0].name.toUpperCase().includes(".PDF"))
                          {
                               file_pdf = fileReader.result;
+                              
+                              var ros = '';
+                                 ros +=`<button  id="GetModalPdf" data-param_id="`+file_pdf+`" data-toggle="modal" data-target="#modal-show"  data-toggle="tooltip" data-placement="top" title="Lihat Data PDF" type="button" class="btn btn-warning" >File Perencanaan PDF</button>`;
+
+                                      ros +=`<div id="modal-show" class="modal fade" role="dialog">`;
+                                    ros +=`<div id="ViewPerencanaanPDF"></div>`;
+                                    ros +=`</div>`;
+
+                              $('#ShowPDF').html(ros);
                          } else {
                               Swal.fire({
                                    icon: 'info',
@@ -583,11 +596,44 @@
 
                });
 
+               $( "#ShowPDF" ).on( "click", "#GetModalPdf", (e) => {
+                    let file = e.currentTarget.dataset.param_id;
+                     
+                    let row = ``;
+                     row +=`<div class="modal-dialog">`;
+                          row +=`<div class="modal-content">`;
+
+                                     row +=`<div class="modal-header">`;
+                                       row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                                       row +=`<h4 class="modal-title">Lihat Dokumen Perencanaan</h4>`;
+                                     row +=`</div>`;
+                                     
+                                     row +=`<div class="modal-body">`; 
+                                      if(file)
+                                      {  
+                                           row +=`<embed src="`+file+`#page=1&zoom=65" width="575" height="500">`;
+                                      }     
+                                     row +=`</div>`;
+                                     
+                                     row +=`<div class="modal-footer">`;
+                                           row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+                                     row +=`</div>`;
+                                        
+                         row +=`</div>`;
+                    row +=`</div>`; 
+
+                    $('#ViewPerencanaanPDF').html(row);   
+
+               });
+
+
                $("#upload_file").click( () => {
                     let id = data.id;      
                     
                     $("#upload_file").hide();
                     $("#load-update").show();
+                    
 
                     var form = {                         
                          'lap_rencana':file_pdf, 
