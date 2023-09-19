@@ -158,6 +158,7 @@ class RequestPerencanaan
         $temp['nip_pejabat'] = $data->nip_pejabat;
         $temp['alasan_unapprove'] = $data->alasan_unapprove;
         $temp['alasan_edit'] = $data->alasan_edit;
+        $temp['alasan_revisi'] = $data->alasan_revisi;
 
         return $temp; 
     }
