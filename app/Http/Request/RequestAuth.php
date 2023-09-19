@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use App\Http\Request\RequestSettingApps;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AuthEmailVerified;
 use App\Models\User;
 use App\Models\RoleUser;
 use JWTAuth;
@@ -29,6 +31,38 @@ class RequestAuth
         }
 
     } 
+
+     public static function CreateAuthToken($request)
+   {
+         $fourRandomDigit = rand(1000,9999);
+         $find = User::where(['email'=>$request->email])->first();
+         if($find)
+         {
+
+           $update = User::where(['username'=>$find->username])->update(['token'=>$fourRandomDigit]);
+           Mail::to($find->email)->send(new AuthEmailVerified($find->username,$fourRandomDigit)); 
+         }   
+         
+
+         return $find;
+           
+   }
+
+    public static function CheckToken($request)
+   {
+        
+         $data = User::where(['token'=>$request->token,'email'=>$request->email])->first();
+         if($data)
+         {
+            $result = true;
+            
+         }else{
+            $result = false;
+         }
+
+         return $result;   
+           
+   }
 
     public static function Access()
     {
@@ -61,6 +95,8 @@ class RequestAuth
         if(Auth::User()->status =="Y")
         {
             $status = 'Aktif';
+        }else{
+            $status = 'Non Aktif';
         }
 
         if(Auth::User()->name !="")

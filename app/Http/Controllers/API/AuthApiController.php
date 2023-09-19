@@ -149,6 +149,7 @@ class AuthApiController extends Controller
 
     }
 
+  
 
 
      public function updatePhoto(Request $request)

@@ -78,6 +78,21 @@ class UserApiController extends Controller
         return response()->json(['status'=>true,'data'=>$data,'message'=>'Get data user ID sucessfully']);
     }
 
+    public function sendMail(Request $request){
+       
+             $req = RequestAuth::CreateAuthToken($request);
+             $data = array('forgot'=>true,'token'=>false,'email'=>$req->email);
+             $email =  $req->email;
+             if (strlen($email) > 8) {
+                $email = substr($email, 0, 8) . "@xxx";
+             } 
+
+             return response()->json(['status'=>true,'data'=>$data,'messages'=>'Harap segera check email anda '.$email]);
+         
+
+        
+    }
+
     public function updateProfile(Request $request)
     {
         $photo = '';
@@ -327,6 +342,34 @@ class UserApiController extends Controller
 
         return response()->json($messages);
     
+    }
+
+     public function nonActive($id){
+
+       $messages['messages'] = false;
+       $data = User::find($id);
+
+       if(empty($data)){
+            return response()->json(['messages' => false]);
+       }else{
+        
+            $json = json_encode($data);
+            //Audit Log
+            $log = array(             
+            'action'=> 'Non Aktif User',
+            'slug'=>'nonactive-user',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/user/nonactive/'.$id
+            );
+
+            RequestAuditLog::fieldsData($log);
+            User::where('id',$id)->update(['status'=>'N']);
+            $messages['messages'] = true;
+
+        }
+
+        return response()->json($messages);
     }
     
     

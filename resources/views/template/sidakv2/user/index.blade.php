@@ -460,6 +460,8 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
+                row +=`<button id="ForgotPassword" data-param_id="`+ item.email +`"  type="button" data-toggle="tooltip" data-placement="top" title="Kirim Forgot password"  class="btn btn-primary"><i class="fa fa-envelope-o" ></i></button>`;
+
                 if(edited.checked == true)
                 {
                     row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
@@ -488,6 +490,8 @@
 
                    
                } 
+
+                row +=`<button id="NonActive" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Non Aktif Data"  class="btn btn-primary"><i class="fa fa-ban" ></i></button>`;
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -935,7 +939,66 @@
         }); 
 
 
-        
+         $( "#content" ).on( "click", "#NonActive", (e) => {
+            let id = e.currentTarget.dataset.param_id;
+
+
+            Swal.fire({
+                  title: 'Apakah anda yakin Non Aktifkan?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#d33',
+                  cancelButtonColor: '#3085d6',
+                  confirmButtonText: 'Ya'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                
+                    NonActiveItem(id);
+                    
+                    Swal.fire(
+                      'NonAktif!',
+                      'Data berhasil.',
+                      'success'
+                    );
+                  }
+                });
+
+            
+        }); 
+
+
+          $( "#content" ).on( "click", "#ForgotPassword", (e) => {
+            let email = e.currentTarget.dataset.param_id;
+
+              $.ajax({
+                    type: "POST",
+                    url: BASE_URL + '/api/user/sendmail',
+                    data: {'email':email},
+                    cache: false,
+                    dataType: "json",
+                    success: function(response) {
+                        
+                         Swal.fire({
+                            title: 'Sukses!',
+                            text: 'Berhasil mengirim Email ',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              // User clicked "Yes, proceed!" button
+                              window.location.replace('/user');
+                            }
+                          });
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+           
+
+            
+        }); 
            
        
         
@@ -1065,6 +1128,23 @@
             },
             error: function(error) {
                 console.error('Error deleting items:', error);
+            }
+        });
+
+    }
+
+
+    function NonActiveItem(id){
+
+        $.ajax({
+            url:  BASE_URL +`/api/user/nonactive/`+ id,
+            method: 'POST',
+            success: function(response) {
+                // Handle success (e.g., remove deleted items from the list)
+                fetchData(page);
+            },
+            error: function(error) {
+                console.error('Error post items:', error);
             }
         });
 

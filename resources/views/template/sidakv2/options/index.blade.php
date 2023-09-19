@@ -478,6 +478,8 @@
 	            dataType: "json",
 	            success: (respons) =>{
 
+
+
 	            	
 
 		             setTimeout(function() { 
@@ -486,6 +488,20 @@
 	             		GetMenu(find.id);
 	             		GetSettingRole(find.value);
 	             		$('#SaveRole').prop("disabled", true).text('Simpan Role').removeClass('btn-primary').addClass('btn-default');
+
+	             		Swal.fire({
+                            title: 'Sukses!',
+                            text: 'Role Berhasil Di Simpan.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+
+                          }).then((result) => {
+                            if (result.isConfirmed) {
+                              // User clicked "Yes, proceed!" button
+                             // window.location.replace('/user');
+                            }
+                          });
+
 	               }, 1000);  
 	                  
 	                   
