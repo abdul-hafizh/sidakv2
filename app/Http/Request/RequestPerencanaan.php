@@ -10,6 +10,7 @@ use App\Models\Perencanaan;
 use App\Models\Roles;
 use App\Models\Periode;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestPeriode;
 use App\Http\Request\RequestMenuRoles;
@@ -37,7 +38,7 @@ class RequestPerencanaan
             {   
                 $temp[$key]['number'] = $numberNext++;
                 $temp[$key]['id'] = $val->id;
-                $temp[$key]['nama_daerah'] = 'nama_daerah';
+                $temp[$key]['nama_daerah'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
                 $temp[$key]['pengawas_analisa_pagu'] = $val->pengawas_analisa_pagu;
                 $temp[$key]['pengawas_analisa_pagu_convert'] = GeneralHelpers::formatRupiah($val->pengawas_analisa_pagu);
                 $temp[$key]['pengawas_inspeksi_pagu'] = $val->pengawas_inspeksi_pagu;
@@ -276,7 +277,7 @@ class RequestPerencanaan
             if ($requestEdit === "false") {
                 return "Draft";
             } elseif ($requestEdit === "true") {
-                return "Request Edit";
+                return "Draft (Edit)";
             } elseif ($requestEdit === "revisi") {
                 return "Request Revision";
             } elseif ($requestEdit === "reject") {
@@ -289,6 +290,8 @@ class RequestPerencanaan
                 return "Terkirim Ke Pusat";
             } elseif ($requestEdit === "request_doc") {
                 return "Request Dokumen";
+            } elseif ($requestEdit === "true") {
+                return "Request Edit";
             }
         } elseif ($status === 16 && $requestEdit === "false") {
             return "Approved";

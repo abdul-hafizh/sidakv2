@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use DB;
 use Auth;
 use File;
 use App\Http\Controllers\Controller;
@@ -9,10 +10,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Request\Validation\ValidationPerencanaan;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestAuditLog;
 use App\Http\Request\RequestPerencanaan;
 use App\Helpers\GeneralPaginate;
 use App\Models\Perencanaan;
 use App\Models\PaguTarget;
+use App\Models\AuditLog;
 
 class PerencanaanApiController extends Controller
 {
@@ -272,15 +275,56 @@ class PerencanaanApiController extends Controller
         return response()->json($messages);
     }
 
-    public function upload_laporan(Request $request)
-    {        
-        $this->validate($request, [
-            'file' => 'required|mimes:pdf'
-        ]);
+    public function upload_laporan($id, Request $request)
+    {                
+        $validation = ValidationPerencanaan::validationUploadFile($request, $id);
 
-        $path = $request->file('lap_rencana')->store('temp');
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            
+            return response()->json(['messages' => false]);
 
-        return response()->json(['status' => true, 'id' => 1, 'message' => 'Perencanaan Berhasil Diupload!']);
+        }        
+
+        if($validation)
+        {
+            return response()->json($validation, 400);
+
+        } else {
+                          
+            $source = explode(";base64,", $request->lap_rencana);
+            $extFile = explode("image/", $source[0]);
+            $extentions = $extFile[1];
+            $fileDir = '/file/perencanaan/';
+            $image = base64_decode($source[1]);
+            $filePath = public_path() . $fileDir;
+            $filepdf = time() . $extentions;
+            $success = file_put_contents($filePath.$filepdf, $image);
+            
+            $check = Perencanaan::where('id', $request->id_perencanaan)->first();
+            if($check)
+            { 
+                File::delete(public_path() . $fileDir . $check->lap_rencana);
+            } 
+            
+            //Audit Log
+            $json = json_encode(['lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
+            $log = array(             
+                'action'=> 'Update Perencanaan',
+                'slug'=>'update-perencanaan',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'api/perencanaan/'.$id
+            );
+            $datalog =  RequestAuditLog::fieldsData($log);
+
+            //update data
+            $results = $_res->where('id', $id)->update([ 'lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
+
+            //result
+            return response()->json(['status' => true, 'messages' => 'Update data sucessfully']);            
+        }  
     }
 
     public function download_file(Request $request)
