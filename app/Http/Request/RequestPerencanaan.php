@@ -227,7 +227,7 @@ class RequestPerencanaan
                 'tgl_tandatangan' => $request->tgl_tandatangan,
                 'lokasi' => $request->lokasi,
                 'request_edit' =>'false',
-                'status' => 15,
+                'status' => $request->status,
                 
                 'created_by' => Auth::User()->username,
                 'daerah_id' => Auth::User()->daerah_id,
