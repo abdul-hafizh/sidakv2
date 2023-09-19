@@ -9,6 +9,7 @@ use App\Helpers\GeneralHelpers;
 use App\Models\Perencanaan;
 use App\Models\Roles;
 use App\Models\Periode;
+use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestPeriode;
 use App\Http\Request\RequestMenuRoles;
@@ -34,7 +35,6 @@ class RequestPerencanaan
             $periode = RequestPerencanaan::GetPeriodeYear($val->periode_id);
             if($periode !="")
             {   
-                $status = ($val->status == "13") ? 'Draft' : 'Terkirim';
                 $temp[$key]['number'] = $numberNext++;
                 $temp[$key]['id'] = $val->id;
                 $temp[$key]['nama_daerah'] = 'nama_daerah';
@@ -58,7 +58,7 @@ class RequestPerencanaan
                 $temp[$key]['promosi_pengadaan_pagu_convert'] = GeneralHelpers::formatRupiah($val->promosi_pengadaan_pagu);
                 $temp[$key]['periode'] =  $periode;
                 $temp[$key]['total_pagu'] =  GeneralHelpers::formatRupiah($val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu);
-                $temp[$key]['status'] = $status;
+                $temp[$key]['status'] = RequestPerencanaan::getLabelStatus($val->status, $val->request_edit);
                 $temp[$key]['deleted'] = RequestPerencanaan::checkValidate($val->status);
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
                 $temp[$key]['updated_at'] = GeneralHelpers::tanggal_indo($val->updated_at);
@@ -95,10 +95,11 @@ class RequestPerencanaan
     }
 
     public static function GetDetailID($data) {
-        $temp = array();
-        
+        $temp = array();        
+
         $temp['id'] = $data->id;
         $temp['periode_id'] = $data->periode_id;
+        $temp['access'] = RequestAuth::Access();
         $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
         $temp['pagu_apbn'] = GeneralHelpers::formatRupiah($data->pagu_apbn);
         $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->pagu_promosi);
@@ -148,7 +149,9 @@ class RequestPerencanaan
         $temp['total_pagu_penyelesaian_convert'] = GeneralHelpers::formatRupiah($data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu);
 
         $temp['lokasi'] = $data->lokasi;
-        $temp['status'] = $data->status;
+        $temp['status'] = RequestPerencanaan::getLabelStatus($data->status, $data->request_edit);
+        $temp['status_code'] = $data->status;
+        $temp['request_edit'] = $data->request_edit;
         $temp['tgl_tandatangan'] = $data->tgl_tandatangan;
         $temp['nama_pejabat'] = $data->nama_pejabat;
         $temp['nip_pejabat'] = $data->nip_pejabat;
@@ -195,9 +198,7 @@ class RequestPerencanaan
     }
 
     public static function fieldsData($request)
-    {
-        $status = ($request->type == "draft") ? 13 : 14;
-    
+    {        
         $fields = [  
                 'pengawas_analisa_target' => $request->pengawas_analisa_target,
                 'pengawas_analisa_pagu' => $request->pengawas_analisa_pagu,
@@ -224,7 +225,7 @@ class RequestPerencanaan
                 'tgl_tandatangan' => $request->tgl_tandatangan,
                 'lokasi' => $request->lokasi,
                 'request_edit' =>'false',
-                'status' => $status,
+                'status' => 15,
                 
                 'created_by' => Auth::User()->username,
                 'daerah_id' => Auth::User()->daerah_id,
@@ -239,8 +240,8 @@ class RequestPerencanaan
     {    
         $fields = [  
                 'alasan_unapprove' => $request->alasan_unapprove,
-                'request_edit' =>'false',
-                'status' => 13,                
+                'request_edit' =>'reject',
+                'status' => 13,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
         ];
@@ -267,6 +268,32 @@ class RequestPerencanaan
         $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
 
         return $hasil_rupiah;
+    }
+
+    public static function getLabelStatus($status, $requestEdit) 
+    {
+        if ($status === 13) {
+            if ($requestEdit === "false") {
+                return "Draft";
+            } elseif ($requestEdit === "true") {
+                return "Request Edit";
+            } elseif ($requestEdit === "revisi") {
+                return "Request Revision";
+            } elseif ($requestEdit === "reject") {
+                return "Draft Unapprove";
+            }
+        } elseif ($status === 14 && $requestEdit === "false") {
+            return "Waiting Approval";
+        } elseif ($status === 15) {
+            if ($requestEdit === "false") {
+                return "Terkirim Ke Pusat";
+            } elseif ($requestEdit === "request_doc") {
+                return "Request Dokumen";
+            }
+        } elseif ($status === 16 && $requestEdit === "false") {
+            return "Approved";
+        }
+        return "Label tidak ditemukan";
     }
 
 }
