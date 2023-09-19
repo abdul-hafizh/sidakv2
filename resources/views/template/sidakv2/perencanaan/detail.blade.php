@@ -35,7 +35,7 @@
                          <div class="media">
                               <div class="media-body text-left">
                                    <span>Periode <span id="selectPeriode" class="pd-top-bottom-5"></span></span>
-                                   <h3 class="card-text" id="status-view"></h3>
+                                   <h3 class="card-text" id="status-view"></h3>                                   
                               </div>
                          </div>
                     </div>			
@@ -151,7 +151,7 @@
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
-               $('#status-view').html('<b>'+data.status+'</b>');
+               $('#status-view').html('<b>'+data.status+'</b>');               
 
                var row = '';
                var rows = '';
@@ -320,6 +320,9 @@
                     row+= '<td class="text-right"><strong>Total Perencanaan :</strong></td>';
                     row+= '<td class="text-right"><strong>' + data.total_rencana + '</strong></td>';
                row+= '</tr>';
+               row+= '<tr>';
+                    row+= '<td colspan="5"><span class="text-red pull-right" id="alasan-edit-view"></span></td>';
+               row+= '</tr>';
 
                $('#showDetail').html(row);
 
@@ -425,6 +428,10 @@
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
                     }
+               }
+
+               if(data.status_code == 13 && data.alasan_edit != null) {
+                    $('#alasan-edit-view').html('<b>Alasan Edit: '+data.alasan_edit+'</b>');
                }
 
                $('.btn-footer').html(rows_btn);
