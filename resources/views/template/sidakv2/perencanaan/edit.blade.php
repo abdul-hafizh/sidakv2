@@ -483,13 +483,13 @@
 
                $('#Attr').html(rows);
 
-               if(data.status_code == 13 && data.alasan_unapprove != null) {
+               if(data.status_code == 13 && data.request_edit == 'reject' && data.alasan_unapprove != null) {
                     $('#alasan-unuapprove-view').html('<b>Alasan Tidak Disetujui : '+data.alasan_unapprove+'</b>').addClass('col-lg-12 text-red align-right');
                } else {
                     $('#alasan-unuapprove-view').removeClass('col-lg-12 text-red align-right');
                }
 
-               if(data.status_code == 13 && data.alasan_revisi != null) {
+               if(data.status_code == 13 && data.request_edit == 'revisi' && data.alasan_revisi != null) {
                     $('#alasan-revisi-view').html('<b>Alasan Rervisi : '+data.alasan_revisi+'</b>').addClass('col-lg-12 text-red align-right');
                } else {
                     $('#alasan-revisi-view').removeClass('col-lg-12 text-red align-right');
