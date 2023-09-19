@@ -294,12 +294,12 @@ class PerencanaanApiController extends Controller
         } else {
                           
             $source = explode(";base64,", $request->lap_rencana);
-            $extFile = explode("image/", $source[0]);
-            $extentions = $extFile[1];
+            // $extFile = explode("pdf/", $source[0]);
+            // $extentions = $extFile[1];
             $fileDir = '/file/perencanaan/';
             $image = base64_decode($source[1]);
             $filePath = public_path() . $fileDir;
-            $filepdf = time() . $extentions;
+            $filepdf = time() .'.pdf';
             $success = file_put_contents($filePath.$filepdf, $image);
             
             $check = Perencanaan::where('id', $request->id_perencanaan)->first();
