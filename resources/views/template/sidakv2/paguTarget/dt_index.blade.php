@@ -56,7 +56,7 @@
 	<div class="row">
 		<div class="col-lg-4 col-md-6 col-sm-12">
 			<div class="box box-solid box-primary ">
-				<div class="box-body bg-primary">
+				<div class="box-body btn-primary border-radius-13">
 					<div class="card-body table-responsive p-0">
 						<div class="media">
 							<div class="media-body text-left">
@@ -70,7 +70,7 @@
 		</div>
 		<div class="col-lg-4 col-md-6 col-sm-12">
 			<div class="box box-solid box-primary">
-				<div class="box-body bg-primary">
+				<div class="box-body btn-primary border-radius-13">
 					<div class="card-body table-responsive p-0">
 						<div class="media">
 							<div class="media-body text-left">
@@ -84,7 +84,7 @@
 		</div>
 		<div class="col-lg-4 col-md-6 col-sm-12">
 			<div class="box box-solid box-primary">
-				<div class="box-body bg-primary">
+				<div class="box-body btn-primary border-radius-13">
 					<div class="card-body table-responsive p-0">
 						<div class="media">
 							<div class="media-body text-left">
