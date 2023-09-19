@@ -5,44 +5,38 @@
 
 <div class="content">
      <form id="FormSubmit">
-          <div class="row">
+          <div class="row" style="margin-bottom: 20px">
                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box box-solid box-primary ">
-                         <div class="box-body bg-primary">
-                              <div class="card-body table-responsive p-0">
-                                   <div class="media">
-                                        <div class="media-body text-left">
-                                             <span>Pagu APBN</span>
-                                             <h3 class="card-text" id="pagu_apbn"></h3>
-                                        </div>
+                    <div class="box-body btn-primary border-radius-13">
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Pagu APBN</span>
+                                        <h3 class="card-text" id="pagu_apbn"></h3>
                                    </div>
                               </div>
                          </div>
                     </div>
                </div>
                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box box-solid box-primary">
-                         <div class="box-body bg-primary">
-                              <div class="card-body table-responsive p-0">
-                                   <div class="media">
-                                        <div class="media-body text-left">
-                                             <span>Total Perencanaan</span>
-                                             <h3 class="card-text" id="total_rencana"></h3>
-                                        </div>
+                    <div class="box-body btn-primary border-radius-13">
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Total Perencanaan</span>
+                                        <h3 class="card-text" id="total_rencana"></h3>
                                    </div>
                               </div>
                          </div>
                     </div>
                </div>
                <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box box-solid box-primary">
-                         <div class="box-body bg-primary">
-                              <div class="card-body table-responsive p-0">
-                                   <div class="media">
-                                        <div class="media-body text-left">
-                                             <span>Status</span>
-                                             <h3 class="card-text" id="status-view"></h3>
-                                        </div>
+                    <div class="box-body btn-primary border-radius-13">		
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Status </span>
+                                        <h3 class="card-text" id="status-view"></h3>
                                    </div>
                               </div>
                          </div>
@@ -273,21 +267,9 @@
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#total_rencana_sec').html('<b>'+data.total_rencana+'</b>');
                $('#pagu_apbn_inp').val(data.pagu_apbn.replace(/[^0-9]/g, ''));
-               $('#total_target_bimtek_inp').val(data.target_bimtek);
+               $('#total_target_bimtek_inp').val(data.target_bimtek);               
+               $('#status-view').html('<b>'+data.status+'</b>');
                
-               const status = data.status;
-               const statusMap = {
-                    13: { label: 'Draft', color: 'badge-info' },
-                    14: { label: 'Terkirim/Waiting Approve', color: 'badge-warning' },
-                    15: { label: 'Approved', color: 'badge-success' }
-               };
-               const statusInfo = statusMap[status];
-
-               if (statusInfo) {
-                    const badgeHtml = `<span>${statusInfo.label}</span>`;
-                    $('#status-view').html('<b>'+badgeHtml+'</b>');
-               }
-
                if(data.status == 13 && data.alasan_unapprove != null) {
                     $('#alasan-view').html('<b>Alasan Tidak Disetujui : '+data.alasan_unapprove+'</b>');
                }
@@ -675,7 +657,7 @@
                     } else {
 
                          $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
-                         $('#total_rencana_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
+                         $('#total_rencana_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
                     }
                }
                

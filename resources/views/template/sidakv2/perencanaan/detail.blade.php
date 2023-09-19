@@ -4,47 +4,41 @@
 <style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
-     <div class="row">
+     <div class="row padding-default" style="margin-bottom: 20px">
 		<div class="col-lg-4 col-md-6 col-sm-12">
-			<div class="box box-solid box-primary ">
-				<div class="box-body bg-primary">
-					<div class="card-body table-responsive p-0">
-						<div class="media">
-							<div class="media-body text-left">
-								<span>Pagu APBN</span>
-								<h3 class="card-text" id="pagu_apbn"></h3>
-							</div>
-						</div>
-					</div>
+               <div class="box-body btn-primary border-radius-13">
+                    <div class="card-body table-responsive p-0">
+                         <div class="media">
+                              <div class="media-body text-left">
+                                   <span>Pagu APBN</span>
+                                   <h3 class="card-text" id="pagu_apbn"></h3>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+               <div class="box-body btn-primary border-radius-13">			
+                    <div class="card-body table-responsive p-0">
+                         <div class="media">
+                              <div class="media-body text-left">
+                                   <span>Total Perencanaan</span>
+                                   <h3 class="card-text" id="total_rencana"></h3>
+                              </div>
+                         </div>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-4 col-md-6 col-sm-12">
-			<div class="box box-solid box-primary">
-				<div class="box-body bg-primary">
-					<div class="card-body table-responsive p-0">
-						<div class="media">
-							<div class="media-body text-left">
-								<span>Total Perencanaan</span>
-								<h3 class="card-text" id="total_rencana"></h3>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4 col-md-6 col-sm-12">
-			<div class="box box-solid box-primary">
-				<div class="box-body bg-primary">
-					<div class="card-body table-responsive p-0">
-						<div class="media">
-							<div class="media-body text-left">
-								<span>Periode <span id="selectPeriode" class="pd-top-bottom-5"></span></span>
-								<h3 class="card-text" id="status-view"></h3>
-							</div>
-						</div>
-					</div>
-				</div>
+               <div class="box-body btn-primary border-radius-13">		
+                    <div class="card-body table-responsive p-0">
+                         <div class="media">
+                              <div class="media-body text-left">
+                                   <span>Periode <span id="selectPeriode" class="pd-top-bottom-5"></span></span>
+                                   <h3 class="card-text" id="status-view"></h3>
+                              </div>
+                         </div>
+                    </div>			
 			</div>
 		</div>
 	</div>
@@ -74,36 +68,12 @@
                     <div id="Attr" class="row pd-top-bottom-15"></div>
                </div>
           </div>
-     </div> 
+     </div>      
 
-     <div class="box box-solid box-primary">
-          <div class="box-body">
-               <div class="card-body">
-                    <div class="form-group col-lg-6">
-                         <form method="post" action="/api/perencanaan/upload_laporan" enctype="multipart/form-data">                         
-                              <div class="form-group">
-                                   <label>Upload File : </label>
-                                   <input type="file" class="form-control" name="lap_rencana">
-                              </div>                         
-                              <button type="submit" class="btn btn-primary">Upload</button>                              
-                         </form>                              
-                         <div class="form-group"> <br/>
-                              <a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
+     <div class="btn-requset-doc"></div> 
 
-     <div class="box-footer">
-          <div class="btn-group just-center">
-               <button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>
-               <button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>
-               <button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>
-               <button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>
-               <button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>
-          </div> 
-     </div> 
+     <div class="btn-footer"></div> 
+
 </div>
 
 @include('template/sidakv2/perencanaan.print')
@@ -157,10 +127,7 @@
           var url = window.location.href; 
           var segments = url.split('/');  
 
-          $("#downloadPdf").click(function() {       
-               // const pdf = new jsPDF();
-               // pdf.autoTable({ html: '#dataPrPdf' });
-               // pdf.save('dataPrPdf.pdf');
+          $("#downloadPdf").click(function() {      
 
                const doc = new jsPDF();
 
@@ -183,22 +150,12 @@
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
-
-               const status = data.status;
-               const statusMap = {
-                    13: { label: 'Draft', color: 'badge-info' },
-                    14: { label: 'Terkirim/Waiting Approve', color: 'badge-warning' },
-                    15: { label: 'Approved', color: 'badge-success' }
-               };
-               const statusInfo = statusMap[status];
-
-               if (statusInfo) {
-                    const badgeHtml = `<span>Status : ${statusInfo.label}</span>`;
-                    $('#status-view').html('<b>'+badgeHtml+'</b>');
-               }
+               $('#status-view').html('<b>'+data.status+'</b>');
 
                var row = '';
                var rows = '';
+               var rows_btn = '';
+               var rows_doc = '';
 
                row+= '<tr>';
                     row+= '<td><strong>1</strong></td>';
@@ -355,12 +312,12 @@
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
                     row+= '<td class="text-right"><strong>Total PAGU :</strong></td>';
-                    row+= '<td class="text-right">' + data.pagu_apbn + '</td>';
+                    row+= '<td class="text-right"><strong>' + data.pagu_apbn + '</strong></td>';
                row+= '</tr>';
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
                     row+= '<td class="text-right"><strong>Total Perencanaan :</strong></td>';
-                    row+= '<td class="text-right">' + data.total_rencana + '</td>';
+                    row+= '<td class="text-right"><strong>' + data.total_rencana + '</strong></td>';
                row+= '</tr>';
 
                $('#showDetail').html(row);
@@ -398,7 +355,103 @@
                rows+= '</div>';
 
                $('#Attr').html(rows);
+
+               if(data.access == 'pusat' && data.status_code == 14 && data.request_edit == 'false') {
+                    rows_doc+= '<div class="box box-solid box-primary">';
+                         rows_doc+= '<div class="box-body">';
+                              rows_doc+= '<div class="card-body">';
+                                   rows_doc+= '<div class="form-group col-lg-6">';                                        
+                                        rows_doc+= '<div class="form-group">';
+                                             rows_doc+= '<a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>';
+                                        rows_doc+= '</div>';
+                                   rows_doc+= '</div>';
+                              rows_doc+= '</div>';
+                         rows_doc+= '</div>';
+                    rows_doc+= '</div>';
+               }
+
+               if(data.access == 'daerah' && data.status_code == 15 && data.request_edit == 'request_doc') {
+                    rows_doc+= '<div class="box box-solid box-primary">';
+                         rows_doc+= '<div class="box-body">';
+                              rows_doc+= '<div class="card-body">';
+                                   rows_doc+= '<div class="form-group col-lg-6">';
+                                        rows_doc+= '<form method="post" action="/api/perencanaan/upload_laporan" enctype="multipart/form-data">';                        
+                                             rows_doc+= '<div class="form-group">';
+                                                  rows_doc+= '<label>Upload File : </label>';
+                                                  rows_doc+= '<input type="file" class="form-control" name="lap_rencana">';
+                                             rows_doc+= '</div>';
+                                             rows_doc+= '<button type="submit" class="btn btn-primary">Upload</button>';
+                                        rows_doc+= '</form>';
+                                        rows_doc+= '<div class="form-group"> <br/>';
+                                             rows_doc+= '<a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>';
+                                        rows_doc+= '</div>';
+                                   rows_doc+= '</div>';
+                              rows_doc+= '</div>';
+                         rows_doc+= '</div>';
+                    rows_doc+= '</div>';
+               }
+
+               $('.btn-requset-doc').html(rows_doc);
+
+               if(data.access == 'pusat') {
+                    if(data.status_code != 13) {
+                         rows_btn+= '<div class="box-footer">';
+                         rows_btn+= '<div class="btn-group just-center">';
+                              if(data.status_code == 15 && data.request_edit == 'false') {
+                                   rows_btn+= '<button id="req_doc" type="button" class="btn btn-warning col-md-2">Request Dokumen</button>';
+                              }
+                              if(data.status_code == 14 && data.request_edit == 'false') {
+                                   rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>';
+                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>';
+                              }
+                              if(data.status_code == 13 && data.request_edit == 'true') {
+                                   rows_btn+= '<button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>';
+                              }
+                              if(data.status_code == 13 && data.request_edit == 'revisi') {
+                                   rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqrevisi">Request Revisi</button>';
+                              }
+                         rows_btn+= '</div>';
+                         rows_btn+= '</div>';
+                    }
+               }               
+
+               if(data.access == 'daerah') {
+                    if (([14, 15].includes(data.status_code) && data.request_edit === 'false') || (data.status_code === 14 && data.request_edit === 'request_doc')) {
+                         rows_btn+= '<div class="box-footer">';
+                         rows_btn+= '<div class="btn-group just-center">';
+                              rows_btn+= '<button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>';
+                              rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>';                              
+                         rows_btn+= '</div>';
+                         rows_btn+= '</div>';
+                    }
+               }
+
+               $('.btn-footer').html(rows_btn);
           }
+
+          $("#req_doc").click( () => {
+               Swal.fire({
+                    title: 'Apakah Anda Yakin Request Dokumen Perencanaan Ini?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+               }).then((result) => {
+                    if (result.isConfirmed) {
+                         requsetItem(segments[5]);
+                         Swal.fire(
+                              'Terkirim.',
+                              'Request Dokumen Berhasil Dikirim Ke Daerah.',
+                              'success'
+                         ).then((act) => {
+                              if (act.isConfirmed) {
+                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                              }
+                         });
+                    }
+               });
+          });
 
           $("#approve").click( () => {
                Swal.fire({
@@ -486,7 +539,7 @@
                     confirmButtonText: 'Ya'
                }).then((result) => {
                     if (result.isConfirmed) {
-                         approveItem(segments[5]);
+                         approveEditItem(segments[5]);
                          Swal.fire(
                               'Approved!',
                               'Data berhasil diapprove.',
@@ -499,6 +552,19 @@
                     }
                });
           });
+
+          function requsetItem(id) {
+               $.ajax({
+                    url:  BASE_URL +`/api/perencanaan/request_doc/`+ id,
+                    method: 'PUT',
+                    success: function(response) {
+                         fetchData(page);
+                    },
+                    error: function(error) {
+                         console.error('Error request data:', error);
+                    }                
+               });
+          }
 
           function approveItem(id) {
                $.ajax({

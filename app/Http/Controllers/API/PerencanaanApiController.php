@@ -125,7 +125,7 @@ class PerencanaanApiController extends Controller
         }   
     }
 
-    public function approve($id){
+    public function request_doc($id){
 
         $messages['messages'] = false;
         $_res = Perencanaan::find($id);
@@ -146,6 +146,27 @@ class PerencanaanApiController extends Controller
 
     }
 
+    public function approve($id){
+
+        $messages['messages'] = false;
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            
+            return response()->json(['messages' => false]);
+
+        }
+
+        $results = $_res->where('id', $id)->update([ 'status' => 16, 'request_edit' => 'false']);
+
+        if($results){
+            $messages['messages'] = true;
+        }
+        
+        return response()->json($messages);
+
+    }
+
     public function approve_edit($id){
 
         $messages['messages'] = false;
@@ -157,7 +178,7 @@ class PerencanaanApiController extends Controller
 
         }
 
-        $results = $_res->where('id', $id)->update([ 'status' => 13, 'request_edit' => 'false']);
+        $results = $_res->where('id', $id)->update([ 'status' => 13, 'request_edit' => 'true']);
 
         if($results){
             $messages['messages'] = true;
