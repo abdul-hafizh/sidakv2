@@ -377,7 +377,7 @@
            selectedVal = $(this).find("option:selected").val();
            let find = role_list.find(o => o.value === selectedVal);
            roleid_new = find.id;
-           roleid_old = find.id;
+           // roleid_old = find.id;
            console.log(find.id)
            var role_menu = [];
            GetMenu(find.id);
