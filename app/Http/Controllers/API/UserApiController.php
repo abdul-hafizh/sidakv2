@@ -344,27 +344,52 @@ class UserApiController extends Controller
     
     }
 
-     public function nonActive($id){
+     public function StatusConfirm(Request $request){
 
        $messages['messages'] = false;
-       $data = User::find($id);
+       $data = User::find($request->id);
 
        if(empty($data)){
             return response()->json(['messages' => false]);
        }else{
-        
+
+        if($request->status =='true')
+        {
+
+            $json = json_encode($data);
+            //Audit Log
+            $log = array(             
+            'action'=> 'Aktif User',
+            'slug'=>'active-user',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/user/status/'
+            );
+
+            RequestAuditLog::fieldsData($log);
+            User::where('id',$request->id)->update(['status'=>'Y']);
+
+        }else{
+
             $json = json_encode($data);
             //Audit Log
             $log = array(             
             'action'=> 'Non Aktif User',
-            'slug'=>'nonactive-user',
+            'slug'=>'non-active-user',
             'type'=>'post',
             'json_field'=> $json,
-            'url'=>'api/user/nonactive/'.$id
+            'url'=>'api/user/status/'
             );
 
             RequestAuditLog::fieldsData($log);
-            User::where('id',$id)->update(['status'=>'N']);
+            User::where('id',$request->id)->update(['status'=>'N']);
+
+
+
+        }    
+        
+           
+           
             $messages['messages'] = true;
 
         }

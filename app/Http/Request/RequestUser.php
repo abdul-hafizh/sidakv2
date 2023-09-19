@@ -35,7 +35,7 @@ class RequestUser
         $template = RequestSettingApps::AppsTemplate();
         foreach ($data as $key => $val)
         {
-            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "NonAktif"; }
+            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "Non Aktif"; }
 
             if($val->photo =="")
             {
@@ -62,7 +62,7 @@ class RequestUser
             $temp[$key]['nip'] = $val->nip;
             $temp[$key]['leader_nip'] = $val->leader_nip;
             $temp[$key]['leader_name'] = $val->leader_name;
-            $temp[$key]['status'] = $status;
+            $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
             $temp[$key]['photo'] = $photo;
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
             //format exel

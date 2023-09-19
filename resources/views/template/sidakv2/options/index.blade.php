@@ -1286,6 +1286,9 @@
 	                   var send = merge;
 	                   	
 	                   roleid_old = roleid_new;	
+
+	                   console.log(roleid_old)
+	            	   console.log(roleid_new)
                        
 	                }else{
 	                    console.log('temp + reales')

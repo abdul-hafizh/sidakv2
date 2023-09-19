@@ -456,7 +456,7 @@
                row +=`<td class="padding-text-table">${item.name}</td>`;
                row +=`<td class="padding-text-table">${item.email}</td>`;
                row +=`<td class="padding-text-table">${item.phone}</td>`;
-               row +=`<td class="padding-text-table">${item.status}</td>`;
+               row +=`<td class="padding-text-table">${item.status.status_convert}</td>`;
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
@@ -489,13 +489,29 @@
                   }   
 
                    
-               } 
+               }
 
+               if(item.status.status_db == 'Y')
+               {
+
+                  
                 row +=`<button id="NonActive" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Non Aktif Data"  class="btn btn-primary"><i class="fa fa-ban" ></i></button>`;
 
                 row +=`</div>`;
                 row +=`</td>`;
-              row +=`</tr>`; 
+                row +=`</tr>`; 
+
+
+               }else{
+                 
+                   row +=`<button id="Active" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Aktif Data"  class="btn btn-primary"><i class="fa fa-check-square" ></i></button>`;
+
+                  row +=`</div>`;
+                  row +=`</td>`;
+                  row +=`</tr>`; 
+
+
+               }
 
             content.append(row);
         });
@@ -939,12 +955,12 @@
         }); 
 
 
-         $( "#content" ).on( "click", "#NonActive", (e) => {
+        $( "#content" ).on( "click", "#NonActive", (e) => {
             let id = e.currentTarget.dataset.param_id;
 
 
             Swal.fire({
-                  title: 'Apakah anda yakin Non Aktifkan?',
+                  title: 'Apakah anda yakin non aktifkan?',
                   icon: 'warning',
                   showCancelButton: true,
                   confirmButtonColor: '#d33',
@@ -953,10 +969,37 @@
                 }).then((result) => {
                   if (result.isConfirmed) {
                 
-                    NonActiveItem(id);
+                    StatusItem(id,'false');
                     
                     Swal.fire(
                       'NonAktif!',
+                      'Data berhasil.',
+                      'success'
+                    );
+                  }
+                });
+
+            
+        }); 
+
+        $( "#content" ).on( "click", "#Active", (e) => {
+            let id = e.currentTarget.dataset.param_id;
+
+
+            Swal.fire({
+                  title: 'Apakah anda yakin aktifkan?',
+                  icon: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#d33',
+                  cancelButtonColor: '#3085d6',
+                  confirmButtonText: 'Ya'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                
+                    StatusItem(id,'true');
+                    
+                    Swal.fire(
+                      'Non Aktif!',
                       'Data berhasil.',
                       'success'
                     );
@@ -1134,14 +1177,15 @@
     }
 
 
-    function NonActiveItem(id){
+    function StatusItem(id,status){
 
         $.ajax({
-            url:  BASE_URL +`/api/user/nonactive/`+ id,
+            url:  BASE_URL +`/api/user/status`,
             method: 'POST',
+            data:{'id':id,'status':status},
             success: function(response) {
                 // Handle success (e.g., remove deleted items from the list)
-                fetchData(page);
+               fetchData(page);
             },
             error: function(error) {
                 console.error('Error post items:', error);
