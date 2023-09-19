@@ -380,6 +380,7 @@
                     "nip_pejabat": $("#nip_pejabat").val(),
                     "periode_id": periode_id,
                     "type": "kirim",
+                    "status": 15,
                     "param": "insert"
                };   
                
@@ -444,6 +445,7 @@
                     "nip_pejabat": $("#nip_pejabat").val(),
                     "periode_id": periode_id,
                     "type": "draft",
+                    "status": 13,
                     "param": "insert"
                };                              
 
