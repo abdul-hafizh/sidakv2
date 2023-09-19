@@ -35,44 +35,11 @@
                                                        <h3 class="text-capitalize text-center text-bold">Selamat Datang</h3>
                                                     </div> 
 
-                                                     <form id="FormLogin">
-                           							
+                                                    <div  id="confirmation">
+                                                    </div>
 
-                                                        @csrf
-
-                                                      
-                                                        <div  id="username-alert" class="pull-left full form-group has-feedback"> 	
-                                                            <label class="text-capitalize color-dark-blue font-label-login font-12">Nama Pengguna </label>
-                                                            <input value="admin"  name="username" type="text" class="form-control mb-3 border-radius-10 font-12"  placeholder="Username">
-                                                            <span id="username-messages"></span>
-                                                             
-                                                        </div>
-
-                                                          <div id="password-alert" class="pull-left full form-group has-feedback">
-
-                                                            <label  id="password-alert"  class="text-capitalize color-dark-blue font-label-login font-12">Kata Sandi </label> 
-                                                            <input name="password" type="password"  v-model="password" value="D4lak2021" class="form-control mb-2 border-radius-10 font-12" placeholder="Kata Sandi">
-                                                            
-                                                             <span id="password-messages"></span>
-
-                                                                
-                                                          
-                                                        </div>
-
-
-
-                                                        <div class="pull-left full form-group">
-                                                            <a id="forgot" class="pointer pull-right font-10-link">Lupa Kata Sandi?</a>
-                                                        </div> 
-
-                                                        <div id="loginLoad" class="pull-left full form-group mgn-top-bottom-10">
-                                                            <button id="Submitlogin" type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Masuk</button>
-
-                                                            <button style="display:none;" id="btnloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
-                                                           
-                                                        </div> 
-
-                                                    </form>
+                                                     <div id="FormLogin">
+                                                     </div>
 
                                                     <div class="pull-left full pd-copyright">
                                                                     <p class="text-center  color-grey-light  font-sm-1 text-bold-600">Copyright by BKPM</p>
@@ -104,49 +71,194 @@
 <script type="text/javascript">
 $(function(){
 
-    
+    ViewFormLogin();
 
-   $("#forgot").click( () => { 
-       var row = '';
+   
+  function ViewFormLogin(){
+     
+     var row = '';
+     row +='<form id="ActionLogin">';
+        row +='<div  id="username-alert" class="pull-left full form-group has-feedback">';    
+            row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Nama Pengguna </label>'; 
+            row +='<input value="admin"  name="username" type="text" class="form-control mb-3 border-radius-10 font-12"  placeholder="Username">'; 
+            row +='<span id="username-messages"></span>'; 
+        row +='</div>'; 
 
-         row +='<form id="FormLogin">';
-         row +='<div  id="username-alert" class="pull-left full form-group has-feedback">';  
+
+        row +='<div id="password-alert" class="pull-left full form-group has-feedback">';
+            row +='<label  id="password-alert"  class="text-capitalize color-dark-blue font-label-login font-12">Kata Sandi </label>'; 
+            row +='<input name="password" type="password"  v-model="password" value="D4lak2021" class="form-control mb-2 border-radius-10 font-12" placeholder="Kata Sandi">';
+             row +='<span id="password-messages"></span>';
+        row +='</div>';
+
+        row +='<div class="pull-left full form-group">';
+            row +='<a id="Forgot" class="pointer pull-right font-10-link">Lupa Kata Sandi?</a>';
+        row +='</div>'; 
+
+     row +='<div id="loginLoad" class="pull-left full form-group mgn-top-bottom-10">'; 
+         row +='<button id="Submitlogin" type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Masuk</button>'; 
+
+         row +='<button style="display:none;" id="btnloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>'; 
+     row +='</div> ';  
+
+     row +='</form> ';     
+
+
+
+    $('#FormLogin').html(row);
+    $("#Submitlogin").click( () => {
+      ActionLogin()
+    });
+    $("#Forgot").click( () => { 
+          let forgot = localStorage.getItem('forgot');
+          var temp =  JSON.parse(forgot);
+          $('.confirmation').remove();
+          if(temp)
+          {
+            viewToken();
+
+          }else{
+            viewForgot();
+          }  
+
+   }); 
+  }
+
+
+  function viewForgot(){
+
+
+     var row = '';
+         $('#email-alert').removeClass('has-error');
+         $('#email-messages').removeClass('help-block').html('');
+
+       
+        row +='<div   class="pull-left full form-group has-feedback">';  
                                                           
-              row +='<div  id="username-alert" class="pull-left full form-group has-feedback">  '; 
+              row +='<div  id="email-alert" class="pull-left full  has-feedback">  '; 
                 row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Email Pengguna </label>';
-                 row +='<input value=""  name="Email" type="text" class="form-control mb-3 border-radius-10 font-12"  placeholder="Email">';
-                 row +='<span id="username-messages"></span>';
+                 row +='<input id="email-forgot" value=""  name="Email" type="text" class="form-control mb-3 border-radius-10 font-12"  placeholder="Email">';
+                 row +='<span id="email-messages"></span>';
                                                              
                 row +='</div>';
-        row +='</form>';   
+      
         
 
-             row +='<div id="loginLoad" class="pull-left full form-group mgn-top-bottom-10">';
-                row +='<button  type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Kirim</button>';
+            row +='<div  class="pull-left full  mgn-top-bottom-10">';
+                row +='<button id="ForgotSubmit"  type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Kirim</button>';
 
-                row +='<button style="display:none;" id="btnloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';
+                row +='<button style="display:none;" id="Forgotloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';
+
+
+                  row +='<button id="Kembali" type="button" class="btn bg-navy btn-block btn-flat border-radius-20">Kembali</button>';
                                                            
-                        row +='</div> ';
+            row +='</div> ';
+        row +='</div> ';
+     
+       $('#FormLogin').html(row);
 
+       $("#Kembali").click( () => {
+          ViewFormLogin();
+       });
+
+       ActionForgot()
+       
+  }
+
+   function viewToken(){
+
+
+     var row = '';
+         $('#token-alert').removeClass('has-error');
+         $('#token-messages').removeClass('help-block').html('');
+       
+           row +='<div   class="pull-left full form-group has-feedback">';                                                
+                row +='<div  id="token-alert" class="pull-left full  has-feedback">  '; 
+                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Token </label>';
+                      row +=`<input id="token-forgot" type="text" maxlength="4" class="form-control form-control mb-3 border-radius-10 font-12" name="token" placeholder="Token" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="">`;
+                   
+                     row +='<span id="token-messages"></span>';
+                                                             
+                row +='</div>';
+      
+        
+
+                row +='<div  class="pull-left full  mgn-top-bottom-10">';
+                        row +='<button id="TokenSubmit"  type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Kirim</button>';
+
+                        row +='<button style="display:none;" id="Tokenloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';
+
+
+                          row +='<button id="Kembali" type="button" class="btn bg-navy btn-block btn-flat border-radius-20">Kembali</button>';
+                                                           
+                row +='</div> ';
+             row +='</div> ';
 
        $('#FormLogin').html(row);
-     
-      
-   }); 
-     
-  $("#Submitlogin").click( () => {
 
-          var data = $("#FormLogin").serializeArray();
+       $("#Kembali").click( () => {
+          ViewFormLogin();
+       });
+
+       ActionToken()
+
+  }
+
+   function InputNewPassword(){
+
+
+     var row = '';
+         $('#token-alert').removeClass('has-error');
+         $('#token-messages').removeClass('help-block').html('');
+       
+          
+                                                          
+                row +='<div id="password-alert" class="pull-left full form-group has-feedback">';    
+                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Password </label>';
+                    row +='<input id="password" name="password" type="password" class="form-control mb-3 border-radius-10 font-12" placeholder="Password">';
+                    row +='<span id="password-messages"></span>';
+                row +='</div>';
+
+                row +='<div id="password-confirmation-alert" class="pull-left full form-group has-feedback">';    
+                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Konfirmasi Password </label>';
+                    row +='<input id="password-confirmation" name="password-confirmation" type="password" class="form-control mb-3 border-radius-10 font-12" placeholder="Konfirmasi Password">';
+                    row +='<span id="password-confirmation-messages"></span>';
+                row +='</div>';
+      
+        
+                row +='<div class="pull-left full form-group has-feedback">';
+                    row +='<div  class="pull-left full  mgn-top-bottom-10">';
+                            row +='<button id="UpdateSubmit"  type="button"   class="btn btn-primary btn-block btn-flat border-radius-20">Update</button>';
+
+                            row +='<button style="display:none;" id="Updateloading" disabled type="button"   class="btn btn-default btn-block btn-flat border-radius-20"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';
+
+                                                               
+                    row +='</div> ';
+                row +='</div> ';
+
+       $('#FormLogin').html(row);
+
+      
+
+       ActionUpdatePassword()
+
+  }
+
+
+  function ActionLogin(){
+
+     var data = $("#ActionLogin").serializeArray();
+     var csrfToken = $('meta[name="csrf-token"]').attr('content');
           var form = {
-              '_token':data[0].value,
-              'username':data[1].value,
-              'password':data[2].value,
+              '_token':csrfToken,
+              'username':data[0].value,
+              'password':data[1].value,
           };
           $("#Submitlogin").hide(); 
           $("#btnloading").show();  
             
 
-          $.ajax({
+        $.ajax({
             type:"POST",
             url: BASE_URL+'/login',
             data:form,
@@ -183,12 +295,243 @@ $(function(){
                     $('#password-messages').removeClass('help-block').html('');
                 }
 
+                if(errors.messages.status)
+                {
+
+                     var row = '';
+                     row +='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+                     row +=''+ errors.messages.status +'';
+                                                      
+                     $('#confirmation').addClass('alert pull-left full alert-danger alert-dismissible').html(row);
+                    
+                }else{
+                    $('#confirmation').removeClass('alert pull-left full alert-danger alert-dismissible').html();
+                }
+
                 
             }
           });
-     });
+  }
 
-  });
+  function ActionForgot(){
+
+       $("#ForgotSubmit").click( () => {
+
+          $("#ForgotSubmit").hide(); 
+          $("#Forgotloading").show(); 
+         
+          
+          $('.confirmation').remove();
+          var email = $('#email-forgot').val();
+          var csrfToken = $('meta[name="csrf-token"]').attr('content');
+          
+          var form = {
+              '_token':csrfToken,
+              'email':email,
+          } 
+
+
+          $.ajax({
+            type:"POST",
+            url: BASE_URL+'/forgotpasword',
+            data:form,
+            cache: false,
+            dataType: "json",
+            success: (respons) =>{
+
+                localStorage.setItem('forgot', JSON.stringify(respons.data));
+                 var row = '';
+                 row +='<div class="confirmation alert pull-left full alert-success alert-dismissible">';
+                 row +='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+                 row +=''+ respons.messages +'';
+                 row +='</div>';
+                                                  
+                 $('#confirmation').html(row);
+                viewToken();
+                  
+            },
+            error: (respons)=>{
+
+               $("#ForgotSubmit").show(); 
+               $("#Forgotloading").hide();   
+               $('.confirmation').remove();
+              var  errors = respons.responseJSON;
+              
+                if(errors.messages.email)
+                {
+                     $('#email-alert').addClass('has-error');
+                     $('#email-messages').addClass('help-block').html('<strong>'+ errors.messages.email +'</strong>');
+                }else{
+                    $('#email-alert').removeClass('has-error');
+                    $('#email-messages').removeClass('help-block').html('');
+                }
+
+                
+
+                
+            }
+          });         
+       });
+
+  }
+
+  function ActionToken(){
+     
+       $("#TokenSubmit").click( () => {
+
+          let forgot = localStorage.getItem('forgot');
+          var temp =  JSON.parse(forgot);
+          var token = $('#token-forgot').val();
+          var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+          $("#TokenSubmit").hide(); 
+          $("#Tokenloading").show(); 
+
+          
+         
+          $('.confirmation').remove();
+          
+          var form = {
+              '_token':csrfToken,
+              'token':token,
+              'email':temp.email,
+          } 
+
+
+          $.ajax({
+            type:"POST",
+            url: BASE_URL+'/checktoken',
+            data:form,
+            cache: false,
+            dataType: "json",
+            success: (respons) =>{
+                 localStorage.setItem('forgot', JSON.stringify(respons.data));
+                
+
+                 var row = '';
+                 row +='<div class="confirmation alert pull-left full alert-success alert-dismissible">';
+                 row +='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+                 row +=''+ respons.messages +'';
+                 row +='</div>';
+                                                  
+                 $('#confirmation').html(row);  
+
+                  InputNewPassword() 
+                                 
+            },
+            error: (respons)=>{
+
+               $("#TokenSubmit").show(); 
+               $("#Tokenloading").hide();  
+
+               
+               $('.confirmation').remove();
+               
+              var  errors = respons.responseJSON;
+              
+                if(errors.messages.token)
+                {
+                     $('#token-alert').addClass('has-error');
+                     $('#token-messages').addClass('help-block').html('<strong>'+ errors.messages.token +'</strong>');
+                }else{
+                    $('#token-alert').removeClass('has-error');
+                    $('#token-messages').removeClass('help-block').html('');
+                }
+
+                
+
+                
+            }
+          });
+
+                
+       });
+
+  }
+
+
+   function ActionUpdatePassword(){
+     
+       $("#UpdateSubmit").click( () => {
+          $('.confirmation').remove();
+          let forgot = localStorage.getItem('forgot');
+          var temp =  JSON.parse(forgot);
+          var password = $('#password').val();
+          var passwordConfirmation = $('#password-confirmation').val();
+          var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+          $("#UpdateSubmit").hide(); 
+          $("#Updateloading").show();
+           $('.confirmation').remove(); 
+          
+          var form = {
+              '_token':csrfToken,
+              'email':temp.email,
+              'password':password,
+              'password_confirmation':passwordConfirmation,
+          } 
+
+
+          $.ajax({
+            type:"POST",
+            url: BASE_URL+'/updatepassword',
+            data:form,
+            cache: false,
+            dataType: "json",
+            success: (respons) =>{
+                 
+                 localStorage.removeItem('forgot');
+
+                 var row = '';
+                  row +='<div class="confirmation alert pull-left full alert-success alert-dismissible">';
+                 row +='<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>';
+                 row +=''+ respons.messages +'';
+                   row +='</div>';
+                                                  
+                 $('#confirmation').html(row);
+                 ViewFormLogin();
+
+            },
+            error: (respons)=>{
+
+               $("#UpdateSubmit").show(); 
+               $("#Updateloading").hide();  
+
+                $('.confirmation').remove(); 
+               
+              var  errors = respons.responseJSON;
+              
+                if(errors.messages.password)
+                {
+                     $('#password-alert').addClass('has-error');
+                     $('#password-messages').addClass('help-block').html('<strong>'+ errors.messages.password +'</strong>');
+                }else{
+                    $('#password-alert').removeClass('has-error');
+                    $('#password-messages').removeClass('help-block').html('');
+                }
+
+                if (errors.messages.password_confirmation) {
+                   $('#password-confirmation-alert').addClass('has-error');
+                   $('#password-confirmation-messages').addClass('help-block').html('<strong>' + errors.messages.password_confirmation + '</strong>');
+                } else {
+                    $('#password-confirmation-alert').removeClass('has-error');
+                    $('#password-confirmation-messages').removeClass('help-block').html('');
+                }
+
+                
+
+                
+            }
+          });
+
+                
+       });
+
+  }
+
+});
+
+
 
 </script>
 <style>

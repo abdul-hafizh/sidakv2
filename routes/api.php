@@ -72,6 +72,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::delete('user/{id}', [UserApiController::class, 'delete']);
     Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     Route::post('user/update', [UserApiController::class, 'updateProfile']);
+    Route::post('user/nonactive/{id}', [UserApiController::class, 'nonActive']);
+    Route::post('user/sendmail', [UserApiController::class, 'sendMail']);
 
     Route::post('pagu/check', [PaguTargetApiController::class, 'check']);
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);

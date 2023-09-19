@@ -10,7 +10,7 @@ use App\Http\Request\Validation\ValidationPeriode;
 use App\Helpers\GeneralPaginate;
 use Auth;
 use DB;
-
+use App\Http\Request\RequestAuditLog;
 class PeriodeApiController extends Controller
 {
 
@@ -114,13 +114,13 @@ class PeriodeApiController extends Controller
     public function store(Request $request)
     {
 
-        $validation = ValidationPeriode::validation($request);
+        $validation = ValidationPeriode::validationInsert($request);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
 
-            $check = Periode::where(['semester'=>$request->semester,'year'=>$request->semester])->first();
-            if(!$check)
+            $check = Periode::where(['semester'=>$request->semester,'year'=>$request->year])->first();
+            if($check)
             { 
 
                
@@ -131,6 +131,18 @@ class PeriodeApiController extends Controller
                return response()->json($err, 400);
             }else{ 
                 $insert = RequestPeriode::fieldsData($request);
+
+                $json = json_encode($insert);
+                $log = array(             
+                'action'=> 'Insert Periode',
+                'slug'=>'insert-periode',
+                'type'=>'post',
+                'json_field'=> $json,
+                'url'=>'api/periode'
+                );
+
+                $datalog = RequestAuditLog::fieldsData($log);
+
                 //create menu
                 $saveData = Periode::create($insert);
                 //result
@@ -142,16 +154,31 @@ class PeriodeApiController extends Controller
     public function update($id, Request $request)
     {
 
-        $validation = ValidationPeriode::validation($request);
+        $validation = ValidationPeriode::validationUpdate($request,$id);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
 
-            $update = RequestPeriode::fieldsData($request);
-            //update account
-            $UpdateData = Periode::where('id', $id)->update($update);
-            //result
-            return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+           
+                $update = RequestPeriode::fieldsData($request);
+
+                 $json = json_encode($update);
+                    
+                    $log = array(             
+                    'action'=> 'Update Periode',
+                    'slug'=>'update-periode',
+                    'type'=>'put',
+                    'json_field'=> $json,
+                    'url'=>'api/periode/'.$id
+                    );
+
+                    $datalog =  RequestAuditLog::fieldsData($log);
+
+                //update account
+                $UpdateData = Periode::where('id', $id)->update($update);
+                //result
+                return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+                
         }
     }
 
@@ -160,6 +187,17 @@ class PeriodeApiController extends Controller
         $messages['messages'] = false;
         $_res = Periode::find($id);
 
+         $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Periode',
+        'slug'=>'delete-periode',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/periode/'.$id
+        );
+
+        
         if (empty($_res)) {
             return response()->json(['messages' => false]);
         }
@@ -174,6 +212,19 @@ class PeriodeApiController extends Controller
      public function deleteSelected(Request $request)
     {
         $messages['messages'] = false;
+        RequestAuditLog::fieldsData($log);
+
+        $json = json_encode($request->data);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Periode Select',
+        'slug'=>'delete-periode-select',
+        'type'=>'post',
+        'json_field'=> $json,
+        'url'=>'api/periode/selected/'
+        );
+
+        RequestAuditLog::fieldsData($log);
         foreach ($request->data as $key) {
             $results = Periode::where('id', (int)$key)->delete();
         }

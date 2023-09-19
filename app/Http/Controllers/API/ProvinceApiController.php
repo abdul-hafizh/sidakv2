@@ -121,7 +121,7 @@ class ProvinceApiController extends Controller
                 
                 $log = array(             
                 'action'=> 'Update Provinsi',
-                'slug'=>'update-user',
+                'slug'=>'update-provinsi',
                 'type'=>'put',
                 'json_field'=> $json,
                 'url'=>'api/province/'.$id
@@ -143,11 +143,11 @@ class ProvinceApiController extends Controller
         $json = json_encode($request->data);
         //Audit Log
         $log = array(             
-        'action'=> 'Delete User Select',
-        'slug'=>'delete-user-select',
+        'action'=> 'Delete Provinsi Select',
+        'slug'=>'delete-provinsi-select',
         'type'=>'post',
         'json_field'=> $json,
-        'url'=>'api/province/'.$id
+        'url'=>'api/province/selected/'
         );
 
         RequestAuditLog::fieldsData($log);
@@ -172,7 +172,7 @@ class ProvinceApiController extends Controller
         //Audit Log
         $log = array(             
         'action'=> 'Delete Provinsi',
-        'slug'=>'delete-user',
+        'slug'=>'delete-provinsi',
         'type'=>'delete',
         'json_field'=> $json,
         'url'=>'api/province/'.$id

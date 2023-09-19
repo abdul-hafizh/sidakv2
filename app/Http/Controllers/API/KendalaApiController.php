@@ -13,6 +13,7 @@ use App\Http\Request\RequestNotification;
 use App\Http\Request\Validation\ValidationKriteria;
 use App\Http\Request\Validation\ValidationKendala;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestAuditLog;
 use DB;
 use Auth;
 
@@ -103,6 +104,18 @@ class KendalaApiController extends Controller
         }else{
 
            $insert = RequestKendala::fieldsDataKendala($request);  
+
+            $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Kendala',
+            'slug'=>'insert-kendala',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/kendala'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);
+
             //create menu
            $saveData = Kendala::create($insert);
            $messages = RequestKendala::fieldsDataKendalaDetail($saveData->id,$request);
@@ -130,6 +143,18 @@ class KendalaApiController extends Controller
         }else{
 
            $insert = RequestKendala::fieldsDataKendalaDetail($request->kendala_id,$request);  
+
+           $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Pesan',
+            'slug'=>'insert-pesan',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/topic/comment'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);
+
             //create menu
            $saveData = KendalaDetail::create($insert);
            $last = RequestKendala::MessagesLast($saveData->id,$request->kendala_id);
@@ -243,6 +268,18 @@ class KendalaApiController extends Controller
 
            }  
            $insert = RequestKendala::fieldsData($request);  
+
+           $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Kendala',
+            'slug'=>'insert-kendala',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/kendala'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);
+
             //create menu
            $saveData = Kriteria::create($insert);
             //result
@@ -261,6 +298,18 @@ class KendalaApiController extends Controller
         }else{
             
                $update = RequestKendala::fieldsData($request);
+               $json = json_encode($update);
+                
+                $log = array(             
+                'action'=> 'Update Kendala',
+                'slug'=>'update-kendala',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'api/kendala/'.$id
+                );
+
+                $datalog =  RequestAuditLog::fieldsData($log);
+
                 //update account
                $UpdateData = Kriteria::where('id',$id)->update($update);
                 //result
@@ -281,6 +330,18 @@ class KendalaApiController extends Controller
         }else{
             
                $update = array('messages'=>$request->messages);
+
+                $json = json_encode($update);
+                
+                $log = array(             
+                'action'=> 'Replay Pesan',
+                'slug'=>'replay-pesan',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'topic/update-replay/'.$id
+                );
+
+                $datalog =  RequestAuditLog::fieldsData($log);
                 //update account
                $UpdateData = KendalaDetail::where('id',$id)->update($update);
                 //result
@@ -294,6 +355,18 @@ class KendalaApiController extends Controller
     public function deletereplay($id){
         $messages['messages'] = false;
         $_res = KendalaDetail::find($id);
+
+        $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Replay',
+        'slug'=>'delete-replay',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/masalah/'.$id
+        );
+
+        RequestAuditLog::fieldsData($log);
           
         if(empty($_res)){
             return response()->json(['messages' => false]);
@@ -310,10 +383,23 @@ class KendalaApiController extends Controller
 
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
+
         foreach($request->data as $key)
         {
             $results = Kriteria::where('id',(int)$key)->delete();
         }
+
+         $json = json_encode($request->data);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Masalah Select',
+        'slug'=>'delete-masalah-select',
+        'type'=>'post',
+        'json_field'=> $json,
+        'url'=>'api/kendala/selected'
+        );
+
+        RequestAuditLog::fieldsData($log);
 
         if($results){
             $messages['messages'] = true;
@@ -328,7 +414,17 @@ class KendalaApiController extends Controller
     public function delete($id){
         $messages['messages'] = false;
         $_res = Kriteria::find($id);
-          
+        $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Kendala',
+        'slug'=>'delete-kendala',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/kendala/'.$id
+        );
+
+        RequestAuditLog::fieldsData($log);   
         if(empty($_res)){
             return response()->json(['messages' => false]);
         }

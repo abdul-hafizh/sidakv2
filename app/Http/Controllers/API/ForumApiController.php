@@ -306,9 +306,21 @@ class ForumApiController extends Controller
           return response()->json($validation,400);  
         }else{
             
-               $update = array('messages'=>$request->comment);
+                $update = array('messages'=>$request->comment);
+                $json = json_encode($update);
+                
+                $log = array(             
+                'action'=> 'Replay Komentar',
+                'slug'=>'replay-komentar',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'masalah/update-replay/'.$id
+                );
+
+                $datalog =  RequestAuditLog::fieldsData($log);
+
                 //update account
-               $UpdateData = TopicDetail::where('id',$id)->update($update);
+                $UpdateData = TopicDetail::where('id',$id)->update($update);
                 //result
                return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
             
@@ -352,6 +364,19 @@ class ForumApiController extends Controller
         {
             $results = Forum::where('id',(int)$key)->delete();
         }
+
+
+        $json = json_encode($request->data);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Forum Select',
+        'slug'=>'delete-forum-select',
+        'type'=>'post',
+        'json_field'=> $json,
+        'url'=>'api/forum/selected'
+        );
+
+        RequestAuditLog::fieldsData($log);
 
         if($results){
             $messages['messages'] = true;

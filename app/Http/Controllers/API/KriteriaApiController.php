@@ -7,7 +7,7 @@ use App\Models\Kriteria;
 use App\Http\Request\RequestKriteria;
 use App\Http\Request\Validation\ValidationKriteria;
 use DB;
-
+use App\Http\Request\RequestAuditLog;
 class KriteriaApiController extends Controller
 {
 
@@ -80,7 +80,18 @@ class KriteriaApiController extends Controller
         }else{
 
             
-           $insert = RequestKriteria::fieldsData($request);  
+           $insert = RequestKriteria::fieldsData($request);
+
+           $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Kriteria',
+            'slug'=>'insert-kriteria',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/kriteria'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);  
             //create menu
            $saveData = Kriteria::create($insert);
             //result
@@ -98,6 +109,19 @@ class KriteriaApiController extends Controller
         }else{
             
                $update = RequestKriteria::fieldsData($request);
+
+                $json = json_encode($update);
+                
+                $log = array(             
+                'action'=> 'Update Kriteria',
+                'slug'=>'update-kriteria',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'api/kriteria/'.$id
+                );
+
+                $datalog =  RequestAuditLog::fieldsData($log);
+
                 //update account
                $UpdateData = Kriteria::where('id',$id)->update($update);
                 //result
@@ -110,6 +134,19 @@ class KriteriaApiController extends Controller
 
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
+
+        $json = json_encode($request->data);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Kriteria Select',
+        'slug'=>'delete-kriteria-select',
+        'type'=>'post',
+        'json_field'=> $json,
+        'url'=>'api/kriteria/selected/'
+        );
+
+        RequestAuditLog::fieldsData($log);
+
         foreach($request->data as $key)
         {
             $results = Kriteria::where('id',(int)$key)->delete();
@@ -126,7 +163,17 @@ class KriteriaApiController extends Controller
     public function delete($id){
         $messages['messages'] = false;
         $_res = Kriteria::find($id);
-          
+        $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Kriteria',
+        'slug'=>'delete-kriteria',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/kriteria/'.$id
+        );
+
+        RequestAuditLog::fieldsData($log);  
         if(empty($_res)){
             return response()->json(['messages' => false]);
         }
