@@ -34,6 +34,7 @@ use App\Http\Controllers\API\ForumApiController;
 use App\Http\Controllers\API\NotificationApiController;
 use App\Http\Controllers\API\ActionApiController;
 use App\Http\Controllers\API\KriteriaApiController;
+use App\Http\Controllers\API\BimsosApiController;
 
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('select-kriteria', [KriteriaApiController::class, 'listAll']);
@@ -178,4 +179,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('setting-apps', [SettingWebApiController::class, 'index']);
     Route::put('setting-apps/{id}', [SettingWebApiController::class, 'update']);
+
+    Route::get('bimsos/datalist', [BimsosApiController::class, 'jsonData']);
+    Route::post('bimsos', [BimsosApiController::class, 'store']);
 });
