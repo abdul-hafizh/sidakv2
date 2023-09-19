@@ -26,9 +26,9 @@
 			</div>
 		</div> 
 		<div class="menus">
-			<div data-widget="tree" class="sidebar-menu tree">
-				<li class="header main-nav text-center">MENU</li>
-				 @include('template/sidakv2/layout.menu')
+			<div id="menu-sidebar" data-widget="tree" class="sidebar-menu tree">
+				<!-- <li class="header main-nav text-center">MENU</li> -->
+				<!--  @include('template/sidakv2/layout.menu') -->
 				
 			</div>
 		</div>
@@ -40,6 +40,13 @@
 	 	var photo = '';
         const apps  = JSON.parse(localStorage.getItem('apps')); 
         const user_sidebar  = JSON.parse(localStorage.getItem('user_sidebar'));
+
+        let sidebar = localStorage.getItem('menu_sidebar');
+        let action =  JSON.parse(sidebar);
+         getMenuSidebar(action);
+        
+       
+ 
         
          $("#logo").html('<img src="'+ apps.logo_lg +'" class="img-logo">');         
          var row = '';
@@ -117,6 +124,125 @@
           });
 
         } 
+
+        function getMenuSidebar(data){
+             const content = $('#menu-sidebar');
+             content.empty();
+             content.append('<li class="header main-nav text-center">MENU</li>'); 
+		    // Clear previous data
+		    
+		    if(data.length>0)
+		    {
+		        // Populate content with new data
+		        data.forEach(function(item, index) {
+		           	let row = ``;
+
+			        if(item.count>0)
+					{
+			           
+			            row +=`<li id="class-menu" data-param_id="${item.slug}" class="${item.class}" style="height: auto;">`;
+			            row +=`<a href="#">`;
+			         }else{
+	                     
+	                    row +=`<li id="class-menu" class="${item.class}" data-param_id="${item.slug}">`;
+	                    row +=`<a href="${item.url}">`;
+
+			         }
+		          		            
+		            
+						    row +=`<i class="fa-icon ${item.icon}"></i>`;
+						        row +=`<span class="title-menu" > ${item.name}</span>`;
+						   
+						   if(item.count>0)
+						   {	
+						        row +=`<span class="pull-right-container ">`;
+						          row +=`<i class="fa fa-angle-left pull-right"></i>`;
+						        row +=`</span>`;
+						    }    
+						row +=`</a>`;
+                    if(item.active ==true)
+				    {
+						row +=`<ul  class="treeview-menu" style="display: block;">`; 
+				    }else{
+				    	row +=`<ul  class="treeview-menu" style="display: none;">`; 
+				    }		
+                             for(let i=0; i<item.tasks.length; i++)
+							 {   
+							    row +=`<li >`;
+							        row +=`<a href="`+ item.tasks[i].url +`">`;
+							            row +=`<i class="po-top-menu fa-icon `+ item.tasks[i].icon +`"></i>`; 
+							             row +=`<span class="title-menu" > `+ item.tasks[i].name +`</span>`;
+							        row +=`</a>`;
+							    row +=`</li>`;
+
+                            } 
+
+
+					    row +=`</ul>`;
+								               
+		             row +=`</li>`;
+		            content.append(row);
+
+		        });
+
+		    }  
+
+
+		    $( "#menu-sidebar" ).on( "click", "#class-menu", (e) => {
+		        let slug = e.currentTarget.dataset.param_id;
+                const find = data.find(o => o.slug === slug);
+                const items = [];
+
+                if(find.count ==0)
+                {
+                  window.location.replace(find.url);  
+                }
+               
+                    
+
+		        
+                for(let i =0; i<data.length; i++)
+                 {
+                    if(data[i].slug != slug)
+                    {
+                      items.push({
+                      	 name:data[i].name,
+                      	 slug:data[i].slug,
+                      	 icon:data[i].icon,
+                      	 url:data[i].url,
+                      	 count:data[i].count,
+                      	 active:false,
+                      	 class:'treeview',
+                      	 tasks:data[i].tasks
+                      })
+                    }else{
+
+                    	
+		                           
+	                      items.push({
+	                      	 name:data[i].name,
+	                      	 slug:data[i].slug,
+	                      	 icon:data[i].icon,
+	                      	 url:data[i].url,
+	                      	 count:data[i].count,
+	                      	 active:true,
+	                      	 class:'treeview menu-open active',
+	                      	 tasks:data[i].tasks
+	                      })
+
+                       
+
+                    }	
+                } 	
+
+            
+
+		        localStorage.setItem('menu_sidebar', JSON.stringify(items));
+		        //getMenuSidebar(items);
+		    });
+
+
+        }
        
 
 	 }); 	

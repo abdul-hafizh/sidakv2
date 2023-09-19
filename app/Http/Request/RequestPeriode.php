@@ -43,9 +43,15 @@ class RequestPeriode
          $temp[$key]['slug'] = $val->slug;
          $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->year);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
+         $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
+
+         $temp[$key]['startdate_format'] = GeneralHelpers::formatExcel($val->startdate);
+         $temp[$key]['enddate_format'] = GeneralHelpers::formatExcel($val->enddate);
+         $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
       }
 
       $result['data'] = $temp;
+      $result['options'] = RequestMenuRoles::ActionPage('periode');
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();
          $result['last_page'] = $data->lastPage();
@@ -59,37 +65,7 @@ class RequestPeriode
       return $result;
    }
 
-   public static function GetDataPrint($data)
-   {
-
-      $i = 1;
-      $temp = array();
-
-      foreach ($data as $key => $val) {
-         
-         if ($val->status == "Y") {
-            $status = "Aktif";
-         } else {
-            $status = "NonAktif";
-         }
-
-         $temp[$key]['number'] = $i;
-         $temp[$key]['id'] = $val->id;
-         $temp[$key]['name'] = $val->name;
-         $temp[$key]['slug'] = $val->slug;
-         $temp[$key]['semester'] = $val->semester;
-         $temp[$key]['description'] = $val->description;
-         $temp[$key]['year'] = $val->year;
-         $temp[$key]['startdate'] = GeneralHelpers::formatExcel($val->startdate);
-         $temp[$key]['enddate'] = GeneralHelpers::formatExcel($val->enddate);
-         $temp[$key]['status'] = $status;
-         $temp[$key]['created_at'] = GeneralHelpers::formatExcel($val->created_at);
-
-         $i++;
-      }
-
-      return json_decode(json_encode($temp), FALSE);
-   }
+   
 
    public static function SelectAll($data, $type)
    {

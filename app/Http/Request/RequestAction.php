@@ -35,9 +35,11 @@ class RequestAction
             $temp[$key]['status'] = $status;
             $temp[$key]['status_ori'] = $val->status;
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+            $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
         }
 
        $result['data'] = $temp;
+       $result['options'] = RequestMenuRoles::ActionPage('action');
        if($perPage !='all')
        {
            $result['current_page'] = $data->currentPage();

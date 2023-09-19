@@ -5,26 +5,41 @@
 
 <div class="content">
      <form id="FormSubmit">
-          <div class="box box-solid box-primary">
-               <div class="box-body">
-                    <div class="card-body">
-                         <div class="row pd-top-bottom-15">  
-                              <div class="col-lg-8">
-                                   <div class="form-group">
-                                        <label class="col-lg-4 label-header-box align-left">
-                                             Pagu APBN : 
-                                             <span id="pagu_apbn" class="align-left pd-top-bottom-5"></span>
-                                             <input type="hidden" id="pagu_apbn_inp">
-                                             <input type="hidden" id="total_target_bimtek_inp">
-                                        </label>
-                                        <label class="col-lg-6 label-header-box align-left">
-                                             Total Perencanaan :
-                                             <span id="total_rencana" class="align-left pd-top-bottom-5"></span>
-                                             <input type="hidden" id="total_rencana_inp">
-                                        </label>
+          <div class="row" style="margin-bottom: 20px">
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Pagu APBN</span>
+                                        <h3 class="card-text" id="pagu_apbn"></h3>
                                    </div>
                               </div>
-                         </div>                          
+                         </div>
+                    </div>
+               </div>
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Total Perencanaan</span>
+                                        <h3 class="card-text" id="total_rencana"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">		
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Status </span>
+                                        <h3 class="card-text" id="status-view"></h3>
+                                   </div>
+                              </div>
+                         </div>
                     </div>
                </div>
           </div>
@@ -37,8 +52,10 @@
                                    <div id="periode-alert" class="form-group">
                                         <label class="col-lg-2 label-header-box form-group margin-none">Periode Perencanaan :</label>                                        
                                         <div class="col-lg-2 form-group margin-none" id="selectPeriode"></div>
-                                        <span class="col-lg-6 label-header-box form-group margin-none text-red" id="alasan-view"></span>
-                                        <span class="col-lg-2 label-header-box form-group margin-none align-right" id="status-view"></span>
+                                        <span class="col-lg-8 label-header-box form-group margin-none text-red align-right" id="alasan-view"></span>
+                                        <input type="hidden" id="pagu_apbn_inp">
+                                        <input type="hidden" id="total_target_bimtek_inp">
+                                        <input type="hidden" id="total_rencana_inp">
                                    </div>
                               </div>
                          </div>                          
@@ -250,21 +267,9 @@
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#total_rencana_sec').html('<b>'+data.total_rencana+'</b>');
                $('#pagu_apbn_inp').val(data.pagu_apbn.replace(/[^0-9]/g, ''));
-               $('#total_target_bimtek_inp').val(data.target_bimtek);
+               $('#total_target_bimtek_inp').val(data.target_bimtek);               
+               $('#status-view').html('<b>'+data.status+'</b>');
                
-               const status = data.status;
-               const statusMap = {
-                    13: { label: 'Draft', color: 'badge-info' },
-                    14: { label: 'Terkirim/Waiting Approve', color: 'badge-warning' },
-                    15: { label: 'Approved', color: 'badge-success' }
-               };
-               const statusInfo = statusMap[status];
-
-               if (statusInfo) {
-                    const badgeHtml = `<span class="badge ${statusInfo.color}">${statusInfo.label}</span>`;
-                    $('#status-view').html(badgeHtml);
-               }
-
                if(data.status == 13 && data.alasan_unapprove != null) {
                     $('#alasan-view').html('<b>Alasan Tidak Disetujui : '+data.alasan_unapprove+'</b>');
                }
@@ -651,7 +656,7 @@
 
                     } else {
 
-                         $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
+                         $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                          $('#total_rencana_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
                     }
                }

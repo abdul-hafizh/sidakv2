@@ -33,10 +33,10 @@ class ValidationMenus
             if($errors->has('name')){
                 $err['messages']['name'] = $errors->first('name');
             }
-
             if($errors->has('icon')){
                 $err['messages']['icon'] = $errors->first('icon');
             }
+           
 
 
             return $err;
@@ -49,7 +49,7 @@ class ValidationMenus
        
         $fields = [
             'name'  => 'Name',  
-            'icon'  => 'Icon',
+           
             
            
         ];

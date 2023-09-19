@@ -14,7 +14,7 @@ use App\Models\RoleUser;
 use App\Models\User;
 use App\Models\SettingApps;
 use App\Models\SystemLog;
-
+use App\Http\Request\RequestMenuRoles;
 use JWTAuth;
 
 
@@ -72,66 +72,150 @@ class AuthController extends Controller
             return response()->json($validation,400); 
 
         }else{
+           $user = User::where('username',$credentials['username'])->first();
+           if($user)
+           {
+
+                if ($user->status == 'N')
+                {  
+                    $messages3 = array('status'=>'Akun anda ditangguhkan admin');
+                    return response()->json(['status'=>false,'messages' => $messages3],400);
+                }else{
+            
+                    // Authentication successful
+                      
+                        try
+                        {
+                            //access login api
+                            if (! $token = JWTAuth::attempt($credentials)){
+                                $messages1 = array('username'=>'Nama Pengguna tidak valid');
+                                $messages2 = array('password'=>'Kata Sandi tidak valid');
+                               
+                               
+                                if ($user ==null)
+                                {
+                                    return response()->json(['status'=>false,'messages' => $messages1],400);
+                                }
+
+                               
+                                 
+                                if (!Hash::check($credentials['password'], $user->password))
+                                {
+                                    return response()->json(['status'=>false, 'messages' => $messages2],400); 
+                                }
          
-            // Authentication successful
-              
-                try
-                {
-                    //access login api
-                    if (! $token = JWTAuth::attempt($credentials)){
-                        $messages1 = array('username'=>'Nama Pengguna tidak valid');
-                        $messages2 = array('password'=>'Kata Sandi tidak valid');
-                        $user = User::where('username',$credentials['username'])->first();
-                        if ($user ==null)
-                        {
-                            return response()->json(['status'=>false,'messages' => $messages1],400);
-                        }
-                         
-                        if (!Hash::check($credentials['password'], $user->password))
-                        {
-                            return response()->json(['status'=>false, 'messages' => $messages2],400); 
-                        }
- 
-                    }
-                    //access login web
-                    if (Auth::attempt($credentials)) {}
+                            }
+                            //access login web
+                            if (Auth::attempt($credentials)) {}
+
+                        } catch (JWTException $e) {
+                           return response()->json(['error' => 'validasi tidak valid'], 500);
+                        } 
+
+                       $auth = Auth::User();
+                       $RoleUser = RoleUser::where('user_id',$auth->id)->first();
+                       $access =  $RoleUser->role->slug; 
+                       $userSidebar = RequestAuth::requestUserSidebar();
 
 
-                } catch (JWTException $e) {
-                   return response()->json(['error' => 'validasi tidak valid'], 500);
-                } 
+                       $token = compact('token');
+                       setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
+                       setcookie('token', $token['token'], time() + (86400 * 30), "/"); // 86400 = 1 day
+                       $apps = SettingApps::first();
+                       $template = RequestSettingApps::GetDataApps($apps);
 
-               $auth = Auth::User();
-               $RoleUser = RoleUser::where('user_id',$auth->id)->first();
-               $access =  $RoleUser->role->slug; 
-               $userSidebar = RequestAuth::requestUserSidebar();
+                       $log = array(
+                                    'menu'=>'Login',
+                                    'slug'=>'login',
+                                    'url'=>'login'
+                                   );
+                       RequestSystemLog::CreateLog($log);
 
+                       if($access =='admin')
+                       {
+                            $sidebar = RequestMenuRoles::MenuSidebarAdmin();
+                       }else if($access =='pusat'){
+                           $sidebar = RequestMenuRoles::MenuSidebarPusat();
+                       }else if($access =='province'){
+                            $sidebar = RequestMenuRoles::MenuSidebarProvinsi();
+                       }else if($access =='daerah'){
+                           $sidebar = RequestMenuRoles::MenuSidebarKabupaten();
+                       } 
 
-               $token = compact('token');
-               setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
-               setcookie('token', $token['token'], time() + (86400 * 30), "/"); // 86400 = 1 day
-               $apps = SettingApps::first();
-               $template = RequestSettingApps::GetDataApps($apps);
+                    
 
-               $log = array(
-                            'menu'=>'Login',
-                            'slug'=>'login',
-                            'url'=>'login'
-                           );
-               RequestSystemLog::CreateLog($log);
-
-
-
-              return response()->json(['status'=>true,'template'=>$template,'user_sidebar'=>$userSidebar,'access'=>$access,'token'=>$token['token']],200);  
+                      return response()->json(['status'=>true,'menu_sidebar'=>$sidebar,'template'=>$template,'user_sidebar'=>$userSidebar,'access'=>$access,'token'=>$token['token']],200);  
+                }
                
-               
-
+            }
         
         
         }    
 
       
     }
+
+    public function ForgotPassword(Request $request){
+      
+       
+        $validation = ValidationAuth::validationForgot($request);
+        if($validation)
+        {
+
+            return response()->json($validation,400); 
+
+        }else{
+
+             $req = RequestAuth::CreateAuthToken($request);
+             $data = array('forgot'=>true,'token'=>false,'email'=>$req->email);
+             $email =  $req->email;
+             if (strlen($email) > 8) {
+                $email = substr($email, 0, 8) . "@xxx";
+             } 
+
+             return response()->json(['status'=>true,'data'=>$data,'messages'=>'Harap segera check email anda '.$email]);
+
+        }    
+
+    } 
+
+    public function CheckToken(Request $request){
+         
+        $validation = ValidationAuth::validationToken($request);
+        if($validation)
+        {
+            return response()->json($validation,400); 
+        }else{
+
+             $req = RequestAuth::CheckToken($request);
+             if($req ==true)
+             {
+                $data = array('forgot'=>true,'token'=>true,'email'=>$request->email);
+                return response()->json(['status'=>true,'data'=>$data,'messages'=>'Token berhasil divalidasi']);
+             }else{
+                $data = array('forgot'=>true,'token'=>false,'email'=>$request->email);
+                return response()->json(['status'=>false,'data'=>$data,'messages'=>'Gagal token tidak valid']);
+             }   
+            
+
+        }    
+
+    } 
+
+    public function UpdatePassword(Request $request){
+
+        $validation = ValidationAuth::validationPassword($request);
+        if($validation)
+        {
+            return response()->json($validation,400); 
+        }else{
+
+          $update = User::where(['email'=>$request->email])->update(['token'=>'','password'=> Hash::make($request->password)]);
+          return response()->json(['status'=>true,'messages'=>'Password Berhasil diperbaharui']);
+        }    
+
+    }
+
 
 
        

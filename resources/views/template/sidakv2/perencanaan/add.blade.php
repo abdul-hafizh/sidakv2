@@ -5,30 +5,44 @@
 
 <div class="content">
      <form id="FormSubmit">
+          <div class="row padding-default" style="margin-bottom: 20px">
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Pagu APBN</span>
+                                        <h3 class="card-text" id="pagu_apbn"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">			
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Total Perencanaan</span>
+                                        <h3 class="card-text" id="total_rencana"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
           <div class="box box-solid box-primary">
                <div class="box-body">
                     <div class="card-body">
-                         <div class="row pd-top-bottom-15">  
-                              <div class="col-lg-8">
-                                   <div class="form-group">
-                                        <label class="col-lg-4 label-header-box align-left">
-                                             Pagu APBN : 
-                                             <span id="pagu_apbn" class="align-left pd-top-bottom-5"></span>
-                                             <input type="hidden" id="pagu_apbn_inp">
-                                             <input type="hidden" id="total_target_bimtek_inp">
-                                        </label>
-                                        <label class="col-lg-6 label-header-box align-left">
-                                             Total Perencanaan :
-                                             <span id="total_rencana" class="align-left pd-top-bottom-5"></span>
-                                             <input type="hidden" id="total_rencana_inp">
-                                        </label>
-                                   </div>
-                              </div>
+                         <div class="row pd-top-bottom-15">                                
                               <div class="col-lg-4">
                                    <div id="periode-alert" class="form-group">
-                                        <label class="col-sm-5 label-header-box align-right form-group margin-none">Pilih Periode :</label>
+                                        <label class="col-sm-5 label-header-box form-group margin-none">Pilih Periode :</label>
                                         <div class="col-sm-7">
                                              <div id="selectPeriode" class="form-group margin-none"></div>
+                                             <input type="hidden" id="pagu_apbn_inp">
+                                             <input type="hidden" id="total_target_bimtek_inp">
+                                             <input type="hidden" id="total_rencana_inp">
                                         </div>
                                    </div>
                               </div>
@@ -558,7 +572,7 @@
 
                     } else {
 
-                         $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
+                         $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                          $('#total_rencana_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
                     }
                }

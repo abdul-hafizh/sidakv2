@@ -27,14 +27,12 @@ class PeriodeController extends Controller
         );
         RequestSystemLog::CreateLog($log);
 
-         $query = Periode::select('id','name','slug','semester','year','startdate','enddate','status','created_at')->orderBy('created_at', 'DESC')->get();
-        $result = RequestPeriode::GetDataPrint($query);
+       
 
         return view('template/' . $this->template . '.periode.index')
         ->with(
             [
               'title' => $title,
-              'data' => $result,
               'template'=>'template/'.$this->template
             ]);
     }

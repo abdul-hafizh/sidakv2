@@ -7,7 +7,7 @@ use App\Models\Kriteria;
 use App\Http\Request\RequestKriteria;
 use App\Http\Request\Validation\ValidationKriteria;
 use DB;
-
+use App\Http\Request\RequestAuditLog;
 class KriteriaApiController extends Controller
 {
 
@@ -19,8 +19,6 @@ class KriteriaApiController extends Controller
 
     public function index(Request $request)
     {
-       
-
         // $_res = array();
          $query = Kriteria::orderBy('created_at', 'DESC');
          if($request->per_page !='all')
@@ -32,19 +30,10 @@ class KriteriaApiController extends Controller
         
          $result = RequestKriteria::GetDataAll($data,$request->per_page,$request);
          return response()->json($result);
-
-
     }
 
     
-      public function listAll(Request $request)
-    {
-        $query = Kriteria::select('id','slug as value','name as text','status')->orderBy('created_at', 'DESC')->get();
-        $data = RequestKriteria::GetKriteria($query);
-        return response()->json($data);
-
-    }
-   
+    
 
    
 
@@ -53,7 +42,7 @@ class KriteriaApiController extends Controller
     public function search(Request $request){
         $search = $request->search;
         $_res = array();
-        $column_search  = array('name', 'slug');
+        $column_search  = array('category', 'slug');
 
         $i = 0;
         $query  = Kriteria::orderBy('id','DESC');
@@ -70,9 +59,9 @@ class KriteriaApiController extends Controller
             $i++;
         }
        
-        $Data = $query->paginate($this->perPage);
+        $Data = $query->paginate($request->per_page);
         $description = $search;
-        $_res = RequestKriteria::GetDataAll($Data,$this->perPage,$request,$description);
+        $_res = RequestKriteria::GetDataAll($Data,$request->per_page,$request,$description);
                
     
         return response()->json($_res);
@@ -91,7 +80,18 @@ class KriteriaApiController extends Controller
         }else{
 
             
-           $insert = RequestKriteria::fieldsData($request);  
+           $insert = RequestKriteria::fieldsData($request);
+
+           $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Kriteria',
+            'slug'=>'insert-kriteria',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/kriteria'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);  
             //create menu
            $saveData = Kriteria::create($insert);
             //result
@@ -109,6 +109,19 @@ class KriteriaApiController extends Controller
         }else{
             
                $update = RequestKriteria::fieldsData($request);
+
+                $json = json_encode($update);
+                
+                $log = array(             
+                'action'=> 'Update Kriteria',
+                'slug'=>'update-kriteria',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'api/kriteria/'.$id
+                );
+
+                $datalog =  RequestAuditLog::fieldsData($log);
+
                 //update account
                $UpdateData = Kriteria::where('id',$id)->update($update);
                 //result
@@ -121,6 +134,19 @@ class KriteriaApiController extends Controller
 
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
+
+        $json = json_encode($request->data);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Kriteria Select',
+        'slug'=>'delete-kriteria-select',
+        'type'=>'post',
+        'json_field'=> $json,
+        'url'=>'api/kriteria/selected/'
+        );
+
+        RequestAuditLog::fieldsData($log);
+
         foreach($request->data as $key)
         {
             $results = Kriteria::where('id',(int)$key)->delete();
@@ -137,7 +163,17 @@ class KriteriaApiController extends Controller
     public function delete($id){
         $messages['messages'] = false;
         $_res = Kriteria::find($id);
-          
+        $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Kriteria',
+        'slug'=>'delete-kriteria',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/kriteria/'.$id
+        );
+
+        RequestAuditLog::fieldsData($log);  
         if(empty($_res)){
             return response()->json(['messages' => false]);
         }

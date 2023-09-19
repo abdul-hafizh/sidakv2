@@ -27,6 +27,9 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::post('/login', [AuthController::class, 'store']);
 
+Route::post('/forgotpasword', [AuthController::class, 'ForgotPassword']);
+Route::post('/checktoken', [AuthController::class, 'CheckToken']);
+Route::post('/updatepassword', [AuthController::class, 'UpdatePassword']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/perencanaan', [PerencanaanController::class, 'index']);

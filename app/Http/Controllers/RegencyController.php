@@ -30,14 +30,12 @@ class RegencyController extends Controller
         );
         RequestSystemLog::CreateLog($log);
 
-        $query = Regencies::select('id','name','province_id','created_at')->orderBy('created_at', 'DESC')->get();
-        $result = RequestRegency::GetDataPrint($query);
+       
       
         return view('template/' . $this->template . '.regency.index')
         ->with(
             [
               'title' => $title,
-              'data' => $result,
               'template'=>'template/'.$this->template
             ]);
     }

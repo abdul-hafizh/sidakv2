@@ -23,19 +23,17 @@ class ProvinceController extends Controller
        $title = 'Data Provinsi';
        $log = array(             
             'menu'=>$title,
+            'menu'=>$title,
             'slug'=>'provinsi',
             'url'=>'provinsi'
         );
         RequestSystemLog::CreateLog($log);
 
-        $query = Provinces::select('id','name','created_at')->orderBy('created_at', 'DESC')->get();
-        $result = RequestProvinces::GetDataPrint($query);
       
         return view('template/' . $this->template . '.province.index')
         ->with(
             [
               'title' => $title,
-              'data' => $result,
               'template'=>'template/'.$this->template
             ]);
     }

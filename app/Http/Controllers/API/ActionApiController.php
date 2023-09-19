@@ -7,7 +7,7 @@ use App\Models\Action;
 use App\Http\Request\RequestAction;
 use App\Http\Request\Validation\ValidationAction;
 use DB;
-
+use App\Http\Request\RequestAuditLog;
 
 class ActionApiController extends Controller
 {
@@ -73,9 +73,9 @@ class ActionApiController extends Controller
             $i++;
         }
        
-        $Data = $query->paginate($this->perPage);
+        $Data = $query->paginate($request->per_page);
         $description = $search;
-        $_res = RequestAction::GetDataAll($Data,$this->perPage,$request,$description);
+        $_res = RequestAction::GetDataAll($Data,$request->per_page,$request,$description);
                
     
         return response()->json($_res);
@@ -94,7 +94,19 @@ class ActionApiController extends Controller
         }else{
 
             
-           $insert = RequestAction::fieldsData($request);  
+            $insert = RequestAction::fieldsData($request);  
+
+            $json = json_encode($insert);
+            $log = array(             
+            'action'=> 'Insert Aksi',
+            'slug'=>'insert-aksi',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/action'
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);
+
             //create menu
            $saveData = Action::create($insert);
             //result
@@ -112,6 +124,20 @@ class ActionApiController extends Controller
         }else{
             
                $update = RequestAction::fieldsData($request);
+
+               //Audit Log
+                $json = json_encode($update);
+                
+                $log = array(             
+                'action'=> 'Update Aksi',
+                'slug'=>'update-aksi',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'api/action/'.$id
+                );
+
+                $datalog =  RequestAuditLog::fieldsData($log);
+
                 //update account
                $UpdateData = Action::where('id',$id)->update($update);
                 //result
@@ -140,6 +166,18 @@ class ActionApiController extends Controller
     public function delete($id){
         $messages['messages'] = false;
         $_res = Action::find($id);
+
+        $json = json_encode($_res);
+        //Audit Log
+        $log = array(             
+        'action'=> 'Delete Aksi',
+        'slug'=>'delete-aksi',
+        'type'=>'delete',
+        'json_field'=> $json,
+        'url'=>'api/action/'.$id
+        );
+
+        RequestAuditLog::fieldsData($log);
           
         if(empty($_res)){
             return response()->json(['messages' => false]);

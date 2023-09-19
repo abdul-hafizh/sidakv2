@@ -137,4 +137,30 @@ class ValidationPerencanaan
         }
     }
 
+    public static function validationUploadFile($request, $id){
+        $err = array(); 
+        
+        $fields = [           
+            'lap_rencana'  => 'File PDF'
+        ];
+
+        $validator = Validator::make($request->all(), 
+        [            
+            'lap_rencana' => 'required|mimes:pdf|max:5120', // 5 MB
+        ]);
+
+        $validator->setAttributeNames($fields); 
+
+        if ($validator->fails()) {
+         
+            $errors = $validator->errors();
+            
+            if($errors->has('lap_rencana')){
+                $err['messages']['lap_rencana'] = $errors->first('lap_rencana');
+            }
+
+            return $err;
+       }
+    }
+
 }

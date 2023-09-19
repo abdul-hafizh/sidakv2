@@ -16,51 +16,51 @@
             <select id="role_id"  data-style="btn-default" title="Pilih Role" class="selectpicker form-control" name="role_id">
 
             </select>
-            <span id="role-messages"></span>
+            <span id="role-messages" class="span-messages"></span>
           </div>
 
           <div id="username-alert" class="form-group has-feedback">
             <label>Username</label>
             <input id="username-add" type="text" class="form-control" name="username" placeholder="Username" value="">
-            <span id="username-messages"></span>
+            <span id="username-messages" class="span-messages"></span>
           </div>
 
           <div id="name-alert" class="form-group has-feedback">
             <label>Name</label>
             <input id="name-add" type="text" class="form-control" name="name" placeholder="Name" value="">
-            <span id="name-messages"></span>
+            <span id="name-messages" class="span-messages"></span>
           </div>
 
 
           <div id="email-alert" class="form-group has-feedback">
             <label>Email</label>
             <input id="email-add" type="email" class="form-control" name="email" placeholder="email" value="">
-            <span id="email-messages"></span>
+            <span id="email-messages" class="span-messages"></span>
           </div>
 
           <div id="phone-alert" class="form-group has-feedback">
             <label>Phone</label>
             <input id="phone-add" type="text" class="form-control"  oninput="this.value = this.value.replace(/[^0-9.]/g, '');"  name="phone" placeholder="phone" value="">
-            <span id="phone-messages"></span>
+            <span id="phone-messages" class="span-messages"></span>
           </div>
 
 
           <div id="nip-alert" class="form-group has-feedback">
             <label>NIP</label>
             <input id="nip-add" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" name="nip" placeholder="NIP" value="">
-            <span id="nip-messages"></span>
+            <span id="nip-messages" class="span-messages"></span>
           </div>
 
           <div id="leader-name-alert" class="form-group has-feedback">
             <label>Penanggung Jawab</label>
             <input id="leader-name-add" type="text" class="form-control" name="leader_name" placeholder="Penanggung Jawab " value="">
-            <span id="leader-name-messages"></span>
+            <span id="leader-name-messages" class="span-messages"></span>
           </div>
 
           <div id="leader-nip-alert" class="form-group has-feedback">
             <label>NIP Penanggung Jawab</label>
             <input id="leader-nip-add" type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" name="leader_nip" placeholder="NIP Penanggung Jawab" value="">
-            <span id="leader-nip-messages"></span>
+            <span id="leader-nip-messages" class="span-messages"></span>
           </div>
 
          
@@ -74,7 +74,7 @@
           <div id="password-alert" class="form-group has-feedback">
             <label>Password </label>
             <input id="password-add" type="password" class="form-control" name="password" placeholder="Password">
-            <span id="password-messages"></span>
+            <span id="password-messages" class="span-messages"></span>
 
 
           </div>
@@ -82,7 +82,7 @@
           <div id="password-confirmation-alert" class="form-group has-feedback">
             <label>Konfirmasi Password </label>
             <input id="password-confirmation-add" type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password">
-            <span id="password-confirmation-messages"></span>
+            <span id="password-confirmation-messages" class="span-messages"></span>
           </div>
 
 
@@ -112,14 +112,7 @@
         var role_id = ''; 
        
         var photo = '';
-           
-        $("#close1").click(()=> {   
-          DefaultNull();
-        });
-
-         $("#close2").click(()=> {   
-          DefaultNull();
-        });
+       
 
 
       
@@ -372,16 +365,7 @@
 
 
 
-        function DefaultNull(){
-
-           $('#daerah-alert-add').hide();
-           $("input").val(null);
-           $('#role_id').selectpicker('val', 'null');
-           $('#kabupaten_id').selectpicker('val', 'null');
-           $('#province_id').selectpicker('val', 'null');
-           $('#modal-add').modal('toggle');
-
-        }
+       
 
         function selectDaerah(){
            

@@ -3,8 +3,9 @@
 namespace App\Http\Request;
 use Auth;
 use App\Helpers\GeneralHelpers;
-
+use App\Models\Kendala;
 use Illuminate\Support\Str;
+use App\Http\Request\RequestMenuRoles;
 
 class RequestKriteria 
 {
@@ -31,12 +32,16 @@ class RequestKriteria
             $temp[$key]['category'] = $val->category;
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['description'] = $val->description;
+            $temp[$key]['total'] = RequestKriteria::Total($val->id);
+
             $temp[$key]['status'] = $status;
             $temp[$key]['status_ori'] = $val->status;
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
+            $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
         }
 
        $result['data'] = $temp;
+       $result['options'] = RequestMenuRoles::ActionPage('kriteria');
        if($perPage !='all')
        {
            $result['current_page'] = $data->currentPage();
@@ -51,6 +56,12 @@ class RequestKriteria
 
    }
 
+   public static function Total($id)
+   {
+       $data = Kendala::where('kriteria_id',$id)->count();
+       return $data;
+   }
+
   
   public static function GetKriteria($data){
         $temp = array();
@@ -62,8 +73,6 @@ class RequestKriteria
             $temp[$key]['value'] = $val->value;
             $temp[$key]['status'] = $status;
             $temp[$key]['status_ori'] = $val->status;
-            
-          
         }
         return $temp; 
   }

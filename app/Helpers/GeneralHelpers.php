@@ -238,7 +238,7 @@ class GeneralHelpers
         $bulan_split    = substr($tgl, 5, 2);
         $hari_split     = substr($tgl, 8, 2);
         $tmpstamp       = mktime(0, 0, 0, $bulan_split, $hari_split, $tahun_split);
-        return date('d/m/Y ', $tmpstamp);
+        return date('d/m/Y', $tmpstamp);
     }
 
     public static function  timeAgo($tanggal)

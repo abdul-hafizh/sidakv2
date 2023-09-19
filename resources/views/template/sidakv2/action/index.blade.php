@@ -1,7 +1,7 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15">
-    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+    <div id="ShowSearch" style="display:none;" class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div id="showSearch" class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
@@ -24,14 +24,19 @@
 					<option value="all">All</option>
 				</select>
             </div> 	
-			<div class="pull-left padding-9-0 margin-left-button">
+			<div id="ShowChecklist" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
+
 			</div>
 
-			
-
+			 
+			<div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+                <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
+                     Export
+                </button>
+            </div>
 
 			<div id="ShowAdd"  class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
@@ -40,7 +45,7 @@
 		    </div>		
 		</div> 
 
-		<div id="ShowPagination" class="pull-right width-50">
+		<div id="ShowPagination" style="display:none;" class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -58,11 +63,11 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th class="th-checkbox"><input id="select-all" class="span-title" type="checkbox"></th>
-							<th><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th id="ShowChecklistAll" style="display:none;"><input id="select-all" class="span-title" type="checkbox"></th>
+							<th><div id="ShowChecklistAll" style="display:none;"  class="split-table"></div><span class="span-title">No</span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Status </span></th>
-							<th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+							<th id="ShowAction" style="display:none;"><div class="split-table"></div><span class="span-title">Aksi</span></th>
 						</tr>
 					</thead>
 					<tbody id="content">
@@ -75,7 +80,8 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	    </div>
 	</div>
-     @include('template/sidakv2/action.add')
+    @include('template/sidakv2/action.add')
+    @include('template/sidakv2/action.export')
 
 <script type="text/javascript">
 
@@ -88,6 +94,21 @@
     let page = 1;
     var list = [];
     const total = 0;
+
+    $("#ExportButton").click(function() {    
+        $.ajax({
+            url: BASE_URL+ `/api/action?page=${page}&per_page=all`,
+            method: 'GET',
+            success: function(response) {
+            	
+            	 exportData(response.data);
+            },
+            error: function(error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+
+    });
 
     $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -115,9 +136,9 @@
                     data:{'search':search},
                     success: function(response) {
                     	list = response.data;
-                    	listOptions(response.options);
                         resultTotal(response.total);
-                        updateContent(response.data);
+                        listOptions(response.options);
+                        updateContent(response.data,response.options);
                         updatePagination(response.current_page, response.last_page);
                     },
                     error: function(error) {
@@ -188,7 +209,36 @@
         $('.select-all').prop('checked', allChecked);
     });
 
+    //keyup search
+    $('#search-input').keyup( () => {
+ 		 let search = $('#search-input').val();
+ 		 
+ 		 if(search)
+ 		 { 	
+	 		 const content = $('#content');
+        	 content.empty();
+    	 	 let row = ``;
+             row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+              content.append(row);
+	         $.ajax({
+	            url: BASE_URL + `/api/action/search?page=${page}&per_page=${itemsPerPage}`,
+	            data:{'search':search},
+	            method: 'POST',
+	            success: function(response) {
+	            	list = response.data;
+	            	resultTotal(response.total);
+	                listOptions(response.options);
+                    updateContent(response.data,response.options);
+	                updatePagination(response.current_page, response.last_page);
+	            },
+	            error: function(error) {
+	                console.error('Error fetching data:', error);
+	            }
+	        });
+	     }    
+    });
 
+    //btn search
     $('#Search').click( () => {
  		 let search = $('#search-input').val();
  		 
@@ -255,10 +305,8 @@
             success: function(response) {
             	list = response.data;
             	resultTotal(response.total);
-                // Update content area with fetched data
-                updateContent(response.data);
-
-                // Update pagination controls
+                listOptions(response.options);
+                updateContent(response.data,response.options);
                 updatePagination(response.current_page, response.last_page);
             },
             error: function(error) {
@@ -268,9 +316,11 @@
     }
 
     // Function to update the content area with data
-    function updateContent(data) {
+    function updateContent(data,options) {
         const content = $('#content');
-
+        const edited = options.find(o => o.action === 'edit');
+        const deleted = options.find(o => o.action === 'delete');
+        const checklist = options.find(o => o.action === 'checklist');
         // Clear previous data
         content.empty();
 	    if(data.length>0)
@@ -281,9 +331,15 @@
 	             row +=`<tr>`;
 	             if(item.deleted ==true)
 	             {
-	                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;	
+	             	if(checklist.checked == true)
+                    {
+	                  row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	                }  	
 	             }else{
-	             	row +=`<td><input disabled type="checkbox"></td></td>`;
+	             	if(checklist.checked == true)
+                    {
+	             	   row +=`<td><input disabled type="checkbox"></td></td>`;
+	             	}   
 	             }
 	               
 	               row +=`<td class="padding-text-table">${item.number}</td>`;
@@ -294,10 +350,17 @@
 
 	              if(item.deleted ==true)
 	              {  
-
-	                  row +=`<button id="ShowEdit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+	                    if(edited.checked == true)
+	                    {
+		                  row +=`<button id="ShowEdit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+		                }  
 	                }else{
-	                   row +=`<button disabled data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-default"><i class="fa fa-pencil" ></i></button>`;
+
+	                   if(edited.checked == true)
+	                   {
+	                    	
+	                      row +=`<button disabled data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-default"><i class="fa fa-pencil" ></i></button>`;
+	                    }
 
 	                }
 	               
@@ -308,12 +371,18 @@
 
 	                if(item.deleted ==true)
 	                {
-
-	                    row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                       if(deleted.checked == true)
+	                   {
+	                       row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                   }    
 
 	                 }else{
 
-	                    row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"   type="button" class="btn btn-default"><i class="fa fa-trash" ></i></button>`; 
+	                   if(deleted.checked == true)
+	                   {	
+
+	                      row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"   type="button" class="btn btn-default"><i class="fa fa-trash" ></i></button>`; 
+	                   }   
 
 	                 } 	
 
@@ -552,6 +621,51 @@
 
        });
     }
+
+    function exportData(data){
+          
+          const content = $('#exportView');
+        
+         content.empty();
+         if(data.length>0)
+         {
+            // Populate content with new data
+            data.forEach(function(item, index) {
+                let row = ``;
+                 row +=`<tr>`;
+
+                   row +=`<td class="padding-text-table">${item.number}</td>`;
+                   row +=`<td class="padding-text-table">${item.name}</td>`;
+                   row +=`<td class="padding-text-table">${item.status}</td>`;
+                   row +=`<td class="padding-text-table">${item.created_at_format}</td>`;
+                 row +=`</tr>`;
+
+               content.append(row);
+             });     
+
+         }  
+
+         ExportExel();      
+         
+    }
+
+     function ExportExel()
+    {
+        var dt = new Date();
+        var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+       var table = document.getElementById("myTable");
+       var ws = XLSX.utils.table_to_sheet(table);
+       var wb = XLSX.utils.book_new();
+       XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+       XLSX.writeFile(wb, "Repot-data-forum-"+ time +".xlsx");
+
+         
+
+    }
+
 
 
     // Function to update pagination controls

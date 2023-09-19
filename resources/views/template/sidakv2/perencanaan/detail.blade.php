@@ -4,34 +4,44 @@
 <style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
-     <div class="box box-solid box-primary">
-          <div class="box-body">
-               <div class="card-body">
-                    <div class="row pd-top-bottom-15">  
-                         <div class="col-lg-8">
-                              <div class="form-group">
-                                   <label class="col-lg-4">
-                                        Pagu APBN : 
-                                        <span id="pagu_apbn" class="pd-top-bottom-5"></span>
-                                   </label>
-                                   <label class="col-lg-5">
-                                        Total Perencanaan :
-                                        <span id="total_rencana" class="pd-top-bottom-5"></span>
-                                   </label>                                        
+     <div class="row padding-default" style="margin-bottom: 20px">
+		<div class="col-lg-4 col-md-6 col-sm-12">
+               <div class="box-body btn-primary border-radius-13">
+                    <div class="card-body table-responsive p-0">
+                         <div class="media">
+                              <div class="media-body text-left">
+                                   <span>Pagu APBN</span>
+                                   <h3 class="card-text" id="pagu_apbn"></h3>
                               </div>
                          </div>
-                         <div class="col-lg-4">
-                              <div class="pull-right">
-                                   <label class="col-lg-12">
-                                        <span class="label-header-box form-group margin-none align-right" id="status-view"></span>
-                                        Periode : <span id="selectPeriode" class="pd-top-bottom-5"></span>
-                                   </label>
-                              </div>
-                         </div>
-                    </div>                          
+                    </div>
                </div>
-          </div>
-     </div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+               <div class="box-body btn-primary border-radius-13">			
+                    <div class="card-body table-responsive p-0">
+                         <div class="media">
+                              <div class="media-body text-left">
+                                   <span>Total Perencanaan</span>
+                                   <h3 class="card-text" id="total_rencana"></h3>
+                              </div>
+                         </div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-sm-12">
+               <div class="box-body btn-primary border-radius-13">		
+                    <div class="card-body table-responsive p-0">
+                         <div class="media">
+                              <div class="media-body text-left">
+                                   <span>Periode <span id="selectPeriode" class="pd-top-bottom-5"></span></span>
+                                   <h3 class="card-text" id="status-view"></h3>
+                              </div>
+                         </div>
+                    </div>			
+			</div>
+		</div>
+	</div>
 
      <div class="box box-solid box-primary">
           <div class="box-body">
@@ -58,36 +68,12 @@
                     <div id="Attr" class="row pd-top-bottom-15"></div>
                </div>
           </div>
-     </div> 
+     </div>      
 
-     <div class="box box-solid box-primary">
-          <div class="box-body">
-               <div class="card-body">
-                    <div class="form-group col-lg-6">
-                         <form method="post" action="/api/perencanaan/upload_laporan" enctype="multipart/form-data">                         
-                              <div class="form-group">
-                                   <label>Upload File : </label>
-                                   <input type="file" class="form-control" name="lap_rencana">
-                              </div>                         
-                              <button type="submit" class="btn btn-primary">Upload</button>                              
-                         </form>                              
-                         <div class="form-group"> <br/>
-                              <a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
+     <div class="btn-requset-doc"></div> 
 
-     <div class="box-footer">
-          <div class="btn-group just-center">
-               <button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>
-               <button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>
-               <button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>
-               <button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>
-               <button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>
-          </div> 
-     </div> 
+     <div class="btn-footer"></div> 
+
 </div>
 
 @include('template/sidakv2/perencanaan.print')
@@ -138,13 +124,11 @@
      $(document).ready(function() {          
           var periode =[];
           var pagu_apbn = 0;             
+          var file_pdf = '';             
           var url = window.location.href; 
           var segments = url.split('/');  
 
-          $("#downloadPdf").click(function() {       
-               // const pdf = new jsPDF();
-               // pdf.autoTable({ html: '#dataPrPdf' });
-               // pdf.save('dataPrPdf.pdf');
+          $("#downloadPdf").click(function() {      
 
                const doc = new jsPDF();
 
@@ -167,22 +151,12 @@
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
-
-               const status = data.status;
-               const statusMap = {
-                    13: { label: 'Draft', color: 'badge-info' },
-                    14: { label: 'Terkirim/Waiting Approve', color: 'badge-warning' },
-                    15: { label: 'Approved', color: 'badge-success' }
-               };
-               const statusInfo = statusMap[status];
-
-               if (statusInfo) {
-                    const badgeHtml = `<span class="badge ${statusInfo.color}">${statusInfo.label}</span>`;
-                    $('#status-view').html(badgeHtml);
-               }
+               $('#status-view').html('<b>'+data.status+'</b>');
 
                var row = '';
                var rows = '';
+               var rows_btn = '';
+               var rows_doc = '';
 
                row+= '<tr>';
                     row+= '<td><strong>1</strong></td>';
@@ -339,12 +313,12 @@
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
                     row+= '<td class="text-right"><strong>Total PAGU :</strong></td>';
-                    row+= '<td class="text-right">' + data.pagu_apbn + '</td>';
+                    row+= '<td class="text-right"><strong>' + data.pagu_apbn + '</strong></td>';
                row+= '</tr>';
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
                     row+= '<td class="text-right"><strong>Total Perencanaan :</strong></td>';
-                    row+= '<td class="text-right">' + data.total_rencana + '</td>';
+                    row+= '<td class="text-right"><strong>' + data.total_rencana + '</strong></td>';
                row+= '</tr>';
 
                $('#showDetail').html(row);
@@ -382,107 +356,288 @@
                rows+= '</div>';
 
                $('#Attr').html(rows);
+
+               if(data.access == 'pusat' && data.status_code == 14 && data.request_edit == 'false') {
+                    rows_doc+= '<div class="box box-solid box-primary">';
+                         rows_doc+= '<div class="box-body">';
+                              rows_doc+= '<div class="card-body">';
+                                   rows_doc+= '<div class="form-group col-lg-6">';                                        
+                                        rows_doc+= '<div class="form-group">';
+                                             rows_doc+= '<a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>';
+                                        rows_doc+= '</div>';
+                                   rows_doc+= '</div>';
+                              rows_doc+= '</div>';
+                         rows_doc+= '</div>';
+                    rows_doc+= '</div>';
+               }
+
+               if(data.access == 'daerah' && data.status_code == 15 && data.request_edit == 'request_doc') {
+                    rows_doc+= '<div class="box box-solid box-primary">';
+                         rows_doc+= '<div class="box-body">';
+                              rows_doc+= '<div class="card-body">';
+                                   rows_doc+= '<div class="form-group col-lg-6">';
+                                        rows_doc+= '<div id="file-pdf-alert" class="form-group">';
+                                             rows_doc+= '<label>Upload File: </label>';
+                                             rows_doc+= '<input type="file" id="AddFiles" class="form-control" name="lap_rencana" accept=".pdf">';
+                                             rows_doc+= '<span id="file-pdf-alert-messages"></span>';
+                                        rows_doc+= '</div>';
+                                        rows_doc+= '<button id="upload_file" class="btn btn-primary">Upload PDF</button>';
+                                        rows_doc+='<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';                                        
+                                        rows_doc+= '<div class="form-group"> <br/>';
+                                             rows_doc+= '<a class="btn btn-warning" href="/api/perencanaan/download_file">File Perencanaan PDF</a>';
+                                        rows_doc+= '</div>';
+                                   rows_doc+= '</div>';
+                              rows_doc+= '</div>';
+                         rows_doc+= '</div>';
+                    rows_doc+= '</div>';
+               }
+
+               $('.btn-requset-doc').html(rows_doc);
+
+               if(data.access == 'pusat') {
+                    if(data.status_code != 13) {
+                         rows_btn+= '<div class="box-footer">';
+                         rows_btn+= '<div class="btn-group just-center">';
+                              if(data.status_code == 15 && data.request_edit == 'false') {
+                                   rows_btn+= '<button id="req_doc" type="button" class="btn btn-warning col-md-2">Request Dokumen</button>';
+                              }
+                              if(data.status_code == 14 && data.request_edit == 'false') {
+                                   rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>';
+                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>';
+                              }
+                              if(data.status_code == 15 && data.request_edit == 'true') {
+                                   rows_btn+= '<button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>';
+                              }
+                              if(data.status_code == 13 && data.request_edit == 'revisi') {
+                                   rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqrevisi">Request Revisi</button>';
+                              }
+                         rows_btn+= '</div>';
+                         rows_btn+= '</div>';
+                    }
+               }               
+
+               if(data.access == 'daerah') {
+                    if (([14, 15].includes(data.status_code) && data.request_edit === 'false') || (data.status_code === 14 && data.request_edit === 'request_doc')) {
+                         rows_btn+= '<div class="box-footer">';
+                         rows_btn+= '<div class="btn-group just-center">';
+                              rows_btn+= '<button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>';
+                              rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>';                              
+                         rows_btn+= '</div>';
+                         rows_btn+= '</div>';
+                    }
+               }
+
+               $('.btn-footer').html(rows_btn);
+
+               $("#req_doc").click( () => {
+                    Swal.fire({
+                         title: 'Apakah Anda Yakin Request Dokumen Perencanaan Ini?',			    
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonColor: '#d33',
+                         cancelButtonColor: '#3085d6',
+                         confirmButtonText: 'Ya'
+                    }).then((result) => {
+                         if (result.isConfirmed) {
+                              requsetItem(segments[5]);
+                              Swal.fire(
+                                   'Terkirim.',
+                                   'Request Dokumen Berhasil Dikirim Ke Daerah.',
+                                   'success'
+                              ).then((act) => {
+                                   if (act.isConfirmed) {
+                                        window.location.replace('/perencanaan/detail/' + segments[5]);
+                                   }
+                              });
+                         }
+                    });
+               });
+
+               $("#approve").click( () => {
+                    Swal.fire({
+                         title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonColor: '#d33',
+                         cancelButtonColor: '#3085d6',
+                         confirmButtonText: 'Ya'
+                    }).then((result) => {
+                         if (result.isConfirmed) {
+                              approveItem(segments[5]);
+                              Swal.fire(
+                                   'Approved!',
+                                   'Data berhasil diapprove.',
+                                   'success'
+                              ).then((act) => {
+                                   if (act.isConfirmed) {
+                                        window.location.replace('/perencanaan/detail/' + segments[5]);
+                                   }
+                              });
+                         }
+                    });
+               });
+
+               $("#unapprove").click( () => {
+                    Swal.fire({
+                         title: 'Apakah Anda Yakin Unapprove Perencanaan Ini?',			    
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonColor: '#d33',
+                         cancelButtonColor: '#3085d6',
+                         confirmButtonText: 'Ya'
+                    }).then((result) => {
+                         if (result.isConfirmed) {
+                              var form = {
+                                   "alasan_unapprove": $("#alasan_unapprove_inp").val()
+                              };
+                              if($("#alasan_unapprove_inp").val() != '') {  
+                                   unapproveItem(form);
+                              } else {
+                                   Swal.fire(
+                                        'Gagal.',
+                                        'Alasan belum diisi.',
+                                        'error'
+                                   );
+                              }
+                         }
+                    });
+               });
+
+               $("#reqedit").click( () => {
+                    Swal.fire({
+                         title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonColor: '#d33',
+                         cancelButtonColor: '#3085d6',
+                         confirmButtonText: 'Ya'
+                    }).then((result) => {
+                         if (result.isConfirmed) {
+                              var form = {
+                                   "alasan_edit": $("#alasan_edit_inp").val()
+                              };
+                              if($("#alasan_edit_inp").val() != '') {  
+                                   reqeditItem(form);
+                              } else {
+                                   Swal.fire(
+                                        'Gagal.',
+                                        'Alasan belum diisi.',
+                                        'error'
+                                   );
+                              }
+                         }
+                    });
+               });
+
+               $("#approve_edit").click( () => {
+                    Swal.fire({
+                         title: 'Apakah Anda Yakin Approve Request Edit?',			    
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonColor: '#d33',
+                         cancelButtonColor: '#3085d6',
+                         confirmButtonText: 'Ya'
+                    }).then((result) => {
+                         if (result.isConfirmed) {
+                              approveEditItem(segments[5]);
+                              Swal.fire(
+                                   'Approved!',
+                                   'Data berhasil diapprove.',
+                                   'success'
+                              ).then((act) => {
+                                   if (act.isConfirmed) {
+                                        window.location.replace('/perencanaan/detail/' + segments[5]);
+                                   }
+                              });
+                         }
+                    });
+               });
+
+               $("#AddFiles").change((event)=> {     
+            
+                    const files = event.target.files
+                    let filename = files[0].name
+                    const fileReader = new FileReader()
+                    fileReader.addEventListener('load', () => {
+                         if(files[0].name.toUpperCase().includes(".PDF"))
+                         {
+                              file_pdf = fileReader.result;
+                         } else {
+                              Swal.fire({
+                                   icon: 'info',
+                                   title: 'Hanya File PDF Yang Diizinkan.',
+                                   confirmButtonColor: '#000',
+                                   confirmButtonText: 'OK'
+                              });  
+                         }
+                    })
+
+                    fileReader.readAsDataURL(files[0])
+
+               });
+
+               $("#upload_file").click( () => {
+                    let id = data.id;      
+                    
+                    $("#upload_file").hide();
+                    $("#load-update").show();
+
+                    var form = {                         
+                         'lap_rencana':file_pdf, 
+                         'id_perencanaan':id
+                    };
+
+                    $.ajax({
+                         type:"PUT",
+                         url: BASE_URL+'/api/perencanaan/upload_laporan/'+ id,
+                         data:form,
+                         cache: false,
+                         dataType: "json",
+                         success: (respons) =>{
+                              Swal.fire({
+                                   title: 'Sukses!',
+                                   text: 'Berhasil Diupdate',
+                                   icon: 'success',
+                                   confirmButtonText: 'OK'
+                                   
+                              }).then((result) => {
+                                   if (result.isConfirmed) {
+                                   window.location.replace('/perencanaan');
+                                   }
+                              });
+                         },
+                         error: (respons)=>{
+                              
+                              errors = respons.responseJSON;
+
+                              $("#upload_file").show();
+                              $("#load-update").hide();
+
+                              if(errors.messages.lap_rencana)
+                              {
+                                   $('#file-pdf-alert').addClass('has-error');
+                                   $('#file-pdf-alert-messages').addClass('help-block').html('<strong>'+ errors.messages.lap_rencana +'</strong>');
+                              } else {
+                                   $('#file-pdf-alert').removeClass('has-error');
+                                   $('#file-pdf-alert-messages').removeClass('help-block').html('');
+                              }
+                         }
+                    });                    
+               });
           }
 
-          $("#approve").click( () => {
-               Swal.fire({
-                    title: 'Apakah Anda Yakin Approve Perencanaan Ini?',			    
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya'
-               }).then((result) => {
-                    if (result.isConfirmed) {
-                         approveItem(segments[5]);
-                         Swal.fire(
-                              'Approved!',
-                              'Data berhasil diapprove.',
-                              'success'
-                         ).then((act) => {
-                              if (act.isConfirmed) {
-                                   window.location.replace('/perencanaan/detail/' + segments[5]);
-                              }
-                         });
-                    }
+          function requsetItem(id) {
+               $.ajax({
+                    url:  BASE_URL +`/api/perencanaan/request_doc/`+ id,
+                    method: 'PUT',
+                    success: function(response) {
+                         fetchData(page);
+                    },
+                    error: function(error) {
+                         console.error('Error request data:', error);
+                    }                
                });
-          });
-
-          $("#unapprove").click( () => {
-               Swal.fire({
-                    title: 'Apakah Anda Yakin Unapprove Perencanaan Ini?',			    
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya'
-               }).then((result) => {
-                    if (result.isConfirmed) {
-                         var form = {
-                              "alasan_unapprove": $("#alasan_unapprove_inp").val()
-                         };
-                         if($("#alasan_unapprove_inp").val() != '') {  
-                              unapproveItem(form);
-                         } else {
-                              Swal.fire(
-                                   'Gagal.',
-                                   'Alasan belum diisi.',
-                                   'error'
-                              );
-                         }
-                    }
-               });
-          });
-
-          $("#reqedit").click( () => {
-               Swal.fire({
-                    title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya'
-               }).then((result) => {
-                    if (result.isConfirmed) {
-                         var form = {
-                              "alasan_edit": $("#alasan_edit_inp").val()
-                         };
-                         if($("#alasan_edit_inp").val() != '') {  
-                              reqeditItem(form);
-                         } else {
-                              Swal.fire(
-                                   'Gagal.',
-                                   'Alasan belum diisi.',
-                                   'error'
-                              );
-                         }
-                    }
-               });
-          });
-
-          $("#approve_edit").click( () => {
-               Swal.fire({
-                    title: 'Apakah Anda Yakin Approve Request Edit?',			    
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Ya'
-               }).then((result) => {
-                    if (result.isConfirmed) {
-                         approveItem(segments[5]);
-                         Swal.fire(
-                              'Approved!',
-                              'Data berhasil diapprove.',
-                              'success'
-                         ).then((act) => {
-                              if (act.isConfirmed) {
-                                   window.location.replace('/perencanaan/detail/' + segments[5]);
-                              }
-                         });
-                    }
-               });
-          });
+          }
 
           function approveItem(id) {
                $.ajax({
