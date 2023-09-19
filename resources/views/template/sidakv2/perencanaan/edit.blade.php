@@ -52,7 +52,8 @@
                                    <div id="periode-alert" class="form-group">
                                         <label class="col-lg-2 label-header-box form-group margin-none">Periode Perencanaan :</label>                                        
                                         <div class="col-lg-2 form-group margin-none" id="selectPeriode"></div>
-                                        <span class="col-lg-8 label-header-box form-group margin-none text-red align-right" id="alasan-view"></span>
+                                        <span id="alasan-unuapprove-view"></span>                                        
+                                        <span id="alasan-revisi-view"></span>
                                         <input type="hidden" id="pagu_apbn_inp">
                                         <input type="hidden" id="total_target_bimtek_inp">
                                         <input type="hidden" id="total_rencana_inp">
@@ -268,11 +269,7 @@
                $('#total_rencana_sec').html('<b>'+data.total_rencana+'</b>');
                $('#pagu_apbn_inp').val(data.pagu_apbn.replace(/[^0-9]/g, ''));
                $('#total_target_bimtek_inp').val(data.target_bimtek);               
-               $('#status-view').html('<b>'+data.status+'</b>');
-               
-               if(data.status == 13 && data.alasan_unapprove != null) {
-                    $('#alasan-view').html('<b>Alasan Tidak Disetujui : '+data.alasan_unapprove+'</b>');
-               }
+               $('#status-view').html('<b>'+data.status+'</b>');               
 
                total_pengawasan_pagu = data.total_pagu_pengawasan;
                total_bimtek_pagu = data.total_pagu_bimtek;
@@ -284,6 +281,9 @@
 
                var row = '';
                var rows = '';
+               var unapprove = '';
+               var revisi = '';
+
                row+= '<tr>';
                     row+= '<td><strong>1</strong></td>';
                     row+= '<td class="text-left"><strong>Pengawasan Penanaman Modal</strong></td>';
@@ -483,6 +483,18 @@
 
                $('#Attr').html(rows);
 
+               if(data.status_code == 13 && data.request_edit == 'reject' && data.alasan_unapprove != null) {
+                    $('#alasan-unuapprove-view').html('<b>Alasan Tidak Disetujui : '+data.alasan_unapprove+'</b>').addClass('col-lg-12 text-red align-right');
+               } else {
+                    $('#alasan-unuapprove-view').removeClass('col-lg-12 text-red align-right');
+               }
+
+               if(data.status_code == 13 && data.request_edit == 'revisi' && data.alasan_revisi != null) {
+                    $('#alasan-revisi-view').html('<b>Alasan Rervisi : '+data.alasan_revisi+'</b>').addClass('col-lg-12 text-red align-right');
+               } else {
+                    $('#alasan-revisi-view').removeClass('col-lg-12 text-red align-right');
+               }
+               
                getperiode(data.periode_id);
 
                $(".rencana_inp").on("input", updateTotalPaguRencana);

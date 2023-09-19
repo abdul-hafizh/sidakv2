@@ -119,7 +119,7 @@ class PeriodeApiController extends Controller
             return response()->json($validation, 400);
         } else {
 
-            $check = Periode::where(['semester'=>$request->semester,'year'=>$request->year])->first();
+            $check = Periode::where(['slug'=>$request->year.$request->semester])->first();
             if($check)
             { 
 
@@ -158,7 +158,75 @@ class PeriodeApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
+            
+            $check = Periode::where(['year'=>$request->year,'id'=>$id])->first();
+            if($check)
+            { 
+                $validate = Periode::where(['semester'=>$request->semester,'id'=>$id])->first();
+                if($validate) 
+                {
 
+                    $update = RequestPeriode::fieldsData($request);
+                    $json = json_encode($update);
+                    
+                    $log = array(             
+                    'action'=> 'Update Periode',
+                    'slug'=>'update-periode',
+                    'type'=>'put',
+                    'json_field'=> $json,
+                    'url'=>'api/periode/'.$id
+                    );
+
+                    $datalog =  RequestAuditLog::fieldsData($log);
+
+                //update account
+                $UpdateData = Periode::where('id', $id)->update($update);
+                //result
+                return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+
+                }else{
+
+                    $checklain = Periode::where(['year'=>$request->year])->first();
+                    if($checklain)
+                    { 
+                        if($checklain->semester == $request->semester)
+                        {
+                             $err['messages']['semester'] = 'Semester dan tahun sudah pernah dibuat.';
+                             $err['messages']['year'] = 'Semester dan tahun sudah pernah dibuat.';
+                             return response()->json($err, 400);
+                        }else{
+
+
+                                $update = RequestPeriode::fieldsData($request);
+                                $json = json_encode($update);
+                                
+                                $log = array(             
+                                'action'=> 'Update Periode',
+                                'slug'=>'update-periode',
+                                'type'=>'put',
+                                'json_field'=> $json,
+                                'url'=>'api/periode/'.$id
+                                );
+
+                                $datalog =  RequestAuditLog::fieldsData($log);
+
+                            //update account
+                            $UpdateData = Periode::where('id', $id)->update($update);
+                            //result
+                            return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+
+
+                        }    
+
+                   
+
+                    } 
+                }
+
+              
+               
+               
+            }else{ 
            
                 $update = RequestPeriode::fieldsData($request);
 
@@ -178,7 +246,7 @@ class PeriodeApiController extends Controller
                 $UpdateData = Periode::where('id', $id)->update($update);
                 //result
                 return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
-                
+           }     
         }
     }
 
