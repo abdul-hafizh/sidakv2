@@ -158,6 +158,7 @@ class RequestPerencanaan
         $temp['nama_pejabat'] = $data->nama_pejabat;
         $temp['nip_pejabat'] = $data->nip_pejabat;
         $temp['alasan_unapprove'] = $data->alasan_unapprove;
+        $temp['alasan_unapprove_doc'] = $data->alasan_unapprove_doc;
         $temp['alasan_edit'] = $data->alasan_edit;
         $temp['alasan_revisi'] = $data->alasan_revisi;
 
@@ -257,7 +258,7 @@ class RequestPerencanaan
     {    
         $fields = [  
                 'alasan_unapprove_doc' => $request->alasan_unapprove_doc,
-                'request_edit' =>'reject',
+                'request_edit' =>'reject_doc',
                 'status' => 13,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
@@ -281,6 +282,20 @@ class RequestPerencanaan
 
     }
 
+    public static function fieldReqrevisi($request)
+    {    
+        $fields = [  
+                'alasan_revisi' => $request->alasan_revisi,
+                'request_edit' =>'revisi',
+                'status' => 13,
+                'created_by' => Auth::User()->username,
+                'created_at' => date('Y-m-d H:i:s'),
+        ];
+  
+        return $fields;
+
+    }
+
     public static function Rupiah($angka) {
     
         $hasil_rupiah = "Rp " . number_format($angka,2,',','.');
@@ -296,8 +311,8 @@ class RequestPerencanaan
             } elseif ($requestEdit === "true") {
                 return "Draft (Edit)";
             } elseif ($requestEdit === "revisi") {
-                return "Request Revision";
-            } elseif ($requestEdit === "reject") {
+                return "Draft (Revision)";
+            } elseif ($requestEdit === "reject" || $requestEdit === "reject_doc") {
                 return "Draft (Unapprove)";
             }
         } elseif ($status === 14) {

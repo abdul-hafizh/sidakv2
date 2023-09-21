@@ -60,6 +60,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('perencanaan/unapprove/{id}', [PerencanaanApiController::class, 'unapprove']);
     Route::put('perencanaan/unapprove_doc/{id}', [PerencanaanApiController::class, 'unapprove_doc']);
     Route::put('perencanaan/reqedit/{id}', [PerencanaanApiController::class, 'reqedit']);
+    Route::put('perencanaan/reqrevisi/{id}', [PerencanaanApiController::class, 'reqrevisi']);
     Route::get('perencanaan/edit/{id}', [PerencanaanApiController::class, 'edit']);
     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']);
     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
