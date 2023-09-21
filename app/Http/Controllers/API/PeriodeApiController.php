@@ -164,7 +164,6 @@ class PeriodeApiController extends Controller
 
             if($check)
             {
-
                 $UpdateData = Periode::where('id', $id)->update($update);
 
             }else{
