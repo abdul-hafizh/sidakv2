@@ -213,6 +213,28 @@ class PerencanaanApiController extends Controller
 
     }
 
+    public function unapprove_doc($id, Request $request){
+
+        $messages['messages'] = false;
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            
+            return response()->json(['messages' => false]);
+
+        }
+
+        $update = RequestPerencanaan::fieldAlasanDoc($request);
+        $results = Perencanaan::where('id', $id)->update($update);
+
+        if($results){
+            $messages['messages'] = true;
+        }
+        
+        return response()->json($messages);
+
+    }
+
     public function reqedit($id, Request $request){
 
         $messages['messages'] = false;
@@ -294,8 +316,6 @@ class PerencanaanApiController extends Controller
         } else {
                           
             $source = explode(";base64,", $request->lap_rencana);
-            // $extFile = explode("pdf/", $source[0]);
-            // $extentions = $extFile[1];
             $fileDir = '/file/perencanaan/';
             $image = base64_decode($source[1]);
             $filePath = public_path() . $fileDir;
@@ -332,5 +352,16 @@ class PerencanaanApiController extends Controller
         $myFile = public_path("/perencanaan/test.pdf");
 
         return response()->download($myFile);
+    }
+
+    public function downloadPdf($filename)
+{
+        $file = public_path('file/perencanaan/' . $filename);
+
+        if (file_exists($file)) {
+            return response()->download($file, $filename);
+        } else {
+            abort(404);
+        }
     }
 }    
