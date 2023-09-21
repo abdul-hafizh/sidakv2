@@ -502,12 +502,12 @@
 
 	    $( "#tabRole" ).on( "click", "#Hapus-Temp", (e) => {
 	   		 let index = e.currentTarget.dataset.param_id;
-
+             
 	   		  var menu = localStorage.getItem('root_menu');
        		  var temp =  JSON.parse(menu);
        		  let find = role.find(o => o.id === temp.role_id);
-	          loadingRole();
 
+	          loadingRole();
 
               setTimeout(function() { 
 	             	
@@ -602,7 +602,7 @@
                                     row +=`</span>`;  
 
 
-                            row +=`<span id="Hapus-temp" data-param_id="${index}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
+                            row +=`<span id="Hapus-Temp" data-param_id="${index}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
                                     row +=`<i class="fa fa-trash"></i>`; 
                                     row +=`</span>`;          
 
