@@ -472,7 +472,7 @@
                             }
                           });
 
-	               }, 1000);  
+	               }, 500);  
 	                  
 	                   
 	            },
@@ -1226,7 +1226,7 @@
              		
 
             }, 1000);  
-	       $('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
+	      //$('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
              
 
    }
