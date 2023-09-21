@@ -479,7 +479,7 @@
                                    'success'
                               ).then((act) => {
                                    if (act.isConfirmed) {
-                                        window.location.replace('/perencanaan/detail/' + segments[5]);
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          }
@@ -503,7 +503,7 @@
                                    'success'
                               ).then((act) => {
                                    if (act.isConfirmed) {
-                                        window.location.replace('/perencanaan/detail/' + segments[5]);
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          }
@@ -605,7 +605,7 @@
                                    'success'
                               ).then((act) => {
                                    if (act.isConfirmed) {
-                                        window.location.replace('/perencanaan/detail/' + segments[5]);
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          }
@@ -761,7 +761,7 @@
                               confirmButtonText: 'OK'                        
                          }).then((result) => {
                               if (result.isConfirmed) {
-                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
@@ -784,7 +784,7 @@
                               confirmButtonText: 'OK'                        
                          }).then((result) => {
                               if (result.isConfirmed) {
-                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
@@ -807,7 +807,7 @@
                               confirmButtonText: 'OK'                        
                          }).then((result) => {
                               if (result.isConfirmed) {
-                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
