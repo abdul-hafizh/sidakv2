@@ -218,7 +218,7 @@
                     $('#alasan-edit-view').removeClass('col-lg-12 text-red');
                }
                
-               var downloadLink = '<a href="'+currentDomain+'/api/perencanaan/downloadPdf/filename=' + data.lap_rencana + '" target="_blank">Download PDF</a>';
+               var downloadLink = '<a href="'+currentDomain+'/api/perencanaan/download_pdf/filename=' + data.lap_rencana + '" target="_blank">Download PDF</a>';
 
                var row = '';
                var rows = '';
@@ -424,20 +424,6 @@
 
                $('#Attr').html(rows);
 
-               if(data.access == 'pusat' && data.status_code == 14 && data.request_edit == 'false') {
-                    rows_doc+= '<div class="box box-solid box-primary">';
-                         rows_doc+= '<div class="box-body">';
-                              rows_doc+= '<div class="card-body">';
-                                   rows_doc+= '<div class="form-group col-lg-6">';                                        
-                                        rows_doc+= '<div class="form-group">';
-                                             rows_doc += downloadLink;
-                                        rows_doc+= '</div>';
-                                   rows_doc+= '</div>';
-                              rows_doc+= '</div>';
-                         rows_doc+= '</div>';
-                    rows_doc+= '</div>';
-               }
-
                if(data.access == 'daerah' && data.status_code == 15 && data.request_edit == 'request_doc') {
                     rows_doc+= '<div class="box box-solid box-primary">';
                          rows_doc+= '<div class="box-body">';
@@ -466,6 +452,9 @@
                     if(data.status_code != 13) {
                          rows_btn+= '<div class="box-footer">';
                          rows_btn+= '<div class="btn-group just-center">';
+                              if(data.lap_rencana != '') {                                   
+                                   rows_btn+= downloadLink;
+                              }
                               if(data.status_code == 15 && data.request_edit == 'false') {
                                    rows_btn+= '<button id="req_doc" type="button" class="btn btn-primary col-md-2">Approve</button>';
                                    rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>';
@@ -477,7 +466,7 @@
                               if(data.status_code == 15 && data.request_edit == 'true') {
                                    rows_btn+= '<button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>';
                               }
-                              if(data.status_code == 16 && data.request_edit == 'false') {
+                              if(data.status_code == 16 && data.request_edit == 'false') {                                   
                                    rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqrevisi">Request Edit</button>';
                               }                              
                          rows_btn+= '</div>';
@@ -491,6 +480,8 @@
                          rows_btn+= '<div class="btn-group just-center">';
                               if(data.lap_rencana == '') {
                                    rows_btn+= '<button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>';
+                              } else {
+                                   rows_btn+= downloadLink;
                               }
                               rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>';
                          rows_btn+= '</div>';
