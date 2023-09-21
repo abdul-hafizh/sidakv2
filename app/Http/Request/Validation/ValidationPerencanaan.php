@@ -146,7 +146,7 @@ class ValidationPerencanaan
 
         $validator = Validator::make($request->all(), 
         [            
-            'lap_rencana' => 'required', // 5 MB
+            'lap_rencana' => 'required',
         ]);
 
         $validator->setAttributeNames($fields); 
