@@ -257,6 +257,28 @@ class PerencanaanApiController extends Controller
 
     }
 
+    public function reqrevisi($id, Request $request){
+
+        $messages['messages'] = false;
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            
+            return response()->json(['messages' => false]);
+
+        }
+
+        $update = RequestPerencanaan::fieldReqrevisi($request);            
+        $results = Perencanaan::where('id', $id)->update($update);
+
+        if($results){
+            $messages['messages'] = true;
+        }
+        
+        return response()->json($messages);
+
+    }
+
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
 

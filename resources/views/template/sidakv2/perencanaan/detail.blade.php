@@ -43,6 +43,20 @@
 		</div>
 	</div>
 
+     <div class="box box-solid box-primary" id="div-edit">
+          <div class="box-body">
+               <div class="card-body">
+                    <div class="row pd-top-bottom-15">                                
+                         <div class="col-lg-12">
+                              <div id="periode-alert" class="form-group">
+                                   <span id="alasan-edit-view"></span>
+                              </div>
+                         </div>
+                    </div>                          
+               </div>
+          </div>
+     </div>
+
      <div class="box box-solid box-primary">
           <div class="box-body">
                <div class="card-body table-responsive">
@@ -141,6 +155,27 @@
      </div>
 </div>
 
+<div id="modal-reqrevisi" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Request Edit Perencanaan</h4>
+               </div>
+               <div class="modal-body">
+                    <div class="form-group">
+                         <label>Alasan Permintaan Edit Data</label>
+                         <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_revisi_inp" name="alasan_revisi" placeholder="Alasan Edit"></textarea>
+                    </div>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" id="reqrevisi" class="btn btn-warning">Request Edit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+               </div>
+          </div>
+     </div>
+</div>
+
 <script type="text/javascript">
      $(document).ready(function() {          
           var periode =[];
@@ -174,6 +209,14 @@
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
                $('#status-view').html('<b>'+data.status+'</b>');    
+
+               if(data.status_code == 15 && data.request_edit == 'true' && data.alasan_edit != null) {
+                    $('#div-edit').show();
+                    $('#alasan-edit-view').html('<b>Alasan Edit : '+data.alasan_edit+'</b>').addClass('col-lg-12 text-red');
+               } else {
+                    $('#div-edit').hide();
+                    $('#alasan-edit-view').removeClass('col-lg-12 text-red');
+               }
                
                var downloadLink = '<a href="'+currentDomain+'/api/perencanaan/downloadPdf/filename=' + data.lap_rencana + '" target="_blank">Download PDF</a>';
 
@@ -344,9 +387,6 @@
                     row+= '<td class="text-right"><strong>Total Perencanaan :</strong></td>';
                     row+= '<td class="text-right"><strong>' + data.total_rencana + '</strong></td>';
                row+= '</tr>';
-               row+= '<tr>';
-                    row+= '<td colspan="5"><span class="text-red pull-right" id="alasan-edit-view"></span></td>';
-               row+= '</tr>';
 
                $('#showDetail').html(row);
 
@@ -437,27 +477,25 @@
                               if(data.status_code == 15 && data.request_edit == 'true') {
                                    rows_btn+= '<button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>';
                               }
-                              if(data.status_code == 13 && data.request_edit == 'revisi') {
-                                   rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqrevisi">Request Revisi</button>';
-                              }
+                              if(data.status_code == 16 && data.request_edit == 'false') {
+                                   rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqrevisi">Request Edit</button>';
+                              }                              
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
                     }
                }               
 
                if(data.access == 'daerah') {
-                    if (([14, 15].includes(data.status_code) && data.request_edit === 'false') || (data.status_code === 14 && data.request_edit === 'request_doc')) {
+                    if(([14, 15, 16].includes(data.status_code) && data.request_edit === 'false') || (data.status_code === 14 && data.request_edit === 'request_doc')) {
                          rows_btn+= '<div class="box-footer">';
                          rows_btn+= '<div class="btn-group just-center">';
-                              rows_btn+= '<button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>';
-                              rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>';                              
+                              if(data.lap_rencana == '') {
+                                   rows_btn+= '<button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>';
+                              }
+                              rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>';
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
                     }
-               }
-
-               if(data.status_code == 13 && data.alasan_edit != null) {
-                    $('#alasan-edit-view').html('<b>Alasan Edit: '+data.alasan_edit+'</b>');
                }
 
                $('.btn-footer').html(rows_btn);
@@ -472,10 +510,10 @@
                          confirmButtonText: 'Ya'
                     }).then((result) => {
                          if (result.isConfirmed) {
-                              requsetItem(segments[5]);
+                              reqdocItem(segments[5]);
                               Swal.fire(
-                                   'Terkirim.',
-                                   'Request Dokumen Berhasil Dikirim Ke Daerah.',
+                                   'Approved.',
+                                   'Dokumen Approved.',
                                    'success'
                               ).then((act) => {
                                    if (act.isConfirmed) {
@@ -587,6 +625,32 @@
                          }
                     });
                });
+               
+               $("#reqrevisi").click( () => {
+                    Swal.fire({
+                         title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonColor: '#d33',
+                         cancelButtonColor: '#3085d6',
+                         confirmButtonText: 'Ya'
+                    }).then((result) => {
+                         if (result.isConfirmed) {
+                              var form = {
+                                   "alasan_revisi": $("#alasan_revisi_inp").val()
+                              };
+                              if($("#alasan_revisi_inp").val() != '') {  
+                                   reqrevisiItem(form);
+                              } else {
+                                   Swal.fire(
+                                        'Gagal.',
+                                        'Alasan belum diisi.',
+                                        'error'
+                                   );
+                              }
+                         }
+                    });
+               });
 
                $("#approve_edit").click( () => {
                     Swal.fire({
@@ -668,7 +732,6 @@
 
                });
 
-
                $("#upload_file").click( () => {
                     let id = data.id;      
                     
@@ -719,7 +782,7 @@
                });
           }
 
-          function requsetItem(id) {
+          function reqdocItem(id) {
                $.ajax({
                     url:  BASE_URL +`/api/perencanaan/request_doc/`+ id,
                     method: 'PUT',
@@ -796,6 +859,29 @@
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/reqedit/' + segments[5],
+                    data:form,
+                    cache: false,
+                    dataType: "json",
+                    success: (respons) =>{
+                         Swal.fire({
+                              title: 'Sukses!',
+                              text: 'Berhasil Request Edit Data Perencanaan.',
+                              icon: 'success',
+                              confirmButtonText: 'OK'                        
+                         }).then((result) => {
+                              if (result.isConfirmed) {
+                                   window.location.replace('/perencanaan');
+                              }
+                         });
+                    },
+               });
+          }
+
+          function reqrevisiItem(form) {
+
+               $.ajax({
+                    type:"PUT",
+                    url: BASE_URL+'/api/perencanaan/reqrevisi/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
