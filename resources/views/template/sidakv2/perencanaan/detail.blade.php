@@ -99,6 +99,27 @@
      </div>
 </div>
 
+<div id="modal-unapprove-doc" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Unapprove Dokumen PDF Perencanaan</h4>
+               </div>
+               <div class="modal-body">
+                    <div class="form-group">
+                         <label>Alasan Unapprove Dokumen</label>
+                         <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_unapprove_doc_inp" name="alasan_unapprove_doc" placeholder="Alasan Unapprove Dokumen"></textarea>
+                    </div>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" id="unapprove_doc" class="btn btn-danger">Unapprove</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+               </div>
+          </div>
+     </div>
+</div>
+
 <div id="modal-reqedit" class="modal fade" role="dialog">
      <div class="modal-dialog">
           <div class="modal-content">
@@ -126,6 +147,7 @@
           var pagu_apbn = 0;             
           var file_pdf = '';             
           var url = window.location.href; 
+          var currentDomain = window.location.hostname;
           var segments = url.split('/');  
 
           $("#downloadPdf").click(function() {      
@@ -151,7 +173,9 @@
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
-               $('#status-view').html('<b>'+data.status+'</b>');               
+               $('#status-view').html('<b>'+data.status+'</b>');    
+               
+               var downloadLink = '<a href="'+currentDomain+'/api/perencanaan/downloadPdf/filename=' + data.lap_rencana + '" target="_blank">Download PDF</a>';
 
                var row = '';
                var rows = '';
@@ -366,7 +390,7 @@
                               rows_doc+= '<div class="card-body">';
                                    rows_doc+= '<div class="form-group col-lg-6">';                                        
                                         rows_doc+= '<div class="form-group">';
-                                             rows_doc+= '<button type="button" class="btn btn-warning" href="">File Perencanaan PDF</button>';
+                                             rows_doc += downloadLink;
                                         rows_doc+= '</div>';
                                    rows_doc+= '</div>';
                               rows_doc+= '</div>';
@@ -384,15 +408,12 @@
                                              rows_doc+= '<input type="file" id="AddFiles" class="form-control" name="lap_rencana" accept=".pdf">';
                                              rows_doc+= '<span id="file-pdf-alert-messages"></span>';
                                         rows_doc+= '</div>';
-                                        rows_doc+= '<button id="upload_file" class="btn btn-primary">Upload PDF</button>';
-
-                                         rows_doc+= '';
-
- 
-                                        rows_doc+='<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';                                        
                                         rows_doc+= '<div class="form-group"> <br/>';
                                              rows_doc+= '<div id="ShowPDF"></div>';
                                         rows_doc+= '</div>';
+                                        rows_doc+= '<button id="upload_file" class="btn btn-primary">Upload PDF</button>';
+                                        rows_doc+= '';
+                                        rows_doc+='<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';
                                    rows_doc+= '</div>';
                               rows_doc+= '</div>';
                          rows_doc+= '</div>';
@@ -406,11 +427,12 @@
                          rows_btn+= '<div class="box-footer">';
                          rows_btn+= '<div class="btn-group just-center">';
                               if(data.status_code == 15 && data.request_edit == 'false') {
-                                   rows_btn+= '<button id="req_doc" type="button" class="btn btn-warning col-md-2">Request Dokumen</button>';
+                                   rows_btn+= '<button id="req_doc" type="button" class="btn btn-primary col-md-2">Approve</button>';
+                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>';
                               }
                               if(data.status_code == 14 && data.request_edit == 'false') {
                                    rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>';
-                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>';
+                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove-doc">Unapprove</button>';
                               }
                               if(data.status_code == 15 && data.request_edit == 'true') {
                                    rows_btn+= '<button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>';
@@ -514,6 +536,32 @@
                     });
                });
 
+               $("#unapprove_doc").click( () => {
+                    Swal.fire({
+                         title: 'Apakah Anda Yakin Unapprove Perencanaan Ini?',			    
+                         icon: 'warning',
+                         showCancelButton: true,
+                         confirmButtonColor: '#d33',
+                         cancelButtonColor: '#3085d6',
+                         confirmButtonText: 'Ya'
+                    }).then((result) => {
+                         if (result.isConfirmed) {
+                              var form = {
+                                   "alasan_unapprove_doc": $("#alasan_unapprove_doc_inp").val()
+                              };
+                              if($("#alasan_unapprove_doc_inp").val() != '') {  
+                                   unapproveDocItem(form);
+                              } else {
+                                   Swal.fire(
+                                        'Gagal.',
+                                        'Alasan belum diisi.',
+                                        'error'
+                                   );
+                              }
+                         }
+                    });
+               });
+
                $("#reqedit").click( () => {
                     Swal.fire({
                          title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
@@ -575,11 +623,10 @@
                               file_pdf = fileReader.result;
                               
                               var ros = '';
-                                 ros +=`<button  id="GetModalPdf" data-param_id="`+file_pdf+`" data-toggle="modal" data-target="#modal-show"  data-toggle="tooltip" data-placement="top" title="Lihat Data PDF" type="button" class="btn btn-warning" >File Perencanaan PDF</button>`;
-
-                                      ros +=`<div id="modal-show" class="modal fade" role="dialog">`;
-                                    ros +=`<div id="ViewPerencanaanPDF"></div>`;
-                                    ros +=`</div>`;
+                                   ros +=`<button id="GetModalPdf" data-param_id="`+file_pdf+`" data-toggle="modal" data-target="#modal-show" data-toggle="tooltip" data-placement="top" title="Lihat Data PDF" type="button" class="btn btn-secondary" >Lihat File PDF</button>`;
+                                   ros +=`<div id="modal-show" class="modal fade" role="dialog">`;
+                                        ros +=`<div id="ViewPerencanaanPDF"></div>`;
+                                   ros +=`</div>`;
 
                               $('#ShowPDF').html(ros);
                          } else {
@@ -597,29 +644,23 @@
                });
 
                $( "#ShowPDF" ).on( "click", "#GetModalPdf", (e) => {
-                    let file = e.currentTarget.dataset.param_id;
-                     
+                    let file = e.currentTarget.dataset.param_id;                     
                     let row = ``;
                      row +=`<div class="modal-dialog">`;
                           row +=`<div class="modal-content">`;
-
-                                     row +=`<div class="modal-header">`;
-                                       row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-                                       row +=`<h4 class="modal-title">Lihat Dokumen Perencanaan</h4>`;
-                                     row +=`</div>`;
-                                     
-                                     row +=`<div class="modal-body">`; 
-                                      if(file)
-                                      {  
-                                           row +=`<embed src="`+file+`#page=1&zoom=65" width="575" height="500">`;
-                                      }     
-                                     row +=`</div>`;
-                                     
-                                     row +=`<div class="modal-footer">`;
-                                           row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-
-                                     row +=`</div>`;
-                                        
+                              row +=`<div class="modal-header">`;
+                                   row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                                   row +=`<h4 class="modal-title">Lihat Dokumen Perencanaan</h4>`;
+                              row +=`</div>`;                              
+                              row +=`<div class="modal-body">`; 
+                              if(file)
+                              {  
+                                   row +=`<embed src="`+file+`#page=1&zoom=65" width="575" height="500">`;
+                              }     
+                              row +=`</div>`;                              
+                              row +=`<div class="modal-footer">`;
+                                   row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                              row +=`</div>`;                                        
                          row +=`</div>`;
                     row +=`</div>`; 
 
@@ -634,7 +675,6 @@
                     $("#upload_file").hide();
                     $("#load-update").show();
                     
-
                     var form = {                         
                          'lap_rencana':file_pdf, 
                          'id_perencanaan':id
@@ -710,6 +750,29 @@
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/unapprove/' + segments[5],
+                    data:form,
+                    cache: false,
+                    dataType: "json",
+                    success: (respons) =>{
+                         Swal.fire({
+                              title: 'Sukses!',
+                              text: 'Berhasil Unapprove Data Perencanaan.',
+                              icon: 'success',
+                              confirmButtonText: 'OK'                        
+                         }).then((result) => {
+                              if (result.isConfirmed) {
+                                   window.location.replace('/perencanaan/detail/' + segments[5]);
+                              }
+                         });
+                    },
+               });
+          }
+
+          function unapproveDocItem(form) {
+
+               $.ajax({
+                    type:"PUT",
+                    url: BASE_URL+'/api/perencanaan/unapprove_doc/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",

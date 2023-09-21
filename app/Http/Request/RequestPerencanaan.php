@@ -152,6 +152,7 @@ class RequestPerencanaan
         $temp['lokasi'] = $data->lokasi;
         $temp['status'] = RequestPerencanaan::getLabelStatus($data->status, $data->request_edit);
         $temp['status_code'] = $data->status;
+        $temp['lap_rencana'] = $data->lap_rencana;
         $temp['request_edit'] = $data->request_edit;
         $temp['tgl_tandatangan'] = $data->tgl_tandatangan;
         $temp['nama_pejabat'] = $data->nama_pejabat;
@@ -252,11 +253,26 @@ class RequestPerencanaan
 
     }
 
+    public static function fieldAlasanDoc($request)
+    {    
+        $fields = [  
+                'alasan_unapprove_doc' => $request->alasan_unapprove_doc,
+                'request_edit' =>'reject',
+                'status' => 13,
+                'created_by' => Auth::User()->username,
+                'created_at' => date('Y-m-d H:i:s'),
+        ];
+  
+        return $fields;
+
+    }
+
     public static function fieldReqedit($request)
     {    
         $fields = [  
                 'alasan_edit' => $request->alasan_edit,
                 'request_edit' =>'true',
+                'status' => 15,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
         ];
@@ -282,13 +298,15 @@ class RequestPerencanaan
             } elseif ($requestEdit === "revisi") {
                 return "Request Revision";
             } elseif ($requestEdit === "reject") {
-                return "Draft Unapprove";
+                return "Draft (Unapprove)";
             }
-        } elseif ($status === 14 && $requestEdit === "false") {
-            return "Waiting Approval";
+        } elseif ($status === 14) {
+            if ($requestEdit === "false") {
+                return "Terkirim (Waiting Approval)";
+            }
         } elseif ($status === 15) {
             if ($requestEdit === "false") {
-                return "Terkirim Ke Pusat";
+                return "Terkirim (Waiting Approval)";
             } elseif ($requestEdit === "request_doc") {
                 return "Request Dokumen";
             } elseif ($requestEdit === "true") {
