@@ -376,12 +376,12 @@ class PerencanaanApiController extends Controller
         return response()->download($myFile);
     }
 
-    public function downloadPdf($filename)
+    public function download_pdf($filename)
 {
         $file = public_path('file/perencanaan/' . $filename);
 
         if (file_exists($file)) {
-            return response()->download($file, $filename);
+            return response()->download($file);
         } else {
             abort(404);
         }

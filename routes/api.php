@@ -65,7 +65,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']);
     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
     Route::put('perencanaan/upload_laporan/{id}', [PerencanaanApiController::class, 'upload_laporan']);
-    Route::get('perencanaan/downloadPdf/{id}', [PerencanaanApiController::class, 'downloadPdf']);
+    Route::get('perencanaan/download_pdf/{id}', [PerencanaanApiController::class, 'download_pdf']);
     Route::get('perencanaan/download_file', [PerencanaanApiController::class, 'download_file']);
     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
 
