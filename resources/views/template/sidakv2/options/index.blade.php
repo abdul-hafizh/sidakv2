@@ -873,7 +873,7 @@
                  content.append(row);
             });
        }else{
-
+           role_menu = [];
            var row = '';
            row +=`<div id="role-null"  class="mt-20 ">`; 
                    row +=`<div class="list-group">`;
@@ -1171,7 +1171,8 @@
 	                }else{
 	                    console.log('temp + reales')
 	                    console.log(role_menu)	
-	                   var send = [...role_menu,...merge];	
+	                    var send = [...role_menu,...merge];	
+	                    
 	                }		
 	              	
 	            } 	
@@ -1218,7 +1219,7 @@
                          UpdateListItem(form,role,roleid_new)
 
 			   	     }else{
-			   	     	
+			   	     	localStorage.removeItem('root_menu');
 			   	     	DeleteMenuRole(role,roleid_new)
 			   	     	   
 			   	     } 	
