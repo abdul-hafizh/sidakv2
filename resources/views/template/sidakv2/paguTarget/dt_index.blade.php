@@ -48,6 +48,12 @@
 	thead th.dt-head-second {
 		padding: 9px 0px 9px 30px !important;
 	}
+
+	table.dataTable thead th,
+	table.dataTable thead td {
+		padding: 10px 18px;
+		border-bottom: none;
+	}
 </style>
 </script>
 
