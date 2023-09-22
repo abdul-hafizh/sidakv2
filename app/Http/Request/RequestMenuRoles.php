@@ -846,6 +846,46 @@ class RequestMenuRoles
             'tasks'=>[], // dashboard
         ],
        
+        // [
+        //     'name'=>'Updating Data',
+        //     'slug'=>'updating-data',
+        //     'icon'=>'fa-img-monitoring',
+        //     'url'=>'',
+        //     'count'=>7,
+        //     'active'=>false,
+        //     'class'=>'',
+        //     'tasks'=> array(
+        //        [
+
+        //             'name'=>'Perencanaan',
+        //             'slug'=>'perencanaan',
+        //             'icon'=>'fa-img-perencanaan',
+        //             'url'=>'/perencanaan',
+        //             'tasks'=>[],
+             
+        //        ],[
+        //         'name'=>'Pengawasan',
+        //         'slug'=>'pengawasan',
+        //         'icon'=>'fa-img-pengawasan',
+        //         'url'=>'/pengawasan',
+        //         'tasks'=>[],
+        //        ],[
+        //         'name'=>'Bimbingan/Sosialisasi',
+        //         'slug'=>'bimsos',
+        //         'icon'=>'fa-img-bimsos',
+        //         'url'=>'/bimsos',
+        //         'tasks'=>[],
+        //      ],[
+        //         'name'=>'Penyelesaian Masalah',
+        //         'slug'=>'penyelesaian-masalah',
+        //         'icon'=>'fa-img-penyelesaian',
+        //         'url'=>'/',
+        //         'tasks'=>[],
+        //     ]
+
+        //    ), //updating data
+            
+        // ],
         [
             'name'=>'Updating Data',
             'slug'=>'updating-data',
@@ -853,9 +893,9 @@ class RequestMenuRoles
             'url'=>'',
             'count'=>7,
             'active'=>false,
-            'class'=>'',
+            'class'=>'treeview',
             'tasks'=> array(
-               [
+                       [
 
                     'name'=>'Perencanaan',
                     'slug'=>'perencanaan',
@@ -882,8 +922,7 @@ class RequestMenuRoles
                 'url'=>'/',
                 'tasks'=>[],
             ]
-
-           ), //updating data
+           ), // updating data
             
         ],
         [

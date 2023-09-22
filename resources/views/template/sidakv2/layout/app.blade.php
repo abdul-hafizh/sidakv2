@@ -152,7 +152,7 @@
 
 
 
-            getNotif();
+            //getNotif();
 
 
             function UpdateData() {
@@ -171,49 +171,49 @@
 
             }
 
-            function getNotif() {
+            // function getNotif() {
 
-                $.ajax({
-                    url: BASE_URL + `/api/notif`,
-                    method: 'GET',
-                    success: function(response) {
+            //     $.ajax({
+            //         url: BASE_URL + `/api/notif`,
+            //         method: 'GET',
+            //         success: function(response) {
                        
 
-                        if (response.data.length > 0) {
-                            // Populate content with new data
-                            response.data.forEach(function(item, index) {
-                                var row = ``;
-                                row += `<li>`;
-                                row += `<a href="#">`;
-                                row += `<div class="pull-left">`;
-                                row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
-                                row += `</div>`;
-                                row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
-                                row += `<p>${item.messages}</p>`;
-                                row += `</a>`;
+            //             if (response.data.length > 0) {
+            //                 // Populate content with new data
+            //                 response.data.forEach(function(item, index) {
+            //                     var row = ``;
+            //                     row += `<li>`;
+            //                     row += `<a href="#">`;
+            //                     row += `<div class="pull-left">`;
+            //                     row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
+            //                     row += `</div>`;
+            //                     row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
+            //                     row += `<p>${item.messages}</p>`;
+            //                     row += `</a>`;
 
-                                row += `</li>`;
+            //                     row += `</li>`;
 
-                            });
-                            $('#total-notif').append(response.total_not_show);
-                            $('#total-notif-all').append('You have ' + response.total_all + ' messages');
-                            $('#menu-notif').append(row);
-                        } else {
+            //                 });
+            //                 $('#total-notif').append(response.total_not_show);
+            //                 $('#total-notif-all').append('You have ' + response.total_all + ' messages');
+            //                 $('#menu-notif').append(row);
+            //             } else {
                             
-                            var row = ``;
-                            row += `<li>`;
-                            row += `<a>Data Kosong</a>`;
-                            row += `</li>`;
-                            $('#menu-notif').append(row);
-                        }
+            //                 var row = ``;
+            //                 row += `<li>`;
+            //                 row += `<a>Data Kosong</a>`;
+            //                 row += `</li>`;
+            //                 $('#menu-notif').append(row);
+            //             }
 
 
-                    },
-                    error: function(error) {
-                        console.error('Error fetching data:', error);
-                    }
-                });
-            } 
+            //         },
+            //         error: function(error) {
+            //             console.error('Error fetching data:', error);
+            //         }
+            //     });
+            // } 
         });
     </script>
     <script type="text/javascript">

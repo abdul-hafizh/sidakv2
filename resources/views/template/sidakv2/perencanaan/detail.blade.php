@@ -1,6 +1,8 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 <style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
@@ -57,6 +59,15 @@
           </div>
      </div>
 
+     
+     <div class="">
+      <button type="button" id="downloadPdf" class="btn btn-primary border-radius-10" >
+          Download PDF
+          </button> 
+    </div>     
+
+
+       
      <div class="box box-solid box-primary">
           <div class="box-body">
                <div class="card-body table-responsive">
@@ -82,7 +93,10 @@
                     <div id="Attr" class="row pd-top-bottom-15"></div>
                </div>
           </div>
-     </div>      
+     </div>   
+
+
+
 
      <div class="btn-requset-doc"></div> 
 
@@ -90,7 +104,10 @@
 
 </div>
 
-@include('template/sidakv2/perencanaan.print')
+
+
+
+
 
 <div id="modal-unapprove" class="modal fade" role="dialog">
      <div class="modal-dialog">
@@ -185,15 +202,60 @@
           var currentDomain = window.location.hostname;
           var segments = url.split('/');  
 
+
+         ShowDetailPerencanaan()
+
           $("#downloadPdf").click(function() {      
+              console.log(list)
+              exportData(list);
 
-               const doc = new jsPDF();
-
-               doc.text("Hello world!");
-               doc.save("SIDAK_Perencanaan_Tahun_2023.pdf");
           });
 
-          $.ajax({
+
+     function exportData(data){
+
+       
+          var row = '';
+
+          row+='<tr style="border-bottom: 1px solid #000;">';
+           row+='<td rowspan="4" style="text-align: center;padding: 5px 5px;border-left: 1px solid #000;">1.</td>';
+           row+='<td colspan="2" style="text-align: left;padding: 5px 5px;border-left: 1px solid #000;">Pengawasan Penanaman Modal</td>';
+           row+='<td style="text-align: center;padding: 5px 5px;border-left: 1px solid #000;">'+ data.pengawas_analisa_target +'</td>';
+           row+='<td width="110" style="text-align: center;padding: 10px 0px;border-left: 1px solid #000;">';
+           row+='<td style="text-align: right;padding: 5px 0px;border-left: 1px solid #000;">Kegiatan Usaha </td>';
+           row+='<td style="text-align: right;padding: cpx 0px;border-right: 1px solid #000;">'+ data.pengawas_analisa_pagu +'</td>';
+          
+         
+         row+='</tr>';
+        $('#exportView').html(row);
+      
+           
+
+         ExportPDF();   
+          
+    }
+
+
+    function ExportPDF(){
+         
+         var dt = new Date();
+         var time =  dt.getDate() + "-"
+                + (dt.getMonth()+1)  + "-" 
+                + dt.getFullYear();
+
+         var doc = new jsPDF()
+         doc.autoTable({ html: '#myTable' })
+         doc.save("dokumen-perencanaan-"+ time +".pdf");
+
+
+    }
+
+
+        
+
+         function ShowDetailPerencanaan(){
+
+           $.ajax({
                type: 'GET',
                url: BASE_URL +'/api/perencanaan/edit/' + segments[5],
                success: function(response) {
@@ -202,6 +264,18 @@
                },
                error: function( error) { }
           });
+
+         }
+
+
+          function exportPdF(){
+
+                var doc = new jsPDF()
+              doc.autoTable({ html: '#myTable' })
+              doc.save('table.pdf')
+
+
+          }
    
           function getdataid(data)
           {
@@ -906,4 +980,5 @@
      });
 
 </script>
+ @include('template/sidakv2/perencanaan.print')
 @stop
