@@ -141,7 +141,7 @@
 					{
 			           
 			            row +=`<li id="class-menu" data-param_id="${item.slug}" class="${item.class}" style="height: auto;">`;
-			            row +=`<a href="#">`;
+			            row +=`<a>`;
 			         }else{
 	                     
 	                    row +=`<li id="class-menu" class="${item.class}" data-param_id="${item.slug}">`;
