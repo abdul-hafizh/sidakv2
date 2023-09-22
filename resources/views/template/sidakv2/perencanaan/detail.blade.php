@@ -3,6 +3,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+
 <style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
@@ -48,7 +49,7 @@
      <div class="box box-solid box-primary" id="div-edit">
           <div class="box-body">
                <div class="card-body">
-                    <div class="row pd-top-bottom-15">                                
+                    <div class="row pd-top-bottom-15">
                          <div class="col-lg-12">
                               <div id="periode-alert" class="form-group">
                                    <span id="alasan-edit-view"></span>
@@ -58,15 +59,20 @@
                </div>
           </div>
      </div>
-
      
-     <div class="">
-      <button type="button" id="downloadPdf" class="btn btn-primary border-radius-10" >
-          Download PDF
-          </button> 
-    </div>     
-
-
+     <div class="box box-solid box-primary" id='div-generate'>
+          <div class="box-body">
+               <div class="card-body">
+                    <div class="row pd-top-bottom-15">
+                         <div class="col-lg-12">
+                              <button type="button" id="generate-pdf" class="btn btn-success col-md-2 border-radius-10">
+                                   <span class="blinking-text">Generate PDF</span>
+                              </button> 
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
        
      <div class="box box-solid box-primary">
           <div class="box-body">
@@ -95,19 +101,11 @@
           </div>
      </div>   
 
-
-
-
      <div class="btn-requset-doc"></div> 
 
      <div class="btn-footer"></div> 
 
 </div>
-
-
-
-
-
 
 <div id="modal-unapprove" class="modal fade" role="dialog">
      <div class="modal-dialog">
@@ -193,6 +191,8 @@
      </div>
 </div>
 
+@include('template/sidakv2/perencanaan.print')
+
 <script type="text/javascript">
      $(document).ready(function() {          
           var periode =[];
@@ -200,81 +200,53 @@
           var file_pdf = '';             
           var url = window.location.href; 
           var currentDomain = window.location.hostname;
-          var segments = url.split('/');  
+          var segments = url.split('/'); 
 
+          $('#div-generate').hide();
 
-         ShowDetailPerencanaan()
+          ShowDetailPerencanaan()
 
-          $("#downloadPdf").click(function() {      
-              console.log(list)
+          $("#generate-pdf").click(function() {
               exportData(list);
-
           });
 
+          function exportData(data)
+          {
+               var row = '';
+               row+='<tr style="border-bottom: 1px solid #000;">';
+               row+='<td rowspan="4" style="text-align: center;padding: 5px 5px;border-left: 1px solid #000;">1.</td>';
+               row+='<td colspan="2" style="text-align: left;padding: 5px 5px;border-left: 1px solid #000;">Pengawasan Penanaman Modal</td>';
+               row+='<td style="text-align: center;padding: 5px 5px;border-left: 1px solid #000;">'+ data.pengawas_analisa_target +'</td>';
+               row+='<td width="110" style="text-align: center;padding: 10px 0px;border-left: 1px solid #000;">';
+               row+='<td style="text-align: right;padding: 5px 0px;border-left: 1px solid #000;">Kegiatan Usaha </td>';
+               row+='<td style="text-align: right;padding: cpx 0px;border-right: 1px solid #000;">'+ data.pengawas_analisa_pagu +'</td>';
+               row+='</tr>';
 
-     function exportData(data){
+               $('#exportView').html(row);
+               
+               ExportPDF();        
+          }
 
-       
-          var row = '';
+          function ExportPDF()
+          {
+               var dt = new Date();
+               var time = dt.getDate() + "-" + (dt.getMonth()+1)  + "-"  + dt.getFullYear();
+               var doc = new jsPDF();
+               doc.autoTable({ html: '#myTable' })         
+               doc.save("Dokumen-Perencanaan-"+ time +".pdf");
+          }
 
-          row+='<tr style="border-bottom: 1px solid #000;">';
-           row+='<td rowspan="4" style="text-align: center;padding: 5px 5px;border-left: 1px solid #000;">1.</td>';
-           row+='<td colspan="2" style="text-align: left;padding: 5px 5px;border-left: 1px solid #000;">Pengawasan Penanaman Modal</td>';
-           row+='<td style="text-align: center;padding: 5px 5px;border-left: 1px solid #000;">'+ data.pengawas_analisa_target +'</td>';
-           row+='<td width="110" style="text-align: center;padding: 10px 0px;border-left: 1px solid #000;">';
-           row+='<td style="text-align: right;padding: 5px 0px;border-left: 1px solid #000;">Kegiatan Usaha </td>';
-           row+='<td style="text-align: right;padding: cpx 0px;border-right: 1px solid #000;">'+ data.pengawas_analisa_pagu +'</td>';
-          
-         
-         row+='</tr>';
-        $('#exportView').html(row);
-      
-           
-
-         ExportPDF();   
-          
-    }
-
-
-    function ExportPDF(){
-         
-         var dt = new Date();
-         var time =  dt.getDate() + "-"
-                + (dt.getMonth()+1)  + "-" 
-                + dt.getFullYear();
-
-         var doc = new jsPDF()
-         doc.autoTable({ html: '#myTable' })
-         doc.save("dokumen-perencanaan-"+ time +".pdf");
-
-
-    }
-
-
-        
-
-         function ShowDetailPerencanaan(){
-
-           $.ajax({
-               type: 'GET',
-               url: BASE_URL +'/api/perencanaan/edit/' + segments[5],
-               success: function(response) {
-                    list = response;  
-                    getdataid(list);              
-               },
-               error: function( error) { }
-          });
-
-         }
-
-
-          function exportPdF(){
-
-                var doc = new jsPDF()
-              doc.autoTable({ html: '#myTable' })
-              doc.save('table.pdf')
-
-
+          function ShowDetailPerencanaan()
+          {
+               $.ajax({
+                    type: 'GET',
+                    url: BASE_URL +'/api/perencanaan/edit/' + segments[5],
+                    success: function(response) {
+                         list = response;  
+                         getdataid(list);              
+                    },
+                    error: function( error) { }
+               });
           }
    
           function getdataid(data)
@@ -285,14 +257,14 @@
                $('#status-view').html('<b>'+data.status+'</b>');    
 
                if(data.status_code == 15 && data.request_edit == 'true' && data.alasan_edit != null) {
-                    $('#div-edit').show();
+                    $('#div-edit').show();     
                     $('#alasan-edit-view').html('<b>Alasan Edit : '+data.alasan_edit+'</b>').addClass('col-lg-12 text-red');
                } else {
                     $('#div-edit').hide();
                     $('#alasan-edit-view').removeClass('col-lg-12 text-red');
                }
                
-               var downloadLink = '<a href="'+currentDomain+'/api/perencanaan/download_pdf/filename=' + data.lap_rencana + '" target="_blank">Download PDF</a>';
+               var downloadLink = '<a href="'+BASE_URL+'/file/perencanaan/' + data.lap_rencana + '" class="btn btn-danger col-md-2" target="_blank">Download PDF</a>';
 
                var row = '';
                var rows = '';
@@ -334,7 +306,7 @@
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
                     row+= '<td>';
-                         row+= '<input disabled id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu_convert +'">';                                      
+                         row+= '<input disabled id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu_convert +'">';                       
                          row+= '<span id="pengawas-inspeksi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
@@ -502,17 +474,15 @@
                     rows_doc+= '<div class="box box-solid box-primary">';
                          rows_doc+= '<div class="box-body">';
                               rows_doc+= '<div class="card-body">';
-                                   rows_doc+= '<div class="form-group col-lg-6">';
+                                   rows_doc+= '<div class="form-group col-lg-4">';
                                         rows_doc+= '<div id="file-pdf-alert" class="form-group">';
-                                             rows_doc+= '<label>Upload File: </label>';
                                              rows_doc+= '<input type="file" id="AddFiles" class="form-control" name="lap_rencana" accept=".pdf">';
                                              rows_doc+= '<span id="file-pdf-alert-messages"></span>';
                                         rows_doc+= '</div>';
-                                        rows_doc+= '<div class="form-group"> <br/>';
+                                        rows_doc+= '<div class="btn-group">';
                                              rows_doc+= '<div id="ShowPDF"></div>';
+                                             rows_doc+= '<button id="upload_file" class="btn btn-primary" style="margin-top: 10px;">Upload PDF</button>';
                                         rows_doc+= '</div>';
-                                        rows_doc+= '<button id="upload_file" class="btn btn-primary">Upload PDF</button>';
-                                        rows_doc+= '';
                                         rows_doc+='<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>';
                                    rows_doc+= '</div>';
                               rows_doc+= '</div>';
@@ -552,14 +522,17 @@
                     if(([14, 15, 16].includes(data.status_code) && data.request_edit === 'false') || (data.status_code === 14 && data.request_edit === 'request_doc')) {
                          rows_btn+= '<div class="box-footer">';
                          rows_btn+= '<div class="btn-group just-center">';
-                              if(data.lap_rencana == '') {
-                                   rows_btn+= '<button id="downloadPdf" type="button" class="btn btn-success col-md-2">Download</button>';
-                              } else {
+                              if(data.lap_rencana != '') {
                                    rows_btn+= downloadLink;
                               }
                               rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>';
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
+
+                    } else {
+                         if(data.status_code == 15 && data.request_edit == 'request_doc') {
+                              $('#div-generate').show();
+                         }
                     }
                }
 
@@ -773,23 +746,23 @@
                });
 
                $( "#ShowPDF" ).on( "click", "#GetModalPdf", (e) => {
-                    let file = e.currentTarget.dataset.param_id;                     
+                    let file = e.currentTarget.dataset.param_id;      
                     let row = ``;
                      row +=`<div class="modal-dialog">`;
                           row +=`<div class="modal-content">`;
                               row +=`<div class="modal-header">`;
                                    row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                                    row +=`<h4 class="modal-title">Lihat Dokumen Perencanaan</h4>`;
-                              row +=`</div>`;                              
+                              row +=`</div>`;               
                               row +=`<div class="modal-body">`; 
                               if(file)
                               {  
                                    row +=`<embed src="`+file+`#page=1&zoom=65" width="575" height="500">`;
                               }     
-                              row +=`</div>`;                              
+                              row +=`</div>`;               
                               row +=`<div class="modal-footer">`;
                                    row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                              row +=`</div>`;                                        
+                              row +=`</div>`;                         
                          row +=`</div>`;
                     row +=`</div>`; 
 
@@ -843,7 +816,7 @@
                                    $('#file-pdf-alert-messages').removeClass('help-block').html('');
                               }
                          }
-                    });                    
+                    });     
                });
           }
 
@@ -980,5 +953,5 @@
      });
 
 </script>
- @include('template/sidakv2/perencanaan.print')
+
 @stop

@@ -368,22 +368,4 @@ class PerencanaanApiController extends Controller
             return response()->json(['status' => true, 'messages' => 'Update data sucessfully']);            
         }  
     }
-
-    public function download_file(Request $request)
-    {
-        $myFile = public_path("/perencanaan/test.pdf");
-
-        return response()->download($myFile);
-    }
-
-    public function download_pdf($filename)
-{
-        $file = public_path('file/perencanaan/' . $filename);
-
-        if (file_exists($file)) {
-            return response()->download($file);
-        } else {
-            abort(404);
-        }
-    }
 }    
