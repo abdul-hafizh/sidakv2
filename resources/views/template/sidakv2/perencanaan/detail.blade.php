@@ -65,9 +65,7 @@
                <div class="card-body">
                     <div class="row pd-top-bottom-15">
                          <div class="col-lg-12">
-                              <button type="button" id="generate-pdf" class="btn btn-success col-md-2 border-radius-10">
-                                   <span class="blinking-text">Generate PDF</span>
-                              </button> 
+                              <div id="generate_pdf"></div>
                          </div>
                     </div>
                </div>
@@ -191,8 +189,6 @@
      </div>
 </div>
 
-@include('template/sidakv2/perencanaan.print')
-
 <script type="text/javascript">
      $(document).ready(function() {          
           var periode =[];
@@ -222,18 +218,7 @@
                row+='<td style="text-align: right;padding: cpx 0px;border-right: 1px solid #000;">'+ data.pengawas_analisa_pagu +'</td>';
                row+='</tr>';
 
-               $('#exportView').html(row);
-               
-               ExportPDF();        
-          }
-
-          function ExportPDF()
-          {
-               var dt = new Date();
-               var time = dt.getDate() + "-" + (dt.getMonth()+1)  + "-"  + dt.getFullYear();
-               var doc = new jsPDF();
-               doc.autoTable({ html: '#myTable' })         
-               doc.save("Dokumen-Perencanaan-"+ time +".pdf");
+               $('#exportView').html(row);                
           }
 
           function ShowDetailPerencanaan()
@@ -264,7 +249,8 @@
                     $('#alasan-edit-view').removeClass('col-lg-12 text-red');
                }
                
-               var downloadLink = '<a href="'+BASE_URL+'/file/perencanaan/' + data.lap_rencana + '" class="btn btn-danger col-md-2" target="_blank">Download PDF</a>';
+               var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + data.lap_rencana + '" class="btn btn-danger col-md-2" target="_blank">Download PDF</a>';
+               var generate_pdf = '<a href="'+BASE_URL+'/perencanaan/generate_pdf" class="btn btn-success blink-text col-md-2" target="_blank">Generate PDF</a>';         
 
                var row = '';
                var rows = '';
@@ -497,7 +483,7 @@
                          rows_btn+= '<div class="box-footer">';
                          rows_btn+= '<div class="btn-group just-center">';
                               if(data.lap_rencana != '') {                                   
-                                   rows_btn+= downloadLink;
+                                   rows_btn+= download_link;
                               }
                               if(data.status_code == 15 && data.request_edit == 'false') {
                                    rows_btn+= '<button id="req_doc" type="button" class="btn btn-primary col-md-2">Approve</button>';
@@ -523,7 +509,7 @@
                          rows_btn+= '<div class="box-footer">';
                          rows_btn+= '<div class="btn-group just-center">';
                               if(data.lap_rencana != '') {
-                                   rows_btn+= downloadLink;
+                                   rows_btn+= download_link;
                               }
                               rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>';
                          rows_btn+= '</div>';
@@ -532,6 +518,7 @@
                     } else {
                          if(data.status_code == 15 && data.request_edit == 'request_doc') {
                               $('#div-generate').show();
+                              $('#generate_pdf').html(generate_pdf);
                          }
                     }
                }
