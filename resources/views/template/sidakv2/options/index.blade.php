@@ -33,7 +33,7 @@
 
        </div>
      </div> 
-
+     
   
 
    </section>
@@ -72,9 +72,9 @@
 </div>
 @include('template/sidakv2/options.menu-add')
 @include('template/sidakv2/options.role-add')
-  <!-- <script src="http://sortablejs.github.io/Sortable/Sortable.js"></script>
+ <!--  <script src="http://sortablejs.github.io/Sortable/Sortable.js"></script> -->
 
-  -->
+ 
     
 <script>
    $( function() {
@@ -409,7 +409,7 @@
 
         row +=`<div class="tab-content pull-left full form-group">`;
             row +=`<div id="tabDrag"  class="tab-pane active">`;
-	            row +=`<div id="tabRole" class="nested-sortable">`;
+	            row +=`<div id="tabRole" class="nested-sortable padding-bottom-30">`;
 	            GetSettingRole(find.value);
 	            row +=`</div>`;	
             row +=`</div>`;	
@@ -502,66 +502,80 @@
 
 	    $( "#tabRole" ).on( "click", "#Hapus-Temp", (e) => {
 	   		 let index = e.currentTarget.dataset.param_id;
+
              
 	   		  var menu = localStorage.getItem('root_menu');
        		  var temp =  JSON.parse(menu);
        		  let find = role.find(o => o.id === temp.role_id);
 
-	          loadingRole();
+       		  Swal.fire({
+			      title: 'Apakah anda yakin hapus role ?',
+			    
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#d33',
+			      cancelButtonColor: '#3085d6',
+			      confirmButtonText: 'Ya'
+			    }).then((result) => {
+			      if (result.isConfirmed) {
 
-              setTimeout(function() { 
-	             	
-			   	     if(temp.menu.length > 1)
-			   	     {
-                         temp.menu.splice(index, 1); 
-                         var form = {'menu':temp.menu,'role_id':find.id};
-                         localStorage.setItem('root_menu', JSON.stringify(form));
-                         GetMenu(find.id);
-			             GetSettingRole(find.value);
+					      loadingRole();
+			              setTimeout(function() { 
+				             	
+						   	     if(temp.menu.length > 1)
+						   	     {
+			                         temp.menu.splice(index, 1); 
+			                         var form = {'menu':temp.menu,'role_id':find.id};
+			                         localStorage.setItem('root_menu', JSON.stringify(form));
+			                         GetMenu(find.id);
+						             GetSettingRole(find.value);
 
-			   	     }else{
-			   	     	 localStorage.removeItem('root_menu');
-			   	     	 GetMenu(find.id);
-			             GetSettingRole(find.value);
-			   	     	   
-			   	     } 	
-             		
+						   	     }else{
+						   	     	 localStorage.removeItem('root_menu');
+						   	     	 GetMenu(find.id);
+						             GetSettingRole(find.value);
+						   	     	   
+						   	     } 	
+			             		
 
-               }, 1000);     		
+			               }, 1000);   
+
+			        Swal.fire(
+			          'Deleted!',
+			          'Data berhasil dihapus.',
+			          'success'
+			        );
+			      }
+			    });
+	
 
 	   	}); 
 
 	    //delete Role
         $( "#tabRole" ).on( "click", "#Hapus-Real", (e) => {
             let index = e.currentTarget.dataset.param_id;
-         //    var menu = localStorage.getItem('root_menu');
-       		// var temp =  JSON.parse(menu);
-
-      //  		Swal.fire({
-		    //   title: 'Apakah anda yakin hapus role '+ slug +'?',
+      
+            
+       		Swal.fire({
+		      title: 'Apakah anda yakin hapus ?',
 		    
-		    //   icon: 'warning',
-		    //   showCancelButton: true,
-		    //   confirmButtonColor: '#d33',
-		    //   cancelButtonColor: '#3085d6',
-		    //   confirmButtonText: 'Ya'
-		    // }).then((result) => {
-		    //   if (result.isConfirmed) {
-		        
-		                        
-		           
-		              // let item = role_menu.find(o => o.slug === slug);   
-				       DeleteSetting(index,role);
-		           
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#d33',
+		      cancelButtonColor: '#3085d6',
+		      confirmButtonText: 'Ya'
+		    }).then((result) => {
+		      if (result.isConfirmed) {
 
-		        
-		    //     Swal.fire(
-		    //       'Deleted!',
-		    //       'Data berhasil dihapus.',
-		    //       'success'
-		    //     );
-		    //   }
-		    // });
+				   DeleteSetting(index,role);
+
+		        Swal.fire(
+		          'Deleted!',
+		          'Data berhasil dihapus.',
+		          'success'
+		        );
+		      }
+		    });
             
         }); 
 
@@ -619,16 +633,20 @@
 
 
 
-               row +=`<div class="list-group pointer  nested-sortable"></div>`;
+               row +=`<div class="list-group pointer nested-sortable"></div>`;
             row +=`</div>`;
                                   
             content.append(row);
             });
 
+            //RoleNested();
+
         }else{     
 
            GetDataRoleMenu(role)
         } 	
+
+       
 
    }
 
@@ -866,8 +884,43 @@
 
 
 
-                       row +=`<div class="list-group pointer  nested-sortable"></div>`;
+                      row +=`<div class="list-group pointer nested-sortable"></div>`;
 		            row +=`</div>`;
+
+
+
+
+
+        //               row +=`<div id="list-role" data-id="${item.slug}" class="row-checkbox " >`;
+        // 				row +=`<div class="nested-sortable-content">`;
+        //                       row +=`<div class="checkbox-form pull-left">`; 
+        //                              row +=`<span class="black pull-left padding-05-05">`;
+        //                                 row +=`<img width="20" src="${item.icon}">`;
+        //                              row +=`</span>`;
+        //                         row +=`</div>`;  
+
+        //                         row +=`<div class="pull-left checkbox-label">`; 
+		      //                     row +=`${item.name}`; 
+		      //                   row +=`</div>`;
+
+		      //                   row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
+        //                             row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
+        //                                         row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
+        //                                         row +=`<i class="border-right-white"></i>`; 
+        //                                     row +=`</span>`;  
+
+
+        //                             row +=`<span id="Hapus-Real" data-param_id="${index}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
+        //                                     row +=`<i class="fa fa-trash"></i>`; 
+        //                                     row +=`</span>`;          
+
+        //                         row +=`</div>`;
+
+        //                         row +=`<div id="modal-edit-${item.slug}" class="modal fade" role="dialog">`;
+								// 	row +=`<div id="FormEdit-${item.slug}"></div>`;
+								// row +=`</div>`;
+        				
+        //               row +=`</div>`;
 
 
                  content.append(row);
@@ -884,80 +937,8 @@
 
        }
 
-       
- //    var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
- //     const sortableContainer = document.getElementById('tabDrag');
-	// // Loop through each nested sortable element
-	// for (var i = 0; i < nestedSortables.length; i++) {
-	// 	new Sortable(nestedSortables[i], {
-	// 		group: 'nested',
-	// 		animation: 500,
-	// 		ghostClass: 'moving-card',
-	// 		onEnd: function (evt) {
-	//             // Callback when sorting is finished
-	//             const sortedData = getSortedData(sortableContainer);
-	//             console.log(sortedData);
- //           }
-			
-	// 	});
-	// }
-
-   
-     // Function to collect sorted data
-    // function getSortedData(container) {
-    //     const sortedData = [];
-
-    //     const lists = container.querySelectorAll('#tabRole');
-    //     const items = [];
-    //     const find = [];
-    //     lists.forEach(function (list) {
-    //         const listId = list.getAttribute('data-id');
-    //         const listItems = list.querySelectorAll('#list-role');
-
-    //         listItems.forEach(function (item, index) {
-    //             const name = item.getAttribute('data-id');
-       
-    //             items.push({
-    //                 name: name,
-    //                 tasks: getNestedSortedData(item),
-    //             });
-    //         });
-
-         
-    //     });
-
-
-
-
-    //     return items;
-    // }
-
-    // Function to collect nested sorted data
-    // function getNestedSortedData(parentItem) {
-    //     const nestedData = [];
-
-    //     const nestedLists = parentItem.querySelectorAll('.nested-sortable');
-    //     const items = [];
-
-    //     nestedLists.forEach(function (list) {
-    //         const listId = list.getAttribute('data-id');
-           
-    //         const listItems = list.querySelectorAll('#list-role');
-
-    //         listItems.forEach(function (item, index) {
-
-    //             const itemId = item.getAttribute('data-id');
-    //             items.push({
-    //                 name: itemId,
-                   
-    //             });
-    //         });
-    //     });
-
-    //     return items;
-    // }
+       //RoleNested();
     
-           
 
    }
 
@@ -1455,6 +1436,79 @@
 	            }
 	          });
    }
+
+
+  function RoleNested(){
+
+     var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable'));
+     const sortableContainer = document.getElementById('tabDrag');
+	// Loop through each nested sortable element
+	for (var i = 0; i < nestedSortables.length; i++) {
+		new Sortable(nestedSortables[i], {
+			group: 'nested',
+			animation: 500,
+			ghostClass: 'moving-card',
+			onChange: function (evt) {
+	            // Callback when sorting is finished
+	            const sortedData = getSortedData(sortableContainer);
+	            console.log(sortedData);
+           }
+			
+		});
+	}
+	
+  }
+    // Function to collect sorted data
+    function getSortedData(container,event) {
+        const sortedData = [];
+
+        const lists = container.querySelectorAll('#tabRole');
+        const items = [];
+        const find = [];
+        lists.forEach(function (list) {
+            const listId = list.getAttribute('data-id');
+            const listItems = list.querySelectorAll('#list-role');
+
+            listItems.forEach(function (item, index) {
+                const name = item.getAttribute('data-id');
+              
+                   items.push({
+                    name: name,
+                    tasks: getNestedSortedData(item),
+                   });
+              	
+               
+            });
+
+         
+        });
+        return items;
+    }
+
+    // Function to collect nested sorted data
+    function getNestedSortedData(parentItem) {
+        const nestedData = [];
+
+        const nestedLists = parentItem.querySelectorAll('.nested-sortable');
+        const items = [];
+
+        nestedLists.forEach(function (list) {
+            const listId = list.getAttribute('data-id');
+           
+            const listItems = list.querySelectorAll('#list-role');
+
+            listItems.forEach(function (item, index) {
+
+                const itemId = item.getAttribute('data-id');
+                items.push({
+                    name: itemId,
+                   
+                });
+            });
+        });
+
+        return items;
+    }
 
     
    
