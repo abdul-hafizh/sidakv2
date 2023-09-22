@@ -54,9 +54,9 @@
 							<th rowspan="2"><div id="ShowChecklistAll" style="display:none;" class="split-table"></div>No</span></th>							
 							<th rowspan="2"><span class="border-left-table">Nama Daerah </span></th>
 							<th rowspan="2"><span class="border-left-table">Periode </span></th>
-							<th colspan="3"><span class="border-left-table">Pengawasan </span></th>
-							<th colspan="2"><span class="border-left-table">Bimsos </span></th>
-							<th colspan="3"><span class="border-left-table">Penyelesaian Masalah </span></th>
+							<th colspan="3" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Pengawasan </th>
+							<th colspan="2" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Bimsos </th>
+							<th colspan="3" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Penyelesaian Masalah </th>
 							<th rowspan="2"><span class="border-left-table">Promosi </span></th>
 							<th rowspan="2"><span class="border-left-table">Total </span></th>
 							<th rowspan="2"><span class="border-left-table">Status </span></th>
