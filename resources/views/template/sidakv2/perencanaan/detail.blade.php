@@ -249,7 +249,7 @@
                     $('#alasan-edit-view').removeClass('col-lg-12 text-red');
                }
                
-               var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + data.lap_rencana + '" class="btn btn-danger col-md-2" target="_blank">Download PDF</a>';
+               var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + data.lap_rencana + '" class="btn btn-danger col-md-2" target="_blank"><i class="fa fa-download"></i> Download PDF</a>';
                var generate_pdf = '<a href="'+BASE_URL+'/perencanaan/generate_pdf" class="btn btn-success blink-text col-md-2" target="_blank">Generate PDF</a>';         
 
                var row = '';
