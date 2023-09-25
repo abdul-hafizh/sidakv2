@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestAuth;
@@ -77,6 +78,14 @@ class PerencanaanController extends Controller
         ->with([
             'title' => $title,
             'template' => 'template/'.$this->template ]);
+    }
+
+    public function generate_pdf()
+    {
+        $data = ['title' => 'Perencanaan'];
+        $pdf = PDF::loadView('template/sidakv2/perencanaan/print', $data);
+  
+        return $pdf->download('Perencanaan.pdf');
     }
 
 }

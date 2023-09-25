@@ -7,6 +7,45 @@
         </div> 	
     </div> 	
 
+    <div class="row padding-default" style="margin-bottom: 20px">
+		<div class="col-lg-3 col-sm-12">
+            <div class="box-body btn-primary border-radius-13">
+                <div class="card-body table-responsive p-0">
+                        <div class="media">
+                            <div class="media-body text-left">
+                                <span>Total Rencana Pengawasan</span>
+                                <h3 class="card-text" id="total-rencana-pengawasan"></h3>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+		<div class="col-lg-3 col-sm-12">
+            <div class="box-body btn-primary border-radius-13">
+                <div class="card-body table-responsive p-0">
+                    <div class="media">
+                        <div class="media-body text-left">
+                            <span>Total Rencana Bimsos</span>
+                            <h3 class="card-text" id="total-rencana-bimsos"></h3>
+                        </div>
+                    </div>
+			    </div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-12">
+            <div class="box-body btn-primary border-radius-13">
+                <div class="card-body table-responsive p-0">
+                    <div class="media">
+                        <div class="media-body text-left">
+                            <span>Total Penyelesaian Masalah</span>
+                            <h3 class="card-text" id="total-rencana-masalah"></h3>
+                        </div>
+                    </div>
+			    </div>
+			</div>
+		</div>
+	</div>
+
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
             <div class="pull-left padding-9-0 margin-left-button">
@@ -19,12 +58,12 @@
                 </select>
             </div>  
             <div id="ShowChecklist" style="display:none;" class="pull-left padding-9-0 margin-left-button">
-                <button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
-                     Hapus
+                <button type="button" disabled id="approve-selected" class="btn btn-danger border-radius-10">
+                     Approve
                 </button>
             </div>
              <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
-                <button type="button" id="printButton" class="btn btn-info border-radius-10">
+                <button type="button" id="ExportButton" class="btn btn-info border-radius-10">
                      Export
                 </button>
             </div>                    
@@ -50,13 +89,15 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th rowspan="2" id="ShowChecklistAll" style="display:none;" class="th-checkbox"><input id="select-all" class="border-left-table" type="checkbox"></th>
-							<th rowspan="2"><div id="ShowChecklistAll" style="display:none;" class="split-table"></div>No</span></th>							
+							<th rowspan="2" id="ShowChecklistAll" style="display:none;" class="th-checkbox">
+                                <input id="select-all" class="border-left-table" type="checkbox">
+                            </th>
+							<th rowspan="2"><div id="ShowChecklistAll" style="display:none;" class="split-table"></div><span>No</span></th>
 							<th rowspan="2"><span class="border-left-table">Nama Daerah </span></th>
 							<th rowspan="2"><span class="border-left-table">Periode </span></th>
-							<th colspan="3"><span class="border-left-table">Pengawasan </span></th>
-							<th colspan="2"><span class="border-left-table">Bimsos </span></th>
-							<th colspan="3"><span class="border-left-table">Penyelesaian Masalah </span></th>
+							<th colspan="3" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Pengawasan </th>
+							<th colspan="2" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Bimsos </th>
+							<th colspan="3" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Penyelesaian Masalah </th>
 							<th rowspan="2"><span class="border-left-table">Promosi </span></th>
 							<th rowspan="2"><span class="border-left-table">Total </span></th>
 							<th rowspan="2"><span class="border-left-table">Status </span></th>
@@ -86,6 +127,8 @@
     </div>
 </div>
 
+@include('template/sidakv2/perencanaan.export')
+
 <script type="text/javascript">
     $(document).ready(function() {
         const itemsPerPage = 10;
@@ -103,7 +146,7 @@
                 const content = $('#content');
                 content.empty();
                 let row = ``;
-                row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                row +=`<tr><td colspan="12" align="center"> <b>Loading ...</b></td></tr>`;
                 content.append(row);
                 let search = $('#periode_id').val();
 
@@ -123,7 +166,7 @@
                     success: function(response) {
                         list = response.data;
                         resultTotal(response.total);
-                        updateContent(response.data);
+                        updateContent(response.data, response.options);
                         updatePagination(response.current_page, response.last_page);
                     },
                     error: function(error) {
@@ -144,7 +187,6 @@
                       text: option.text
                     }));
                 });
-
                 $('#periode_id').selectpicker('refresh');
             },
             error: function(error) {
@@ -156,19 +198,19 @@
             var value = $(this).val();         
             if(value)
             {   
-                 const content = $('#content');
-                 content.empty();
-                 let row = ``;
-                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
-                  content.append(row);
+                const content = $('#content');
+                content.empty();
+                let row = ``;
+                row +=`<tr><td colspan="12" align="center"> <b>Loading ...</b></td></tr>`;
+                content.append(row);
 
                 $.ajax({
                     url: BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}`,
                     data:{'search':value},
                     method: 'POST',
-                    success: function(response) {
+                    success: function(response) {                        
                         resultTotal(response.total);
-                        updateContent(response.data);
+                        updateContent(response.data, response.options);
                         updatePagination(response.current_page, response.last_page);
                     },
                     error: function(error) {
@@ -184,9 +226,9 @@
             const checkedCount =  $('.item-checkbox:checked').length;
             if(checkedCount >0)
             {
-                $('#delete-selected').prop("disabled", false);
+                $('#approve-selected').prop("disabled", false);
             } else {
-                $('#delete-selected').prop("disabled", true);
+                $('#approve-selected').prop("disabled", true);
             }
         });
 
@@ -195,13 +237,33 @@
             $('#search-input').val('');
         });
 
-        $('#delete-selected').on('click', function() {
+        $('#approve-selected').on('click', function() {
             const selectedIds = [];
             $('.item-checkbox:checked').each(function() {
                 selectedIds.push($(this).data('id'));
             });
 
-            deleteItems(selectedIds);
+            Swal.fire({
+                    title: 'Apakah Anda Yakin Approve Perencanaan?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+            }).then((result) => {
+                    if (result.isConfirmed) {
+                        approveItems(selectedIds);
+                        Swal.fire(
+                            'Approved!',
+                            'Data berhasil diapprove.',
+                            'success'
+                        ).then((act) => {
+                            if (act.isConfirmed) {
+                                window.location.replace('/perencanaan');
+                            }
+                        });
+                    }
+            });            
         });
 
         $('.item-checkbox').on('change', function() {
@@ -209,9 +271,22 @@
             $('.select-all').prop('checked', allChecked);
         });
 
-        function deleteItems(ids) {        
+        $("#ExportButton").click(function() {
             $.ajax({
-                url:  BASE_URL +`/api/perencanaan/selected`,
+                url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
+                method: 'GET',
+                success: function(response) {
+                    exportData(response.data);
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        });
+
+        function approveItems(ids) {        
+            $.ajax({
+                url:  BASE_URL +`/api/perencanaan/approve_selected`,
                 method: 'POST',
                 data: { data: ids },
                 success: function(response) {
@@ -228,7 +303,7 @@
             content.empty();
           
             let row = ``;
-                row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                row +=`<tr><td colspan="12" align="center"> <b>Loading ...</b></td></tr>`;
                 content.append(row);
 
             $.ajax({
@@ -238,8 +313,7 @@
                     list = response.data;
                     resultTotal(response.total);
                     listOptions(response.options);
-                    updateContent(response.data,response.options);
-
+                    updateContent(response.data, response.options);
                     updatePagination(response.current_page, response.last_page);
                 },
                 error: function(error) {
@@ -248,45 +322,58 @@
             });
         }
 
-        function updateContent(data,options) {
-            const content = $('#content');
+        function updateContent(data, options) {
+            const content = $('#content');            
             const edited = options.find(o => o.action === 'edit');
             const deleted = options.find(o => o.action === 'delete');
             const checklist = options.find(o => o.action === 'checklist');
             const detailed = options.find(o => o.action === 'detail');
+
+            var total_pengawasan = 0;
+            var total_bimsos = 0;
+            var total_masalah = 0;
             
             content.empty();
 
             data.forEach(function(item, index) {
                 let row = ``;
                 row +=`<tr>`;
-                if(item.deleted == false)
-                {
-                    if(checklist.checked == true)
-                    {
-                        row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
-                    }
+
+                // if(item.deleted == false)
+                // {
+                //     if(checklist.checked == true)
+                //     {
+                //         row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
+                //     }
                   
-                } else {
-                    if(checklist.checked == true)
-                    {
-                        row +=`<td><input disabled  type="checkbox"></td></td>`;  
-                    }
-                }   
+                // } else {
+                //     if(checklist.checked == true)
+                //     {
+                //         row +=`<td><input disabled type="checkbox"></td></td>`;  
+                //     }
+                // }   
+                
+                if(checklist.checked == true) {
+                    row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
+                }
+
+                total_pengawasan += item.total_rencana_pengawasan;
+                total_bimsos += item.total_rencana_bimsos;
+                total_masalah += item.total_rencana_masalah;
 
                 row +=`<td class="table-padding-second">${item.number}</td>`;
                 row +=`<td class="table-padding-second">${item.nama_daerah}</td>`;
                 row +=`<td class="table-padding-second">${item.periode}</td>`;
-                row +=`<td class="table-padding-second">${item.pengawas_analisa_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.pengawas_inspeksi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.pengawas_evaluasi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.bimtek_perizinan_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.bimtek_pengawasan_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.penyelesaian_identifikasi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.penyelesaian_realisasi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.penyelesaian_evaluasi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.promosi_pengadaan_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second">${item.total_pagu}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.pengawas_analisa_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.pengawas_inspeksi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.pengawas_evaluasi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.bimtek_perizinan_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.bimtek_pengawasan_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.penyelesaian_identifikasi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.penyelesaian_realisasi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.penyelesaian_evaluasi_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.promosi_pengadaan_pagu_convert}</td>`;
+                row +=`<td class="table-padding-second text-right">${item.total_pagu}</td>`;
                 row +=`<td class="table-padding-second">${item.status}</td>`;
                 row +=`<td class="table-padding-second">${item.updated_at}</td>`;
                 row +=`<td>`; 
@@ -325,15 +412,19 @@
 
                 row +=`</tr>`; 
                 content.append(row);
-            });
+            });            
+
+            $('#total-rencana-pengawasan').html('<b> Rp. '+accounting.formatNumber(total_pengawasan, 0, ".", ".")+'</b>');
+            $('#total-rencana-bimsos').html('<b> Rp. '+accounting.formatNumber(total_bimsos, 0, ".", ".")+'</b>');
+            $('#total-rencana-masalah').html('<b> Rp. '+accounting.formatNumber(total_masalah, 0, ".", ".")+'</b>');
 
             $('.item-checkbox').on('click', function() {
                 const checkedCount = $('.item-checkbox:checked').length;
                 if(checkedCount>0)
                 {
-                    $('#delete-selected').prop("disabled", false);
+                    $('#approve-selected').prop("disabled", false);
                 } else {
-                    $('#delete-selected').prop("disabled", true);
+                    $('#approve-selected').prop("disabled", true);
                 }  
             });
 
@@ -509,6 +600,52 @@
         }
 
         fetchData(currentPage);
+
+        function exportData(data)
+        {
+            const content = $('#exportView');
+            content.empty();
+
+            if(data.length>0)
+            {
+                data.forEach(function(item, index) {
+                    let row = ``;
+                        row +=`<tr>`;
+                        row +=`<td class="padding-text-table">${item.number}</td>`;
+                        row +=`<td class="padding-text-table">${item.nama_daerah}</td>`;
+                        row +=`<td class="padding-text-table">${item.periode}</td>`;
+                        row +=`<td class="padding-text-table">${item.pengawas_analisa_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.pengawas_inspeksi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.pengawas_evaluasi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.bimtek_perizinan_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.bimtek_pengawasan_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.penyelesaian_identifikasi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.penyelesaian_realisasi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.penyelesaian_evaluasi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.promosi_pengadaan_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.total_pagu_export}</td>`;
+                        row +=`<td class="padding-text-table">${item.status}</td>`;
+                        row +=`<td class="padding-text-table">${item.updated_at_export}</td>`;
+                        row +=`</tr>`;
+                    content.append(row);
+                });     
+            }     
+
+            ExportExel();   
+        }
+
+        function ExportExel()
+        {
+            var dt = new Date();
+            var time =  dt.getDate() + "-"+ (dt.getMonth()+1)  + "-" + dt.getFullYear();
+
+            var table = document.getElementById("perencanaanTable");
+            var ws = XLSX.utils.table_to_sheet(table);
+            var wb = XLSX.utils.book_new();
+
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+            XLSX.writeFile(wb, "Repot-data-perencanaan-"+ time +".xlsx");
+        }
 
     });
 

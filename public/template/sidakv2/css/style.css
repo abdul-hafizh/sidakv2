@@ -1177,9 +1177,6 @@
 .d-flex {
   display: flex !important; }
 
-
-  
-
 .picture-lg, .picture-mini{
     width: 42%; 
 }
@@ -1192,13 +1189,16 @@
 }
 
 .border-right-table{
-        border-right: 3px solid #0e298f;
-
+    border-right: 3px solid #0e298f;
 }
+
 .border-left-table {
     border-left: 3px solid #0e298f;
-    padding: 0px 0px 0px 16px;
-   
+    padding: 0px 0px 0px 16px;  
+}
+
+.table>thead>tr>th {
+    vertical-align: middle !important;
 }
 
 .bg-search-table{
@@ -1296,8 +1296,8 @@
 }
 
 .border-list{
-        margin: 0px!important;
-   border-bottom: 1px solid #e9e5e5;
+    margin: 0px!important;
+    border-bottom: 1px solid #e9e5e5;
     box-shadow: 0px 2px 0px 0px #fff;
 }
 
