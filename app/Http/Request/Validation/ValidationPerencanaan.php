@@ -57,7 +57,13 @@ class ValidationPerencanaan
             'penyelesaian_evaluasi_target' => 'numeric',
             'penyelesaian_evaluasi_pagu' => 'required|numeric|min:0|gt:0',
 
-            'periode_id' => 'required|required_if:param,update|unique:perencanaan',
+            'periode_id' => [
+                'required',
+                Rule::unique('perencanaan')->where(function ($query) use ($request) {
+                    return $query->where('periode_id', $request->periode_id)
+                        ->where('daerah_id', $request->daerah_id);
+                }),
+            ],
             'nama_pejabat' => 'required',
             'nip_pejabat' => 'required|numeric|min:0|gt:0',
             'tgl_tandatangan' => 'required',
@@ -187,7 +193,13 @@ class ValidationPerencanaan
             'penyelesaian_realisasi_pagu' => 'required|numeric|min:0|gt:0',
             'penyelesaian_evaluasi_target' => 'numeric',
             'penyelesaian_evaluasi_pagu' => 'required|numeric|min:0|gt:0',
-            'periode_id' => [ 'required', Rule::unique('perencanaan')->ignore($id)],
+            'periode_id' => [
+                'required',
+                Rule::unique('perencanaan')->ignore($id)->where(function ($query) use ($request) {
+                    return $query->where('periode_id', $request->periode_id)
+                        ->where('daerah_id', $request->daerah_id);
+                }),
+            ],
             'nama_pejabat' => 'required',
             'nip_pejabat' => 'required|numeric|min:0|gt:0',
             'tgl_tandatangan' => 'required',
