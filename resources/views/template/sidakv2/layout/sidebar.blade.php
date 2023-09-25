@@ -199,13 +199,13 @@
 			        $('.icon-'+ menu).removeClass('icon-'+ menu).addClass('icon-'+ menu+'-hover');
                    
                     findlast = data.find(o => o.active === true);
-                    
-
+                   
+                   console.log(findlast.slug)
                     if(menu != findlast.slug)
                     {
                         $('.icon-'+ findlast.slug +'-hover').removeClass('icon-'+ findlast.slug+'-hover').addClass('icon-'+ findlast.slug);
                         $('.'+findlast.slug).removeClass('menu-open active');
-
+                        
                     }
                   
                     
