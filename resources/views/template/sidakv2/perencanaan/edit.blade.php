@@ -603,9 +603,9 @@
           function getperiode(periode) {
                
                $.ajax({
-                    type: 'GET',
                     dataType: 'json',
                     url: BASE_URL +'/api/select-periode?type=POST',
+                    type: 'GET',
                     success: function(data) {
                          var select =  $('#periode_id');
                          $.each(data.result, function(index, option) {

@@ -285,6 +285,21 @@ class PerencanaanApiController extends Controller
 
     }
 
+    public function approveSelected(Request $request){
+        $messages['messages'] = false;
+
+        foreach($request->data as $key)
+        {
+            $results = request_doc((int)$key);
+        }
+
+        if($results){
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    }    
+
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
 
