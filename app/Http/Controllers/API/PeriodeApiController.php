@@ -131,18 +131,20 @@ class PeriodeApiController extends Controller
                return response()->json($err, 400);
             }else{ 
                 $insert = RequestPeriode::fieldsData($request);
-
-                $json = json_encode($insert);
+                 if($request->semester =='01')
+                 {
+                     $name = 'Semester 1 Tahun '.$request->year;
+                 }else{
+                     $name = 'Semester 2 Tahun '.$request->year;
+                 }   
+ 
                 $log = array(             
-                'action'=> 'Insert Periode',
-                'slug'=>'insert-periode',
-                'type'=>'post',
-                'json_field'=> $json,
-                'url'=>'api/periode'
-                );
-
-                $datalog = RequestAuditLog::fieldsData($log);
-
+                    'category'=> 'LOG_DATA_PERIODE',
+                    'group_menu'=>'upload_data_periode',
+                    'description'=>'Menambahkan data periode <b>'.$name.'</b>',
+                    );
+                    $datalog = RequestAuditLog::fieldsData($log);
+                
                 //create menu
                 $saveData = Periode::create($insert);
                 //result
@@ -158,6 +160,13 @@ class PeriodeApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
+
+             if($request->semester =='01')
+             {
+                 $name = 'Semester 1 Tahun '.$request->year;
+             }else{
+                 $name = 'Semester 2 Tahun '.$request->year;
+             } 
             
             $update = RequestPeriode::fieldsData($request); 
             $check = Periode::where(['slug'=>$request->year.$request->semester,'id'=>$id])->first();
@@ -165,7 +174,15 @@ class PeriodeApiController extends Controller
             if($check)
             {
                 $UpdateData = Periode::where('id', $id)->update($update);
+               
 
+                 $log = array(             
+                    'category'=> 'LOG_DATA_PERIODE',
+                    'group_menu'=>'mengubah_data_periode',
+                    'description'=>'Mengubah data periode <b>'.$name.'</b>',
+                    );
+                    $datalog = RequestAuditLog::fieldsData($log);
+                    //Audit Log
             }else{
 
                 $checklain = Periode::where(['slug'=>$request->year.$request->semester])->first();
@@ -176,6 +193,16 @@ class PeriodeApiController extends Controller
                      return response()->json($err, 400); 
 
                 }else{
+
+                    
+
+                     $log = array(             
+                        'category'=> 'LOG_DATA_PERIODE',
+                        'group_menu'=>'mengubah_data_periode',
+                        'description'=>'Mengubah data periode <b>'.$name.'</b>',
+                        );
+                        $datalog = RequestAuditLog::fieldsData($log);
+                        //Audit Log
 
                      $UpdateData = Periode::where('id', $id)->update($update);
                        
@@ -191,16 +218,20 @@ class PeriodeApiController extends Controller
     {
         $messages['messages'] = false;
         $_res = Periode::find($id);
-
-         $json = json_encode($_res);
-        //Audit Log
+        
+         if($_res->semester =='01')
+         {
+             $name = 'Semester 1 Tahun '.$_res->year;
+         }else{
+             $name = 'Semester 2 Tahun '.$_res->year;
+         } 
+         
         $log = array(             
-        'action'=> 'Delete Periode',
-        'slug'=>'delete-periode',
-        'type'=>'delete',
-        'json_field'=> $json,
-        'url'=>'api/periode/'.$id
-        );
+            'category'=> 'LOG_DATA_PERIODE',
+            'group_menu'=>'menghapus_data_periode',
+            'description'=> '<b>'.$name.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
 
         
         if (empty($_res)) {
@@ -217,20 +248,22 @@ class PeriodeApiController extends Controller
      public function deleteSelected(Request $request)
     {
         $messages['messages'] = false;
-        RequestAuditLog::fieldsData($log);
-
-        $json = json_encode($request->data);
-        //Audit Log
-        $log = array(             
-        'action'=> 'Delete Periode Select',
-        'slug'=>'delete-periode-select',
-        'type'=>'post',
-        'json_field'=> $json,
-        'url'=>'api/periode/selected/'
-        );
-
-        RequestAuditLog::fieldsData($log);
+        
         foreach ($request->data as $key) {
+            $find = Periode::where('id',$key)->first();
+            if($find->semester =='01')
+            {
+                $name = 'Semester 1 Tahun '.$find->year;
+            }else{
+                $name = 'Semester 2 Tahun '.$find->year;
+            } 
+
+            $log = array(             
+                'category'=> 'LOG_DATA_PERIODE',
+                'group_menu'=>'menghapus_data_periode',
+                'description'=> '<b>'.$name.'</b> telah dihapus',
+                );
+           // $datalog = RequestAuditLog::fieldsData($log);
             $results = Periode::where('id', (int)$key)->delete();
         }
 

@@ -47,6 +47,13 @@ class RegencyApiController extends Controller
 
 
             $insert = RequestRegency::fieldsData($request);
+
+             $log = array(             
+            'category'=> 'LOG_DATA_KABUPATEN',
+            'group_menu'=>'upload_data_kabupaten',
+            'description'=>'Menambahkan data kabupaten <b>'.$request->name.'</b>',
+            );
+            $datalog = RequestAuditLog::fieldsData($log);
             //create menu
             $saveData = Regencies::create($insert);
             //result
@@ -121,6 +128,14 @@ class RegencyApiController extends Controller
         } else {
 
             $update = RequestRegency::fieldsData($request);
+
+             $log = array(             
+                'category'=> 'LOG_DATA_KABUPATEN',
+                'group_menu'=>'mengubah_data_kabupaten',
+                'description'=>'Mengubah data kabupaten <b>'.$request->name.'</b>',
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
+                //Audit Log
             //update account
             $UpdateData = Regencies::where('id', $id)->update($update);
             //result
@@ -132,6 +147,13 @@ class RegencyApiController extends Controller
     {
         $messages['messages'] = false;
         foreach ($request->data as $key) {
+            $find = Regencies::where('id',$key)->first();
+            $log = array(             
+                'category'=> 'LOG_DATA_KABUPATEN',
+                'group_menu'=>'menghapus_data_kabupaten',
+                'description'=> '<b>'.$find->name.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
             $results = Regencies::where('id', (int)$key)->delete();
         }
 
@@ -146,6 +168,14 @@ class RegencyApiController extends Controller
     {
         $messages['messages'] = false;
         $_res = Regencies::find($id);
+
+        $log = array(             
+            'category'=> 'LOG_DATA_KABUPATEN',
+            'group_menu'=>'menghapus_data_kabupaten',
+            'description'=> '<b>'.$_res->name.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
+
 
         if (empty($_res)) {
             return response()->json(['messages' => false]);

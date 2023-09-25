@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="clear-input close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Role</h4>
       </div>
       <form  id="FormSubmitRole" >
@@ -20,7 +20,7 @@
             <div id="name-role-alert" class="form-group has-feedback" >
               <label>Nama</label>
               <input type="text" class="form-control" name="name" placeholder="Nama" value="">
-              <span id="name-role-messages"></span>
+              <span id="name-role-messages" class="span-messages"></span>
             </div>
 
 
@@ -49,7 +49,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>
@@ -63,8 +63,6 @@
 
 <script type="text/javascript">
  $(function(){
-
-   
      
   $("#simpan").click( () => {
 

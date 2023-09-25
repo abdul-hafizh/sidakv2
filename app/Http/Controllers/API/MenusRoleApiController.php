@@ -14,6 +14,8 @@ use Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Request\Validation\ValidationKeys;
+use App\Http\Request\RequestAuditLog;
+use App\Http\Request\RequestRoles;
 class MenusRoleApiController extends Controller
 {
 
@@ -51,9 +53,26 @@ class MenusRoleApiController extends Controller
         $check = MenusRole::where('role_id',$request->role_id)->first();
         if($check)
         {
+
+
+            $log = array(             
+            'category'=> 'LOG_DATA_ROLE',
+            'group_menu'=>'mengubah_menu_role',
+            'description'=>'Mengubah menu role <b>'.$check->role->slug.'</b>',
+            );
+            $datalog = RequestAuditLog::fieldsData($log);
+            //Audit Log
+                  
            MenusRole::where('role_id',$request->role_id)->update(['menu_json'=>$objectMenu]);
 
         }else{
+            $role = RequestRoles::GetRoleWhere($request->role_id,'name');
+            $log = array(             
+            'category'=> 'LOG_DATA_ROLE',
+            'group_menu'=>'upload_menu_role',
+            'description'=>'Menambahkan menu role <b>'.$role.'</b>',
+            );
+            $datalog = RequestAuditLog::fieldsData($log);
             
            $fields = RequestMenuRoles::fieldsData($request);
            MenusRole::create($fields);
@@ -117,6 +136,13 @@ class MenusRoleApiController extends Controller
        
        $messages['messages'] = false;
         $_res = MenusRole::where('role_id',$id)->first();
+        $role = RequestRoles::GetRoleWhere($id,'name');
+        $log = array(             
+            'category'=> 'LOG_DATA_ROLE',
+            'group_menu'=>'menghapus_data_role',
+            'description'=> '<b>'.$role.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
           
         if(empty($_res)){
             return response()->json(['messages' => false]);

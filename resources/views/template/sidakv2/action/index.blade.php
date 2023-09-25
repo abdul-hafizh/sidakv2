@@ -16,7 +16,7 @@
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
                
-				<select id="row_page" class="selectpicker" data-style="btn-default" >
+				<select id="row_page" class="selectpicker" data-style="bg-navy" >
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
 					<option value="50">50</option>
@@ -280,6 +280,7 @@
             success: function(response) {
                 // Handle success (e.g., remove deleted items from the list)
                 fetchData(page);
+                $('#delete-selected').prop("disabled", true);
             },
             error: function(error) {
                 console.error('Error deleting items:', error);
@@ -424,8 +425,8 @@
                 row +=`<div class="modal-content">`;
 
 				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit action</h4>`;
+				         row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Edit Aksi</h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
@@ -437,9 +438,11 @@
 				                  row +=`<label>Nama</label>`;
 
 				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">`;
-				                  row +=`<span id="name-messages-`+ item.id +`"></span>`;
+				                  row +=`<span id="name-messages-`+ item.id +`" class="span-messages"></span>`;
 
 				                 row +=`</div>`;
+
+				                  row +=`<div  id="status-alert" class="form-group has-feedback" >`;
 
 				                    row +=`<div class="radio">`;
 					                    row +=`<label>`;
@@ -466,12 +469,15 @@
 					                     row +=`Non Aktif`;
 					                    row +=`</label>`;
 					                row +=`</div>`;
+                                    row +=`</label>`;
 
+                                   row +=`<span id="status-messages" class="span-messages"></span>`;
+					                row +=`</div>`;
 
 
 
                             row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
@@ -596,7 +602,8 @@
 
 
     function listOptions(data){
-       
+         const checklist = data.find(o => o.action === 'checklist');
+
        data.forEach(function(item, index) 
        {
            if(item.action =='add')
@@ -609,6 +616,20 @@
            	   }	
            }
 
+             if(checklist.action =='checklist')
+           {
+               if(checklist.checked ==true)
+               {
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
+                   
+                  
+               }else{
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               }    
+           }
+
            if(item.action =='edit')
            {
            	   if(item.checked ==true)
@@ -617,7 +638,38 @@
            	   }else{
                   $('#ShowEdit').hide();
            	   }	
-           }	
+           }
+
+             if(item.action =='export')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowExport').show();
+               }else{
+                  $('#ShowExport').hide();
+               }    
+           }     
+
+            if(item.action =='search')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowSearch').show();
+               }else{
+                  $('#ShowSearch').hide();
+               }    
+           }   
+
+
+            if(item.action =='perpage')
+           {
+               if(item.checked ==true)
+               {
+                   $('#ShowPagination').show();
+               }else{
+                  $('#ShowPagination').hide();
+               }    
+           }    	
 
        });
     }

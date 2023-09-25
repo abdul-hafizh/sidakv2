@@ -25,9 +25,9 @@ class RequestPeriode
 
       foreach ($data as $key => $val) {
          if ($val->status == 'Y') {
-            $status = 'Aktif';
+            $status = 'Publish';
          } else {
-            $status = 'Non Aktif';
+            $status = 'Draft';
          };
 
          $temp[$key]['number'] = $numberNext++;

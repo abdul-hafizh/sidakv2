@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Models\SettingApps;
 use App\Models\SystemLog;
 use App\Http\Request\RequestMenuRoles;
+use App\Http\Request\RequestAuditLog;
 use JWTAuth;
 
 
@@ -142,7 +143,12 @@ class AuthController extends Controller
                            $sidebar = RequestMenuRoles::MenuSidebarKabupaten();
                        } 
 
-                    
+                       $log = array(             
+                        'category'=> 'LOG_DATA_LOGIN',
+                        'group_menu'=>'access_data_user',
+                        'description'=> '<b class="text-capitalize"> '.$auth->username.' </b> berhasil melakukan login',
+                        );
+                        $datalog = RequestAuditLog::fieldsData($log);
 
                       return response()->json(['status'=>true,'menu_sidebar'=>$sidebar,'template'=>$template,'user_sidebar'=>$userSidebar,'access'=>$access,'token'=>$token['token']],200);  
                 }

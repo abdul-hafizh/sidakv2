@@ -5,7 +5,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>
+        <button type="button"  class="clear-input close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah User</h4>
       </div>
       <form id="FormSubmit">
@@ -97,7 +97,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" id="close2" class="btn btn-default" data-dismiss="modal">Tutup</button>
+          <button type="button"  class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>
 
           <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
           <button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>

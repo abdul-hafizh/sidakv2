@@ -16,7 +16,7 @@
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
                
-				<select id="row_page" class="selectpicker" data-style="btn-default" >
+				<select id="row_page" class="selectpicker" data-style="bg-navy" >
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
 					<option value="50">50</option>
@@ -285,6 +285,7 @@
             success: function(response) {
                 // Handle success (e.g., remove deleted items from the list)
                 fetchData(page);
+                $('#delete-selected').prop("disabled", true);
             },
             error: function(error) {
                 console.error('Error deleting items:', error);
@@ -419,14 +420,14 @@
 				                  row +=`<label>Kategori</label>`;
 
 				                  row +=`<input type="text" class="form-control" name="category" placeholder="Kategori" value="`+ item.category +`">`;
-				                  row +=`<span id="category-messages-`+ item.id +`"></span>`;
+				                  row +=`<span id="category-messages-`+ item.id +`" class="span-messages"></span>`;
 
 				                 row +=`</div>`;
 
 				                   row +=`<div id="description-alert" class="form-group has-feedback" >`;
 						              row +=`<label>Keterangan</label>`;
 						              row +=`<textarea class="form-control textarea-fixed" placeholder="Keterangan" name="description">`+ item.description +`</textarea>`;
-						              row +=`<span id="description-messages"></span>`;
+						              row +=`<span id="description-messages" class="span-messages"></span>`;
 						            row +=`</div>`;
 
 				                    row +=`<div class="radio">`;

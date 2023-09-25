@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button"  id="close1" class="close" data-dismiss="modal">&times;</button>
+        <button type="button"   class="clear-input close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Kriteria</h4>
       </div>
       <form  id="FormSubmit" >
@@ -20,14 +20,14 @@
             <div id="category-alert" class="form-group has-feedback" >
               <label>Kategori</label>
               <input type="text" class="form-control" name="category" placeholder="Kategori" value="">
-              <span id="category-messages"></span>
+              <span id="category-messages" class="span-messages"></span>
             </div>
 
 
              <div id="description-alert" class="form-group has-feedback" >
               <label>Keterangan</label>
               <textarea class="form-control textarea-fixed" placeholder="Keterangan" name="description"></textarea>
-              <span id="description-messages"></span>
+              <span id="description-messages" class="span-messages"></span>
             </div>
 
 
@@ -45,7 +45,7 @@
                      Non Aktif
                     </label>
                 </div>
-                <span id="status-messages"></span>
+                <span id="status-messages" class="span-messages"></span>
             
             </div>
 
@@ -56,7 +56,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" id="close2" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>
@@ -71,13 +71,7 @@
 <script type="text/javascript">
  $(function(){
 
-   $("#close1").click(()=> {  
-      DefaultNull();
-   });
-
-   $("#close2").click(()=> {  
-      DefaultNull();
-   });
+   
      
   $("#simpan").click( () => {
 
@@ -126,14 +120,7 @@
                     $('#category-messages').removeClass('help-block').html('');
                 }
 
-                 if(errors.messages.status)
-                {
-                     $('#status-alert').addClass('has-error');
-                     $('#status-messages').addClass('help-block').html('<strong>'+ errors.messages.status +'</strong>');
-                }else{
-                    $('#status-alert').removeClass('has-error');
-                    $('#status-messages').removeClass('help-block').html('');
-                }  
+               
 
                 
             }

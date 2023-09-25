@@ -225,6 +225,14 @@
     float: right;
 }
 
+.title-header {
+    padding: 8px 14px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #0e298f;
+    
+}
+
 .border-radius-13{
   border-radius: 13px!important;
 }
@@ -237,6 +245,19 @@
     border-radius: 12px 12px 0px 0px!important;
 }
 
+.width-10{
+  width: 10%;
+}
+
+.width-20{
+  width: 20%;
+}
+
+.width-30{
+  width: 30%;
+}
+
+
 .width-70{
   width: 70%;
 }
@@ -247,6 +268,44 @@
     background: #d9d9d9;
 
 }
+
+.flexible-label {
+           
+          
+            float:left;
+            word-wrap: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+        }
+
+.flexible-text {
+            width: 140px; /* Set the container width */
+              float:left;
+            word-wrap: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+        }
+
+ .flexible-text-description {
+            width:320px; /* Set the container width */
+              float:left;
+            word-wrap: break-word;
+            white-space: normal;
+            overflow-wrap: break-word;
+        }       
+
+ .border-grey{
+    border: 1px solid #ddd!important;
+ }
+
+
+ .border-bottom-table{
+    border-bottom: 1px solid #ddd!important;
+ }
+
+ .border-top-table{
+    border-top: 1px solid #ddd!important;
+ }            
 
 .image-preview img{
     width: 200px;
@@ -565,13 +624,12 @@
 
 .checkbox-label {
     width: 50%;
-    padding: 5px;
+    padding: 5px 8px;
 }
 
 .nav-tabs-custom>.tab-content {
     padding: 12px 12px!important;
 }
-
 
 .padding-05-05{
     padding: 5px;
@@ -995,7 +1053,7 @@
 }
 
 .sidebar-menu>li>a {
-    padding: 12px 12px!important;
+    padding: 7px 12px!important;
      font-weight: 500;
 }
 
@@ -1005,10 +1063,10 @@
      padding: 8px 10px; 
 }
 .skin-blue .sidebar-menu>li:hover>a,.skin-blue .sidebar-menu>li.active>a,.skin-blue .sidebar-menu>li.menu-open>a,.skin-blue .sidebar-menu>li.menu-open>a>.fa-icon>span:hover,.skin-blue .sidebar-menu>li.menu-open>a>.fa-icon>span:focus {
-    color: #fff!important;
-    background: #0e298f!important;
-    
-    box-shadow: 0px 2px 0px 0px #000;
+    color: #0e298f!important;
+    background: #fff!important;
+    border-radius: 10px;
+    /*box-shadow: 0px 2px 0px 0px #000;*/
 }
 
 .sidebar-menu>li>a>.fa-icon,.treeview-menu>li>a>.fa-icon{

@@ -38,7 +38,7 @@ class AuditLogApiController extends Controller
     {
         $search = $request->search;
         $_res = array();
-        $column_search  = array('created_by', 'action');
+        $column_search  = array('created_by', 'category','group_menu','role_user');
 
         $i = 0;
         $query  = AuditLog::orderBy('id', 'DESC');

@@ -20,10 +20,7 @@ class ForumApiController extends Controller
 {
 
    
-    public function __construct()
-    {   
-         $this->perPage = GeneralPaginate::limit();
-    }
+   
 
     public function index(Request $request)
     {
@@ -105,16 +102,13 @@ class ForumApiController extends Controller
            $insert = RequestForum::fieldsDataTopic($request);  
 
 
-            $json = json_encode($insert);
             $log = array(             
-            'action'=> 'Insert Topik',
-            'slug'=>'insert-topik',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/topic'
+            'category'=> 'LOG_DATA_TOPIK',
+            'group_menu'=>'upload_data_topik',
+            'description'=>'Menambahkan data topik <b>'.$request->name.'</b>',
             );
-
             $datalog = RequestAuditLog::fieldsData($log);
+
             //create menu
            $saveData = Topic::create($insert);
            $messages = RequestForum::fieldsDataTopicDetail($saveData->id,$request);
@@ -145,15 +139,11 @@ class ForumApiController extends Controller
 
             
 
-            $json = json_encode($insert);
-            $log = array(             
-            'action'=> 'Insert Komentar',
-            'slug'=>'insert-komentar',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/topic/comment'
+             $log = array(             
+            'category'=> 'LOG_DATA_KOMENTAR',
+            'group_menu'=>'upload_data_komentar',
+            'description'=>'Menambahkan data komentar <b>'.$request->name.'</b>',
             );
-
             $datalog = RequestAuditLog::fieldsData($log);
 
             //create menu
@@ -246,15 +236,14 @@ class ForumApiController extends Controller
             
             $insert = RequestForum::fieldsData($request); 
             $json = json_encode($insert);
-            $log = array(             
-            'action'=> 'Insert Forum',
-            'slug'=>'insert-forum',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/forum'
+            
+             $log = array(             
+            'category'=> 'LOG_DATA_FORUM',
+            'group_menu'=>'upload_data_forum',
+            'description'=>'Menambahkan data forum <b>'.$request->category.'</b>',
             );
-
             $datalog = RequestAuditLog::fieldsData($log);
+
 
             //create menu
            $saveData = Forum::create($insert);
@@ -275,18 +264,13 @@ class ForumApiController extends Controller
             
                $update = RequestForum::fieldsData($request);
                //Audit Log
-                $json = json_encode($update);
-                
-                $log = array(             
-                'action'=> 'Update Forum',
-                'slug'=>'update-forum',
-                'type'=>'put',
-                'json_field'=> $json,
-                'url'=>'api/forum/'.$id
+                 $log = array(             
+                'category'=> 'LOG_DATA_FORUM',
+                'group_menu'=>'mengubah_data_forum',
+                'description'=>'Mengubah data forum <b>'.$request->category.'</b>',
                 );
-
-                $datalog =  RequestAuditLog::fieldsData($log);
-
+                $datalog = RequestAuditLog::fieldsData($log);
+                //Audit Log
                 //update account
                $UpdateData = Forum::where('id',$id)->update($update);
                 //result
@@ -307,19 +291,13 @@ class ForumApiController extends Controller
         }else{
             
                 $update = array('messages'=>$request->comment);
-                $json = json_encode($update);
-                
-                $log = array(             
-                'action'=> 'Replay Komentar',
-                'slug'=>'replay-komentar',
-                'type'=>'put',
-                'json_field'=> $json,
-                'url'=>'masalah/update-replay/'.$id
+                 $log = array(             
+                'category'=> 'LOG_DATA_REPLAY',
+                'group_menu'=>'mengubah_data_replay',
+                'description'=>'Mengubah data replay <b>'.$request->category.'</b>',
                 );
+                $datalog = RequestAuditLog::fieldsData($log);
 
-                $datalog =  RequestAuditLog::fieldsData($log);
-
-                //update account
                 $UpdateData = TopicDetail::where('id',$id)->update($update);
                 //result
                return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
@@ -332,18 +310,15 @@ class ForumApiController extends Controller
     public function deletereplay($id){
         $messages['messages'] = false;
         $_res = TopicDetail::find($id);
-
-         $json = json_encode($_res);
-        //Audit Log
+         
+        $find = TopicDetail::where('role_id',$key)->first();
         $log = array(             
-        'action'=> 'Delete Replay',
-        'slug'=>'delete-replay',
-        'type'=>'delete',
-        'json_field'=> $json,
-        'url'=>'api/topic/'.$id
-        );
-
-        RequestAuditLog::fieldsData($log);
+                'category'=> 'LOG_DATA_FORUM',
+                'group_menu'=>'menghapus_data_forum',
+                'description'=> '<b>'.$find->category.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log); 
+         
           
         if(empty($_res)){
             return response()->json(['messages' => false]);
@@ -366,17 +341,7 @@ class ForumApiController extends Controller
         }
 
 
-        $json = json_encode($request->data);
-        //Audit Log
-        $log = array(             
-        'action'=> 'Delete Forum Select',
-        'slug'=>'delete-forum-select',
-        'type'=>'post',
-        'json_field'=> $json,
-        'url'=>'api/forum/selected'
-        );
-
-        RequestAuditLog::fieldsData($log);
+        
 
         if($results){
             $messages['messages'] = true;
@@ -392,17 +357,13 @@ class ForumApiController extends Controller
         $messages['messages'] = false;
         $_res = Forum::find($id);
 
-        $json = json_encode($_res);
-        //Audit Log
-        $log = array(             
-        'action'=> 'Delete Forum',
-        'slug'=>'delete-forum',
-        'type'=>'delete',
-        'json_field'=> $json,
-        'url'=>'api/forum/'.$id
-        );
+         $log = array(             
+            'category'=> 'LOG_DATA_FORUM',
+            'group_menu'=>'menghapus_data_forum',
+            'description'=> '<b>'.$_res->category.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
 
-        RequestAuditLog::fieldsData($log);
           
         if(empty($_res)){
             return response()->json(['messages' => false]);

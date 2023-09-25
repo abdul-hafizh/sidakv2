@@ -19,12 +19,14 @@ class AuditLog extends Model
 
     public $fillable = [
      
-        'action',
-        'type',
-        'json_field',
-        'slug',
-        'url',
-        'created_by'
+        'category',
+        'group_menu',
+        'description',
+        'client_ip',
+        'user_agent',
+        'role_user',
+        'created_by',
+
        
     ];
 

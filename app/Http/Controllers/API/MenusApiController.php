@@ -15,6 +15,7 @@ use App\Models\MenuPosition;
 use DB;
 use File;
 use Auth;
+use App\Http\Request\RequestAuditLog;
 
 class MenusApiController extends Controller
 {
@@ -124,6 +125,14 @@ class MenusApiController extends Controller
                 $merge = $insert;
             }
 
+
+            $log = array(             
+            'category'=> 'LOG_DATA_MENU',
+            'group_menu'=>'upload_data_menu',
+            'description'=>'Menambahkan data menu <b>'.$request->name.'</b>',
+            );
+            $datalog = RequestAuditLog::fieldsData($log);
+
            $saveAccount = Menus::create($merge);
            return response()->json(['status'=>true,'id'=>$saveAccount,'message'=>'Insert data sucessfully']);    
             
@@ -166,6 +175,15 @@ class MenusApiController extends Controller
 
             }
 
+
+                $log = array(             
+                'category'=> 'LOG_DATA_MENU',
+                'group_menu'=>'mengubah_data_menu',
+                'description'=>'Mengubah data menu <b>'.$request->name.'</b>',
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
+                //Audit Log
+
             $UpdateAccount = Menus::where('id',$id)->update($merge);
             return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
         
@@ -188,6 +206,13 @@ class MenusApiController extends Controller
                File::delete(public_path() .$fileDir.$_res->icon);
             } 
         }
+
+        $log = array(             
+            'category'=> 'LOG_DATA_MENU',
+            'group_menu'=>'menghapus_data_menu',
+            'description'=> '<b>'.$_res->name.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
 
         
 

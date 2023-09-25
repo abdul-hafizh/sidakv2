@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="clear-input close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Kabupaten</h4>
       </div>
       <form  id="FormSubmit" >
@@ -16,25 +16,25 @@
             <div id="kode-alert" class="form-group has-feedback" >
               <label>Kode Kabupaten</label>
               <input type="text" maxlength="4" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"  name="id" placeholder="Kode Kabupaten" value="">
-              <span id="kode-messages"></span>
+              <span id="kode-messages" class="span-messages"></span>
             </div>
 
             <div id="name-alert" class="form-group has-feedback" >
               <label>Nama</label>
               <input type="text" class="form-control" name="name" placeholder="Nama" value="">
-              <span id="name-messages"></span>
+              <span id="name-messages" class="span-messages"></span>
             </div>
 
             <div id="province-id-alert" class="form-group has-feedback">
                     <label>Provinsi </label>
                   <select id="province_id" class="selectpicker form-control" data-live-search="true" title="Pilih Provinsi"  name="province_id" ></select>
-                  <span id="province-id-messages"></span>
+                  <span id="province-id-messages" class="span-messages"></span>
             </div>
             
        
       </div>
       <div class="modal-footer">
-        <button type="button" id="close2" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>
@@ -50,14 +50,7 @@
  $(function(){
 
 
-   $("#close1").click(()=> {  
-      DefaultNull();
-   });
-
-   $("#close2").click(()=> {  
-      DefaultNull();
-   });
-
+   
 
         $.ajax({
           url: BASE_URL +'/api/select-province',
@@ -155,14 +148,7 @@
           });
      });
 
-       function DefaultNull()
-       {
-   
-           $("input").val(null);
-           $('#province_id').selectpicker('val', 'null');
-           $('#modal-add').modal('toggle');
-
-        }
+      
 
   });
 </script>

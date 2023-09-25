@@ -23,7 +23,7 @@
 		<div class="width-50 pull-left">
             <div class="pull-left padding-9-0 margin-left-button">
                
-				<select id="row_page" class="selectpicker" data-style="btn-default" >
+				<select id="row_page" class="selectpicker" data-style="bg-navy" >
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
 					<option value="50">50</option>
@@ -364,6 +364,7 @@
 
                 // Handle success (e.g., remove deleted items from the list)
                 fetchData(page);
+                $('#delete-selected').prop("disabled", true);
             },
             error: function(error) {
                 console.error('Error deleting items:', error);
@@ -506,7 +507,7 @@
              
             let id = e.currentTarget.dataset.param_id;
             const item = list.find(o => o.id === id); 
-
+             SelectProvinsi(item);
 		   
             
             let row = ``;
@@ -514,7 +515,7 @@
                 row +=`<div class="modal-content">`;
 
 				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" id="close1" data-dismiss="modal" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<button type="button"  data-dismiss="modal" class="clear-input close" data-dismiss="modal">&times;</button>`;
 				         row +=`<h4 class="modal-title">Edit Kabupaten</h4>`;
 				       row +=`</div>`;
 
@@ -524,13 +525,13 @@
                                   row +=`<div id="kode-alert-`+ item.id +`" class="form-group has-feedback" >`;
                                   row +=`<label>Kode Kabupaten</label>`;
                                   row +=`<input maxlength="4" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="id" placeholder="Kode Kabupaten" value="`+ item.id +`">
-                                  <span id="kode-messages-`+ item.id +`"></span>`;
+                                  <span id="kode-messages-`+ item.id +`" class="span-messages"></span>`;
                                  row +=`</div>`;
                              
 				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
 				                  row +=`<label>Nama</label>`;
 				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
-				                  <span id="name-messages-`+ item.id +`"></span>`;
+				                  <span id="name-messages-`+ item.id +`" class="span-messages"></span>`;
 				                 row +=`</div>`;
 
 
@@ -538,16 +539,16 @@
 
 				                     row +=`<label>Provinsi </label>`;
 
-				                   row +=`<select id="province-id-`+ item.id +`" class="selectpicker form-control" title="Pilih Provinsi" data-live-search="true"   name="province_id" ></select>`;
+				                   row +=`<select id="province-id-`+ item.id +`" class="selectpicker form-control"  data-live-search="true"   name="province_id" ></select>`;
 
-				                   row +=`<span id="province-id-messages-`+ item.id +`"></span>`;
+				                   row +=`<span id="province-id-messages-`+ item.id +`" class="span-messages"></span>`;
 				                 row +=`</div>`;
 
 
 					        row +=`</div>`;
 
                             row +=`<div class="modal-footer">`;
-						        row +=`<button id="close2" type="button" class="btn btn-default" id="close" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button type="button" class="clear-input btn btn-default" id="close" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
@@ -563,14 +564,8 @@
             $('#FormEdit-'+ item.id).html(row);
 
 
-            SelectProvinsi(item);
-            $("#close1").click(()=> {  
-              DefaultNull(item.id);
-           });
-
-            $("#close2").click(()=> {  
-              DefaultNull(item.id);
-           });
+           
+           
 
           
            
@@ -694,17 +689,10 @@
         
     }
 
-    function DefaultNull(id){
 
-           
-           $("input").val(null);
-           $('#province-id-'+ id).selectpicker('val', 'null');          
-           $('#modal-edit-'+ id).modal('toggle');
 
-    }
 
     function SelectProvinsi(item){
-        console.log(SelectProvinsi)
         $.ajax({
                 url: BASE_URL +'/api/select-province',
                 method: 'GET',
@@ -713,7 +701,7 @@
                   var select =  $('#province-id-'+item.id)
 
                  // Clear existing options
-                 //select.empty();
+                 select.empty();
 
                   // Populate options from the received data
                   $.each(data, function(index, option) {

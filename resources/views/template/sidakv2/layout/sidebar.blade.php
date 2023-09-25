@@ -37,12 +37,16 @@
 
 <script type="text/javascript">
 	 $(function(){
+
+
+
+        var findlast = {}; 
 	 	var photo = '';
         const apps  = JSON.parse(localStorage.getItem('apps')); 
         const user_sidebar  = JSON.parse(localStorage.getItem('user_sidebar'));
 
         let sidebar = localStorage.getItem('menu_sidebar');
-        let action =  JSON.parse(sidebar);
+        var action =  JSON.parse(sidebar);
          getMenuSidebar(action);
         
        
@@ -140,11 +144,11 @@
 			        if(item.count>0)
 					{
 			           
-			            row +=`<li id="class-menu" data-param_id="${item.slug}" class="${item.class}" style="height: auto;">`;
+			            row +=`<li id="class-menu" data-param_id="${item.slug}" class="li-menu ${item.class}" style="height: auto;">`;
 			            row +=`<a>`;
 			         }else{
 	                     
-	                    row +=`<li id="class-menu" class="${item.class}" data-param_id="${item.slug}">`;
+	                    row +=`<li id="class-menu" class="li-menu ${item.class}" data-param_id="${item.slug}">`;
 	                    row +=`<a href="${item.url}">`;
 
 			         }
@@ -168,7 +172,7 @@
 				    }		
                              for(let i=0; i<item.tasks.length; i++)
 							 {   
-							    row +=`<li >`;
+							    row +=`<li class="li-menu">`;
 							        row +=`<a href="`+ item.tasks[i].url +`">`;
 							            row +=`<i class="po-top-menu fa-icon `+ item.tasks[i].icon +`"></i>`; 
 							             row +=`<span class="title-menu" > `+ item.tasks[i].name +`</span>`;
@@ -185,7 +189,43 @@
 
 		        });
 
+		        
+
 		    }  
+
+		    $('.li-menu').hover((e) => {
+			        //$('.li-menu').removeClass('menu-open active').addClass('active-disabled');
+			        let menu = e.currentTarget.dataset.param_id;
+			        $('.icon-'+ menu).removeClass('icon-'+ menu).addClass('icon-'+ menu+'-hover');
+                   
+                    findlast = data.find(o => o.active === true);
+                    
+
+                    if(menu != findlast.slug)
+                    {
+                        $('.icon-'+ findlast.slug +'-hover').removeClass('icon-'+ findlast.slug+'-hover').addClass('icon-'+ findlast.slug);
+                        $('.'+findlast.slug).removeClass('menu-open active');
+
+                    }
+                  
+                    
+
+			    }, function (e) {
+			    	let menu = e.currentTarget.dataset.param_id;
+			    	  
+			        $('.icon-'+ menu +'-hover').removeClass('icon-'+ menu+'-hover').addClass('icon-'+ menu);
+
+			         if(menu != findlast.slug)
+                    {
+
+	                    $('.icon-'+ findlast.slug).removeClass('icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
+				        $('.'+findlast.slug).addClass('menu-open active');
+				    } else{
+
+				    	$('.icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
+				    }   
+			 
+			    });
 
 
 		    $( "#menu-sidebar" ).on( "click", "#class-menu", (e) => {

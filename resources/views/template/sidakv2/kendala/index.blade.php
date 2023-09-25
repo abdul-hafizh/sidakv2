@@ -16,7 +16,7 @@
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-				<select id="row_page" class="selectpicker" data-style="btn-default" >
+				<select id="row_page" class="selectpicker" data-style="bg-navy" >
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
 					<option value="50">50</option>
@@ -24,12 +24,12 @@
 					<option value="all">All</option>
 				</select>
             </div>
-			<div id="ShowChecklist" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
+			<!-- <div id="ShowChecklist" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
 
-			</div>
+			</div> -->
 
 			<div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
@@ -38,11 +38,11 @@
             </div>
 
 			
-			<div id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
+			<!-- <div id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
 				 Tambah Data
 				</button> 
-		    </div>	
+		    </div> -->	
 
 				
 		</div> 
@@ -65,8 +65,8 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th id="ShowChecklistAll" style="display:none;"><input id="select-all" class="span-title" type="checkbox"></th>
-							<th><div id="ShowChecklistAll" style="display:none;"  class="split-table"></div><span class="span-title">No</span></th>
+							<!-- <th id="ShowChecklistAll" style="display:none;"><input id="select-all" class="span-title" type="checkbox"></th> -->
+							<th><span class="span-title">No</span></th>
 							<th><div class="split-table"></div><span class="span-title">Kategori</span></th>
 							<th><div class="split-table"></div><span class="span-title">Keterangan</span></th>
 							<th id="ShowStatus" style="display:none;"><div class="split-table"></div><span class="span-title">Status</span></th>
@@ -89,7 +89,7 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	</div>
 </div>
-  @include('template/sidakv2/kendala.add')    
+ <!--  @include('template/sidakv2/kendala.add')    --> 
   @include('template/sidakv2/kendala.exportKriteria')
 <script type="text/javascript">
 
@@ -303,10 +303,10 @@
     // Function to update the content area with data
     function updateContent(data,options) {
        
-        const edited = options.find(o => o.action === 'edit');
-        const deleted = options.find(o => o.action === 'delete');
+        // const edited = options.find(o => o.action === 'edit');
+        // const deleted = options.find(o => o.action === 'delete');
         const detail = options.find(o => o.action === 'detail');
-        const checklist = options.find(o => o.action === 'checklist');
+        // const checklist = options.find(o => o.action === 'checklist');
         const created = options.find(o => o.action === 'dibuat');
         const status = options.find(o => o.action === 'status');
         // Clear previous data
@@ -318,10 +318,10 @@
 	        data.forEach(function(item, index) {
 	           	let row = ``;
 	             row +=`<tr>`;
-	              if(checklist.checked == true)
-                  {
-	               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-	               } 
+	              // if(checklist.checked == true)
+               //    {
+	              //  row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	              //  } 
 	               row +=`<td>${item.number}</td>`;
 	               row +=`<td>${item.category }</td>`;
 	               
@@ -345,22 +345,22 @@
                 } 	
 	                
 
-	            if(edited.checked == true)
-                {  
+	            // if(edited.checked == true)
+             //    {  
     
-	                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;	
+	            //     row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;	
 
-	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-	                row +=`<div id="FormEdit-${item.id}"></div>`;
-	                row +=`</div>`;
+	            //     row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+	            //     row +=`<div id="FormEdit-${item.id}"></div>`;
+	            //     row +=`</div>`;
 
-	            }     
+	            // }     
 
 
-                if(deleted.checked == true) 
-                {
-	                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-	            }    
+             //    if(deleted.checked == true) 
+             //    {
+	            //     row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	            // }    
 
 	                row +=`</div>`;
 	                row +=`</td>`;
@@ -829,6 +829,7 @@
             success: function(response) {
                 // Handle success (e.g., remove deleted items from the list)
                 fetchData(page);
+                $('#delete-selected').prop("disabled", true);
             },
             error: function(error) {
                 console.error('Error deleting items:', error);

@@ -82,16 +82,13 @@ class KriteriaApiController extends Controller
             
            $insert = RequestKriteria::fieldsData($request);
 
-           $json = json_encode($insert);
+          
             $log = array(             
-            'action'=> 'Insert Kriteria',
-            'slug'=>'insert-kriteria',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/kriteria'
+            'category'=> 'LOG_DATA_KRITERIA',
+            'group_menu'=>'upload_data_kriteria',
+            'description'=>'Menambahkan data kriteria <b>'.$request->category.'</b>',
             );
-
-            $datalog = RequestAuditLog::fieldsData($log);  
+            $datalog = RequestAuditLog::fieldsData($log);
             //create menu
            $saveData = Kriteria::create($insert);
             //result
@@ -110,17 +107,13 @@ class KriteriaApiController extends Controller
             
                $update = RequestKriteria::fieldsData($request);
 
-                $json = json_encode($update);
-                
                 $log = array(             
-                'action'=> 'Update Kriteria',
-                'slug'=>'update-kriteria',
-                'type'=>'put',
-                'json_field'=> $json,
-                'url'=>'api/kriteria/'.$id
+                'category'=> 'LOG_DATA_KRITERIA',
+                'group_menu'=>'mengubah_data_kriteria',
+                'description'=>'Mengubah data kriteria <b>'.$request->category.'</b>',
                 );
-
-                $datalog =  RequestAuditLog::fieldsData($log);
+                $datalog = RequestAuditLog::fieldsData($log);
+                //Audit Log
 
                 //update account
                $UpdateData = Kriteria::where('id',$id)->update($update);
@@ -135,20 +128,15 @@ class KriteriaApiController extends Controller
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
 
-        $json = json_encode($request->data);
-        //Audit Log
-        $log = array(             
-        'action'=> 'Delete Kriteria Select',
-        'slug'=>'delete-kriteria-select',
-        'type'=>'post',
-        'json_field'=> $json,
-        'url'=>'api/kriteria/selected/'
-        );
-
-        RequestAuditLog::fieldsData($log);
-
         foreach($request->data as $key)
         {
+            $find = Kriteria::where('id',$key)->first();
+            $log = array(             
+                'category'=> 'LOG_DATA_KRITERIA',
+                'group_menu'=>'menghapus_data_kriteria',
+                'description'=> '<b>'.$find->category.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
             $results = Kriteria::where('id',(int)$key)->delete();
         }
 
@@ -163,17 +151,14 @@ class KriteriaApiController extends Controller
     public function delete($id){
         $messages['messages'] = false;
         $_res = Kriteria::find($id);
-        $json = json_encode($_res);
-        //Audit Log
-        $log = array(             
-        'action'=> 'Delete Kriteria',
-        'slug'=>'delete-kriteria',
-        'type'=>'delete',
-        'json_field'=> $json,
-        'url'=>'api/kriteria/'.$id
-        );
+        
+          $log = array(             
+            'category'=> 'LOG_DATA_KRITERIA',
+            'group_menu'=>'menghapus_data_kriteria',
+            'description'=> '<b>'.$_res->category.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
 
-        RequestAuditLog::fieldsData($log);  
         if(empty($_res)){
             return response()->json(['messages' => false]);
         }

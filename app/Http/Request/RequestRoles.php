@@ -70,7 +70,7 @@ class RequestRoles
   }
 
 
-  public static function GetRoleWhere($id,$type){
+   public static function GetRoleUserWhere($id,$type){
 
     $data = RoleUser::where('user_id',$id)->first();
     if($data)
@@ -80,6 +80,25 @@ class RequestRoles
           $result = $data->role->id;
        }else{
           $result = $data->role->slug;
+       }  
+      
+    }else{
+       $result = null;
+    }    
+    return $result; 
+  }
+
+
+  public static function GetRoleWhere($id,$type){
+
+    $data = Roles::find($id);
+    if($data)
+    {
+       if($type =='name')
+       {
+          $result = $data->name;
+       }else{
+          $result = $data->slug;
        }  
       
     }else{
