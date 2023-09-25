@@ -58,8 +58,8 @@
                 </select>
             </div>  
             <div id="ShowChecklist" style="display:none;" class="pull-left padding-9-0 margin-left-button">
-                <button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
-                     Hapus
+                <button type="button" disabled id="approve-selected" class="btn btn-danger border-radius-10">
+                     Approve
                 </button>
             </div>
              <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
@@ -224,9 +224,9 @@
             const checkedCount =  $('.item-checkbox:checked').length;
             if(checkedCount >0)
             {
-                $('#delete-selected').prop("disabled", false);
+                $('#approve-selected').prop("disabled", false);
             } else {
-                $('#delete-selected').prop("disabled", true);
+                $('#approve-selected').prop("disabled", true);
             }
         });
 
@@ -235,13 +235,13 @@
             $('#search-input').val('');
         });
 
-        $('#delete-selected').on('click', function() {
+        $('#approve-selected').on('click', function() {
             const selectedIds = [];
             $('.item-checkbox:checked').each(function() {
                 selectedIds.push($(this).data('id'));
             });
 
-            deleteItems(selectedIds);
+            approveItems(selectedIds);
         });
 
         $('.item-checkbox').on('change', function() {
@@ -262,9 +262,9 @@
             });
         });
 
-        function deleteItems(ids) {        
+        function approveItems(ids) {        
             $.ajax({
-                url:  BASE_URL +`/api/perencanaan/selected`,
+                url:  BASE_URL +`/api/perencanaan/approve_selected`,
                 method: 'POST',
                 data: { data: ids },
                 success: function(response) {
@@ -395,9 +395,9 @@
                 const checkedCount = $('.item-checkbox:checked').length;
                 if(checkedCount>0)
                 {
-                    $('#delete-selected').prop("disabled", false);
+                    $('#approve-selected').prop("disabled", false);
                 } else {
-                    $('#delete-selected').prop("disabled", true);
+                    $('#approve-selected').prop("disabled", true);
                 }  
             });
 
