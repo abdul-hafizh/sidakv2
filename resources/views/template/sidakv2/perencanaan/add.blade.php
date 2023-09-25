@@ -40,6 +40,7 @@
                                         <label class="col-sm-5 label-header-box form-group margin-none">Pilih Periode :</label>
                                         <div class="col-sm-7">
                                              <div id="selectPeriode" class="form-group margin-none"></div>
+                                             <span id="periode-id-messages"></span>
                                              <input type="hidden" id="pagu_apbn_inp">
                                              <input type="hidden" id="total_target_bimtek_inp">
                                              <input type="hidden" id="total_rencana_inp">
@@ -820,7 +821,7 @@
 
                          if(errors.messages.periode_id)
                          {
-                              $('#periode-alert').addClass('has-error');
+                              $('#periode-id-alert').addClass('has-error');
                               $('#selectPeriode').addClass('has-error');
                               $('#periode-id-messages').addClass('help-block').html('<strong>'+ errors.messages.periode_id +'</strong>');
                          } else {
