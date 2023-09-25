@@ -486,18 +486,18 @@
                                    rows_btn+= download_link;
                               }
                               if(data.status_code == 15 && data.request_edit == 'false') {
-                                   rows_btn+= '<button id="req_doc" type="button" class="btn btn-primary col-md-2">Approve</button>';
-                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove">Unapprove</button>';
+                                   rows_btn+= '<button id="req_doc" type="button" class="btn btn-primary col-md-2"><i class="fa fa-check"></i> Approve</button>';
+                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove"><i class="fa fa-ban"></i> Unapprove</button>';
                               }
                               if(data.status_code == 14 && data.request_edit == 'false') {
                                    rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>';
-                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove-doc">Unapprove</button>';
+                                   rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove-doc"><i class="fa fa-ban"></i> Unapprove</button>';
                               }
                               if(data.status_code == 15 && data.request_edit == 'true') {
-                                   rows_btn+= '<button id="approve_edit" type="button" class="btn btn-primary col-md-2">Approve Request Edit</button>';
+                                   rows_btn+= '<button id="approve_edit" type="button" class="btn btn-primary col-md-2"><i class="fa fa-check"></i> Approve Request Edit</button>';
                               }
                               if(data.status_code == 16 && data.request_edit == 'false') {                                   
-                                   rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqrevisi">Request Edit</button>';
+                                   rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqrevisi"><i class="fa fa-pencil"></i> Request Edit</button>';
                               }                              
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
@@ -511,7 +511,7 @@
                               if(data.lap_rencana != '') {
                                    rows_btn+= download_link;
                               }
-                              rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit">Request Edit</button>';
+                              rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit"><i class="fa fa-pencil"></i> Request Edit</button>';
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
 
