@@ -490,7 +490,7 @@
                                    rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove"><i class="fa fa-ban"></i> Unapprove</button>';
                               }
                               if(data.status_code == 14 && data.request_edit == 'false') {
-                                   rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>';
+                                   rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2"><i class="fa fa-check"></i> Approve</button>';
                                    rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove-doc"><i class="fa fa-ban"></i> Unapprove</button>';
                               }
                               if(data.status_code == 15 && data.request_edit == 'true') {
