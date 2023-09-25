@@ -174,7 +174,17 @@
 
 
 
+.icon-updating-data{
+    background: url('../img/menu/rekapitulasi.png');
+    background-repeat: no-repeat;
+   
+}
 
+.icon-updating-data-hover{
+    background: url('../img/menu/hover/rekapitulasi.png');
+    background-repeat: no-repeat;
+   
+}
 
 
 

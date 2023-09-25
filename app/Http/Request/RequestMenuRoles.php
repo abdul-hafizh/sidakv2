@@ -466,17 +466,17 @@ class RequestMenuRoles
             
             'name'=>'Dashboard',
             'slug'=>'dashboard',
-            'icon'=>'fa-img-home',
+            'icon'=>'icon-dashboard-hover',
             'url'=>'/dashboard',
             'count'=>0,
             'active'=>true,
-            'class'=>'treeview menu-open active',
+            'class'=>'dashboard treeview menu-open active',
             'tasks'=>[], // dashboard
         ],
         [ 
             'name'=>'Pagu APBN',
             'slug'=>'pagu-apbn',
-            'icon'=>'fa-img-pagu',
+            'icon'=>'icon-pagu-apbn',
             'url'=>'/pagutarget',
             'count'=>0,
             'active'=>false,
@@ -485,18 +485,18 @@ class RequestMenuRoles
 
         ],
         [
-            'name'=>'Monitoring',
-            'slug'=>'monitoring',
-            'icon'=>'fa-img-monitoring',
-            'url'=>'#',
+            'name'=>'Updating Data',
+            'slug'=>'updating-data',
+            'icon'=>'icon-updating-data',
+            'url'=>'',
             'count'=>7,
             'active'=>false,
-            'class'=>'',
+            'class'=>'updating-data treeview',
             'tasks'=> array(
-                [
+               [
                     'name'=>'Pagu APBN',
                     'slug'=>'pagu-apbn',
-                    'icon'=>'fa-img-pagu',
+                    'icon'=>'icon-pagu-apbn',
                     'url'=>'/pagutarget',
                     'tasks'=>[],  
                ],[
@@ -534,34 +534,35 @@ class RequestMenuRoles
             ],[
                 'name'=>'Imap',
                 'slug'=>'imap',
-                'icon'=>'fa-img-promosi',
+                'icon'=>'fa-img-imaps',
                 'url'=>'/imap',
                 'tasks'=>[],
             ]
 
-           ), //monitoring
+           ), // monitoring
             
         ],
+       
         [
             'name'=>'Tools',
             'slug'=>'tools',
-            'icon'=>'fa-img-ma-user',
-            'url'=>'#',
+            'icon'=>'icon-tools',
+            'url'=>'',
             'count'=>3,
             'active'=>false,
-            'class'=>'treeview',
+            'class'=>'tools treeview',
             'tasks'=> array(
                 [
                     'name'=>'Kendala',
                     'slug'=>'kendala',
-                    'icon'=>'fa-img-kendala',
+                    'icon'=>'icon-kriteria-kendala',
                     'url'=>'/kendala',
                     'tasks'=>[],  
                ],[
 
                     'name'=>'Forum',
                     'slug'=>'forum',
-                    'icon'=>'fa-img-forum',
+                    'icon'=>'icon-forum',
                     'url'=>'/forum',
                     'tasks'=>[],
              
@@ -570,26 +571,27 @@ class RequestMenuRoles
            ), // tools
             
         ],
+        
         [
             'name'=>'Pelaporan',
             'slug'=>'pelaporan',
-            'icon'=>'fa-img-monitoring',
-            'url'=>'#',
+            'icon'=>'icon-pelaporan',
+            'url'=>'',
             'count'=>7,
             'active'=>false,
-            'class'=>'treeview',
+            'class'=>'pelaporan treeview',
             'tasks'=> array(
                 [
                     'name'=>'Rekapitulasi',
                     'slug'=>'rekapitulasi',
-                    'icon'=>'fa-img-pagu',
+                    'icon'=>'fa-img-rekap',
                     'url'=>'/rekapitulasi',
                     'tasks'=>[],  
                 ],
                 [
                     'name'=>'Pagu APBN',
                     'slug'=>'pagu-apbn',
-                    'icon'=>'fa-img-pagu',
+                    'icon'=>'icon-pagu-apbn',
                     'url'=>'/pagutarget',
                     'tasks'=>[],  
                ],[
@@ -627,14 +629,14 @@ class RequestMenuRoles
             ],[
                 'name'=>'Imap',
                 'slug'=>'imap',
-                'icon'=>'fa-img-promosi',
+                'icon'=>'fa-img-imaps',
                 'url'=>'/imap',
                 'tasks'=>[],
             ]
             ,[
                 'name'=>'Kendala',
                 'slug'=>'kendala',
-                'icon'=>'fa-img-kendala',
+                'icon'=>'icon-kriteria-kendala',
                 'url'=>'/kendala',
                 'tasks'=>[],
             ]
@@ -661,22 +663,22 @@ class RequestMenuRoles
             
             'name'=>'Dashboard',
             'slug'=>'dashboard',
-            'icon'=>'fa-img-home',
+            'icon'=>'icon-dashboard-hover',
             'url'=>'/dashboard',
             'count'=>0,
             'active'=>true,
-            'class'=>'treeview menu-open active',
+            'class'=>'dashboard treeview menu-open active',
             'tasks'=>[], // dashboard
         ],
        
         [
             'name'=>'Updating Data',
             'slug'=>'updating-data',
-            'icon'=>'fa-img-monitoring',
+            'icon'=>'icon-updating-data',
             'url'=>'#',
             'count'=>7,
             'active'=>false,
-            'class'=>'',
+            'class'=>'updating-data treeview',
             'tasks'=> array(
                [
 
@@ -724,23 +726,23 @@ class RequestMenuRoles
         [
             'name'=>'Tools',
             'slug'=>'tools',
-            'icon'=>'fa-img-ma-user',
-            'url'=>'#',
+            'icon'=>'icon-tools',
+            'url'=>'',
             'count'=>3,
             'active'=>false,
-            'class'=>'treeview',
+            'class'=>'tools treeview',
             'tasks'=> array(
                 [
                     'name'=>'Kendala',
                     'slug'=>'kendala',
-                    'icon'=>'fa-img-kendala',
+                    'icon'=>'icon-kriteria-kendala',
                     'url'=>'/kendala',
                     'tasks'=>[],  
                ],[
 
                     'name'=>'Forum',
                     'slug'=>'forum',
-                    'icon'=>'fa-img-forum',
+                    'icon'=>'icon-forum',
                     'url'=>'/forum',
                     'tasks'=>[],
              
@@ -752,23 +754,23 @@ class RequestMenuRoles
         [
             'name'=>'Pelaporan',
             'slug'=>'pelaporan',
-            'icon'=>'fa-img-monitoring',
-            'url'=>'#',
+            'icon'=>'icon-pelaporan',
+            'url'=>'',
             'count'=>7,
             'active'=>false,
-            'class'=>'treeview',
+            'class'=>'pelaporan treeview',
             'tasks'=> array(
                 [
                     'name'=>'Rekapitulasi',
                     'slug'=>'rekapitulasi',
-                    'icon'=>'fa-img-pagu',
+                    'icon'=>'fa-img-rekap',
                     'url'=>'/rekapitulasi',
                     'tasks'=>[],  
                 ],
                 [
                     'name'=>'Pagu APBN',
                     'slug'=>'pagu-apbn',
-                    'icon'=>'fa-img-pagu',
+                    'icon'=>'icon-pagu-apbn',
                     'url'=>'/pagutarget',
                     'tasks'=>[],  
                ],[
@@ -806,14 +808,14 @@ class RequestMenuRoles
             ],[
                 'name'=>'Imap',
                 'slug'=>'imap',
-                'icon'=>'fa-img-promosi',
+                'icon'=>'fa-img-imaps',
                 'url'=>'/imap',
                 'tasks'=>[],
             ]
             ,[
                 'name'=>'Kendala',
                 'slug'=>'kendala',
-                'icon'=>'fa-img-kendala',
+                'icon'=>'icon-kriteria-kendala',
                 'url'=>'/kendala',
                 'tasks'=>[],
             ]
@@ -835,62 +837,21 @@ class RequestMenuRoles
 
        
         $data = array(
-        [
+       [
             
             'name'=>'Dashboard',
             'slug'=>'dashboard',
-            'icon'=>'fa-img-home',
+            'icon'=>'icon-dashboard-hover',
             'url'=>'/dashboard',
             'count'=>0,
             'active'=>true,
-            'class'=>'treeview menu-open active',
+            'class'=>'dashboard treeview menu-open active',
             'tasks'=>[], // dashboard
         ],
-       
-        // [
-        //     'name'=>'Updating Data',
-        //     'slug'=>'updating-data',
-        //     'icon'=>'fa-img-monitoring',
-        //     'url'=>'',
-        //     'count'=>7,
-        //     'active'=>false,
-        //     'class'=>'',
-        //     'tasks'=> array(
-        //        [
-
-        //             'name'=>'Perencanaan',
-        //             'slug'=>'perencanaan',
-        //             'icon'=>'fa-img-perencanaan',
-        //             'url'=>'/perencanaan',
-        //             'tasks'=>[],
-             
-        //        ],[
-        //         'name'=>'Pengawasan',
-        //         'slug'=>'pengawasan',
-        //         'icon'=>'fa-img-pengawasan',
-        //         'url'=>'/pengawasan',
-        //         'tasks'=>[],
-        //        ],[
-        //         'name'=>'Bimbingan/Sosialisasi',
-        //         'slug'=>'bimsos',
-        //         'icon'=>'fa-img-bimsos',
-        //         'url'=>'/bimsos',
-        //         'tasks'=>[],
-        //      ],[
-        //         'name'=>'Penyelesaian Masalah',
-        //         'slug'=>'penyelesaian-masalah',
-        //         'icon'=>'fa-img-penyelesaian',
-        //         'url'=>'/',
-        //         'tasks'=>[],
-        //     ]
-
-        //    ), //updating data
-            
-        // ],
         [
             'name'=>'Updating Data',
             'slug'=>'updating-data',
-            'icon'=>'fa-img-monitoring',
+            'icon'=>'icon-updating-data',
             'url'=>'',
             'count'=>7,
             'active'=>false,
@@ -929,23 +890,23 @@ class RequestMenuRoles
         [
             'name'=>'Tools',
             'slug'=>'tools',
-            'icon'=>'fa-img-ma-user',
+            'icon'=>'icon-tools',
             'url'=>'',
             'count'=>3,
             'active'=>false,
-            'class'=>'treeview',
+            'class'=>'tools treeview',
             'tasks'=> array(
                 [
                     'name'=>'Kendala',
                     'slug'=>'kendala',
-                    'icon'=>'fa-img-kendala',
+                    'icon'=>'icon-kriteria-kendala',
                     'url'=>'/kendala',
                     'tasks'=>[],  
                ],[
 
                     'name'=>'Forum',
                     'slug'=>'forum',
-                    'icon'=>'fa-img-forum',
+                    'icon'=>'icon-forum',
                     'url'=>'/forum',
                     'tasks'=>[],
              
@@ -957,23 +918,23 @@ class RequestMenuRoles
         [
             'name'=>'Pelaporan',
             'slug'=>'pelaporan',
-            'icon'=>'fa-img-monitoring',
+            'icon'=>'icon-pelaporan',
             'url'=>'',
             'count'=>7,
             'active'=>false,
-            'class'=>'treeview',
+            'class'=>'pelaporan treeview',
             'tasks'=> array(
                 [
                     'name'=>'Rekapitulasi',
                     'slug'=>'rekapitulasi',
-                    'icon'=>'fa-img-pagu',
+                    'icon'=>'fa-img-rekap',
                     'url'=>'/rekapitulasi',
                     'tasks'=>[],  
                 ],
                 [
                     'name'=>'Pagu APBN',
                     'slug'=>'pagu-apbn',
-                    'icon'=>'fa-img-pagu',
+                    'icon'=>'icon-pagu-apbn',
                     'url'=>'/pagutarget',
                     'tasks'=>[],  
                ],[
@@ -1006,7 +967,7 @@ class RequestMenuRoles
             ,[
                 'name'=>'Kendala',
                 'slug'=>'kendala',
-                'icon'=>'fa-img-kendala',
+                'icon'=>'icon-kriteria-kendala',
                 'url'=>'/kendala',
                 'tasks'=>[],
             ]
