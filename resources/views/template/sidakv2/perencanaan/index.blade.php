@@ -241,7 +241,27 @@
                 selectedIds.push($(this).data('id'));
             });
 
-            approveItems(selectedIds);
+            Swal.fire({
+                    title: 'Apakah Anda Yakin Approve Perencanaan?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+            }).then((result) => {
+                    if (result.isConfirmed) {
+                        approveItems(selectedIds);
+                        Swal.fire(
+                            'Approved!',
+                            'Data berhasil diapprove.',
+                            'success'
+                        ).then((act) => {
+                            if (act.isConfirmed) {
+                                window.location.replace('/perencanaan');
+                            }
+                        });
+                    }
+            });            
         });
 
         $('.item-checkbox').on('change', function() {
@@ -316,19 +336,22 @@
             data.forEach(function(item, index) {
                 let row = ``;
                 row +=`<tr>`;
-                if(item.deleted == false)
-                {
-                    if(checklist.checked == true)
-                    {
-                        row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
-                    }
+
+                // if(item.deleted == false)
+                // {
+                //     if(checklist.checked == true)
+                //     {
+                //         row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
+                //     }
                   
-                } else {
-                    if(checklist.checked == true)
-                    {
-                        row +=`<td><input disabled  type="checkbox"></td></td>`;  
-                    }
-                }   
+                // } else {
+                //     if(checklist.checked == true)
+                //     {
+                //         row +=`<td><input disabled type="checkbox"></td></td>`;  
+                //     }
+                // }   
+
+                row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
 
                 total_pengawasan += item.total_rencana_pengawasan;
                 total_bimsos += item.total_rencana_bimsos;

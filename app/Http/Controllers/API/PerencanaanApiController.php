@@ -118,7 +118,7 @@ class PerencanaanApiController extends Controller
 
     public function update($id, Request $request){
      
-        $validation = ValidationPerencanaan::validation($request);
+        $validation = ValidationPerencanaan::validationUpdate($request,$id);
 
         if($validation)
         {
@@ -285,12 +285,27 @@ class PerencanaanApiController extends Controller
 
     }
 
-    public function approveSelected(Request $request){
+    public function approveSelected(Request $request){        
+        $results = false;
         $messages['messages'] = false;
-
+                
         foreach($request->data as $key)
-        {
-            $results = request_doc((int)$key);
+        {                        
+            $_res = Perencanaan::find($key);
+
+            if($_res->status == 15 && $_res->request_edit == 'false') {
+                $updateResult = $_res->where('id', $key)->update([ 'status' => 15, 'request_edit' => 'request_doc']);
+            } elseif ($_res->status == 14 && $_res->request_edit == 'false') {
+                $updateResult = $_res->where('id', $key)->update([ 'status' => 16, 'request_edit' => 'false']);
+            } elseif ($_res->status == 15 && $_res->request_edit == 'true') {
+                $updateResult = $_res->where('id', $key)->update([ 'status' => 13, 'request_edit' => 'true']);
+            } else {
+                $results = false;
+            }
+
+            if ($updateResult) {             
+                $results = true;
+            }
         }
 
         if($results){
