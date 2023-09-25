@@ -89,7 +89,9 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th rowspan="2" id="ShowChecklistAll" style="display:none;" class="th-checkbox"><input id="select-all" class="border-left-table" type="checkbox"></th>
+							<th rowspan="2" id="ShowChecklistAll" style="display:none;" class="th-checkbox">
+                                <input id="select-all" class="border-left-table" type="checkbox">
+                            </th>
 							<th rowspan="2"><div id="ShowChecklistAll" style="display:none;" class="split-table"></div><span>No</span></th>
 							<th rowspan="2"><span class="border-left-table">Nama Daerah </span></th>
 							<th rowspan="2"><span class="border-left-table">Periode </span></th>
@@ -350,8 +352,10 @@
                 //         row +=`<td><input disabled type="checkbox"></td></td>`;  
                 //     }
                 // }   
-
-                row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
+                
+                if(checklist.checked == true) {
+                    row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
+                }
 
                 total_pengawasan += item.total_rencana_pengawasan;
                 total_bimsos += item.total_rencana_bimsos;
