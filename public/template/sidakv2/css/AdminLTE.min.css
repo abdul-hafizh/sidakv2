@@ -525,7 +525,7 @@ a:hover,a:active,a:focus {
 .sidebar-menu>li {
     position: relative;
     margin: 0;
-    padding: 0
+    padding: 4px 9px;
 }
 
 .sidebar-menu>li>a {
@@ -1053,7 +1053,7 @@ a:hover,a:active,a:focus {
 
 .navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a {
     margin: 0;
-    padding: 10px 10px
+    padding: 10px 6px
 }
 
 .navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a>div>img {

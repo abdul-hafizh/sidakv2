@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>
+        <button type="button"  class="clear-input close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Periode</h4>
       </div>
       <form  id="FormSubmit" >
@@ -76,7 +76,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" id="close2" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button"  class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>

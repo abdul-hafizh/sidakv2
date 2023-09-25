@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>
+        <button type="button"  class="clear-input close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Provinsi</h4>
       </div>
       <form  id="FormSubmit" >
@@ -17,14 +17,14 @@
               <div id="kode-alert-add" class="form-group has-feedback" >
               <label>Kode Provinsi</label>
               <input type="text" class="form-control" maxlength="2" oninput="this.value = this.value.replace(/[^0-9.]/g, '');"  name="id" placeholder="Kode Provinsi" value="">
-              <span id="kode-messages-add"></span>
+              <span id="kode-messages-add" class="span-messages"></span>
             </div> 
                
 
             <div id="name-alert-add" class="form-group has-feedback" >
               <label>Nama Provinsi</label>
               <input type="text" class="form-control" name="name" placeholder="Nama" value="">
-              <span id="name-messages-add"></span>
+              <span id="name-messages-add" class="span-messages"></span>
             </div>
 
 
@@ -36,7 +36,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" id="close2" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button"  class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>

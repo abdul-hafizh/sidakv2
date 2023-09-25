@@ -12,7 +12,7 @@
         <div class="modal-body">
 
           <div class="row">
-            <div id="type_daerah-alert" class="form-group has-feedback col-md-6">
+            <div id="type_daerah-alert" class="form-group has-feedback col-md-12">
               <label>Tipe </label>
               <select class="form-control" name="type_daerah" id="type_daerah">
                 <option value="">-Pilih Tipe-</option>
@@ -23,7 +23,7 @@
             </div>
           </div>
           <div class="row">
-            <div id="daerah_id-alert" class="form-group has-feedback col-md-6">
+            <div id="daerah_id-alert" class="form-group has-feedback col-md-12">
               <label>Daerah </label>
               <select id="daerah_id" class="select-daerah form-control" name="daerah_id" disabled>
                 <option value="">Pilih</option>
@@ -34,7 +34,7 @@
 
           </div>
           <div class="row">
-            <div id="periode_id-alert" class="form-group has-feedback col-md-6">
+            <div id="periode_id-alert" class="form-group has-feedback col-md-12">
               <label>Periode </label>
               <select id="periode_id" class="select-periode form-control" name="periode_id"></select>
               <span id="periode_id-messages"></span>
@@ -42,44 +42,44 @@
           </div>
 
           <div class="row">
-            <div id="pagu_apbn-alert" class="form-group has-feedback col-md-6">
+            <div id="pagu_apbn-alert" class="form-group has-feedback col-md-12">
               <label>Pagu APBN</label>
-              <input type="number" class="form-control" name="pagu_apbn" id="pagu_apbn" placeholder="APBN" value="">
+              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="pagu_apbn" id="pagu_apbn" placeholder="APBN" value="">
               <span id="pagu_apbn-messages"></span>
             </div>
-            <div id="pagu_promosi-alert" class="form-group has-feedback col-md-6" style="display: none;">
+            <div id="pagu_promosi-alert" class="form-group has-feedback col-md-12" style="display: none;">
               <label>Pagu Promosi</label>
-              <input type="number" class="form-control" name="pagu_promosi" id="pagu_promosi" placeholder="Promosi" value="">
+              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="pagu_promosi" id="pagu_promosi" placeholder="Promosi" value="">
               <span id="pagu_promosi-messages"></span>
             </div>
           </div>
           <div class="row">
-            <div id="target_pengawasan-alert" class="form-group has-feedback col-md-6">
+            <div id="target_pengawasan-alert" class="form-group has-feedback col-md-12">
               <label>Target Pengawasan</label>
-              <input type="number" class="form-control" name="target_pengawasan" id="target_pengawasan" placeholder="Pengawasan" value="">
+              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="target_pengawasan" id="target_pengawasan" placeholder="Pengawasan" value="">
               <span id="target_pengawasan-messages"></span>
             </div>
-            <div id="target_penyelesaian_permasalahan-alert" class="form-group has-feedback col-md-6">
+            <div id="target_penyelesaian_permasalahan-alert" class="form-group has-feedback col-md-12">
               <label>Target Penyelesaian Masalah</label>
-              <input type="number" class="form-control" name="target_penyelesaian_permasalahan" id="target_penyelesaian_permasalahan" placeholder="Penyelesaian Masalah" value="">
+              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="target_penyelesaian_permasalahan" id="target_penyelesaian_permasalahan" placeholder="Penyelesaian Masalah" value="">
               <span id="target_penyelesaian_permasalahan-messages"></span>
             </div>
           </div>
           <div class="row">
-            <div id="target_bimbingan_teknis-alert" class="form-group has-feedback col-md-6">
+            <div id="target_bimbingan_teknis-alert" class="form-group has-feedback col-md-12">
               <label>Target Bimbingan Teknis</label>
-              <input type="number" class="form-control" name="target_bimbingan_teknis" id="target_bimbingan_teknis" placeholder="Bimbingan Teknis" value="">
+              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="target_bimbingan_teknis" id="target_bimbingan_teknis" placeholder="Bimbingan Teknis" value="">
               <span id="target_bimbingan_teknis-messages"></span>
             </div>
-            <div id="target_video_promosi-alert" class="form-group has-feedback col-md-6" style="display: none">
+            <div id="target_video_promosi-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Target Video Promosi</label>
-              <input type="number" class="form-control" name="target_video_promosi" id="target_video_promosi" placeholder="Video Promosi" value="" readonly>
+              <input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="target_video_promosi" id="target_video_promosi" placeholder="Video Promosi" value="" readonly>
               <span id="target_video_promosi-messages"></span>
             </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-default" data-dismiss="modal">Close</button>
+          <button class="btn btn-default" data-dismiss="modal">Tutup</button>
           <button id="simpan" type="button" class="btn btn-primary" style="display: none;">Simpan</button>
           <button id="update" type="button" class="btn btn-info" style="display: none;">Ubah</button>
 

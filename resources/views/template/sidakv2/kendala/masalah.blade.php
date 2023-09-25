@@ -23,7 +23,7 @@
 
 			 <div class="pull-left padding-9-0 margin-left-button">
                
-                <select id="row_page" class="selectpicker" data-style="btn-default" >
+                <select id="row_page" class="selectpicker" data-style="bg-navy" >
                     <option value="10" selected>10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -329,7 +329,7 @@
             
              	let row = ``;
 	             row +=`<tr>`;
-	             row +=`<td colspan="5" align="center">Data Kosong</td>`;
+	             row +=`<td colspan="6" align="center">Data Kosong</td>`;
                  row +=`</tr>`;
                  content.html(row);
 

@@ -3,6 +3,7 @@
 namespace App\Http\Request;
 use App\Helpers\GeneralHelpers;
 use App\Models\AuditLog;
+use App\Models\User;
 use Auth;
 use Illuminate\Support\Str;
 use App\Http\Request\RequestAuth;
@@ -32,12 +33,14 @@ class RequestAuditLog
 
             $temp[$key]['number'] = $numberNext++;
             $temp[$key]['id'] = $val->id;
-            $temp[$key]['name'] = RequestAuth::fullname($val->created_by);
-            $temp[$key]['action'] = $val->action;
-            $temp[$key]['json_data_convert'] = $description;
-            $temp[$key]['json_data'] = $val->json_field;
-
-            // $temp[$key]['last_update'] = RequestAuditLog::LastUpdate($val->created_by);
+            $temp[$key]['created_by'] = RequestAuth::fullname($val->created_by);
+            $temp[$key]['client_ip'] = $val->client_ip;
+            $temp[$key]['category'] = $val->category;
+            $temp[$key]['user_agent'] = $val->user_agent;
+            $temp[$key]['description'] = $val->description;
+            $temp[$key]['role_user'] = $val->role_user;
+            $temp[$key]['group_menu'] = $val->group_menu;
+            
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
             $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
         }
@@ -59,13 +62,18 @@ class RequestAuditLog
    }
 
    
+
+    
   
    
     public static function fieldsData($request)
     {
        
         $uuid = Str::uuid()->toString(); 
-        $username = array('id'=>$uuid,'created_by'=> Auth::User()->username);
+        $clientIP = $_SERVER['REMOTE_ADDR'];
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        $role_user =  RequestAuth::Access();
+        $username = array('id'=>$uuid,'role_user'=>$role_user,'client_ip'=>$clientIP,'user_agent'=>$userAgent,'created_by'=> Auth::User()->username);
         $input = array_merge($request,$username);
         $data = AuditLog::create($input);
         return $data;

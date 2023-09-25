@@ -45,15 +45,11 @@ class ProvinceApiController extends Controller
 
             $insert = RequestProvinces::fieldsData($request);
 
-            $json = json_encode($insert);
-            $log = array(             
-            'action'=> 'Insert Provinsi',
-            'slug'=>'insert-provinsi',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/province'
+             $log = array(             
+            'category'=> 'LOG_DATA_PROVINSI',
+            'group_menu'=>'upload_data_provinsi',
+            'description'=>'Menambahkan data provinsi <b>'.$request->name.'</b>',
             );
-
             $datalog = RequestAuditLog::fieldsData($log);
 
             //create menu
@@ -116,18 +112,13 @@ class ProvinceApiController extends Controller
 
             $update = RequestProvinces::fieldsData($request);
 
-            //Audit Log
-                $json = json_encode($update);
-                
                 $log = array(             
-                'action'=> 'Update Provinsi',
-                'slug'=>'update-provinsi',
-                'type'=>'put',
-                'json_field'=> $json,
-                'url'=>'api/province/'.$id
+                'category'=> 'LOG_DATA_PROVINSI',
+                'group_menu'=>'mengubah_data_provinsi',
+                'description'=>'Mengubah data provinsi <b>'.$request->name.'</b>',
                 );
-
-                $datalog =  RequestAuditLog::fieldsData($log);
+                $datalog = RequestAuditLog::fieldsData($log);
+                //Audit Log
 
             //update account
             $UpdateData = Provinces::where('id', $id)->update($update);
@@ -140,19 +131,17 @@ class ProvinceApiController extends Controller
     {
         $messages['messages'] = false;
 
-        $json = json_encode($request->data);
-        //Audit Log
-        $log = array(             
-        'action'=> 'Delete Provinsi Select',
-        'slug'=>'delete-provinsi-select',
-        'type'=>'post',
-        'json_field'=> $json,
-        'url'=>'api/province/selected/'
-        );
-
-        RequestAuditLog::fieldsData($log);
+        
 
         foreach ($request->data as $key) {
+            $find = Provinces::where('id',$key)->first();
+            $log = array(             
+                'category'=> 'LOG_DATA_PROVINSI',
+                'group_menu'=>'menghapus_data_provinsi',
+                'description'=> '<b>'.$find->name.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
+
             $results = Provinces::where('id', (int)$key)->delete();
         }
 
@@ -168,17 +157,12 @@ class ProvinceApiController extends Controller
         $messages['messages'] = false;
         $_res = Provinces::find($id);
 
-        $json = json_encode($_res);
-        //Audit Log
-        $log = array(             
-        'action'=> 'Delete Provinsi',
-        'slug'=>'delete-provinsi',
-        'type'=>'delete',
-        'json_field'=> $json,
-        'url'=>'api/province/'.$id
-        );
-
-        RequestAuditLog::fieldsData($log);
+         $log = array(             
+            'category'=> 'LOG_DATA_PROVINSI',
+            'group_menu'=>'menghapus_data_provinsi',
+            'description'=> '<b>'.$_res->name.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
 
         if (empty($_res)) {
             return response()->json(['messages' => false]);

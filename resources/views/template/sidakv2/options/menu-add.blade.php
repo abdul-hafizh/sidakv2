@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close clear-input" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Menu</h4>
       </div>
       <form  id="FormSubmitMenu" >
@@ -20,19 +20,19 @@
             <div id="name-alert" class="form-group has-feedback" >
               <label>Nama : </label>
               <input type="text" class="form-control" name="name" placeholder="Nama" value="">
-              <span id="name-messages"></span>
+              <span id="name-messages" class="span-messages"></span>
             </div>
 
             <div id="path-web-alert" class="form-group has-feedback" >
               <label>URL : </label>
               <input type="text" class="form-control" name="url" placeholder="URL" value="#">
-              <span id="path-web-messages"></span>
+              <span id="path-web-messages" class="span-messages"></span>
             </div>
 
             <div id="icon-alert" class="form-group has-feedback">
                 <label>Icon :</label>
                 <input id="AddFiles" type="file" name="upload_photo" >
-                <span id="icon-messages"></span>
+                <span id="icon-messages" class="span-messages"></span>
             </div>
 
             <div class="form-group has-feedback user-photo"></div>
@@ -47,7 +47,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button  type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan-menu" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>

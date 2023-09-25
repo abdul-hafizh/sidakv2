@@ -1511,7 +1511,78 @@
     }
 
     
-   
+  //  function RoleNested(){
+        
+  //       const groupClass = ".nested-sortable";
+	 //   	var nestedSortables = [...document.querySelectorAll(groupClass)];
+  //       const main = nestedSortables[0];
+  //       const handleSelector = groupClass;
+  //       const dataIdAttr = "data-id";  
+
+  //       const sortableContainer = createdDraggableNestedList(
+		//   nestedSortables,
+		//   main,
+		//   handleSelector,
+		//   dataIdAttr,
+		//   groupClass
+		// );
+		// showOutputData(main,groupClass,dataIdAttr);
+		  
+    
+  //  }
+
+  //  function createdDraggableNestedList(
+		//   nestedSortables,
+		//   container,
+		//   handleSelector = ".drag-handle",
+		//   dataIdAttr,
+		//   groupClass
+		// ) {
+		//   let sortableContainer = null;
+		//   for (let i = 0; i < nestedSortables.length; i++) {
+		//     const sortable = new Sortable(nestedSortables[i], {
+		//       group: "nested",
+		//       handle: handleSelector,
+		//       ghostClass: "sortable-placeholder",
+		//       dataIdAttr: dataIdAttr,
+		//       animation: 800,
+		//       fallbackOnBody: true,
+		//       swapThreshold: 0.65,
+		//       invertedSwapThreshold: 0.5,
+		//       invertSwap: true,
+		//       onChange: () => showOutputData(container,groupClass,dataIdAttr)
+		//     });
+		//     if (nestedSortables[i] === container) {
+		//       sortableContainer = sortable;
+		//     }
+		//   }
+		//   return sortableContainer;
+  //  }
+
+ //    function showOutputData(container,groupClass,dataIdAttr) {
+	//   const data = toHierarchy(container, groupClass, dataIdAttr);
+	//   console.log(JSON.stringify(data, null, 2))
+	//   //$("#output").text(JSON.stringify(data, null, 2));
+	// }
+
+	// function toHierarchy(sortable, childrenSelector, dataAttributeSelector) {
+	//   const serialized = [];
+	//   const children = [...sortable.children];
+
+	//   for (let child of children) {
+	//     const nestedChildren = child.querySelector(childrenSelector);
+	//     const data = child.getAttribute(dataAttributeSelector);
+	//     if (data) {
+	//       serialized.push({
+	//         data: data,
+	//         children: nestedChildren
+	//           ? toHierarchy(child, childrenSelector, dataAttributeSelector)
+	//           : []
+	//       });
+	//     }
+	//   }
+	//   return serialized;
+	// }
      
   });
 </script> 

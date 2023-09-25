@@ -96,15 +96,11 @@ class ActionApiController extends Controller
             
             $insert = RequestAction::fieldsData($request);  
 
-            $json = json_encode($insert);
-            $log = array(             
-            'action'=> 'Insert Aksi',
-            'slug'=>'insert-aksi',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/action'
+             $log = array(             
+            'category'=> 'LOG_DATA_AKSI',
+            'group_menu'=>'upload_data_aksi',
+            'description'=>'Menambahkan data aksi <b>'.$request->name.'</b>',
             );
-
             $datalog = RequestAuditLog::fieldsData($log);
 
             //create menu
@@ -125,18 +121,14 @@ class ActionApiController extends Controller
             
                $update = RequestAction::fieldsData($request);
 
-               //Audit Log
-                $json = json_encode($update);
-                
-                $log = array(             
-                'action'=> 'Update Aksi',
-                'slug'=>'update-aksi',
-                'type'=>'put',
-                'json_field'=> $json,
-                'url'=>'api/action/'.$id
+               $log = array(             
+                'category'=> 'LOG_DATA_AKSI',
+                'group_menu'=>'mengubah_data_aksi',
+                'description'=>'Mengubah data user <b>'.$request->name.'</b>',
                 );
+                $datalog = RequestAuditLog::fieldsData($log);
+                //Audit Log
 
-                $datalog =  RequestAuditLog::fieldsData($log);
 
                 //update account
                $UpdateData = Action::where('id',$id)->update($update);
@@ -152,6 +144,13 @@ class ActionApiController extends Controller
         $messages['messages'] = false;
         foreach($request->data as $key)
         {
+            $find = Action::where('id',$key)->first();
+            $log = array(             
+                'category'=> 'LOG_DATA_MENU',
+                'group_menu'=>'menghapus_data_menu',
+                'description'=> '<b>'.$find->name.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
             $results = Action::where('id',(int)$key)->delete();
         }
 
@@ -167,15 +166,12 @@ class ActionApiController extends Controller
         $messages['messages'] = false;
         $_res = Action::find($id);
 
-        $json = json_encode($_res);
-        //Audit Log
         $log = array(             
-        'action'=> 'Delete Aksi',
-        'slug'=>'delete-aksi',
-        'type'=>'delete',
-        'json_field'=> $json,
-        'url'=>'api/action/'.$id
-        );
+            'category'=> 'LOG_DATA_AKSI',
+            'group_menu'=>'menghapus_data_aksi',
+            'description'=> '<b>'.$_res->name.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
 
         RequestAuditLog::fieldsData($log);
           

@@ -18,6 +18,7 @@ use App\Http\Request\RequestAuth;
 use File;
 use Auth;
 use DB;
+
 class UserApiController extends Controller
 {
 
@@ -121,11 +122,21 @@ class UserApiController extends Controller
                 } 
                 $user_photo = ['photo'=> $photo];
                 $merge = array_merge($update,$user_photo);
-                
+
+               
             }else{
                 $merge = $update;
 
             }
+
+                $log = array(             
+                    'category'=> 'LOG_DATA_USER',
+                    'group_menu'=>'mengubah_data_profile',
+                    'description'=>'Mengubah data profile <b>'.Auth::User()->username.'</b>',
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
+                //Audit Log
+                
      
            
             $UpdateData = User::where('id',Auth::User()->id)->update($merge);
@@ -165,15 +176,12 @@ class UserApiController extends Controller
                 $merge = $insert;
             }
 
-            $json = json_encode($merge);
+            
             $log = array(             
-            'action'=> 'Insert User',
-            'slug'=>'insert-user',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/user'
+            'category'=> 'LOG_DATA_USER',
+            'group_menu'=>'upload_data_user',
+            'description'=>'Menambahkan data user <b>'.$request->username.'</b>',
             );
-
             $datalog = RequestAuditLog::fieldsData($log);
          
             //create menu
@@ -229,18 +237,12 @@ class UserApiController extends Controller
                     $merge = $update; 
                 }
                 
-                //Audit Log
-                $json = json_encode($merge);
-                
                 $log = array(             
-                'action'=> 'Update User',
-                'slug'=>'update-user',
-                'type'=>'put',
-                'json_field'=> $json,
-                'url'=>'api/user/'.$id
+                'category'=> 'LOG_DATA_USER',
+                'group_menu'=>'mengubah_data_user',
+                'description'=>'Mengubah data user <b>'.$request->username.'</b>',
                 );
-
-                $datalog =  RequestAuditLog::fieldsData($log);
+                $datalog = RequestAuditLog::fieldsData($log);
                 //Audit Log
 
                 //update account
@@ -332,6 +334,14 @@ class UserApiController extends Controller
         $messages['messages'] = false;
         foreach($request->data as $key)
         {
+
+            $find = User::where('id',$key)->first();
+            $log = array(             
+                'category'=> 'LOG_DATA_USER',
+                'group_menu'=>'menghapus_data_user',
+                'description'=> '<b>'.$find->username.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
             $roleuser = RoleUser::where('user_id',(int)$key)->delete(); 
             $results = User::where('id',(int)$key)->delete();
         }
@@ -356,32 +366,23 @@ class UserApiController extends Controller
         if($request->status =='true')
         {
 
-            $json = json_encode($data);
-            //Audit Log
-            $log = array(             
-            'action'=> 'Aktif User',
-            'slug'=>'active-user',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/user/status/'
-            );
+                $log = array(             
+                'category'=> 'LOG_DATA_USER',
+                'group_menu'=>'mengaktifkan_data_user',
+                'description'=>'Mengubah status menjadi aktif untuk user <b>'.$data->username.'</b>',
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
 
-            RequestAuditLog::fieldsData($log);
             User::where('id',$request->id)->update(['status'=>'Y']);
 
         }else{
 
-            $json = json_encode($data);
-            //Audit Log
-            $log = array(             
-            'action'=> 'Non Aktif User',
-            'slug'=>'non-active-user',
-            'type'=>'post',
-            'json_field'=> $json,
-            'url'=>'api/user/status/'
-            );
-
-            RequestAuditLog::fieldsData($log);
+                $log = array(             
+                'category'=> 'LOG_DATA_USER',
+                'group_menu'=>'menonaktifkan_data_user',
+                'description'=>'Mengubah status menjadi nonaktif untuk user <b>'.$data->username.'</b>',
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
             User::where('id',$request->id)->update(['status'=>'N']);
 
 
@@ -403,17 +404,14 @@ class UserApiController extends Controller
        $messages['messages'] = false;
         $_res = User::find($id);
         
-        $json = json_encode($_res);
-        //Audit Log
         $log = array(             
-        'action'=> 'Delete User',
-        'slug'=>'delete-user',
-        'type'=>'delete',
-        'json_field'=> $json,
-        'url'=>'api/user/'.$id
-        );
+            'category'=> 'LOG_DATA_USER',
+            'group_menu'=>'menghapus_data_user',
+            'description'=> '<b>'.$_res->username.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
 
-        RequestAuditLog::fieldsData($log);
+       
 
         if(empty($_res)){
             return response()->json(['messages' => false]);

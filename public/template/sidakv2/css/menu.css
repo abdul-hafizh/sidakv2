@@ -1,31 +1,118 @@
 
 
-.fa-img-home{
+.icon-dashboard{
     background: url('../img/menu/home.png');
     background-repeat: no-repeat;
    
 }
 
+.icon-dashboard-hover{
+    background: url('../img/menu/hover/home.png');
+    background-repeat: no-repeat;
+   
+}
 
 
-.fa-img-ma-data{
+
+.icon-manajemen-data{
     background: url('../img/menu/master_data.png');
     background-repeat: no-repeat;
     
 }
 
+.icon-manajemen-data-hover{
+    background: url('../img/menu/hover/master_data.png');
+    background-repeat: no-repeat;
+    
+}
+
+.icon-manajemen-user{
+    background: url('../img/menu/user_management.png');
+    background-repeat: no-repeat;
+   
+}
+
+.icon-manajemen-user-hover{
+    background: url('../img/menu/hover/user_management.png');
+    background-repeat: no-repeat;
+   
+}
+
+.icon-pagu-apbn{
+    background: url('../img/menu/pagu_target.png');
+    background-repeat: no-repeat;
+   
+}
+
+.icon-pagu-apbn-hover{
+    background: url('../img/menu/hover/pagu_target.png');
+    background-repeat: no-repeat;
+   
+}
 
 
-.fa-img-province{
+.icon-monitoring{
+    background: url('../img/menu/rekapitulasi.png');
+    background-repeat: no-repeat;
+   
+}
+
+.icon-monitoring-hover{
+    background: url('../img/menu/hover/rekapitulasi.png');
+    background-repeat: no-repeat;
+   
+}
+
+.icon-tools{
+    background: url('../img/menu/kendala.png');
+    background-repeat: no-repeat;  
+}
+
+.icon-tools-hover{
+    background: url('../img/menu/hover/kendala.png');
+    background-repeat: no-repeat;  
+}
+
+.icon-pelaporan{
+    background: url('../img/menu/kendala.png');
+    background-repeat: no-repeat;  
+}
+
+.icon-pelaporan-hover{
+    background: url('../img/menu/hover/kendala.png');
+    background-repeat: no-repeat;  
+}
+
+.icon-auditlog{
+    background: url('../img/menu/kendala.png');
+    background-repeat: no-repeat;  
+}
+
+.icon-auditlog-hover{
+    background: url('../img/menu/hover/kendala.png');
+    background-repeat: no-repeat;  
+}
+
+
+.icon-kriteria-kendala{
+    background: url('../img/menu/kendala.png');
+    background-repeat: no-repeat;  
+}
+
+.icon-kriteria-kendala-hover{
+    background: url('../img/menu/hover/kendala.png');
+    background-repeat: no-repeat;  
+}
+
+
+.icon-province{
     background: url('../img/menu/provinsi.png');
     background-repeat: no-repeat;
    
 }
 
-
-
-.fa-img-regency{
-    background: url('../img/menu/kabupaten.png');
+.icon-province-hover{
+    background: url('../img/menu/hover/provinsi.png');
     background-repeat: no-repeat;
    
 }
@@ -33,35 +120,75 @@
 
 
 
-.fa-img-kendala{
-    background: url('../img/menu/kendala.png');
+.icon-regency{
+    background: url('../img/menu/kabupaten.png');
     background-repeat: no-repeat;
-    
+   
 }
 
+.icon-regency-hover{
+    background: url('../img/menu/hover/kabupaten.png');
+    background-repeat: no-repeat;
+   
+}
 
-
-.fa-img-forum{
+.icon-forum{
     background: url('../img/menu/forum.png');
     background-repeat: no-repeat;
 
 }
 
 
+.icon-forum-hover{
+    background: url('../img/menu/hover/forum.png');
+    background-repeat: no-repeat;
+
+}
+
+
+.icon-status{
+    background: url('../img/menu/status.png');
+    background-repeat: no-repeat;
+
+}
+
+
+.icon-status-hover{
+    background: url('../img/menu/hover/status.png');
+    background-repeat: no-repeat;
+
+}
+
+.icon-batas-periode{
+    background: url('../img/menu/batas_periode.png');
+    background-repeat: no-repeat;
+
+}
+
+
+.icon-batas-periode-hover{
+    background: url('../img/menu/hover/batas_periode.png');
+    background-repeat: no-repeat;
+
+}
+
+
+
+
+
+
+
+
 
 .fa-img-status{
-    background: url('../img/menu/access.png');
+    background: url('../img/menu/status.png');
     background-repeat: no-repeat;
   
 }
 
 
 
-.fa-img-ma-user{
-    background: url('../img/menu/user_management.png');
-    background-repeat: no-repeat;
-   
-}
+
 
 
 .fa-img-user{
@@ -78,20 +205,14 @@
   
 }
 
-
-
-.fa-img-pagu{
-    background: url('../img/menu/pagu_target.png');
-    background-repeat: no-repeat;
-   
-}
-
-
-.fa-img-monitoring{
+.fa-img-rekap{
     background: url('../img/menu/rekapitulasi.png');
     background-repeat: no-repeat;
-   
+  
 }
+
+
+
 
 
 
@@ -130,4 +251,18 @@
     background-repeat: no-repeat;
     
 }
+
+.fa-img-imaps{
+    background: url('../img/menu/imap.png');
+    background-repeat: no-repeat;
+    
+}
+
+
+.fa-img-aksi{
+    background: url('../img/menu/action.png');
+    background-repeat: no-repeat;
+    
+}
+
 

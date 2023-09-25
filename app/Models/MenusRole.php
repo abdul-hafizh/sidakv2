@@ -20,6 +20,9 @@ class MenusRole extends Model
         'created_by'
     ];
 
-    
+     public function role()
+    {
+        return $this->belongsTo('App\Models\Roles','role_id');
+    }
     
 }

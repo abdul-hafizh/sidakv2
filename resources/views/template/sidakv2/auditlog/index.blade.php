@@ -16,7 +16,7 @@
     <div class="col-sm-4 pull-left padding-default full">
         <div class="width-50 pull-left">
             <div class="pull-left padding-9-0 margin-left-button">
-                <select id="row_page" class="selectpicker" data-style="btn-default" >
+                <select id="row_page" class="selectpicker" data-style="bg-navy" >
                     <option value="10" selected>10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -62,21 +62,22 @@
     <div class="box box-solid box-primary">
         <div class="box-body">
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
+                <table class="table table-hover text-nowrap" border="0">
                     <thead>
                        <tr>
                             <th id="ShowChecklistAll" style="display:none;"  ><input id="select-all" class="span-title" type="checkbox"></th>
                             <th><div  id="ShowChecklistAll" style="display:none;"   class="split-table"></div><span class="span-title">No</span>  </th>
-                            <th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
-                            <th><div class="split-table"></div> <span class="span-title"> Aksi </span></th>
-                            <th><div class="split-table"></div> <span class="span-title"> Data </span></th>
-                            
-                            <th><div class="split-table"></div> <span class="span-title"> Dibuat </span> </th>
+                            <th><div class="split-table"></div> <span class="span-title"> Jenis Log </span></th>
+                            <th><div class="split-table"></div> <span class="span-title"> Kelompok Log </span></th>
+                            <th><div class="split-table"></div> <span class="span-title"> Deskripsi </span></th>
+                            <th><div class="split-table"></div> <span class="span-title"> Oleh </span></th>
+                            <th><div class="split-table"></div> <span class="span-title"> Kelompok User </span></th>
+                            <th><div class="split-table"></div> <span class="span-title"> Tanggal Log </span> </th>
                             <th id="ShowAction" style="display:none;"><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
                         </tr>
                     </thead>
 
-                    <tbody id="content">
+                    <tbody id="content"  class="border-grey">
                         
                     
                      </tbody>
@@ -325,7 +326,10 @@
         // Populate content with new data
         data.forEach(function(item, index) {
             let row = ``;
-             row +=`<tr>`;
+             row +=`<tr >`;
+
+
+
               
               
 
@@ -336,13 +340,16 @@
                    }
 
               
-               row +=`<td class="padding-text-table">${item.number}</td>`;
-               row +=`<td class="padding-text-table">${item.name }</td>`;
-               row +=`<td class="padding-text-table">${item.action}</td>`;
-               row +=`<td class="padding-text-table">${item.json_data_convert}</td>`;
-               row +=`<td class="padding-text-table">${item.created_at}</td>`;;
-       
-               row +=`<td>`; 
+               row +=`<td rowspan="3" class="padding-text-table">${item.number}</td>`;
+               row +=`<td rowspan="3" class="padding-text-table">${item.category }</td>`;
+               row +=`<td rowspan="3" class="padding-text-table">${item.group_menu}</td>`;
+               row +=`<td class="padding-text-table flexible-text-description"> ${item.description}</td>`;
+               row +=`<td rowspan="3" class="padding-text-table">${item.created_by}</td>`;
+               row +=`<td rowspan="3" class="padding-text-table">${item.role_user}</td>`;
+                row +=`<td rowspan="3" class="padding-text-table">${item.created_at}</td>`;
+              if(detail.checked == true || deleted.checked == true)
+             { 
+                row +=`<td  rowspan="3" >`; 
                 row +=`<div class="btn-group">`;
                 
                 if(detail.checked == true)
@@ -356,12 +363,10 @@
                     row +=`</div>`;
 
                 }
-
-
-
+                     
                   if(deleted.checked == true) 
                   {
-
+                      
                         row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
                   }
@@ -370,6 +375,18 @@
 
                 row +=`</div>`;
                 row +=`</td>`;
+           }     
+              row +=`</tr>`; 
+              row +=`<tr>`;
+               
+                row +=`<td class="padding-text-table"><b>Client IP :</b> ${item.client_ip}</td>`;
+              
+              row +=`</tr>`;
+
+               row +=`<tr>`;
+               
+                row +=`<td class="padding-text-table"><b class="flexible-label">User agent :</b> <div class="flexible-text"> &nbsp; ${item.user_agent}</div></td>`;
+               
               row +=`</tr>`; 
 
             content.append(row);
@@ -380,7 +397,7 @@
 
          let row = ``;
          row +=`<tr>`;
-         row +=`<td colspan="4" align="center">Data Kosong</td>`;
+         row +=`<td colspan="9" align="center">Data Kosong</td>`;
          row +=`</tr>`;
          content.append(row);
     }    
@@ -501,6 +518,8 @@
         const detail = data.find(o => o.action === 'detail');
          const checklist = data.find(o => o.action === 'checklist');
 
+        
+
          if(checklist.action =='checklist')
            {
                if(checklist.checked ==true)
@@ -515,12 +534,7 @@
                }    
            }
        
-        if(edited.checked == false && deleted.checked == false && detail.checked == false)
-        {
-            $('#ShowAction').hide();
-        }else{
-             $('#ShowAction').show();
-        }    
+        
        data.forEach(function(item, index) 
        {
            if(item.action =='add')
@@ -614,6 +628,7 @@
             success: function(response) {
                 // Handle success (e.g., remove deleted items from the list)
                 fetchData(page);
+                $('#delete-selected').prop("disabled", true);
             },
             error: function(error) {
                 console.error('Error deleting items:', error);

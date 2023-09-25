@@ -16,7 +16,7 @@
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-				<select id="row_page" class="selectpicker" data-style="btn-default" >
+				<select id="row_page" class="selectpicker" data-style="bg-navy" >
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
 					<option value="50">50</option>
@@ -399,7 +399,7 @@
                 row +=`<div class="modal-content ">`;
 
 				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<button type="button"  class="clear-input close" data-dismiss="modal">&times;</button>`;
 				         row +=`<h4 class="modal-title">Edit Forum</h4>`;
 				       row +=`</div>`;
 
@@ -453,7 +453,7 @@
                             row +=`</div>`;
 
                             row +=`<div class="modal-footer">`;
-						        row +=`<button id="close2" type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button  type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="simpan" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
 						           
@@ -826,6 +826,7 @@
             success: function(response) {
                 // Handle success (e.g., remove deleted items from the list)
                 fetchData(page);
+                $('#delete-selected').prop("disabled", true);
             },
             error: function(error) {
                 console.error('Error deleting items:', error);

@@ -24,7 +24,7 @@
         <div class="width-50 pull-left">
             <div class="pull-left padding-9-0 margin-left-button">
                
-                <select id="row_page" class="selectpicker" data-style="btn-default" >
+                <select id="row_page" class="selectpicker" data-style="bg-navy" >
                     <option value="10" selected>10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -279,6 +279,7 @@
                 // Perform the delete action here, e.g., using an AJAX request
                 // Send selected IDs for deletion (e.g., via AJAX)
                  deleteItems(selectedIds);
+
                 
                 Swal.fire(
                   'Deleted!',
@@ -379,6 +380,7 @@
 
                 // Handle success (e.g., remove deleted items from the list)
                 fetchData(page);
+                $('#delete-selected').prop("disabled", true);
             },
             error: function(error) {
                 console.error('Error deleting items:', error);
@@ -556,7 +558,7 @@
                 row +=`<div class="modal-content">`;
 
                        row +=`<div class="modal-header">`;
-                         row +=`<button type="button" id="close1" data-dismiss="modal" class="close" >&times;</button>`;
+                         row +=`<button type="button"  data-dismiss="modal" class="clear-input close" >&times;</button>`;
                          row +=`<h4 class="modal-title">Edit User</h4>`;
                        row +=`</div>`;
 
@@ -568,7 +570,7 @@
                                      row +=`<label>Role </label>`;
                                    row +=`<select id="role-`+ item.id +`" class="selectpicker" name="role_id"></select>`;
 
-                                   row +=`<span id="role-messages-`+ item.id +`"></span>`;
+                                   row +=`<span id="role-messages-`+ item.id +`" class="span-messages"></span>`;
                                  row +=`</div>`;
                                
                                 row +=`<div class="form-group has-feedback" >`;
@@ -581,7 +583,7 @@
                                   row +=`<label>Name</label>`;
 
                                   row +=`<input type="text" class="form-control" name="name" placeholder="Name" value="`+ item.name +`">
-                                  <span id="name-messages-`+ item.id +`"></span>`;
+                                  <span id="name-messages-`+ item.id +`" class="span-messages"></span>`;
 
                                  row +=`</div>`;
 
@@ -593,7 +595,7 @@
 
                                    row +=`<input type="email" class="form-control" name="email" placeholder="email" value="`+ item.email +`">`;
 
-                                   row +=`<span id="email-messages-`+ item.id +`"></span>`;
+                                   row +=`<span id="email-messages-`+ item.id +`" class="span-messages"></span>`;
 
                                  row +=`</div>`;
 
@@ -604,7 +606,7 @@
 
                                    row +=`<input type="text" class="form-control" name="phone" placeholder="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="`+ item.phone +`">`;
 
-                                   row +=`<span id="phone-messages-`+ item.id +`"></span>`;
+                                   row +=`<span id="phone-messages-`+ item.id +`" class="span-messages"></span>`;
 
                                  row +=`</div>`;
 
@@ -616,7 +618,7 @@
 
                                    row +=`<input type="text" class="form-control" name="nip" placeholder="NIP"  oninput="this.value = this.value.replace(/[^0-9.]/g, '')" value="`+ item.nip +`">`;
 
-                                   row +=`<span id="nip-messages-`+ item.id +`"></span>`;
+                                   row +=`<span id="nip-messages-`+ item.id +`" class="span-messages"></span>`;
 
                                  row +=`</div>`;
 
@@ -627,7 +629,7 @@
 
                                    row +=`<input type="text" class="form-control" name="leader_name" placeholder="Penanggung Jawab " value="`+ item.leader_name +`">`;
 
-                                   row +=`<span id="leader-name-messages-`+ item.id +`"></span>`;
+                                   row +=`<span id="leader-name-messages-`+ item.id +`" class="span-messages"></span>`;
 
                                  row +=`</div>`;
 
@@ -637,7 +639,7 @@
                                    row +=`<label>NIP Penanggung Jawab</label>`;
 
                                    row +=`<input type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
-                                    row +=`<span id="leader-nip-messages-`+ item.id +`"></span>`;
+                                    row +=`<span id="leader-nip-messages-`+ item.id +`" class="span-messages"></span>`;
 
                                  row +=`</div>`;
 
@@ -650,7 +652,7 @@
                                 
                                    row +=`<select id="daerah_id-`+ item.id +`" class="selectpicker form-control" data-live-search="true" name="daerah_id" ></select>`;
 
-                                   row +=`<span id="daerah-messages-`+ item.id +`"></span>`;
+                                   row +=`<span id="daerah-messages-`+ item.id +`" class="span-messages"></span>`;
                                  row +=`</div>`;
 
                                  row +=`<div  class="form-group has-feedback">`;
@@ -668,7 +670,7 @@
                             row +=`</div>`;
 
                             row +=`<div class="modal-footer">`;
-                                row +=`<button type="button"  data-dismiss="modal" class="btn btn-default" id="close2">Tutup</button>`;
+                                row +=`<button type="button"  data-dismiss="modal" class="clear-input btn btn-default" >Tutup</button>`;
 
                                   row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
                                     row +=`<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
@@ -999,7 +1001,7 @@
                     StatusItem(id,'true');
                     
                     Swal.fire(
-                      'Non Aktif!',
+                      'Aktifkan!',
                       'Data berhasil.',
                       'success'
                     );

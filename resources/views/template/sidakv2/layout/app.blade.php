@@ -49,14 +49,14 @@
             </a>
 
             <nav role="navigation" class="navbar navbar-static-top">
-                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+              <!--   <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-
-                <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
+ -->
+                <h3 class="pull-left title-header mgn-none text-capitalize">{{ $title  }} </h3>
                 <div class="navbar-custom-menu mt-10 mc-15">
 
 
@@ -222,27 +222,25 @@
         $('.logo-lg').html('<img src="' + template.logo_lg + '" class="full">');
 
 
-        $("#close1").click(()=> {   
+        $(".clear-input").click(()=> {   
           DefaultNull();
+        
         });
 
-         $("#close2").click(()=> {   
-          DefaultNull();
-        });
-
+        
          function DefaultNull()
        {
-            $('.selectpicker').selectpicker('refresh');
+           
            $("input").val(null);
            $("textarea").val(null);
            $('#daerah-alert-add').hide();
-           $('#semester').selectpicker('val', 'null');
-           $('#role_id').selectpicker('val', 'null');
-           $('#kabupaten_id').selectpicker('val', 'null');
-           $('#province_id').selectpicker('val', 'null');
+           $('#semester').selectpicker('val', '');
+           $('#role_id').selectpicker('val', '');
+           $('#kabupaten_id').selectpicker('val', '');
+           $('#province_id').selectpicker('val', '');
            $('.form-group').removeClass('has-error');
            $('.span-messages').removeClass('help-block').html('');
-           
+           $('.selectpicker').selectpicker('refresh');
         }
 
     </script>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Roles;
 use App\Http\Request\RequestRoles;
 use App\Http\Request\Validation\ValidationRoles;
+use App\Http\Request\RequestAuditLog;
 use DB;
 class RolesApiController extends Controller
 {
@@ -91,6 +92,14 @@ class RolesApiController extends Controller
 
             
            $insert = RequestRoles::fieldsData($request);  
+
+            $log = array(             
+            'category'=> 'LOG_DATA_USER_ROLE',
+            'group_menu'=>'upload_data_user_role',
+            'description'=>'Menambahkan data user role <b>'.$request->name.'</b>',
+            );
+            $datalog = RequestAuditLog::fieldsData($log);
+
             //create menu
            $saveData = Roles::create($insert);
             //result
@@ -109,6 +118,15 @@ class RolesApiController extends Controller
             
                $update = RequestRoles::fieldsData($request);
                 //update account
+
+                $log = array(             
+                'category'=> 'LOG_DATA_USER_ROLE',
+                'group_menu'=>'mengubah_data_user_role',
+                'description'=>'Mengubah data user role <b>'.$request->name.'</b>',
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
+                //Audit Log
+
                $UpdateData = Roles::where('id',$id)->update($update);
                 //result
                return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
@@ -122,6 +140,14 @@ class RolesApiController extends Controller
         $messages['messages'] = false;
         foreach($request->data as $key)
         {
+            $find = Roles::where('id',$key)->first();
+            $log = array(             
+                'category'=> 'LOG_DATA_USER_ROLE',
+                'group_menu'=>'menghapus_data_user_role',
+                'description'=> '<b>'.$find->name.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
+
             $results = Roles::where('id',(int)$key)->delete();
         }
 
@@ -140,6 +166,13 @@ class RolesApiController extends Controller
         if(empty($_res)){
             return response()->json(['messages' => false]);
         }
+
+        $log = array(             
+            'category'=> 'LOG_DATA_USER_ROLE',
+            'group_menu'=>'menghapus_data_user_role',
+            'description'=> '<b>'.$_res->name.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
 
         $results = $_res->delete();
         if($results){
