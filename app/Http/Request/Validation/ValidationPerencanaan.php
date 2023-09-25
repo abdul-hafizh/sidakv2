@@ -57,7 +57,7 @@ class ValidationPerencanaan
             'penyelesaian_evaluasi_target' => 'numeric',
             'penyelesaian_evaluasi_pagu' => 'required|numeric|min:0|gt:0',
 
-            'periode_id' => 'required|required_if:param,update|unique:perencaan',
+            'periode_id' => 'required|required_if:param,update|unique:perencanaan',
             'nama_pejabat' => 'required',
             'nip_pejabat' => 'required|numeric|min:0|gt:0',
             'tgl_tandatangan' => 'required',

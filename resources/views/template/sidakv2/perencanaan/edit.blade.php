@@ -51,10 +51,13 @@
                               <div class="col-lg-12">
                                    <div id="periode-alert" class="form-group">
                                         <label class="col-lg-2 label-header-box form-group margin-none">Periode Perencanaan :</label>
-                                        <div class="col-lg-2 form-group margin-none" id="selectPeriode"></div>
-                                        <input type="hidden" id="pagu_apbn_inp">
-                                        <input type="hidden" id="total_target_bimtek_inp">
-                                        <input type="hidden" id="total_rencana_inp">
+                                        <div class="col-sm-2">
+                                             <div id="selectPeriode" class="form-group margin-none"></div>
+                                             <span id="periode-id-messages"></span>
+                                             <input type="hidden" id="pagu_apbn_inp">
+                                             <input type="hidden" id="total_target_bimtek_inp">
+                                             <input type="hidden" id="total_rencana_inp">
+                                        </div>
                                    </div>
                               </div>
                          </div>                          
@@ -882,6 +885,7 @@
                          if(errors.messages.periode_id)
                          {
                               $('#periode-id-alert').addClass('has-error');
+                              $('#selectPeriode').addClass('has-error');
                               $('#periode-id-messages').addClass('help-block').html('<strong>'+ errors.messages.periode_id +'</strong>');
                          } else {
                               $('#periode-id-alert').removeClass('has-error');
