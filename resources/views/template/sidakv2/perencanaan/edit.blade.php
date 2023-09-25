@@ -502,7 +502,7 @@
 
                $('#Attr').html(rows);
 
-               if(data.status_code == 13 && data.request_edit == 'reject' && data.alasan_unapprove != null) {
+               if(data.status_code == 13 && data.request_edit == 'reject') {
                     $('#div-edit').show();
                     $('#alasan-unuapprove-view').html('<b>Alasan Tidak Disetujui : '+data.alasan_unapprove+'</b>').addClass('col-lg-12 text-red');
                } else {
@@ -510,7 +510,7 @@
                     $('#alasan-unuapprove-view').removeClass('col-lg-12 text-red');
                }
 
-               if(data.status_code == 13 && data.request_edit == 'reject_doc' && data.alasan_unapprove_doc != null) {
+               if(data.status_code == 13 && data.request_edit == 'reject_doc') {
                     $('#div-edit').show();
                     $('#alasan-unuapprove-doc-view').html('<b>Alasan Tidak Disetujui : '+data.alasan_unapprove_doc+'</b>').addClass('col-lg-12 text-red');
                } else {
@@ -518,7 +518,7 @@
                     $('#alasan-unuapprove-doc-view').removeClass('col-lg-12 text-red');
                }
 
-               if(data.status_code == 13 && data.request_edit == 'revisi' && data.alasan_revisi != null) {
+               if(data.status_code == 13 && data.request_edit == 'revisi') {
                     $('#div-edit').show();
                     $('#alasan-revisi-view').html('<b>Alasan Revisi : '+data.alasan_revisi+'</b>').addClass('col-lg-12 text-red');
                } else {
