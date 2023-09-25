@@ -110,8 +110,8 @@
 
           <div class="box-footer">
                <div class="btn-group just-center">
-                    <button id="update" type="button" class="btn btn-warning col-md-2">Update</button>
-                    <button id="kirim" type="button" class="btn btn-primary col-md-2">Kirim</button>
+                    <button id="update" type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> Update</button>
+                    <button id="kirim" type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> Kirim</button>
                </div>
           </div>
      </form>

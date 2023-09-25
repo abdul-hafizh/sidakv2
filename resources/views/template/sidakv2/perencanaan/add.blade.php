@@ -297,8 +297,8 @@
 
           <div class="box-footer">
                <div class="btn-group just-center">
-                    <button id="simpan" type="button" class="btn btn-warning col-md-2">SIMPAN</button>
-                    <button id="kirim" type="button" class="btn btn-primary col-md-2">KIRIM</button>
+                    <button id="simpan" type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> SIMPAN</button>
+                    <button id="kirim" type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>
                </div> 
           </div> 
      </form>
