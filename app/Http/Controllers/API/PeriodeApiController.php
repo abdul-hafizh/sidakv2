@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\API;
 
+use DB;
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Periode;
+use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPeriode;
 use App\Http\Request\Validation\ValidationPeriode;
-use App\Helpers\GeneralPaginate;
-use Auth;
-use DB;
 use App\Http\Request\RequestAuditLog;
+use App\Helpers\GeneralPaginate;
+
 class PeriodeApiController extends Controller
 {
-
 
     public function __construct()
     {
@@ -22,7 +23,6 @@ class PeriodeApiController extends Controller
 
     public function index(Request $request)
     {
-        // $_res = array();
         $query = Periode::orderBy('created_at', 'DESC');
         if ($request->per_page != 'all') {
             $data = $query->paginate($request->per_page);
@@ -34,32 +34,34 @@ class PeriodeApiController extends Controller
         return response()->json($result);
     }
 
-
-
     public function listAll(Request $request)
     {
-
+        $access = RequestAuth::Access(); 
+        
         $query =  DB::table('periode as a')
             ->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan')
-            ->where('a.status', 'Y')
-            ->where('c.daerah_id', Auth::User()->daerah_id);
-        if ($request->type == 'POST') {
-            $query->whereNotIn(
-                'slug',
-                DB::table('perencanaan')
-                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-            );
-        } else {
-            $query->whereIn(
-                'slug',
-                DB::table('perencanaan')
-                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-            );
+            ->where('a.status', 'Y');
+
+        if($access == 'daerah' ||  $access == 'province') { 
+
+            $query->where('c.daerah_id', Auth::User()->daerah_id);
+            
+            if ($request->type == 'POST') {
+                $query->whereNotIn(
+                    'year',
+                    DB::table('perencanaan')
+                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                );
+            } else {
+                $query->whereIn(
+                    'year',
+                    DB::table('perencanaan')
+                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                );
+            }
         }
-        $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id')
-            ->groupBy('year');
-
-
+        
+        $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id')->groupBy('year');
 
         $data = $query->get();
         if ($data->count() != 0) {
@@ -67,18 +69,15 @@ class PeriodeApiController extends Controller
         } else {
             $selected = true;
         }
+
         $periode = RequestPeriode::SelectAll($data, $request->type);
         return response()->json(['selected' => $selected, 'result' => $periode]);
     }
 
-
-
-
-
-     public function search(Request $request){
+    public function search(Request $request){
         $search = $request->search;
         $_res = array();
-        $column_search  = array('name', 'slug','year');
+        $column_search  = array('name','slug','year');
 
         $i = 0;
         $query  = Periode::orderBy('id','DESC');
@@ -97,11 +96,10 @@ class PeriodeApiController extends Controller
        
         $data = $query->paginate($request->per_page);
         $description = $search;
-        $_res = RequestPeriode::GetDataAll($data,$request->per_page,$request,$description);
+
+        $_res = RequestPeriode::GetDataAll($data, $request->per_page,$request, $description);
         return response()->json($_res);
-
     }
-
 
     public function edit($id)
     {
@@ -110,10 +108,8 @@ class PeriodeApiController extends Controller
         return response()->json($_res);
     }
 
-
     public function store(Request $request)
     {
-
         $validation = ValidationPeriode::validationInsert($request);
         if ($validation) {
             return response()->json($validation, 400);
@@ -153,7 +149,6 @@ class PeriodeApiController extends Controller
 
     public function update($id, Request $request)
     {
-
         $validation = ValidationPeriode::validationUpdate($request,$id);
         if ($validation) {
             return response()->json($validation, 400);
@@ -192,16 +187,15 @@ class PeriodeApiController extends Controller
         $messages['messages'] = false;
         $_res = Periode::find($id);
 
-         $json = json_encode($_res);
+        $json = json_encode($_res);
         //Audit Log
         $log = array(             
-        'action'=> 'Delete Periode',
-        'slug'=>'delete-periode',
-        'type'=>'delete',
-        'json_field'=> $json,
-        'url'=>'api/periode/'.$id
+            'action'=> 'Delete Periode',
+            'slug'=>'delete-periode',
+            'type'=>'delete',
+            'json_field'=> $json,
+            'url'=>'api/periode/'.$id
         );
-
         
         if (empty($_res)) {
             return response()->json(['messages' => false]);
@@ -214,7 +208,7 @@ class PeriodeApiController extends Controller
         return response()->json($messages);
     }
 
-     public function deleteSelected(Request $request)
+    public function deleteSelected(Request $request)
     {
         $messages['messages'] = false;
         RequestAuditLog::fieldsData($log);
@@ -222,11 +216,11 @@ class PeriodeApiController extends Controller
         $json = json_encode($request->data);
         //Audit Log
         $log = array(             
-        'action'=> 'Delete Periode Select',
-        'slug'=>'delete-periode-select',
-        'type'=>'post',
-        'json_field'=> $json,
-        'url'=>'api/periode/selected/'
+            'action'=> 'Delete Periode Select',
+            'slug'=>'delete-periode-select',
+            'type'=>'post',
+            'json_field'=> $json,
+            'url'=>'api/periode/selected/'
         );
 
         RequestAuditLog::fieldsData($log);
@@ -243,7 +237,6 @@ class PeriodeApiController extends Controller
 
     public function listAll2(Request $request)
     {
-
         $query =  DB::table('periode as a')
             ->select('a.id', 'a.slug', 'a.year')
             ->where('a.status', 'Y')

@@ -62,12 +62,18 @@ class PerencanaanApiController extends Controller
     
     public function search(Request $request)
     {
+        $access = RequestAuth::Access(); 
         $search = $request->search;
-        $_res = array();
         $column_search  = array('periode_id');
-
+        $_res = array();
         $i = 0;
-        $query  = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('id','DESC');
+
+        if($access == 'daerah' ||  $access == 'province') { 
+            $query  = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('id','DESC');
+
+        } else {
+            $query  = Perencanaan::orderBy('id','DESC');
+        }
 
         foreach ($column_search as $item)
         {
@@ -84,7 +90,7 @@ class PerencanaanApiController extends Controller
         }
        
         $data = $query->paginate($this->perPage);
-        $description = $search;
+        $description = $search;        
         $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
 
         return response()->json($result);

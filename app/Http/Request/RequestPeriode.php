@@ -2,12 +2,12 @@
 
 namespace App\Http\Request;
 
+use DB;
 use Auth;
 use App\Helpers\GeneralHelpers;
 use App\Models\PaguTarget;
 use App\Models\Periode;
 use App\Models\Perencanaan;
-use DB;
 
 class RequestPeriode
 {
@@ -64,8 +64,6 @@ class RequestPeriode
 
       return $result;
    }
-
-   
 
    public static function SelectAll($data, $type)
    {
