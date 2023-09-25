@@ -82,10 +82,10 @@ class PerencanaanController extends Controller
 
     public function generate_pdf()
     {
-        $data = ['title' => 'Welcome to ItSolutionStuff.com'];
+        $data = ['title' => 'Perencanaan'];
         $pdf = PDF::loadView('template/sidakv2/perencanaan/print', $data);
   
-        return $pdf->download('itsolutionstuff.pdf');
+        return $pdf->download('Perencanaan.pdf');
     }
 
 }
