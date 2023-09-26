@@ -40,11 +40,32 @@
 		</div>
 	</div>
 
-    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20" id="ShowSearch" style="display:none;">
-        <div class="width-25">
-		    <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
+    <div id="ShowSearch" style="display:none;">
+        <div class="row">
+            <div class="col-lg-2">    
+                <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
+            </div> 	
+            <div class="col-lg-3">    
+                <select id="search_status" class="selectpicker" data-style="btn-default" title="Pilih Status">
+                    <option value="1">Draft</option>
+                    <option value="2">Request Dokumen</option>
+                    <option value="3">Request Edit</option>
+                    <option value="4">Terkirim/Waiting</option>
+                    <option value="5">Approved</option>
+                    <option value="6">Unapprove</option>
+                </select>
+            </div> 	
+            <div class="col-lg-3">
+                <input type="text" id="search_text" class="form-control" placeholder="Pencarian">
+            </div> 	
+            <div class="col-lg-2">
+                <div class="btn-group">
+                    <button id="Search" type="button" title="Cari" class="btn btn-info"><i class="fa fa-filter"></i> Cari</button>
+                    <button id="Reset" type="button" title="Reset" class="btn btn-info"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
         </div> 	
-    </div> 	
+    </div>
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
@@ -194,32 +215,6 @@
             }    
         });
 
-        $('#periode_id').on('change', function() {
-            var value = $(this).val();         
-            if(value)
-            {   
-                const content = $('#content');
-                content.empty();
-                let row = ``;
-                row +=`<tr><td colspan="12" align="center"> <b>Loading ...</b></td></tr>`;
-                content.append(row);
-
-                $.ajax({
-                    url: BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}`,
-                    data:{'search':value},
-                    method: 'POST',
-                    success: function(response) {                        
-                        resultTotal(response.total);
-                        updateContent(response.data, response.options);
-                        updatePagination(response.current_page, response.last_page);
-                    },
-                    error: function(error) {
-                        console.error('Error fetching data:', error);
-                    }
-                });
-            }    
-        });
-
         $('#select-all').on('change', function() {
             var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
             nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
@@ -230,12 +225,7 @@
             } else {
                 $('#approve-selected').prop("disabled", true);
             }
-        });
-
-        $('#refresh').on('click', function() {
-            fetchData(page);
-            $('#search-input').val('');
-        });
+        });        
 
         $('#approve-selected').on('click', function() {
             const selectedIds = [];
@@ -284,6 +274,36 @@
             });
         });
 
+        $('#Reset').on('click', function() {
+            location.reload(true); 
+        });
+
+        $('#Search').click( () => {
+            var periode_id = $('#periode_id').val(); 
+            var search_status = $('#search_status').val();
+            var search_text = $('#search_text').val();
+
+            const content = $('#content');
+            content.empty();
+            let row = ``;
+            row +=`<tr><td colspan="12" align="center"> <b>Loading ...</b></td></tr>`;
+            content.append(row);
+
+            $.ajax({
+                url: BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}`,
+                data:{'periode_id':periode_id,'search_status':search_status,'search_text':search_text},
+                method: 'POST',
+                success: function(response) {                        
+                    resultTotal(response.total);
+                    updateContent(response.data, response.options);
+                    updatePagination(response.current_page, response.last_page);
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        });
+
         function approveItems(ids) {        
             $.ajax({
                 url:  BASE_URL +`/api/perencanaan/approve_selected`,
@@ -320,7 +340,7 @@
                     console.error('Error fetching data:', error);
                 }
             });
-        }
+        }        
 
         function updateContent(data, options) {
             const content = $('#content');            

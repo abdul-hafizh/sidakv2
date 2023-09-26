@@ -174,8 +174,8 @@ $(function(){
        
            row +='<div   class="pull-left full form-group has-feedback">';                                                
                 row +='<div  id="token-alert" class="pull-left full  has-feedback">  '; 
-                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Token </label>';
-                      row +=`<input id="token-forgot" type="text" maxlength="4" class="form-control form-control mb-3 border-radius-10 font-12" name="token" placeholder="Token" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="">`;
+                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">PIN </label>';
+                      row +=`<input id="token-forgot" type="text" maxlength="4" class="form-control form-control mb-3 border-radius-10 font-12" name="token" placeholder="PIN" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="">`;
                    
                      row +='<span id="token-messages"></span>';
                                                              

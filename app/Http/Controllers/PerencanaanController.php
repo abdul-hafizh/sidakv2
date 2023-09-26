@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestSystemLog;
+use App\Models\Perencanaan;
 
 class PerencanaanController extends Controller
 {
@@ -80,12 +81,21 @@ class PerencanaanController extends Controller
             'template' => 'template/'.$this->template ]);
     }
 
-    public function generate_pdf()
+    public function generate_pdf($id)
     {
-        $data = ['title' => 'Perencanaan'];
+        $get_data = Perencanaan::join('vw_wilayah_union', 'perencanaan.daerah_id', '=', 'vw_wilayah_union.id')
+        ->join('pagu_target', function($join) {
+            $join->on('perencanaan.periode_id', '=', 'pagu_target.periode_id')
+                ->on('perencanaan.daerah_id', '=', 'pagu_target.daerah_id');
+        })
+        ->select('perencanaan.*', 'vw_wilayah_union.name AS nama_daerah', 'pagu_target.pagu_apbn')
+        ->where('perencanaan.id', $id)
+        ->first();
+
+        $data = ['title' => 'Perencanaan', 'rows' => $get_data];
         $pdf = PDF::loadView('template/sidakv2/perencanaan/print', $data);
   
-        return $pdf->download('Perencanaan.pdf');
+        return $pdf->download('Perencanaan ' . $get_data->nama_daerah . ' Tahun ' . $get_data->periode_id . '.pdf');
     }
 
 }
