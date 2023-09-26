@@ -1,12 +1,6 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
-<section class="content-header pd-left-right-15">
-    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20" id="ShowSearch" style="display:none;">
-        <div class="pull-right width-25">
-		    <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
-        </div> 	
-    </div> 	
-
+<section class="content-header pd-left-right-15">    
     <div class="row padding-default" style="margin-bottom: 20px">
 		<div class="col-lg-3 col-sm-12">
             <div class="box-body btn-primary border-radius-13">
@@ -45,6 +39,12 @@
 			</div>
 		</div>
 	</div>
+
+    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20" id="ShowSearch" style="display:none;">
+        <div class="width-25">
+		    <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
+        </div> 	
+    </div> 	
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
