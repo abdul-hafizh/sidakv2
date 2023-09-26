@@ -1138,6 +1138,11 @@
      left: 0px!important; 
 }
 
+.btn-group,.btn-group-vertical {
+    float: left;
+    width: 200px;
+}
+
 .user-panel>.info p{
     color: #fff;
 }
