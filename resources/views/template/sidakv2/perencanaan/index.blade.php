@@ -138,6 +138,24 @@
         let page = 1;
         var periode = [];
         var list = [];
+        
+        $.ajax({
+            url: BASE_URL +'/api/select-periode?type=GET',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $.each(data.result, function(index, option) {
+                    $('#periode_id').append($('<option>', {
+                      value: option.value,
+                      text: option.text
+                    }));
+                });
+                $('#periode_id').selectpicker('refresh');
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
 
         $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -174,24 +192,6 @@
                     }
                 });
             }    
-        });
-
-        $.ajax({
-            url: BASE_URL +'/api/select-periode?type=GET',
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                $.each(data.result, function(index, option) {
-                    $('#periode_id').append($('<option>', {
-                      value: option.value,
-                      text: option.text
-                    }));
-                });
-                $('#periode_id').selectpicker('refresh');
-            },
-            error: function(error) {
-                console.error(error);
-            }
         });
 
         $('#periode_id').on('change', function() {
