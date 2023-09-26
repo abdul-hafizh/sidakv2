@@ -1138,9 +1138,15 @@
      left: 0px!important; 
 }
 
-.btn-group,.btn-group-vertical {
+.btn-action {
+    position: relative;
+    vertical-align: middle;
     float: left;
     width: 200px;
+}
+
+.btn-action button {
+    margin-right: 5px;
 }
 
 .user-panel>.info p{

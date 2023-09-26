@@ -377,7 +377,7 @@
                 row +=`<td class="table-padding-second">${item.status}</td>`;
                 row +=`<td class="table-padding-second">${item.updated_at}</td>`;
                 row +=`<td>`; 
-                    row +=`<div class="btn-group">`;
+                    row +=`<div class="btn-action">`;
                     if(item.deleted == false)
                     {
                         if(detailed.checked == true)
