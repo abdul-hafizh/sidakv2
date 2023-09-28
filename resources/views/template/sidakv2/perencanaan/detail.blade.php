@@ -249,8 +249,8 @@
                     $('#alasan-edit-view').removeClass('col-lg-12 text-red');
                }
                
-               var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + data.lap_rencana + '" class="btn btn-danger col-md-2" target="_blank">Download PDF</a>';
-               var generate_pdf = '<a href="'+BASE_URL+'/perencanaan/generate_pdf" class="btn btn-success blink-text col-md-2" target="_blank">Generate PDF</a>';         
+               var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + data.lap_rencana + '" class="btn btn-danger col-md-2" target="_blank"><i class="fa fa-download"></i> Download PDF</a>';
+               var generate_pdf = '<a href="'+BASE_URL+'/perencanaan/generate_pdf/'+ data.id + '" class="btn btn-success blink-text col-md-2" target="_blank">Generate PDF</a>';         
 
                var row = '';
                var rows = '';
@@ -490,7 +490,7 @@
                                    rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove"><i class="fa fa-ban"></i> Unapprove</button>';
                               }
                               if(data.status_code == 14 && data.request_edit == 'false') {
-                                   rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2">Approve</button>';
+                                   rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2"><i class="fa fa-check"></i> Approve</button>';
                                    rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove-doc"><i class="fa fa-ban"></i> Unapprove</button>';
                               }
                               if(data.status_code == 15 && data.request_edit == 'true') {

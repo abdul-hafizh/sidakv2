@@ -12,9 +12,10 @@ use App\Http\Request\Validation\ValidationPerencanaan;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestAuditLog;
 use App\Http\Request\RequestPerencanaan;
+use App\Http\Request\RequestNotification;
 use App\Helpers\GeneralPaginate;
 use App\Models\Perencanaan;
-use App\Models\PaguTarget;
+use App\Models\Notification;
 use App\Models\AuditLog;
 
 class PerencanaanApiController extends Controller
@@ -63,38 +64,66 @@ class PerencanaanApiController extends Controller
     public function search(Request $request)
     {
         $access = RequestAuth::Access(); 
-        $search = $request->search;
-        $column_search  = array('periode_id');
-        $_res = array();
-        $i = 0;
+        $periode_id = $request->periode_id;
+        $search_status = $request->search_status;                
+        $search_text = $request->search_text;                
 
-        if($access == 'daerah' ||  $access == 'province') { 
-            $query  = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('id','DESC');
-
+        if($access == 'daerah' || $access == 'province') { 
+            $query  = Perencanaan::where('daerah_id', Auth::user()->daerah_id)->orderBy('id', 'DESC');
         } else {
-            $query  = Perencanaan::orderBy('id','DESC');
+            $query  = Perencanaan::orderBy('id', 'DESC');
         }
 
-        foreach ($column_search as $item)
-        {
-            if ($search) 
-            {                
-                if ($i === 0) {   
-                   $query->where($item,'LIKE','%'.$search.'%');
-                } else {
-                   $query->orWhere($item,'LIKE','%'.$search.'%');
-                }   
-            }
-
-            $i++;
+        if($periode_id) {
+            $query->where(function ($q) use ($periode_id) {
+                $q->where('periode_id', 'LIKE', '%' . $periode_id . '%');
+            });
         }
-       
-        $data = $query->paginate($this->perPage);
-        $description = $search;        
-        $result = RequestPerencanaan::GetDataAll($data,$this->perPage,$request);
+
+        if ($search_text) {
+            $query->where(function ($q) use ($search_text) {
+                $q->where('pengawas_analisa_pagu', $search_text)
+                  ->orWhere('pengawas_inspeksi_pagu', $search_text)
+                  ->orWhere('pengawas_evaluasi_pagu', $search_text)
+                  ->orWhere('bimtek_perizinan_pagu', $search_text)
+                  ->orWhere('bimtek_pengawasan_pagu', $search_text)
+                  ->orWhere('penyelesaian_identifikasi_pagu', $search_text)
+                  ->orWhere('penyelesaian_realisasi_pagu', $search_text)
+                  ->orWhere('penyelesaian_evaluasi_pagu', $search_text)
+                  ->orWhere('promosi_pengadaan_pagu', $search_text)
+                  ->orWhere('lokasi', $search_text);
+            });
+        }        
+
+        if($search_status) {
+            $query->where(function ($q) use ($search_status) {
+                switch ($search_status) {
+                    case 1:
+                        $q->where('status', 13)->WhereIn('request_edit', ['false', 'true', 'revisi', 'reject', 'reject_doc']);
+                        break;
+                    case 2:
+                        $q->where('status', 15)->where('request_edit', 'reject_doc');
+                        break;
+                    case 3:
+                        $q->where('status', 15)->where('request_edit', 'true');
+                        break;
+                    case 4:
+                        $q->where('status', 15)->where('request_edit', 'false');
+                        break;
+                    case 5:
+                        $q->where('status', 16)->where('request_edit', 'false');
+                        break;
+                    case 6:
+                        $q->where('status', 13)->WhereIn('request_edit', ['reject', 'reject_doc']);
+                        break;
+                }
+            });
+        }           
+    
+        $data = $query->paginate($this->perPage);        
+        $result = RequestPerencanaan::GetDataAll($data, $this->perPage, $request);
 
         return response()->json($result);
-
     }
        
     public function store(Request $request){
@@ -110,6 +139,14 @@ class PerencanaanApiController extends Controller
             
             $insert = RequestPerencanaan::fieldsData($request);  
             $saveData = Perencanaan::create($insert);
+
+            if($saveData && $request->type == 'kirim')
+            {
+                $type = 'perencanaan';
+                $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
+                $notif = RequestNotification::fieldsData($type,$messages_desc);
+                Notification::create($notif);
+            }  
 
             return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);    
             
@@ -148,6 +185,12 @@ class PerencanaanApiController extends Controller
         $results = $_res->where('id', $id)->update([ 'status' => 15, 'request_edit' => 'request_doc']);
 
         if($results){
+            
+            $type = 'perencanaan';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Dokumen Perencanaan Tahun ' . $_res->periode_id;
+            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            Notification::create($notif);
+            
             $messages['messages'] = true;
         }
         
@@ -169,6 +212,11 @@ class PerencanaanApiController extends Controller
         $results = $_res->where('id', $id)->update([ 'status' => 16, 'request_edit' => 'false']);
 
         if($results){
+            $type = 'perencanaan';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Perencanaan Tahun ' . $_res->periode_id;
+            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            Notification::create($notif);
+
             $messages['messages'] = true;
         }
         
@@ -190,6 +238,11 @@ class PerencanaanApiController extends Controller
         $results = $_res->where('id', $id)->update([ 'status' => 13, 'request_edit' => 'true']);
 
         if($results){
+            $type = 'perencanaan';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Request Edit Perencanaan Tahun ' . $_res->periode_id;
+            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            Notification::create($notif);
+
             $messages['messages'] = true;
         }
         
@@ -212,6 +265,11 @@ class PerencanaanApiController extends Controller
         $results = Perencanaan::where('id', $id)->update($update);
 
         if($results){
+            $type = 'perencanaan';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Perencanaan Tahun ' . $_res->periode_id;
+            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            Notification::create($notif);
+
             $messages['messages'] = true;
         }
         
@@ -234,6 +292,11 @@ class PerencanaanApiController extends Controller
         $results = Perencanaan::where('id', $id)->update($update);
 
         if($results){
+            $type = 'perencanaan';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Dokumen Perencanaan Tahun ' . $_res->periode_id;
+            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            Notification::create($notif);
+
             $messages['messages'] = true;
         }
         
@@ -256,6 +319,11 @@ class PerencanaanApiController extends Controller
         $results = Perencanaan::where('id', $id)->update($update);
 
         if($results){
+            $type = 'perencanaan';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Request Edit Perencanaan Tahun ' . $_res->periode_id;
+            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            Notification::create($notif);
+
             $messages['messages'] = true;
         }
         
@@ -278,6 +346,11 @@ class PerencanaanApiController extends Controller
         $results = Perencanaan::where('id', $id)->update($update);
 
         if($results){
+            $type = 'perencanaan';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Perbaikan Pada Perencanaan Tahun ' . $_res->periode_id;
+            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            Notification::create($notif);
+
             $messages['messages'] = true;
         }
         
@@ -295,10 +368,28 @@ class PerencanaanApiController extends Controller
 
             if($_res->status == 15 && $_res->request_edit == 'false') {
                 $updateResult = $_res->where('id', $key)->update([ 'status' => 15, 'request_edit' => 'request_doc']);
+                if($updateResult) {
+                    $type = 'perencanaan';
+                    $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Formulir Perencanaan Tahun ' . $_res->periode_id;
+                    $notif = RequestNotification::fieldsData($type,$messages_desc);
+                    Notification::create($notif);
+                }
             } elseif ($_res->status == 14 && $_res->request_edit == 'false') {
                 $updateResult = $_res->where('id', $key)->update([ 'status' => 16, 'request_edit' => 'false']);
+                if($updateResult) {
+                    $type = 'perencanaan';
+                    $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Perencanaan Tahun ' . $_res->periode_id;
+                    $notif = RequestNotification::fieldsData($type,$messages_desc);
+                    Notification::create($notif);
+                }
             } elseif ($_res->status == 15 && $_res->request_edit == 'true') {
                 $updateResult = $_res->where('id', $key)->update([ 'status' => 13, 'request_edit' => 'true']);
+                if($updateResult) {
+                    $type = 'perencanaan';
+                    $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Request Edit Perencanaan Tahun ' . $_res->periode_id;
+                    $notif = RequestNotification::fieldsData($type,$messages_desc);
+                    Notification::create($notif);
+                }
             } else {
                 $results = false;
             }

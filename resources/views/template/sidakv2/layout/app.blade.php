@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="theme-color" content="#ff4500">
     <meta name="description" content="Sidak | BKPM">
-
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="description" content="">
@@ -39,8 +38,9 @@
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
    
 
-<body class="hold-transition ">
+</head>
 
+<body class="hold-transition ">
     @if (!Auth::guest())
     <div class="wrapper">
         <header class="main-header">
@@ -59,10 +59,6 @@
 
                 <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
                 <div class="navbar-custom-menu mt-10 mc-15">
-
-
-
-
                     <ul class="nav navbar-nav">
                         <li class="dropdown messages-menu">
                             <a id="update-notif" data-toggle="dropdown" class="btn btn-danger margin-0-12-0-0  border-radius-10" aria-expanded="false">
@@ -74,7 +70,6 @@
                                 <li>
                                     <ul id="menu-notif" class="menu"></ul>
                                 </li>
-
                                 <li class="footer"><a href="{{ url('notification') }}">See All Messages</a></li>
                             </ul>
                         </li>
@@ -82,42 +77,30 @@
                             <a data-toggle="modal" data-target="#modal-profile-x" class="btn btn-primary margin-0-12-0-0  border-radius-10">
                                 <i aria-hidden="true" class="fa fa-user"></i> Profile
                             </a>
-
-
                         </li>
-
                         <li>
                             <a href="{{ url('logout') }}" class="btn btn-danger  border-radius-10">
                                 <i aria-hidden="true" class="fa fa-sign-out"></i> Logout
                             </a>
-
                         </li>
                     </ul>
-
-
-
-
-
                 </div>
             </nav>
-
         </header>
 
         @include('template/sidakv2/layout.sidebar')
         <div class="content-wrapper">
             @yield('content')
-
         </div>
-
-
     </div>
     @else
-    <div class="preloader"><span></span></div><!-- /.preloader -->
+
+    <div class="preloader"><span></span></div>
+
     <div class="page-wrapper">
         @yield('content')
     </div>
     @endif
-
 
     <script src="{{ config('app.url').$template.'/js/sweetalert2.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/adminlte.min.js' }}"></script>
@@ -136,27 +119,18 @@
     <script src="{{ config('app.url').$template.'/js/accounting.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/xlsx.full.min.js' }}"></script>
 
-   
-
     <script>
         $(function() {
 
-                $('[data-toggle="tooltip"]').tooltip();
+            $('[data-toggle="tooltip"]').tooltip();
 
-                $("#update-notif").click(() => {
-                    UpdateData();
-                });
+            $("#update-notif").click(() => {
+                UpdateData();
+            });
 
-
-
-
-
-
-            //getNotif();
-
+            getNotif();
 
             function UpdateData() {
-
                 $.ajax({
                     url: BASE_URL + `/api/notif-update`,
                     method: 'GET',
@@ -167,81 +141,74 @@
                         console.error('Error fetching data:', error);
                     }
                 });
-
-
             }
 
-            // function getNotif() {
+            function getNotif() {
+                $.ajax({
+                    url: BASE_URL + "/api/notif", // Perbaikan tanda kutip
+                    method: "GET",
+                    success: function (response) {
+                        // Bersihkan konten notifikasi sebelum menambahkan elemen baru
+                        $("#total-notif").empty();
+                        $("#total-notif-all").empty();
+                        $("#menu-notif").empty();
 
-            //     $.ajax({
-            //         url: BASE_URL + `/api/notif`,
-            //         method: 'GET',
-            //         success: function(response) {
-                       
+                        if (response.data.length > 0) {
+                            response.data.forEach(function (item, index) {
+                                var row = "";
+                                row += `<li>`;
+                                row += `<a href="#">`;
+                                row += `<div class="pull-left">`;
+                                row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
+                                row += `</div>`;
+                                row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
+                                row += `<p>${item.messages}</p>`;
+                                row += `</a>`;
+                                row += `</li>`;
 
-            //             if (response.data.length > 0) {
-            //                 // Populate content with new data
-            //                 response.data.forEach(function(item, index) {
-            //                     var row = ``;
-            //                     row += `<li>`;
-            //                     row += `<a href="#">`;
-            //                     row += `<div class="pull-left">`;
-            //                     row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
-            //                     row += `</div>`;
-            //                     row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
-            //                     row += `<p>${item.messages}</p>`;
-            //                     row += `</a>`;
+                                // Tambahkan elemen ke menu-notif
+                                $("#menu-notif").append(row);
+                            });
 
-            //                     row += `</li>`;
-
-            //                 });
-            //                 $('#total-notif').append(response.total_not_show);
-            //                 $('#total-notif-all').append('You have ' + response.total_all + ' messages');
-            //                 $('#menu-notif').append(row);
-            //             } else {
-                            
-            //                 var row = ``;
-            //                 row += `<li>`;
-            //                 row += `<a>Data Kosong</a>`;
-            //                 row += `</li>`;
-            //                 $('#menu-notif').append(row);
-            //             }
-
-
-            //         },
-            //         error: function(error) {
-            //             console.error('Error fetching data:', error);
-            //         }
-            //     });
-            // } 
+                            // Tambahkan total-notif dan total-notif-all
+                            $("#total-notif").append(response.total_not_show);
+                            $("#total-notif-all").append("You have " + response.total_all + " messages");
+                        } else {
+                            var row = `<li><a>Data Kosong</a></li>`;
+                            $("#menu-notif").append(row);
+                        }
+                    },
+                    error: function (error) {
+                        console.error("Error fetching data:", error);
+                    },
+                });
+            }
         });
+
     </script>
+
     <script type="text/javascript">
         const apps = localStorage.getItem('apps');
         const template = JSON.parse(apps);
         $('.logo-mini').html('<img src="' + template.logo_sm + '" class="full">');
         $('.logo-lg').html('<img src="' + template.logo_lg + '" class="full">');
 
-
         $(".clear-input").click(()=> {   
           DefaultNull();
-        
         });
-
         
-         function DefaultNull()
-       {
-           
-           $("input").val(null);
-           $("textarea").val(null);
-           $('#daerah-alert-add').hide();
-           $('#semester').selectpicker('val', '');
-           $('#role_id').selectpicker('val', '');
-           $('#kabupaten_id').selectpicker('val', '');
-           $('#province_id').selectpicker('val', '');
-           $('.form-group').removeClass('has-error');
-           $('.span-messages').removeClass('help-block').html('');
-           $('.selectpicker').selectpicker('refresh');
+        function DefaultNull()
+        {
+            $("input").val(null);
+            $("textarea").val(null);
+            $('#daerah-alert-add').hide();
+            $('#semester').selectpicker('val', '');
+            $('#role_id').selectpicker('val', '');
+            $('#kabupaten_id').selectpicker('val', '');
+            $('#province_id').selectpicker('val', '');
+            $('.form-group').removeClass('has-error');
+            $('.span-messages').removeClass('help-block').html('');
+            $('.selectpicker').selectpicker('refresh');
         }
 
     </script>
@@ -249,5 +216,4 @@
 
 </body>
 @include('template/sidakv2/layout.profile')
-
 </html>

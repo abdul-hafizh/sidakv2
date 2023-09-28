@@ -1148,6 +1148,17 @@
      left: 0px!important; 
 }
 
+.btn-action {
+    position: relative;
+    vertical-align: middle;
+    float: left;
+    width: 200px;
+}
+
+.btn-action button {
+    margin-right: 4px;
+}
+
 .user-panel>.info p{
     color: #fff;
 }
