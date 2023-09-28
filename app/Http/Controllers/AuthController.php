@@ -17,7 +17,7 @@ use App\Models\SystemLog;
 use App\Http\Request\RequestMenuRoles;
 use App\Http\Request\RequestAuditLog;
 use JWTAuth;
-
+use App\Helpers\ConfigMenu;
 
 class AuthController extends Controller
 {
@@ -134,13 +134,13 @@ class AuthController extends Controller
 
                        if($access =='admin')
                        {
-                            $sidebar = RequestMenuRoles::MenuSidebarAdmin();
+                            $sidebar = ConfigMenu::MenuSidebarAdmin();
                        }else if($access =='pusat'){
-                           $sidebar = RequestMenuRoles::MenuSidebarPusat();
+                           $sidebar = ConfigMenu::MenuSidebarPusat();
                        }else if($access =='province'){
-                            $sidebar = RequestMenuRoles::MenuSidebarProvinsi();
+                            $sidebar = ConfigMenu::MenuSidebarProvinsi();
                        }else if($access =='daerah'){
-                           $sidebar = RequestMenuRoles::MenuSidebarKabupaten();
+                           $sidebar = ConfigMenu::MenuSidebarKabupaten();
                        } 
 
                        $log = array(             

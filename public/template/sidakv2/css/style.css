@@ -226,7 +226,7 @@
 }
 
 .title-header {
-    padding: 8px 14px;
+    padding: 8px 0px;
     font-size: 30px;
     font-weight: 700;
     color: #0e298f;
@@ -312,6 +312,9 @@
     padding: 18px 18px;
 
 }
+
+
+
 
 .loading-table{
     padding: 93px 0px;
@@ -1077,7 +1080,12 @@
 
 .po-top-menu{
     position: relative;
-    top: 7px;
+    top: 3px;
+}
+
+.title-menu{
+    position: relative;
+    bottom: 3px;
 }
 
 .skin-blue .sidebar-menu>li>a>span{
@@ -1104,10 +1112,12 @@
   color: #fff;
 }
 
-.treeview-menu>li>a:hover {
-    color: #fff;
-}
 
+.skin-blue .sidebar-menu .treeview-menu>li:hover,.skin-blue .sidebar-menu .treeview-menu>.active {
+    background-color: #000!important;
+    border-radius: 6px;
+
+}
 
 .mgn-center-img{
     margin: 0px auto;

@@ -105,13 +105,13 @@
 }
 
 
-.icon-province{
+.icon-provinsi{
     background: url('../img/menu/provinsi.png');
     background-repeat: no-repeat;
    
 }
 
-.icon-province-hover{
+.icon-provinsi-hover{
     background: url('../img/menu/hover/provinsi.png');
     background-repeat: no-repeat;
    
@@ -120,13 +120,13 @@
 
 
 
-.icon-regency{
+.icon-kabupaten{
     background: url('../img/menu/kabupaten.png');
     background-repeat: no-repeat;
    
 }
 
-.icon-regency-hover{
+.icon-kabupaten-hover{
     background: url('../img/menu/hover/kabupaten.png');
     background-repeat: no-repeat;
    
@@ -190,18 +190,13 @@
 
 
 
-.fa-img-status{
-    background: url('../img/menu/status.png');
-    background-repeat: no-repeat;
-  
-}
 
 
 
 
 
 
-.fa-img-user{
+.icon-user{
     background: url('../img/menu/user.png');
     background-repeat: no-repeat;
     
@@ -209,13 +204,13 @@
 
 
 
-.fa-img-role{
+.icon-role{
     background: url('../img/menu/role.png');
     background-repeat: no-repeat;
   
 }
 
-.fa-img-rekap{
+.icon-rekap{
     background: url('../img/menu/rekapitulasi.png');
     background-repeat: no-repeat;
   
@@ -226,7 +221,7 @@
 
 
 
-.fa-img-perencanaan{
+.icon-perencanaan{
     background: url('../img/menu/perencanaan.png');
     background-repeat: no-repeat;
    
@@ -234,13 +229,13 @@
 
 
 
-.fa-img-pengawasan{
+.icon-pengawasan{
     background: url('../img/menu/pengawasan.png');
     background-repeat: no-repeat;
 }
 
 
-.fa-img-bimsos{
+.icon-bimsos{
     background: url('../img/menu/bimbingan.png');
     background-repeat: no-repeat;
    
@@ -249,27 +244,27 @@
 
 
 
-.fa-img-penyelesaian{
+.icon-penyelesaian{
     background: url('../img/menu/penyelesaian_masalah.png');
     background-repeat: no-repeat;
    
 }
 
 
-.fa-img-promosi{
+.icon-promosi{
     background: url('../img/menu/promosi.png');
     background-repeat: no-repeat;
     
 }
 
-.fa-img-imaps{
+.icon-imaps{
     background: url('../img/menu/imap.png');
     background-repeat: no-repeat;
     
 }
 
 
-.fa-img-aksi{
+.icon-aksi{
     background: url('../img/menu/action.png');
     background-repeat: no-repeat;
     
