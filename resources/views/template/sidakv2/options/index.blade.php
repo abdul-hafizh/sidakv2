@@ -768,35 +768,14 @@
 	                 'option':result,
                 });
 
-                for(let x =0; x<role_menu.length; x++)
-                {
-              	   
-              	    
-                 if(listnew[0].slug != role_menu[x].slug)
-                 {
+                let listmenu = role_menu.find(o => o.slug === item.slug); 
+                    listmenu.option = result;
 
-                 	 listold.push({
-	                     'icon':role_menu[x].icon,
-	                     'tasks':[],
-	                     'name':role_menu[x].name,
-	                     'slug':role_menu[x].slug,
-	                     'option':role_menu[x].option,
-	                     'path_web':role_menu[x].path_web
-	                    
-	                  });
-                  } 	
-
-                }
-
-
-                merge = [...listnew,...listold];
-               
 	            var role_id = $('#role_id').val();
-	           
 	            let find = role.find(o => o.value === role_id);
                  
 		   		var form = {
-		           'menu':merge,
+		           'menu':role_menu,
 		           'role_id':find.id,
 		        };
 		        localStorage.setItem('root_menu', JSON.stringify(form));
@@ -1107,7 +1086,7 @@
 	            }];
 	             
 	              //roleid_old = temp.role_id;  
-	              merge = [...temp.menu,...form];
+	              merge = [...form,...temp.menu];
 	             	
              
               
@@ -1143,16 +1122,19 @@
 	            
 	            	if(roleid_old != roleid_new)
 	                {
-	                   //console.log(role_menu)
-	                  
-	                   var send = merge;
-	
-	                  
+	                   console.log(role_menu)
+	                   if(!role_menu)
+	                   {
+	                   	  var send = merge;
+	                   }else{
+	                   	   var send = [...merge,...role_menu];
+	                   }	
+	                      
                        
 	                }else{
 	                    console.log('temp + reales')
 	                    console.log(role_menu)	
-	                    var send = [...role_menu,...merge];	
+	                    var send = [...merge,...role_menu];	
 	                    
 	                }		
 	              	

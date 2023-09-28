@@ -3297,8 +3297,10 @@ table.text-center,table.text-center td,table.text-center th {
 }
 
 .treeview-menu>li {
-    margin: 0
+       margin: 0px 0px 3px;
 }
+
+
 
 .treeview-menu>li>a {
     padding: 5px 5px 5px 15px;

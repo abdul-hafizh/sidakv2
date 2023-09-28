@@ -37,6 +37,7 @@
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
+   
 
 <body class="hold-transition ">
 
@@ -49,14 +50,14 @@
             </a>
 
             <nav role="navigation" class="navbar navbar-static-top">
-              <!--   <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
- -->
-                <h3 class="pull-left title-header mgn-none text-capitalize">{{ $title  }} </h3>
+
+                <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
                 <div class="navbar-custom-menu mt-10 mc-15">
 
 

@@ -47,7 +47,8 @@
 
         let sidebar = localStorage.getItem('menu_sidebar');
         var action =  JSON.parse(sidebar);
-         getMenuSidebar(action);
+        var data = [];
+        getMenuSidebar(action);
         
        
  
@@ -171,9 +172,16 @@
 				    	row +=`<ul  class="treeview-menu" style="display: none;">`; 
 				    }		
                              for(let i=0; i<item.tasks.length; i++)
-							 {   
-							    row +=`<li class="li-menu">`;
-							        row +=`<a href="`+ item.tasks[i].url +`">`;
+							 {  
+								 if(item.tasks[i].active ==true)
+								 {
+								 	row +=`<li class="li-sub `+ item.tasks[i].class +`"  data-param_sub="`+ item.tasks[i].slug +`">`;
+								 }else{
+								 	row +=`<li class="li-sub `+ item.tasks[i].class +`"  data-param_sub="`+ item.tasks[i].slug +`">`;
+								 } 
+							    
+							        
+							        row +=`<a >`;
 							            row +=`<i class="po-top-menu fa-icon `+ item.tasks[i].icon +`"></i>`; 
 							             row +=`<span class="title-menu" > `+ item.tasks[i].name +`</span>`;
 							        row +=`</a>`;
@@ -189,101 +197,162 @@
 
 		        });
 
-		        
+		           findlast = data.find(o => o.active === true);
+		           if(findlast)
+		           {
+                       $('.icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
+                       $('.'+findlast.slug).addClass('menu-open active');
+
+		           }	
+		         
+                   
 
 		    }  
-
-		    $('.li-menu').hover((e) => {
-			        //$('.li-menu').removeClass('menu-open active').addClass('active-disabled');
-			        let menu = e.currentTarget.dataset.param_id;
-			        $('.icon-'+ menu).removeClass('icon-'+ menu).addClass('icon-'+ menu+'-hover');
-                   
-                    findlast = data.find(o => o.active === true);
-                   
-                   console.log(findlast.slug)
-                    if(menu != findlast.slug)
-                    {
-                        $('.icon-'+ findlast.slug +'-hover').removeClass('icon-'+ findlast.slug+'-hover').addClass('icon-'+ findlast.slug);
-                        $('.'+findlast.slug).removeClass('menu-open active');
-                        
-                    }
-                  
-                    
-
-			    }, function (e) {
-			    	let menu = e.currentTarget.dataset.param_id;
-			    	  
-			        $('.icon-'+ menu +'-hover').removeClass('icon-'+ menu+'-hover').addClass('icon-'+ menu);
-
-			         if(menu != findlast.slug)
-                    {
-
-	                    $('.icon-'+ findlast.slug).removeClass('icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
-				        $('.'+findlast.slug).addClass('menu-open active');
-				    } else{
-
-				    	$('.icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
-				    }   
-			 
-			    });
-
-
-		    $( "#menu-sidebar" ).on( "click", "#class-menu", (e) => {
-		        let slug = e.currentTarget.dataset.param_id;
-                const find = data.find(o => o.slug === slug);
-                const items = [];
-
-                if(find.count ==0)
-                {
-                  window.location.replace(find.url);  
-                }
-               
-                    
-
-		        
-                for(let i =0; i<data.length; i++)
-                 {
-                    if(data[i].slug != slug)
-                    {
-                      items.push({
-                      	 name:data[i].name,
-                      	 slug:data[i].slug,
-                      	 icon:data[i].icon,
-                      	 url:data[i].url,
-                      	 count:data[i].count,
-                      	 active:false,
-                      	 class:'treeview',
-                      	 tasks:data[i].tasks
-                      })
-                    }else{
-
-                    	
-		                           
-	                      items.push({
-	                      	 name:data[i].name,
-	                      	 slug:data[i].slug,
-	                      	 icon:data[i].icon,
-	                      	 url:data[i].url,
-	                      	 count:data[i].count,
-	                      	 active:true,
-	                      	 class:'treeview menu-open active',
-	                      	 tasks:data[i].tasks
-	                      })
-
-                       
-
-                    }	
-                } 	
-
-            
-
-		        localStorage.setItem('menu_sidebar', JSON.stringify(items));
-		        //getMenuSidebar(items);
-		    });
-
+           
+            MenuHover();
+            OnClickSubMenu();
+       
+	     
 
         }
-       
+        
+        //menu
+        $( "#menu-sidebar" ).on( "click", "#class-menu", (e) => {
+		        let slug = e.currentTarget.dataset.param_id;
+		        
+                data = action;
+                //active sebelummnya
+                findlast = data.find(o => o.active === true && o.slug != slug);
+                if(findlast)
+                {
+                	findlast.active = false;
+                	findlast.icon = 'icon-'+findlast.slug;
+                    findlast.class = findlast.slug +' treeview';
+                } 	
+               
+               
+
+
+                const findtrue = data.find(o => o.slug === slug);
+                if(findtrue.active == true)
+                {
+
+                    findtrue.active = false;
+                    findtrue.icon = 'icon-'+findtrue.slug;
+                    findtrue.class = findtrue.slug +' treeview';
+                }else{
+
+                   
+
+                    findtrue.active = true;
+                    findtrue.icon = 'icon-'+findtrue.slug +'-hover';
+                    findtrue.class = findtrue.slug +' treeview menu-open active';
+
+                }	
+
+
+
+                getMenuSidebar(data);
+
+                if(findtrue.count ==0)
+                {
+                  window.location.replace(findtrue.url);  
+                }
+               
+		        
+		});
+
+     function MenuHover(){
+            
+           $('.li-menu').hover((e) => {
+		        let menu = e.currentTarget.dataset.param_id;
+		        data = action;
+                var findlast = data.find(o => o.active === true); 
+		        if(findlast)
+		        { 	
+		        
+	                 if(menu != findlast.slug)
+	                 {
+	                	 $('.'+findlast.slug).removeClass('menu-open active');
+	                     $('.icon-'+ findlast.slug +'-hover').removeClass('icon-'+ findlast.slug+'-hover').addClass('icon-'+ findlast.slug);
+	                     $('.icon-'+ menu).removeClass('icon-'+ menu).addClass('icon-'+ menu+'-hover');
+	                 }
+               }else{
+
+                  const findtrue = data.find(o => o.slug === menu);
+                  $('.'+findtrue.slug).removeClass('menu-open active');
+                  $('.icon-'+ findtrue.slug +'-hover').removeClass('icon-'+ findtrue.slug+'-hover').addClass('icon-'+ findtrue.slug);
+	              $('.icon-'+ menu).removeClass('icon-'+ menu).addClass('icon-'+ menu+'-hover');
+                  
+               }
+
+                
+     
+               
+              
+		    }, function (e) {
+		    	let menu = e.currentTarget.dataset.param_id;
+		        var findlast = data.find(o => o.active === true); 
+			      if(findlast)
+			      {
+			    	  //tampilakan menu baru
+	                 if(menu != findlast.slug)
+	                 {
+
+	                 	 //menu
+	                    $('.icon-'+ menu +'-hover').removeClass('icon-'+ menu+'-hover').addClass('icon-'+ menu);
+	                    $('.'+findlast.slug).addClass('menu-open active');
+	                    $('.icon-'+ findlast.slug).removeClass('icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
+
+	                 }
+	              }else{
+
+                      const findtrue = data.find(o => o.slug === menu);
+	                  $('.icon-'+ menu +'-hover').removeClass('icon-'+ menu+'-hover').addClass('icon-'+ menu);
+	                  $('.'+findtrue.slug).removeClass('menu-open active');
+	                
+	              }    	
+
+		    });
+
+     }
+
+    
+
+     function OnClickSubMenu(){
+
+
+     	 $(".treeview-menu").on( "click", ".li-sub", (e) => {
+
+                let slug = e.currentTarget.dataset.param_sub; 
+                
+                findmenu = data.find(o => o.active === true);
+                findlasttaks = findmenu.tasks.find(o => o.active === true);
+
+                if(findlasttaks)
+                {
+                   findlasttaks.active = false; 
+                   findlasttaks.class = findlasttaks.slug; 
+                
+                } 	
+
+               
+               
+                findtasks = findmenu.tasks.find(o => o.slug === slug);
+                findtasks.active = true;
+                findtasks.class = findtasks.slug + ' active'; 
+               
+                
+               localStorage.setItem('menu_sidebar', JSON.stringify(data));
+                getMenuSidebar(data);
+                data = [];
+            
+                window.location.replace(findtasks.url);  
+
+          });
+
+     }
+
 
 	 }); 	
 
