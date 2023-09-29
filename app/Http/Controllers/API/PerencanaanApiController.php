@@ -102,7 +102,7 @@ class PerencanaanApiController extends Controller
                         $q->where('status', 13)->WhereIn('request_edit', ['false', 'true', 'revisi', 'reject', 'reject_doc']);
                         break;
                     case 2:
-                        $q->where('status', 15)->where('request_edit', 'reject_doc');
+                        $q->where('status', 15)->where('request_edit', 'request_doc');
                         break;
                     case 3:
                         $q->where('status', 15)->where('request_edit', 'true');

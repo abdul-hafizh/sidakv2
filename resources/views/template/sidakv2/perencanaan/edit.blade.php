@@ -144,7 +144,7 @@
                url: BASE_URL +'/api/perencanaan/edit/' + segments[5],
                success: function(response) {
                     list = response;  
-                    $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');    
+                    $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker" disabled></select>');    
                     getdataid(list);
                },
                error: function( error) { }
@@ -609,7 +609,7 @@
                
                $.ajax({
                     dataType: 'json',
-                    url: BASE_URL +'/api/select-periode?type=POST',
+                    url: BASE_URL +'/api/select-periode?type=get',
                     type: 'GET',
                     success: function(data) {
                          var select =  $('#periode_id');
