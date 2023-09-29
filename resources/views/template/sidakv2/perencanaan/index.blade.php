@@ -52,7 +52,7 @@
                     <option value="3">Request Edit</option>
                     <option value="4">Terkirim/Waiting</option>
                     <option value="5">Approved</option>
-                    <option value="6">Unapprove</option>
+                    <option value="6">Perlu Perbaikan</option>
                 </select>
             </div> 	
             <div class="col-lg-3">
