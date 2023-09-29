@@ -23,6 +23,11 @@ class RequestBimsos
         $order = array('nama_kegiatan' => 'ASC');
 
         $data = DB::table('bimsos');
+
+        if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
+            $data->where('daerah_id', Auth::User()->daerah_id);
+        }
+
         if ($request->length > 0)
             $data->offset($request->start)->limit($request->length);
 
@@ -31,11 +36,8 @@ class RequestBimsos
             $value = $searchColumn[0]['search']['value'];
             $filterjs = json_decode($value);
 
-            if ($filterjs[0]->type_daerah) {
-                $data->where('type_daerah', $filterjs[0]->type_daerah);
-            }
-            if ($filterjs[0]->daerah_id) {
-                $data->where('daerah_id', $filterjs[0]->daerah_id);
+            if ($filterjs[0]->jenis_sub) {
+                $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
             if ($filterjs[0]->periode_id) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
@@ -73,16 +75,17 @@ class RequestBimsos
             $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
 
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
+
             $numberNext++;
             $row    = array();
             $row[]  = $val->id;
 
             $row[]  = $val->nama_kegiatan;
-            $row[]  = $val->sub_menu_slug;
+            $row[]  = RequestBimsos::getLabelSubMenu($val->sub_menu_slug);
             $row[]  = $val->tgl_bimtek;
             $row[]  = $val->lokasi_bimtek;
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
-            $row[]  = $val->status_laporan_id;
+            $row[]  = RequestBimsos::getLabelStatus($val->status_laporan_id, $val->request_edit);
             $row[]  = $edit_url . " " . $delete_url;
 
             $temp[] = $row;
@@ -103,16 +106,16 @@ class RequestBimsos
         $order = array('nama_kegiatan' => 'ASC');
 
         $data = DB::table('bimsos');
+        if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
+            $data->where('daerah_id', Auth::User()->daerah_id);
+        }
         $searchColumn = $request->columns;
         if (!empty($searchColumn[0]['search']['value'])) {
             $value = $searchColumn[0]['search']['value'];
             $filterjs = json_decode($value);
 
-            if ($filterjs[0]->type_daerah) {
-                $data->where('type_daerah', $filterjs[0]->type_daerah);
-            }
-            if ($filterjs[0]->daerah_id) {
-                $data->where('daerah_id', $filterjs[0]->daerah_id);
+            if ($filterjs[0]->jenis_sub) {
+                $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
             if ($filterjs[0]->periode_id) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
@@ -147,48 +150,6 @@ class RequestBimsos
         return json_decode(json_encode($temp2), FALSE);
     }
 
-    public static function GetTotalPagu($request)
-    {
-
-        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
-
-        $data = DB::table('pagu_target');
-        $searchColumn = $request->data;
-        if (!empty($request->data)) {
-            $value = $searchColumn;
-            $filterjs = json_decode($value);
-
-            if ($filterjs[0]->type_daerah) {
-                $data->where('type_daerah', $filterjs[0]->type_daerah);
-            }
-            if ($filterjs[0]->daerah_id) {
-                $data->where('daerah_id', $filterjs[0]->daerah_id);
-            }
-            if ($filterjs[0]->periode_id) {
-                $data->where('periode_id', $filterjs[0]->periode_id);
-            }
-            $i = 0;
-            $search = $filterjs[0]->search_input;
-            if ($filterjs[0]->search_input) {
-                $data->where(function ($query) use ($search, $column_search, $i) {
-                    foreach ($column_search as $item) {
-                        if ($i == 0)
-                            $query->where($item, 'LIKE', '%' . $search . '%');
-                        else
-                            $query->orWhere($item, 'LIKE', '%' . $search . '%');
-                        $i++;
-                    }
-                });
-            }
-        }
-
-        $temp2['total_apbn'] = $data->sum('pagu_apbn');
-        $temp2['total_promosi'] = $data->sum('pagu_promosi');
-
-        return json_decode(json_encode($temp2), FALSE);
-    }
-
-
 
     public static function fieldsData($request)
     {
@@ -203,14 +164,46 @@ class RequestBimsos
                 'jml_peserta' => $request->jml_peserta,
                 'ringkasan_kegiatan' => $request->ringkasan_kegiatan,
 
-                'status_laporan_id' => 13,
+                'status_laporan_id' => '13',
                 'request_edit' => 'false',
-                'periode_id'  => '2022',
+                'periode_id'  => $request->periode_id_mdl,
                 'daerah_id'  => Auth::User()->daerah_id,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
 
         return $fields;
+    }
+
+    public static function getLabelSubMenu($status)
+    {
+        if ($status == 'is_tenaga_pendamping')
+            return  'Tenaga Pendamping';
+        elseif ($status == 'is_bimtek_ipbbr')
+            return  'Bimtek Implementasi Perizinan Berusaha Berbasis Resiko';
+        elseif ($status == 'is_bimtek_ippbbr')
+            return  'Bimtek Implementasi Pengawasan Perizinan Berusaha Berbasis Resiko';
+        return "Label tidak ditemukan";
+    }
+    public static function getLabelStatus($status, $requestEdit)
+    {
+        if ($status === 13) {
+            if ($requestEdit === "false") {
+                return "Draft";
+            } elseif ($requestEdit === "true") {
+                return "Draft (Edit)";
+            }
+        } elseif ($status === 14) {
+            if ($requestEdit === "false") {
+                return "Terkirim";
+            }
+        } elseif ($status === 15) {
+            if ($requestEdit === "false") {
+                return "Request Revision)";
+            } elseif ($requestEdit === "true") {
+                return "Request Edit";
+            }
+        }
+        return "Label tidak ditemukan";
     }
 }

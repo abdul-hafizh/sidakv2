@@ -160,12 +160,11 @@ class RequestPeriode
 
    public static function fieldsData($request)
    {
-      if($request->semester =='01')
-      {
-         $name = 'Semester 1 Tahun '.$request->year;
-      }else{
-         $name = 'Semester 2 Tahun '.$request->year;
-      }   
+      if ($request->semester == '01') {
+         $name = 'Semester 1 Tahun ' . $request->year;
+      } else {
+         $name = 'Semester 2 Tahun ' . $request->year;
+      }
 
       $fields = [
          'name'  =>  $name,
@@ -210,6 +209,17 @@ class RequestPeriode
 
          $temp[$key]['value'] = $val->year;
          $temp[$key]['text'] = 'Periode ' . $val->year;
+      }
+      return  $temp;
+   }
+   public static function SelectAllSemester($data)
+   {
+      $temp = array();
+
+      foreach ($data as $key => $val) {
+
+         $temp[$key]['value'] = $val->slug;
+         $temp[$key]['text'] = $val->name;
       }
       return  $temp;
    }

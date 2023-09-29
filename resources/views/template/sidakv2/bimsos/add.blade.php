@@ -77,6 +77,14 @@
       <form id="FormSubmit" enctype="multipart/form-data">
         <div class="modal-body" style="height: 550px; overflow-y: auto;">
           <div class="row">
+            <div id="periode_id_mdl-alert" class="form-group has-feedback col-md-12">
+              <label>Periode </label>
+              <select class="form-control select-periode-mdl" name="periode_id_mdl" id="periode_id_mdl">
+              </select>
+              <span id="periode_id_mdl-messages"></span>
+            </div>
+          </div>
+          <div class="row">
             <div id="sub_menu_slug-alert" class="form-group has-feedback col-md-12">
               <label>Jenis </label>
               <select class="form-control select-jenis" name="sub_menu_slug" id="sub_menu_slug">
@@ -269,12 +277,10 @@
       $('#update').hide();
     })
 
-
-
-
     $('#simpan').on('click', function() {
       var formData = new FormData($('#FormSubmit')[0]);
       var form = [
+        'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
         'tgl_bimtek',
@@ -336,6 +342,135 @@
           }
         }
       });
+    });
+
+    $("#datatable").on("click", ".modalUbah", function() {
+      $('#judulModalLabel').html('Form Ubah');
+      //  $('.modal-footer button[type=button]').html('Ubah Data');
+      $('#simpan').hide();
+      $('#update').show();
+      $('#periode_id_mdl-alert').removeClass('has-error');
+      $('#periode_id_mdl-messages').removeClass('help-block').html('');
+
+
+      const id = $(this).data('param_id');
+      $.ajax({
+        url: BASE_URL + '/api/bimsos/edit/' + id,
+        method: 'GET',
+        success: function(data) {
+          $('#sub_menu_slug').val(data.sub_menu_slug);
+          $('#nama_kegiatan').val(data.nama_kegiatan);
+          $('#tgl_bimtek').val(data.tgl_bimtek);
+          $('#lokasi_bimtek').val(data.lokasi_bimtek);
+          $('#biaya_kegiatan').val(data.biaya_kegiatan);
+          $('#jml_peserta').val(data.jml_peserta);
+          $('#ringkasan_kegiatan').val(data.ringkasan_kegiatan);
+          $('#is_skpd_sesuai').val(data.is_skpd_sesuai);
+          getPeriode(data.periode_id);
+          subMenu(data.sub_menu_slug);
+        }
+
+      })
+
+      function subMenu(sub_menu_slug) {
+        if (sub_menu_slug == 'is_tenaga_pendamping') {
+          $('#jml_peserta-alert').hide();
+          $('#lap_notula-alert').hide();
+          $('#lap_survei-alert').hide();
+          $('#lap_narasumber-alert').hide();
+          $('#lap_materi-alert').hide();
+          $('#lap_document-alert').hide();
+          $('#lap_pendamping-alert').show();
+        } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
+          $('#jml_peserta-alert').show();
+          $('#lap_notula-alert').show();
+          $('#lap_survei-alert').show();
+          $('#lap_narasumber-alert').show();
+          $('#lap_materi-alert').show();
+          $('#lap_document-alert').show();
+          $('#lap_pendamping-alert').hide();
+        } else {
+          $('#jml_peserta-alert').show();
+          $('#lap_notula-alert').show();
+          $('#lap_survei-alert').show();
+          $('#lap_narasumber-alert').show();
+          $('#lap_materi-alert').show();
+          $('#lap_document-alert').show();
+          $('#lap_pendamping-alert').hide();
+        }
+      }
+
+      function getPeriode(periode_id) {
+        $.ajax({
+          url: BASE_URL + '/api/select-periode-semester',
+          method: 'get',
+          dataType: 'json',
+          success: function(data) {
+            periode = '<option value="">- Pilih -</option>';
+            $.each(data, function(key, val) {
+              var select = '';
+              if (val.value == periode_id)
+                select = 'selected';
+              periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+            });
+            $('#periode_id_mdl').html(periode)
+          }
+        })
+        $('.select-periode-mdl').select2();
+      }
+
+      $("#update").click(() => {
+        var data = $("#FormSubmit").serializeArray();
+        var form = [
+          'periode_id_mdl',
+          'sub_menu_slug',
+          'nama_kegiatan',
+          'tgl_bimtek',
+          'lokasi_bimtek',
+          'biaya_kegiatan',
+          'jml_peserta',
+          'ringkasan_kegiatan'
+        ];
+
+        $.ajax({
+          type: "PUT",
+          url: BASE_URL + '/api/bimsos/' + id,
+          data: data,
+          cache: false,
+          dataType: "json",
+          success: (respons) => {
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Berhasil Disimpan',
+              icon: 'success',
+              confirmButtonText: 'OK'
+
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // User clicked "Yes, proceed!" button
+                window.location.replace('/bimsos');
+              }
+            });
+
+            //
+          },
+          error: (respons) => {
+            errors = respons.responseJSON;
+            for (let i = 0; i < form.length; i++) {
+              const field = form[i];
+              if (errors.messages[field]) {
+                $('#' + field + '-alert').addClass('has-error');
+                $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
+              } else {
+                $('#' + field + '-alert').removeClass('has-error');
+                $('#' + field + '-messages').removeClass('help-block').html('');
+              }
+            }
+          }
+        });
+      });
+
+
     });
 
   });
