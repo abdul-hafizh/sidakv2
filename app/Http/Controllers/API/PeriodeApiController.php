@@ -46,17 +46,17 @@ class PeriodeApiController extends Controller
             $query->where('c.daerah_id', Auth::User()->daerah_id);
 
             if ($request->type == 'POST') {
-                // $query->whereNotIn(
-                //     'year',
-                //     DB::table('perencanaan')
-                //         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                // );
+                $query->whereNotIn(
+                    'year',
+                    DB::table('perencanaan')
+                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                );
             } else {
-                // $query->whereIn(
-                //     'year',
-                //     DB::table('perencanaan')
-                //         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                // );
+                $query->whereIn(
+                    'year',
+                    DB::table('perencanaan')
+                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                );
             }
         }
 
