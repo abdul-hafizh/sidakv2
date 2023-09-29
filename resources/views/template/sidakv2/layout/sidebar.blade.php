@@ -336,17 +336,9 @@
                 let slug = e.currentTarget.dataset.param_sub; 
 
                 //active sebelummnya
-                // if(loglast)
-                // {
-                	
-                    // let linklast = loglast.tasks.find(o => o.active === true);
-                    // if(linklast)
-                    // {
-                    //     linklast.active = false;
-                    //     linklast.class = linklast.slug; 	
-                    // }
+              
 
-                // } 	
+                console.log(loglast)
 
 
 
@@ -357,8 +349,21 @@
                 
                 if(findtasks)
                 {
-                	 findtasks.active = true;
-                     findtasks.class = findtasks.slug + ' active'; 
+                	findtasks.active = true;
+                    findtasks.class = findtasks.slug + ' active'; 
+
+                    if(loglast)
+	                {
+	                	
+	                    let linklast = loglast.tasks.find(o => o.active === true);
+	                    if(linklast)
+	                    {
+
+	                        linklast.active = false;
+	                        linklast.class = linklast.slug; 	
+	                    }
+
+	                } 	
                 } 	
                
 
@@ -371,9 +376,6 @@
                 } 	
                 	
 
-              
-
-                
                 localStorage.setItem('menu_sidebar', JSON.stringify(data));
                 getMenuSidebar(data);
                 data = [];
