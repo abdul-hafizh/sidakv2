@@ -37,13 +37,14 @@ use App\Http\Controllers\API\KriteriaApiController;
 use App\Http\Controllers\API\BimsosApiController;
 
 Route::middleware(['jwt.auth'])->group(function () {
-   
+
     Route::get('select-role', [RolesApiController::class, 'listAll']);
     Route::get('select-daerah', [DaerahApiController::class, 'listAllDaerah']);
     Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
     Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
     Route::get('select-periode', [PeriodeApiController::class, 'listAll']);
     Route::get('select-periode2', [PeriodeApiController::class, 'listAll2']);
+    Route::get('select-periode-semester', [PeriodeApiController::class, 'listAllSemester']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
@@ -121,7 +122,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('periode/{id}', [PeriodeApiController::class, 'update']);
     Route::delete('periode/{id}', [PeriodeApiController::class, 'delete']);
     Route::post('periode/selected', [PeriodeApiController::class, 'deleteSelected']);
-    
+
 
     Route::get('auditlog', [AuditLogApiController::class, 'index']);
     Route::post('auditlog/search', [AuditLogApiController::class, 'search']);
@@ -144,7 +145,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('masalah/comment', [KendalaApiController::class, 'saveComment']);
     Route::put('masalah/update-replay/{id}', [KendalaApiController::class, 'updatereplay']);
     Route::delete('masalah/delete-replay/{id}', [KendalaApiController::class, 'deletereplay']);
-    
+
 
 
     Route::get('forum', [ForumApiController::class, 'index']);
@@ -200,4 +201,8 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('bimsos/datalist', [BimsosApiController::class, 'jsonData']);
     Route::post('bimsos', [BimsosApiController::class, 'store']);
+    Route::get('bimsos/edit/{id}', [BimsosApiController::class, 'edit']);
+    Route::put('bimsos/{id}', [BimsosApiController::class, 'update']);
+    Route::delete('bimsos/{id}', [BimsosApiController::class, 'delete']);
+    Route::post('bimsos/selected', [BimsosApiController::class, 'deleteSelected']);
 });

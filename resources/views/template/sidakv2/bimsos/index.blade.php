@@ -55,17 +55,12 @@
 <section class="content-header pd-left-right-15">
 	<div class="form-group row">
 		<div class="col-sm-3">
-			<label>Tipe</label>
-			<select class="form-control" name="type_daerah2" id="type_daerah2">
+			<label>Jenis </label>
+			<select class="form-control" name="jenis_sub" id="jenis_sub">
 				<option value="">-Pilih Tipe-</option>
-				<option value="Provinsi">Provinsi</option>
-				<option value="Kabupaten">Kabupaten</option>
-			</select>
-		</div>
-		<div class="col-sm-3">
-			<label>Daerah </label>
-			<select id="daerah_id2" class="select-daerah2 form-control" name="daerah_id2" disabled>
-				<option value="">Pilih</option>
+				<option value="is_tenaga_pendamping">Tenaga Pendamping</option>
+				<option value="is_bimtek_ipbbr">Bimtek Implementasi Perizinan Berusaha Berbasis Resiko</option>
+				<option value="is_bimtek_ippbbr">Bimtek Implementasi Pengawasan Perizinan Berusaha Berbasis Resiko</option>
 			</select>
 		</div>
 		<div class="col-sm-3">
@@ -106,9 +101,6 @@
 				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
-				<button type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#importExcel">
-					IMPORT EXCEL
-				</button>
 				<button type="button" class="btn btn-info border-radius-10" id="exportData">
 				</button>
 			</div>
@@ -148,41 +140,7 @@
 </div>
 @include('template/sidakv2/bimsos.add')
 <!-- Import Excel -->
-<div id="importExcel" class="modal fade" role="dialog">
 
-	<div class="modal-dialog" role="document">
-		<form method="post" action="/api/pagutarget/import_excel" id="file-upload" enctype="multipart/form-data">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h5 class="modal-title" id="exampleModalLabel">Import Excel</h5>
-				</div>
-				<div class="modal-body">
-
-					{{ csrf_field() }}
-
-					<label>Pilih file excel</label>
-					<div class="form-group">
-						<input type="file" name="file" required="required">
-						<span class="text-danger" id="file-input-error"></span>
-					</div>
-					<a class="btn btn-warning" href="/api/pagutarget/download_file">Template data</a>
-					<a class="btn btn-info" href="/api/pagutarget/download_daerah">data wilayah</a>
-				</div>
-
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Import</button>
-				</div>
-				<div class="form-group">
-					<div class="progress">
-						<div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-					</div>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
 @stop
 
 @push('scripts')
@@ -210,37 +168,6 @@
 			}
 		});
 	}
-
-	$('#file-upload').submit(function(e) {
-		e.preventDefault();
-		let formData = new FormData(this);
-		$('#file-input-error').text('');
-
-		$.ajax({
-			type: 'POST',
-			url: BASE_URL + '/api/pagutarget/import_excel',
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: (response) => {
-				Swal.fire({
-					title: 'Sukses!',
-					text: 'Berhasil Disimpan',
-					icon: 'success',
-					confirmButtonText: 'OK'
-
-				}).then((result) => {
-					if (result.isConfirmed) {
-						// User clicked "Yes, proceed!" button
-						window.location.replace('/pagutarget');
-					}
-				});
-			},
-			error: function(response) {
-				$('#file-input-error').text(response.responseJSON.errors.file);
-			}
-		});
-	});
 
 	$(function() {
 
@@ -323,31 +250,9 @@
 			};
 		}
 
-		$('#type_daerah2').on('change', function() {
-			let type_daerah = $('#type_daerah2').val();
-			if (type_daerah == 'Provinsi') {
-				url = "select-province";
-			} else {
-				url = "select-kabupaten";
-			}
-			$.ajax({
-				url: BASE_URL + '/api/' + url,
-				method: 'get',
-				dataType: 'json',
-				success: function(data) {
-					jenis = '<option value="">- Pilih -</option>';
-					$.each(data, function(key, val) {
-						jenis += '<option value="' + val.value + '">' + val.text + '</option>';
-					});
-					$('#daerah_id2').html(jenis).removeAttr('disabled');
-				}
-			})
-			$('.select-daerah2').select2();
-		})
-
 		$('.select-periode2').select2(
 			$.ajax({
-				url: BASE_URL + '/api/select-periode2',
+				url: BASE_URL + '/api/select-periode-semester',
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {
@@ -361,11 +266,26 @@
 			})
 		);
 
+		$('.select-periode-mdl').select2(
+			$.ajax({
+				url: BASE_URL + '/api/select-periode-semester',
+				method: 'get',
+				dataType: 'json',
+				success: function(data) {
+					periode = '<option value="">- Pilih -</option>';
+					$.each(data, function(key, val) {
+						periode += '<option value="' + val.value + '" >' + val.text + '</option>';
+
+					});
+					$('#periode_id_mdl').html(periode);
+				}
+			})
+		);
+
 		$('#search-input').keyup(delay(function(e) {
 			var filter = [{
 				search_input: $("#search-input").val(),
-				type_daerah: $("#type_daerah2").val(),
-				daerah_id: $("#daerah_id2").val(),
+				jenis_sub: $("#jenis_sub").val(),
 				periode_id: $("#periode_id2").val()
 			}, ];
 			table.search(this.value).draw();
@@ -375,8 +295,7 @@
 		$("#Search").on("click", function() {
 			var filter = [{
 				search_input: $("#search-input").val(),
-				type_daerah: $("#type_daerah2").val(),
-				daerah_id: $("#daerah_id2").val(),
+				jenis_sub: $("#jenis_sub").val(),
 				periode_id: $("#periode_id2").val()
 			}, ];
 
@@ -411,7 +330,7 @@
 
 		function deleteItem(id) {
 			$.ajax({
-				url: BASE_URL + `/api/pagutarget/` + id,
+				url: BASE_URL + `/api/bimsos/` + id,
 				method: 'DELETE',
 				success: function(response) {
 					table.search("").columns().search("").draw();
@@ -448,7 +367,7 @@
 
 		function deleteItems(ids) {
 			$.ajax({
-				url: BASE_URL + `/api/pagutarget/selected`,
+				url: BASE_URL + `/api/bimsos/selected`,
 				method: 'POST',
 				data: {
 					data: ids
@@ -465,8 +384,7 @@
 		$("#Clear").on("click", function() {
 
 			var filter = '';
-			$("#type_daerah2").val("").trigger("change");
-			$("#daerah_id2").val("").trigger("change");
+			$("#jenis_sub").val("").trigger("change");
 			$("#periode_id2").val("").trigger("change");
 			$("#search-input").val("");
 
