@@ -351,19 +351,18 @@
                 {
                 	findtasks.active = true;
                     findtasks.class = findtasks.slug + ' active'; 
-
-                    if(loglast)
-	                {
+                 //    if(loglast)
+	                // {
 	                	
-	                    let linklast = loglast.tasks.find(o => o.active === true);
-	                    if(linklast)
-	                    {
+	                //     let linklast = loglast.tasks.find(o => o.active === true);
+	                //     if(linklast)
+	                //     {
 
-	                        linklast.active = false;
-	                        linklast.class = linklast.slug; 	
-	                    }
+	                //         linklast.active = false;
+	                //         linklast.class = linklast.slug; 	
+	                //     }
 
-	                } 	
+	                // } 	
                 } 	
                
 
