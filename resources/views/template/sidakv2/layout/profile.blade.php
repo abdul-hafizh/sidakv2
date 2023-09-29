@@ -15,22 +15,33 @@
        var photo = '';
        var username = '';
        var daerah_id = '';
-       $.ajax({
-            url: BASE_URL +'/api/user/profile',
-            method: 'GET',
-            dataType: 'json',
-            success: function(response) {
-               
-               GetFormModal(response.data);
-               username = response.data.username;
-               daerah_id = response.data.daerah_id;
-            },
-            error: function(error) {
-            console.error(error);
-            }
-        });
+        const apps = localStorage.getItem('apps');
+        const template = JSON.parse(apps);
+        if(template)
+        {
+
+          GetProfile();
         
-      
+       } 
+
+       function GetProfile(){
+
+         $.ajax({
+                url: BASE_URL +'/api/user/profile',
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                   
+                   GetFormModal(response.data);
+                   username = response.data.username;
+                   daerah_id = response.data.daerah_id;
+                },
+                error: function(error) {
+                console.error(error);
+                }
+            });
+         
+       }
 
 
         function GetFormModal(data)

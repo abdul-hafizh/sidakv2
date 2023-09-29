@@ -7,21 +7,21 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class AuthEmailVerified extends Mailable
+class forgotPassword extends Mailable
 {
     use Queueable, SerializesModels;
     public $username;
-    public $token;
+    public $url;
   
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($username,$token)
+    public function __construct($username,$url)
     {
         $this->username = $username;
-        $this->token = $token;
+        $this->url = $url;
       
     }
 
@@ -32,7 +32,7 @@ class AuthEmailVerified extends Mailable
      */
     public function build()
     {
-         return $this->from(env('MAIL_USERNAME', 'SIDAK BKPM'))->subject('PIN Authenticator')->view('mail.AuthEmailVerified');
+         return $this->from(env('MAIL_USERNAME', 'SIDAK BKPM'))->subject('Forgot Password')->view('mail.forgotPassword');
 
     }
 }

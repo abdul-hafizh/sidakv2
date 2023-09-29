@@ -18,6 +18,8 @@ use App\Http\Request\RequestAuth;
 use File;
 use Auth;
 use DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\forgotPassword;
 
 class UserApiController extends Controller
 {
@@ -81,14 +83,11 @@ class UserApiController extends Controller
 
     public function sendMail(Request $request){
        
-             $req = RequestAuth::CreateAuthToken($request);
-             $data = array('forgot'=>true,'token'=>false,'email'=>$req->email);
-             $email =  $req->email;
-             if (strlen($email) > 8) {
-                $email = substr($email, 0, 8) . "@xxx";
-             } 
-
-             return response()->json(['status'=>true,'data'=>$data,'messages'=>'Harap segera check email anda '.$email]);
+             $req = RequestAuth::CreateCode('encrypt',$request->email);
+             $find = User::where(['email'=>$request->email])->first();
+             $url = url("forgot?req=$req");
+             Mail::to($find->email)->send(new forgotPassword($find->username,$url));
+             return response()->json(['status'=>true,'messages'=>'Harap segera check email '.$find->email]);
          
 
         
