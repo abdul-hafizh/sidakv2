@@ -351,7 +351,6 @@
                 {
                 	findtasks.active = true;
                     findtasks.class = findtasks.slug + ' active'; 
-
                  //    if(loglast)
 	                // {
 	                	
