@@ -161,6 +161,19 @@ class AuthController extends Controller
       
     }
 
+    public function GetFormForgot(Request $request){
+
+         return view('template/' . $this->template . '.auth.forgot')
+          ->with(
+            [
+              'title' => 'Lupa Password',
+              'template' => 'template/' . $this->template
+            ]
+          );
+          
+
+    }
+
     public function ForgotPassword(Request $request){
       
        
@@ -207,6 +220,19 @@ class AuthController extends Controller
         }    
 
     } 
+
+    public function CheckEncrypt(Request $request){
+
+        $decrypt = RequestAuth::CreateCode('decrypt',$request->token);
+        if($decrypt ==false)
+        {
+            return response()->json(['status'=>false,'messages'=>'Sesi ubah password telah berahir harap hubungi admin!'],400);  
+        }else{
+          return response()->json(['status'=>true,'data'=>$decrypt,'messages'=>'Token berhasil divalidasi']);  
+        }    
+       
+        
+    }
 
     public function UpdatePassword(Request $request){
 

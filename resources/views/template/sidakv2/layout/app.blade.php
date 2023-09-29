@@ -50,7 +50,7 @@
             </a>
 
             <nav role="navigation" class="navbar navbar-static-top">
-                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <a  role="button" class="sidebar-toggle">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -119,8 +119,17 @@
     <script src="{{ config('app.url').$template.'/js/accounting.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/xlsx.full.min.js' }}"></script>
 
-    <script>
-        $(function() {
+
+
+    <script type="text/javascript">
+      $(function() {
+  
+        const apps = localStorage.getItem('apps');
+        const template = JSON.parse(apps);
+        if(template){
+            $('.logo-mini').html('<img src="' + template.logo_sm + '" class="full">');
+            $('.logo-lg').html('<img src="' + template.logo_lg + '" class="full">');
+
 
             $('[data-toggle="tooltip"]').tooltip();
 
@@ -129,8 +138,30 @@
             });
 
             getNotif();
+        }
+       
 
-            function UpdateData() {
+        $(".clear-input").click(()=> {   
+          DefaultNull();
+        });
+
+      });   
+        
+        function DefaultNull()
+        {
+            $("input").val(null);
+            $("textarea").val(null);
+            $('#daerah-alert-add').hide();
+            $('#semester').selectpicker('val', '');
+            $('#role_id').selectpicker('val', '');
+            $('#kabupaten_id').selectpicker('val', '');
+            $('#province_id').selectpicker('val', '');
+            $('.form-group').removeClass('has-error');
+            $('.span-messages').removeClass('help-block').html('');
+            $('.selectpicker').selectpicker('refresh');
+        }
+
+         function UpdateData() {
                 $.ajax({
                     url: BASE_URL + `/api/notif-update`,
                     method: 'GET',
@@ -183,33 +214,6 @@
                     },
                 });
             }
-        });
-
-    </script>
-
-    <script type="text/javascript">
-        const apps = localStorage.getItem('apps');
-        const template = JSON.parse(apps);
-        $('.logo-mini').html('<img src="' + template.logo_sm + '" class="full">');
-        $('.logo-lg').html('<img src="' + template.logo_lg + '" class="full">');
-
-        $(".clear-input").click(()=> {   
-          DefaultNull();
-        });
-        
-        function DefaultNull()
-        {
-            $("input").val(null);
-            $("textarea").val(null);
-            $('#daerah-alert-add').hide();
-            $('#semester').selectpicker('val', '');
-            $('#role_id').selectpicker('val', '');
-            $('#kabupaten_id').selectpicker('val', '');
-            $('#province_id').selectpicker('val', '');
-            $('.form-group').removeClass('has-error');
-            $('.span-messages').removeClass('help-block').html('');
-            $('.selectpicker').selectpicker('refresh');
-        }
 
     </script>
     @stack('scripts')

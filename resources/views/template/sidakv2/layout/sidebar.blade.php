@@ -48,6 +48,7 @@
         let sidebar = localStorage.getItem('menu_sidebar');
         var action =  JSON.parse(sidebar);
         var data = [];
+        var loglast = [];
         getMenuSidebar(action);
         
        
@@ -219,19 +220,23 @@
         //menu
         $( "#menu-sidebar" ).on( "click", "#class-menu", (e) => {
 		        let slug = e.currentTarget.dataset.param_id;
+		       
 		        
                 data = action;
                 //active sebelummnya
                 findlast = data.find(o => o.active === true && o.slug != slug);
+                loglast = findlast;
                 if(findlast)
                 {
                 	findlast.active = false;
                 	findlast.icon = 'icon-'+findlast.slug;
                     findlast.class = findlast.slug +' treeview';
+
                 } 	
                
+             
                
-
+                
 
                 const findtrue = data.find(o => o.slug === slug);
                 if(findtrue.active == true)
@@ -240,6 +245,9 @@
                     findtrue.active = false;
                     findtrue.icon = 'icon-'+findtrue.slug;
                     findtrue.class = findtrue.slug +' treeview';
+
+                    
+
                 }else{
 
                    
@@ -248,12 +256,13 @@
                     findtrue.icon = 'icon-'+findtrue.slug +'-hover';
                     findtrue.class = findtrue.slug +' treeview menu-open active';
 
+
                 }	
 
-
-
+                // localStorage.setItem('menu_sidebar', JSON.stringify(data));
+    
                 getMenuSidebar(data);
-
+               
                 if(findtrue.count ==0)
                 {
                   window.location.replace(findtrue.url);  
@@ -325,25 +334,47 @@
      	 $(".treeview-menu").on( "click", ".li-sub", (e) => {
 
                 let slug = e.currentTarget.dataset.param_sub; 
-                
+
+                //active sebelummnya
+                // if(loglast)
+                // {
+                	
+                    // let linklast = loglast.tasks.find(o => o.active === true);
+                    // if(linklast)
+                    // {
+                    //     linklast.active = false;
+                    //     linklast.class = linklast.slug; 	
+                    // }
+
+                // } 	
+
+
+
+
+                          
                 findmenu = data.find(o => o.active === true);
-                findlasttaks = findmenu.tasks.find(o => o.active === true);
-
-                if(findlasttaks)
-                {
-                   findlasttaks.active = false; 
-                   findlasttaks.class = findlasttaks.slug; 
-                
-                } 	
-
-               
-               
                 findtasks = findmenu.tasks.find(o => o.slug === slug);
-                findtasks.active = true;
-                findtasks.class = findtasks.slug + ' active'; 
-               
                 
-               localStorage.setItem('menu_sidebar', JSON.stringify(data));
+                if(findtasks)
+                {
+                	 findtasks.active = true;
+                     findtasks.class = findtasks.slug + ' active'; 
+                } 	
+               
+
+
+                findtaskslast = findmenu.tasks.find(o => o.slug != slug);
+                if(findtaskslast)
+                {
+                   findtaskslast.active = false;
+                   findtaskslast.class = findtasks.slug;
+                } 	
+                	
+
+              
+
+                
+                localStorage.setItem('menu_sidebar', JSON.stringify(data));
                 getMenuSidebar(data);
                 data = [];
             

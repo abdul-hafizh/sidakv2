@@ -171,11 +171,15 @@ $(function(){
      var row = '';
          $('#token-alert').removeClass('has-error');
          $('#token-messages').removeClass('help-block').html('');
+            
+            row +='<div class="pull-left full form-group has-feedback">';
+               row +='<div id="countdown">02:00</div>';
+            row +='</div>'; 
        
            row +='<div   class="pull-left full form-group has-feedback">';                                                
                 row +='<div  id="token-alert" class="pull-left full  has-feedback">  '; 
-                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">PIN </label>';
-                      row +=`<input id="token-forgot" type="text" maxlength="4" class="form-control form-control mb-3 border-radius-10 font-12" name="token" placeholder="PIN" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="">`;
+                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">PIN Authenticator</label>';
+                      row +=`<input id="token-forgot" type="text" maxlength="4" class="form-control form-control mb-3 border-radius-10 font-12" name="token" placeholder="PIN Authenticator" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="">`;
                    
                      row +='<span id="token-messages"></span>';
                                                              
@@ -201,8 +205,37 @@ $(function(){
        });
 
        ActionToken()
-
+       Countdown()
   }
+
+    function Countdown(){
+
+        var countdownDuration = 2 * 60 * 1000; // 2 minutes * 60 seconds * 1000 milliseconds
+        // Calculate the target date and time
+        var targetDate = new Date().getTime() + countdownDuration;
+
+        // Update the countdown every 1 second
+        var countdownInterval = setInterval(function () {
+            var currentDate = new Date().getTime();
+            var timeLeft = targetDate - currentDate;
+
+            if (timeLeft <= 0) {
+                clearInterval(countdownInterval);
+                localStorage.removeItem('forgot');
+                $('.confirmation').remove();
+                viewForgot();
+            } else {
+                var minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                // Format the time as MM:SS
+                var formattedTime = ('0' + minutes).slice(-2) + ':' + ('0' + seconds).slice(-2);
+
+                // Display the formatted time in the countdown element
+                $('#countdown').html(formattedTime);
+            }
+        }, 1000);
+    }
 
    function InputNewPassword(){
 

@@ -32,6 +32,37 @@ class RequestAuth
 
     } 
 
+    public static function CreateCode($action, $string) {
+        $encrypt_method = "AES-256-CBC";
+        $secret_key = 'bkpmlog';
+        $secret_iv = 'sidakv2';
+
+        $expSeconds = 1440; // 24 jam
+
+        $key = hash('sha256', $secret_key);
+        $iv = substr(hash('sha256', $secret_iv), 0, 16);
+
+        if ($action == 'encrypt' ) {
+            $time = pack('N', time());
+            $output = openssl_encrypt($time . $string, $encrypt_method, $key, 0, $iv);
+            $output = base64_encode($output);
+        } else if($action == 'decrypt' ) {
+            $output = false;
+            $data = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+            if ($data) {
+                $time = unpack('N', substr($data, 0, 4));
+                if (time() - $time[1] <= $expSeconds) {
+                    $strDecoded = substr($data, 4);
+                    $output = $strDecoded;
+                }
+            }
+
+        }
+
+        return $output;
+
+    }
+
      public static function CreateAuthToken($request)
    {
          $fourRandomDigit = rand(1000,9999);

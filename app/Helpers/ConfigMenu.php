@@ -527,6 +527,7 @@ class ConfigMenu
                 'icon'=>'icon-pengawasan',
                 'url'=>'/pengawasan',
                 'active'=>false,
+                'class'=>'pengawasan',
                 'tasks'=>[],
                ],[
                 'name'=>'Bimbingan/Sosialisasi',
@@ -534,6 +535,7 @@ class ConfigMenu
                 'icon'=>'icon-bimsos',
                 'url'=>'/bimsos',
                 'active'=>false,
+                'class'=>'bimsos',
                 'tasks'=>[],
              ],[
                 'name'=>'Penyelesaian Masalah',
@@ -541,6 +543,7 @@ class ConfigMenu
                 'icon'=>'icon-penyelesaian',
                 'url'=>'/',
                 'active'=>false,
+                'class'=>'penyelesaian-masalah',
                 'tasks'=>[],
             ],[
                 'name'=>'Promosi',
@@ -548,6 +551,7 @@ class ConfigMenu
                 'icon'=>'icon-promosi',
                 'url'=>'/promosi',
                 'active'=>false,
+                'class'=>'promosi',
                 'tasks'=>[],
             ],[
                 'name'=>'Imap',
@@ -555,6 +559,7 @@ class ConfigMenu
                 'icon'=>'icon-imaps',
                 'url'=>'/imap',
                 'active'=>false,
+                 'class'=>'imap',
                 'tasks'=>[],
             ]
             ,[
@@ -563,6 +568,7 @@ class ConfigMenu
                 'icon'=>'icon-kriteria-kendala',
                 'url'=>'/kendala',
                 'active'=>false,
+                'class'=>'kendala',
                 'tasks'=>[],
             ]
 
@@ -611,6 +617,7 @@ class ConfigMenu
                     'icon'=>'icon-perencanaan',
                     'url'=>'/perencanaan',
                     'active'=>false,
+                    'class'=>'perencanaan',
                     'tasks'=>[],
              
                ],[
@@ -619,6 +626,7 @@ class ConfigMenu
                 'icon'=>'icon-pengawasan',
                 'url'=>'/pengawasan',
                 'active'=>false,
+                'class'=>'pengawasan',
                 'tasks'=>[],
                ],[
                 'name'=>'Bimbingan/Sosialisasi',
@@ -626,6 +634,7 @@ class ConfigMenu
                 'icon'=>'icon-bimsos',
                 'url'=>'/bimsos',
                 'active'=>false,
+                'class'=>'bimsos',
                 'tasks'=>[],
              ],[
                 'name'=>'Penyelesaian Masalah',
@@ -633,6 +642,7 @@ class ConfigMenu
                 'icon'=>'icon-penyelesaian',
                 'url'=>'/',
                 'active'=>false,
+                'class'=>'penyelesaian-masalah',
                 'tasks'=>[],
             ],[
                 'name'=>'Promosi',
@@ -640,6 +650,7 @@ class ConfigMenu
                 'icon'=>'icon-promosi',
                 'url'=>'/promosi',
                 'active'=>false,
+                'class'=>'promosi',
                 'tasks'=>[],
             ],[
                 'name'=>'Imap',
@@ -647,6 +658,7 @@ class ConfigMenu
                 'icon'=>'icon-promosi',
                 'url'=>'/imap',
                 'active'=>false,
+                'class'=>'imap',
                 'tasks'=>[],
             ]
 
@@ -668,6 +680,7 @@ class ConfigMenu
                     'icon'=>'icon-kriteria-kendala',
                     'url'=>'/kendala',
                     'active'=>false, 
+                    'class'=>'kendala',
                     'tasks'=>[],  
                ],[
 
@@ -676,6 +689,7 @@ class ConfigMenu
                     'icon'=>'icon-forum',
                     'url'=>'/forum',
                     'active'=>false,
+                    'class'=>'forum',
                     'tasks'=>[],
              
                ]
@@ -698,6 +712,7 @@ class ConfigMenu
                     'icon'=>'icon-rekap',
                     'url'=>'/rekapitulasi',
                     'active'=>false, 
+                    'class'=>'rekapitulasi',
                     'tasks'=>[],  
                 ],
                 [
@@ -706,6 +721,7 @@ class ConfigMenu
                     'icon'=>'icon-pagu-apbn',
                     'url'=>'/pagutarget',
                     'active'=>false,
+                    'class'=>'pagu-apbn', 
                     'tasks'=>[],  
                ],[
 
@@ -714,6 +730,7 @@ class ConfigMenu
                     'icon'=>'icon-perencanaan',
                     'url'=>'/perencanaan',
                     'active'=>false, 
+                    'class'=>'perencanaan', 
                     'tasks'=>[],
              
                ],[
@@ -721,21 +738,24 @@ class ConfigMenu
                 'slug'=>'pengawasan',
                 'icon'=>'icon-pengawasan',
                 'url'=>'/pengawasan',
-                'active'=>false, 
+                'active'=>false,
+                'class'=>'pengawasan',
                 'tasks'=>[],
                ],[
                 'name'=>'Bimbingan/Sosialisasi',
                 'slug'=>'bimsos',
                 'icon'=>'icon-bimsos',
                 'url'=>'/bimsos',
-                'active'=>false, 
+                'active'=>false,
+                'class'=>'bimsos',
                 'tasks'=>[],
              ],[
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
                 'url'=>'/',
-                'active'=>false, 
+                'active'=>false,
+                'class'=>'penyelesaian-masalah', 
                 'tasks'=>[],
             ],[
                 'name'=>'Promosi',
@@ -743,6 +763,7 @@ class ConfigMenu
                 'icon'=>'icon-promosi',
                 'url'=>'/promosi',
                 'active'=>false, 
+                'class'=>'promosi',
                 'tasks'=>[],
             ],[
                 'name'=>'Imap',
@@ -750,6 +771,7 @@ class ConfigMenu
                 'icon'=>'icon-imaps',
                 'url'=>'/imap',
                 'active'=>false, 
+                'class'=>'imap',
                 'tasks'=>[],
             ]
             ,[
@@ -758,6 +780,7 @@ class ConfigMenu
                 'icon'=>'icon-kriteria-kendala',
                 'url'=>'/kendala',
                 'active'=>false, 
+                'class'=>'kendala',
                 'tasks'=>[],
             ]
 
@@ -803,6 +826,8 @@ class ConfigMenu
                     'slug'=>'perencanaan',
                     'icon'=>'icon-perencanaan',
                     'url'=>'/perencanaan',
+                    'active'=>false,
+                    'class'=>'perencanaan',
                     'tasks'=>[],
              
                ],[
@@ -810,21 +835,24 @@ class ConfigMenu
                 'slug'=>'pengawasan',
                 'icon'=>'icon-pengawasan',
                 'url'=>'/pengawasan',
-                'active'=>false, 
+                'active'=>false,
+                'class'=>'pengawasan',
                 'tasks'=>[],
                ],[
                 'name'=>'Bimbingan/Sosialisasi',
                 'slug'=>'bimsos',
                 'icon'=>'icon-bimsos',
                 'url'=>'/bimsos',
-                'active'=>false,  
+                'active'=>false, 
+                'class'=>'bimsos',  
                 'tasks'=>[],
              ],[
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
                 'url'=>'/',
-                'active'=>false,  
+                'active'=>false,
+                'class'=>'penyelesaian-masalah', 
                 'tasks'=>[],
             ]
            ), // updating data
@@ -844,7 +872,8 @@ class ConfigMenu
                     'slug'=>'kendala',
                     'icon'=>'icon-kriteria-kendala',
                     'url'=>'/kendala',
-                    'active'=>false, 
+                    'active'=>false,
+                    'class'=>'kendala',
                     'tasks'=>[],  
                ],[
 
@@ -852,7 +881,8 @@ class ConfigMenu
                     'slug'=>'forum',
                     'icon'=>'icon-forum',
                     'url'=>'/forum',
-                    'active'=>false,  
+                    'active'=>false,
+                    'class'=>'forum', 
                     'tasks'=>[],
              
                ]
@@ -874,7 +904,8 @@ class ConfigMenu
                     'slug'=>'rekapitulasi',
                     'icon'=>'icon-rekap',
                     'url'=>'/rekapitulasi',
-                    'active'=>false,  
+                    'active'=>false, 
+                    'class'=>'rekapitulasi', 
                     'tasks'=>[],  
                 ],
                 [
@@ -882,7 +913,8 @@ class ConfigMenu
                     'slug'=>'pagu-apbn',
                     'icon'=>'icon-pagu-apbn',
                     'url'=>'/pagutarget',
-                    'active'=>false,  
+                    'active'=>false,
+                    'class'=>'pagu-apbn', 
                     'tasks'=>[],  
                ],[
 
@@ -890,7 +922,8 @@ class ConfigMenu
                     'slug'=>'perencanaan',
                     'icon'=>'icon-perencanaan',
                     'url'=>'/perencanaan',
-                    'active'=>false, 
+                    'active'=>false,
+                    'class'=>'perencanaan',  
                     'tasks'=>[],
              
                ],[
@@ -899,6 +932,7 @@ class ConfigMenu
                 'icon'=>'icon-pengawasan',
                 'url'=>'/pengawasan',
                 'active'=>false,  
+                'class'=>'pengawasan',  
                 'tasks'=>[],
                ],[
                 'name'=>'Bimbingan/Sosialisasi',
@@ -906,13 +940,15 @@ class ConfigMenu
                 'icon'=>'icon-bimsos',
                 'url'=>'/bimsos',
                 'active'=>false,  
+                'class'=>'bimsos',  
                 'tasks'=>[],
              ],[
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
                 'url'=>'/',
-                'active'=>false,  
+                'active'=>false,
+                'class'=>'penyelesaian-masalah',  
                 'tasks'=>[],
             ]
             ,[
@@ -920,7 +956,8 @@ class ConfigMenu
                 'slug'=>'kendala',
                 'icon'=>'icon-kriteria-kendala',
                 'url'=>'/kendala',
-                'active'=>false, 
+                'active'=>false,
+                'class'=>'kendala',  
                 'tasks'=>[],
             ]
 
