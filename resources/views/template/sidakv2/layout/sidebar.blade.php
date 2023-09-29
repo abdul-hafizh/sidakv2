@@ -336,23 +336,42 @@
                 let slug = e.currentTarget.dataset.param_sub; 
 
                 //active sebelummnya
-                if(loglast)
-                {
+                // if(loglast)
+                // {
                 	
-                    let linklast = loglast.tasks.find(o => o.active === true);
-                    if(linklast)
-                    {
-                        linklast.active = false;
-                        linklast.class = linklast.slug; 	
-                    }
+                    // let linklast = loglast.tasks.find(o => o.active === true);
+                    // if(linklast)
+                    // {
+                    //     linklast.active = false;
+                    //     linklast.class = linklast.slug; 	
+                    // }
 
-                } 	
+                // } 	
+
+
+
 
                           
                 findmenu = data.find(o => o.active === true);
                 findtasks = findmenu.tasks.find(o => o.slug === slug);
-                findtasks.active = true;
-                findtasks.class = findtasks.slug + ' active'; 
+                
+                if(findtasks)
+                {
+                	 findtasks.active = true;
+                     findtasks.class = findtasks.slug + ' active'; 
+                } 	
+               
+
+
+                findtaskslast = findmenu.tasks.find(o => o.slug != slug);
+                if(findtaskslast)
+                {
+                   findtaskslast.active = false;
+                   findtaskslast.class = findtasks.slug;
+                } 	
+                	
+
+              
 
                 
                 localStorage.setItem('menu_sidebar', JSON.stringify(data));
