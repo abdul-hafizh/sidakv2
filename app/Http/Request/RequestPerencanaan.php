@@ -88,6 +88,48 @@ class RequestPerencanaan
         
         return $result;
     }
+    
+    public static function GetDataAllExport($data, $request)
+    {
+        $no = 1;
+        $temp = array();
+        $getRequest = $request->all();  
+        
+        foreach ($data as $key => $val)
+        {
+            $periode = RequestPerencanaan::GetPeriodeYear($val->periode_id);
+            if($periode !="")
+            {                   
+                $temp[$key]['number'] = $no++;
+                $temp[$key]['id'] = $val->id;
+                $temp[$key]['nama_daerah'] = $val->wilayah;
+                $temp[$key]['pengawas_analisa_pagu'] = $val->pengawas_analisa_pagu;
+                $temp[$key]['pengawas_inspeksi_pagu'] = $val->pengawas_inspeksi_pagu;
+                $temp[$key]['pengawas_evaluasi_pagu'] = $val->pengawas_evaluasi_pagu;
+                $temp[$key]['bimtek_perizinan_pagu'] = $val->bimtek_perizinan_pagu;
+                $temp[$key]['bimtek_pengawasan_pagu'] = $val->bimtek_pengawasan_pagu;
+                $temp[$key]['penyelesaian_identifikasi_pagu'] = $val->penyelesaian_identifikasi_pagu;
+                $temp[$key]['penyelesaian_realisasi_pagu'] = $val->penyelesaian_realisasi_pagu;
+                $temp[$key]['penyelesaian_evaluasi_pagu'] = $val->penyelesaian_evaluasi_pagu;
+                $temp[$key]['promosi_pengadaan_pagu'] = $val->promosi_pengadaan_pagu;
+                $temp[$key]['periode'] =  $periode;
+                $temp[$key]['total_rencana_pengawasan'] = $val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu;
+                $temp[$key]['total_rencana_bimsos'] = $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu;
+                $temp[$key]['total_rencana_masalah'] = $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu;
+                $temp[$key]['total_pagu_export'] =  $val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu + $val->pagu_promosi;
+                $temp[$key]['status'] = RequestPerencanaan::getLabelStatus($val->status, $val->request_edit);
+                $temp[$key]['deleted'] = RequestPerencanaan::checkValidate($val->status);
+                $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
+                $temp[$key]['updated_at'] = GeneralHelpers::tanggal_indo($val->updated_at);
+                $temp[$key]['created_at_export'] = $val->created_at;
+                $temp[$key]['updated_at_export'] = $val->updated_at;
+            }
+        }
+       
+        $result['data'] = $temp;
+        
+        return $result;
+    }
 
     public static function checkValidate($status) {
 

@@ -47,6 +47,26 @@ class PerencanaanApiController extends Controller
         return response()->json($result);        
     }
 
+    public function export(Request $request)
+    {
+        $access = RequestAuth::Access();
+        $userDaerahId = Auth::user()->daerah_id;
+
+        $query = Perencanaan::rightJoin('vw_wilayah_union as wilayah', 'perencanaan.daerah_id', '=', 'wilayah.id')
+            ->select('perencanaan.*', 'wilayah.name as wilayah')
+            ->orderBy('wilayah.id', 'ASC');
+
+        if ($access == 'daerah' || $access == 'province') {
+            $query->where('perencanaan.daerah_id', $userDaerahId);
+        }
+
+        $data = $query->get();
+
+        $result = RequestPerencanaan::GetDataAllExport($data, $request);
+
+        return response()->json($result);
+    }
+
     public function edit($id)
     { 
         $data = Perencanaan::leftJoin('pagu_target', function($join) {
@@ -64,14 +84,21 @@ class PerencanaanApiController extends Controller
     public function search(Request $request)
     {
         $access = RequestAuth::Access(); 
+        $daerah_id = $request->daerah_id;
         $periode_id = $request->periode_id;
-        $search_status = $request->search_status;                
-        $search_text = $request->search_text;                
+        $search_status = $request->search_status;
+        $search_text = $request->search_text;
 
         if($access == 'daerah' || $access == 'province') { 
             $query  = Perencanaan::where('daerah_id', Auth::user()->daerah_id)->orderBy('id', 'DESC');
         } else {
             $query  = Perencanaan::orderBy('id', 'DESC');
+        }
+
+        if($daerah_id) {
+            $query->where(function ($q) use ($daerah_id) {
+                $q->where('daerah_id', $daerah_id);
+            });
         }
 
         if($periode_id) {
@@ -82,18 +109,18 @@ class PerencanaanApiController extends Controller
 
         if ($search_text) {
             $query->where(function ($q) use ($search_text) {
-                $q->where('pengawas_analisa_pagu', $search_text)
-                  ->orWhere('pengawas_inspeksi_pagu', $search_text)
-                  ->orWhere('pengawas_evaluasi_pagu', $search_text)
-                  ->orWhere('bimtek_perizinan_pagu', $search_text)
-                  ->orWhere('bimtek_pengawasan_pagu', $search_text)
-                  ->orWhere('penyelesaian_identifikasi_pagu', $search_text)
-                  ->orWhere('penyelesaian_realisasi_pagu', $search_text)
-                  ->orWhere('penyelesaian_evaluasi_pagu', $search_text)
-                  ->orWhere('promosi_pengadaan_pagu', $search_text)
-                  ->orWhere('lokasi', $search_text);
+                $q->where('pengawas_analisa_pagu', 'like', "%$search_text%")
+                  ->orWhere('pengawas_inspeksi_pagu', 'like', "%$search_text%")
+                  ->orWhere('pengawas_evaluasi_pagu', 'like', "%$search_text%")
+                  ->orWhere('bimtek_perizinan_pagu', 'like', "%$search_text%")
+                  ->orWhere('bimtek_pengawasan_pagu', 'like', "%$search_text%")
+                  ->orWhere('penyelesaian_identifikasi_pagu', 'like', "%$search_text%")
+                  ->orWhere('penyelesaian_realisasi_pagu', 'like', "%$search_text%")
+                  ->orWhere('penyelesaian_evaluasi_pagu', 'like', "%$search_text%")
+                  ->orWhere('promosi_pengadaan_pagu', 'like', "%$search_text%")
+                  ->orWhere('lokasi', 'like', "%$search_text%");
             });
-        }        
+        }             
 
         if($search_status) {
             $query->where(function ($q) use ($search_status) {

@@ -53,6 +53,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
 
     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
+    Route::get('perencanaan/export', [PerencanaanApiController::class, 'export']);
     Route::post('perencanaan', [PerencanaanApiController::class, 'store']);
     Route::put('perencanaan/{id}', [PerencanaanApiController::class, 'update']);
     Route::put('perencanaan/request_doc/{id}', [PerencanaanApiController::class, 'request_doc']);

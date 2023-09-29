@@ -2,7 +2,7 @@
 @section('content')
 <section class="content-header pd-left-right-15">    
     <div class="row padding-default" style="margin-bottom: 20px">
-		<div class="col-lg-3 col-sm-12">
+		<div class="col-lg-4 col-sm-12">
             <div class="box-body btn-primary border-radius-13">
                 <div class="card-body table-responsive p-0">
                         <div class="media">
@@ -14,7 +14,7 @@
                 </div>
             </div>
         </div>
-		<div class="col-lg-3 col-sm-12">
+		<div class="col-lg-4 col-sm-12">
             <div class="box-body btn-primary border-radius-13">
                 <div class="card-body table-responsive p-0">
                     <div class="media">
@@ -26,7 +26,7 @@
 			    </div>
 			</div>
 		</div>
-		<div class="col-lg-3 col-sm-12">
+		<div class="col-lg-4 col-sm-12">
             <div class="box-body btn-primary border-radius-13">
                 <div class="card-body table-responsive p-0">
                     <div class="media">
@@ -42,10 +42,22 @@
 
     <div id="ShowSearch" style="display:none;">
         <div class="row">
-            <div class="col-lg-2">    
+            <div class="col-lg-3" style="margin-bottom: 9px;">
                 <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
             </div> 	
-            <div class="col-lg-3">    
+            <div class="col-lg-3" style="margin-bottom: 9px;">
+                <select class="selectpicker" name="type_daerah" id="type_daerah" title="Pilih Type Wilayah">
+                    <option value="">Pilih Tipe Wilayah</option>
+                    <option value="Provinsi">Provinsi</option>
+                    <option value="Kabupaten">Kabupaten</option>
+                </select>
+            </div>
+            <div class="col-lg-3" style="margin-bottom: 9px;">
+                <select id="daerah_id" class="select-daerah form-control" name="daerah_id" title="Pilih Daerah" disabled>
+                    <option value="">Pilih Daerah</option>
+                </select>
+            </div>
+            <div class="col-lg-3" style="margin-bottom: 9px;">    
                 <select id="search_status" class="selectpicker" data-style="btn-default" title="Pilih Status">
                     <option value="1">Draft</option>
                     <option value="2">Request Dokumen</option>
@@ -55,7 +67,7 @@
                     <option value="6">Perlu Perbaikan</option>
                 </select>
             </div> 	
-            <div class="col-lg-3">
+            <div class="col-lg-3" style="margin-bottom: 9px;">
                 <input type="text" id="search_text" class="form-control" placeholder="Pencarian">
             </div> 	
             <div class="col-lg-2">
@@ -178,6 +190,25 @@
             }
         });
 
+        $('#type_daerah').on('change', function () {
+            let type_daerah = $('#type_daerah').val();
+            let url = type_daerah === 'Provinsi' ? 'select-province' : 'select-kabupaten';
+
+            $.ajax({
+                url: BASE_URL + '/api/' + url,
+                method: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    let jenis = '<option value="">Pilih Daerah</option>';
+                    $.each(data, function (key, val) {
+                        jenis += '<option value="' + val.value + '">' + val.text + '</option>';
+                    });
+                    $('#daerah_id').html(jenis).removeAttr('disabled');
+                    $('.select-daerah').select2();
+                }
+            });
+        });
+
         $('#row_page').on('change', function() {
             var value = $(this).val();         
             if(value)
@@ -263,6 +294,7 @@
 
         $("#ExportButton").click(function() {
             $.ajax({
+                //url: BASE_URL+ `/api/perencanaan/export`,
                 url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
                 method: 'GET',
                 success: function(response) {
@@ -279,6 +311,7 @@
         });
 
         $('#Search').click( () => {
+            var daerah_id = $("#daerah_id").val();
             var periode_id = $('#periode_id').val(); 
             var search_status = $('#search_status').val();
             var search_text = $('#search_text').val();
@@ -291,7 +324,7 @@
 
             $.ajax({
                 url: BASE_URL + `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}`,
-                data:{'periode_id':periode_id,'search_status':search_status,'search_text':search_text},
+                data:{'daerah_id':daerah_id,'periode_id':periode_id,'search_status':search_status,'search_text':search_text},
                 method: 'POST',
                 success: function(response) {                        
                     resultTotal(response.total);
@@ -632,7 +665,7 @@
                     let row = ``;
                         row +=`<tr>`;
                         row +=`<td class="padding-text-table">${item.number}</td>`;
-                        row +=`<td class="padding-text-table">${item.nama_daerah}</td>`;
+                        row +=`<td class="padding-text-table">${item.nama_daerah}gjs</td>`;
                         row +=`<td class="padding-text-table">${item.periode}</td>`;
                         row +=`<td class="padding-text-table">${item.pengawas_analisa_pagu}</td>`;
                         row +=`<td class="padding-text-table">${item.pengawas_inspeksi_pagu}</td>`;
@@ -664,7 +697,7 @@
             var wb = XLSX.utils.book_new();
 
             XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-            XLSX.writeFile(wb, "Repot-data-perencanaan-"+ time +".xlsx");
+            XLSX.writeFile(wb, "Report-data-perencanaan-"+ time +".xlsx");
         }
 
     });
