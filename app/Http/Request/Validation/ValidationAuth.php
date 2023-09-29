@@ -77,7 +77,7 @@ class ValidationAuth
   {
         $err = array(); 
         $fields = [
-            'token'  => 'Token Validasi' 
+            'token'  => 'PIN Validasi' 
            
         ];
 
