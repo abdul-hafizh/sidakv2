@@ -450,11 +450,11 @@
                     "param": "insert"
                };                              
 
-               if (totalRencana > paguApbn) {
+               if (totalRencana != paguApbn) {
                     Swal.fire({
                          icon: 'info',
                          title: 'Peringatan',
-                         text: 'Maaf, Total Perencanaan Melebihi PAGU.',
+                         text: 'Maaf, Total Perencanaan Tidak Sama Dengan PAGU.',
                          confirmButtonColor: '#000',
                          showConfirmButton: true,
                          confirmButtonText: 'OK',
