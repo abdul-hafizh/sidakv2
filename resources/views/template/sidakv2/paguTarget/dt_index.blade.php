@@ -488,7 +488,7 @@
 
 		$('.select-periode2').select2(
 			$.ajax({
-				url: BASE_URL + '/api/select-periode',
+				url: BASE_URL + '/api/select-periode?type=GET&action=pagu',
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {

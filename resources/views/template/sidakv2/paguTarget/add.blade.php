@@ -159,7 +159,7 @@
 
       function getPeriode(periode_id) {
         $.ajax({
-          url: BASE_URL + '/api/select-periode',
+          url: BASE_URL + '/api/select-periode?type=POST&action=pagu',
           method: 'get',
           dataType: 'json',
           success: function(data) {
