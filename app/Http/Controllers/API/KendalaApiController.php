@@ -158,14 +158,16 @@ class KendalaApiController extends Controller
             {
                  $type = 'kendala';
                  $messages = Auth::User()->username.' meminta tanggapan atas kendala '.$request->permasalahan;
-                 $notif = RequestNotification::fieldsData($type,$messages);
+                 $url = '';
+                 $notif = RequestNotification::fieldsData($type,$messages,$url);
                  Notification::create($notif);
 
             }else{
                 
                 $type = 'kendala';
+                $url = '';
                 $messages = 'Tanggapan atas kendala '.$request->permasalahan.' sudah dibalas Admin';
-                $notif = RequestNotification::fieldsData($type,$messages);
+                $notif = RequestNotification::fieldsData($type,$messages,$url);
                 Notification::create($notif);
 
 

@@ -40,7 +40,7 @@
 		</div>
 	</div>
 
-    <div id="ShowSearch" style="display:none;">
+    
         <div class="row">
             <div class="col-lg-3" style="margin-bottom: 9px;">
                 <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
@@ -77,7 +77,7 @@
                 </div>
             </div>
         </div> 	
-    </div>
+    
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
@@ -95,7 +95,7 @@
                      Approve
                 </button>
             </div>
-             <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
+             <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton" class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -106,7 +106,7 @@
                 </a> 
             </div>
 		</div>
-		<div id="ShowPagination" class="pull-right width-50">
+		<div  class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -589,24 +589,8 @@
                         $('#ShowExport').hide();
                     }    
                 }     
-                if(item.action =='search')
-                {
-                    if(item.checked ==true)
-                    {
-                        $('#ShowSearch').show();
-                    } else {
-                        $('#ShowSearch').hide();
-                    }    
-                }   
-                if(item.action =='perpage')
-                {
-                    if(item.checked ==true)
-                    {
-                        $('#ShowPagination').show();
-                    } else {
-                        $('#ShowPagination').hide();
-                    }    
-                }     
+                   
+                   
             });
         }
 

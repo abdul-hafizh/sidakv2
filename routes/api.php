@@ -43,7 +43,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
     Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
     Route::get('select-periode', [PeriodeApiController::class, 'listAll']);
-    Route::get('select-periode2', [PeriodeApiController::class, 'listAll2']);
     Route::get('select-periode-semester', [PeriodeApiController::class, 'listAllSemester']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
@@ -84,15 +83,18 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('pagu/check', [PaguTargetApiController::class, 'check']);
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
     Route::post('pagutarget/total_pagu', [PaguTargetApiController::class, 'total_pagu']);
-    Route::get('pengawasan/datalist', [PengawasanApiController::class, 'jsonData']);
+ 
     Route::post('pagutarget', [PaguTargetApiController::class, 'store']);
     Route::post('pagutarget/import_excel', [PaguTargetApiController::class, 'import_excel']);
-    Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
+   // Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
     Route::get('pagutarget/edit/{id}', [PaguTargetApiController::class, 'edit']);
-    Route::get('pagutarget/download_daerah', [PaguTargetApiController::class, 'download_daerah']);
+    //Route::get('pagutarget/download_daerah', [PaguTargetApiController::class, 'download_daerah']);
     Route::put('pagutarget/{id}', [PaguTargetApiController::class, 'update']);
     Route::delete('pagutarget/{id}', [PaguTargetApiController::class, 'delete']);
     Route::post('pagutarget/selected', [PaguTargetApiController::class, 'deleteSelected']);
+
+
+    Route::get('pengawasan/datalist', [PengawasanApiController::class, 'jsonData']);
 
     Route::get('province', [ProvinceApiController::class, 'index']);
     Route::post('province', [ProvinceApiController::class, 'store']);

@@ -114,15 +114,16 @@ class ConfigMenu
                     'class'=>'role',
                     'tasks'=>[],
              
-               ],[
-                'name'=>'Aksi',
-                'slug'=>'aksi',
-                'icon'=>'icon-aksi',
-                'url'=>'/action',
-                'active'=>false,
-                'class'=>'aksi',
-                'tasks'=>[],
-               ]
+               ],
+               // [
+               //  'name'=>'Aksi',
+               //  'slug'=>'aksi',
+               //  'icon'=>'icon-aksi',
+               //  'url'=>'/action',
+               //  'active'=>false,
+               //  'class'=>'aksi',
+               //  'tasks'=>[],
+               // ]
 
            ), // management user
             

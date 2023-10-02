@@ -81,7 +81,7 @@
         <div class="modal-footer">
           <button class="btn btn-default" data-dismiss="modal">Tutup</button>
           <button id="simpan" type="button" class="btn btn-primary" style="display: none;">Simpan</button>
-          <button id="update" type="button" class="btn btn-info" style="display: none;">Ubah</button>
+          <button id="update" type="button" class="btn btn-primary" style="display: none;">Ubah</button>
 
         </div>
       </form>
@@ -96,9 +96,9 @@
 <script type="text/javascript">
   $(function() {
 
-    $('#tambah').on('click', function() {
+    $('#ShowAdd').on('click', function() {
       $('#judulModalLabel').html('Tambah Pagu Target')
-
+     
       var form = [
         'periode_id',
         'daerah_id',
@@ -159,12 +159,12 @@
 
       function getPeriode(periode_id) {
         $.ajax({
-          url: BASE_URL + '/api/select-periode2',
+          url: BASE_URL + '/api/select-periode',
           method: 'get',
           dataType: 'json',
           success: function(data) {
             periode = '<option value="">- Pilih -</option>';
-            $.each(data, function(key, val) {
+            $.each(data.result, function(key, val) {
               var select = '';
               if (val.value == periode_id)
                 select = 'selected';
@@ -307,12 +307,12 @@
 
     $('.select-periode').select2(
       $.ajax({
-        url: BASE_URL + '/api/select-periode2',
+        url: BASE_URL + '/api/select-periode',
         method: 'get',
         dataType: 'json',
         success: function(data) {
           periode = '<option value="">- Pilih -</option>';
-          $.each(data, function(key, val) {
+          $.each(data.result, function(key, val) {
             periode += '<option value="' + val.value + '" >' + val.text + '</option>';
 
           });

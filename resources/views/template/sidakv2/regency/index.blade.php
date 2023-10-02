@@ -1,7 +1,7 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15" >
-    <div id="ShowSearch" style="display:none;" class="col-sm-4 pull-left padding-default full margin-top-bottom-20" >
+    <!-- <div  class="col-sm-4 pull-left padding-default full margin-top-bottom-20" >
         <div class="pull-right width-50">
         	 <div class="pull-left width-50 padding-0-8">
 			    		<select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi "></select>
@@ -17,7 +17,25 @@
 	        </div>
 	         	
         </div>
-    </div> 	
+    </div>  -->	
+
+    <div class="row margin-top-bottom-20">
+            <div class="col-lg-3 pd-right">
+               <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi "></select>
+            </div>   
+
+            <div class="col-lg-3 pd-right">
+                <input type="text" id="search-input" class="form-control border-radius-20" placeholder="Pencarian">
+            </div>  
+
+           <div class="col-lg-3 padding-default">
+                <div class="btn-group">
+                    <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+                    <button id="refresh" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>  
+
+     </div> 
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
@@ -38,7 +56,7 @@
 				</button>
 			</div>
 
-            <div id="ShowExport" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
+            <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button">
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -55,7 +73,7 @@
 		    </div>		
 		</div> 
 
-		<div id="ShowPagination" style="display:none;" class="pull-right width-50">
+		<div  class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -247,9 +265,10 @@
 
      // Delete selected button
     $('#refresh').on('click', function() {
-    	
+    	$('#search-input').val();
+        $('#daerah_id').val();
         fetchData(page);
-        $('#search-input').val('');
+        
     });
 
   
@@ -746,31 +765,7 @@
     }
 
     function listOptions(data){
-        const edited = data.find(o => o.action === 'edit');
-        const deleted = data.find(o => o.action === 'delete');
-        const detail = data.find(o => o.action === 'detail');
-         const checklist = data.find(o => o.action === 'checklist');
-
-         if(checklist.action =='checklist')
-           {
-               if(checklist.checked ==true)
-               {
-                   $('#ShowChecklist').show();
-                   $('#ShowChecklistAll').show();
-                   
-                  
-               }else{
-                   $('#ShowChecklist').hide();
-                   $('#ShowChecklistAll').hide();
-               }    
-           }
-       
-        if(edited.checked == false && deleted.checked == false && detail.checked == false)
-        {
-            $('#ShowAction').hide();
-        }else{
-             $('#ShowAction').show();
-        }    
+          
        data.forEach(function(item, index) 
        {
            if(item.action =='add')
@@ -783,11 +778,7 @@
                }    
            }
 
-          
-
-
-
-            if(item.action =='export')
+           if(item.action =='export')
            {
                if(item.checked ==true)
                {
@@ -795,27 +786,31 @@
                }else{
                   $('#ShowExport').hide();
                }    
-           }     
-
-            if(item.action =='search')
-           {
+           }    
+               
+            if(item.action =='checklist')
+            {
                if(item.checked ==true)
                {
-                   $('#ShowSearch').show();
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
                }else{
-                  $('#ShowSearch').hide();
-               }    
-           }   
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               } 
+            }
 
-            if(item.action =='perpage')
-           {
-               if(item.checked ==true)
+             if(item.action =='edit' && item.action =='delete')
+            {
+               if(item.checked ==false)
                {
-                   $('#ShowPagination').show();
+                   $('#ShowAction').hide();
                }else{
-                  $('#ShowPagination').hide();
-               }    
-           }     
+                   $('#ShowAction').show();
+               }  
+            }
+           
+ 
 
            
 
