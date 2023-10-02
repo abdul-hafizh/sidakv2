@@ -729,8 +729,6 @@
                 var result_input = [];
                 var result_in = [];
                 var result = [];
-                var listnew = [];
-                var listold = [];
                 var merge = []; 
 
 
@@ -757,20 +755,19 @@
                     })
 
 	            }	
-                 
-               
-                listnew.push({
-	                 'icon':item.icon,
-	                 'name':item.name,
-	                 'slug':item.slug,
-	                 'tasks':[],
-	                 'path_web':item.path_web,
-	                 'option':result,
-                });
 
-                let listmenu = role_menu.find(o => o.slug === item.slug); 
-                    listmenu.option = result;
 
+                var ListReal = role_menu.find(o => o.slug === item.slug);
+                if(ListReal)
+                {
+                	ListReal.option = result;
+                }else{
+                   var ListTemp = temp.menu.find(o => o.slug === item.slug);
+                   ListTemp.option = result;
+                   role_menu = temp.menu;
+                } 	
+
+              
 	            var role_id = $('#role_id').val();
 	            let find = role.find(o => o.value === role_id);
                  

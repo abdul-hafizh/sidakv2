@@ -1,8 +1,8 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15">
-    <div id="ShowSearch" style="display:none;" class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
-        <div id="showSearch" class="pull-right width-25">
+    <div  class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+        <div  class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari ..." class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
@@ -45,7 +45,7 @@
 		    </div>		
 		</div> 
 
-		<div id="ShowPagination" style="display:none;" class="pull-right width-50">
+		<div  class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -602,7 +602,7 @@
 
 
     function listOptions(data){
-         const checklist = data.find(o => o.action === 'checklist');
+       
 
        data.forEach(function(item, index) 
        {
@@ -616,9 +616,9 @@
            	   }	
            }
 
-             if(checklist.action =='checklist')
+             if(item.action =='checklist')
            {
-               if(checklist.checked ==true)
+               if(item.checked ==true)
                {
                    $('#ShowChecklist').show();
                    $('#ShowChecklistAll').show();
@@ -650,26 +650,9 @@
                }    
            }     
 
-            if(item.action =='search')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowSearch').show();
-               }else{
-                  $('#ShowSearch').hide();
-               }    
-           }   
 
 
-            if(item.action =='perpage')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowPagination').show();
-               }else{
-                  $('#ShowPagination').hide();
-               }    
-           }    	
+          	
 
        });
     }

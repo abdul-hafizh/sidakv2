@@ -8,6 +8,7 @@ use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\PaguTarget;
 use App\Http\Request\RequestSettingApps;
+use App\Http\Request\RequestMenuRoles;
 use DB;
 
 class RequestPaguTarget
@@ -97,13 +98,37 @@ class RequestPaguTarget
         $numberNext = 1;
         //dd($data);
         $result = $data->get();
+        $options = RequestMenuRoles::ActionPage('pagu-target');
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
+            
+            foreach($options as $rows => $row)
+            {
+               if($row->action == 'edit')
+               {
+                    if($row->checked == 'checked')
+                    {
+                            
+                              
+                        $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+                    }    
 
-            $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+               } 
+               
+                if($row->action == 'delete')
+                {
+                    if($row->checked == 'checked')
+                    {
+                        
+                        $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
-            $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
+                    }
+               }         
+
+
+            }
+
             $numberNext++;
             $row    = array();
             $row[]  = $val->id;
@@ -126,6 +151,7 @@ class RequestPaguTarget
         $temp2['total'] = $data->count();
         $temp2['total_apbn'] = $data->sum('pagu_apbn');
         $temp2['total_promosi'] = $data->sum('pagu_promosi');
+        $temp2['options'] = $options;
         return json_decode(json_encode($temp2), FALSE);
     }
 

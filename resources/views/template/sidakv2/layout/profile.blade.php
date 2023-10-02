@@ -110,6 +110,21 @@
               row +='</div>';
             row +='</div>';
 
+
+
+
+          row +='<div id="password-alert" class="form-group has-feedback">';
+            row +='<label>Password </label>';
+            row +='<input id="password-add" type="password" class="form-control" name="password" placeholder="Password">';
+            row +='<span id="password-messages" class="span-messages"></span>';
+          row +='</div>';
+
+          row +='<div id="password-confirmation-alert" class="form-group has-feedback">';
+            row +='<label>Konfirmasi Password </label>';
+            row +='<input id="password-confirmation-add" type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password">';
+            row +='<span id="password-confirmation-messages" class="span-messages"></span>';
+          row +='</div>';
+
         row +='</div>';  
 
         row +='<div class="modal-footer">'; 
@@ -178,7 +193,10 @@
             'nip': data[3].value,
             'leader_name': data[4].value,
             'leader_nip': data[5].value,
+            'password': data[6].value,
+            'password_confirmation': data[7].value,
             'photo':photo,
+
             
           };
           $.ajax({
@@ -260,6 +278,22 @@
               } else {
                 $('#leader-nip-alert').removeClass('has-error');
                 $('#leader-nip-messages').removeClass('help-block').html('');
+              }
+
+              if (errors.messages.password) {
+                $('#password-alert').addClass('has-error');
+                $('#password-messages').addClass('help-block').html('<strong>' + errors.messages.password + '</strong>');
+              } else {
+                $('#password-alert').removeClass('has-error');
+                $('#password-messages').removeClass('help-block').html('');
+              }
+
+              if (errors.messages.password_confirmation) {
+                $('#password-confirmation-alert').addClass('has-error');
+                $('#password-confirmation-messages').addClass('help-block').html('<strong>' + errors.messages.password_confirmation + '</strong>');
+              } else {
+                $('#password-confirmation-alert').removeClass('has-error');
+                $('#password-confirmation-messages').removeClass('help-block').html('');
               }
 
              

@@ -1,7 +1,7 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15">
-    <div class="col-sm-4 pull-left padding-default full margin-top-bottom-20" id="ShowSearch" style="display:none;">
+    <!-- <div  class="col-sm-4 pull-left padding-default full margin-top-bottom-20" >
        
         <div class="pull-right width-50" >
              <div class="pull-left width-50 padding-0-8">
@@ -18,13 +18,31 @@
             </div>
                 
         </div>  
-    </div>  
+    </div>   -->
+
+     <div class="row margin-top-bottom-20">
+            <div class="col-lg-3 pd-right">
+                <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi / Kabupaten"></select>
+            </div>   
+
+            <div class="col-lg-3 pd-right ">
+                <input type="text" id="search-input" class="form-control border-radius-20" placeholder="Pencarian">
+            </div>  
+
+           <div class="col-lg-3 pd-right">
+                <div class="btn-group">
+                    <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+                    <button id="refresh" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>  
+
+     </div>   
 
     <div class="col-sm-4 pull-left padding-default full">
         <div class="width-50 pull-left">
             <div class="pull-left padding-9-0 margin-left-button">
                
-                <select id="row_page" class="selectpicker" data-style="bg-navy" >
+                <select id="row_page" class="selectpicker  border-radius-10" data-style="bg-navy" >
                     <option value="10" selected>10</option>
                     <option value="25">25</option>
                     <option value="50">50</option>
@@ -39,7 +57,7 @@
                 </button>
             </div>
 
-            <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+            <div id="ShowExport" style="display:none;"  class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -57,7 +75,7 @@
             </div>      
         </div> 
 
-        <div id="ShowPagination" style="display:none;" class="pull-right width-50" >
+        <div  class="pull-right width-50" >
             <ul id="pagination" class="pagination-table pagination"></ul>
         </div>
     </div>
@@ -83,7 +101,7 @@
                             <th><div class="split-table"></div><span class="span-title"> Email </span></th>
                             <th><div class="split-table"></div><span class="span-title"> Phone </span></th>
                             <th><div class="split-table"></div><span class="span-title"> Status </span></th> 
-                            <th id="ShowAction" style="display:none;"><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+                            <th><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
                         </tr>
                     </thead>
 
@@ -429,7 +447,7 @@
         const edited = options.find(o => o.action === 'edit');
         const deleted = options.find(o => o.action === 'delete');
         const checklist = options.find(o => o.action === 'checklist');
-
+       
         // Clear previous data
         content.empty();
      if(data.length>0)
@@ -460,7 +478,9 @@
                row +=`<td class="padding-text-table">${item.phone}</td>`;
                row +=`<td class="padding-text-table">${item.status.status_convert}</td>`;
                row +=`<td>`; 
-                row +=`<div class="btn-group">`;
+                row +=`<div class="btn-group pull-left list-menu-table">`;
+
+
 
                 row +=`<button id="ForgotPassword" data-param_id="`+ item.email +`"  type="button" data-toggle="tooltip" data-placement="top" title="Kirim Forgot password"  class="btn btn-primary"><i class="fa fa-envelope-o" ></i></button>`;
 
@@ -664,6 +684,19 @@
                                   row +=`</div>`;
                                 row +=`</div>`;
 
+
+                                  row +='<div id="password-alert" class="form-group has-feedback">';
+                                    row +='<label>Password </label>';
+                                    row +='<input id="password-add" type="password" class="form-control" name="password" placeholder="Password">';
+                                    row +='<span id="password-messages" class="span-messages"></span>';
+                                  row +='</div>';
+
+                                  row +='<div id="password-confirmation-alert" class="form-group has-feedback">';
+                                    row +='<label>Konfirmasi Password </label>';
+                                    row +='<input id="password-confirmation-add" type="password" class="form-control" name="password_confirmation" placeholder="Ulangi password">';
+                                    row +='<span id="password-confirmation-messages" class="span-messages"></span>';
+                                  row +='</div>';
+
                                 
 
 
@@ -808,6 +841,8 @@
                       'nip':data[4].value,
                       'leader_name':data[5].value,
                       'leader_nip':data[6].value,
+                      'password': data[7].value,
+                      'password_confirmation': data[8].value,
                       'daerah_id':periode,
                       'photo':photo, 
                       'username':find.username,        
@@ -915,6 +950,22 @@
                                 $('#leader-nip-alert-'+id).removeClass('has-error');
                                 $('#leader-nip-messages-'+id).removeClass('help-block').html('');
                             }  
+
+                            if (errors.messages.password) {
+                                $('#password-alert').addClass('has-error');
+                                $('#password-messages').addClass('help-block').html('<strong>' + errors.messages.password + '</strong>');
+                              } else {
+                                $('#password-alert').removeClass('has-error');
+                                $('#password-messages').removeClass('help-block').html('');
+                              }
+
+                              if (errors.messages.password_confirmation) {
+                                $('#password-confirmation-alert').addClass('has-error');
+                                $('#password-confirmation-messages').addClass('help-block').html('<strong>' + errors.messages.password_confirmation + '</strong>');
+                              } else {
+                                $('#password-confirmation-alert').removeClass('has-error');
+                                $('#password-confirmation-messages').removeClass('help-block').html('');
+                              }
 
                             
                         }
@@ -1248,32 +1299,10 @@
     }
 
 
-    function listOptions(data){
-        const edited = data.find(o => o.action === 'edit');
-        const deleted = data.find(o => o.action === 'delete');
-        const detail = data.find(o => o.action === 'detail');
-         const checklist = data.find(o => o.action === 'checklist');
 
-         if(checklist.action =='checklist')
-           {
-               if(checklist.checked ==true)
-               {
-                   $('#ShowChecklist').show();
-                   $('#ShowChecklistAll').show();
-                   
-                  
-               }else{
-                   $('#ShowChecklist').hide();
-                   $('#ShowChecklistAll').hide();
-               }    
-           }
-       
-        if(edited.checked == false && deleted.checked == false && detail.checked == false)
-        {
-            $('#ShowAction').hide();
-        }else{
-             $('#ShowAction').show();
-        }    
+
+    function listOptions(data){
+        
        data.forEach(function(item, index) 
        {
            if(item.action =='add')
@@ -1285,12 +1314,8 @@
                   $('#ShowAdd').hide();
                }    
            }
-
-          
-
-
-
-            if(item.action =='export')
+               
+           if(item.action =='export')
            {
                if(item.checked ==true)
                {
@@ -1300,108 +1325,20 @@
                }    
            }     
 
-            if(item.action =='search')
-           {
+
+            if(item.action =='checklist')
+            {
                if(item.checked ==true)
-               {
-                   $('#ShowSearch').show();
-               }else{
-                  $('#ShowSearch').hide();
-               }    
-           }   
-
-            if(item.action =='perpage')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowPagination').show();
-               }else{
-                  $('#ShowPagination').hide();
-               }    
-           }     
-
-           
-
-       });
-    }
-
-    
-
-
-    function listOptions(data){
-        const edited = data.find(o => o.action === 'edit');
-        const deleted = data.find(o => o.action === 'delete');
-        const detail = data.find(o => o.action === 'delete');
-         const checklist = data.find(o => o.action === 'checklist');
-
-         if(checklist.action =='checklist')
-           {
-               if(checklist.checked ==true)
                {
                    $('#ShowChecklist').show();
                    $('#ShowChecklistAll').show();
-                   
-                  
                }else{
                    $('#ShowChecklist').hide();
                    $('#ShowChecklistAll').hide();
-               }    
-           }
+               } 
+            }
+
        
-        if(edited.checked == false && deleted.checked == false && detail.checked == false)
-        {
-            $('#ShowAction').hide();
-        }else{
-             $('#ShowAction').show();
-        }    
-       data.forEach(function(item, index) 
-       {
-           if(item.action =='add')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowAdd').show();
-               }else{
-                  $('#ShowAdd').hide();
-               }    
-           }
-
-          
-
-
-
-            if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           }     
-
-            if(item.action =='search')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowSearch').show();
-               }else{
-                  $('#ShowSearch').hide();
-               }    
-           }   
-
-            if(item.action =='perpage')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowPagination').show();
-               }else{
-                  $('#ShowPagination').hide();
-               }    
-           }     
-
-           
-
        });
     }
 

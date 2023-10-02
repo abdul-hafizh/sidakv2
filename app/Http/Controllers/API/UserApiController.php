@@ -136,15 +136,34 @@ class UserApiController extends Controller
                 $datalog = RequestAuditLog::fieldsData($log);
                 //Audit Log
                 
-     
+               if($request->password !='' && $request->password_confirmation !='')
+               {
+                  $validation = ValidationUser::validationPassword($request);
+                  if($validation)
+                  {
+                    return response()->json($validation,400);
+                  }else{
+                      $password = ['password'=> $request->password];
+                      $profile = array_merge($merge,$password);
+                  } 
+
+               }else{
+                    $profile = $merge;
+                
+               } 
            
-            $UpdateData = User::where('id',Auth::User()->id)->update($merge);
+            $UpdateData = User::where('id',Auth::User()->id)->update($profile);
 
             $data = User::select('id','username','daerah_id','name','status','photo')->where('username',$request->username)->first();
             $userSidebar = RequestAuth::requestSidebar($data); 
            
             return response()->json(['status'=>true,'user_sidebar'=>$userSidebar,'message'=>'Update data sucessfully']);
-        }    
+       } 
+
+        
+        
+         
+
 
     }    
 
@@ -244,8 +263,24 @@ class UserApiController extends Controller
                 $datalog = RequestAuditLog::fieldsData($log);
                 //Audit Log
 
+                if($request->password !='' && $request->password_confirmation !='')
+               {
+                  $validation = ValidationUser::validationPassword($request);
+                  if($validation)
+                  {
+                    return response()->json($validation,400);
+                  }else{
+                      $password = ['password'=> $request->password];
+                      $profile = array_merge($merge,$password);
+                  } 
+
+               }else{
+                    $profile = $merge;
+                
+               } 
+               
                 //update account
-               $UpdateData = User::where('id',$id)->update($merge);
+               $UpdateData = User::where('id',$id)->update($profile);
                $role = Roles::where('slug',$request->role_id)->first();
                if(!$role)
                {
