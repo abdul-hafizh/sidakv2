@@ -170,8 +170,9 @@ class PerencanaanApiController extends Controller
             if($saveData && $request->type == 'kirim')
             {
                 $type = 'perencanaan';
+                $url = 'perencanaan/detail/' . $saveData->id;
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
-                $notif = RequestNotification::fieldsData($type,$messages_desc);
+                $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
                 Notification::create($notif);
             }  
 
@@ -214,8 +215,9 @@ class PerencanaanApiController extends Controller
         if($results){
             
             $type = 'perencanaan';
+            $url = 'perencanaan/detail/' . $id;
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Dokumen Perencanaan Tahun ' . $_res->periode_id;
-            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
             
             $messages['messages'] = true;
@@ -240,8 +242,9 @@ class PerencanaanApiController extends Controller
 
         if($results){
             $type = 'perencanaan';
+            $url = 'perencanaan/detail/' . $id;
             $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Perencanaan Tahun ' . $_res->periode_id;
-            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
 
             $messages['messages'] = true;
@@ -266,8 +269,9 @@ class PerencanaanApiController extends Controller
 
         if($results){
             $type = 'perencanaan';
+            $url = 'perencanaan/detail/' . $id;
             $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Request Edit Perencanaan Tahun ' . $_res->periode_id;
-            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
 
             $messages['messages'] = true;
@@ -293,8 +297,9 @@ class PerencanaanApiController extends Controller
 
         if($results){
             $type = 'perencanaan';
+            $url = 'perencanaan/detail/' . $id;
             $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Perencanaan Tahun ' . $_res->periode_id;
-            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
 
             $messages['messages'] = true;
@@ -320,8 +325,9 @@ class PerencanaanApiController extends Controller
 
         if($results){
             $type = 'perencanaan';
+            $url = 'perencanaan/detail/' . $id;
             $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Dokumen Perencanaan Tahun ' . $_res->periode_id;
-            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
 
             $messages['messages'] = true;
@@ -347,8 +353,9 @@ class PerencanaanApiController extends Controller
 
         if($results){
             $type = 'perencanaan';
+            $url = 'perencanaan/detail/' . $id;
             $messages_desc = strtoupper(Auth::User()->username) . ' Request Edit Perencanaan Tahun ' . $_res->periode_id;
-            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
 
             $messages['messages'] = true;
@@ -374,8 +381,9 @@ class PerencanaanApiController extends Controller
 
         if($results){
             $type = 'perencanaan';
+            $url = 'perencanaan/detail/' . $id;
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Perbaikan Pada Perencanaan Tahun ' . $_res->periode_id;
-            $notif = RequestNotification::fieldsData($type,$messages_desc);
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
 
             $messages['messages'] = true;
@@ -397,24 +405,27 @@ class PerencanaanApiController extends Controller
                 $updateResult = $_res->where('id', $key)->update([ 'status' => 15, 'request_edit' => 'request_doc']);
                 if($updateResult) {
                     $type = 'perencanaan';
+                    $url = 'perencanaan/detail/' . $_res->id;
                     $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Formulir Perencanaan Tahun ' . $_res->periode_id;
-                    $notif = RequestNotification::fieldsData($type,$messages_desc);
+                    $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
                     Notification::create($notif);
                 }
             } elseif ($_res->status == 14 && $_res->request_edit == 'false') {
                 $updateResult = $_res->where('id', $key)->update([ 'status' => 16, 'request_edit' => 'false']);
                 if($updateResult) {
                     $type = 'perencanaan';
+                    $url = 'perencanaan/detail/' . $_res->id;
                     $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Perencanaan Tahun ' . $_res->periode_id;
-                    $notif = RequestNotification::fieldsData($type,$messages_desc);
+                    $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
                     Notification::create($notif);
                 }
             } elseif ($_res->status == 15 && $_res->request_edit == 'true') {
                 $updateResult = $_res->where('id', $key)->update([ 'status' => 13, 'request_edit' => 'true']);
                 if($updateResult) {
                     $type = 'perencanaan';
+                    $url = 'perencanaan/detail/' . $_res->id;
                     $messages_desc = strtoupper(Auth::User()->username) . ' Menyetujui Request Edit Perencanaan Tahun ' . $_res->periode_id;
-                    $notif = RequestNotification::fieldsData($type,$messages_desc);
+                    $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
                     Notification::create($notif);
                 }
             } else {
