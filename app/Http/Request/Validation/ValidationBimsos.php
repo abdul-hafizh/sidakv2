@@ -27,10 +27,11 @@ class ValidationBimsos
         $validator =  Validator::make(
             $request->all(),
             [
-                'periode_id_mdl' => [
-                    'required',
-                    Rule::unique('bimsos', 'periode_id')->where('daerah_id', Auth::User()->daerah_id)->where('sub_menu_slug', $request->sub_menu_slug),
-                ],
+                // 'periode_id_mdl' => [
+                //     'required',
+                //     Rule::unique('bimsos', 'periode_id')->where('daerah_id', Auth::User()->daerah_id)->where('sub_menu_slug', $request->sub_menu_slug),
+                // ],
+                'periode_id_mdl'  => 'required',
                 'sub_menu_slug'  => 'required',
                 'nama_kegiatan'  => 'required',
                 'tgl_bimtek'  => 'required',
@@ -74,11 +75,12 @@ class ValidationBimsos
         $validator =  Validator::make(
             $request->all(),
             [
-                'periode_id_mdl' => [
-                    'required',
-                    Rule::unique('bimsos', 'periode_id')->where('daerah_id', Auth::User()->daerah_id)->where('sub_menu_slug', $request->sub_menu_slug)->ignore($id),
-                ],
+                // 'periode_id_mdl' => [
+                //     'required',
+                //     Rule::unique('bimsos', 'periode_id')->where('daerah_id', Auth::User()->daerah_id)->where('sub_menu_slug', $request->sub_menu_slug)->ignore($id),
+                // ],
 
+                'periode_id_mdl'  => 'required',
                 'sub_menu_slug'  => 'required',
                 'nama_kegiatan'  => 'required',
                 'tgl_bimtek'  => 'required',

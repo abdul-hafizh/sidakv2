@@ -22,6 +22,8 @@ class Bimsos extends Model
         'biaya_kegiatan',
         'jml_peserta',
         'ringkasan_kegiatan',
+        'status_laporan_id',
+        'request_edit',
         'lap_hadir',
         'lap_pendamping',
         'lap_notula',

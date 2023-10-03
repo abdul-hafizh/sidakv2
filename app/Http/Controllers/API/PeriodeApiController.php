@@ -11,6 +11,7 @@ use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPeriode;
 use App\Http\Request\Validation\ValidationPeriode;
 use App\Http\Request\RequestAuditLog;
+use App\Helpers\GeneralHelpers;
 use App\Helpers\GeneralPaginate;
 
 class PeriodeApiController extends Controller
@@ -326,14 +327,30 @@ class PeriodeApiController extends Controller
     
     public function listAllSemester(Request $request)
     {
+        $access = RequestAuth::Access();
+        $tahunSemester = GeneralHelpers::semesterToday();
         $query =  DB::table('periode as a')
             ->select('a.id', 'a.slug', 'a.name')
             ->where('a.status', 'Y')
             ->groupBy('slug');
 
+        if ($access == 'daerah' ||  $access == 'province') {
+
+            $query->whereIn(
+                'year',
+                DB::table('perencanaan')
+                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                    ->where('status', 16)
+            );
+        }
+
         $data = $query->get();
 
         $periode = RequestPeriode::SelectAllSemester($data);
-        return response()->json($periode);
+        $output = array(
+            "tahunSemester" => $tahunSemester,
+            "periode" => $periode,
+        );
+        return response()->json($output);
     }
 }

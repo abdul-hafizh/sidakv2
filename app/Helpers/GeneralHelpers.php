@@ -295,4 +295,16 @@ class GeneralHelpers
             }
         }
     }
+
+    public static function semesterToday()
+    {
+        $year =  date('Y');
+        $month =  date('m');
+        if ($month < 7)
+            $semester = '01';
+        else
+            $semester = '02';
+
+        return "$year$semester";
+    }
 }

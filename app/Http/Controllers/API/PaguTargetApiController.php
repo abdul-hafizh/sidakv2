@@ -11,6 +11,7 @@ use App\Helpers\GeneralHelpers;
 use App\Http\Request\Validation\ValidationPaguTarget;
 use App\Imports\PaguTargetImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DaerahExport;
 use Auth;
 use File;
 use Response;
@@ -47,7 +48,7 @@ class PaguTargetApiController extends Controller
             "recordsTotal" => $result->total,
             "recordsFiltered" => $count->total,
             "data" => $result->data,
-            "options" =>$result->options,
+            "options" => $result->options,
         );
         return response()->json($output);
     }
@@ -75,10 +76,10 @@ class PaguTargetApiController extends Controller
             $insert = RequestPaguTarget::fieldsData($request);
             //create menu
 
-            $log = array(             
-            'category'=> 'LOG_DATA_PAGU_APBN',
-            'group_menu'=>'upload_data_pagu_apbn',
-            'description'=>'Menambahkan data pagu APBN<b>'.$request->nama_daerah.'</b>',
+            $log = array(
+                'category' => 'LOG_DATA_PAGU_APBN',
+                'group_menu' => 'upload_data_pagu_apbn',
+                'description' => 'Menambahkan data pagu APBN<b>' . $request->nama_daerah . '</b>',
             );
             $datalog = RequestAuditLog::fieldsData($log);
 
@@ -99,13 +100,13 @@ class PaguTargetApiController extends Controller
             $update = RequestPaguTarget::fieldsData($request);
             //update account
 
-               $log = array(             
-                'category'=> 'LOG_DATA_PAGU_APBN',
-                'group_menu'=>'mengubah_pagu_apbn',
-                'description'=>'Mengubah pagu APBN <b>'.$request->nama_daerah.'</b>',
-                );
-                $datalog = RequestAuditLog::fieldsData($log);
-                //Audit Log
+            $log = array(
+                'category' => 'LOG_DATA_PAGU_APBN',
+                'group_menu' => 'mengubah_pagu_apbn',
+                'description' => 'Mengubah pagu APBN <b>' . $request->nama_daerah . '</b>',
+            );
+            $datalog = RequestAuditLog::fieldsData($log);
+            //Audit Log
 
             $UpdateData = PaguTarget::where('id', $id)->update($update);
             //result
@@ -127,18 +128,16 @@ class PaguTargetApiController extends Controller
     }
 
 
-    // public function download_excel(Request $request)
-    // {
-    //     $myFile = public_path("/file/pagu_target/template.xlsx");
+    public function download_excel(Request $request)
+    {
+        $myFile = public_path("/file/pagu_target/template.xlsx");
 
-    //     return response()->download($myFile);
-    // }
-    // public function download_daerah(Request $request)
-    // {
-    //     $myFile = public_path("/file/pagu_target/data_daerah.xlsx");
-
-    //     return response()->download($myFile);
-    // }
+        return response()->download($myFile);
+    }
+    public function download_daerah()
+    {
+        return Excel::download(new DaerahExport, 'data_daerah.xlsx');
+    }
 
     public function edit($id)
     {
@@ -155,11 +154,11 @@ class PaguTargetApiController extends Controller
             return response()->json(['messages' => false]);
         }
 
-        $log = array(             
-            'category'=> 'LOG_DATA_PAGU_APBN',
-            'group_menu'=>'menghapus_pagu_apbn',
-            'description'=> '<b>'.$_res->nama_daerah.'</b> telah dihapus',
-            );
+        $log = array(
+            'category' => 'LOG_DATA_PAGU_APBN',
+            'group_menu' => 'menghapus_pagu_apbn',
+            'description' => '<b>' . $_res->nama_daerah . '</b> telah dihapus',
+        );
         $datalog = RequestAuditLog::fieldsData($log);
 
         $results = $_res->delete();
@@ -174,12 +173,12 @@ class PaguTargetApiController extends Controller
         $messages['messages'] = false;
 
         foreach ($request->data as $key) {
-            $find = PaguTarget::where('id',$key)->first();
-            $log = array(             
-                'category'=> 'LOG_DATA_PAGU_APBN',
-                'group_menu'=>'menghapus_pagu_apbn',
-                'description'=> '<b>'.$find->nama_daerah.'</b> telah dihapus',
-                );
+            $find = PaguTarget::where('id', $key)->first();
+            $log = array(
+                'category' => 'LOG_DATA_PAGU_APBN',
+                'group_menu' => 'menghapus_pagu_apbn',
+                'description' => '<b>' . $find->nama_daerah . '</b> telah dihapus',
+            );
             $datalog = RequestAuditLog::fieldsData($log);
 
             $results = PaguTarget::where('id', (int)$key)->delete();

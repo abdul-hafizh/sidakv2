@@ -48,6 +48,19 @@
 	thead th.dt-head-second {
 		padding: 9px 0px 9px 30px !important;
 	}
+
+	table.dataTable thead th,
+	table.dataTable thead td {
+		padding: 10px 18px;
+		border-bottom: 2px solid #f4f4f4;
+
+	}
+
+	table.dataTable tbody th,
+	table.dataTable tbody td {
+		border-bottom: 1px solid #f4f4f4;
+
+	}
 </style>
 </script>
 
@@ -257,8 +270,11 @@
 				dataType: 'json',
 				success: function(data) {
 					periode = '<option value="">- Pilih -</option>';
-					$.each(data, function(key, val) {
-						periode += '<option value="' + val.value + '" >' + val.text + '</option>';
+					$.each(data.periode, function(key, val) {
+						var select = '';
+						if (data.tahunSemester == val.value)
+							select = 'selected';
+						periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
 
 					});
 					$('#periode_id2').html(periode);
@@ -273,8 +289,11 @@
 				dataType: 'json',
 				success: function(data) {
 					periode = '<option value="">- Pilih -</option>';
-					$.each(data, function(key, val) {
-						periode += '<option value="' + val.value + '" >' + val.text + '</option>';
+					$.each(data.periode, function(key, val) {
+						var select = '';
+						if (data.tahunSemester == val.value)
+							select = 'selected';
+						periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
 
 					});
 					$('#periode_id_mdl').html(periode);
