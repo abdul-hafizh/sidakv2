@@ -38,6 +38,7 @@ class RequestPerencanaan
             {   
                 $temp[$key]['number'] = $numberNext++;
                 $temp[$key]['id'] = $val->id;
+                $temp[$key]['access'] = RequestAuth::Access();
                 $temp[$key]['nama_daerah'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
                 $temp[$key]['pengawas_analisa_pagu'] = $val->pengawas_analisa_pagu;
                 $temp[$key]['pengawas_analisa_pagu_convert'] = GeneralHelpers::formatRupiah($val->pengawas_analisa_pagu);
@@ -67,6 +68,8 @@ class RequestPerencanaan
                 $temp[$key]['deleted'] = RequestPerencanaan::checkValidate($val->status);
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
                 $temp[$key]['updated_at'] = GeneralHelpers::tanggal_indo($val->updated_at);
+                $temp[$key]['lap_rencana'] = $val->lap_rencana;
+                $temp[$key]['status_code'] = $val->status;
                 $temp[$key]['created_at_export'] = $val->created_at;
                 $temp[$key]['updated_at_export'] = $val->updated_at;
             }
