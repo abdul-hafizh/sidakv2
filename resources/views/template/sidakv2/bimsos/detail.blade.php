@@ -7,7 +7,7 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
+    z-index: 99999;
   }
 
   .modal-content2 {
@@ -51,23 +51,7 @@
     font-weight: bold;
   }
 </style>
-<!-- Modal loading -->
-<div id="progressModal" class="modal-loading" style="display: none;">
-  <div class="modal-content2">
-    <span class="close" id="closeProgressModal">&times;</span>
-    <h2>Upload Progress</h2>
-    <div id="progress-container">
-      <div id="progress-bar">
-        <div id="progress" style="width: 0%"></div>
-      </div>
-      <div id="progress-label">0%</div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal -->
-<div id="modal-add" class="modal fade in" role="dialog">
+<div id="modal-detail" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -231,9 +215,8 @@
           <button id="simpan" type="button" class="btn btn-primary" style="display: none;">Simpan</button>
           <button id="update" type="button" class="btn btn-info" style="display: none;">Ubah</button>
           <button id="kirim" type="button" class="btn btn-warning" style="display: none;">Kirim</button>
-          <button id="approve_edit" type="button" class="btn btn-warning" style="display: none;">Approve Edit</button>
-          <button id="request_edit" type="button" class="btn btn-warning" data-toggle="modal" style="display: none;" data-target="#modal-req-edit">Mengajukan Edit</button>
-          <button id="request_revision" type="button" class="btn btn-warning" data-toggle="modal" style="display: none;" data-target="#modal-req-revision">Mengajukan Revisi</button>
+          <button id="request_revision" type="button" class="btn btn-warning" style="display: none;">Mengajukan Revisi</button>
+          <button id="request_edit" type="button" class="btn btn-warning" style="display: none;">Mengajukan Edit</button>
 
         </div>
       </form>
@@ -242,199 +225,21 @@
   </div>
 </div>
 
-<div id="modal-req-edit" class="modal fade in" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Mengajukan Edit</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Alasan Edit</label>
-          <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_edit" name="alasan_edit" placeholder="Alasan Edit"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="modal_edit" class="btn btn-danger">Simpan</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div id="modal-req-revision" class="modal fade in" role="dialog">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Mengajukan Revisi</h4>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label>Alasan Revisi</label>
-          <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_revisi" name="alasan_revisi" placeholder="Alasan Revisi"></textarea>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="modal_revisi" class="btn btn-danger">Simpan</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
 
 <script type="text/javascript">
   $(function() {
 
-    $('#sub_menu_slug').on('change', function() {
-      let sub_menu_slug = $('#sub_menu_slug').val();
-      if (sub_menu_slug == 'is_tenaga_pendamping') {
-        $('#jml_peserta-alert').hide();
-        $('#lap_notula-alert').hide();
-        $('#lap_survei-alert').hide();
-        $('#lap_narasumber-alert').hide();
-        $('#lap_materi-alert').hide();
-        $('#lap_document-alert').hide();
-        $('#lap_pendamping-alert').show();
-      } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
-        $('#jml_peserta-alert').show();
-        $('#lap_notula-alert').show();
-        $('#lap_survei-alert').show();
-        $('#lap_narasumber-alert').show();
-        $('#lap_materi-alert').show();
-        $('#lap_document-alert').show();
-        $('#lap_pendamping-alert').hide();
-      } else {
-        $('#jml_peserta-alert').show();
-        $('#lap_notula-alert').show();
-        $('#lap_survei-alert').show();
-        $('#lap_narasumber-alert').show();
-        $('#lap_materi-alert').show();
-        $('#lap_document-alert').show();
-        $('#lap_pendamping-alert').hide();
-      }
-    })
-
-    $('#tambah').on('click', function() {
-      $('#judulModalLabel').html('Tambah Data')
-      $('#simpan').show();
-      $('#update').hide();
-      $('#kirim').hide();
-      $('#approve_edit').hide();
-      $('#request_revision').hide();
-      $('#request_edit').hide();
-      $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
-      $('#FormSubmit select').removeAttr('disabled');
-      var form = [
-        'periode_id_mdl',
-        'sub_menu_slug',
-        'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
-        'biaya_kegiatan',
-        'jml_peserta',
-        'ringkasan_kegiatan'
-      ];
-      for (let i = 0; i < form.length; i++) {
-        const field = form[i];
-        $('#' + field).val('');
-        $('#' + field + '-alert').removeClass('has-error');
-        $('#' + field + '-messages').removeClass('help-block').html('');
-      }
-    })
-
-    $('#simpan').on('click', function() {
-      var formData = new FormData($('#FormSubmit')[0]);
-      var form = [
-        'periode_id_mdl',
-        'sub_menu_slug',
-        'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
-        'biaya_kegiatan',
-        'jml_peserta',
-        'ringkasan_kegiatan'
-      ];
-      formData.append("status", 13);
-      $('#progressModal').show();
-      $.ajax({
-        type: "POST",
-        url: BASE_URL + '/api/bimsos',
-        data: formData,
-        processData: false,
-        contentType: false,
-        xhr: function() {
-          var xhr = new window.XMLHttpRequest();
-          xhr.upload.addEventListener("progress", function(evt) {
-            if (evt.lengthComputable) {
-              var percentComplete = (evt.loaded / evt.total) * 100;
-              $('#progress').css('width', percentComplete + '%');
-              $('#progress-label').text(percentComplete.toFixed(2) + '%');
-              // Place upload progress bar visibility code here
-            }
-          }, false);
-
-          return xhr;
-        },
-        success: (respons) => {
-          $('#progressModal').hide();
-          Swal.fire({
-            title: 'Sukses!',
-            text: 'Berhasil Disimpan',
-            icon: 'success',
-            confirmButtonText: 'OK'
-
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // User clicked "Yes, proceed!" button
-              window.location.replace('/bimsos');
-            }
-          });
-
-          //
-        },
-        error: (respons) => {
-          $('#progressModal').hide();
-
-          errors = respons.responseJSON;
-          for (let i = 0; i < form.length; i++) {
-            const field = form[i];
-            if (errors.messages[field]) {
-              $('#' + field + '-alert').addClass('has-error');
-              $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
-            } else {
-              $('#' + field + '-alert').removeClass('has-error');
-              $('#' + field + '-messages').removeClass('help-block').html('');
-            }
-          }
-        }
-      });
-    });
-
-    $("#datatable").on("click", ".modalUbah", function() {
-      $('#judulModalLabel').html('Form Ubah');
+    $("#datatable").on("click", ".modalDetail", function() {
+      $('.modal-title').html('Form Detail');
       //  $('.modal-footer button[type=button]').html('Ubah Data');
       $('#simpan').hide();
-      var form = [
-        'periode_id_mdl',
-        'sub_menu_slug',
-        'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
-        'biaya_kegiatan',
-        'jml_peserta',
-        'ringkasan_kegiatan'
-      ];
-      for (let i = 0; i < form.length; i++) {
-        const field = form[i];
-        $('#' + field).val('');
-        $('#' + field + '-alert').removeClass('has-error');
-        $('#' + field + '-messages').removeClass('help-block').html('');
-      }
+      $('#update').show();
+      $('#kirim').show();
+      $('#periode_id_mdl-alert').removeClass('has-error');
+      $('#periode_id_mdl-messages').removeClass('help-block').html('');
+
 
       const id = $(this).data('param_id');
       $.ajax({
@@ -451,61 +256,6 @@
           $('#is_skpd_sesuai').val(data.is_skpd_sesuai);
           getPeriode(data.periode_id);
           subMenu(data.sub_menu_slug);
-          if (data.access == 'daerah' || data.access == 'province') {
-            $('#approve_edit').hide();
-            $('#request_revision').hide();
-            if (data.status_laporan_id == 13) {
-              $('#update').show();
-              $('#kirim').show();
-              $('#request_edit').hide();
-              $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
-              $('#FormSubmit select').removeAttr('disabled');
-            } else if (data.status_laporan_id == 15) {
-              if (data.request_edit == 'false') {
-                $('#update').show();
-                $('#kirim').show();
-                $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
-                $('#FormSubmit select').removeAttr('disabled');
-              } else {
-                $('#update').hide();
-                $('#kirim').hide();
-                $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
-                $('#FormSubmit select').attr('disabled', 'true');
-              }
-              $('#request_edit').hide();
-            } else {
-              $('#update').hide();
-              $('#kirim').hide();
-              $('#request_edit').show();
-              $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
-              $('#FormSubmit select').attr('disabled', 'true');
-            }
-          } else {
-            $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
-            $('#FormSubmit select').attr('disabled', 'true');
-            $('#request_edit').hide();
-            if (data.status_laporan_id == 13) {
-              $('#update').hide();
-              $('#kirim').hide();
-              $('#request_revision').hide();
-
-            } else if (data.status_laporan_id == 15) {
-              if (data.request_edit == 'false') {
-                $('#update').hide();
-                $('#kirim').hide();
-                $('#approve_edit').hide();
-              } else {
-                $('#approve_edit').show();
-                $('#update').hide();
-                $('#kirim').hide();
-              }
-              $('#request_revision').hide();
-            } else {
-              $('#update').hide();
-              $('#kirim').hide();
-              $('#request_revision').show();
-            }
-          }
         }
 
       })
@@ -664,134 +414,6 @@
           }
         });
       });
-
-      $("#approve_edit").click(() => {
-        var data = {
-          "status": 13,
-          "request_edit": "false",
-        };
-        $.ajax({
-          type: "PUT",
-          url: BASE_URL + '/api/bimsos/approve_edit/' + id,
-          data: data,
-          cache: false,
-          dataType: "json",
-          success: (respons) => {
-            Swal.fire({
-              title: 'Sukses!',
-              text: 'Berhasil Disimpan',
-              icon: 'success',
-              confirmButtonText: 'OK'
-
-            }).then((result) => {
-              if (result.isConfirmed) {
-                // User clicked "Yes, proceed!" button
-                window.location.replace('/bimsos');
-              }
-            });
-
-            //
-          }
-        });
-      });
-
-      $("#modal_edit").click(() => {
-        Swal.fire({
-          title: 'Apakah Anda Yakin Mengedit Bimsos Ini?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Ya'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            var form = {
-              "alasan_edit": $("#alasan_edit").val()
-            };
-            if ($("#alasan_edit").val() != '') {
-              req_edit(form);
-            } else {
-              Swal.fire(
-                'Gagal.',
-                'Alasan belum diisi.',
-                'error'
-              );
-            }
-          }
-        });
-      });
-
-      function req_edit(form) {
-
-        $.ajax({
-          type: "PUT",
-          url: BASE_URL + '/api/bimsos/request_edit/' + id,
-          data: form,
-          cache: false,
-          dataType: "json",
-          success: (respons) => {
-            Swal.fire({
-              title: 'Sukses!',
-              text: 'Berhasil mengajukan edit.',
-              icon: 'success',
-              confirmButtonText: 'OK'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.replace('/bimsos');
-              }
-            });
-          },
-        });
-      }
-
-      $("#modal_revisi").click(() => {
-        Swal.fire({
-          title: 'Apakah Anda Yakin Revisi Bimsos Ini?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#d33',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Ya'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            var form = {
-              "alasan_revisi": $("#alasan_revisi").val()
-            };
-            if ($("#alasan_revisi").val() != '') {
-              req_revisi(form);
-            } else {
-              Swal.fire(
-                'Gagal.',
-                'Alasan belum diisi.',
-                'error'
-              );
-            }
-          }
-        });
-      });
-
-      function req_revisi(form) {
-
-        $.ajax({
-          type: "PUT",
-          url: BASE_URL + '/api/bimsos/request_revisi/' + id,
-          data: form,
-          cache: false,
-          dataType: "json",
-          success: (respons) => {
-            Swal.fire({
-              title: 'Sukses!',
-              text: 'Berhasil mengajukan edit.',
-              icon: 'success',
-              confirmButtonText: 'OK'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.replace('/bimsos');
-              }
-            });
-          },
-        });
-      }
 
 
     });

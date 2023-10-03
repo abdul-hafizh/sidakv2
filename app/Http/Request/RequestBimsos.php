@@ -7,6 +7,7 @@ use Auth;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\Bimsos;
+use App\Models\Perencanaan;
 use App\Http\Request\RequestSettingApps;
 use DB;
 
@@ -16,7 +17,7 @@ class RequestBimsos
     public static function GetDataList($request)
     {
         $temp = array();
-
+        $tahunSemester = GeneralHelpers::semesterToday();
         $getRequest = $request->all();
         $column_order   = array('', 'nama_kegiatan', 'sub_menu_slug', 'tgl_bimtek', 'lokasi_bimtek', 'biaya_kegiatan', 'status_laporan_id');
         $column_search  = array('nama_kegiatan', 'sub_menu_slug', 'tgl_bimtek', 'lokasi_bimtek', 'biaya_kegiatan', 'status_laporan_id');
@@ -41,7 +42,11 @@ class RequestBimsos
             }
             if ($filterjs[0]->periode_id) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
+            } else {
+                $data->where('periode_id', $tahunSemester);
             }
+        } else {
+            $data->where('periode_id', $tahunSemester);
         }
 
         $i = 0;
@@ -71,7 +76,6 @@ class RequestBimsos
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
-
             $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
 
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
@@ -82,7 +86,7 @@ class RequestBimsos
 
             $row[]  = $val->nama_kegiatan;
             $row[]  = RequestBimsos::getLabelSubMenu($val->sub_menu_slug);
-            $row[]  = $val->tgl_bimtek;
+            $row[]  = GeneralHelpers::formatDate($val->tgl_bimtek);
             $row[]  = $val->lokasi_bimtek;
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
             $row[]  = RequestBimsos::getLabelStatus($val->status_laporan_id, $val->request_edit);
@@ -100,7 +104,7 @@ class RequestBimsos
     public static function GetDataCountFilter($request)
     {
         $temp = array();
-
+        $tahunSemester = GeneralHelpers::semesterToday();
         $column_order   = array('', 'nama_kegiatan', 'sub_menu_slug', 'tgl_bimtek', 'lokasi_bimtek', 'biaya_kegiatan', 'status_laporan_id');
         $column_search  = array('nama_kegiatan', 'sub_menu_slug', 'tgl_bimtek', 'lokasi_bimtek', 'biaya_kegiatan', 'status_laporan_id');
         $order = array('nama_kegiatan' => 'ASC');
@@ -119,7 +123,11 @@ class RequestBimsos
             }
             if ($filterjs[0]->periode_id) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
+            } else {
+                $data->where('periode_id', $tahunSemester);
             }
+        } else {
+            $data->where('periode_id', $tahunSemester);
         }
         $i = 0;
         $search = $request->search['value'];
@@ -150,6 +158,32 @@ class RequestBimsos
         return json_decode(json_encode($temp2), FALSE);
     }
 
+    public static function GetNilaiPerencanaan($request)
+    {
+        $temp = array();
+        $year = substr((string)$request->periode_id_mdl, 0, 4);
+
+        $periode = Perencanaan::where(['periode_id' => $year, 'daerah_id' => Auth::User()->daerah_id])->first();
+
+        $temp['bimtek_perizinan_pagu'] = $periode->bimtek_perizinan_pagu;
+        $temp['bimtek_pengawasan_pagu'] = $periode->bimtek_pengawasan_pagu;
+        $temp['bimtek_perizinan_target'] = $periode->bimtek_perizinan_target;
+        $temp['bimtek_pengawasan_target'] = $periode->bimtek_pengawasan_target;
+        $temp['total_pagu'] = $periode->bimtek_perizinan_pagu + $periode->bimtek_pengawasan_pagu;
+        $temp['total_peserta'] = $periode->bimtek_perizinan_target + $periode->bimtek_pengawasan_target;
+        return json_decode(json_encode($temp), FALSE);
+    }
+
+    public static function GetSumBimsos($request)
+    {
+        $temp = array();
+        $year = substr((string)$request->periode_id_mdl, 0, 4);
+        $periode = Bimsos::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14])->where('periode_id', 'LIKE', $year . '%');
+
+        $temp['biaya_kegiatan'] = $request->biaya_kegiatan + $periode->sum('biaya_kegiatan');
+        $temp['jml_peserta'] = $request->jml_peserta + $periode->sum('jml_peserta');
+        return json_decode(json_encode($temp), FALSE);
+    }
 
     public static function fieldsData($request)
     {
@@ -163,14 +197,49 @@ class RequestBimsos
                 'biaya_kegiatan' => $request->biaya_kegiatan,
                 'jml_peserta' => $request->jml_peserta,
                 'ringkasan_kegiatan' => $request->ringkasan_kegiatan,
-
-                'status_laporan_id' => '13',
+                'status_laporan_id' => $request->status,
                 'request_edit' => 'false',
                 'periode_id'  => $request->periode_id_mdl,
                 'daerah_id'  => Auth::User()->daerah_id,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
+
+        return $fields;
+    }
+
+    public static function fieldReqEdit($request)
+    {
+        $fields = [
+            'alasan_edit' => $request->alasan_edit,
+            'request_edit' => 'true',
+            'status_laporan_id' => 15,
+            'modified_by' => Auth::User()->username,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+
+        return $fields;
+    }
+    public static function fieldReqRevisi($request)
+    {
+        $fields = [
+            'alasan_edit' => $request->alasan_revisi,
+            'request_edit' => 'false',
+            'status_laporan_id' => 15,
+            'modified_by' => Auth::User()->username,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+
+        return $fields;
+    }
+    public static function fieldApprEdit($request)
+    {
+        $fields = [
+            'request_edit' => $request->request_edit,
+            'status_laporan_id' => $request->status,
+            'modified_by' => Auth::User()->username,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
 
         return $fields;
     }
@@ -199,7 +268,7 @@ class RequestBimsos
             }
         } elseif ($status === 15) {
             if ($requestEdit === "false") {
-                return "Request Revision)";
+                return "Request Revision";
             } elseif ($requestEdit === "true") {
                 return "Request Edit";
             }

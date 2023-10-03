@@ -8,6 +8,7 @@ use App\Http\Request\RequestBimsos;
 use App\Models\Bimsos;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
+use App\Http\Request\RequestAuth;
 use App\Http\Request\Validation\ValidationBimsos;
 use App\Imports\BimsosImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -159,8 +160,19 @@ class BimsosApiController extends Controller
                 $file_document->move(public_path('laporan/bimsos'), $lap_document);
                 $update['lap_document'] = 'laporan/bimsos/' . $lap_document;
             }
+
+
+            $result = RequestBimsos::GetNilaiPerencanaan($request);
+            $sumBimsos = RequestBimsos::GetSumBimsos($request);
+            if ($result->total_pagu < $sumBimsos->biaya_kegiatan && $request->status == 14) {
+                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
+                return response()->json($err, 400);
+            }
+            if ($result->total_peserta < $sumBimsos->jml_peserta && $request->status == 14) {
+                $err['messages']['jml_peserta'] = 'Jumlah Peserta melebihi perencanaan.';
+                return response()->json($err, 400);
+            }
             $UpdateData = Bimsos::where('id', $id)->update($update);
-            //result
             return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
         }
     }
@@ -185,16 +197,13 @@ class BimsosApiController extends Controller
 
         return response()->download($myFile);
     }
-    public function download_daerah(Request $request)
-    {
-        $myFile = public_path("/pagu_target/data_daerah.xlsx");
 
-        return response()->download($myFile);
-    }
 
     public function edit($id)
     {
+        $access = RequestAuth::Access();
         $result = Bimsos::where(['id' => $id])->first();
+        $result['access'] = $access;
         return response()->json($result);
     }
 
@@ -227,5 +236,80 @@ class BimsosApiController extends Controller
         }
 
         return response()->json($messages);
+    }
+
+    public function request_edit($id, Request $request)
+    {
+
+        $messages['messages'] = false;
+        $_res = Bimsos::find($id);
+
+        if (empty($_res)) {
+
+            return response()->json(['messages' => false]);
+        }
+
+        $update = RequestBimsos::fieldReqEdit($request);
+        $results = Bimsos::where('id', $id)->update($update);
+
+        // if ($results) {
+        //     $type = 'perencanaan';
+        //     $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Perencanaan Tahun ' . $_res->periode_id;
+        //     $notif = RequestNotification::fieldsData($type, $messages_desc);
+        //     Notification::create($notif);
+
+        //     $messages['messages'] = true;
+        // }
+        return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
+    }
+
+    public function request_revisi($id, Request $request)
+    {
+
+        $messages['messages'] = false;
+        $_res = Bimsos::find($id);
+
+        if (empty($_res)) {
+
+            return response()->json(['messages' => false]);
+        }
+
+        $update = RequestBimsos::fieldReqRevisi($request);
+        $results = Bimsos::where('id', $id)->update($update);
+
+        // if ($results) {
+        //     $type = 'perencanaan';
+        //     $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Perencanaan Tahun ' . $_res->periode_id;
+        //     $notif = RequestNotification::fieldsData($type, $messages_desc);
+        //     Notification::create($notif);
+
+        //     $messages['messages'] = true;
+        // }
+        return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
+    }
+
+    public function approve_edit($id, Request $request)
+    {
+
+        $messages['messages'] = false;
+        $_res = Bimsos::find($id);
+
+        if (empty($_res)) {
+
+            return response()->json(['messages' => false]);
+        }
+
+        $update = RequestBimsos::fieldApprEdit($request);
+        $results = Bimsos::where('id', $id)->update($update);
+
+        // if ($results) {
+        //     $type = 'perencanaan';
+        //     $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Perencanaan Tahun ' . $_res->periode_id;
+        //     $notif = RequestNotification::fieldsData($type, $messages_desc);
+        //     Notification::create($notif);
+
+        //     $messages['messages'] = true;
+        // }
+        return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }
 }

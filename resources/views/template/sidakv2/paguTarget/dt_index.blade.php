@@ -52,7 +52,14 @@
 	table.dataTable thead th,
 	table.dataTable thead td {
 		padding: 10px 18px;
-		border-bottom: none;
+		border-bottom: 2px solid #f4f4f4;
+
+	}
+
+	table.dataTable tbody th,
+	table.dataTable tbody td {
+		border-bottom: 1px solid #f4f4f4;
+
 	}
 </style>
 </script>
@@ -336,6 +343,7 @@
 					'targets': 0,
 					'searchable': false,
 					'orderable': false,
+					'visible': false,
 					'className': 'dt-body-center',
 					'render': function(data, type, full, meta) {
 						return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';

@@ -11,6 +11,7 @@ use App\Helpers\GeneralHelpers;
 use App\Http\Request\Validation\ValidationPaguTarget;
 use App\Imports\PaguTargetImport;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DaerahExport;
 use Auth;
 use File;
 use Response;
@@ -114,11 +115,9 @@ class PaguTargetApiController extends Controller
 
         return response()->download($myFile);
     }
-    public function download_daerah(Request $request)
+    public function download_daerah()
     {
-        $myFile = public_path("/pagu_target/data_daerah.xlsx");
-
-        return response()->download($myFile);
+        return Excel::download(new DaerahExport, 'data_daerah.xlsx');
     }
 
     public function edit($id)
