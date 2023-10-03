@@ -38,8 +38,6 @@ class PeriodeApiController extends Controller
         $access = RequestAuth::Access();
 
         $query =  DB::table('periode as a');
-            
-           
 
         if ($access == 'daerah' ||  $access == 'province') {
               $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan');
@@ -111,18 +109,13 @@ class PeriodeApiController extends Controller
 
             }
 
-            
-
-                
-
             $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id')->groupBy('year');
               
 
-        }else{
+        } else {
             $query->select('a.id', 'a.slug', 'a.year');
             $query->groupBy('a.year');
         }
-
        
         $query->where('a.status', 'Y');
         $data = $query->get();

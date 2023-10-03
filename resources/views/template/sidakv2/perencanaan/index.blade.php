@@ -52,7 +52,7 @@
             </select>
         </div>
         <div class="col-lg-3" style="margin-bottom: 9px;">
-            <select id="daerah_id" class="select-daerah form-control" name="daerah_id" title="Pilih Daerah" disabled>
+            <select id="daerah_id" class="select-daerah selectpicker" name="daerah_id" title="Pilih Daerah" disabled>
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
@@ -67,7 +67,7 @@
             </select>
         </div> 	
         <div class="col-lg-3" style="margin-bottom: 9px;">
-            <input type="text" id="search_text" class="form-control" placeholder="Pencarian">
+            <input type="text" id="search_text" class="form-control border-radius-13" placeholder="Pencarian">
         </div> 	
         <div class="col-lg-2">
             <div class="btn-group">
@@ -213,7 +213,7 @@
         var list = [];
         
         $.ajax({
-            url: BASE_URL +'/api/select-periode?type=GET',
+            url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
             method: 'GET',
             dataType: 'json',
             success: function(data) {

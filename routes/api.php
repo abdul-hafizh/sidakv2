@@ -69,6 +69,22 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('perencanaan/upload_laporan/{id}', [PerencanaanApiController::class, 'upload_laporan']);
     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
 
+    Route::get('penyelesaian_masalah', [PenyelesaianApiController::class, 'index']);
+    Route::get('penyelesaian_masalah/export', [PenyelesaianApiController::class, 'export']);
+    Route::post('penyelesaian_masalah', [PenyelesaianApiController::class, 'store']);
+    Route::put('penyelesaian_masalah/{id}', [PenyelesaianApiController::class, 'update']);
+    Route::put('penyelesaian_masalah/approve/{id}', [PenyelesaianApiController::class, 'approve']);
+    Route::put('penyelesaian_masalah/approve_edit/{id}', [PenyelesaianApiController::class, 'approve_edit']);
+    Route::put('penyelesaian_masalah/unapprove/{id}', [PenyelesaianApiController::class, 'unapprove']);
+    Route::put('penyelesaian_masalah/reqedit/{id}', [PenyelesaianApiController::class, 'reqedit']);
+    Route::put('penyelesaian_masalah/reqrevisi/{id}', [PenyelesaianApiController::class, 'reqrevisi']);
+    Route::get('penyelesaian_masalah/edit/{id}', [PenyelesaianApiController::class, 'edit']);
+    Route::post('penyelesaian_masalah/search', [PenyelesaianApiController::class, 'search']);
+    Route::post('penyelesaian_masalah/selected', [PenyelesaianApiController::class, 'deleteSelected']);
+    Route::post('penyelesaian_masalah/approve_selected', [PenyelesaianApiController::class, 'approveSelected']);
+    Route::put('penyelesaian_masalah/upload_laporan/{id}', [PenyelesaianApiController::class, 'upload_laporan']);
+    Route::delete('penyelesaian_masalah/{id}', [PenyelesaianApiController::class, 'delete']);
+
     Route::get('user', [UserApiController::class, 'index']);
     Route::post('user', [UserApiController::class, 'store']);
     Route::put('user/{id}', [UserApiController::class, 'update']);
@@ -86,13 +102,12 @@ Route::middleware(['jwt.auth'])->group(function () {
  
     Route::post('pagutarget', [PaguTargetApiController::class, 'store']);
     Route::post('pagutarget/import_excel', [PaguTargetApiController::class, 'import_excel']);
-   // Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
+    // Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
     Route::get('pagutarget/edit/{id}', [PaguTargetApiController::class, 'edit']);
-    //Route::get('pagutarget/download_daerah', [PaguTargetApiController::class, 'download_daerah']);
+    // Route::get('pagutarget/download_daerah', [PaguTargetApiController::class, 'download_daerah']);
     Route::put('pagutarget/{id}', [PaguTargetApiController::class, 'update']);
     Route::delete('pagutarget/{id}', [PaguTargetApiController::class, 'delete']);
     Route::post('pagutarget/selected', [PaguTargetApiController::class, 'deleteSelected']);
-
 
     Route::get('pengawasan/datalist', [PengawasanApiController::class, 'jsonData']);
 
@@ -126,12 +141,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::delete('periode/{id}', [PeriodeApiController::class, 'delete']);
     Route::post('periode/selected', [PeriodeApiController::class, 'deleteSelected']);
 
-
     Route::get('auditlog', [AuditLogApiController::class, 'index']);
     Route::post('auditlog/search', [AuditLogApiController::class, 'search']);
     Route::delete('auditlog/{id}', [AuditLogApiController::class, 'delete']);
     Route::post('auditlog/selected', [AuditLogApiController::class, 'deleteSelected']);
-
 
     Route::get('kendala', [KendalaApiController::class, 'index']);
     Route::post('kendala', [KendalaApiController::class, 'store']);
@@ -148,8 +161,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('masalah/comment', [KendalaApiController::class, 'saveComment']);
     Route::put('masalah/update-replay/{id}', [KendalaApiController::class, 'updatereplay']);
     Route::delete('masalah/delete-replay/{id}', [KendalaApiController::class, 'deletereplay']);
-
-
 
     Route::get('forum', [ForumApiController::class, 'index']);
     Route::post('forum', [ForumApiController::class, 'store']);
@@ -176,7 +187,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('menu/search', [MenusApiController::class, 'search']);
     Route::put('menu/{id}', [MenusApiController::class, 'update']);
     Route::delete('menu/{id}', [MenusApiController::class, 'delete']);
-
 
     Route::get('action', [ActionApiController::class, 'index']);
     Route::get('action/edit/{id}', [ActionApiController::class, 'edit']);

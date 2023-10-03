@@ -589,7 +589,7 @@
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
-                    url: BASE_URL +'/api/select-periode?type=POST',
+                    url: BASE_URL +'/api/select-periode?type=POST&action=perencanaan',
                     success: function(data) {
                          var select =  $('#periode_id');
                          $.each(data.result, function(index, option) {
