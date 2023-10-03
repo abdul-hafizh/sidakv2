@@ -98,7 +98,7 @@
 
     $('#ShowAdd').on('click', function() {
       $('#judulModalLabel').html('Tambah Pagu Target')
-     
+
       var form = [
         'periode_id',
         'daerah_id',
@@ -307,7 +307,7 @@
 
     $('.select-periode').select2(
       $.ajax({
-        url: BASE_URL + '/api/select-periode',
+        url: BASE_URL + '/api/select-periode?type=POST&action=pagu',
         method: 'get',
         dataType: 'json',
         success: function(data) {
