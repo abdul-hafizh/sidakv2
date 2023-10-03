@@ -111,6 +111,8 @@ class PeriodeApiController extends Controller
 
             }
 
+            
+
                 
 
             $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id')->groupBy('year');
@@ -130,7 +132,7 @@ class PeriodeApiController extends Controller
             $selected = true;
         }
 
-        $periode = RequestPeriode::SelectAll($data, $request->type);
+        $periode = RequestPeriode::SelectAll($data, $request->type,$request->action);
         return response()->json(['selected' => $selected, 'result' => $periode]);
     }
 

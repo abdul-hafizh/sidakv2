@@ -192,7 +192,7 @@
 							<th rowspan="2"><span class="border-left-table">Periode </span></th>
 							<th colspan="3" class="dt-head-center">Pagu</th>
 							<th colspan="4" class="dt-head-center border-left-table">Target</th>
-							<th rowspan="2"  id="ShowAction" style="display:none;"><span class="border-left-table"> Aksi </span> </th>
+							<th rowspan="2"  ><span class="border-left-table"> Aksi </span> </th>
 						</tr>
 						<tr>
 							<th><span class="border-left-table"> APBN (Rp) </span> </th>
@@ -418,22 +418,6 @@
 	               } 
 	            }
 
-	             if(item.action =='edit' && item.action =='delete')
-	            {
-	               if(item.checked ==false)
-	               {
-	                   $('#ShowAction').hide();
-	                   // $('#ShowChecklist').hide();
-	                   // $('#ShowChecklistAll').hide();
-
-	               }else{
-	                   $('#ShowAction').show();
-	                   // $('#ShowChecklist').show();
-	                   // $('#ShowChecklistAll').show();
-	               }  
-	            }
-	  
-
 	         
 	           
 
@@ -488,7 +472,7 @@
 
 		$('.select-periode2').select2(
 			$.ajax({
-				url: BASE_URL + '/api/select-periode',
+				url: BASE_URL + '/api/select-periode?type=GET&action=pagu',
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {

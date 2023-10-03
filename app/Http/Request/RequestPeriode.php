@@ -65,21 +65,37 @@ class RequestPeriode
       return $result;
    }
 
-   public static function SelectAll($data, $type)
+   public static function SelectAll($data, $type,$action)
    {
       $temp = array();
 
       foreach ($data as $key => $val) {
 
-         $temp[$key]['value'] = $val->year;
-         $temp[$key]['text'] = 'Periode ' . $val->year;
-         if ($type == "POST") {
-            $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
-            $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
-            $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
-            $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
-            $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan;
-         }
+       
+            $temp[$key]['value'] = $val->slug;
+            $temp[$key]['text'] = 'Periode ' . $val->year;
+
+            if($action =="perencanaan" )
+            {
+                  $temp[$key]['value'] = $val->year;
+                  $temp[$key]['text'] = 'Periode ' . $val->year;
+                  if ($type == "POST") {
+                     $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
+                     $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
+                     $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
+                     $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
+                     $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan;
+                  }
+             }else if($action =="pagu" ){
+                  $temp[$key]['value'] = $val->year;
+                  $temp[$key]['text'] = 'Periode ' . $val->year;
+             }else{
+                $temp[$key]['value'] = $val->slug;
+                $temp[$key]['text'] = 'Periode ' . $val->year;
+             }
+  
+
+         
       }
 
       return  $temp;
