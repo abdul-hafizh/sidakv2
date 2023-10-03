@@ -40,45 +40,43 @@
 		</div>
 	</div>
 
-    <div id="ShowSearch" style="display:none;">
-        <div class="row">
-            <div class="col-lg-3" style="margin-bottom: 9px;">
-                <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
-            </div> 	
-            <div class="col-lg-3" style="margin-bottom: 9px;">
-                <select class="selectpicker" name="type_daerah" id="type_daerah" title="Pilih Type Wilayah">
-                    <option value="">Pilih Tipe Wilayah</option>
-                    <option value="Provinsi">Provinsi</option>
-                    <option value="Kabupaten">Kabupaten</option>
-                </select>
-            </div>
-            <div class="col-lg-3" style="margin-bottom: 9px;">
-                <select id="daerah_id" class="select-daerah form-control" name="daerah_id" title="Pilih Daerah" disabled>
-                    <option value="">Pilih Daerah</option>
-                </select>
-            </div>
-            <div class="col-lg-3" style="margin-bottom: 9px;">    
-                <select id="search_status" class="selectpicker" data-style="btn-default" title="Pilih Status">
-                    <option value="1">Draft</option>
-                    <option value="2">Request Dokumen</option>
-                    <option value="3">Request Edit</option>
-                    <option value="4">Terkirim/Waiting</option>
-                    <option value="5">Approved</option>
-                    <option value="6">Perlu Perbaikan</option>
-                </select>
-            </div> 	
-            <div class="col-lg-3" style="margin-bottom: 9px;">
-                <input type="text" id="search_text" class="form-control" placeholder="Pencarian">
-            </div> 	
-            <div class="col-lg-2">
-                <div class="btn-group">
-                    <button id="Search" type="button" title="Cari" class="btn btn-info"><i class="fa fa-filter"></i> Cari</button>
-                    <button id="Reset" type="button" title="Reset" class="btn btn-info"><i class="fa fa-refresh"></i></button>
-                </div>
-            </div>
+    <div class="row">
+        <div class="col-lg-3" style="margin-bottom: 9px;">
+            <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
         </div> 	
-    </div>
-
+        <div class="col-lg-3" style="margin-bottom: 9px;">
+            <select class="selectpicker" name="type_daerah" id="type_daerah" title="Pilih Type Wilayah">
+                <option value="">Pilih Tipe Wilayah</option>
+                <option value="Provinsi">Provinsi</option>
+                <option value="Kabupaten">Kabupaten</option>
+            </select>
+        </div>
+        <div class="col-lg-3" style="margin-bottom: 9px;">
+            <select id="daerah_id" class="select-daerah form-control" name="daerah_id" title="Pilih Daerah" disabled>
+                <option value="">Pilih Daerah</option>
+            </select>
+        </div>
+        <div class="col-lg-3" style="margin-bottom: 9px;">    
+            <select id="search_status" class="selectpicker" data-style="btn-default" title="Pilih Status">
+                <option value="1">Draft</option>
+                <option value="2">Request Dokumen</option>
+                <option value="3">Request Edit</option>
+                <option value="4">Terkirim/Waiting</option>
+                <option value="5">Approved</option>
+                <option value="6">Perlu Perbaikan</option>
+            </select>
+        </div> 	
+        <div class="col-lg-3" style="margin-bottom: 9px;">
+            <input type="text" id="search_text" class="form-control border-radius-13" placeholder="Pencarian">
+        </div> 	
+        <div class="col-lg-2">
+            <div class="btn-group">
+                <button id="Search" type="button" title="Cari" class="btn btn-info"><i class="fa fa-filter"></i> Cari</button>
+                <button id="Reset" type="button" title="Reset" class="btn btn-info"><i class="fa fa-refresh"></i></button>
+            </div>
+        </div>
+    </div> 	
+    
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
             <div class="pull-left padding-9-0 margin-left-button">
@@ -95,7 +93,7 @@
                      Approve
                 </button>
             </div>
-             <div id="ShowExport" class="pull-left padding-9-0 margin-left-button" style="display:none;">
+             <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton" class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -106,7 +104,7 @@
                 </a> 
             </div>
 		</div>
-		<div id="ShowPagination" class="pull-right width-50">
+		<div  class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -160,6 +158,48 @@
     </div>
 </div>
 
+<div id="modal-reqrevisi" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Request Edit Perencanaan</h4>
+               </div>
+               <div class="modal-body">
+                    <div class="form-group">
+                         <label>Alasan Permintaan Edit Data</label>
+                         <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_revisi_inp" name="alasan_revisi" placeholder="Alasan Edit"></textarea>
+                    </div>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" id="reqrevisi" class="btn btn-warning">Request Edit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+               </div>
+          </div>
+     </div>
+</div>
+
+<div id="modal-reqedit" class="modal fade" role="dialog">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Request Edit Perencanaan</h4>
+               </div>
+               <div class="modal-body">
+                    <div class="form-group">
+                         <label>Alasan Permintaan Edit Data</label>
+                         <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_edit_inp" name="alasan_edit" placeholder="Alasan Edit"></textarea>
+                    </div>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" id="reqedit" class="btn btn-warning">Request Edit</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+               </div>
+          </div>
+     </div>
+</div>
+
 @include('template/sidakv2/perencanaan.export')
 
 <script type="text/javascript">
@@ -173,7 +213,7 @@
         var list = [];
         
         $.ajax({
-            url: BASE_URL +'/api/select-periode?type=GET',
+            url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
             method: 'GET',
             dataType: 'json',
             success: function(data) {
@@ -414,6 +454,8 @@
                 total_bimsos += item.total_rencana_bimsos;
                 total_masalah += item.total_rencana_masalah;
 
+                var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + item.lap_rencana + '" class="btn btn-danger" title="Download PDF" target="_blank" style="margin-right: 4px"><i class="fa fa-download"></i></a>';
+
                 row +=`<td class="table-padding-second">${item.number}</td>`;
                 row +=`<td class="table-padding-second">${item.nama_daerah}</td>`;
                 row +=`<td class="table-padding-second">${item.periode}</td>`;
@@ -431,6 +473,9 @@
                 row +=`<td class="table-padding-second">${item.updated_at}</td>`;
                 row +=`<td>`; 
                     row +=`<div class="btn-action">`;
+                    if(item.lap_rencana != '') {                                   
+                        row += download_link;
+                    }
                     if(item.deleted == false)
                     {
                         if(detailed.checked == true)
@@ -459,7 +504,16 @@
                         { 
                             row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
                         } 
-                    }  
+                    }
+                    
+                    if(item.access == 'pusat' && item.status_code == 16 && item.request_edit == 'false') {
+                        row += '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa fa-pencil"></i></button>';
+                    }               
+
+                    if(item.access == 'daerah' && ([14, 15, 16].includes(item.status_code) && item.request_edit === 'false') || (item.status_code === 14 && item.request_edit === 'request_doc')) {                         
+                        row += '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-reqedit" title="Request Edit"><i class="fa fa-pencil"></i></button>';
+                    }
+
                     row +=`</div>`;
                     row +=`</td>`;
 
@@ -533,6 +587,102 @@
                     }
                 });
             }); 
+
+            $("#reqedit").click( () => {
+                Swal.fire({
+                        title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya'
+                }).then((result) => {
+                        if (result.isConfirmed) {
+                            var form = {
+                                "alasan_edit": $("#alasan_edit_inp").val()
+                            };
+                            if($("#alasan_edit_inp").val() != '') {  
+                                reqeditItem(form);
+                            } else {
+                                Swal.fire(
+                                    'Gagal.',
+                                    'Alasan belum diisi.',
+                                    'error'
+                                );
+                            }
+                        }
+                });
+            });
+            
+            $("#reqrevisi").click( () => {
+                Swal.fire({
+                        title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya'
+                }).then((result) => {
+                        if (result.isConfirmed) {
+                            var form = {
+                                "alasan_revisi": $("#alasan_revisi_inp").val()
+                            };
+                            if($("#alasan_revisi_inp").val() != '') {  
+                                reqrevisiItem(form);
+                            } else {
+                                Swal.fire(
+                                    'Gagal.',
+                                    'Alasan belum diisi.',
+                                    'error'
+                                );
+                            }
+                        }
+                });
+            });
+
+            function reqeditItem(form) {
+                $.ajax({
+                    type:"PUT",
+                    url: BASE_URL+'/api/perencanaan/reqedit/' + item.id,
+                    data:form,
+                    cache: false,
+                    dataType: "json",
+                    success: (respons) =>{
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: 'Berhasil Request Edit Data Perencanaan.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'                        
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                    window.location.replace('/perencanaan');
+                            }
+                        });
+                    },
+                });
+            }
+
+            function reqrevisiItem(form) {
+                $.ajax({
+                    type:"PUT",
+                    url: BASE_URL+'/api/perencanaan/reqrevisi/' + item.id,
+                    data:form,
+                    cache: false,
+                    dataType: "json",
+                    success: (respons) =>{
+                        Swal.fire({
+                            title: 'Sukses!',
+                            text: 'Berhasil Request Edit Data Perencanaan.',
+                            icon: 'success',
+                            confirmButtonText: 'OK'                        
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                    window.location.replace('/perencanaan');
+                            }
+                        });
+                    },
+                });
+            }
         }
 
         function deleteItem(id){
@@ -546,7 +696,7 @@
                     console.error('Error deleting items:', error);
                 }
             });
-        }
+        }        
 
         function resultTotal(total){
            $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
@@ -589,24 +739,8 @@
                         $('#ShowExport').hide();
                     }    
                 }     
-                if(item.action =='search')
-                {
-                    if(item.checked ==true)
-                    {
-                        $('#ShowSearch').show();
-                    } else {
-                        $('#ShowSearch').hide();
-                    }    
-                }   
-                if(item.action =='perpage')
-                {
-                    if(item.checked ==true)
-                    {
-                        $('#ShowPagination').show();
-                    } else {
-                        $('#ShowPagination').hide();
-                    }    
-                }     
+                   
+                   
             });
         }
 

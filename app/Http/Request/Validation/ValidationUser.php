@@ -246,6 +246,41 @@ class ValidationUser
     }
 
 
+    public static function validationPassword($request){
+        $err = array(); 
+        
+        $fields = [
+           
+            'password'  => 'Password',
+            'password_confirmation'  => 'Password Konfirmasi',
+        ];
+
+        $validator =  Validator::make($request->all(), 
+        [
+            
+            'password'  => 'required|confirmed|min:6',
+            'password_confirmation'  => 'required',
+        ]);
+
+        $validator->setAttributeNames($fields); 
+        if ($validator->fails()) {
+         
+            $errors = $validator->errors();
+            
+           
+            
+            if($errors->has('password')){
+                $err['messages']['password'] = $errors->first('password');
+            }
+
+            if($errors->has('password_confirmation')){
+                $err['messages']['password_confirmation'] = $errors->first('password_confirmation');
+            } 
+            return $err;
+       }
+    }
+
+
     public static function ValidateAttribut($request){
 
          $err = array();

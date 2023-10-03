@@ -153,20 +153,21 @@
 					<option value="-1">All</option>
 				</select>
 			</div>
-			<div class="pull-left padding-9-0 margin-left-button">
-				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
+			<div  class="pull-left padding-9-0 margin-left-button">
+				<button id="ShowChecklist" style="display:none;" type="button" id="delete-selected" class="btn btn-danger border-radius-10">
 					Hapus
 				</button>
 				<!-- <button type="button" class="btn btn-primary">
 					<i aria-hidden="true" class="fa fa-search"></i> Search
 				</button> -->
-				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
+				<button id="ShowAdd" style="display:none;" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
-				<button type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#importExcel">
+				<button id="ShowImport" style="display:none;"  type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#modal-import">
 					IMPORT EXCEL
 				</button>
-				<button type="button" class="btn btn-info border-radius-10" id="exportData">
+				<button  id="ShowExport"  style="display:none;" type="button" class="btn btn-info border-radius-10" >
+					
 				</button>
 			</div>
 
@@ -188,13 +189,17 @@
 				<table id="datatable" class="table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th rowspan="2"><input type="checkbox" id="checkAll"></th>
-							<th rowspan="2"><span class="border-left-table">Nama Daerah </span> </th>
+
+							<th rowspan="2" >
+								<input type="checkbox" id="checkAll">
+                              
+							</th>
+							<th rowspan="2"><div   class="split-table"></div>  <span  class="span-title">Nama Daerah </span> </th>
 							<th rowspan="2"><span class="border-left-table">Type </span> </th>
 							<th rowspan="2"><span class="border-left-table">Periode </span></th>
 							<th colspan="3" class="dt-head-center">Pagu</th>
 							<th colspan="4" class="dt-head-center border-left-table">Target</th>
-							<th rowspan="2"><span class="border-left-table"> Aksi </span> </th>
+							<th rowspan="2"  ><span class="border-left-table"> Aksi </span> </th>
 						</tr>
 						<tr>
 							<th><span class="border-left-table"> APBN (Rp) </span> </th>
@@ -213,8 +218,9 @@
 	</div>
 </div>
 @include('template/sidakv2/paguTarget.add')
+@include('template/sidakv2/paguTarget.import')
 <!-- Import Excel -->
-<div id="importExcel" class="modal fade" role="dialog">
+<!-- <div id="importExcel" class="modal fade" role="dialog">
 
 	<div class="modal-dialog" role="document">
 		<form method="post" action="/api/pagutarget/import_excel" id="file-upload" enctype="multipart/form-data">
@@ -248,7 +254,7 @@
 			</div>
 		</form>
 	</div>
-</div>
+</div> -->
 @stop
 
 @push('scripts')
@@ -277,36 +283,36 @@
 		});
 	}
 
-	$('#file-upload').submit(function(e) {
-		e.preventDefault();
-		let formData = new FormData(this);
-		$('#file-input-error').text('');
+	// $('#file-upload').submit(function(e) {
+	// 	e.preventDefault();
+	// 	let formData = new FormData(this);
+	// 	$('#file-input-error').text('');
 
-		$.ajax({
-			type: 'POST',
-			url: BASE_URL + '/api/pagutarget/import_excel',
-			data: formData,
-			contentType: false,
-			processData: false,
-			success: (response) => {
-				Swal.fire({
-					title: 'Sukses!',
-					text: 'Berhasil Disimpan',
-					icon: 'success',
-					confirmButtonText: 'OK'
+	// 	$.ajax({
+	// 		type: 'POST',
+	// 		url: BASE_URL + '/api/pagutarget/import_excel',
+	// 		data: formData,
+	// 		contentType: false,
+	// 		processData: false,
+	// 		success: (response) => {
+	// 			Swal.fire({
+	// 				title: 'Sukses!',
+	// 				text: 'Berhasil Disimpan',
+	// 				icon: 'success',
+	// 				confirmButtonText: 'OK'
 
-				}).then((result) => {
-					if (result.isConfirmed) {
-						// User clicked "Yes, proceed!" button
-						window.location.replace('/pagutarget');
-					}
-				});
-			},
-			error: function(response) {
-				$('#file-input-error').text(response.responseJSON.errors.file);
-			}
-		});
-	});
+	// 			}).then((result) => {
+	// 				if (result.isConfirmed) {
+	// 					// User clicked "Yes, proceed!" button
+	// 					window.location.replace('/pagutarget');
+	// 				}
+	// 			});
+	// 		},
+	// 		error: function(response) {
+	// 			$('#file-input-error').text(response.responseJSON.errors.file);
+	// 		}
+	// 	});
+	// });
 
 	$(function() {
 
@@ -326,7 +332,7 @@
 			},
 			buttons: [{
 				extend: 'excel',
-				text: 'Export excel',
+				text: 'EXPORT EXCEL',
 				exportOptions: {
 					format: {
 						body: function(data, row, column, node) {
@@ -345,7 +351,9 @@
 					'orderable': false,
 					'visible': false,
 					'className': 'dt-body-center',
-					'render': function(data, type, full, meta) {
+					'render': function(data, options, type, full, meta) {
+
+						
 						return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
 					}
 				},
@@ -362,9 +370,67 @@
 				[1, 'asc']
 			],
 			initComplete: (settings, json) => {
+				
 				$('.dataTables_paginate').appendTo('#datatable_paginate');
+				listOptions(json.options);
 			}
 		});
+
+		function listOptions(data){
+       
+	       data.forEach(function(item, index) 
+	       {
+	           if(item.action =='add')
+	           {
+	               if(item.checked ==true)
+	               {
+	                   $('#ShowAdd').show();
+	               }else{
+	                  $('#ShowAdd').hide();
+	               }    
+	           }
+
+	           if(item.action =='export')
+	           {
+	               if(item.checked ==true)
+	               {
+	                   $('#ShowExport').show();
+	               }else{
+	                  $('#ShowExport').hide();
+	               }    
+	           } 
+
+	            if(item.action =='import')
+	           {
+	               if(item.checked ==true)
+	               {
+	                   $('#ShowImport').show();
+	                   
+	               }else{
+	                   $('#ShowImport').hide();
+	                  
+	               }    
+	           } 
+
+	            if(item.action =='checklist')
+	            {
+	               if(item.checked ==true)
+	               {
+	                   $('#ShowChecklist').show();
+	                   $('#ShowChecklistAll').show();
+	                  
+	               }else{
+	                   $('#ShowChecklist').hide();
+	                   $('#ShowChecklistAll').hide();
+
+	               } 
+	            }
+
+	         
+	           
+
+	       });
+	    }
 
 		function reformatNumber(data, row, column, node) {
 			// replace spaces with nothing; replace commas with points.
@@ -376,7 +442,7 @@
 			}
 		}
 
-		table.buttons(0, null).containers().appendTo('#exportData');
+		table.buttons(0, null).containers().appendTo('#ShowExport');
 
 		function delay(callback, ms) {
 			var timer = 0;
@@ -414,12 +480,12 @@
 
 		$('.select-periode2').select2(
 			$.ajax({
-				url: BASE_URL + '/api/select-periode2',
+				url: BASE_URL + '/api/select-periode?type=GET&action=pagu',
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {
 					periode = '<option value="">- Pilih -</option>';
-					$.each(data, function(key, val) {
+					$.each(data.result, function(key, val) {
 						periode += '<option value="' + val.value + '" >' + val.text + '</option>';
 
 					});

@@ -188,7 +188,13 @@
                             response.data.forEach(function (item, index) {
                                 var row = "";
                                 row += `<li>`;
-                                row += `<a href="#">`;
+                                if(item.url !='')
+                                {
+                                  row += `<a href="${item.url}">`;  
+                                }else{
+                                  row += `<a >`;  
+                                }    
+                                
                                 row += `<div class="pull-left">`;
                                 row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
                                 row += `</div>`;

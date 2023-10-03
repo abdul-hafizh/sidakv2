@@ -2,7 +2,7 @@
 @section('content')
 
 <section class="content-header pd-left-right-15">
-    <div id="ShowSearch" style="display:none;" class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+    <div  class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
@@ -47,7 +47,7 @@
 				
 		</div> 
 
-		<div id="ShowPagination" style="display:none;" class="pull-right width-50">
+		<div  class="pull-right width-50">
 			<ul id="pagination" class="pagination-table pagination"></ul>
 		</div>
 	</div>
@@ -852,31 +852,9 @@
     }
 
      function listOptions(data){
-        const edited = data.find(o => o.action === 'edit');
-        const deleted = data.find(o => o.action === 'delete');
-        const detail = data.find(o => o.action === 'delete');
-         const checklist = data.find(o => o.action === 'checklist');
-
-         if(checklist.action =='checklist')
-           {
-               if(checklist.checked ==true)
-               {
-                   $('#ShowChecklist').show();
-                   $('#ShowChecklistAll').show();
-                   
-                  
-               }else{
-                   $('#ShowChecklist').hide();
-                   $('#ShowChecklistAll').hide();
-               }    
-           }
        
-        if(edited.checked == false && deleted.checked == false && detail.checked == false)
-        {
-            $('#ShowAction').hide();
-        }else{
-             $('#ShowAction').show();
-        }    
+
+           
        data.forEach(function(item, index) 
        {
            if(item.action =='add')
@@ -903,25 +881,9 @@
                }    
            }     
 
-            if(item.action =='search')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowSearch').show();
-               }else{
-                  $('#ShowSearch').hide();
-               }    
-           }   
+           
 
-            if(item.action =='perpage')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowPagination').show();
-               }else{
-                  $('#ShowPagination').hide();
-               }    
-           }   
+            
 
             if(item.action =='status')
            {
@@ -941,7 +903,29 @@
                }else{
                   $('#ShowCreated').hide();
                }    
-           }     
+           }   
+
+            if(item.action =='checklist')
+            {
+               if(item.checked ==true)
+               {
+                   $('#ShowChecklist').show();
+                   $('#ShowChecklistAll').show();
+               }else{
+                   $('#ShowChecklist').hide();
+                   $('#ShowChecklistAll').hide();
+               } 
+            }
+
+             if(item.action =='edit' && item.action =='delete')
+            {
+               if(item.checked ==false)
+               {
+                   $('#ShowAction').hide();
+               }else{
+                   $('#ShowAction').show();
+               }  
+            }  
   
 
            

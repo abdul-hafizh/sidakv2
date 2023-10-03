@@ -48,6 +48,7 @@
         let sidebar = localStorage.getItem('menu_sidebar');
         var action =  JSON.parse(sidebar);
         var data = [];
+        var menulast = '';
         getMenuSidebar(action);
         
        
@@ -175,13 +176,13 @@
 							 {  
 								 if(item.tasks[i].active ==true)
 								 {
-								 	row +=`<li class="li-sub `+ item.tasks[i].class +`"  data-param_sub="`+ item.tasks[i].slug +`">`;
+								 	row +=`<li class="li-sub `+ item.tasks[i].class +`"  data-param_id="${item.slug}" data-param_sub="`+ item.tasks[i].slug +`">`;
 								 }else{
-								 	row +=`<li class="li-sub `+ item.tasks[i].class +`"  data-param_sub="`+ item.tasks[i].slug +`">`;
+								 	row +=`<li class="li-sub `+ item.tasks[i].class +`" data-param_id="${item.slug}"  data-param_sub="`+ item.tasks[i].slug +`">`;
 								 } 
 							    
 							        
-							        row +=`<a >`;
+							        row +=`<a href="`+ item.tasks[i].url +`" >`;
 							            row +=`<i class="po-top-menu fa-icon `+ item.tasks[i].icon +`"></i>`; 
 							             row +=`<span class="title-menu" > `+ item.tasks[i].name +`</span>`;
 							        row +=`</a>`;
@@ -197,13 +198,13 @@
 
 		        });
 
-		           findlast = data.find(o => o.active === true);
-		           if(findlast)
-		           {
-                       $('.icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
-                       $('.'+findlast.slug).addClass('menu-open active');
+	           findlast = data.find(o => o.active === true);
+	           if(findlast)
+	           {
+                   $('.icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
+                   $('.'+findlast.slug).addClass('menu-open active');
 
-		           }	
+	            }	
 		         
                    
 
@@ -219,10 +220,12 @@
         //menu
         $( "#menu-sidebar" ).on( "click", "#class-menu", (e) => {
 		        let slug = e.currentTarget.dataset.param_id;
+		       
 		        
                 data = action;
                 //active sebelummnya
                 findlast = data.find(o => o.active === true && o.slug != slug);
+                
                 if(findlast)
                 {
                 	findlast.active = false;
@@ -264,7 +267,7 @@
 
                 }	
 
-                // localStorage.setItem('menu_sidebar', JSON.stringify(data));
+                localStorage.setItem('menu_sidebar', JSON.stringify(data));
     
                 getMenuSidebar(data);
                
@@ -337,9 +340,9 @@
 
 
      	 $(".treeview-menu").on( "click", ".li-sub", (e) => {
-
+                let menu = e.currentTarget.dataset.param_id;
                 let slug = e.currentTarget.dataset.param_sub; 
-                
+                menulast = menu;
                 findmenu = data.find(o => o.active === true);
                 findlasttaks = findmenu.tasks.find(o => o.active === true);
 
@@ -351,27 +354,17 @@
                   
                 } 	 
 
-
-
-             
+   
                 findtasks = findmenu.tasks.find(o => o.slug === slug);
                 findtasks.active = true;
                 findtasks.class = findtasks.slug + ' active'; 
 
-               	
-
-
-
-                   
-
-               
-               
                 
                 localStorage.setItem('menu_sidebar', JSON.stringify(data));
                 getMenuSidebar(data);
                 data = [];
             
-                 window.location.replace(findtasks.url);  
+              // window.location.replace(findtasks.url);  
 
           });
 

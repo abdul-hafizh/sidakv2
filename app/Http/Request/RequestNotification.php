@@ -41,7 +41,8 @@ class RequestNotification
              $temp[$key]['photo'] = RequestAuth::photoUser($val->sender);
            
           }   
-         $temp[$key]['name'] = ucwords(strtolower($val->type)); 
+         $temp[$key]['name'] = ucwords(strtolower($val->type));
+         $temp[$key]['url'] = $val->url; 
          $temp[$key]['messages'] = $messages;
          $temp[$key]['created_at'] = GeneralHelpers::timeAgo($val['created_at']);
     }
@@ -81,6 +82,7 @@ class RequestNotification
                
              }   
              $temp[$key]['name'] = ucwords(strtolower($val->type)); 
+               $temp[$key]['url'] = $val->url; 
             $temp[$key]['messages'] = $messages;
             $temp[$key]['created_at'] = GeneralHelpers::timeAgo($val['created_at']);
           } 
@@ -123,7 +125,7 @@ class RequestNotification
   
  
 
-   public static function fieldsData($type,$messages)
+   public static function fieldsData($type,$messages,$url)
    {
         $uuid = Str::uuid()->toString();
         $pusat = User::where(['username'=>'pusat'])->first();
@@ -140,6 +142,7 @@ class RequestNotification
                 'messages'  => $messages ,
                 'from'  =>  Auth::User()->username,
                 'sender'  =>  $sender,
+                'url' => $url,
                 'view_from'  =>  'false',
                 'view_sender'  =>  'false',
                 'created_by' => Auth::User()->username,
