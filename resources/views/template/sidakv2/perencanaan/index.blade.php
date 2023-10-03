@@ -52,7 +52,7 @@
             </select>
         </div>
         <div class="col-lg-3" style="margin-bottom: 9px;">
-            <select id="daerah_id" class="select-daerah selectpicker" name="daerah_id" title="Pilih Daerah" disabled>
+            <select id="daerah_id" class="select-daerah" name="daerah_id" title="Pilih Daerah" disabled>
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
