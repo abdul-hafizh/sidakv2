@@ -19,6 +19,7 @@ use App\Http\Controllers\OptionsController;
 use App\Http\Controllers\ActionController;
 use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\BimsosController;
+use App\Http\Controllers\PenyelesaianController;
 
 Route::get('/', function () {
     return redirect('login');
@@ -45,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/forum/{topic}', [ForumController::class, 'show']);
     Route::get('/notification', [NotificationController::class, 'index']);
     Route::get('/bimsos', [BimsosController::class, 'index']);
+    Route::get('/penyelesaian', [PenyelesaianController::class, 'index']);
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
