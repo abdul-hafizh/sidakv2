@@ -2,18 +2,17 @@
 
 namespace App\Http\Request;
 
-use Illuminate\Support\Facades\Validator;
+use DB;
 use Auth;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\Penyelesaian;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestSettingApps;
-use DB;
+use Illuminate\Support\Facades\Validator;
 
 class RequestPenyelesaian
 {
-
     public static function GetDataList($request)
     {
         $temp = array();
@@ -21,20 +20,21 @@ class RequestPenyelesaian
         $tahunSemester = GeneralHelpers::semesterToday();
         $getRequest = $request->all();
         $access = RequestAuth::Access();
-        $column_order   = array('', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id');
-        $column_search  = array('nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id');
-        $order = array('created_date' => 'DESC');
+        $column_order = ['', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
+        $column_search = ['nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
+        $order = ['created_date' => 'DESC'];
 
-        $data = DB::table('penyelesaian');
+        $data = DB::table('penyelesaian');       
 
-        if ($access == "daerah" || $access == "province") {
-            $data->where('daerah_id', Auth::User()->daerah_id);
+        if ($access == 'daerah' || $access == 'province') {
+            $data->where('daerah_id', Auth()->User()->daerah_id);
         }
 
-        if ($request->length > 0)
-            $data->offset($request->start)->limit($request->length);
+        if ($request->filled('length')) {
+            $data->offset($request->input('start'))->limit($request->input('length'));
+        }
 
-        $searchColumn = $request->columns;
+        $searchColumn = $request->input('columns');
         if (!empty($searchColumn[0]['search']['value'])) {
             $value = $searchColumn[0]['search']['value'];
             $filterjs = json_decode($value);
@@ -49,18 +49,13 @@ class RequestPenyelesaian
             }
         } else {
             $data->where('periode_id', $tahunSemester);
-        }
+        }        
 
-        $i = 0;
-        $search = $request->search['value'];
-        if ($request->search['value']) {
-            $data->where(function ($query) use ($search, $column_search, $i) {
+        $searchValue = $request->input('search.value');
+        if ($searchValue) {
+            $data->where(function ($query) use ($searchValue, $column_search) {
                 foreach ($column_search as $item) {
-                    if ($i == 0)
-                        $query->where($item, 'LIKE', '%' . $search . '%');
-                    else
-                        $query->orWhere($item, 'LIKE', '%' . $search . '%');
-                    $i++;
+                    $query->orWhere($item, 'LIKE', '%' . $searchValue . '%');
                 }
             });
         }
@@ -70,7 +65,7 @@ class RequestPenyelesaian
         } else if (isset($order)) {
             $order = $order;
             $data->orderBy(key($order), $order[key($order)]);
-        }
+        }        
 
         $numberNext = 1;
         $result = $data->get();
@@ -85,11 +80,11 @@ class RequestPenyelesaian
             $row    = array();
             $row[]  = $val->id;
             $row[]  = $val->nama_kegiatan;
-            $row[]  = RequestBimsos::getLabelSubMenu($val->sub_menu_slug);
+            $row[]  = $val->sub_menu;
             $row[]  = GeneralHelpers::formatDate($val->tgl_kegiatan);
             $row[]  = $val->lokasi;
             $row[]  = GeneralHelpers::formatRupiah($val->biaya);
-            $row[]  = RequestBimsos::getLabelStatus($val->status_laporan_id, $val->request_edit);
+            $row[]  = RequestPenyelesaian::getLabelStatus($val->status_laporan_id, $val->request_edit);
             $row[]  = $edit_url . " " . $delete_url;
 
             $temp[] = $row;
@@ -112,7 +107,7 @@ class RequestPenyelesaian
         $column_search  = array('nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id');
         $order = array('nama_kegiatan' => 'ASC');
 
-        $data = DB::table('bimsos');
+        $data = DB::table('penyelesaian');
 
         if ($access == "daerah" || $access == "province") {
             $data->where('daerah_id', Auth::User()->daerah_id);
@@ -189,7 +184,7 @@ class RequestPenyelesaian
     {
         $temp = array();
         $year = substr((string)$request->periode_id_mdl, 0, 4);
-        $periode = Bimsos::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14])->where('periode_id', 'LIKE', $year . '%');
+        $periode = Penyelesaian::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14])->where('periode_id', 'LIKE', $year . '%');
 
         $temp['biaya'] = $request->biaya + $periode->sum('biaya');
         $temp['jml_perusahaan'] = $request->jml_perusahaan + $periode->sum('jml_perusahaan');
@@ -255,17 +250,6 @@ class RequestPenyelesaian
         return $fields;
     }
 
-    public static function getLabelSubMenu($status)
-    {
-        if ($status == 'is_tenaga_pendamping')
-            return  'Tenaga Pendamping';
-        elseif ($status == 'is_bimtek_ipbbr')
-            return  'Bimtek Implementasi Perizinan Berusaha Berbasis Resiko';
-        elseif ($status == 'is_bimtek_ippbbr')
-            return  'Bimtek Implementasi Pengawasan Perizinan Berusaha Berbasis Resiko';
-        return "Label tidak ditemukan";
-    }
-
     public static function getLabelStatus($status, $requestEdit)
     {
         if ($status === 13) {
@@ -273,17 +257,23 @@ class RequestPenyelesaian
                 return "Draft";
             } elseif ($requestEdit === "true") {
                 return "Draft (Edit)";
+            } elseif ($requestEdit === "revisi") {
+                return "Draft (Revision)";
+            } elseif ($requestEdit === "reject" || $requestEdit === "reject_doc") {
+                return "Draft (Unapprove)";
             }
         } elseif ($status === 14) {
             if ($requestEdit === "false") {
-                return "Terkirim";
+                return "Terkirim (Waiting Approval)";
             }
         } elseif ($status === 15) {
             if ($requestEdit === "false") {
-                return "Request Revision";
+                return "Terkirim (Waiting Approval)";
             } elseif ($requestEdit === "true") {
                 return "Request Edit";
             }
+        } elseif ($status === 16 && $requestEdit === "false") {
+            return "Approved";
         }
         return "Label tidak ditemukan";
     }

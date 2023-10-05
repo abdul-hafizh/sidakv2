@@ -51,7 +51,7 @@
     font-weight: bold;
   }
 </style>
-<!-- Modal loading -->
+
 <div id="progressModal" class="modal-loading" style="display: none;">
   <div class="modal-content2">
     <span class="close" id="closeProgressModal">&times;</span>
@@ -65,12 +65,8 @@
   </div>
 </div>
 
-
-<!-- Modal -->
 <div id="modal-add" class="modal fade in" role="dialog">
   <div class="modal-dialog">
-
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header bg-primary">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -90,10 +86,10 @@
             <div id="sub_menu_slug-alert" class="form-group has-feedback col-md-12">
               <label>Jenis </label>
               <select class="form-control select-jenis" name="sub_menu_slug" id="sub_menu_slug">
-                <option value="">-Pilih Tipe-</option>
-                <option value="is_tenaga_pendamping">Tenaga Pendamping</option>
-                <option value="is_bimtek_ipbbr">Bimtek Implementasi Perizinan Berusaha Berbasis Resiko</option>
-                <option value="is_bimtek_ippbbr">Bimtek Implementasi Pengawasan Perizinan Berusaha Berbasis Resiko</option>
+                <option value="">Pilih Tipe</option>
+                <option value="identifikasi">Identifikasi Penyelesaian</option>
+                <option value="penyelesaian">Penyelesaian Masalah</option>
+                <option value="evaluasi">Evaluasi Penyelesaian</option>
               </select>
               <span id="sub_menu_slug-messages"></span>
             </div>
@@ -101,144 +97,60 @@
           <div class="row">
             <div id="nama_kegiatan-alert" class="form-group has-feedback col-md-12">
               <label>Nama Kegiatan </label>
-              <input type="text" class="form-control" name="nama_kegiatan" id="nama_kegiatan" placeholder="nama kegiatan" value="">
+              <input type="text" class="form-control" name="nama_kegiatan" id="nama_kegiatan" placeholder="Nama kegiatan" value="">
               <span id="nama_kegiatan-messages"></span>
             </div>
           </div>
           <div class="row">
-            <div id="tgl_bimtek-alert" class="form-group has-feedback col-md-12">
+            <div id="tgl_kegiatan-alert" class="form-group has-feedback col-md-12">
               <label>Tanggal Kegiatan </label>
-              <input type="date" class="form-control" name="tgl_bimtek" id="tgl_bimtek" placeholder="Tanggal Kegiatan" value="">
-              <span id="tgl_bimtek-messages"></span>
+              <input type="date" class="form-control" name="tgl_kegiatan" id="tgl_kegiatan" placeholder="Tanggal Kegiatan" value="">
+              <span id="tgl_kegiatan-messages"></span>
             </div>
-          </div>
-          <div class="row">
-            <div id="lokasi_bimtek-alert" class="form-group has-feedback col-md-12">
-              <label>Lokasi </label>
-              <input type="text" class="form-control" name="lokasi_bimtek" id="lokasi_bimtek" placeholder="Lokasi" value="">
-              <span id="lokasi_bimtek-messages"></span>
-            </div>
-          </div>
+          </div>          
           <div class="row">
             <div id="biaya_kegiatan-alert" class="form-group has-feedback col-md-12">
-              <label>Biaya </label>
-              <input type="number" class="form-control" name="biaya_kegiatan" id="biaya_kegiatan" placeholder="Biaya " value="">
+              <label>Biaya Kegiatan</label>
+              <input type="number" class="form-control" name="biaya_kegiatan" id="biaya_kegiatan" placeholder="Biaya Kegiatan" value="">
               <span id="biaya_kegiatan-messages"></span>
             </div>
           </div>
           <div class="row">
-            <div id="jml_peserta-alert" class="form-group has-feedback col-md-12" style="display: none">
-              <label>Jumlah Peserta </label>
-              <input type="number" class="form-control" name="jml_peserta" id="jml_peserta" placeholder="Jumlah peserta " value="">
-              <span id="jml_peserta-messages"></span>
+            <div id="jml_perusahaan-alert" class="form-group has-feedback col-md-12">
+              <label>Jumlah Perusahaan </label>
+              <input type="number" class="form-control" name="jml_perusahaan" id="jml_perusahaan" placeholder="Jumlah Perusahaan " value="">
+              <span id="jml_perusahaan-messages"></span>
             </div>
           </div>
           <div class="row">
-            <div id="ringkasan_kegiatan-alert" class="form-group has-feedback col-md-12">
-              <label>Ringkasan kegiatan </label>
-              <textarea id="ringkasan_kegiatan" name="ringkasan_kegiatan" rows="4" class="form-control"></textarea>
-              <span id="ringkasan_kegiatan-messages"></span>
+            <div id="lokasi-alert" class="form-group has-feedback col-md-12">
+              <label>Lokasi </label>
+              <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi" value="">
+              <span id="lokasi-messages"></span>
             </div>
           </div>
-          <div class="row">
-            <div id="lap_hadir-alert" class="form-group has-feedback">
-              <div class="col-md-3 col-5">
-                <label>Daftar hadir </label>
-              </div>
-              <div class="col-md-9 col-7">
-                <input type="file" name="lap_hadir" id="lap_hadir" accept=".pdf">
-                <span id="lap_hadir-messages"></span>
-              </div>
-              <small class="text-muted">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+          <div class="row">            
+            <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
+                <label>Profile Pelaku Usaha </label>
+                <input type="file" class="form-control" name="lap_profile" id="AddFilesProfile" accept=".pdf">
+                <div id="ShowPdfProfile" style="margin-top:8px"></div>
+                <span id="file-pdf-alert-messages"></span>
             </div>
           </div>
-          <div class="row">
-            <div id="lap_pendamping-alert" class="form-group has-feedback">
-              <div class="col-md-3 col-5">
-                <label>Laporan Tenaga Pendamping </label>
-              </div>
-              <div class="col-md-9 col-7">
-                <input type="file" name="lap_pendamping" accept=".pdf">
-                <span id="lap_pendamping-messages"></span>
-              </div>
-              <small class="text-muted">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_notula-alert" class="form-group has-feedback" style="display: none">
-              <div class="col-md-3 col-5">
-                <label>Notula Kegiatan </label>
-              </div>
-              <div class="col-md-9 col-7">
-                <input type="file" name="lap_notula" accept=".pdf">
-                <span id="lap_notula-messages"></span>
-              </div>
-              <small class="text-muted">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_survey-alert" class="form-group has-feedback" style="display: none">
-              <div class="col-md-3 col-5">
-                <label>Hasil Survey </label>
-              </div>
-              <div class="col-md-9 col-7">
-                <input type="file" name="lap_survey" accept=".pdf">
-                <span id="lap_survey-messages"></span>
-              </div>
-              <small class="text-muted">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_narasumber-alert" class="form-group has-feedback" style="display: none">
-              <div class="col-md-3 col-5">
-                <label>Daftar Narasumber </label>
-              </div>
-              <div class="col-md-9 col-7">
-                <input type="file" name="lap_narasumber" accept=".pdf">
-                <span id="lap_narasumber-messages"></span>
-              </div>
-              <small class="text-muted">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_materi-alert" class="form-group has-feedback" style="display: none">
-              <div class="col-md-3 col-5">
-                <label>Materi </label>
-              </div>
-              <div class="col-md-9 col-7">
-                <input type="file" name="lap_materi" accept=".pdf">
-                <span id="lap_materi-messages"></span>
-              </div>
-              <small class="text-muted">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_document-alert" class="form-group has-feedback" style="display: none">
-              <div class="col-md-3 col-5">
-                <label>Laporan Dokumentasi </label>
-              </div>
-              <div class="col-md-9 col-7">
-                <input type="file" name="lap_document" accept=".pdf">
-                <span id="lap_document-messages"></span>
-              </div>
-              <small class="text-muted">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
-            </div>
-          </div>
-
         </div>
+
         <div class="modal-footer">
-          <button class="btn btn-default" data-dismiss="modal">Close</button>
+          <button class="btn btn-default" data-dismiss="modal">Tutup</button>
           <button id="simpan" type="button" class="btn btn-primary" style="display: none;">Simpan</button>
           <button id="update" type="button" class="btn btn-info" style="display: none;">Ubah</button>
           <button id="kirim" type="button" class="btn btn-warning" style="display: none;">Kirim</button>
           <button id="approve_edit" type="button" class="btn btn-warning" style="display: none;">Approve Edit</button>
           <button id="request_edit" type="button" class="btn btn-warning" data-toggle="modal" style="display: none;" data-target="#modal-req-edit">Mengajukan Edit</button>
           <button id="request_revision" type="button" class="btn btn-warning" data-toggle="modal" style="display: none;" data-target="#modal-req-revision">Mengajukan Revisi</button>
-
         </div>
+
       </form>
     </div>
-
   </div>
 </div>
 
@@ -263,7 +175,6 @@
   </div>
 </div>
 
-
 <div id="modal-req-revision" class="modal fade in" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -285,15 +196,13 @@
   </div>
 </div>
 
-
-
 <script type="text/javascript">
   $(function() {
 
     $('#sub_menu_slug').on('change', function() {
       let sub_menu_slug = $('#sub_menu_slug').val();
       if (sub_menu_slug == 'is_tenaga_pendamping') {
-        $('#jml_peserta-alert').hide();
+        $('#jml_perusahaan-alert').hide();
         $('#lap_notula-alert').hide();
         $('#lap_survei-alert').hide();
         $('#lap_narasumber-alert').hide();
@@ -301,7 +210,7 @@
         $('#lap_document-alert').hide();
         $('#lap_pendamping-alert').show();
       } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
-        $('#jml_peserta-alert').show();
+        $('#jml_perusahaan-alert').show();
         $('#lap_notula-alert').show();
         $('#lap_survei-alert').show();
         $('#lap_narasumber-alert').show();
@@ -309,7 +218,7 @@
         $('#lap_document-alert').show();
         $('#lap_pendamping-alert').hide();
       } else {
-        $('#jml_peserta-alert').show();
+        $('#jml_perusahaan-alert').show();
         $('#lap_notula-alert').show();
         $('#lap_survei-alert').show();
         $('#lap_narasumber-alert').show();
@@ -333,10 +242,10 @@
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
+        'tgl_kegiatan',
+        'lokasi',
         'biaya_kegiatan',
-        'jml_peserta',
+        'jml_perusahaan',
         'ringkasan_kegiatan'
       ];
       for (let i = 0; i < form.length; i++) {
@@ -353,17 +262,17 @@
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
+        'tgl_kegiatan',
+        'lokasi',
         'biaya_kegiatan',
-        'jml_peserta',
+        'jml_perusahaan',
         'ringkasan_kegiatan'
       ];
       formData.append("status", 13);
       $('#progressModal').show();
       $.ajax({
         type: "POST",
-        url: BASE_URL + '/api/bimsos',
+        url: BASE_URL + '/api/penyelesaian',
         data: formData,
         processData: false,
         contentType: false,
@@ -391,7 +300,7 @@
           }).then((result) => {
             if (result.isConfirmed) {
               // User clicked "Yes, proceed!" button
-              window.location.replace('/bimsos');
+              window.location.replace('/penyelesaian');
             }
           });
 
@@ -417,16 +326,15 @@
 
     $("#datatable").on("click", ".modalUbah", function() {
       $('#judulModalLabel').html('Form Ubah');
-      //  $('.modal-footer button[type=button]').html('Ubah Data');
       $('#simpan').hide();
       var form = [
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
+        'tgl_kegiatan',
+        'lokasi',
         'biaya_kegiatan',
-        'jml_peserta',
+        'jml_perusahaan',
         'ringkasan_kegiatan'
       ];
       for (let i = 0; i < form.length; i++) {
@@ -438,15 +346,15 @@
 
       const id = $(this).data('param_id');
       $.ajax({
-        url: BASE_URL + '/api/bimsos/edit/' + id,
+        url: BASE_URL + '/api/penyelesaian/edit/' + id,
         method: 'GET',
         success: function(data) {
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
-          $('#tgl_bimtek').val(data.tgl_bimtek);
-          $('#lokasi_bimtek').val(data.lokasi_bimtek);
+          $('#tgl_kegiatan').val(data.tgl_kegiatan);
+          $('#lokasi').val(data.lokasi);
           $('#biaya_kegiatan').val(data.biaya_kegiatan);
-          $('#jml_peserta').val(data.jml_peserta);
+          $('#jml_perusahaan').val(data.jml_perusahaan);
           $('#ringkasan_kegiatan').val(data.ringkasan_kegiatan);
           $('#is_skpd_sesuai').val(data.is_skpd_sesuai);
           getPeriode(data.periode_id);
@@ -512,7 +420,7 @@
 
       function subMenu(sub_menu_slug) {
         if (sub_menu_slug == 'is_tenaga_pendamping') {
-          $('#jml_peserta-alert').hide();
+          $('#jml_perusahaan-alert').hide();
           $('#lap_notula-alert').hide();
           $('#lap_survei-alert').hide();
           $('#lap_narasumber-alert').hide();
@@ -520,7 +428,7 @@
           $('#lap_document-alert').hide();
           $('#lap_pendamping-alert').show();
         } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
-          $('#jml_peserta-alert').show();
+          $('#jml_perusahaan-alert').show();
           $('#lap_notula-alert').show();
           $('#lap_survei-alert').show();
           $('#lap_narasumber-alert').show();
@@ -528,7 +436,7 @@
           $('#lap_document-alert').show();
           $('#lap_pendamping-alert').hide();
         } else {
-          $('#jml_peserta-alert').show();
+          $('#jml_perusahaan-alert').show();
           $('#lap_notula-alert').show();
           $('#lap_survei-alert').show();
           $('#lap_narasumber-alert').show();
@@ -544,7 +452,7 @@
           method: 'get',
           dataType: 'json',
           success: function(data) {
-            periode = '<option value="">- Pilih -</option>';
+            periode = '<option value="">Pilih Periode</option>';
             $.each(data.periode, function(key, val) {
               var select = '';
               if (val.value == periode_id)
@@ -563,10 +471,10 @@
           'periode_id_mdl',
           'sub_menu_slug',
           'nama_kegiatan',
-          'tgl_bimtek',
-          'lokasi_bimtek',
+          'tgl_kegiatan',
+          'lokasi',
           'biaya_kegiatan',
-          'jml_peserta',
+          'jml_perusahaan',
           'ringkasan_kegiatan'
         ];
         data.push({
@@ -575,7 +483,7 @@
         });
         $.ajax({
           type: "PUT",
-          url: BASE_URL + '/api/bimsos/' + id,
+          url: BASE_URL + '/api/penyelesaian/' + id,
           data: data,
           cache: false,
           dataType: "json",
@@ -588,8 +496,7 @@
 
             }).then((result) => {
               if (result.isConfirmed) {
-                // User clicked "Yes, proceed!" button
-                window.location.replace('/bimsos');
+                window.location.replace('/penyelesaian');
               }
             });
 
@@ -617,10 +524,10 @@
           'periode_id_mdl',
           'sub_menu_slug',
           'nama_kegiatan',
-          'tgl_bimtek',
-          'lokasi_bimtek',
+          'tgl_kegiatan',
+          'lokasi',
           'biaya_kegiatan',
-          'jml_peserta',
+          'jml_perusahaan',
           'ringkasan_kegiatan'
         ];
         data.push({
@@ -629,7 +536,7 @@
         });
         $.ajax({
           type: "PUT",
-          url: BASE_URL + '/api/bimsos/' + id,
+          url: BASE_URL + '/api/penyelesaian/' + id,
           data: data,
           cache: false,
           dataType: "json",
@@ -642,8 +549,7 @@
 
             }).then((result) => {
               if (result.isConfirmed) {
-                // User clicked "Yes, proceed!" button
-                window.location.replace('/bimsos');
+                window.location.replace('/penyelesaian');
               }
             });
 
@@ -672,7 +578,7 @@
         };
         $.ajax({
           type: "PUT",
-          url: BASE_URL + '/api/bimsos/approve_edit/' + id,
+          url: BASE_URL + '/api/penyelesaian/approve_edit/' + id,
           data: data,
           cache: false,
           dataType: "json",
@@ -685,8 +591,7 @@
 
             }).then((result) => {
               if (result.isConfirmed) {
-                // User clicked "Yes, proceed!" button
-                window.location.replace('/bimsos');
+                window.location.replace('/penyelesaian');
               }
             });
 
@@ -697,7 +602,7 @@
 
       $("#modal_edit").click(() => {
         Swal.fire({
-          title: 'Apakah Anda Yakin Mengedit Bimsos Ini?',
+          title: 'Apakah Anda Yakin Mengubah Data Ini?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#d33',
@@ -722,10 +627,9 @@
       });
 
       function req_edit(form) {
-
         $.ajax({
           type: "PUT",
-          url: BASE_URL + '/api/bimsos/request_edit/' + id,
+          url: BASE_URL + '/api/penyelesaian/request_edit/' + id,
           data: form,
           cache: false,
           dataType: "json",
@@ -737,7 +641,7 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/bimsos');
+                window.location.replace('/penyelesaian');
               }
             });
           },
@@ -746,7 +650,7 @@
 
       $("#modal_revisi").click(() => {
         Swal.fire({
-          title: 'Apakah Anda Yakin Revisi Bimsos Ini?',
+          title: 'Apakah Anda Yakin Revisi Data Ini?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#d33',
@@ -771,28 +675,82 @@
       });
 
       function req_revisi(form) {
-
         $.ajax({
           type: "PUT",
-          url: BASE_URL + '/api/bimsos/request_revisi/' + id,
+          url: BASE_URL + '/api/penyelesaian/request_revisi/' + id,
           data: form,
           cache: false,
           dataType: "json",
           success: (respons) => {
             Swal.fire({
               title: 'Sukses!',
-              text: 'Berhasil mengajukan edit.',
+              text: 'Berhasil mengajukan revisi.',
               icon: 'success',
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/bimsos');
+                window.location.replace('/penyelesaian');
               }
             });
           },
         });
       }
 
+    });
+
+    $("#AddFilesProfile").change((event)=> {     
+            
+        const files = event.target.files
+        let filename = files[0].name
+        const fileReader = new FileReader()
+        fileReader.addEventListener('load', () => {
+              if(files[0].name.toUpperCase().includes(".PDF"))
+              {
+                  file_pdf = fileReader.result;
+                  
+                  var ros = '';
+                        ros +=`<a href="#" id="GetModalPdfProfile" data-param_id="`+file_pdf+`" data-toggle="modal" data-target="#modal-show" data-toggle="tooltip" data-placement="top" title="Lihat Data PDF">Lihat File Profile</a>`;
+                        ros +=`<div id="modal-show" class="modal fade" role="dialog">`;
+                            ros +=`<div id="ViewProfilePDF"></div>`;
+                        ros +=`</div>`;
+
+                  $('#ShowPdfProfile').html(ros);
+              } else {
+                  Swal.fire({
+                        icon: 'info',
+                        title: 'Hanya File PDF Yang Diizinkan.',
+                        confirmButtonColor: '#000',
+                        confirmButtonText: 'OK'
+                  });  
+              }
+        })
+
+        fileReader.readAsDataURL(files[0])
+
+    });
+
+    $( "#ShowPdfProfile" ).on( "click", "#GetModalPdfProfile", (e) => {
+        let file = e.currentTarget.dataset.param_id;      
+        let row = ``;
+          row +=`<div class="modal-dialog">`;
+              row +=`<div class="modal-content">`;
+                  row +=`<div class="modal-header">`;
+                        row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row +=`<h4 class="modal-title">Lihat Dokumen Perencanaan</h4>`;
+                  row +=`</div>`;               
+                  row +=`<div class="modal-body">`; 
+                  if(file)
+                  {  
+                        row +=`<embed src="`+file+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row +=`</div>`;               
+                  row +=`<div class="modal-footer">`;
+                        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row +=`</div>`;                         
+              row +=`</div>`;
+        row +=`</div>`; 
+
+        $('#ViewProfilePDF').html(row);   
 
     });
 
