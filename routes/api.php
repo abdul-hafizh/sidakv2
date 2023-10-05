@@ -35,6 +35,7 @@ use App\Http\Controllers\API\NotificationApiController;
 use App\Http\Controllers\API\ActionApiController;
 use App\Http\Controllers\API\KriteriaApiController;
 use App\Http\Controllers\API\BimsosApiController;
+use App\Http\Controllers\API\PenyelesaianApiController;
 
 Route::middleware(['jwt.auth'])->group(function () {
 

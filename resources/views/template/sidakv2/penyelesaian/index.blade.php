@@ -66,15 +66,17 @@
 <section class="content-header pd-left-right-15">
 	<div class="form-group row">
 		<div class="col-sm-3">
-			<label>Jenis </label>
-			<select class="form-control" name="jenis_sub" id="jenis_sub">
-				<option value="">-Pilih Tipe-</option>
-				<!-- <option value="is_tenaga_pendamping">Tenaga Pendamping</option> -->
-			</select>
+			<label>Periode </label>
+			<select id="periode_id" class="select-periode form-control" name="periode_id"></select>
 		</div>
 		<div class="col-sm-3">
-			<label>Periode </label>
-			<select id="periode_id" class="select-periode2 form-control" name="periode_id"></select>
+			<label>Jenis </label>
+			<select class="form-control" name="jenis_sub" id="jenis_sub">
+				<option value="">Pilih Jenis</option>
+				<option value="identifikasi">Identifikasi Penyelesaian</option>
+				<option value="penyelesaian">Penyelesaian Masalah</option>
+				<option value="evaluasi">Evaluasi Penyelesaian</option>
+			</select>
 		</div>
 		<div class="col-sm-3">
 			<label>Search</label>
@@ -252,13 +254,13 @@
 			};
 		}
 
-		$('.select-periode2').select2(
+		$('.select-periode').select2(
 			$.ajax({
 				url: BASE_URL + '/api/select-periode-semester',
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {
-					periode = '<option value="">- Pilih -</option>';
+					periode = '<option value="">Pilih Periode</option>';
 					$.each(data.periode, function(key, val) {
 						var select = '';
 						if (data.tahunSemester == val.value)
@@ -277,7 +279,7 @@
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {
-					periode = '<option value="">- Pilih -</option>';
+					periode = '<option value="">Pilih Periode</option>';
 					$.each(data.periode, function(key, val) {
 						var select = '';
 						if (data.tahunSemester == val.value)

@@ -14,6 +14,7 @@ use App\Http\Request\RequestAuditLog;
 use App\Http\Request\RequestPerencanaan;
 use App\Http\Request\RequestNotification;
 use App\Helpers\GeneralPaginate;
+use App\Helpers\GeneralHelpers;
 use App\Models\Perencanaan;
 use App\Models\Notification;
 use App\Models\AuditLog;
@@ -30,11 +31,15 @@ class PerencanaanApiController extends Controller
     public function index(Request $request)
     {                
         $access = RequestAuth::Access(); 
+        $tahunSemester = GeneralHelpers::semesterToday();
+
         if($access == 'daerah' ||  $access == 'province') { 
              $query = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('created_at', 'DESC');
         } else {
              $query = Perencanaan::orderBy('created_at', 'DESC');
         }
+
+        $query->where('periode_id', $tahunSemester);
 
         if($request->per_page !='all')
         {
@@ -63,7 +68,6 @@ class PerencanaanApiController extends Controller
         $data = $query->get();
 
         $result = RequestPerencanaan::GetDataAllExport($data, $request);
-
         return response()->json($result);
     }
 
