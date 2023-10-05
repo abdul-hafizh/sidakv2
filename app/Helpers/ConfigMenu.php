@@ -8,8 +8,7 @@ use App\Http\Request\RequestMenuRoles;
 class ConfigMenu
 {
 
-    public static function MenuSidebarAdmin()
-    {
+    public static function MenuSidebarAdmin(){
         
         $data = array(
         [
@@ -186,7 +185,7 @@ class ConfigMenu
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
-                'url'=>'/',
+                'url'=>'/penyelesaian',
                 'active'=>false,
                 'class'=>'penyelesaian-masalah',
                 'tasks'=>[],
@@ -300,7 +299,7 @@ class ConfigMenu
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
-                'url'=>'/',
+                'url'=>'/penyelesaian',
                 'active'=>false,
                 'class'=>'penyelesaian-masalah',
                 'tasks'=>[],
@@ -333,8 +332,8 @@ class ConfigMenu
 
            ), // Pelaporan
             
-        ],
-        [
+            ],
+            [
             
             'name'=>'Audit Log',
             'slug'=>'auditlog',
@@ -345,18 +344,13 @@ class ConfigMenu
             'class'=>'auditlog treeview',
             'tasks'=>[], 
 
-        ], // auditlog
-
-
-    );
+        ]); // auditlog
     
-     return json_decode(json_encode($data),true);
+        return json_decode(json_encode($data),true);
 
-   }  
+    }  
+
     public static function MenuSidebarPusat(){
-        
-
-       
         $data = array(
         [
             
@@ -427,7 +421,7 @@ class ConfigMenu
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
-                'url'=>'/',
+                'url'=>'/penyelesaian',
                 'active'=>false,
                 'class'=>'penyelesaian-masalah',
                 'tasks'=>[],
@@ -542,7 +536,7 @@ class ConfigMenu
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
-                'url'=>'/',
+                'url'=>'/penyelesaian',
                 'active'=>false,
                 'class'=>'penyelesaian-masalah',
                 'tasks'=>[],
@@ -573,22 +567,15 @@ class ConfigMenu
                 'tasks'=>[],
             ]
 
-           ), // Pelaporan
-            
-        ],
-        
+            ), // Pelaporan
+                
+        ]);
 
+        return json_decode(json_encode($data),true);
 
-    );
+    }
 
-    return json_decode(json_encode($data),true);
-
-   }
-
-   public static function MenuSidebarProvinsi(){
-        
-
-       
+    public static function MenuSidebarProvinsi(){
         $data = array(
         [
             
@@ -641,7 +628,7 @@ class ConfigMenu
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
-                'url'=>'/',
+                'url'=>'/penyelesaian',
                 'active'=>false,
                 'class'=>'penyelesaian-masalah',
                 'tasks'=>[],
@@ -754,7 +741,7 @@ class ConfigMenu
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
-                'url'=>'/',
+                'url'=>'/penyelesaian',
                 'active'=>false,
                 'class'=>'penyelesaian-masalah', 
                 'tasks'=>[],
@@ -785,23 +772,17 @@ class ConfigMenu
                 'tasks'=>[],
             ]
 
-           ), // Pelaporan
-            
-        ],
-        
+            ), // Pelaporan
+                
+        ]);
 
-    );
+        return json_decode(json_encode($data),true);
 
-    return json_decode(json_encode($data),true);
+    }
 
-   }
-
-   public static function MenuSidebarKabupaten(){
-        
-
-       
+    public static function MenuSidebarKabupaten(){
         $data = array(
-       [
+        [
             
             'name'=>'Dashboard',
             'slug'=>'dashboard',
@@ -851,7 +832,7 @@ class ConfigMenu
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
-                'url'=>'/',
+                'url'=>'/penyelesaian',
                 'active'=>false,
                 'class'=>'penyelesaian-masalah', 
                 'tasks'=>[],
@@ -943,16 +924,16 @@ class ConfigMenu
                 'active'=>false,  
                 'class'=>'bimsos',  
                 'tasks'=>[],
-             ],[
+                ],[
                 'name'=>'Penyelesaian Masalah',
                 'slug'=>'penyelesaian-masalah',
                 'icon'=>'icon-penyelesaian',
-                'url'=>'/',
+                'url'=>'/penyelesaian',
                 'active'=>false,
                 'class'=>'penyelesaian-masalah',  
                 'tasks'=>[],
-            ]
-            ,[
+                ]
+                ,[
                 'name'=>'Kendala',
                 'slug'=>'kendala',
                 'icon'=>'icon-kriteria-kendala',
@@ -960,23 +941,13 @@ class ConfigMenu
                 'active'=>false,
                 'class'=>'kendala',  
                 'tasks'=>[],
-            ]
+                ]
 
-           ), // Pelaporan
-            
-        ],
-        
+            ), // Pelaporan
+                
+        ]);
 
+        return json_decode(json_encode($data),true);
 
-    );
-
-    return json_decode(json_encode($data),true);
-
-   }
-
-
-    
-
-   
-
+    }
 }
