@@ -101,7 +101,7 @@ class RequestMenus
 
    public static function ActionList(){
       $temp = array();
-      $query = Action::Select('id','name','slug')->orderBy('created_at', 'DESC')->get();
+      $query = Action::Select('id','name','slug')->orderBy('created_at', 'ASC')->get();
       foreach($query as $key =>$val)
       {
          $temp[$key]['action'] = $val->slug;

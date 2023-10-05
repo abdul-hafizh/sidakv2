@@ -30,7 +30,7 @@
 
 			</div>
 
-			<div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button">
+			<div  class="pull-left padding-9-0 margin-left-button">
 				<button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
 					 Export
 				</button>
@@ -70,7 +70,7 @@
 							<th><div class="split-table"></div><span class="span-title"> Tanggal Mulai </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Tanggal Berahir </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Status </span></th>
-							<th id="ShowAction" style="display:none;"><div class="split-table"></div><span class="span-title"> Aksi </span></th> 
+							<th ><div class="split-table"></div><span class="span-title"> Aksi </span></th> 
 							
 						</tr>
 					</thead>
@@ -300,9 +300,7 @@
     // Function to update the content area with data
     function updateContent(data,options) {
         const content = $('#content');
-        const edited = options.find(o => o.action === 'edit');
-        const deleted = options.find(o => o.action === 'delete');
-        const checklist = options.find(o => o.action === 'checklist'); 	
+        
    
         // Clear previous data
         content.empty();
@@ -312,19 +310,18 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-             if(item.deleted == true)
-             { 
-             	if(checklist.checked == true)
-                {
-             	 row +=`<td><input  class="item-checkbox"  data-id="${item.id}"  type="checkbox"></td></td>`;
-             	} 
-             }else{
-               if(checklist.checked == true)
-               {	
-             	 row +=`<td><input  disabled    type="checkbox"></td></td>`;
-               }	 
-             } 	
-              
+             
+               options.forEach(function(opt, arr) 
+              {
+                 if(opt.action == 'delete')
+                 {
+                    if(opt.checked == true)
+                    {
+                        row +=ChecklistTable(item);
+                    }
+                 }       
+              }); 
+
                row +=`<td>${item.number}</td>`;
                row +=`<td>${item.name}</td>`;
               
@@ -334,31 +331,40 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-              if(edited.checked == true)
-              {
-                row +=`<button  id="Edit"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
-
-               
-                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                row +=`<div id="FormEdit-${item.id}"></div>`;
-                row +=`</div>`;
-
-            }    
+                  row +=`<button id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
 
 
-                if(item.deleted == true)
-                {   
-                  if(deleted.checked == true) 
+                   options.forEach(function(opt, arr) 
                   {
-                	row +=`<button  id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-                  }
-	            }else{
+                        if(opt.action == 'update')
+                        {
+                           if(opt.checked == true)
+                           { 
+                                row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                              
+                            }    
 
-	              if(deleted.checked == true) 
-                  { 	
-                     row +=`<button disabled  data-placement="top"  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-                  } 
-	            }
+                        } 
+
+                        if(opt.action == 'delete')
+                        {
+                           if(opt.checked == true)
+                           {
+                             
+                            row += BtnTableDelete(item);
+
+                           } 
+                        }   
+
+
+                  });
+
+                  row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+                     row +=`<div id="FormEdit-${item.id}"></div>`;
+                  row +=`</div>`;
+
+
+              
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -388,10 +394,124 @@
    		});
 
 
+   		$( "#content" ).on( "click", "#Detail", (e) => {
+             
+            let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id == id); 
+           
+            
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+				       row +=`<div class="modal-header">`;
+				         row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Detail Periode</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body">`;
+                               
+                                 
+				                 
+
+				                  row +=`<div id="semester-alert-`+ item.id +`" class="form-group has-feedback" >`;
+					              row +=`<label>Semester</label>`;
+					              row +=`<select  id="semester-`+ item.id +`" class="selectpicker form-control" name="semester">`;
+					                  row +=`<option value="">Pilih Semester</option>`;
+                                      row +=`<option value="01" >Semester 01</option>`;
+                                      row +=`<option value="02">Semester 02</option>`;
+					                     
+					              row +=`</select>`;
+					              row +=`<span id="semester-messages-`+ item.id +`"></span>`;
+					            row +=`</div>`;
+
+					            row +=`<div id="year-alert-`+ item.id +`" class="form-group has-feedback" >`;
+					              row +=`<label>Tahun</label>`;
+					              row +=`<input readonly maxlength="4" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Year" value="`+ item.year +`">`;
+					              row +=`<span id="year-messages-`+ item.id +`"></span>`;
+					            row +=`</div>`;
+
+                                 row +=`<div id="startdate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Tanggal Mulai</label>`;
+				                  row +=`<input readonly type="date" class="form-control" name="startdate" placeholder="Tanggal Mulai" value="`+ item.startdate +`">
+				                  <span id="startdate-messages-`+ item.id +`"></span>`;
+				                  row +=`</div>`;
+
+
+				                    row +=`<div id="enddate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Tanggal Berahir</label>`;
+				                  row +=`<input readonly type="date" class="form-control" name="enddate" placeholder="Tanggal Berahir" value="`+ item.enddate +`">
+				                  <span id="enddate-messages-`+ item.id +`"></span>`;
+				                  row +=`</div>`;
+
+
+				                  row +=`<div id="description-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Keterangan</label>`;
+				                  row +=`<textarea readonly type="text" name="description" class="form-control">`+ item.description +`</textarea>`;
+				                  row +=`<span id="description-messages-`+ item.id +`"></span>`;
+				                  row +=`</div>`;
+
+
+			                    row +=`<div class="radio">`;
+				                    row +=`<label>`;
+				                    if(item.status.status_db =='Y')
+				                    {
+				                        row +=`<input disabled type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
+				                    }else{
+				                    	row +=`<input disabled type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
+				                    } 	
+				                 
+				                      row +=`Publish`;
+				                    row +=`</label>`;
+				                row +=`</div>`;
+				                row +=`<div class="radio">`;
+				                    row +=`<label>`;
+				                      if(item.status.status_db =='N')
+				                    {
+				                        row +=`<input  disabled type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
+				                    }else{
+				                    	row +=`<input  disabled type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
+				                    } 
+
+				                     
+				                     row +=`Draft`;
+				                    row +=`</label>`;
+				                row +=`</div>`;
+
+                            row +=`</div>`;
+
+
+                            row +=`<div class="modal-footer">`;
+						        row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+						         
+     						row +=`</div>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ item.id).html(row); 
+
+            // Set a specific option as selected
+               let select = $('#semester-'+ item.id);
+		       var selectedValue = item.semester;
+		       select.val(selectedValue);
+		       // Refresh the SelectPicker
+		       select.prop('disabled', true); 
+		       select.selectpicker('refresh');
+        });
+
         $( "#content" ).on( "click", "#Edit", (e) => {
              
             let id = e.currentTarget.dataset.param_id;
-            const item = list.find(o => o.id === id); 
+            const item = list.find(o => o.id == id); 
            
             
             let row = ``;
@@ -681,21 +801,56 @@
 
     }
 
+    function ChecklistTable(item){
+         
+           var row = '';
+           if(item.deleted == true)
+           {
+                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+           }else{
+               row +=`<td><input disabled  type="checkbox"></td></td>`;  
+             
+           }   
+
+           return row;
+    }
+
+   function BtnTableDelete(item){
+        
+       var row = ''; 
+        if(item.deleted == true)
+       {
+            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }else{
+            row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }
+
+
+       return row;
+
+
+    }
+
     function listOptions(data){
          
        data.forEach(function(item, index) 
        {
-            if(item.action =='add')
-            {
+           if(item.action =='create')
+           {
                if(item.checked ==true)
                {
                    $('#ShowAdd').show();
+                   $('#ShowImport').show();
                }else{
                   $('#ShowAdd').hide();
+                  $('#ShowImport').hide();
                }    
-            }
+           }
 
-            if(item.action =='checklist')
+
+
+
+            if(item.action =='delete')
             {
                if(item.checked ==true)
                {
@@ -707,22 +862,7 @@
                } 
             }
 
-             if(item.action =='edit' && item.action =='delete')
-            {
-               if(item.checked ==false)
-               {
-                   $('#ShowAction').hide();
-               }else{
-                   $('#ShowAction').show();
-               }  
-            }
-
-           
-           
- 
-
-           
-
+       
        });
     }
 

@@ -45,7 +45,7 @@
 				</button>
 			</div> -->
 
-			<div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+			<div  class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -85,7 +85,7 @@
                             <th><div  id="ShowChecklistAll" style="display:none;"   class="split-table"></div><span class="span-title">No</span>  </th>
                             
 							
-							<th><div class="split-table"></div><span class="span-title">Nama</span></th>
+							<th><div class="split-table"></div><span class="span-title">Nama Daerah</span></th>
 							<th><div class="split-table"></div><span class="span-title">Kriteria</span></th>
 							<th><div class="split-table"></div><span class="span-title">Total Pesan</span></th>
 						
@@ -153,6 +153,55 @@
        
     });
 
+      // "Select All" checkbox
+    $('#select-all').on('change', function() {
+        $('.item-checkbox').prop('checked', $(this).is(':checked'));
+
+         const checkedCount = $('.item-checkbox:checked').length;
+         if(checkedCount >0)
+         {
+         	$('#delete-selected').prop("disabled", false);
+         }else{
+         	$('#delete-selected').prop("disabled", true);
+         } 
+
+    });
+
+     // Delete selected button
+    $('#delete-selected').on('click', function() {
+        const selectedIds = [];
+        $('.item-checkbox:checked').each(function() {
+            selectedIds.push($(this).data('id'));
+        });
+
+         Swal.fire({
+              title: 'Apakah anda yakin hapus?',
+            
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#d33',
+              cancelButtonColor: '#3085d6',
+              confirmButtonText: 'Ya'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // Perform the delete action here, e.g., using an AJAX request
+                // Send selected IDs for deletion (e.g., via AJAX)
+                 deleteItems(selectedIds);
+
+                
+                Swal.fire(
+                  'Deleted!',
+                  'Data berhasil dihapus.',
+                  'success'
+                );
+              }
+            });
+        
+    });
+
+  
+
+
     $('#row_page').on('change', function() {
             var value = $(this).val();         
             if(value)
@@ -181,7 +230,7 @@
                         list = response.data;
                         resultTotal(response.total);
                         listOptions(response.options);
-                        updateContent(response.data,response.options);
+                        updateCupdateContentontent(response.data,response.options);
                         updatePagination(response.current_page, response.last_page);
                     },
                     error: function(error) {
@@ -281,12 +330,9 @@
     // Function to update the content area with data
     function updateContent(data,options) {
        
-        const edited = options.find(o => o.action === 'edit');
-        const deleted = options.find(o => o.action === 'delete');
-        const detail = options.find(o => o.action === 'detail');
-        const checklist = options.find(o => o.action === 'checklist');
+     
         // Clear previous data
-         const content = $('#content');
+        const content = $('#content');
         content.empty();
         if(data.length>0)
         { 	
@@ -294,28 +340,46 @@
 	        data.forEach(function(item, index) {
 	           	let row = ``;
 	             row +=`<tr>`;
-	               if(checklist.checked == true)
-                   {
-                     row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-                   }
+	                options.forEach(function(opt, arr) 
+		            {
+		                if(opt.action == 'delete')
+		                {
+		                   if(opt.checked == true)
+		                   {
+		                        row +=ChecklistTable(item);
+		                   }
+		                }       
+		            });
 	               row +=`<td>${item.number}</td>`;
 	               row +=`<td>${item.from}</td>`;
 	               row +=`<td>${item.category}</td>`;  
-	               row +=`<td>${item.total_messsage}</td>`;
+	               row +=`<td>${item.total_messsage} </td>`;
 	               
 	               row +=`<td>`; 
-
+                    row +=`<div class="btn-group">`;
 	                
-                  if(detail.checked == true) 
-                  {
+                 
 	             
-	                row +=`<button id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Pesan" type="button" class="btn btn-primary margin-left-button pull-left"><i class="fa fa-eye" ></i></button>`;
+	                row +=`<button id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Pesan" type="button" class="btn btn-primary "><i class="fa fa-eye" ></i></button>`;
 	               
 	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
 	                 row +=`<div id="FormEdit-${item.id}"></div>`;
 	                row +=`</div>`;
+                     options.forEach(function(opt, arr) 
+		            {
+	                    if(opt.action == 'delete')
+                        {
+                           if(opt.checked == true)
+                           {
+                             
+                            row += BtnTableDelete(item);
 
-                    }
+                           } 
+                        } 
+
+                    });
+
+                      row +=`</div">`;
 
 	                row +=`</td>`;
 	              row +=`</tr>`; 
@@ -346,11 +410,50 @@
             
         });
 
-       
+        $('.item-checkbox').on('click', function() {
+         const checkedCount = $('.item-checkbox:checked').length;
 
-
+         if(checkedCount > 0)
+         {
+           $('#delete-selected').prop("disabled", false);
+         }else{
+           $('#delete-selected').prop("disabled", true);
+         }  
+        });
         
+
        
+        $( "#content" ).on( "click", "#Destroy", (e) => {
+	        let id = e.currentTarget.dataset.param_id;
+
+
+	        Swal.fire({
+			      title: 'Apakah anda yakin hapus?',
+			    
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#d33',
+			      cancelButtonColor: '#3085d6',
+			      confirmButtonText: 'Ya'
+			    }).then((result) => {
+			      if (result.isConfirmed) {
+			        // Perform the delete action here, e.g., using an AJAX request
+			        // You can use the itemId to identify the item to be deleted
+			        deleteItem(id);
+			        
+			        Swal.fire(
+			          'Deleted!',
+			          'Data berhasil dihapus.',
+			          'success'
+			        );
+			      }
+			    });
+
+        }); 
+
+
+
+  
         
     }
 
@@ -380,7 +483,7 @@
                 row +=`<div class="modal-content pull-left full">`;
 
 				       row +=`<div class="modal-header pull-left full">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
 				         row +=`<h4 class="modal-title">Kendala | `+ item.category +` </h4>`;
 				       row +=`</div>`;
 
@@ -405,7 +508,7 @@
 				                                    row +=`</div>`;	
 													row +=`<div class="margin-top-7 col-sm-8">`;
 			                                               row +=`<input class="text-username" disabled type="text" value="${items.username}">`;
-																row +=`<textarea id="comment-edit-`+ items.id +`" disabled class="form-control textarea-fixed-replay text-message resize-hide">${items.messages}</textarea>`;
+																row +=`<textarea id="comment-edit-`+ items.id +`" readonly class="form-control textarea-fixed-replay text-message resize-hide">${items.messages}</textarea>`;
 													row +=`</div>`;	
                                                      
                                                      row +=`<div id="divclose-`+ items.id +`" style="display:none;" class="col-sm-2 padding-none ">`;
@@ -422,14 +525,17 @@
                                                  row +=`</div>`;
 
                                                 row +=`</div>`;		
-
+                                                if(items.action == true)
+                                                {
 													row +=`<div id="option-`+ items.id +`" class="margin-top-32 col-sm-2 btn-group btn-group-forum padding-none ">`;
 													 
 
 													   row +=`<button id="Edit" data-param_index="`+ index +`" data-param_id="`+ items.id +`"   type="button" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>`;
 			                                         row +=`<button id="deleted" data-param_index="`+ index +`" data-param_id="`+ items.id +`"  type="button" class="btn btn-primary"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
+
+
 			                                        row +=`</div>`;
-													
+												}	
 
 												row +=`</div>`;
 							           
@@ -446,7 +552,7 @@
                             row +=`</div>`;
     
                             row +=`<div class="pull-left full modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="kirim" disabled data-param_id="`+ item.id +`" type="button" class="btn btn-default">Kirim</button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button></div>`;
@@ -458,6 +564,10 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ item.id).html(row); 
+
+            $( ".modal-content" ).on( "click", ".clear-input", (e) => {
+                location.reload();
+            }); 
               
              $('#comment').on('input', function() {
                  $('#kirim').removeClass('btn-default').addClass('btn-primary');	
@@ -479,13 +589,15 @@
 		          let id = e.currentTarget.dataset.param_id; 
 		          let item = data.find(o => o.id === id)
 
+
+
 		          $.ajax({
 		            url: BASE_URL+ `/api/masalah/comment/`+ id +``,
 		            method: 'GET',
 		            success: function(response) {
 		            	
 
-		                 $('#comment-edit-'+ item.id).val(response.messages).prop("disabled", false).removeClass('text-message');
+		                 $('#comment-edit-'+ item.id).val(response.messages).prop("readonly", false).removeClass('text-message');
 		                 $('.update-topic-'+ item.id).prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
 				          $('#divclose-'+ item.id).show();
 		                  $('#btn-update-'+ item.id).show();
@@ -518,7 +630,7 @@
 		          let item = data.find(o => o.id === id)
 
 		        
-		          $('#comment-edit-'+ item.id).val(item.messages).prop("disabled", true).addClass('text-message');
+		          $('#comment-edit-'+ item.id).val(item.messages).prop("readonly", true).addClass('text-message');
 		          $('#divclose-'+ item.id).hide();
 		          $('#btn-update-'+ item.id).hide();
 		          $('#option-'+ item.id).show();
@@ -552,7 +664,7 @@
 							al +=`</div>`;
 							$('#succes').append(al);
 
-							       $('#comment-edit-'+ item.id).val(messages).prop("disabled", true).addClass('text-message');
+							       $('#comment-edit-'+ item.id).val(messages).prop("readonly", true).addClass('text-message');
 						          $('#divclose-'+ item.id).hide();
 						          $('#btn-update-'+ item.id).hide();
 						          $('#option-'+ item.id).show();
@@ -751,8 +863,44 @@
 
     }
 
+    function deleteItem(id){
+
+		$.ajax({
+		    url:  BASE_URL +`/api/masalah/delete-all/`+ id,
+		    method: 'DELETE',
+		    success: function(response) {
+		        // Handle success (e.g., remove deleted items from the list)
+		        fetchData(page);
+		    },
+		    error: function(error) {
+		        console.error('Error deleting items:', error);
+		    }
+		});
+
+    }
+
     function resultTotal(total){
        $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
+    }
+
+     // Function to delete items
+    function deleteItems(ids) {
+        // Send the selected IDs for deletion using AJAX
+        
+        $.ajax({
+            url:  BASE_URL +`/api/masalah/selected`,
+            method: 'POST',
+            data: { data: ids },
+            success: function(response) {
+
+                // Handle success (e.g., remove deleted items from the list)
+                fetchData(page);
+                $('#delete-selected').prop("disabled", true);
+            },
+            error: function(error) {
+                console.error('Error deleting items:', error);
+            }
+        });
     }
 
     function exportData(data){
@@ -803,36 +951,60 @@
 
     }
 
+     function ChecklistTable(item){
+         
+           var row = '';
+           // if(item.deleted == true)
+           // {
+                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+           // }else{
+           //     row +=`<td><input disabled  type="checkbox"></td></td>`;  
+             
+           // }   
+
+           return row;
+
+
+    }
+
+    function BtnTableDelete(item){
+        
+       var row = ''; 
+       //  if(item.deleted == true)
+       // {
+            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       // }else{
+       //      row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       // }
+
+
+       return row;
+
+
+    }
+
+
+
     function listOptions(data){
            
        data.forEach(function(item, index) 
        {
-           if(item.action =='add')
+           if(item.action =='create')
            {
                if(item.checked ==true)
                {
                    $('#ShowAdd').show();
+                   $('#ShowImport').show();
                }else{
                   $('#ShowAdd').hide();
+                  $('#ShowImport').hide();
                }    
            }
 
-          
 
 
 
-            if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           }     
-
-           
-            if(item.action =='checklist')
+            if(item.action =='delete')
             {
                if(item.checked ==true)
                {
@@ -844,19 +1016,7 @@
                } 
             }
 
-             if(item.action =='edit' && item.action =='delete')
-            {
-               if(item.checked ==false)
-               {
-                   $('#ShowAction').hide();
-               }else{
-                   $('#ShowAction').show();
-               }  
-            }
-             
-
-           
-
+       
        });
     }
 

@@ -31,18 +31,21 @@
 
 			</div>
 
-			<div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+			<div  class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
             </div>
 
 			
-			<div id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
+			@if($access =='admin' || $access == 'pusat' )
+			<div  class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
 				 Tambah Data
 				</button> 
 		    </div>	
+		    @endif
+
 
 				
 		</div> 
@@ -69,9 +72,11 @@
 							<th><div id="ShowChecklistAll" style="display:none;"  class="split-table"></div><span class="span-title">No</span></th>
 							<th><div class="split-table"></div><span class="span-title">Kategori</span></th>
 							<th><div class="split-table"></div><span class="span-title">Keterangan</span></th>
-							<th id="ShowStatus" style="display:none;"><div class="split-table"></div><span class="span-title">Status</span></th>
-							<th id="ShowCreated" style="display:none;"><div class="split-table"></div><span class="span-title">Dibuat</span></th>  
-							<th id="ShowAction" style="display:none;"><div class="split-table"></div><span class="span-title">Aksi</span></th>
+							@if($access =='admin' || $access == 'pusat' )
+							<th><div class="split-table"></div><span class="span-title">Status</span></th>
+							<th><div class="split-table"></div><span class="span-title">Dibuat</span></th>
+							<th><div class="split-table"></div><span class="span-title">Aksi</span></th>
+							@endif
 						</tr>
 					</thead>
 
@@ -303,12 +308,7 @@
     // Function to update the content area with data
     function updateContent(data,options) {
         const content = $('#content');
-        const edited = options.find(o => o.action === 'edit');
-        const deleted = options.find(o => o.action === 'delete');
-        const detail = options.find(o => o.action === 'detail');
-        const checklist = options.find(o => o.action === 'checklist');
-        const created = options.find(o => o.action === 'dibuat');
-        const status = options.find(o => o.action === 'status'); 
+       
         // Clear previous data
         content.empty();
         if(data.length>0)
@@ -317,47 +317,53 @@
 	        data.forEach(function(item, index) {
 	           	let row = ``;
 	             row +=`<tr>`;
-	             if(checklist.checked == true)
-                 {
-	               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-	             }  
+
+
+	              options.forEach(function(opt, arr) 
+	              {
+	                 if(opt.action == 'delete')
+	                 {
+	                    if(opt.checked == true)
+	                    {
+	                        row +=ChecklistTable(item);
+	                    }
+	                 }       
+	              }); 
+
 	               row +=`<td>${item.number}</td>`;
 	               row +=`<td>${item.category }</td>`;
 	               row +=`<td>${item.description}</td>`;
-	            if(status.checked == true)
-	            {   
-		           row +=`<td>${item.status.status_convert}</td>`;
-		        }    
-		        if(created.checked == true)
-		        {
-		           row +=`<td>${item.created_at}</td>`;
-		        }   
+
+	               if(item.access == 'admin' || item.access == 'pusat')
+	               {  
+
+			           row +=`<td>${item.status.status_convert}</td>`;
+			           row +=`<td>${item.created_at}</td>`;
+
+		           }
+		        
 	               row +=`<td>`; 
 	               row +=`<div class="btn-group">`;
 
 	               // row +=`<button id="Export"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Export Data" type="button" class="btn btn-primary"><i class="fa fa-file-excel-o" ></i></button>`;
-                if(detail.checked ==true)
-                {
-	                row +=`<button id="Detail"  data-param_id="${item.id}"  data-toggle="tooltip" data-placement="top" title="Detail Data" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;	
+               
+	               row +=`<button id="Detail"  data-param_id="${item.id}"  data-toggle="tooltip" data-placement="top" title="Detail Data" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;	
 
-	            } 	
-	            
-	            if(edited.checked == true)
-                {     
+	                
+	                if(item.access == 'admin' || item.access == 'pusat')
+	               {  
+
     
-	                row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;	
+	                   row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+
+	                   row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                }	
+
 
 	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-	                row +=`<div id="FormEdit-${item.id}"></div>`;
-	                row +=`</div>`;
+	                	row +=`<div id="FormEdit-${item.id}"></div>`;
+	                row +=`</div>`;    
 
-	            }     
-
-                if(deleted.checked == true) 
-                {
-
-	                row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-	            }    
 
 	                row +=`</div>`;
 	                row +=`</td>`;
@@ -430,7 +436,7 @@
 				                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
 				                    } 	
 				                 
-				                      row +=`Aktif`;
+				                      row +=`Publish`;
 				                    row +=`</label>`;
 				                row +=`</div>`;
 				                row +=`<div class="radio">`;
@@ -443,7 +449,7 @@
 				                    } 
 
 				                     
-				                     row +=`Non Aktif`;
+				                     row +=`Draft`;
 				                    row +=`</label>`;
 				                row +=`</div>`;
 
@@ -851,61 +857,56 @@
 
     }
 
-     function listOptions(data){
-       
+     function ChecklistTable(item){
+         
+           var row = '';
+           // if(item.deleted == true)
+           // {
+                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+           // }else{
+           //     row +=`<td><input disabled  type="checkbox"></td></td>`;  
+             
+           // }   
 
-           
-       data.forEach(function(item, index) 
+           return row;
+    }
+
+   function BtnTableDelete(item){
+        
+       var row = ''; 
+       //  if(item.deleted == true)
+       // {
+            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       // }else{
+       //      row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       // }
+
+
+       return row;
+
+
+    }
+
+     function listOptions(data){
+
+        data.forEach(function(item, index) 
        {
-           if(item.action =='add')
+           if(item.action =='create')
            {
                if(item.checked ==true)
                {
                    $('#ShowAdd').show();
+                   $('#ShowImport').show();
                }else{
                   $('#ShowAdd').hide();
+                  $('#ShowImport').hide();
                }    
            }
 
-          
 
 
 
-            if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           }     
-
-           
-
-            
-
-            if(item.action =='status')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowStatus').show();
-               }else{
-                  $('#ShowStatus').hide();
-               }    
-           }    
-
-            if(item.action =='dibuat')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowCreated').show();
-               }else{
-                  $('#ShowCreated').hide();
-               }    
-           }   
-
-            if(item.action =='checklist')
+            if(item.action =='delete')
             {
                if(item.checked ==true)
                {
@@ -917,19 +918,7 @@
                } 
             }
 
-             if(item.action =='edit' && item.action =='delete')
-            {
-               if(item.checked ==false)
-               {
-                   $('#ShowAction').hide();
-               }else{
-                   $('#ShowAction').show();
-               }  
-            }  
-  
-
-           
-
+       
        });
     }
 

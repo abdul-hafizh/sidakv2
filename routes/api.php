@@ -150,7 +150,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('kendala', [KendalaApiController::class, 'store']);
     Route::post('kendala/search', [KendalaApiController::class, 'searchKendala']);
     Route::put('kendala/{id}', [KendalaApiController::class, 'update']);
-    Route::post('kendala/selected', [KendalaApiController::class, 'deleteSelected']);
+    Route::post('kendala/selected', [KendalaApiController::class, 'deleteKendala']);
     Route::delete('kendala/{id}', [KendalaApiController::class, 'delete']);
 
     Route::get('kendala/{id}', [KendalaApiController::class, 'show']);
@@ -160,13 +160,15 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('masalah/list-replay/{id}', [KendalaApiController::class, 'listreplay']);
     Route::post('masalah/comment', [KendalaApiController::class, 'saveComment']);
     Route::put('masalah/update-replay/{id}', [KendalaApiController::class, 'updatereplay']);
+    Route::post('masalah/selected', [KendalaApiController::class, 'masalahSelected']);
     Route::delete('masalah/delete-replay/{id}', [KendalaApiController::class, 'deletereplay']);
+    Route::delete('masalah/delete-all/{id}', [KendalaApiController::class, 'deleteMasalah']);
 
     Route::get('forum', [ForumApiController::class, 'index']);
     Route::post('forum', [ForumApiController::class, 'store']);
     Route::post('forum/search', [ForumApiController::class, 'searchForum']);
     Route::put('forum/{id}', [ForumApiController::class, 'update']);
-    Route::post('forum/selected', [ForumApiController::class, 'deleteSelected']);
+    Route::post('forum/selected', [ForumApiController::class, 'deleteForum']);
     Route::delete('forum/{id}', [ForumApiController::class, 'delete']);
 
     Route::get('topic/{id}', [ForumApiController::class, 'show']);
@@ -177,6 +179,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('topic/comment', [ForumApiController::class, 'saveComment']);
     Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
     Route::delete('topic/delete-replay/{id}', [ForumApiController::class, 'deletereplay']);
+    Route::delete('topic/delete-all/{id}', [ForumApiController::class, 'deleteTopic']);
 
     Route::get('notification', [NotificationApiController::class, 'index']);
     Route::get('notif', [NotificationApiController::class, 'show']);

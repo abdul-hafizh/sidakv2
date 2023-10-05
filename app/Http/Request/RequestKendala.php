@@ -46,6 +46,7 @@ class RequestKendala
             $temp[$key]['category'] = $val->category;
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['description'] = $description;
+            $temp[$key]['access'] = RequestAuth::Access();
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
             $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val['created_at']); 
@@ -100,6 +101,7 @@ class RequestKendala
             $temp[$key]['permasalahan'] = $val->permasalahan;
             $temp[$key]['messages'] = $val->messages;
             $temp[$key]['from'] = $val->from;
+            //$temp[$key]['deleted'] = RequestKendala::checkValidate($val->id);
             $temp[$key]['category'] = RequestKendala::categoryKendala($val->kriteria_id);
             $temp[$key]['total_messsage'] = RequestKendala::TotalMessage($val->id).' Pesan';
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
@@ -124,6 +126,19 @@ class RequestKendala
         return $result;
 
    }
+
+   public static function checkValidate($id){
+
+       $data = KendalaDetail::where('kendala_id',$id)->count();
+       if($data > 0)
+       {
+          $result = false;
+       }else{
+          $result = true;
+       } 
+
+       return $result;
+  }
 
  
 
@@ -154,11 +169,25 @@ class RequestKendala
           $temp[$key]['username'] = $val->created_by;
           $temp[$key]['photo'] = RequestAuth::photoUser($val->created_by);
           $temp[$key]['messages'] = $val->messages; 
+          $temp[$key]['action'] = RequestKendala::CheckAction($val->from);
           $temp[$key]['deleted'] = true;
        } 
 
 
         return $temp;
+   }
+
+   public static function CheckAction($username)
+   {
+        if($username == Auth::User()->username)
+        {
+          $result = true;
+        }else{
+          $result = false;
+        } 
+
+        return $result;   
+
    }
 
 

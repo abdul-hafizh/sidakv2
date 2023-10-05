@@ -36,13 +36,13 @@
                 <div class="radio">
                     <label>
                       <input  type="radio" name="status" id="" value="Y"   checked>
-                      Aktif
+                      Publish
                     </label>
                 </div>
                 <div class="radio">
                     <label>
                       <input   type="radio" name="status" id="" value="N" >
-                     Non Aktif
+                      Draft
                     </label>
                 </div>
                 <span id="status-messages" class="span-messages"></span>

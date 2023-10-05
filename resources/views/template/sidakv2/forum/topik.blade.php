@@ -29,7 +29,7 @@
                 </button>
             </div>
 
-            <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+            <div  class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -70,7 +70,7 @@
 							<th><div class="split-table"></div><span class="span-title">Topik</span></th>
 							<th><div class="split-table"></div><span class="span-title">Total Komentar</span></th>
 						
-							<th id="ShowAction" style="display:none;"><div class="split-table"></div><span class="span-title"> Aksi </span></th>
+							<th ><div class="split-table"></div><span class="span-title"> Aksi </span></th>
 						</tr>
 					</thead>
 
@@ -194,10 +194,7 @@
     function updateContent(data,options) {
         const content = $('#content');
 
-        const edited = options.find(o => o.action === 'edit');
-        const deleted = options.find(o => o.action === 'delete');
-        const detail = options.find(o => o.action === 'detail');
-        const checklist = options.find(o => o.action === 'checklist');
+      
 
         // Clear previous data
         content.empty();
@@ -207,21 +204,45 @@
 	        data.forEach(function(item, index) {
 	           	let row = ``;
 	             row +=`<tr>`;
-	               if(checklist.checked == true)
-                   {
-                      row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-                   }
+	              options.forEach(function(opt, arr) 
+	              {
+	                 if(opt.action == 'delete')
+	                 {
+	                    if(opt.checked == true)
+	                    {
+	                        row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	                    }
+	                 }       
+	              });
 	               row +=`<td>${item.number}</td>`;
 	               row +=`<td>${item.name}</td>`;
 	               row +=`<td>${item.total_messsage}</td>`;
 	               
 	               row +=`<td>`; 
-	             
+	                 row +=`<div class="btn-group">`;
 	                row +=`<button id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Komentar" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
 	            
 	               
-	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-	                row +=`<div id="FormEdit-${item.id}"></div>`;
+
+	                  options.forEach(function(opt, arr) 
+		            {
+	                    if(opt.action == 'delete')
+                        {
+                           if(opt.checked == true)
+                           {
+                             
+                            
+	                         row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+                           } 
+                        } 
+
+                    });
+
+
+	                  row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+	                	row +=`<div id="FormEdit-${item.id}"></div>`;
+	                  row +=`</div">`;
 	               
 
 	                row +=`</div>`;
@@ -252,10 +273,54 @@
             
         });
 
+        $( "#content" ).on( "click", "#Destroy", (e) => {
+	        let id = e.currentTarget.dataset.param_id;
+            //delete topik
+
+	        Swal.fire({
+			      title: 'Apakah anda yakin hapus?',
+			    
+			      icon: 'warning',
+			      showCancelButton: true,
+			      confirmButtonColor: '#d33',
+			      cancelButtonColor: '#3085d6',
+			      confirmButtonText: 'Ya'
+			    }).then((result) => {
+			      if (result.isConfirmed) {
+			        // Perform the delete action here, e.g., using an AJAX request
+			        // You can use the itemId to identify the item to be deleted
+			        deleteItem(id);
+			        
+			        Swal.fire(
+			          'Deleted!',
+			          'Data berhasil dihapus.',
+			          'success'
+			        );
+			      }
+			    });
+
+        }); 
+
 
         
        
         
+    }
+
+     function deleteItem(id){
+
+		$.ajax({
+		    url:  BASE_URL +`/api/topic/delete-all/`+ id,
+		    method: 'DELETE',
+		    success: function(response) {
+		        // Handle success (e.g., remove deleted items from the list)
+		        fetchData(page);
+		    },
+		    error: function(error) {
+		        console.error('Error deleting items:', error);
+		    }
+		});
+
     }
 
     function getlistComment(item){
@@ -283,7 +348,7 @@
                 row +=`<div class="modal-content pull-left full">`;
 
 				       row +=`<div class="modal-header pull-left full">`;
-				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
 				         row +=`<h4 class="modal-title">Forum `+ item.category +` </h4>`;
 				       row +=`</div>`;
 
@@ -328,11 +393,12 @@
 
 													row +=`<div id="option-`+ items.id +`" class="margin-top-32 col-sm-2 btn-group btn-group-forum padding-none ">`;
 													 
-
+                                                 if(items.action == true)
+                                                {
 													   row +=`<button id="Edit" data-param_index="`+ index +`" data-param_id="`+ items.id +`"   type="button" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>`;
 			                                         row +=`<button id="deleted" data-param_index="`+ index +`" data-param_id="`+ items.id +`"  type="button" class="btn btn-primary"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
 			                                        row +=`</div>`;
-													
+												}	
 
 												row +=`</div>`;
 							           
@@ -349,7 +415,7 @@
                             row +=`</div>`;
     
                             row +=`<div class="pull-left full modal-footer">`;
-						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="kirim" disabled data-param_id="`+ item.id +`" type="button" class="btn btn-default">Kirim</button>`;
 						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button></div>`;
@@ -361,6 +427,11 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ item.id).html(row); 
+        
+           $( ".modal-content" ).on( "click", ".clear-input", (e) => {
+                location.reload();
+            }); 	
+            
               
              $('#comment').on('input', function() {
                  $('#kirim').removeClass('btn-default').addClass('btn-primary');	
@@ -701,36 +772,29 @@
 
     }
 
+
+    
+    
+
     function listOptions(data){
-          
-       data.forEach(function(item, index) 
+          data.forEach(function(item, index) 
        {
-           if(item.action =='add')
+           if(item.action =='create')
            {
                if(item.checked ==true)
                {
                    $('#ShowAdd').show();
+                   $('#ShowImport').show();
                }else{
                   $('#ShowAdd').hide();
+                  $('#ShowImport').hide();
                }    
            }
 
-          
 
 
 
-            if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           }     
-
-             
-             if(item.action =='checklist')
+            if(item.action =='delete')
             {
                if(item.checked ==true)
                {
@@ -742,20 +806,9 @@
                } 
             }
 
-             if(item.action =='edit' && item.action =='delete')
-            {
-               if(item.checked ==false)
-               {
-                   $('#ShowAction').hide();
-               }else{
-                   $('#ShowAction').show();
-               }  
-            }
-           
-
-           
-
-       });
+       
+       }); 
+       
     }
     
 
