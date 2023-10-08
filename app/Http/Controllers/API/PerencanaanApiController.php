@@ -39,7 +39,7 @@ class PerencanaanApiController extends Controller
              $query = Perencanaan::orderBy('created_at', 'DESC');
         }
 
-        $query->where('periode_id', $tahunSemester);
+        $query->where('periode_id', substr($tahunSemester, 0, 4));
 
         if($request->per_page !='all')
         {

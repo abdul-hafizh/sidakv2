@@ -52,7 +52,7 @@
   }
 </style>
 
-<div id="progressModal" class="modal-loading" style="display: none;">
+<div id="progressModal" class="modal-loading" style="display:none;position:relative;z-index:9999999">
   <div class="modal-content2">
     <span class="close" id="closeProgressModal">&times;</span>
     <h2>Upload Progress</h2>
@@ -84,9 +84,9 @@
           </div>
           <div class="row">
             <div id="sub_menu_slug-alert" class="form-group has-feedback col-md-12">
-              <label>Jenis </label>
+              <label>Jenis Kegiatan </label>
               <select class="form-control select-jenis" name="sub_menu_slug" id="sub_menu_slug">
-                <option value="">Pilih Tipe</option>
+                <option value="">Pilih Jenis Kegiatan</option>
                 <option value="identifikasi">Identifikasi Penyelesaian</option>
                 <option value="penyelesaian">Penyelesaian Masalah</option>
                 <option value="evaluasi">Evaluasi Penyelesaian</option>
@@ -109,10 +109,10 @@
             </div>
           </div>          
           <div class="row">
-            <div id="biaya_kegiatan-alert" class="form-group has-feedback col-md-12">
+            <div id="biaya-alert" class="form-group has-feedback col-md-12">
               <label>Biaya Kegiatan</label>
-              <input type="number" class="form-control" name="biaya_kegiatan" id="biaya_kegiatan" placeholder="Biaya Kegiatan" value="">
-              <span id="biaya_kegiatan-messages"></span>
+              <input type="number" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
+              <span id="biaya-messages"></span>
             </div>
           </div>
           <div class="row">
@@ -129,14 +129,97 @@
               <span id="lokasi-messages"></span>
             </div>
           </div>
-          <div class="row">            
-            <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
-                <label>Profile Pelaku Usaha </label>
-                <input type="file" class="form-control" name="lap_profile" id="AddFilesProfile" accept=".pdf">
-                <div id="ShowPdfProfile" style="margin-top:8px"></div>
-                <span id="file-pdf-alert-messages"></span>
+
+          <div id="tab_identifikasi">
+            <div class="row">
+              <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
+                  <label>Profile Pelaku Usaha </label>
+                  <input type="file" class="form-control" name="lap_profile" id="AddFilesProfile" accept=".pdf">
+                  <div id="ShowPdfProfile" style="margin-top:8px"></div>
+                  <span id="file-profile-alert-messages"></span>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
             </div>
           </div>
+
+          <div id="tab_penyelesaian">
+            <div class="row">
+              <div id="lap_peserta-alert" class="form-group has-feedback col-md-12">
+                <label>Daftar Hadir </label>
+                <input type="file" class="form-control" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
+                <div id="ShowPdfPeserta" style="margin-top:8px"></div>
+                <span id="file-peserta-alert-messages"></span>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="lap_profile2-alert" class="form-group has-feedback col-md-12">
+                <label>Profile Pelaku Usaha </label>
+                <input type="file" class="form-control" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
+                <div id="ShowPdfProfile2" style="margin-top:8px"></div>
+                <span id="file-profile2-alert-messages"></span>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12">
+                  <label>Daftar Narasumber </label>
+                  <input type="file" class="form-control" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
+                  <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
+                  <span id="file-narasumber-alert-messages"></span>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="notula2-alert" class="form-group has-feedback col-md-12">
+                  <label>Notula Kegiatan </label>
+                  <input type="file" class="form-control" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
+                  <div id="ShowPdfNotula2" style="margin-top:8px"></div>
+                  <span id="file-notula2-alert-messages"></span>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="lap_lkpm-alert" class="form-group has-feedback col-md-12">
+                  <label>Laporan LKPM </label>
+                  <input type="file" class="form-control" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
+                  <div id="ShowPdfLkpm" style="margin-top:8px"></div>
+                  <span id="file-lkpm-alert-messages"></span>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="lap_document-alert" class="form-group has-feedback col-md-12">
+                  <label>Laporan Dokumentasi </label>
+                  <input type="file" class="form-control" name="lap_document" id="AddFilesDoc" accept=".pdf">
+                  <div id="ShowPdfDoc" style="margin-top:8px"></div>
+                  <span id="file-doc-alert-messages"></span>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
+            </div>
+          </div>
+
+          <div id="tab_evaluasi">
+            <div class="row">
+              <div id="notula-alert" class="form-group has-feedback col-md-12">
+                  <label>Notula Rapat </label>
+                  <input type="file" class="form-control" name="lap_notula" id="AddFilesNotula" accept=".pdf">
+                  <div id="ShowPdfNotula" style="margin-top:8px"></div>
+                  <span id="file-notula-alert-messages"></span>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
+            </div>
+            <div class="row">
+              <div id="lap_evaluasi-alert" class="form-group has-feedback col-md-12">
+                  <label>Laporan Hasil Evaluasi </label>
+                  <input type="file" class="form-control" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
+                  <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
+                  <span id="file-evaluasi-alert-messages"></span>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <div class="modal-footer">
@@ -199,32 +282,26 @@
 <script type="text/javascript">
   $(function() {
 
+    $('#tab_identifikasi').hide();
+    $('#tab_penyelesaian').hide();
+    $('#tab_evaluasi').hide();
+
     $('#sub_menu_slug').on('change', function() {
+      
       let sub_menu_slug = $('#sub_menu_slug').val();
-      if (sub_menu_slug == 'is_tenaga_pendamping') {
-        $('#jml_perusahaan-alert').hide();
-        $('#lap_notula-alert').hide();
-        $('#lap_survei-alert').hide();
-        $('#lap_narasumber-alert').hide();
-        $('#lap_materi-alert').hide();
-        $('#lap_document-alert').hide();
-        $('#lap_pendamping-alert').show();
-      } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
-        $('#jml_perusahaan-alert').show();
-        $('#lap_notula-alert').show();
-        $('#lap_survei-alert').show();
-        $('#lap_narasumber-alert').show();
-        $('#lap_materi-alert').show();
-        $('#lap_document-alert').show();
-        $('#lap_pendamping-alert').hide();
-      } else {
-        $('#jml_perusahaan-alert').show();
-        $('#lap_notula-alert').show();
-        $('#lap_survei-alert').show();
-        $('#lap_narasumber-alert').show();
-        $('#lap_materi-alert').show();
-        $('#lap_document-alert').show();
-        $('#lap_pendamping-alert').hide();
+
+      if (sub_menu_slug == 'identifikasi') {
+        $('#tab_identifikasi').show();
+        $('#tab_penyelesaian').hide();
+        $('#tab_evaluasi').hide();
+      } else if (sub_menu_slug == 'penyelesaian') {
+        $('#tab_identifikasi').hide();
+        $('#tab_penyelesaian').show();
+        $('#tab_evaluasi').hide();
+      } else if (sub_menu_slug == 'evaluasi') {
+        $('#tab_identifikasi').hide();
+        $('#tab_penyelesaian').hide();
+        $('#tab_evaluasi').show();
       }
     })
 
@@ -244,7 +321,7 @@
         'nama_kegiatan',
         'tgl_kegiatan',
         'lokasi',
-        'biaya_kegiatan',
+        'biaya',
         'jml_perusahaan',
         'ringkasan_kegiatan'
       ];
@@ -264,12 +341,12 @@
         'nama_kegiatan',
         'tgl_kegiatan',
         'lokasi',
-        'biaya_kegiatan',
-        'jml_perusahaan',
-        'ringkasan_kegiatan'
+        'biaya',
+        'jml_perusahaan'
       ];
-      formData.append("status", 13);
+      
       $('#progressModal').show();
+
       $.ajax({
         type: "POST",
         url: BASE_URL + '/api/penyelesaian',
@@ -283,7 +360,6 @@
               var percentComplete = (evt.loaded / evt.total) * 100;
               $('#progress').css('width', percentComplete + '%');
               $('#progress-label').text(percentComplete.toFixed(2) + '%');
-              // Place upload progress bar visibility code here
             }
           }, false);
 
@@ -299,12 +375,9 @@
 
           }).then((result) => {
             if (result.isConfirmed) {
-              // User clicked "Yes, proceed!" button
               window.location.replace('/penyelesaian');
             }
           });
-
-          //
         },
         error: (respons) => {
           $('#progressModal').hide();
@@ -325,7 +398,7 @@
     });
 
     $("#datatable").on("click", ".modalUbah", function() {
-      $('#judulModalLabel').html('Form Ubah');
+      $('#judulModalLabel').html('Ubah Data');
       $('#simpan').hide();
       var form = [
         'periode_id_mdl',
@@ -333,7 +406,7 @@
         'nama_kegiatan',
         'tgl_kegiatan',
         'lokasi',
-        'biaya_kegiatan',
+        'biaya',
         'jml_perusahaan',
         'ringkasan_kegiatan'
       ];
@@ -353,7 +426,7 @@
           $('#nama_kegiatan').val(data.nama_kegiatan);
           $('#tgl_kegiatan').val(data.tgl_kegiatan);
           $('#lokasi').val(data.lokasi);
-          $('#biaya_kegiatan').val(data.biaya_kegiatan);
+          $('#biaya').val(data.biaya);
           $('#jml_perusahaan').val(data.jml_perusahaan);
           $('#ringkasan_kegiatan').val(data.ringkasan_kegiatan);
           $('#is_skpd_sesuai').val(data.is_skpd_sesuai);
@@ -473,7 +546,7 @@
           'nama_kegiatan',
           'tgl_kegiatan',
           'lokasi',
-          'biaya_kegiatan',
+          'biaya',
           'jml_perusahaan',
           'ringkasan_kegiatan'
         ];
@@ -526,7 +599,7 @@
           'nama_kegiatan',
           'tgl_kegiatan',
           'lokasi',
-          'biaya_kegiatan',
+          'biaya',
           'jml_perusahaan',
           'ringkasan_kegiatan'
         ];
