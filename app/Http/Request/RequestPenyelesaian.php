@@ -77,15 +77,15 @@ class RequestPenyelesaian
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
             $numberNext++;
-            $row    = array();
-            $row[]  = $val->id;
-            $row[]  = $val->nama_kegiatan;
-            $row[]  = $val->sub_menu;
-            $row[]  = GeneralHelpers::formatDate($val->tgl_kegiatan);
-            $row[]  = $val->lokasi;
-            $row[]  = GeneralHelpers::formatRupiah($val->biaya);
-            $row[]  = RequestPenyelesaian::getLabelStatus($val->status_laporan_id, $val->request_edit);
-            $row[]  = $edit_url . " " . $delete_url;
+            $row   = array();
+            $row[] = $val->id;
+            $row[] = $val->nama_kegiatan;
+            $row[] = $val->sub_menu;
+            $row[] = GeneralHelpers::formatDate($val->tgl_kegiatan);
+            $row[] = $val->lokasi;
+            $row[] = GeneralHelpers::formatRupiah($val->biaya);
+            $row[] = RequestPenyelesaian::getLabelStatus($val->status_laporan_id, $val->request_edit);
+            $row[] = $edit_url . " " . $delete_url;
 
             $temp[] = $row;
         }
@@ -103,8 +103,8 @@ class RequestPenyelesaian
         $temp2 = array();
         $access = RequestAuth::Access();
         $tahunSemester = GeneralHelpers::semesterToday();
-        $column_order   = array('', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id');
-        $column_search  = array('nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id');
+        $column_order  = array('', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id');
+        $column_search = array('nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id');
         $order = array('nama_kegiatan' => 'ASC');
 
         $data = DB::table('penyelesaian');
@@ -196,17 +196,17 @@ class RequestPenyelesaian
     {
         $fields =
             [
+                'sub_menu' => $request->sub_menu_slug,
                 'sub_menu_slug' => $request->sub_menu_slug,
                 'nama_kegiatan' => $request->nama_kegiatan,
                 'tgl_kegiatan' => $request->tgl_kegiatan,
                 'lokasi' => $request->lokasi,
                 'biaya' => $request->biaya,
                 'jml_perusahaan' => $request->jml_perusahaan,
-                'ringkasan_kegiatan' => $request->ringkasan_kegiatan,
-                'status_laporan_id' => $request->status,
+                'status_laporan_id' => 13,
                 'request_edit' => 'false',
-                'periode_id'  => $request->periode_id_mdl,
-                'daerah_id'  => Auth::User()->daerah_id,
+                'periode_id' => $request->periode_id_mdl,
+                'daerah_id' => Auth::User()->daerah_id,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
