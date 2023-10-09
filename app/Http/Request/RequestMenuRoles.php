@@ -238,7 +238,17 @@ class RequestMenuRoles
                 if($val->slug == $slug)
                 {
                    $res = $val->option;
-                }   
+                }else{
+                    foreach($val->tasks as $keys =>$vals)
+                    {
+
+                      if($vals->slug == $slug)
+                      {  
+                          $res = $vals->option;
+                      }  
+
+                    }    
+                }  
 
               }
            } 

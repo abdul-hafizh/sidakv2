@@ -349,7 +349,8 @@
            roleid_new = find.id;
        
            console.log(roleid_new+' Role baru')
-           var role_menu = [];
+           // role_menu = [];
+           localStorage.removeItem('root_menu');
            GetMenu(find.id);
            ViewTabMenu(find,data);
            RoleNested();

@@ -496,10 +496,10 @@
 		                           row +=`</div>`;	
 
 
-		                           row +=`<div id="slimScrollDiv" class="pull-left full form-group" style="height: 200px; overflow: auto;background: #fafafa;">`;
+		                           row +=`<div  class="pull-left full form-group" >`;
                                       row +=`<div id="replayNew" ></div>`;
-
-                                      data.forEach(function(items, index) {
+                                        row +=`<div id="slimScrollDiv">`;
+                                        data.forEach(function(items, index) {
 			                                  
 												row +=`<div id="list-${index}" class="form-group pull-left full border-list">`;		
 													row +=`<div class="col-sm-2">`;
@@ -540,7 +540,7 @@
 												row +=`</div>`;
 							           
 			                            });
-
+                                        row +=`</div>`;
                                    row +=`</div>`;
 
                                       row +=`<div class="form-group has-feedback pull-left full" >`;
@@ -798,7 +798,12 @@
                 
 		    });    
 
-
+          $('#slimScrollDiv').slimScroll({
+            height: '200px',
+            railVisible: true,
+            alwaysVisible: true,
+            railOpacity: 0.4
+        });
 
     }
 
