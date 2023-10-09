@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
+use App\Models\Perencanaan;
 use App\Models\Penyelesaian;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestSettingApps;
@@ -182,28 +183,49 @@ class RequestPenyelesaian
 
     public static function GetSumPenyelesaian($request)
     {
-        $temp = array();
         $year = substr((string)$request->periode_id_mdl, 0, 4);
-        $periode = Penyelesaian::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14])->where('periode_id', 'LIKE', $year . '%');
+        $daerah_id = Auth::user()->daerah_id;
+        $status_laporan_id = 14;
 
-        $temp['biaya'] = $request->biaya + $periode->sum('biaya');
-        $temp['jml_perusahaan'] = $request->jml_perusahaan + $periode->sum('jml_perusahaan');
+        $biayaTotal = Penyelesaian::where('daerah_id', $daerah_id)
+            ->where('status_laporan_id', $status_laporan_id)
+            ->where('periode_id', 'LIKE', $year . '%')
+            ->sum('biaya');
+
+        $jmlPerusahaanTotal = Penyelesaian::where('sub_menu_slug', 'penyelesaian')
+            ->where('daerah_id', $daerah_id)
+            ->where('status_laporan_id', $status_laporan_id)
+            ->where('periode_id', 'LIKE', $year . '%')
+            ->sum('jml_perusahaan');
+
+        $temp = [
+            'biaya' => $request->biaya + $biayaTotal,
+            'jml_perusahaan' => $request->jml_perusahaan + $jmlPerusahaanTotal,
+        ];
 
         return json_decode(json_encode($temp), FALSE);
     }
 
     public static function fieldsData($request)
     {
+        $subMenuMapping = [
+            'identidikasi' => 'Identifikasi Penyelesaian',
+            'penyelesaian' => 'Penyelesaian Masalah',
+            'evaluasi' => 'Evaluasi Penyelesaian',
+        ];
+    
+        $jenis = $subMenuMapping[$request->sub_menu_slug] ?? '';
+
         $fields =
             [
-                'sub_menu' => $request->sub_menu_slug,
+                'sub_menu' => $jenis,
                 'sub_menu_slug' => $request->sub_menu_slug,
                 'nama_kegiatan' => $request->nama_kegiatan,
                 'tgl_kegiatan' => $request->tgl_kegiatan,
                 'lokasi' => $request->lokasi,
                 'biaya' => $request->biaya,
                 'jml_perusahaan' => $request->jml_perusahaan,
-                'status_laporan_id' => 13,
+                'status_laporan_id' => $request->status == 14 ? 14 : 13,
                 'request_edit' => 'false',
                 'periode_id' => $request->periode_id_mdl,
                 'daerah_id' => Auth::User()->daerah_id,
@@ -226,18 +248,20 @@ class RequestPenyelesaian
 
         return $fields;
     }
+
     public static function fieldReqRevisi($request)
     {
         $fields = [
-            'alasan_edit' => $request->alasan_revisi,
-            'request_edit' => 'false',
-            'status_laporan_id' => 15,
+            'alasan_revisi' => $request->alasan_revisi,
+            'request_edit' => 'reject',
+            'status_laporan_id' => 13,
             'modified_by' => Auth::User()->username,
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         return $fields;
     }
+    
     public static function fieldApprEdit($request)
     {
         $fields = [
@@ -259,16 +283,16 @@ class RequestPenyelesaian
                 return "Draft (Edit)";
             } elseif ($requestEdit === "revisi") {
                 return "Draft (Revision)";
-            } elseif ($requestEdit === "reject" || $requestEdit === "reject_doc") {
-                return "Draft (Unapprove)";
+            } elseif ($requestEdit === "reject") {
+                return "Perlu Perbaikan";
             }
         } elseif ($status === 14) {
             if ($requestEdit === "false") {
-                return "Terkirim (Waiting Approval)";
+                return "Terkirim";
             }
         } elseif ($status === 15) {
             if ($requestEdit === "false") {
-                return "Terkirim (Waiting Approval)";
+                return "Terkirim";
             } elseif ($requestEdit === "true") {
                 return "Request Edit";
             }
