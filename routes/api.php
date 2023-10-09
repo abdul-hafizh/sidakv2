@@ -46,8 +46,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('select-periode-semester', [PeriodeApiController::class, 'listAllSemester']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
-    Route::get('profile', [AuthApiController::class, 'getAuthUser']);
-    Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::post('user/photo', [AuthApiController::class, 'updatePhoto']);
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
 

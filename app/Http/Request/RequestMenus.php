@@ -10,6 +10,7 @@ use App\Models\Menus;
 use App\Models\RoleMenu;
 use App\Models\Action;
 use App\Http\Request\RequestMenuRoles;
+use App\Http\Request\RequestSettingApps;
 class RequestMenus
 {
 
@@ -19,7 +20,7 @@ class RequestMenus
    {
 
         $temp = array();
-        
+        $template = RequestSettingApps::AppsTemplate();
    	    foreach ($data as $key => $val)
         {
             if($val->icon =="")
@@ -29,12 +30,21 @@ class RequestMenus
                 $icon = url('/images/menu/'.$val->icon);
             }  
 
+            if($val->icon_hover =="")
+            {
+                $icon_hover = url('/template/'.$template.'/img/user.png');
+            }else{
+                $icon_hover = url('/images/menu/'.$val->icon_hover);
+            }  
+
             $temp[$key]['id'] = $val->id;
             $temp[$key]['name'] = $val->name;
+            $temp[$key]['parent'] = $val->parent;
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['path_web'] = $val->path_web;
             $temp[$key]['option'] = RequestMenus::ActionList();
             $temp[$key]['icon'] = $icon;
+            $temp[$key]['icon_hover'] = $icon_hover;
             $temp[$key]['edit'] = false;
             $temp[$key]['tasks'] = [];
             $temp[$key]['move'] = RequestMenus::MoveCheck($role_id,$val->slug);
@@ -81,10 +91,25 @@ class RequestMenus
           $data = json_decode($query->menu_json);
           foreach($data as $key =>$val)
           {
-            if($slug == $val->slug)
-            {
-               $temp[$key] = $val->slug;
-            }      
+             if($val->tasks)
+             {
+
+                foreach($val->tasks as $keys =>$vals)
+                {
+                  if($slug == $vals->slug)
+                  {
+                     $temp[$keys] = $vals->slug;
+                 }  
+
+                }    
+
+             }else{
+                if($slug == $val->slug)
+                {
+                   $temp[$key] = $val->slug;
+                }   
+             }   
+               
           }
 
           if (in_array($slug, $temp)) {
@@ -151,7 +176,7 @@ class RequestMenus
         $fields = [  
                 'name'  =>  $request->name,
                 'slug' =>  $slug,
-                // 'path_vue'  =>  $path_vue,
+                'parent'  => $request->parent,
                 'path_web'  =>  $path_web,
                 // 'path_api'  =>  $path_api,
                 // 'type'  => $request->type,

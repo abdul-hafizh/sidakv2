@@ -49,7 +49,7 @@ class MenusRoleApiController extends Controller
     public function store(Request $request)
     {
         
-        $objectMenu = json_decode(json_encode($request->menu), FALSE);
+        $objectMenu = json_decode($request->menu, FALSE);
         $check = MenusRole::where('role_id',$request->role_id)->first();
         if($check)
         {

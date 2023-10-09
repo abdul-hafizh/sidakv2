@@ -682,7 +682,7 @@ padding: 0px 12px 0px 0px!important;
 }
 
 .checkbox-label {
-    width: 50%;
+    width: auto;
     padding: 5px 8px;
 }
 
@@ -704,6 +704,30 @@ padding: 0px 12px 0px 0px!important;
     font-weight: 700;
     color: #0e298f;
 
+}
+
+.submenu-count{
+    position: absolute;
+    top: 18px;
+    left: 49px;
+}
+
+.dropMove{
+    top: 69%!important;
+    background: #000!important;
+}
+
+.dropMove>li{
+   border-bottom: 1px solid #ddd!important;
+}
+
+.dropMove>li>a{
+   color: #ddd!important;
+}
+
+.dropMove>li>a:hover{
+     color: #fff;
+     background: #0e298f!important;
 }
 
 .padding-5-15{
@@ -1069,7 +1093,7 @@ padding: 0px 12px 0px 0px!important;
 
 
 .title-menu-sub{
-  padding: 12px 94px 12px 32px;
+  padding: 0px 3px;
    top: 2px;
     position: relative;
 }
@@ -1137,12 +1161,13 @@ padding: 0px 12px 0px 0px!important;
 
 .po-top-menu{
     position: relative;
-    top: 3px;
+    top: 0px;
 }
 
 .title-menu{
     position: relative;
-    bottom: 3px;
+    top: 2px;
+    padding: 0px 3px;
 }
 
 .skin-blue .sidebar-menu>li>a>span{

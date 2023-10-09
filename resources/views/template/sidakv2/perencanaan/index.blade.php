@@ -41,22 +41,22 @@
 	</div>
 
     <div class="row">
-        <div class="col-lg-3" style="margin-bottom: 9px;">
+        <div class="col-sm-2" style="margin-bottom: 9px;">
             <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
         </div> 	
-        <div class="col-lg-3" style="margin-bottom: 9px;">
-            <select class="selectpicker" name="type_daerah" id="type_daerah" title="Pilih Type Wilayah">
+        <div class="col-sm-2" style="margin-bottom: 9px;">
+            <select class="selectpicker" name="type_daerah" data-style="btn-default" id="type_daerah" title="Pilih Type Wilayah">
                 <option value="">Pilih Tipe Wilayah</option>
                 <option value="Provinsi">Provinsi</option>
                 <option value="Kabupaten">Kabupaten</option>
             </select>
         </div>
-        <div class="col-lg-3" style="margin-bottom: 9px;">
-            <select id="daerah_id" class="select-daerah form-control" name="daerah_id" title="Pilih Daerah" disabled>
+        <div class="col-sm-2" style="margin-bottom: 9px;">
+            <select id="daerah_id" class="selectpicker" data-style="btn-default" name="daerah_id" title="Pilih Daerah" data-live-search="true" disabled>
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
-        <div class="col-lg-3" style="margin-bottom: 9px;">    
+        <div class="col-sm-2" style="margin-bottom: 9px;">    
             <select id="search_status" class="selectpicker" data-style="btn-default" title="Pilih Status">
                 <option value="1">Draft</option>
                 <option value="2">Request Dokumen</option>
@@ -66,7 +66,7 @@
                 <option value="6">Perlu Perbaikan</option>
             </select>
         </div> 	
-        <div class="col-lg-3" style="margin-bottom: 9px;">
+        <div class="col-sm-2" style="margin-bottom: 9px;">
             <input type="text" id="search_text" class="form-control border-radius-13" placeholder="Pencarian">
         </div> 	
         <div class="col-lg-2">
@@ -93,7 +93,7 @@
                      Approve
                 </button>
             </div>
-             <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+             <div  class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton" class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -234,19 +234,29 @@
             let type_daerah = $('#type_daerah').val();
             let url = type_daerah === 'Provinsi' ? 'select-province' : 'select-kabupaten';
 
-            $.ajax({
-                url: BASE_URL + '/api/' + url,
-                method: 'get',
-                dataType: 'json',
-                success: function (data) {
-                    let jenis = '<option value="">Pilih Daerah</option>';
-                    $.each(data, function (key, val) {
-                        jenis += '<option value="' + val.value + '">' + val.text + '</option>';
-                    });
-                    $('#daerah_id').html(jenis).removeAttr('disabled');
-                    $('.select-daerah').select2();
-                }
-            });
+             $.ajax({
+              url: BASE_URL +'/api/' + url,
+              method: 'GET',
+              dataType: 'json',
+              success: function(data) {
+                  // Populate SelectPicker options using received data
+                  var select =  $('#daerah_id')
+                  $.each(data, function(index, option) {
+                      select.append($('<option>', {
+                        value: option.value,
+                        text: option.text
+                      }));
+                  });
+                 select.prop('disabled', false);
+                 // Refresh the SelectPicker to apply the new options
+                 select.selectpicker('refresh');
+              },
+              error: function(error) {
+              console.error(error);
+              }
+          });
+
+            
         });
 
         $('#row_page').on('change', function() {
@@ -417,11 +427,7 @@
 
         function updateContent(data, options) {
             const content = $('#content');            
-            const edited = options.find(o => o.action === 'edit');
-            const deleted = options.find(o => o.action === 'delete');
-            const checklist = options.find(o => o.action === 'checklist');
-            const detailed = options.find(o => o.action === 'detail');
-
+           
             var total_pengawasan = 0;
             var total_bimsos = 0;
             var total_masalah = 0;
@@ -432,23 +438,17 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                // if(item.deleted == false)
-                // {
-                //     if(checklist.checked == true)
-                //     {
-                //         row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
-                //     }
-                  
-                // } else {
-                //     if(checklist.checked == true)
-                //     {
-                //         row +=`<td><input disabled type="checkbox"></td></td>`;  
-                //     }
-                // }   
                 
-                if(checklist.checked == true) {
-                    row +=`<td><input class="item-checkbox" data-id="${item.id}" type="checkbox"></td></td>`;
-                }
+                  options.forEach(function(opt, arr) 
+                  {
+                     if(opt.action == 'approval')
+                     {
+                        if(opt.checked == true)
+                        {
+                             row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                        }
+                     }       
+                  }); 
 
                 total_pengawasan += item.total_rencana_pengawasan;
                 total_bimsos += item.total_rencana_bimsos;
@@ -476,35 +476,78 @@
                     if(item.lap_rencana != '') {                                   
                         row += download_link;
                     }
-                    if(item.deleted == false)
-                    {
-                        if(detailed.checked == true)
-                        {  
-                            row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                        }   
-                        if(edited.checked == true)
-                        { 
-                            row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                        }
-                        if(deleted.checked == true)
-                        {
-                            row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
-                        }
-                    } else {
 
-                        if(detailed.checked == true)
-                        {   
-                            row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                        }
-                        if(edited.checked == true)
-                        {                            
-                            row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                        }                        
-                        if(deleted.checked == true)
-                        { 
-                            row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
-                        } 
-                    }
+                    row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+
+                    if(item.status_code == 13)
+                    {    
+
+                        options.forEach(function(opt, arr) 
+                        {
+
+                            if(opt.action == 'update')
+                            {
+                               if(opt.checked == true)
+                               { 
+                                   
+                                  row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                                } 
+
+                            }
+
+
+                             if(opt.action == 'delete')
+                            {
+                               if(opt.checked == true)
+                               {
+                                 
+                                  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+
+                               } 
+                            }    
+
+
+                        });   
+
+                }else{
+                   
+                   row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+
+                    row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+
+                }
+
+
+
+                    // if(item.deleted == false)
+                    // {
+                    //     if(detailed.checked == true)
+                    //     {  
+                    //         row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+                    //     }   
+                    //     if(edited.checked == true)
+                    //     { 
+                    //         row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                    //     }
+                    //     if(deleted.checked == true)
+                    //     {
+                    //         row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
+                    //     }
+                    // } else {
+
+                    //     if(detailed.checked == true)
+                    //     {   
+                    //         row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+                    //     }
+                    //     if(edited.checked == true)
+                    //     {                            
+                    //         row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                    //     }                        
+                    //     if(deleted.checked == true)
+                    //     { 
+                    //         row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+                    //     } 
+                    // }
                     
                     if(item.access == 'pusat' && item.status_code == 16 && item.request_edit == 'false') {
                         row += '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa fa-pencil"></i></button>';
@@ -702,46 +745,53 @@
            $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
         }
 
+        
+
+          
+
         function listOptions(data){
-            const edited = data.find(o => o.action === 'edit');
-            const deleted = data.find(o => o.action === 'delete');
-            const detail = data.find(o => o.action === 'delete');
-            const checklist = data.find(o => o.action === 'checklist');
+            
+            data.forEach(function(item, index) 
+           {
+               if(item.action =='create')
+               {
+                   if(item.checked ==true)
+                   {
+                       $('#ShowAdd').show();
+                       $('#ShowImport').show();
+                   }else{
+                      $('#ShowAdd').hide();
+                      $('#ShowImport').hide();
+                   }    
+               }
 
-            if(checklist.action =='checklist')
-            {
-                if(checklist.checked ==true)
-                {
-                    $('#ShowChecklist').show();
-                    $('#ShowChecklistAll').show();                                
-                } else {
-                    $('#ShowChecklist').hide();
-                    $('#ShowChecklistAll').hide();
-                }    
-            }
+                //  if(item.action =='delete')
+                // {
+                //    if(item.checked ==true)
+                //    {
+                //        $('#ShowChecklist').show();
+                //        $('#ShowChecklistAll').show();
+                //    }else{
+                //        $('#ShowChecklist').hide();
+                //        $('#ShowChecklistAll').hide();
+                //    } 
+                // }
 
-            data.forEach(function(item, index) {
-                if(item.action =='add')
+
+                if(item.action =='approval')
                 {
-                    if(item.checked ==true)
-                    {
-                        $('#ShowAdd').show();
-                    } else {
-                        $('#ShowAdd').hide();
-                    }    
+                   if(item.checked ==true)
+                   {
+                       $('#ShowChecklist').show();
+                       $('#ShowChecklistAll').show();
+                   }else{
+                       $('#ShowChecklist').hide();
+                       $('#ShowChecklistAll').hide();
+                   } 
                 }
-                if(item.action =='export')
-                {
-                    if(item.checked ==true)
-                    {
-                        $('#ShowExport').show();
-                    } else {
-                        $('#ShowExport').hide();
-                    }    
-                }     
-                   
-                   
-            });
+
+           
+           });
         }
 
         function updatePagination(currentPage, totalPages) {

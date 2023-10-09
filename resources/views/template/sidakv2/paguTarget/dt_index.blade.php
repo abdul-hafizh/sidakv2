@@ -154,7 +154,7 @@
 				</select>
 			</div>
 			<div  class="pull-left padding-9-0 margin-left-button">
-				<button id="ShowChecklist" style="display:none;" type="button" id="delete-selected" class="btn btn-danger border-radius-10">
+				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
 					Hapus
 				</button>
 				<!-- <button type="button" class="btn btn-primary">
@@ -163,10 +163,10 @@
 				<button id="ShowAdd" style="display:none;" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
-				<button id="ShowImport" style="display:none;"  type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#modal-import">
+				<button   type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#modal-import">
 					IMPORT EXCEL
 				</button>
-				<button  id="ShowExport"  style="display:none;" type="button" class="btn btn-info border-radius-10" >
+				<button id="ShowExport" type="button" class="btn btn-info border-radius-10" >
 					
 				</button>
 			</div>
@@ -194,7 +194,7 @@
 								<input type="checkbox" id="checkAll">
                               
 							</th>
-							<th rowspan="2"><div   class="split-table"></div>  <span  class="span-title">Nama Daerah </span> </th>
+							<th rowspan="2"><div  class="split-table"></div>  <span  class="span-title">Nama Daerah </span> </th>
 							<th rowspan="2"><span class="border-left-table">Type </span> </th>
 							<th rowspan="2"><span class="border-left-table">Periode </span></th>
 							<th colspan="3" class="dt-head-center">Pagu</th>
@@ -349,11 +349,9 @@
 					'targets': 0,
 					'searchable': false,
 					'orderable': false,
-					'visible': false,
+					
 					'className': 'dt-body-center',
-					'render': function(data, options, type, full, meta) {
-
-						
+					'render': function(data, type, full, meta) {
 						return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
 					}
 				},
@@ -378,58 +376,27 @@
 
 		function listOptions(data){
        
-	       data.forEach(function(item, index) 
-	       {
-	           if(item.action =='add')
+	        data.forEach(function(item, index) 
+           {
+	           if(item.action =='create')
 	           {
 	               if(item.checked ==true)
 	               {
 	                   $('#ShowAdd').show();
+	                   $('#ShowImport').show();
 	               }else{
 	                  $('#ShowAdd').hide();
+	                  $('#ShowImport').hide();
 	               }    
 	           }
 
-	           if(item.action =='export')
-	           {
-	               if(item.checked ==true)
-	               {
-	                   $('#ShowExport').show();
-	               }else{
-	                  $('#ShowExport').hide();
-	               }    
-	           } 
 
-	            if(item.action =='import')
-	           {
-	               if(item.checked ==true)
-	               {
-	                   $('#ShowImport').show();
-	                   
-	               }else{
-	                   $('#ShowImport').hide();
-	                  
-	               }    
-	           } 
 
-	            if(item.action =='checklist')
-	            {
-	               if(item.checked ==true)
-	               {
-	                   $('#ShowChecklist').show();
-	                   $('#ShowChecklistAll').show();
-	                  
-	               }else{
-	                   $('#ShowChecklist').hide();
-	                   $('#ShowChecklistAll').hide();
 
-	               } 
-	            }
+      
 
-	         
-	           
-
-	       });
+       
+           });
 	    }
 
 		function reformatNumber(data, row, column, node) {

@@ -118,6 +118,10 @@ class AuthController extends Controller
                        $access =  $RoleUser->role->slug; 
                        $userSidebar = RequestAuth::requestUserSidebar();
 
+                       $role = RequestMenuRoles::Roles($RoleUser->role->id);
+                       $dataMenu = json_decode($role);
+                      $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
+
 
                        $token = compact('token');
                        setcookie('access', $access, time() + (86400 * 30), "/"); // 86400 = 1 day
@@ -132,16 +136,18 @@ class AuthController extends Controller
                                    );
                        RequestSystemLog::CreateLog($log);
 
-                       if($access =='admin')
-                       {
-                            $sidebar = ConfigMenu::MenuSidebarAdmin();
-                       }else if($access =='pusat'){
-                           $sidebar = ConfigMenu::MenuSidebarPusat();
-                       }else if($access =='province'){
-                            $sidebar = ConfigMenu::MenuSidebarProvinsi();
-                       }else if($access =='daerah'){
-                           $sidebar = ConfigMenu::MenuSidebarKabupaten();
-                       } 
+                       // if($access =='admin')
+                       // {
+                       //      $sidebar = ConfigMenu::MenuSidebarAdmin();
+                       // }else if($access =='pusat'){
+                       //     $sidebar = ConfigMenu::MenuSidebarPusat();
+                       // }else if($access =='province'){
+                       //      $sidebar = ConfigMenu::MenuSidebarProvinsi();
+                       // }else if($access =='daerah'){
+                       //     $sidebar = ConfigMenu::MenuSidebarKabupaten();
+                       // } 
+
+                       
 
                        $log = array(             
                         'category'=> 'LOG_DATA_LOGIN',

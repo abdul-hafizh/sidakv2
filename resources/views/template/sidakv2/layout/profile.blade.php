@@ -17,12 +17,21 @@
        var daerah_id = '';
         const apps = localStorage.getItem('apps');
         const template = JSON.parse(apps);
+
+          var url = window.location.href; 
+          var currentDomain = window.location.hostname;
+          var segments = url.split('/');
+         
+
         if(template)
         {
-
-          GetProfile();
+          if(segments[3] !='login')
+          {
+            GetProfile(); 
+          }  
+          
         
-       } 
+        } 
 
        function GetProfile(){
 
@@ -37,7 +46,7 @@
                    daerah_id = response.data.daerah_id;
                 },
                 error: function(error) {
-                console.error(error);
+               // console.error(error);
                 }
             });
          
