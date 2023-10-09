@@ -98,16 +98,16 @@ class RequestPaguTarget
         $numberNext = 1;
         //dd($data);
         $result = $data->get();
-        $options = RequestMenuRoles::ActionPage('pagu-target');
+        $options = RequestMenuRoles::ActionPage('pagu-apbn');
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
             
             foreach($options as $rows => $row)
             {
-               if($row->action == 'edit')
+               if($row->action == 'update')
                {
-                    if($row->checked == 'checked')
+                    if($row->checked == true)
                     {
                             
                               
@@ -118,7 +118,7 @@ class RequestPaguTarget
                
                 if($row->action == 'delete')
                 {
-                    if($row->checked == 'checked')
+                    if($row->checked == true)
                     {
                         
                         $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';

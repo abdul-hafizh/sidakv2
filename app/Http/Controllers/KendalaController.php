@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestSystemLog;
+use App\Http\Request\RequestAuth;
 use DB;
 class KendalaController extends Controller
 {
@@ -23,8 +24,9 @@ class KendalaController extends Controller
             'slug'=>'kendala',
             'url'=>'kendala'
         );
+        $access = RequestAuth::Access();
         RequestSystemLog::CreateLog($log);
-        $with =  ['title' => $title,'template'=>'template/'.$this->template];
+        $with =  ['title' => $title,'access'=>$access,'template'=>'template/'.$this->template];
        
         return view('template/' . $this->template . '.kendala.index')->with($with);
        

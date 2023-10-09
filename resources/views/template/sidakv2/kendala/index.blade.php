@@ -24,25 +24,28 @@
 					<option value="all">All</option>
 				</select>
             </div>
-			<!-- <div id="ShowChecklist" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
+
+            @if($access =='admin' || $access == 'pusat' )
+			<div  class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
 				</button>
 
-			</div> -->
-
-			<div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+			</div>
+              @endif
+			<div  class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
             </div>
-
-			
-			<!-- <div id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
+             
+			@if($access =='admin' || $access == 'pusat' )
+			<div  class="pull-left padding-9-0">
                 <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add">
 				 Tambah Data
 				</button> 
-		    </div> -->	
+		    </div>	
+		    @endif
 
 				
 		</div> 
@@ -65,13 +68,17 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<!-- <th id="ShowChecklistAll" style="display:none;"><input id="select-all" class="span-title" type="checkbox"></th> -->
+							@if($access =='admin' || $access == 'pusat' )
+							<th ><input id="select-all" class="span-title" type="checkbox"></th>
+							@endif
 							<th><span class="span-title">No</span></th>
 							<th><div class="split-table"></div><span class="span-title">Kategori</span></th>
 							<th><div class="split-table"></div><span class="span-title">Keterangan</span></th>
-							<th id="ShowStatus" style="display:none;"><div class="split-table"></div><span class="span-title">Status</span></th>
-							<th id="ShowCreated" style="display:none;"><div class="split-table"></div><span class="span-title">Dibuat</span></th>  
-							<th id="ShowAction" style="display:none;"><div class="split-table"></div><span class="span-title">Aksi</span></th>
+							@if($access =='admin' || $access == 'pusat' )
+							<th ><div class="split-table"></div><span class="span-title">Status</span></th>
+							<th ><div class="split-table"></div><span class="span-title">Dibuat</span></th>  
+							<th ><div class="split-table"></div><span class="span-title">Aksi</span></th>
+							@endif
 						</tr>
 					</thead>
 
@@ -89,7 +96,7 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	</div>
 </div>
- <!--  @include('template/sidakv2/kendala.add')    --> 
+  @include('template/sidakv2/kendala.add')
   @include('template/sidakv2/kendala.exportKriteria')
 <script type="text/javascript">
 
@@ -157,7 +164,16 @@
     // Perform other actions based on the selected value
     });
 
-     // "Select All" checkbox
+    
+
+     // Refresh selected button
+    $('#refresh').on('click', function() {
+    	
+        fetchData(page);
+        $('#search-input').val('');
+    });
+
+      // "Select All" checkbox
     $('#select-all').on('change', function() {
         $('.item-checkbox').prop('checked', $(this).is(':checked'));
 
@@ -169,13 +185,6 @@
          	$('#delete-selected').prop("disabled", true);
          } 
 
-    });
-
-     // Refresh selected button
-    $('#refresh').on('click', function() {
-    	
-        fetchData(page);
-        $('#search-input').val('');
     });
 
     // Delete selected button
@@ -302,15 +311,9 @@
 
     // Function to update the content area with data
     function updateContent(data,options) {
-       
-        // const edited = options.find(o => o.action === 'edit');
-        // const deleted = options.find(o => o.action === 'delete');
-        const detail = options.find(o => o.action === 'detail');
-        // const checklist = options.find(o => o.action === 'checklist');
-        const created = options.find(o => o.action === 'dibuat');
-        const status = options.find(o => o.action === 'status');
+           const content = $('#content');
         // Clear previous data
-        const content = $('#content');
+     
         content.empty();
         if(data.length>0)
         { 
@@ -318,50 +321,43 @@
 	        data.forEach(function(item, index) {
 	           	let row = ``;
 	             row +=`<tr>`;
-	              // if(checklist.checked == true)
-               //    {
-	              //  row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-	              //  } 
+	               if(item.access == 'admin' || item.access == 'pusat')
+	               {
+	                  row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	               }
 	               row +=`<td>${item.number}</td>`;
-	               row +=`<td>${item.category }</td>`;
-	               
+	               row +=`<td>${item.category }</td>`; 
 	               row +=`<td>${item.description}</td>`;
-	            if(status.checked == true){
-	            	 row +=`<td>${item.status.status_convert}</td>`;
-	            } 
-
-	            if(created.checked == true){
-	            	  row +=`<td>${item.created_at}</td>`;
-	            }
+	               if(item.access == 'admin' || item.access == 'pusat')
+	               {	
+	               row +=`<td>${item.status.status_convert}</td>`;
+	               row +=`<td>${item.created_at}</td>`;
+	               }
 		          
 		          
 	               row +=`<td>`; 
 	               row +=`<div class="btn-group">`;
 
-	               // row +=`<button id="Export"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Export Data" type="button" class="btn btn-primary"><i class="fa fa-file-excel-o" ></i></button>`;
-                if(detail.checked ==true)
-                {
+	               
+                
                 	row +=`<button id="Detail"  data-param_id="${item.id}"  data-toggle="tooltip" data-placement="top" title="Lihat ${item.category }" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;	
-                } 	
-	                
+                	
+	                 
+	               if(item.access == 'admin' || item.access == 'pusat')
+	               {  
 
-	            // if(edited.checked == true)
-             //    {  
     
-	            //     row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;	
+	                   row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
-	            //     row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-	            //     row +=`<div id="FormEdit-${item.id}"></div>`;
-	            //     row +=`</div>`;
-
-	            // }     
+	                   row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                }	
 
 
-             //    if(deleted.checked == true) 
-             //    {
-	            //     row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-	            // }    
+	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+	                	row +=`<div id="FormEdit-${item.id}"></div>`;
+	                row +=`</div>`;
 
+	           
 	                row +=`</div>`;
 	                row +=`</td>`;
 	              row +=`</tr>`; 
@@ -402,7 +398,7 @@
                 row +=`<div class="modal-content ">`;
 
 				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" id="close1" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<button type="button"  class="clear-input close" data-dismiss="modal">&times;</button>`;
 				         row +=`<h4 class="modal-title">Edit Forum</h4>`;
 				       row +=`</div>`;
 
@@ -433,7 +429,7 @@
 				                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
 				                    } 	
 				                 
-				                      row +=`Aktif`;
+				                      row +=`Publish`;
 				                    row +=`</label>`;
 				                row +=`</div>`;
 				                row +=`<div class="radio">`;
@@ -446,7 +442,7 @@
 				                    } 
 
 				                     
-				                     row +=`Non Aktif`;
+				                     row +=`Draft`;
 				                    row +=`</label>`;
 				                row +=`</div>`;
 
@@ -456,7 +452,7 @@
                             row +=`</div>`;
 
                             row +=`<div class="modal-footer">`;
-						        row +=`<button id="close2" type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+						        row +=`<button  type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="simpan" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
 						           

@@ -5242,7 +5242,7 @@ a.label:focus,a.label:hover {
 
 .btn .label {
     position: relative;
-    top: -1px
+    /*top: -1px*/
 }
 
 .label-default {

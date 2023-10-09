@@ -31,7 +31,7 @@
                 </button>
             </div>
 
-            <div id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button">
+            <div  class="pull-left padding-9-0 margin-left-button">
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -40,11 +40,7 @@
             
 
 
-            <div id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
-                <button type="button" class="btn btn-primary border-radius-10" data-toggle="modal" data-target="#modal-add" >
-                 Tambah Data
-                </button> 
-            </div>      
+             
         </div> 
 
         <div  class="pull-right width-50">
@@ -73,7 +69,7 @@
                             <th><div class="split-table"></div> <span class="span-title"> Oleh </span></th>
                             <th><div class="split-table"></div> <span class="span-title"> Kelompok User </span></th>
                             <th><div class="split-table"></div> <span class="span-title"> Tanggal Log </span> </th>
-                            <th id="ShowAction" style="display:none;"><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+                            <th id="ShowAction" style="display:none;" ><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
                         </tr>
                     </thead>
 
@@ -313,9 +309,7 @@
     // Function to update the content area with data
     function updateContent(data,options) {
         const content = $('#content');
-        const detail = options.find(o => o.action === 'detail');
-        const deleted = options.find(o => o.action === 'delete');
-        const checklist = options.find(o => o.action === 'checklist');  
+       
  
 
 
@@ -327,17 +321,18 @@
         data.forEach(function(item, index) {
             let row = ``;
              row +=`<tr >`;
-
-
-
-              
               
 
-                   if(checklist.checked == true)
-                   {
-
-                   row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-                   }
+              options.forEach(function(opt, arr) 
+              {
+                 if(opt.action == 'delete')
+                 {
+                    if(opt.checked == true)
+                    {
+                        row +=ChecklistTable(item);
+                    }
+                 }       
+              }); 
 
               
                row +=`<td rowspan="3" class="padding-text-table">${item.number}</td>`;
@@ -347,35 +342,29 @@
                row +=`<td rowspan="3" class="padding-text-table">${item.created_by}</td>`;
                row +=`<td rowspan="3" class="padding-text-table">${item.role_user}</td>`;
                 row +=`<td rowspan="3" class="padding-text-table">${item.created_at}</td>`;
-              if(detail.checked == true || deleted.checked == true)
-             { 
+             
+
                 row +=`<td  rowspan="3" >`; 
                 row +=`<div class="btn-group">`;
+
+               
                 
-                if(detail.checked == true)
+                options.forEach(function(opt, arr) 
                 {
-                   
-                    row +=`<button id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Detail Data"  type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
-                  
-                   
-                    row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                    row +=`<div id="FormEdit-${item.id}"></div>`;
-                    row +=`</div>`;
+                        if(opt.action == 'delete')
+                        {
+                           if(opt.checked == true)
+                           {
+                             
+                            row += BtnTableDelete(item);
 
-                }
-                     
-                  if(deleted.checked == true) 
-                  {
-                      
-                        row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-
-                  }
-
+                           } 
+                        }   
            
-
+                })
                 row +=`</div>`;
                 row +=`</td>`;
-           }     
+              
               row +=`</tr>`; 
               row +=`<tr>`;
                
@@ -510,66 +499,58 @@
         
     }
 
-    
+    function ChecklistTable(item){
+         
+           var row = '';
+           if(item.deleted == true)
+           {
+                row +=`<td rowspan="3"><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+           }else{
+               row +=`<td rowspan="3"><input disabled  type="checkbox"></td></td>`;  
+             
+           }   
 
-    function listOptions(data){
-        
+           return row;
+    }
 
+    function BtnTableDelete(item){
         
-       
-        
-       data.forEach(function(item, index) 
+       var row = ''; 
+        if(item.deleted == true)
        {
-           if(item.action =='add')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowAdd').show();
-               }else{
-                  $('#ShowAdd').hide();
-               }    
-           }
-
-          
+            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }else{
+            row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }
 
 
+       return row;
 
-            if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           }     
 
+    }
+
+    function listOptions(data){ 
+
+        data.forEach(function(item, index) 
+       {
            
 
-            if(item.action =='checklist')
+            if(item.action =='delete')
             {
                if(item.checked ==true)
                {
                    $('#ShowChecklist').show();
                    $('#ShowChecklistAll').show();
+                    $('#ShowAction').show();
+                   
                }else{
                    $('#ShowChecklist').hide();
                    $('#ShowChecklistAll').hide();
+                   $('#ShowAction').hide();
                } 
             }
 
-             if(item.action =='edit' && item.action =='delete')
-            {
-               if(item.checked ==false)
-               {
-                   $('#ShowAction').hide();
-               }else{
-                   $('#ShowAction').show();
-               }  
-            }
-
-           
-
+       
        });
     }
 

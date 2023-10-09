@@ -57,7 +57,13 @@
                 </button>
             </div>
 
-            <div id="ShowExport" style="display:none;"  class="pull-left padding-9-0 margin-left-button" >
+            <!-- <div id="ShowImport" style="display:none;" class="pull-left padding-9-0 margin-left-button" >
+                <button  type="button" class="btn btn-warning border-radius-10" >
+                     IMPORT EXCEL
+                </button>
+            </div>    --> 
+
+            <div   class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
                      Export
                 </button>
@@ -444,9 +450,8 @@
     // Function to update the content area with data
     function updateContent(data,options) {
         const content = $('#content');
-        const edited = options.find(o => o.action === 'edit');
-        const deleted = options.find(o => o.action === 'delete');
-        const checklist = options.find(o => o.action === 'checklist');
+        
+      
        
         // Clear previous data
         content.empty();
@@ -456,20 +461,17 @@
         data.forEach(function(item, index) {
             let row = ``;
              row +=`<tr>`;
-
-               if(item.deleted == true)
-               {
-                  if(checklist.checked == true)
-                  {
-                     row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-                  }
-                  
-               }else{
-                  if(checklist.checked == true)
-                  {
-                  row +=`<td><input disabled  type="checkbox"></td></td>`;  
-                  }
-               }    
+              
+              options.forEach(function(opt, arr) 
+              {
+                 if(opt.action == 'delete')
+                 {
+                    if(opt.checked == true)
+                    {
+                        row +=ChecklistTable(item);
+                    }
+                 }       
+              }); 
                
                row +=`<td class="padding-text-table">${item.number}</td>`;
                row +=`<td class="padding-text-table">${item.username}</td>`;
@@ -480,38 +482,46 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group pull-left list-menu-table">`;
 
+           
+
+                 row +=`<button id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
+
+              
 
 
                 row +=`<button id="ForgotPassword" data-param_id="`+ item.email +`"  type="button" data-toggle="tooltip" data-placement="top" title="Kirim Forgot password"  class="btn btn-primary"><i class="fa fa-envelope-o" ></i></button>`;
 
-                if(edited.checked == true)
-                {
-                    row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
-                    row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-                    row +=`<div id="FormEdit-${item.id}"></div>`;
-                    row +=`</div>`;
-
-                }
-
-                if(item.deleted == true)
-               {
-                   
-                 if(deleted.checked == true) 
-                 {
-                    row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
-                 } 
-                  
-                 
-               }else{
-                  if(deleted.checked == true) 
+                  options.forEach(function(opt, arr) 
                   {
+                        if(opt.action == 'update')
+                        {
+                           if(opt.checked == true)
+                           { 
+                                row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                              
+                            }    
 
-                    row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-                  }   
+                        } 
 
-                   
-               }
+                        if(opt.action == 'delete')
+                        {
+                           if(opt.checked == true)
+                           {
+                             
+                            row += BtnTableDelete(item);
+
+                           } 
+                        }   
+
+
+                  });
+
+                     row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+                                row +=`<div id="FormEdit-${item.id}"></div>`;
+                                row +=`</div>`;
+ 
+                 
 
                if(item.status.status_db == 'Y')
                {
@@ -561,11 +571,11 @@
 
         
 
-        $( "#content" ).on( "click", "#Edit", (e) => {
+       $( "#content" ).on( "click", "#Edit", (e) => {
              
             let id = e.currentTarget.dataset.param_id;
-            const item = list.find(o => o.id === id); 
-            SelectRole(item);
+            const item = list.find(o => o.id == id); 
+            SelectRole(item,'edit');
 
             // Event handler when an item is selected
             $('.select-edit').on('select-edit:select', function(e) {
@@ -715,18 +725,9 @@
                 row +=`</div>`;
             row +=`</div>`;
 
-
-          
-
             $('#FormEdit-'+ item.id).html(row);
            
-           $("#close1").click(()=> {  
-              DefaultNull(item.id);
-           });
-
-            $("#close2").click(()=> {  
-              DefaultNull(item.id);
-           });
+           
 
           
 
@@ -812,9 +813,7 @@
                       $('#text_label').text(text_label);
                     }
 
-                }
-
-                  
+                }    
             });  
 
                 // Fetch data using AJAX
@@ -875,7 +874,7 @@
                         },
                         error: (respons)=>{
                             errors = respons.responseJSON;
-                            SelectRole(find);
+                            SelectRole(find,'edit');
                              $("#update").show();
                              $("#load-update").hide();
  
@@ -972,10 +971,152 @@
                       });
  
                 
-        });  
-            
-        });
+            });
 
+       });
+
+       
+       $( "#content" ).on( "click", "#Detail", (e) => {
+             
+            let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id == id); 
+            SelectRole(item,'detail');
+
+           
+            
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+                       row +=`<div class="modal-header">`;
+                         row +=`<button type="button"  data-dismiss="modal" class="clear-input close" >&times;</button>`;
+                         row +=`<h4 class="modal-title">Detail User</h4>`;
+                       row +=`</div>`;
+
+                       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+                            row +=`<div class="modal-body">`;
+
+                                 row +=`<div id="role-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+                                     row +=`<label>Role </label>`;
+                                   row +=`<select  id="role-`+ item.id +`" class="selectpicker" name="role_id"></select>`;
+
+                                   row +=`<span id="role-messages-`+ item.id +`" class="span-messages"></span>`;
+                                 row +=`</div>`;
+                               
+                                row +=`<div class="form-group has-feedback" >`;
+                                  row +=`<label>Username</label>`;
+                                  row +=`<input readonly type="text" class="form-control" name="username" placeholder="Username" value="`+ item.username +`" disabled>`;
+                                row +=`</div>`;
+
+                                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+                                  row +=`<label>Name</label>`;
+
+                                  row +=`<input readonly type="text" class="form-control" name="name" placeholder="Name" value="`+ item.name +`">
+                                  <span id="name-messages-`+ item.id +`" class="span-messages"></span>`;
+
+                                 row +=`</div>`;
+
+
+
+                                 row +=`<div id="email-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+                                   row +=`<label>Email</label>`;
+
+                                   row +=`<input readonly type="email" class="form-control" name="email" placeholder="email" value="`+ item.email +`">`;
+
+                                   row +=`<span id="email-messages-`+ item.id +`" class="span-messages"></span>`;
+
+                                 row +=`</div>`;
+
+
+                                 row +=`<div id="phone-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+                                   row +=`<label>Phone</label>`;
+
+                                   row +=`<input readonly type="text" class="form-control" name="phone" placeholder="phone" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="`+ item.phone +`">`;
+
+                                   row +=`<span id="phone-messages-`+ item.id +`" class="span-messages"></span>`;
+
+                                 row +=`</div>`;
+
+
+
+                                 row +=`<div id="nip-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+                                   row +=`<label>NIP</label>`;
+
+                                   row +=`<input readonly type="text" class="form-control" name="nip" placeholder="NIP"  oninput="this.value = this.value.replace(/[^0-9.]/g, '')" value="`+ item.nip +`">`;
+
+                                   row +=`<span id="nip-messages-`+ item.id +`" class="span-messages"></span>`;
+
+                                 row +=`</div>`;
+
+
+                                 row +=`<div id="leader-name-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+                                   row +=`<label>Penanggung Jawab</label>`;
+
+                                   row +=`<input readonly type="text" class="form-control" name="leader_name" placeholder="Penanggung Jawab " value="`+ item.leader_name +`">`;
+
+                                   row +=`<span id="leader-name-messages-`+ item.id +`" class="span-messages"></span>`;
+
+                                 row +=`</div>`;
+
+
+                                 row +=`<div id="leader-nip-alert-`+ item.id +`" class="form-group has-feedback">`;
+
+                                   row +=`<label>NIP Penanggung Jawab</label>`;
+
+                                   row +=`<input readonly type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  class="form-control" name="leader_nip" placeholder="NIP Penanggung Jawab" value="`+ item.leader_nip +`">`;
+                                    row +=`<span id="leader-nip-messages-`+ item.id +`" class="span-messages"></span>`;
+
+                                 row +=`</div>`;
+
+
+                                 row +=`<div id="daerah-alert-`+ item.id +`" class="form-group has-feedback">`;
+                                
+                                     
+                                 
+                                      row +=`<label id="text_label"></label>`;
+                                
+                                   row +=`<select  id="daerah_id-`+ item.id +`" class="selectpicker form-control" data-live-search="true" name="daerah_id" ></select>`;
+
+                                   row +=`<span id="daerah-messages-`+ item.id +`" class="span-messages"></span>`;
+                                 row +=`</div>`;
+
+                                 row +=`<div  class="form-group has-feedback">`;
+                                  row +=`<label>Photo </label>`;
+                                  row +=`<div  class="user-photo camera_upload">`;
+                                    row +=`<img id="user-photo" width="130" src="`+ item.photo +`" alt="admin sidak">`;
+                                   
+                                  row +=`</div>`;
+                                row +=`</div>`;
+
+
+                                
+
+
+                            row +=`</div>`;
+
+                            row +=`<div class="modal-footer">`;
+                                row +=`<button type="button"  data-dismiss="modal" class="clear-input btn btn-default" >Tutup</button>`;
+
+                                
+                                    row +=`<button id="load-update" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
+                            </div>`;
+                            row +=`</div>`;
+
+
+                        row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`;
+
+            $('#FormEdit-'+ item.id).html(row);
+           
+                       
+        });
        
 
 
@@ -1004,7 +1145,6 @@
                   }
                 });
 
-            
         }); 
 
 
@@ -1032,7 +1172,6 @@
                   }
                 });
 
-            
         }); 
 
         $( "#content" ).on( "click", "#Active", (e) => {
@@ -1059,11 +1198,10 @@
                   }
                 });
 
-            
         }); 
 
 
-          $( "#content" ).on( "click", "#ForgotPassword", (e) => {
+        $( "#content" ).on( "click", "#ForgotPassword", (e) => {
             let email = e.currentTarget.dataset.param_id;
 
               $.ajax({
@@ -1091,24 +1229,45 @@
                         console.error('Error fetching data:', error);
                     }
                 });
-           
 
-            
         }); 
            
        
         
     }
 
-    function DefaultNull(id){
+    function ChecklistTable(item){
+         
+           var row = '';
+           if(item.deleted == true)
+           {
+                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+           }else{
+               row +=`<td><input disabled  type="checkbox"></td></td>`;  
+             
+           }   
 
-           $('#daerah-alert-add').hide();
-           $("input").val(null);
-           $('#role-'+ id).selectpicker('val', 'null');
-           $('#daerah_id-'+ id).selectpicker('val', 'null');          
-           $('#modal-edit-'+ id).modal('toggle');
+           return row;
+    }
 
-        }
+
+    function BtnTableDelete(item){
+        
+       var row = ''; 
+        if(item.deleted == true)
+       {
+            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }else{
+            row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }
+
+
+       return row;
+
+
+    }
+
+   
 
     function SelectProvinsi(item,text_label){
            
@@ -1179,7 +1338,7 @@
 
     }
 
-    function SelectRole(item){
+    function SelectRole(item,type){
 
         $.ajax({
                 url: BASE_URL +'/api/select-role',
@@ -1203,7 +1362,13 @@
                    var selectedValue = item.role_id;
                    select.val(selectedValue);
                   // Refresh the SelectPicker
+                  if(type =='detail')
+                  {
+                    select.prop('disabled', true);  
+                  }  
+                  
                   select.selectpicker('refresh');
+
 
                 },
                 error: function() {
@@ -1305,28 +1470,22 @@
         
        data.forEach(function(item, index) 
        {
-           if(item.action =='add')
+           if(item.action =='create')
            {
                if(item.checked ==true)
                {
                    $('#ShowAdd').show();
+                   $('#ShowImport').show();
                }else{
                   $('#ShowAdd').hide();
+                  $('#ShowImport').hide();
                }    
            }
-               
-           if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           }     
 
 
-            if(item.action =='checklist')
+
+
+            if(item.action =='delete')
             {
                if(item.checked ==true)
                {

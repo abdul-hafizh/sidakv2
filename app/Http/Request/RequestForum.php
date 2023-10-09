@@ -45,6 +45,8 @@ class RequestForum
             $temp[$key]['category'] = $val->category;
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['description'] = $description;
+            $temp[$key]['access'] = RequestAuth::Access();
+           
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
             $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at); 
@@ -65,6 +67,8 @@ class RequestForum
         return $result;
 
    }
+
+  
 
   
    public static function GetDataTopic($data,$perPage,$request)
@@ -99,7 +103,8 @@ class RequestForum
             $temp[$key]['name'] = $val->name;
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['category'] = RequestForum::categoryForum($val->forum_id);
-            $temp[$key]['total_messsage'] = RequestForum::TotalMessage($val->id).' Komentar';
+            
+            $temp[$key]['total_messsage'] = RequestForum::TotalMessage($val->id,$val->created_by).' Komentar';
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
             $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at); 
@@ -121,9 +126,11 @@ class RequestForum
 
    }
 
-   public static function TotalMessage($topic_id)
+   
+
+   public static function TotalMessage($topic_id,$created_by)
    { 
-      $count = TopicDetail::where('topic_id',$topic_id)->count();
+      $count = TopicDetail::where('topic_id',$topic_id)->where('created_by','!=',$created_by)->count();
       return $count;
    }
 
@@ -147,12 +154,26 @@ class RequestForum
           $temp[$key]['id'] = $val->id;
           $temp[$key]['username'] = $val->created_by;
           $temp[$key]['photo'] = RequestAuth::photoUser($val->created_by);
+          $temp[$key]['action'] = RequestKendala::CheckAction($val->created_by);
           $temp[$key]['messages'] = $val->messages; 
           $temp[$key]['deleted'] = true;
        } 
 
 
         return $temp;
+   }
+
+   public static function CheckAction($username)
+   {
+        if($username == Auth::User()->username)
+        {
+          $result = true;
+        }else{
+          $result = false;
+        } 
+
+        return $result;   
+
    }
 
 

@@ -47,6 +47,7 @@
 
         let sidebar = localStorage.getItem('menu_sidebar');
         var action =  JSON.parse(sidebar);
+
         var data = [];
         var menulast = '';
         getMenuSidebar(action);
@@ -143,7 +144,7 @@
 		        data.forEach(function(item, index) {
 		           	let row = ``;
 
-			        if(item.count>0)
+			        if(item.tasks.length>0)
 					{
 			           
 			            row +=`<li id="class-menu" data-param_id="${item.slug}" class="li-menu ${item.class}" style="height: auto;">`;
@@ -151,15 +152,15 @@
 			         }else{
 	                     
 	                    row +=`<li id="class-menu" class="li-menu ${item.class}" data-param_id="${item.slug}">`;
-	                    row +=`<a href="${item.url}">`;
+	                    row +=`<a href="${item.path_web}">`;
 
 			         }
 		          		            
 		            
-						    row +=`<i class="fa-icon ${item.icon}"></i>`;
+						   row +=`<img src="${item.icon_menu}" class="fa-icon img-${item.slug}">`;
 						        row +=`<span class="title-menu" > ${item.name}</span>`;
 						   
-						   if(item.count>0)
+						   if(item.tasks.length>0)
 						   {	
 						        row +=`<span class="pull-right-container ">`;
 						          row +=`<i class="fa fa-angle-left pull-right"></i>`;
@@ -182,9 +183,9 @@
 								 } 
 							    
 							        
-							        row +=`<a href="`+ item.tasks[i].url +`" >`;
-							            row +=`<i class="po-top-menu fa-icon `+ item.tasks[i].icon +`"></i>`; 
-							             row +=`<span class="title-menu" > `+ item.tasks[i].name +`</span>`;
+							        row +=`<a href="`+ item.tasks[i].path_web +`" >`;
+							            row +=`<img class="po-top-menu fa-icon" src="`+ item.tasks[i].icon +`">`; 
+							             row +=`<span class="title-menu-sub" > `+ item.tasks[i].name +`</span>`;
 							        row +=`</a>`;
 							    row +=`</li>`;
 
@@ -218,23 +219,24 @@
         }
         
         //menu
-        $( "#menu-sidebar" ).on( "click", "#class-menu", (e) => {
+        $( "#menu-sidebar" ).on( "click", "#class-menu" , (e) => {
 		        let slug = e.currentTarget.dataset.param_id;
-		       
-		        
                 data = action;
+                
                 //active sebelummnya
                 findlast = data.find(o => o.active === true && o.slug != slug);
                 
                 if(findlast)
                 {
+                	
                 	findlast.active = false;
-                	findlast.icon = 'icon-'+findlast.slug;
+                	findlast.icon_menu = findlast.icon;
                     findlast.class = findlast.slug +' treeview';
 
                     let linklast = findlast.tasks.find(o => o.active === true);
                     if(linklast)
                     {
+                    
                         linklast.active = false;
                         linklast.class = linklast.slug; 	
                     }
@@ -246,22 +248,23 @@
                
                 
 
-                const findtrue = data.find(o => o.slug === slug);
+                var findtrue = data.find(o => o.slug === slug);
                 if(findtrue.active == true)
                 {
-
+                     
                     findtrue.active = false;
-                    findtrue.icon = 'icon-'+findtrue.slug;
+                    findtrue.icon_menu = findtrue.icon;
                     findtrue.class = findtrue.slug +' treeview';
 
-                    
+             
 
                 }else{
 
                    
-
+                
                     findtrue.active = true;
-                    findtrue.icon = 'icon-'+findtrue.slug +'-hover';
+                    findtrue.icon_menu = findtrue.icon_hover;
+               
                     findtrue.class = findtrue.slug +' treeview menu-open active';
 
 
@@ -271,10 +274,10 @@
     
                 getMenuSidebar(data);
                
-                if(findtrue.count ==0)
-                {
-                  window.location.replace(findtrue.url);  
-                }
+                // if(findtrue.count ==0)
+                // {
+                //   window.location.replace(findtrue.url);  
+                // }
                
 		        
 		});
@@ -284,22 +287,25 @@
            $('.li-menu').hover((e) => {
 		        let menu = e.currentTarget.dataset.param_id;
 		        data = action;
+		        var findtrue = data.find(o => o.slug === menu);
                 var findlast = data.find(o => o.active === true); 
 		        if(findlast)
 		        { 	
-		        
+		            
 	                 if(menu != findlast.slug)
 	                 {
 	                	 $('.'+findlast.slug).removeClass('menu-open active');
-	                     $('.icon-'+ findlast.slug +'-hover').removeClass('icon-'+ findlast.slug+'-hover').addClass('icon-'+ findlast.slug);
-	                     $('.icon-'+ menu).removeClass('icon-'+ menu).addClass('icon-'+ menu+'-hover');
+	                     $('.img-'+ findlast.slug).attr('src',findlast.icon);
+	                     $('.img-'+ menu).attr('src',findtrue.icon_hover);
+                        
 	                 }
                }else{
-
-                  const findtrue = data.find(o => o.slug === menu);
-                  $('.'+findtrue.slug).removeClass('menu-open active');
-                  $('.icon-'+ findtrue.slug +'-hover').removeClass('icon-'+ findtrue.slug+'-hover').addClass('icon-'+ findtrue.slug);
-	              $('.icon-'+ menu).removeClass('icon-'+ menu).addClass('icon-'+ menu+'-hover');
+           
+                    
+                 
+                    $('.'+findtrue.slug).removeClass('menu-open active')
+                    $('.img-'+ findtrue.slug).attr('src',findtrue.icon);
+	                $('.img-'+ menu).attr('src',findtrue.icon_hover);
                   
                }
 
@@ -310,23 +316,27 @@
 		    }, function (e) {
 		    	let menu = e.currentTarget.dataset.param_id;
 		        var findlast = data.find(o => o.active === true); 
+		         const findtrue = data.find(o => o.slug === menu);
 			      if(findlast)
 			      {
-			    	  //tampilakan menu baru
+			    	 //tampilakan menu baru
 	                 if(menu != findlast.slug)
 	                 {
-
-	                 	 //menu
-	                    $('.icon-'+ menu +'-hover').removeClass('icon-'+ menu+'-hover').addClass('icon-'+ menu);
+                           
+	                 	 //menu active
 	                    $('.'+findlast.slug).addClass('menu-open active');
-	                    $('.icon-'+ findlast.slug).removeClass('icon-'+ findlast.slug).addClass('icon-'+ findlast.slug+'-hover');
+	                    $('.img-'+ menu).attr('src',findtrue.icon);
+	                    $('.img-'+ findlast.slug).attr('src',findlast.icon_hover);
+
+	                   
 
 	                 }
 	              }else{
-
-                      const findtrue = data.find(o => o.slug === menu);
-	                  $('.icon-'+ menu +'-hover').removeClass('icon-'+ menu+'-hover').addClass('icon-'+ menu);
+                       
+   
 	                  $('.'+findtrue.slug).removeClass('menu-open active');
+
+	                  $('.img-'+ menu).attr('src',findtrue.icon);
 	                
 	              }    	
 

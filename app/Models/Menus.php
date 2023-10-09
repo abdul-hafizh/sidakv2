@@ -18,14 +18,11 @@ class Menus extends Model
         'name',
         'slug',
         'path_web',
-        'path_vue',
-        'path_api',
-        'foldername',
-        'filename',
-        'type',
-        'type_icon',
+        'parent',        
         'icon',
+        'icon_hover',
         'created_by',
+        'modified_by',
         'status'
     ];
 

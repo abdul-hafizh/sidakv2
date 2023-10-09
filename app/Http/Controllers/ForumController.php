@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestSystemLog;
+use App\Http\Request\RequestAuth;
 use DB;
 class ForumController extends Controller
 {
@@ -23,8 +24,10 @@ class ForumController extends Controller
             'slug'=>'forum',
             'url'=>'forum'
         );
+        $access = RequestAuth::Access();
         RequestSystemLog::CreateLog($log);
-        $with =  ['title' => $title,'template'=>'template/'.$this->template];
+        $with =  ['title' => $title,'access'=>$access,'template'=>'template/'.$this->template];
+       
         return view('template/' . $this->template . '.forum.index')->with($with);
      
     }

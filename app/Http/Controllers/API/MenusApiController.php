@@ -106,23 +106,42 @@ class MenusApiController extends Controller
         }else{
             
            $insert = RequestMenus::fieldsData($request);  
-
-           if($request->icon)
+            $slug = rand(1000,9999);
+            if($request->icon)
             {   
-                $slug =  Auth::User()->username;
-                $source = explode(";base64,", $request->icon);
-                $extFile = explode("image/", $source[0]);
-                $extentions = $extFile[1];
-                $fileDir = '/images/menu/';
-                $image = base64_decode($source[1]);
-                $filePath = public_path() .$fileDir;
-                $photo = time() . '-' . $slug.'.'.$extentions;
-                $success = file_put_contents($filePath.$photo, $image);
+               
+                $sourceIcon = explode(";base64,", $request->icon);
+                $extFileIcon = explode("image/", $sourceIcon[0]);
+                $extentionsIcon = $extFileIcon[1];
+                $fileDirIcon = '/images/menu/';
+                $imageIcon = base64_decode($sourceIcon[1]);
+                $filePathIcon = public_path() .$fileDirIcon;
+                $icon = time() . '-' . $slug.'.'.$extentionsIcon;
+                $successIcon = file_put_contents($filePathIcon.$icon, $imageIcon);
              
-                $user_photo = ["icon"=>$photo];
-                $merge = array_merge($insert,$user_photo);
+                $menu_icon = ["icon"=>$icon];
+                $merge = array_merge($insert,$menu_icon);
             }else{
                 $merge = $insert;
+            }
+
+            if($request->icon_hover)
+            {   
+               
+                $sourceHover = explode(";base64,", $request->icon_hover);
+                $extFileHover = explode("image/", $sourceHover[0]);
+                $extentionsHover = $extFileHover[1];
+                $fileDirHover = '/images/menu/';
+                $imageHover = base64_decode($sourceHover[1]);
+                $filePathHover = public_path() .$fileDirHover;
+                $hover = time() . '-hover-' . $slug.'.'.$extentionsHover;
+                $successHover = file_put_contents($filePathHover.$hover, $imageHover);
+             
+                $icon_hover = ["icon_hover"=>$hover];
+             
+                $photo_icon = array_merge($merge,$icon_hover);
+            }else{
+                $photo_icon = $merge;
             }
 
 
@@ -133,7 +152,7 @@ class MenusApiController extends Controller
             );
             $datalog = RequestAuditLog::fieldsData($log);
 
-           $saveAccount = Menus::create($merge);
+          $saveAccount = Menus::create($photo_icon);
            return response()->json(['status'=>true,'id'=>$saveAccount,'message'=>'Insert data sucessfully']);    
             
         }    
@@ -150,30 +169,55 @@ class MenusApiController extends Controller
         }else{
 
              $update = RequestMenus::fieldsData($request);
+             $slug = rand(1000,9999);
              if($request->icon)
              {   
-                $slug = Auth::User()->username;
-                $source = explode(";base64,", $request->icon);
-                $extFile = explode("image/", $source[0]);
-                $extentions = $extFile[1];
-                $fileDir = '/images/menu/';
-                $image = base64_decode($source[1]);
-                $filePath = public_path() .$fileDir;
-                $photo = time() . '-' . $slug.'.'.$extentions;
-                $success = file_put_contents($filePath.$photo, $image);
+               
+                $sourceIcon = explode(";base64,", $request->icon);
+                $extFileIcon = explode("image/", $sourceIcon[0]);
+                $extentionsIcon = $extFileIcon[1];
+                $fileDirIcon = '/images/menu/';
+                $imageIcon = base64_decode($sourceIcon[1]);
+                $filePathIcon = public_path() .$fileDirIcon;
+                $icon = time() . '-' . $slug.'.'.$extentionsIcon;
+                $successIcon = file_put_contents($filePathIcon.$icon, $imageIcon);
                 
                 $check = Menus::find($id);
                 if($check)
                 { 
-                   File::delete(public_path() .$fileDir.$check->icon);
+                   File::delete(public_path() .$fileDirIcon.$check->icon);
                 } 
-                $user_photo = ['icon'=> $photo];
-                $merge = array_merge($update,$user_photo);
+                $menu_icon = ["icon"=>$icon];
+                $merge = array_merge($update,$menu_icon);
                 
             }else{
                 $merge = $update;
 
             }
+
+            if($request->icon_hover)
+            {   
+               
+                $sourceHover = explode(";base64,", $request->icon_hover);
+                $extFileHover = explode("image/", $sourceHover[0]);
+                $extentionsHover = $extFileHover[1];
+                $fileDirHover = '/images/menu/';
+                $imageHover = base64_decode($sourceHover[1]);
+                $filePathHover = public_path() .$fileDirHover;
+                $hover = time() . '-hover-' . $slug.'.'.$extentionsHover;
+                $successHover = file_put_contents($filePathHover.$hover, $imageHover);
+                $check = Menus::find($id);
+                if($check)
+                { 
+                   File::delete(public_path() .$fileDirHover.$check->icon_hover);
+                } 
+                $icon_hover = ["icon_hover"=>$hover];
+                $photo_icon = array_merge($merge,$icon_hover);
+            }else{
+                $photo_icon = $merge;
+            }
+
+
 
 
                 $log = array(             
@@ -184,7 +228,7 @@ class MenusApiController extends Controller
                 $datalog = RequestAuditLog::fieldsData($log);
                 //Audit Log
 
-            $UpdateAccount = Menus::where('id',$id)->update($merge);
+            $UpdateAccount = Menus::where('id',$id)->update($photo_icon);
             return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
         
           

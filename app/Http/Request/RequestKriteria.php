@@ -25,7 +25,7 @@ class RequestKriteria
         
         foreach ($data as $key => $val)
         {
-            if($val->status =="Y") { $status = "Aktif";  }else{ $status = "Non Aktif"; }
+            if($val->status =="Y") { $status = "Publish";  }else{ $status = "Draft"; }
 
             $temp[$key]['number'] = $numberNext++;
             $temp[$key]['id'] = $val->id;
@@ -33,7 +33,7 @@ class RequestKriteria
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['description'] = $val->description;
             $temp[$key]['total'] = RequestKriteria::Total($val->id);
-
+            // $temp[$key]['deleted'] = RequestKriteria::checkValidate($val->id);
             $temp[$key]['status'] = $status;
             $temp[$key]['status_ori'] = $val->status;
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
@@ -61,6 +61,20 @@ class RequestKriteria
        $data = Kendala::where('kriteria_id',$id)->count();
        return $data;
    }
+
+
+   public static function checkValidate($id){
+
+       $data = Kendala::where('kriteria_id',$id)->count();
+       if($data > 0)
+       {
+          $result = false;
+       }else{
+          $result = true;
+       } 
+
+       return $result;
+  }
 
   
   public static function GetKriteria($data){

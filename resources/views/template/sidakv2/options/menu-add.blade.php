@@ -23,7 +23,17 @@
               <span id="name-messages" class="span-messages"></span>
             </div>
 
-            <div id="path-web-alert" class="form-group has-feedback" >
+            <div id="parent-alert" class="form-group has-feedback" >
+              <label>Parent : </label>
+              <select id="parent" data-style="btn-default" name="parent"  class="selectpicker form-control" title="Pilihan Menu">
+                   <option value="menu">Jadikan Menu</option>
+                   <option value="sub">Jadikan Sub Menu</option>
+                 
+              </select>
+              <span id="parent-messages" class="span-messages"></span>
+            </div>
+
+            <div id="path-web-alert" style="display:none;" class="form-group has-feedback" >
               <label>URL : </label>
               <input type="text" class="form-control" name="url" placeholder="URL" value="#">
               <span id="path-web-messages" class="span-messages"></span>
@@ -31,15 +41,21 @@
 
             <div id="icon-alert" class="form-group has-feedback">
                 <label>Icon :</label>
-                <input id="AddFiles" type="file" name="upload_photo" >
+                <input id="AddIcon" type="file" name="upload_photo" >
                 <span id="icon-messages" class="span-messages"></span>
             </div>
 
-            <div class="form-group has-feedback user-photo"></div>
+            <div class="form-group has-feedback icon-photo"></div>
 
 
-           
+            <div id="icon-hover-alert" class="form-group has-feedback">
+                <label>Icon Hover:</label>
+                <input id="AddIconHover" type="file" name="upload_photo" >
+                <span id="icon-hover-messages" class="span-messages"></span>
+            </div>
 
+            <div class="form-group has-feedback icon-hover-photo"></div>
+              
 
 
 
@@ -61,13 +77,23 @@
 
 <script type="text/javascript">
  $(function(){
-    var photo = '';
+    var icon = '';
+    var icon_hover = '';
+       
+    $('#parent').change(function() {
+        selectedVal = $(this).find("option:selected").val();
+        if(selectedVal =='menu')
+        {
+          $('#path-web-alert').hide();
+        }else{
+          $('#path-web-alert').show();
+        }  
+        
 
-    $("#addPhotos").click(()=> {
-        $("#AddFiles").trigger("click");
-    });      
+    });
+   
 
-    $("#AddFiles").change((event)=> {     
+    $("#AddIcon").change((event)=> {     
             
             const files = event.target.files
             let filename = files[0].name
@@ -76,14 +102,45 @@
 
                     if(files[0].name.toUpperCase().includes(".PNG"))
                     {
-                        photo = fileReader.result;
-                        $('.user-photo').html('<img style="background:#000;" width="30" height="30"  src="'+ photo +'">');
+                        icon = fileReader.result;
+                        $('.icon-photo').html('<img style="background:#000;" width="30" height="30"  src="'+ icon +'">');
                     }else if(files[0].name.toUpperCase().includes(".JPEG")){
-                        photo = fileReader.result;
-                        $('.user-photo').html('<img style="background:#000;" width="30" height="30"  src="'+ photo +'">');
+                        icon = fileReader.result;
+                        $('.icon-photo').html('<img style="background:#000;" width="30" height="30"  src="'+ icon +'">');
                     }else if(files[0].name.toUpperCase().includes(".JPG")){
-                        photo = fileReader.result;
-                        $('.user-photo').html('<img style="background:#000;" width="30" height="30" src="'+ photo +'">');
+                        icon = fileReader.result;
+                        $('.icon-photo').html('<img style="background:#000;" width="30" height="30" src="'+ icon +'">');
+                    }else{
+                      Swal.fire({
+                        icon: 'info',
+                        title: 'Tipe file tidak diizinkan!',
+                        confirmButtonColor: '#000',
+                        confirmButtonText: 'OK'
+                      });  
+                    } 
+                  
+            })
+            fileReader.readAsDataURL(files[0])
+
+    }); 
+
+    $("#AddIconHover").change((event)=> {     
+            
+            const files = event.target.files
+            let filename = files[0].name
+            const fileReader = new FileReader()
+            fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PNG"))
+                    {
+                        icon_hover = fileReader.result;
+                        $('.icon-hover-photo').html('<img style="background:#fff;" width="30" height="30"  src="'+ icon_hover +'">');
+                    }else if(files[0].name.toUpperCase().includes(".JPEG")){
+                        icon_hover = fileReader.result;
+                        $('.icon-hover-photo').html('<img style="background:#fff;" width="30" height="30"  src="'+ icon_hover +'">');
+                    }else if(files[0].name.toUpperCase().includes(".JPG")){
+                        icon_hover = fileReader.result;
+                        $('.icon-hover-photo').html('<img style="background:#fff;" width="30" height="30" src="'+ icon_hover +'">');
                     }else{
                       Swal.fire({
                         icon: 'info',
@@ -98,6 +155,7 @@
 
     }); 
    
+   
      
   $("#simpan-menu").click( () => {
 
@@ -105,8 +163,10 @@
           
           var form = {
               'name':data[0].value,
-              'path_web':data[1].value,
-              'icon':photo,
+              'parent':data[1].value,
+              'path_web':data[2].value,
+              'icon':icon,
+              'icon_hover':icon_hover,
              
           };
 
@@ -138,13 +198,23 @@
                 
                
 
-                if(errors.messages.name)
+                if(errors.messages.parent)
                 {
                      $('#name-alert').addClass('has-error');
                      $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
                 }else{
                     $('#name-alert').removeClass('has-error');
                     $('#name-messages').removeClass('help-block').html('');
+                }
+
+
+                if(errors.messages.parent)
+                {
+                     $('#parent-alert').addClass('has-error');
+                     $('#parent-messages').addClass('help-block').html('<strong>'+ errors.messages.parent +'</strong>');
+                }else{
+                    $('#parent-alert').removeClass('has-error');
+                    $('#parent-messages').removeClass('help-block').html('');
                 }
 
                  if(errors.messages.path_web)
@@ -165,14 +235,24 @@
                     $('#icon-messages').removeClass('help-block').html('');
                 }
 
-                 if(errors.messages.status)
+
+                 if(errors.messages.icon_hover)
                 {
-                     $('#status-alert').addClass('has-error');
-                     $('#status-messages').addClass('help-block').html('<strong>'+ errors.messages.status +'</strong>');
+                     $('#icon-hover-alert').addClass('has-error');
+                     $('#icon-hover-messages').addClass('help-block').html('<strong>'+ errors.messages.icon +'</strong>');
                 }else{
-                    $('#status-alert').removeClass('has-error');
-                    $('#status-messages').removeClass('help-block').html('');
-                }  
+                    $('#icon-hover-alert').removeClass('has-error');
+                    $('#icon-hover-messages').removeClass('help-block').html('');
+                }
+
+                //  if(errors.messages.status)
+                // {
+                //      $('#status-alert').addClass('has-error');
+                //      $('#status-messages').addClass('help-block').html('<strong>'+ errors.messages.status +'</strong>');
+                // }else{
+                //     $('#status-alert').removeClass('has-error');
+                //     $('#status-messages').removeClass('help-block').html('');
+                // }  
 
                 
             }
