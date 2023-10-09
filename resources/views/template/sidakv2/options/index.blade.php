@@ -72,7 +72,7 @@
 </div>
 @include('template/sidakv2/options.menu-add')
 @include('template/sidakv2/options.role-add')
-  <script src="http://sortablejs.github.io/Sortable/Sortable.js"></script>
+  <script src="https://sortablejs.github.io/Sortable/Sortable.js"></script>
 
 
     
