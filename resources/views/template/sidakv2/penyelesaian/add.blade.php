@@ -27,43 +27,7 @@
     right: 10px;
     cursor: pointer;
   }
-
-  /* Styling untuk progress bar */
-  #progress-container {
-    text-align: center;
-  }
-
-  #progress-bar {
-    width: 100%;
-    background-color: #ccc;
-    border-radius: 4px;
-  }
-
-  #progress {
-    height: 20px;
-    background-color: #4caf50;
-    border-radius: 4px;
-    transition: width 0.3s ease-in-out;
-  }
-
-  #progress-label {
-    margin-top: 10px;
-    font-weight: bold;
-  }
 </style>
-
-<div id="progressModal" class="modal-loading" style="display:none;position:relative;z-index:9999999">
-  <div class="modal-content2">
-    <span class="close" id="closeProgressModal">&times;</span>
-    <h2>Upload Progress</h2>
-    <div id="progress-container">
-      <div id="progress-bar">
-        <div id="progress" style="width: 0%"></div>
-      </div>
-      <div id="progress-label">0%</div>
-    </div>
-  </div>
-</div>
 
 <div id="modal-add" class="modal fade in" role="dialog">
   <div class="modal-dialog">
@@ -73,7 +37,13 @@
         <h4 class="modal-title" id="judulModalLabel">Tambah Data</h4>
       </div>
       <form id="FormSubmit" enctype="multipart/form-data">
-        <div class="modal-body" style="height: 550px; overflow-y: auto;">
+        <div class="modal-body" style="height: 650px; overflow-y: auto;">
+          <div class="row" id="alasan-view" style="display: none">
+            <div class="form-group has-feedback col-md-12">
+              <strong class="text-red" id="alasan-edit-view"></strong>
+              <strong class="text-red" id="alasan-revisi-view"></strong>
+            </div>
+          </div>
           <div class="row">
             <div id="periode_id_mdl-alert" class="form-group has-feedback col-md-12">
               <label>Periode </label>
@@ -93,7 +63,7 @@
               </select>
               <span id="sub_menu_slug-messages"></span>
             </div>
-          </div>
+          </div>          
           <div class="row">
             <div id="nama_kegiatan-alert" class="form-group has-feedback col-md-12">
               <label>Nama Kegiatan </label>
@@ -110,7 +80,7 @@
           </div>          
           <div class="row">
             <div id="biaya-alert" class="form-group has-feedback col-md-12">
-              <label>Biaya Kegiatan</label>
+              <label>Biaya Kegiatan</label> <small class="text-red" id="anggaran"></small>
               <input type="number" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
               <span id="biaya-messages"></span>
             </div>
@@ -118,7 +88,7 @@
           <div class="row">
             <div id="jml_perusahaan-alert" class="form-group has-feedback col-md-12">
               <label>Jumlah Perusahaan </label>
-              <input type="number" class="form-control" name="jml_perusahaan" id="jml_perusahaan" placeholder="Jumlah Perusahaan " value="">
+              <input type="number" class="form-control" min="0" max="500" name="jml_perusahaan" id="jml_perusahaan" placeholder="Jumlah Perusahaan " value="">
               <span id="jml_perusahaan-messages"></span>
             </div>
           </div>
@@ -137,7 +107,7 @@
                   <input type="file" class="form-control" name="lap_profile" id="AddFilesProfile" accept=".pdf">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
                   <span id="file-profile-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
           </div>
@@ -149,7 +119,7 @@
                 <input type="file" class="form-control" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
                 <div id="ShowPdfPeserta" style="margin-top:8px"></div>
                 <span id="file-peserta-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
             <div class="row">
@@ -158,7 +128,7 @@
                 <input type="file" class="form-control" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
                 <div id="ShowPdfProfile2" style="margin-top:8px"></div>
                 <span id="file-profile2-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
             <div class="row">
@@ -167,7 +137,7 @@
                   <input type="file" class="form-control" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
                   <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
                   <span id="file-narasumber-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
             <div class="row">
@@ -176,7 +146,7 @@
                   <input type="file" class="form-control" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
                   <div id="ShowPdfNotula2" style="margin-top:8px"></div>
                   <span id="file-notula2-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
             <div class="row">
@@ -185,7 +155,7 @@
                   <input type="file" class="form-control" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
                   <div id="ShowPdfLkpm" style="margin-top:8px"></div>
                   <span id="file-lkpm-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
             <div class="row">
@@ -194,7 +164,7 @@
                   <input type="file" class="form-control" name="lap_document" id="AddFilesDoc" accept=".pdf">
                   <div id="ShowPdfDoc" style="margin-top:8px"></div>
                   <span id="file-doc-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
           </div>
@@ -206,7 +176,7 @@
                   <input type="file" class="form-control" name="lap_notula" id="AddFilesNotula" accept=".pdf">
                   <div id="ShowPdfNotula" style="margin-top:8px"></div>
                   <span id="file-notula-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
             <div class="row">
@@ -215,7 +185,7 @@
                   <input type="file" class="form-control" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
                   <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
                   <span id="file-evaluasi-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
               </div>
             </div>
           </div>
@@ -285,10 +255,12 @@
     $('#tab_identifikasi').hide();
     $('#tab_penyelesaian').hide();
     $('#tab_evaluasi').hide();
-
+    
     $('#sub_menu_slug').on('change', function() {
       
       let sub_menu_slug = $('#sub_menu_slug').val();
+
+      getAnggaran($('#periode_id_mdl').val(), sub_menu_slug);
 
       if (sub_menu_slug == 'identifikasi') {
         $('#tab_identifikasi').show();
@@ -303,7 +275,28 @@
         $('#tab_penyelesaian').hide();
         $('#tab_evaluasi').show();
       }
-    })
+    })    
+
+    $('#periode_id_mdl').on('change', function() {
+      getAnggaran($('#periode_id_mdl').val(), $('#sub_menu_slug').val());  
+    })    
+
+    function getAnggaran(periode_id, jenis) {
+      $.ajax({
+        url: BASE_URL + '/api/select-anggaran/' + periode_id,
+        method: 'get',
+        dataType: 'json',
+        success: function(data) {
+          if (jenis == 'identifikasi') {
+            $('#anggaran').html('Anggaran/Tahun: ' + data.penyelesaian_identifikasi_pagu_convert)
+          } else if (jenis == 'penyelesaian') {
+            $('#anggaran').html('Anggaran/Tahun: ' + data.penyelesaian_realisasi_pagu_convert)
+          } else if (jenis == 'evaluasi') {
+            $('#anggaran').html('Anggaran/Tahun: ' + data.penyelesaian_evaluasi_pagu_convert)
+          }
+        }
+      })        
+    }
 
     $('#tambah').on('click', function() {
       $('#judulModalLabel').html('Tambah Data')
@@ -313,7 +306,7 @@
       $('#approve_edit').hide();
       $('#request_revision').hide();
       $('#request_edit').hide();
-      $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
+      $('#FormSubmit input').removeAttr('readonly');
       $('#FormSubmit select').removeAttr('disabled');
       var form = [
         'periode_id_mdl',
@@ -343,9 +336,7 @@
         'lokasi',
         'biaya',
         'jml_perusahaan'
-      ];
-      
-      $('#progressModal').show();
+      ];      
 
       $.ajax({
         type: "POST",
@@ -366,7 +357,6 @@
           return xhr;
         },
         success: (respons) => {
-          $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
             text: 'Berhasil Disimpan',
@@ -380,8 +370,6 @@
           });
         },
         error: (respons) => {
-          $('#progressModal').hide();
-
           errors = respons.responseJSON;
           for (let i = 0; i < form.length; i++) {
             const field = form[i];
@@ -422,16 +410,27 @@
         url: BASE_URL + '/api/penyelesaian/edit/' + id,
         method: 'GET',
         success: function(data) {
+          subMenu(data.sub_menu_slug);
+          getPeriode(data.periode_id);
+          getAnggaran(data.periode_id, data.sub_menu_slug);
+
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
           $('#tgl_kegiatan').val(data.tgl_kegiatan);
           $('#lokasi').val(data.lokasi);
           $('#biaya').val(data.biaya);
           $('#jml_perusahaan').val(data.jml_perusahaan);
-          $('#ringkasan_kegiatan').val(data.ringkasan_kegiatan);
-          $('#is_skpd_sesuai').val(data.is_skpd_sesuai);
-          getPeriode(data.periode_id);
-          subMenu(data.sub_menu_slug);
+
+          if(data.status_laporan_id == 13 && data.request_edit == 'reject') {    
+            $('#alasan-view').show();
+            $('#alasan-revisi-view').html('Alasan Perbaikan: ' + data.alasan_revisi);
+          }
+
+          if(data.status_laporan_id == 15 && data.request_edit == 'true') {            
+            $('#alasan-view').show();
+            $('#alasan-edit-view').html('Alasan Edit: ' + data.alasan_edit);
+          }
+
           if (data.access == 'daerah' || data.access == 'province') {
             $('#approve_edit').hide();
             $('#request_revision').hide();
@@ -439,18 +438,18 @@
               $('#update').show();
               $('#kirim').show();
               $('#request_edit').hide();
-              $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
+              $('#FormSubmit input').removeAttr('readonly');
               $('#FormSubmit select').removeAttr('disabled');
             } else if (data.status_laporan_id == 15) {
               if (data.request_edit == 'false') {
                 $('#update').show();
                 $('#kirim').show();
-                $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
+                $('#FormSubmit input').removeAttr('readonly');
                 $('#FormSubmit select').removeAttr('disabled');
               } else {
                 $('#update').hide();
                 $('#kirim').hide();
-                $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
+                $('#FormSubmit input').attr('readonly', 'readonly');
                 $('#FormSubmit select').attr('disabled', 'true');
               }
               $('#request_edit').hide();
@@ -458,11 +457,11 @@
               $('#update').hide();
               $('#kirim').hide();
               $('#request_edit').show();
-              $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
+              $('#FormSubmit input').attr('readonly', 'readonly');
               $('#FormSubmit select').attr('disabled', 'true');
             }
           } else {
-            $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
+            $('#FormSubmit input').attr('readonly', 'readonly');
             $('#FormSubmit select').attr('disabled', 'true');
             $('#request_edit').hide();
             if (data.status_laporan_id == 13) {
@@ -492,34 +491,22 @@
       })
 
       function subMenu(sub_menu_slug) {
-        if (sub_menu_slug == 'is_tenaga_pendamping') {
-          $('#jml_perusahaan-alert').hide();
-          $('#lap_notula-alert').hide();
-          $('#lap_survei-alert').hide();
-          $('#lap_narasumber-alert').hide();
-          $('#lap_materi-alert').hide();
-          $('#lap_document-alert').hide();
-          $('#lap_pendamping-alert').show();
-        } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
-          $('#jml_perusahaan-alert').show();
-          $('#lap_notula-alert').show();
-          $('#lap_survei-alert').show();
-          $('#lap_narasumber-alert').show();
-          $('#lap_materi-alert').show();
-          $('#lap_document-alert').show();
-          $('#lap_pendamping-alert').hide();
-        } else {
-          $('#jml_perusahaan-alert').show();
-          $('#lap_notula-alert').show();
-          $('#lap_survei-alert').show();
-          $('#lap_narasumber-alert').show();
-          $('#lap_materi-alert').show();
-          $('#lap_document-alert').show();
-          $('#lap_pendamping-alert').hide();
+        if (sub_menu_slug == 'identifikasi') {
+          $('#tab_identifikasi').show();
+          $('#tab_penyelesaian').hide();
+          $('#tab_evaluasi').hide();
+        } else if (sub_menu_slug == 'penyelesaian') {
+          $('#tab_identifikasi').hide();
+          $('#tab_penyelesaian').show();
+          $('#tab_evaluasi').hide();
+        } else if (sub_menu_slug == 'evaluasi') {
+          $('#tab_identifikasi').hide();
+          $('#tab_penyelesaian').hide();
+          $('#tab_evaluasi').show();
         }
       }
 
-      function getPeriode(periode_id) {
+      function getPeriode(periode_id) {        
         $.ajax({
           url: BASE_URL + '/api/select-periode-semester',
           method: 'get',
@@ -535,8 +522,8 @@
             $('#periode_id_mdl').html(periode)
           }
         })
-        $('.select-periode-mdl').select2();
-      }
+        $('.select-periode-mdl').select2();        
+      }      
 
       $("#update").click(() => {
         var data = $("#FormSubmit").serializeArray();
@@ -572,8 +559,6 @@
                 window.location.replace('/penyelesaian');
               }
             });
-
-            //
           },
           error: (respons) => {
             errors = respons.responseJSON;
@@ -625,8 +610,6 @@
                 window.location.replace('/penyelesaian');
               }
             });
-
-            //
           },
           error: (respons) => {
             errors = respons.responseJSON;

@@ -54,8 +54,7 @@ class ValidationPenyelesaian
         $err = array();
 
         $fields = [
-            'periode_id' => 'Periode',
-            'daerah_id' => 'Daerah',
+            'periode_id_mdl' => 'Periode',
             'sub_menu_slug' => 'Jenis',
             'nama_kegiatan' => 'Nama Kegiatan',
             'tgl_kegiatan' => 'Tanggal',
@@ -67,8 +66,7 @@ class ValidationPenyelesaian
         $validator =  Validator::make(
             $request->all(),
             [                
-                'periode_id' => 'required',
-                'daerah_id' => 'required',
+                'periode_id_mdl' => 'required',
                 'sub_menu_slug' => 'required',
                 'nama_kegiatan' => 'required',
                 'tgl_kegiatan' => 'required',
