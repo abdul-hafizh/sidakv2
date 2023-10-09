@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Extension;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestExtension;
-use App\Http\Request\Validation\ValidationPeriode;
+use App\Http\Request\Validation\ValidationExtension;
 use App\Http\Request\RequestAuditLog;
 use App\Helpers\GeneralHelpers;
 use App\Helpers\GeneralPaginate;
@@ -30,7 +30,7 @@ class ExtensionApiController extends Controller
             $data = $query->get();
         }
 
-        $result = RequestPeriode::GetDataAll($data, $request->per_page, $request);
+        $result = RequestExtension::GetDataAll($data, $request->per_page, $request);
         return response()->json($result);
     }
 
@@ -57,20 +57,15 @@ class ExtensionApiController extends Controller
         $data = $query->paginate($request->per_page);
         $description = $search;
 
-        $_res = RequestPeriode::GetDataAll($data, $request->per_page, $request, $description);
+        $_res = RequestExtension::GetDataAll($data, $request->per_page, $request, $description);
         return response()->json($_res);
     }
 
-    public function edit($id)
-    {
-        $Data = Extension::find($id);
-        $_res = RequestPeriode::GetDataID($Data);
-        return response()->json($_res);
-    }
+    
 
     public function store(Request $request)
     {
-        $validation = ValidationPeriode::validationInsert($request);
+        $validation = ValidationExtension::validationInsert($request);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
@@ -85,7 +80,7 @@ class ExtensionApiController extends Controller
 
                 return response()->json($err, 400);
             } else {
-                $insert = RequestPeriode::fieldsData($request);
+                $insert = RequestExtension::fieldsData($request);
                 if ($request->semester == '01') {
                     $name = 'Semester 1 Tahun ' . $request->year;
                 } else {
@@ -109,7 +104,7 @@ class ExtensionApiController extends Controller
 
     public function update($id, Request $request)
     {
-        $validation = ValidationPeriode::validationUpdate($request, $id);
+        $validation = ValidationExtension::validationUpdate($request, $id);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
@@ -120,7 +115,7 @@ class ExtensionApiController extends Controller
                 $name = 'Semester 2 Tahun ' . $request->year;
             }
 
-            $update = RequestPeriode::fieldsData($request);
+            $update = RequestExtension::fieldsData($request);
             $check = Extension::where(['slug' => $request->year . $request->semester, 'id' => $id])->first();
 
             if ($check) {
@@ -230,32 +225,5 @@ class ExtensionApiController extends Controller
     }
 
     
-    public function listAllSemester(Request $request)
-    {
-        $access = RequestAuth::Access();
-        $tahunSemester = GeneralHelpers::semesterToday();
-        $query =  DB::table('Extension as a')
-            ->select('a.id', 'a.slug', 'a.name')
-            ->where('a.status', 'Y')
-            ->groupBy('slug');
-
-        if ($access == 'daerah' ||  $access == 'province') {
-
-            $query->whereIn(
-                'year',
-                DB::table('perencanaan')
-                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                    ->where('status', 16)
-            );
-        }
-
-        $data = $query->get();
-
-        $Extension = RequestPeriode::SelectAllSemester($data);
-        $output = array(
-            "tahunSemester" => $tahunSemester,
-            "Extension" => $Extension,
-        );
-        return response()->json($output);
-    }
+    
 }
