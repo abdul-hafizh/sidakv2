@@ -43,8 +43,8 @@ class RequestMenus
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['path_web'] = $val->path_web;
             $temp[$key]['option'] = RequestMenus::ActionList();
-            $temp[$key]['icon'] = $icon;
-            $temp[$key]['icon_hover'] = $icon_hover;
+            $temp[$key]['icon'] = $val->icon;
+            $temp[$key]['icon_hover'] =$val->icon_hover;
             $temp[$key]['edit'] = false;
             $temp[$key]['tasks'] = [];
             $temp[$key]['move'] = RequestMenus::MoveCheck($role_id,$val->slug);

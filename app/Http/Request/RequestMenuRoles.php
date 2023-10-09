@@ -120,15 +120,29 @@ class RequestMenuRoles
    
     public static function MenuSidebar($array){
         
-
+        $template = RequestSettingApps::AppsTemplate();
         foreach ($array as $key => $value) 
         {
-           if($key ==0)
-           {
+            if($key ==0)
+            {
              $active = true; 
-           }else{
+            }else{
              $active = false;
-           }
+            }
+
+            if($value->icon =="")
+            {
+                $icon = url('/template/'.$template.'/img/user.png');
+            }else{
+                $icon = url('/images/menu/'.$value->icon);
+            }  
+
+            if($value->icon_hover =="")
+            {
+                $icon_hover = url('/template/'.$template.'/img/user.png');
+            }else{
+                $icon_hover = url('/images/menu/'.$value->icon_hover);
+            }  
 
            $arr[$key]['active'] = $active;
            $arr[$key]['id'] = $value->id;
@@ -136,15 +150,15 @@ class RequestMenuRoles
            $arr[$key]['slug'] = $value->slug;  
            $arr[$key]['path_web'] = $value->path_web; 
            $arr[$key]['class'] = $value->class;
-           $arr[$key]['icon'] = $value->icon;
+           $arr[$key]['icon'] =  $icon;
            if($active ==true)
            {
-              $arr[$key]['icon_menu'] = $value->icon_hover;
+              $arr[$key]['icon_menu'] = $icon_hover;
            }else{
-               $arr[$key]['icon_menu'] = $value->icon;
+              $arr[$key]['icon_menu'] =  $icon;
            } 
           
-           $arr[$key]['icon_hover'] =  $value->icon_hover;
+           $arr[$key]['icon_hover'] =  $icon_hover;
            $arr[$key]['option'] = $value->option;
            if($value->tasks)
            {
@@ -170,23 +184,35 @@ class RequestMenuRoles
    
 
    public static function secondaryMenu($array){
-
+        $template = RequestSettingApps::AppsTemplate();
         $result = array();
         if (isset($array)) {
             $no = 1;
             foreach ($array as $key => $value)
             {
                    
+                    if($value->icon =="")
+                    {
+                        $icon = url('/template/'.$template.'/img/user.png');
+                    }else{
+                        $icon = url('/images/menu/'.$value->icon);
+                    }  
 
+                    if($value->icon_hover =="")
+                    {
+                        $icon_hover = url('/template/'.$template.'/img/user.png');
+                    }else{
+                        $icon_hover = url('/images/menu/'.$value->icon_hover);
+                    }    
                    $result[$key]['active'] = $value->active;
                    $result[$key]['id'] = $value->id;
                    $result[$key]['name'] = $value->name;
                    $result[$key]['slug'] = $value->slug;  
                    $result[$key]['path_web'] = $value->path_web;
                    $result[$key]['class'] = $value->class;
-                   $result[$key]['icon'] = $value->icon;
+                   $result[$key]['icon'] =  $icon;
                    $result[$key]['icon_menu'] = '';
-                   $result[$key]['icon_hover'] =  $value->icon_hover;
+                   $result[$key]['icon_hover'] =  $icon_hover;
                    $result[$key]['option'] = $value->option;
                    $result[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ; 
                
