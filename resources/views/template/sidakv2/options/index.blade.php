@@ -72,7 +72,7 @@
 </div>
 @include('template/sidakv2/options.menu-add')
 @include('template/sidakv2/options.role-add')
-  <script src="https://sortablejs.github.io/Sortable/Sortable.js"></script>
+ 
 
 
     
@@ -85,13 +85,13 @@
       var role_menu = [];
       var submenu_real = ''; 
       var sort = [];  
-     
+      var base_asset = window.location.origin+'/images/menu/';
    
       localStorage.removeItem('root_menu');
       var selectedValue = 'admin';  
       var menu = localStorage.getItem('root_menu');
       var temp =  JSON.parse(menu); 
-
+    
 
 
    	  GetRole();
@@ -656,7 +656,7 @@
        { 
        	 
             temp.menu.forEach(function(item, index) {
-            	  console.log(item.tasks.length)
+            	
             var row = '';
            	row +=`<div id="list-role" data-sortable-id="${item.slug}" class="list-group-item pull-left full" style="" draggable="false">`;
            	    
@@ -665,7 +665,7 @@
                    
                         row +=`<div class="checkbox-form pull-left">`; 
                              row +=`<span class="black pull-left padding-05-05">`;
-                                row +=`<img width="20" src="${item.icon}">`;
+                                row +=`<img width="20" src="${ base_asset+item.icon}">`;
                                     if(item.tasks.length > 0)
 					                {
 			                            row +=`<small class="submenu-count label pull-right bg-yellow">${item.tasks.length} </small>`;
@@ -709,7 +709,7 @@
 			                          	if(temp.menu[i].parent == 'menu')
 			                            {
 			                            	 row +=`<li><a  id="Setting-Menu" data-param_menu="${temp.menu[i].slug}" data-param_sub="${item.slug}" data-param_index="${index}">`;
-			                            	 row +=`<img width="20" src="`+ temp.menu[i].icon +`">`;
+			                            	 row +=`<img width="20" src="`+ base_asset+temp.menu[i].icon +`">`;
 			                            	 row +=` `+ temp.menu[i].name +``;
 			                            	 row +=`</a></li>`;
 			                            }		
@@ -1352,7 +1352,7 @@
                              
 						            row +=`<div class="checkbox-form pull-left">`;
 							            row +=`<span class="black pull-left padding-05-05">`;
-							           		row +=`<img width="20" src="${items.icon}">`;
+							           		row +=`<img width="20" src="${ base_asset+items.icon}">`;
 							           	row +=`</span>`;
 						           	row +=`</div>`;
 
@@ -1435,7 +1435,7 @@
 	                       
                                 row +=`<div class="checkbox-form pull-left">`; 
                                      row +=`<span class="black pull-left padding-05-05">`;
-                                        row +=`<img width="20" src="${item.icon}">`;
+                                        row +=`<img width="20" src="${base_asset+item.icon}">`;
                                         if(item.tasks.length > 0)
 						                {
 				                            row +=`<small id="count-${item.slug}" class="submenu-count label pull-right bg-yellow">${item.tasks.length} </small>`;
@@ -1474,7 +1474,7 @@
 			                          	if(role_menu[i].parent == 'menu')
 			                            {
 			                            	 row +=`<li><a  id="Setting-Menu" data-param_menu="${role_menu[i].slug}" data-param_sub="${item.slug}" data-param_index="${index}">`;
-			                            	 row +=`<img width="20" src="`+ role_menu[i].icon +`">`;
+			                            	 row +=`<img width="20" src="`+ base_asset+role_menu[i].icon +`">`;
 			                            	 row +=` `+ role_menu[i].name +``;
 			                            	 row +=`</a></li>`;
 			                            }		
@@ -1609,7 +1609,7 @@
 	   	        row +=`<div class="padding-5-0 form-group  col-sm-12 grup-checkbox">`;
 	   	        	row +=`<div class="row-checkbox">`;
 	   	        		row +=`<span class="black pull-left padding-05-05">`;
-	   	        			row +=`<img  width='20' src="${item.icon}" />`;
+	   	        			row +=`<img  width='20' src="${base_asset+item.icon}" />`;
 	   	        		row +=`</span>`;
 	   	        		row +=`<div class="pull-left checkbox-label">`;
 	   	        			row +=`<span class="text-bold font-16">${item.name}</span>`;
@@ -1844,15 +1844,26 @@
             			
             			if(SubMenu.length > 0)
 	   	                {
-	   	                	SubMenu.splice(index, 1);
-            			    ListReal.tasks =  SubMenu;
-            			    RoleData = role_menu;   
+
+	   	                	var datasub =  SubMenu.find(o => o.slug === p_menu);
+	   	                	if(datasub)
+	   	                    {
+                               SubMenu.splice(index, 1);
+            			       ListReal.tasks =  SubMenu;
+            			       RoleData = role_menu;   
+	   	                    }else{
+                               role_menu.splice(index, 1);
+            			       RoleData = role_menu;  
+	   	                    }		
+	   	            
+
 	                	}else{
+
 	                		role_menu.splice(index, 1);
                             RoleData = role_menu;
 	                	}
 
-	                	
+	              	
 
 	                
 	   	        }else{
@@ -1980,7 +1991,7 @@
 					                 row +=`<span id="icon-messages-`+ item.id +`"></span>`;
 					             row +=`</div>`;
 
-            					 row +=`<div class="form-group has-feedback icon-photo"><img style="background:#000;" width="30" height="30"  src="`+ item.icon +`"></div>`;
+            					 row +=`<div class="form-group has-feedback icon-photo"><img style="background:#000;" width="30" height="30"  src=" `+ base_asset +``+ item.icon +`"></div>`;
 
             					 row +=`<div id="icon-hover-alert-`+ item.id +`" class="form-group has-feedback">`;
 					                 row +=`<label>Icon Hover:</label>`;
@@ -1988,7 +1999,7 @@
 					                 row +=`<span id="icon-hover-messages-`+ item.id +`"></span>`;
 					             row +=`</div>`;
 
-            					 row +=`<div class="form-group has-feedback icon-hover-photo"><img style="background:#fff;" width="30" height="30"  src="`+ item.icon_hover +`"></div>`;
+            					 row +=`<div class="form-group has-feedback icon-hover-photo"><img style="background:#fff;" width="30" height="30"  src="`+base_asset +``+ item.icon_hover +`"></div>`;
 
 				                    
 

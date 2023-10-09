@@ -118,8 +118,8 @@
     <script src="{{ config('app.url').$template.'/plugin/selectpicker/js/bootstrap-select.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/accounting.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/xlsx.full.min.js' }}"></script>
-
-
+    <script src="{{ config('app.url').$template.'/js/sortable.js' }}"></script>
+    
 
     <script type="text/javascript">
       $(function() {

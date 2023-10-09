@@ -3,7 +3,8 @@
 namespace App\Http\Request\Validation;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-class ValidationPeriode
+
+class ValidationExtension
 {
    public static function validationInsert($request){
         $err = array(); 
