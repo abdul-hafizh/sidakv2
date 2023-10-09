@@ -8,6 +8,7 @@ use App\Helpers\GeneralHelpers;
 use App\Models\PaguTarget;
 use App\Models\Extension;
 use App\Models\Perencanaan;
+use App\Http\Request\RequestMenuRoles;
 
 class RequestExtension
 {
@@ -25,23 +26,26 @@ class RequestExtension
 
       foreach ($data as $key => $val) {
          if ($val->status == 'Y') {
-            $status = 'Publish';
-         } else {
-            $status = 'Draft';
+            $status = 'Terkirim';
+         }else if ($val->status == 'A') {
+           $status = 'Approved';
+         }else{
+           $status = 'Draft';
+         
          };
 
          $temp[$key]['number'] = $numberNext++;
          $temp[$key]['id'] = $val->id;
-         $temp[$key]['name'] = $val->name;
+         $temp[$key]['daerah_id'] = $val->name;
          $temp[$key]['semester'] = $val->semester;
          $temp[$key]['year'] = $val->year;
-         $temp[$key]['startdate'] = $val->startdate;
-         $temp[$key]['enddate'] = $val->enddate;
+         $temp[$key]['expireddate'] = $val->expireddate;
+         $temp[$key]['extensiondate'] = $val->extensiondate;
          $temp[$key]['description'] = $val->description;
-         $temp[$key]['startdate_convert'] = GeneralHelpers::formatDate($val->startdate);
-         $temp[$key]['enddate_convert'] = GeneralHelpers::formatDate($val->enddate);
-         $temp[$key]['slug'] = $val->slug;
-         $temp[$key]['deleted'] = RequestPeriode::checkValidate($val->year);
+         $temp[$key]['expireddate_convert'] = GeneralHelpers::formatDate($val->startdate);
+         $temp[$key]['extensiondate_convert'] = GeneralHelpers::formatDate($val->enddate);
+        
+         $temp[$key]['deleted'] = RequestExtension::checkValidate($val->status);
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
          $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
 
@@ -51,7 +55,7 @@ class RequestExtension
       }
 
       $result['data'] = $temp;
-      $result['options'] = RequestMenuRoles::ActionPage('periode');
+      $result['options'] = RequestMenuRoles::ActionPage('extension');
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();
          $result['last_page'] = $data->lastPage();
