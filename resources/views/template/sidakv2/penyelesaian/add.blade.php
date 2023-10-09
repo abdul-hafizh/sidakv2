@@ -315,8 +315,7 @@
         'tgl_kegiatan',
         'lokasi',
         'biaya',
-        'jml_perusahaan',
-        'ringkasan_kegiatan'
+        'jml_perusahaan'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -395,8 +394,7 @@
         'tgl_kegiatan',
         'lokasi',
         'biaya',
-        'jml_perusahaan',
-        'ringkasan_kegiatan'
+        'jml_perusahaan'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -534,8 +532,7 @@
           'tgl_kegiatan',
           'lokasi',
           'biaya',
-          'jml_perusahaan',
-          'ringkasan_kegiatan'
+          'jml_perusahaan'
         ];
         data.push({
           name: 'status',
@@ -585,8 +582,7 @@
           'tgl_kegiatan',
           'lokasi',
           'biaya',
-          'jml_perusahaan',
-          'ringkasan_kegiatan'
+          'jml_perusahaan'
         ];
         data.push({
           name: 'status',
@@ -601,7 +597,7 @@
           success: (respons) => {
             Swal.fire({
               title: 'Sukses!',
-              text: 'Berhasil Disimpan',
+              text: 'Berhasil Terkirim Ke Pusat.',
               icon: 'success',
               confirmButtonText: 'OK'
 

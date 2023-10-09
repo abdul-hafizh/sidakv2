@@ -209,7 +209,7 @@ class RequestPenyelesaian
     public static function fieldsData($request)
     {
         $subMenuMapping = [
-            'identidikasi' => 'Identifikasi Penyelesaian',
+            'identifikasi' => 'Identifikasi Penyelesaian',
             'penyelesaian' => 'Penyelesaian Masalah',
             'evaluasi' => 'Evaluasi Penyelesaian',
         ];
