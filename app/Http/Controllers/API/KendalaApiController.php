@@ -364,7 +364,7 @@ class KendalaApiController extends Controller
 
     }
 
-    public function deleteSelected(Request $request){
+    public function deleteKendala(Request $request){
         $messages['messages'] = false;
 
         foreach($request->data as $key)
@@ -376,11 +376,9 @@ class KendalaApiController extends Controller
                 'description'=> '<b>'.$find->category.'</b> telah dihapus',
                 );
             $datalog = RequestAuditLog::fieldsData($log);
-            $results = Kriteria::where('id',(int)$key)->delete();
+            $results = Kriteria::whereIn('id',[$key])->delete();
         }
 
-         $json = json_encode($request->data);
-        //Audit Log
         
 
         if($results){
@@ -391,21 +389,44 @@ class KendalaApiController extends Controller
     
     }
 
+     public function masalahSelected(Request $request){
+        $messages['messages'] = false;
+
+        foreach($request->data as $key)
+        {
+            $find = Kendala::where('id',$key)->first();
+            $log = array(             
+                'category'=> 'LOG_DATA_KENDALA',
+                'group_menu'=>'menghapus_data_kendala',
+                'description'=> '<b>'.$find->permasalahan.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
+            $results = Kendala::whereIn('id',[$key])->delete();
+        }
+
+        if($results){
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    
+    }
+
+
+    
+
     
 
     public function delete($id){
         $messages['messages'] = false;
         $_res = Kriteria::find($id);
-        // $json = json_encode($_res);
-        // //Audit Log
-        // $log = array(             
-        // 'action'=> 'Delete Kendala',
-        // 'slug'=>'delete-kendala',
-        // 'type'=>'delete',
-        // 'json_field'=> $json,
-        // 'url'=>'api/kendala/'.$id
-        // );
-
+          $log = array(             
+                'category'=> 'LOG_DATA_KENDALA',
+                'group_menu'=>'menghapus_data_kendala',
+                'description'=> '<b>'.$_res->category.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
+     
         // RequestAuditLog::fieldsData($log);   
         if(empty($_res)){
             return response()->json(['messages' => false]);
@@ -417,6 +438,31 @@ class KendalaApiController extends Controller
         }
         return response()->json($messages);
     
+    }
+
+
+     public function deleteMasalah($id){
+        $messages['messages'] = false;
+        $_res = Kendala::find($id);
+
+        $log = array(             
+            'category'=> 'LOG_DATA_REPLAY',
+            'group_menu'=>'menghapus_data_replay',
+            'description'=> '<b>'.$_res->messages.'</b> telah dihapus',
+            );
+        $datalog = RequestAuditLog::fieldsData($log);
+          
+        if(empty($_res)){
+            return response()->json(['messages' => false]);
+        }
+
+        $results = $_res->delete();
+        if($results){
+            $messages['messages'] = true;
+        }
+        return response()->json($messages);
+
+
     }
 
 

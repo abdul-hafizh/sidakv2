@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="{{ config('app.url').$template.'/plugin/select2/css/select2.min.css' }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ config('app.url').$template.'/plugin/selectpicker/css/bootstrap-select.min.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/sweetalert2.min.css'}}">
-    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}">
+    <!-- <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}"> -->
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
    
@@ -123,7 +123,9 @@
 
     <script type="text/javascript">
       $(function() {
-  
+        var url = window.location.href; 
+          var currentDomain = window.location.hostname;
+          var segments = url.split('/');
         const apps = localStorage.getItem('apps');
         const template = JSON.parse(apps);
         if(template){
@@ -136,8 +138,11 @@
             $("#update-notif").click(() => {
                 UpdateData();
             });
-
+          
+          if(segments[3] !='login')
+          {
             getNotif();
+          }  
         }
        
 
@@ -155,9 +160,12 @@
             $('#semester').selectpicker('val', '');
             $('#role_id').selectpicker('val', '');
             $('#kabupaten_id').selectpicker('val', '');
+            $('#parent').selectpicker('val', '');
             $('#province_id').selectpicker('val', '');
             $('.form-group').removeClass('has-error');
             $('.span-messages').removeClass('help-block').html('');
+            $('.icon-photo').remove();
+            $('.icon-hover-photo').remove();
             $('.selectpicker').selectpicker('refresh');
         }
 
@@ -169,7 +177,7 @@
                         $('#total-notif').html('');
                     },
                     error: function(error) {
-                        console.error('Error fetching data:', error);
+                        //console.error('Error fetching data:', error);
                     }
                 });
             }
@@ -216,7 +224,7 @@
                         }
                     },
                     error: function (error) {
-                        console.error("Error fetching data:", error);
+                       // console.error("Error fetching data:", error);
                     },
                 });
             }

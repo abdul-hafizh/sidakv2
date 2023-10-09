@@ -31,7 +31,7 @@
 				</button>
 			</div>
 
-			<div  id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button">
+			<div   class="pull-left padding-9-0 margin-left-button">
 				<button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
 					 Export
 				</button>
@@ -71,7 +71,7 @@
 							
 							<th><div class="split-table"></div> <span class="span-title"> Nama Provinsi</span></th>
 							
-							<th  id="ShowAction" style="display:none;"><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+							<th ><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -312,9 +312,7 @@
     // Function to update the content area with data
     function updateContent(data,options) {
         const content = $('#content');
-        const edited = options.find(o => o.action === 'edit');
-        const deleted = options.find(o => o.action === 'delete');
-        const checklist = options.find(o => o.action === 'checklist'); 	
+       	
  
 
 
@@ -327,59 +325,56 @@
            	let row = ``;
              row +=`<tr>`;
               
-               if(item.deleted == true)
-               {
-
-               	   if(checklist.checked == true)
-                   {
-
-                   row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
-                   }
-
-               }else{
-
-               	   if(checklist.checked == true)
-                   {
-               	      row +=`<td><input disabled  type="checkbox"></td></td>`;
-               	   }   	
-               }
+               options.forEach(function(opt, arr) 
+              {
+                 if(opt.action == 'delete')
+                 {
+                    if(opt.checked == true)
+                    {
+                        row +=ChecklistTable(item);
+                    }
+                 }       
+              }); 
                row +=`<td class="padding-text-table">${item.number}</td>`;
                row +=`<td class="padding-text-table">${item.id}</td>`;
                row +=`<td class="padding-text-table">${item.name}</td>`;
        
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
-                
-                if(edited.checked == true)
-                {
-                   row +=`<button    id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                 
+                   row +=`<button id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
 
-               
-                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-               		 row +=`<div id="FormEdit-${item.id}"></div>`;
-                row +=`</div>`;
-
-                }
-
-
-               if(item.deleted == true)
-               {
-
-               	  if(deleted.checked == true) 
+                  options.forEach(function(opt, arr) 
                   {
+                        if(opt.action == 'update')
+                        {
+                           if(opt.checked == true)
+                           { 
+                                row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                              
+                            }    
 
-                		row +=`<button id="Destroy" data-placement="top" ${item.deleted} data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                        } 
 
-                  }
+                        if(opt.action == 'delete')
+                        {
+                           if(opt.checked == true)
+                           {
+                             
+                            row += BtnTableDelete(item);
 
-            }else{
+                           } 
+                        }   
 
-            	 if(deleted.checked == true) 
-                 {
 
-            	    row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-            	 }
-            }
+                  });
+
+                  row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+                                row +=`<div id="FormEdit-${item.id}"></div>`;
+                  row +=`</div>`;
+
+                
+               
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -409,13 +404,72 @@
    		});
 
 
-        $( "#content" ).on( "click", "#Edit", (e) => {
+   		$( "#content" ).on( "click", "#Detail", (e) => {
              
-            let index = e.currentTarget.dataset.param_id;
-            const item = list[index];
+            let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id == id); 
+              
               
 		  
             
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+				       row +=`<div class="modal-header">`;
+				         row +=`<button data-dismiss="modal" type="button" class="clear-input close">&times;</button>`;
+				         row +=`<h4 class="modal-title">Detail Provinsi</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body">`;
+
+
+					            row +=`<div id="kode-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                row +=`<label>Kode Provinsi</label>`;
+
+				                row +=`<input readonly maxlength="2" type="text" class="form-control" name="id" placeholder="Kode Provinsi" value="`+ item.id +`" oninput="this.value = this.value.replace(/[^0-9.]/g, '');">
+				                  <span id="kode-messages-`+ item.id +`" class="span-messages"></span>`;
+
+				                row +=`</div>`;
+                               
+                                 
+				                row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                row +=`<label>Nama Provinsi</label>`;
+
+				                row +=`<input readonly type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
+				                  <span id="name-messages-`+ item.id +`" class="span-messages"></span>`;
+
+				                row +=`</div>`;
+
+				                
+
+
+
+
+                            row +=`<div class="modal-footer">`;
+						        row +=`<button type="button" class="clear-input btn btn-default"  data-dismiss="modal">Tutup</button>`;
+
+						         
+     						row +=`</div>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ item.id).html(row); 
+
+         }); 
+
+
+        $( "#content" ).on( "click", "#Edit", (e) => {
+             
+           let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id == id); 
+              
+		 
             let row = ``;
             row +=`<div class="modal-dialog">`;
                 row +=`<div class="modal-content">`;
@@ -455,8 +509,8 @@
 						        row +=`<button type="button" class="clear-input btn btn-default"  data-dismiss="modal">Tutup</button>`;
 
 						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
-						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
-     						</div>`;
+						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>`;
+     						row +=`</div>`;
 						    row +=`</div>`;
 
 
@@ -466,13 +520,7 @@
 
             $('#FormEdit-'+ item.id).html(row);  
 
-            $("#close1").click(()=> {  
-              DefaultNull(item.id);
-           });
-
-            $("#close2").click(()=> {  
-              DefaultNull(item.id);
-           });
+           
 
 
             $( ".modal-content" ).on( "click", "#update", (e) => {
@@ -583,39 +631,56 @@
         
     }
 
-    function DefaultNull(id)
-    {
+    function ChecklistTable(item){
+         
+           var row = '';
+           if(item.deleted == true)
+           {
+                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+           }else{
+               row +=`<td><input disabled  type="checkbox"></td></td>`;  
+             
+           }   
 
-       $("input").val(null);    
-       $('#modal-edit-'+ id).modal('toggle');
+           return row;
+    }
+
+   function BtnTableDelete(item){
+        
+       var row = ''; 
+        if(item.deleted == true)
+       {
+            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }else{
+            row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }
+
+
+       return row;
+
 
     }
 
     function listOptions(data){
        
-       data.forEach(function(item, index) 
+        data.forEach(function(item, index) 
        {
-           if(item.action =='add')
+           if(item.action =='create')
            {
                if(item.checked ==true)
                {
                    $('#ShowAdd').show();
+                   $('#ShowImport').show();
                }else{
                   $('#ShowAdd').hide();
+                  $('#ShowImport').hide();
                }    
            }
 
-           if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           } 
 
-            if(item.action =='checklist')
+
+
+            if(item.action =='delete')
             {
                if(item.checked ==true)
                {
@@ -627,20 +692,7 @@
                } 
             }
 
-             if(item.action =='edit' && item.action =='delete')
-            {
-               if(item.checked ==false)
-               {
-                   $('#ShowAction').hide();
-               }else{
-                   $('#ShowAction').show();
-               }  
-            }
-  
-
-         
-           
-
+       
        });
     }
 

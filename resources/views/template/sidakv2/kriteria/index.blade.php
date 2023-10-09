@@ -30,7 +30,7 @@
 				</button>
 			</div>
 
-			<div  id="ShowExport" style="display:none;" class="pull-left padding-9-0 margin-left-button">
+			<div  class="pull-left padding-9-0 margin-left-button">
 				<button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
 					 Export
 				</button>
@@ -324,10 +324,7 @@
     // Function to update the content area with data
     function updateContent(data,options) {
         const content = $('#content');
-
-        const edited = options.find(o => o.action === 'edit');
-        const deleted = options.find(o => o.action === 'delete');
-        const checklist = options.find(o => o.action === 'checklist'); 	
+	
 
         // Clear previous data
         content.empty();
@@ -337,10 +334,17 @@
         data.forEach(function(item, index) {
            	let row = ``;
              row +=`<tr>`;
-              if(checklist.checked == true)
+
+              options.forEach(function(opt, arr) 
               {
-                 row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;	
-              }
+                 if(opt.action == 'delete')
+                 {
+                    if(opt.checked == true)
+                    {
+                        row +=ChecklistTable(item);
+                    }
+                 }       
+              }); 
                
                row +=`<td class="padding-text-table">${item.number}</td>`;
                row +=`<td class="padding-text-table">${item.category}</td>`;
@@ -349,25 +353,37 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
+                 row +=`<button id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
+
                 
-               if(edited.checked == true)
-               {
-                    row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
-               
-               
-	                row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
-	                row +=`<div id="FormEdit-${item.id}"></div>`;
-	                row +=`</div>`;
+               options.forEach(function(opt, arr) 
+                  {
+                        if(opt.action == 'update')
+                        {
+                           if(opt.checked == true)
+                           { 
+                                row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                              
+                            }    
 
-                }
+                        } 
+
+                        if(opt.action == 'delete')
+                        {
+                           if(opt.checked == true)
+                           {
+                             
+                            row += BtnTableDelete(item);
+
+                           } 
+                        }   
 
 
-                 if(deleted.checked == true) 
-                 {
+                  });
 
-                    row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data"  data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-                 }
-               	
+                    row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
+                                row +=`<div id="FormEdit-${item.id}"></div>`;
+                    row +=`</div>`;
 
                 row +=`</div>`;
                 row +=`</td>`;
@@ -394,11 +410,91 @@
 	         } 	
    		});
 
+   		$( "#content" ).on( "click", "#Detail", (e) => {
+             
+            let id = e.currentTarget.dataset.param_id;
+            const item = list.find(o => o.id == id); 
+              
+		  
+            
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+				       row +=`<div class="modal-header">`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Detail Kriteria</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+					        row +=`<div class="modal-body">`;
+                               
+                                 
+				                 row +=`<div id="category-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+				                  row +=`<label>Kategori</label>`;
+
+				                  row +=`<input readonly type="text" class="form-control" name="category" placeholder="Kategori" value="`+ item.category +`">`;
+				                  row +=`<span id="category-messages-`+ item.id +`" class="span-messages"></span>`;
+
+				                 row +=`</div>`;
+
+				                   row +=`<div id="description-alert" class="form-group has-feedback" >`;
+						              row +=`<label>Keterangan</label>`;
+						              row +=`<textarea readonly class="form-control textarea-fixed" placeholder="Keterangan" name="description">`+ item.description +`</textarea>`;
+						              row +=`<span id="description-messages" class="span-messages"></span>`;
+						            row +=`</div>`;
+
+				                    row +=`<div class="radio">`;
+					                    row +=`<label>`;
+					                    if(item.status_ori =='Y')
+					                    {
+					                        row +=`<input disabled  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
+					                    }else{
+					                    	row +=`<input disabled type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
+					                    } 	
+					                 
+					                      row +=`Publish`;
+					                    row +=`</label>`;
+					                row +=`</div>`;
+					                row +=`<div class="radio">`;
+					                    row +=`<label>`;
+					                      if(item.status_ori =='N')
+					                    {
+					                        row +=`<input disabled  type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
+					                    }else{
+					                    	row +=`<input disabled  type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
+					                    } 
+
+					                     
+					                     row +=`Draft`;
+					                    row +=`</label>`;
+					                row +=`</div>`;
+
+
+
+
+                            row +=`<div class="modal-footer">`;
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+						        
+						        
+     						row +=`</div>`;
+						    row +=`</div>`;
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ item.id).html(row);  
+        });    
+
 
         $( "#content" ).on( "click", "#Edit", (e) => {
              
             let id = e.currentTarget.dataset.param_id;
-            const item = list.find(o => o.id === id); 
+            const item = list.find(o => o.id == id); 
               
 		  
             
@@ -591,36 +687,56 @@
 
     }
 
+    function ChecklistTable(item){
+         
+           var row = '';
+           if(item.deleted == true)
+           {
+                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+           }else{
+               row +=`<td><input disabled  type="checkbox"></td></td>`;  
+             
+           }   
+
+           return row;
+    }
+
+   function BtnTableDelete(item){
+        
+       var row = ''; 
+        if(item.deleted == true)
+       {
+            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }else{
+            row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       }
+
+
+       return row;
+
+
+    }
+
     function listOptions(data){
         
        data.forEach(function(item, index) 
        {
-           if(item.action =='add')
+           if(item.action =='create')
            {
                if(item.checked ==true)
                {
                    $('#ShowAdd').show();
+                   $('#ShowImport').show();
                }else{
                   $('#ShowAdd').hide();
+                  $('#ShowImport').hide();
                }    
            }
 
-          
 
 
 
-            if(item.action =='export')
-           {
-               if(item.checked ==true)
-               {
-                   $('#ShowExport').show();
-               }else{
-                  $('#ShowExport').hide();
-               }    
-           }     
-
-          
-            if(item.action =='checklist')
+            if(item.action =='delete')
             {
                if(item.checked ==true)
                {
@@ -632,19 +748,7 @@
                } 
             }
 
-             if(item.action =='edit' && item.action =='delete')
-            {
-               if(item.checked ==false)
-               {
-                   $('#ShowAction').hide();
-               }else{
-                   $('#ShowAction').show();
-               }  
-            }
-            
-
-           
-
+       
        });
     }
 

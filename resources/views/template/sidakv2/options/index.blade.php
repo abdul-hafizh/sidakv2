@@ -72,9 +72,9 @@
 </div>
 @include('template/sidakv2/options.menu-add')
 @include('template/sidakv2/options.role-add')
- <!--  <script src="http://sortablejs.github.io/Sortable/Sortable.js"></script> -->
+  <script src="https://sortablejs.github.io/Sortable/Sortable.js"></script>
 
- 
+
     
 <script>
    $( function() {
@@ -83,7 +83,8 @@
       var menu_list = [];
       var role_list = [];
       var role_menu = [];
-
+      var submenu_real = ''; 
+      var sort = [];  
      
    
       localStorage.removeItem('root_menu');
@@ -96,10 +97,6 @@
    	  GetRole();
    	  SearchMenu();
    	 
-
-
-    
-
 
     //role  
     function GetRole(){
@@ -125,7 +122,7 @@
     }
 
     function SelectRole(data){
-        $('#selectRole').html('<select id="role_id"  class="selectpicker" data-style="bg-navy" title="Pilih Role"></select>');
+        $('#selectRole').html('<select id="role_id"  class="selectpicker" data-style="bg-navy" ></select>');
         var select =  $('#role_id');
         $.each(data, function(index, option) {
             select.append($('<option>', {
@@ -297,7 +294,7 @@
 
         ViewTabMenu(find,data)
         GetMenu(find.id); 
-
+        RoleNested();
            //menu
 	    $( "#ContentMenu" ).on( "click", "#Move-Menu", (e) => {
 	   		 let id = e.currentTarget.dataset.param_id;
@@ -355,7 +352,7 @@
            var role_menu = [];
            GetMenu(find.id);
            ViewTabMenu(find,data);
-
+           RoleNested();
         });
 
     }
@@ -411,6 +408,7 @@
             row +=`<div id="tabDrag"  class="tab-pane active">`;
 	            row +=`<div id="tabRole" class="nested-sortable padding-bottom-30">`;
 	            GetSettingRole(find.value);
+               
 	            row +=`</div>`;	
             row +=`</div>`;	
 
@@ -424,6 +422,8 @@
         row +=`</div>`;
 
         $('#viewRole').html(row);
+
+       
         
         //save Role
         $('#SaveRole').on('click', function() {
@@ -500,61 +500,19 @@
 	  
         }); 
 
-	    $( "#tabRole" ).on( "click", "#Hapus-Temp", (e) => {
-	   		 let index = e.currentTarget.dataset.param_id;
 
-             
-	   		  var menu = localStorage.getItem('root_menu');
-       		  var temp =  JSON.parse(menu);
-       		  let find = role.find(o => o.id === temp.role_id);
+        
 
-       		  Swal.fire({
-			      title: 'Apakah anda yakin hapus role ?',
-			    
-			      icon: 'warning',
-			      showCancelButton: true,
-			      confirmButtonColor: '#d33',
-			      cancelButtonColor: '#3085d6',
-			      confirmButtonText: 'Ya'
-			    }).then((result) => {
-			      if (result.isConfirmed) {
+	    
 
-					      loadingRole();
-			              setTimeout(function() { 
-				             	
-						   	     if(temp.menu.length > 1)
-						   	     {
-			                         temp.menu.splice(index, 1); 
-			                         var form = {'menu':temp.menu,'role_id':find.id};
-			                         localStorage.setItem('root_menu', JSON.stringify(form));
-			                         GetMenu(find.id);
-						             GetSettingRole(find.value);
-
-						   	     }else{
-						   	     	 localStorage.removeItem('root_menu');
-						   	     	 GetMenu(find.id);
-						             GetSettingRole(find.value);
-						   	     	   
-						   	     } 	
-			             		
-
-			               }, 1000);   
-
-			        Swal.fire(
-			          'Deleted!',
-			          'Data berhasil dihapus.',
-			          'success'
-			        );
-			      }
-			    });
-	
-
-	   	}); 
+	   
 
 	    //delete Role
         $( "#tabRole" ).on( "click", "#Hapus-Real", (e) => {
-            let index = e.currentTarget.dataset.param_id;
-      
+            let index = e.currentTarget.dataset.param_id; 
+            let p_menu = e.currentTarget.dataset.param_menu;
+            var menu = localStorage.getItem('root_menu');
+       		var temp =  JSON.parse(menu);
             
        		Swal.fire({
 		      title: 'Apakah anda yakin hapus ?',
@@ -566,8 +524,36 @@
 		      confirmButtonText: 'Ya'
 		    }).then((result) => {
 		      if (result.isConfirmed) {
+                 
+                 if(temp)
+                 {
+                 	 let find = role.find(o => o.id === temp.role_id);
+                     var listMenu = menu_list.find(o => o.slug === p_menu);
+    			     listMenu.move = true;
+			   	     if(temp.menu.length > 1)
+			   	     {
+                         loadingRole();  
+                         temp.menu.splice(index, 1); 
+                         var form = {'menu':temp.menu,'role_id':find.id};
+                         localStorage.setItem('root_menu', JSON.stringify(form));
+                         
 
-				   DeleteSetting(index,role);
+			   	     }else{
+			   	     	 localStorage.removeItem('root_menu');
+			   	     	
+			   	     	   
+			   	     } 
+
+			   	     contentMenu(menu_list); 
+			         GetSettingRole(find.value);	
+
+                 }else{
+                 	DeleteSetting(p_menu,index,role);
+                 }  	
+
+       		 
+                   
+				   
 
 		        Swal.fire(
 		          'Deleted!',
@@ -578,6 +564,84 @@
 		    });
             
         }); 
+
+
+        
+
+        $( "#tabRole" ).on( "click", "#Setting-Menu", (e) => {
+             let p_menu = e.currentTarget.dataset.param_menu;
+             let p_sub = e.currentTarget.dataset.param_sub; 
+             let index = e.currentTarget.dataset.param_index;  
+             var menu = localStorage.getItem('root_menu');
+       		 var temp =  JSON.parse(menu);
+
+       		if(temp)
+            {
+            	 let findmenu = temp.menu.find(o => o.slug === p_menu);
+            	 let findsub = temp.menu.find(o => o.slug === p_sub);
+            	 if(findmenu.tasks.length >0)
+	             {
+                    var arr = [findsub];
+	             	var merge = [...arr,...findmenu.tasks];
+	             	findmenu.tasks = merge;
+
+	             }else{
+                    
+                    var arr = [findsub];
+	                findmenu.tasks  =  arr;
+	             } 	
+
+	              temp.menu.splice(index, 1);
+	              var form = {'menu':temp.menu,'role_id':roleid_new};
+
+            }else{	
+
+
+	             let findmenu = role_menu.find(o => o.slug === p_menu);
+	             let findsub = role_menu.find(o => o.slug === p_sub);
+
+	             if(findmenu.tasks.length >0)
+	             {
+	             	var arr = [findsub];
+	             	var merge = [...arr,...findmenu.tasks];
+	             	findmenu.tasks = merge;
+	             }else{
+	             	var arr = [findsub];
+	                findmenu.tasks  =  arr;
+	             } 	
+	             
+	             role_menu.splice(index, 1);
+	             var form = {'menu':role_menu,'role_id':roleid_new};
+
+            }
+
+		     localStorage.setItem('root_menu', JSON.stringify(form));
+
+		     GetSettingRole(roleid_new);
+           
+             $('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
+             
+
+        }); 
+
+
+         $( "#tabRole" ).on( "click", "#View-Real", (e) => {
+         	
+            let slug = e.currentTarget.dataset.param_id; 
+            var menu = localStorage.getItem('root_menu');
+       		var temp =  JSON.parse(menu);
+            if(temp)
+            {
+	           let item = temp.menu.find(o => o.slug === slug);
+			   formDetailSub(slug,role,item,temp.menu);
+            }else{
+
+               let item = role_menu.find(o => o.slug === slug); 
+		       formDetailSub(slug,role,item,role_menu);
+            }	
+
+        });
+
 
     }
 
@@ -590,10 +654,11 @@
        content.empty();
        if(temp)
        { 
-       	  
+       	 
             temp.menu.forEach(function(item, index) {
+            	  console.log(item.tasks.length)
             var row = '';
-           	row +=`<div id="list-role" data-id="${item.slug}" class="list-group-item pull-left full" style="" draggable="false">`;
+           	row +=`<div id="list-role" data-sortable-id="${item.slug}" class="list-group-item pull-left full" style="" draggable="false">`;
            	    
            	   row +=`<div class="list-group pointer margin-none">`; 
                     row +=`<div class="row-checkbox pull-left full">`; 
@@ -601,22 +666,73 @@
                         row +=`<div class="checkbox-form pull-left">`; 
                              row +=`<span class="black pull-left padding-05-05">`;
                                 row +=`<img width="20" src="${item.icon}">`;
+                                    if(item.tasks.length > 0)
+					                {
+			                            row +=`<small class="submenu-count label pull-right bg-yellow">${item.tasks.length} </small>`;
+			                        }
                              row +=`</span>`;
                         row +=`</div>`;  
 
-                        row +=`<div class="pull-left checkbox-label">`; 
+                        row +=`<div class="pull-left checkbox-label text-bold font-16">`; 
                           row +=`${item.name}`; 
                         row +=`</div>`;
 
+
+
+
                         row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
 
-                            row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
+                                if(item.tasks.length > 0)
+		                        {
+
+
+                                     row +=`<span id="View-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"    data-toggle="tooltip" data-placement="top" title="Lihat Sub Menu"  class="padding-05-05 dropdown-toggle">`; 
+			                           row +=`<i class="fa fa-eye"></i>`; 
+			                           row +=`<i class="border-right-white"></i>`;
+			                        row +=`</span>`;
+
+		                        } 	
+
+
+ 								if(item.parent =='sub')
+		                        { 	
+
+	                                row +=`<span  data-toggle="dropdown" aria-expanded="false"  class="padding-05-05 dropdown-toggle">`; 
+			                           row +=`<i class="fa fa-window-restore"></i>`; 
+			                           row +=`<i class="border-right-white"></i>`;
+			                        row +=`</span>`;
+
+			                         row +=`<ul class="dropdown-menu dropMove">`;
+
+			                          for(let i =0; i<temp.menu.length; i++)
+			                          {
+			                          	if(temp.menu[i].parent == 'menu')
+			                            {
+			                            	 row +=`<li><a  id="Setting-Menu" data-param_menu="${temp.menu[i].slug}" data-param_sub="${item.slug}" data-param_index="${index}">`;
+			                            	 row +=`<img width="20" src="`+ temp.menu[i].icon +`">`;
+			                            	 row +=` `+ temp.menu[i].name +``;
+			                            	 row +=`</a></li>`;
+			                            }		
+			                          	
+			                          }	
+										 
+										
+									row +=`</ul>`;
+
+		                        }
+
+                                if(item.parent !='menu')
+		                        { 
+		                            row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
                                         row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
                                         row +=`<i class="border-right-white"></i>`; 
                                     row +=`</span>`;  
+                                }
+
+                             
 
 
-                            row +=`<span id="Hapus-Temp" data-param_id="${index}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
+                            row +=`<span id="Hapus-Real" data-param_menu="${item.slug}"  data-param_id="${index}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
                                     row +=`<i class="fa fa-trash"></i>`; 
                                     row +=`</span>`;          
 
@@ -631,9 +747,9 @@
 
               row +=`</div>`;
 
-
-
-               row +=`<div class="list-group pointer nested-sortable"></div>`;
+              row +=`<div class="list-group pointer nested-sortable"></div>`;
+                   	
+               
             row +=`</div>`;
                                   
             content.append(row);
@@ -645,8 +761,8 @@
 
            GetDataRoleMenu(role)
         } 	
-
-       
+        
+     
 
    }
 
@@ -705,7 +821,7 @@
                             row +=`<div class="modal-footer">`;
 						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
 
-						          row +=`<button id="update_action-`+ slug +`" data-param_id="`+ slug +`" type="button" class="btn btn-primary">OK</button>`;
+						          row +=`<button id="update_action-`+ slug +`" type="button" class="btn btn-primary">OK</button>`;
 						            row +=`<button id="load-action-`+ slug +`" type="button" disabled class="btn btn-default" style="display:none;">`;
 						             row +=`<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>`;
      						 row +=`</div>`;
@@ -722,8 +838,8 @@
             $(".modal-content").on( "click", "#update_action-"+ slug, (e) => {
 		         var menu = localStorage.getItem('root_menu');
        		     var temp =  JSON.parse(menu);
-		         let id = e.currentTarget.dataset.param_id;
-                 var input = $("#FormSubmit-"+ id).serializeArray();
+		        
+                 var input = $("#FormSubmit-"+ slug).serializeArray();
 		         
 
                 var result_input = [];
@@ -777,13 +893,504 @@
 		        };
 		        localStorage.setItem('root_menu', JSON.stringify(form));
 
-                $('#modal-edit-'+ id).modal('toggle');  
+                $('#modal-edit-'+ slug).modal('toggle');  
                 $('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
                  
 	        });       
 
+   }
 
 
+   function formDetailSub(slug,role,item,menu){
+    
+   	 let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content pull-left full">`;
+
+				       row +=`<div class="modal-header pull-left full">`;
+				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+				         row +=`<h4 class="modal-title">Detail Sub Menu `+ item.name +`</h4>`;
+				       row +=`</div>`;
+
+				       row +=`<form   id="FormSubmit-`+ slug +`">`;
+					        row +=`<div id="TableAction-`+ slug +`" class="modal-body margin-bottom pull-left full">`;
+                               
+                                  
+                            row += formSubList(item.tasks,slug);
+
+				           
+                             
+                            row +=`</div>`; 
+
+                            row +=`<div class="modal-footer pull-left full">`;
+                               row +=`<button type="button" id="Back-List" style="display:none;" class="pull-left btn bg-navy" >Kembali Ke Submenu</button>`;
+
+						        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+						          row +=`<button id="update-role-`+ slug +`"  type="button" class="btn btn-primary">OK</button>`;
+						            row +=`<button id="load-action-`+ slug +`" type="button" disabled class="btn btn-default" style="display:none;">`;
+						             row +=`<i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>`;
+     						 row +=`</div>`;
+						   
+
+
+					    row +=`</form>`;     
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ slug).html(row); 
+
+            RoleNestedSub(item.slug);
+
+            $(".modal-content").on( "click", "#update-role-"+ slug, (e) => {
+		          
+		        
+                 var menu = localStorage.getItem('root_menu');
+	  			 var temp =  JSON.parse(menu);
+		          var input = $("#FormSubmit-"+ slug).serializeArray();
+		           var role_id = $('#role_id').val();
+			       var find = role.find(o => o.value === role_id);
+
+			    
+			       
+			      	
+		           if(input.length>0)
+		          {
+
+		          	    var result_input = [];
+		                var result_in = [];
+		                var result = [];
+		                var merge = []; 
+
+
+		                for(let i =0; i<input.length; i++)
+			            {
+		                    result_input.push(input[i].value);
+			            } 
+
+			            for(let i =0; i<item.option.length; i++)
+			            {
+		                    result_in.push(item.option[i].action);
+			            } 
+
+		                var bool = $.map(result_in, function(element1) {
+						    return $.inArray(element1, result_input) !== -1;
+						});
+
+		                for(let i =0; i<item.option.length; i++)
+			            {
+		                    result.push({
+		                  	  'action':item.option[i].action,
+		                  	  'name':item.option[i].name,
+		                  	  'checked':bool[i]
+		                    })
+
+			            }	
+
+
+			            if(temp)
+			            {
+
+			               var ListTemp = temp.menu.find(o => o.slug === item.slug);
+		                   var i_sub =  ListTemp.tasks.find(o => o.slug === submenu_real);
+		                   i_sub.option = result;
+			                var form = {
+					           'menu':temp.menu,
+					           'role_id':find.id,
+					        };
+
+			            }else{
+
+                           var ListReal = role_menu.find(o => o.slug === item.slug);
+                           var i_sub =  ListReal.tasks.find(o => o.slug === submenu_real);
+		                	 i_sub.option = result;
+
+		                	 var form = {
+					           'menu':role_menu,
+					           'role_id':find.id,
+					        };      
+			            }  	
+
+
+
+				   		
+				        localStorage.setItem('root_menu', JSON.stringify(form));
+                    
+		          }
+
+                  $('#modal-edit-'+ slug).modal('toggle');
+		        if(temp)
+		        {
+                 
+                    if(sort.length>0)
+                    {
+                    	var form = {
+				           'menu':sort,
+				           'role_id':find.id,
+				        };
+				        sort = []; 
+                        localStorage.setItem('root_menu', JSON.stringify(form));
+
+						setTimeout(function() { loadingRole() }, 500); 
+                        setTimeout(function() { GetSettingRole(find.id) }, 800); 
+							
+
+                    }else{
+                       
+                    	var form = {
+				           'menu':temp.menu,
+				           'role_id':find.id,
+				        };
+				        localStorage.setItem('root_menu', JSON.stringify(form)); 
+                    } 
+		         	
+
+
+		        }else{
+                        
+                      if(sort.length>0)
+                     {
+                    	var form = {
+				           'menu':sort,
+				           'role_id':find.id,
+				        };
+				        sort = []; 
+				        console.log(sort) 
+                        localStorage.setItem('root_menu', JSON.stringify(form));
+                          
+					  
+						setTimeout(function() { loadingRole() }, 500); 
+                        setTimeout(function() { GetSettingRole(find.id) }, 800); 
+							
+
+                    }else{
+                       
+                    	var form = {
+				           'menu':role_menu,
+				           'role_id':find.id,
+				        };
+				        localStorage.setItem('root_menu', JSON.stringify(form)); 
+                    }   
+		        }
+		          
+
+                
+                $('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');			
+	        }); 
+
+	        $(".modal-content").on( "click", "#Back-Menu-"+ slug, (e) => {
+		         let p_menu = e.currentTarget.dataset.param_menu;
+                 let p_sub = e.currentTarget.dataset.param_sub;
+                 let index = e.currentTarget.dataset.param_index;
+
+                 
+                 var menu = localStorage.getItem('root_menu');
+	  			 var temp =  JSON.parse(menu);
+	  			 loadingRoleSub();  
+	  			 if(temp)
+	  			 {
+                   
+	  			 	var ListData = temp.menu.find(o => o.slug === p_menu);
+    			    var SubMenu = ListData.tasks;
+    			    var ListSub = SubMenu.find(o => o.slug === p_sub);
+    			    var convert = [ListSub]; 
+    			    temp.menu =  [...convert,...temp.menu];
+    			    sort = temp.menu;
+    			      if(SubMenu.length < 2)
+                      {  
+                       $('#modal-edit-'+ slug).modal('toggle'); 
+
+                      }
+
+	  			 }else{
+
+                    var ListData = role_menu.find(o => o.slug === p_menu);
+    			    var SubMenu = ListData.tasks;
+    			    var ListSub = SubMenu.find(o => o.slug === p_sub);
+    			    var convert = [ListSub]; 
+    			    role_menu =  [...convert,...role_menu];
+                    sort = role_menu;
+                    console.log(sort)  
+	  			 } 	
+
+    			SubMenu.splice(index, 1);
+                setTimeout(function() { 
+                
+	            if(temp)
+	  			{
+                     
+	                 formDetailSub(p_menu,role,ListData,temp.menu);
+		              
+                      
+                      if(SubMenu.length ==0)
+                      {	
+                      	    var form = {
+					           'menu':temp.menu,
+					           'role_id':roleid_new,
+					           };
+
+		                     localStorage.setItem('root_menu', JSON.stringify(form));
+	                       loadingRole();
+	                       setTimeout(function() { 
+	                       		GetSettingRole(roleid_new);
+
+	                       }, 500);
+                      }
+                     
+                }else{ 
+                   formDetailSub(p_menu,role,ListData,role_menu);
+	            //    var form = {
+		           // 'menu':role_menu,
+		           // 'role_id':roleid_new,
+		           // }; 
+             //       localStorage.setItem('root_menu', JSON.stringify(form));
+                }	
+
+		           
+	    		}, 600);
+	        });
+
+            $(".modal-content").on( "click", "#Edit-Menu-"+ slug, (e) => {
+		         let p_menu = e.currentTarget.dataset.param_menu;
+                 let p_sub = e.currentTarget.dataset.param_sub;
+                 submenu_real = p_sub;
+                 var ListData = '';
+
+                 var menu = localStorage.getItem('root_menu');
+	  			 var temp =  JSON.parse(menu);
+	  			 if(temp)
+	  			 {
+
+                     ListData = temp.menu.find(o => o.slug === p_menu);
+	  			 }else{
+
+                    ListData = role_menu.find(o => o.slug === p_menu);
+    			 
+
+	  			 } 	
+                
+                 var SubMenu = ListData.option;
+    			 var sub = ListData.tasks.find(o => o.slug === p_sub);
+
+    			 loadingRoleSub(); 
+
+    			 setTimeout(function() { 
+                    formSubAction(sub,slug,sub.name);
+    			 }, 500);  
+	        });
+
+            $(".modal-content").on( "click", "#Back-List", (e) => { 
+            	$('.table').remove();
+
+            	 var row = '';
+
+            	 row +=`<div id="tabDragSub">`; 
+        			row +=`<div id="tabRoleSub" class="nested-sortable-sub padding-bottom-30">`;
+
+        		    row +=`</div>`; 
+        		 row +=`</div>`; 
+                  $('#TableAction-'+ slug).html(row); 
+
+                 loadingRoleSub(); 
+
+    			 setTimeout(function() { 
+    			 	 $('.modal-title').text('Detail Sub Menu '+ item.name)
+    			 	  $('#tabDragSub').remove();
+                      var rows = formSubList(item.tasks,slug);
+                      $('#Back-List').hide();
+                      $('#TableAction-'+ slug).html(rows);
+    			 }, 500);
+            }); 	
+	        
+	        $(".modal-content").on( "click", "#Hapus-Menu-"+ slug, (e) => {
+		         let p_menu = e.currentTarget.dataset.param_menu;
+                 let p_sub = e.currentTarget.dataset.param_sub;
+                 let index = e.currentTarget.dataset.param_index;
+                 var  ListData = '';
+                 var menu = localStorage.getItem('root_menu');
+	  			 var temp =  JSON.parse(menu);
+	  			 if(temp)
+	  			 {
+                     ListData = temp.menu.find(o => o.slug === p_menu);
+	  			 }else{
+                     ListData = role_menu.find(o => o.slug === p_menu);
+	  			 } 	
+                  
+	  			 loadingRoleSub();  
+                  var listMenu = menu_list.find(o => o.slug === p_sub);
+    			  listMenu.move = true;   	
+	  			 if(ListData.tasks.length > 1)
+	  			 {
+                    
+	  			 	 var SubMenu = ListData.tasks;
+	    			 var ListSub = SubMenu.find(o => o.slug === p_sub);
+	    			 var convert = [ListSub];
+	    			 SubMenu.splice(index, 1);
+                     sort = ListData;
+                     $('#count-'+ slug).text(SubMenu.length);
+                        
+                  
+                     
+
+	  			 }else{
+
+                    ListData.tasks = [];
+                    $('#modal-edit-'+ slug).modal('toggle');
+
+	  			 }
+
+	  			 contentMenu(menu_list); 	
+
+                setTimeout(function() { 
+	             if(temp)
+	  			 {
+	               formDetailSub(p_menu,role,ListData,temp.menu);
+	               var form = {
+		           'menu':temp.menu,
+		           'role_id':roleid_new,
+		           };
+                   
+		            if(ListData.tasks.length ==0)
+		            {
+		               localStorage.setItem('root_menu', JSON.stringify(form));	
+                       loadingRole();
+                       setTimeout(function() { 
+                       		GetSettingRole(roleid_new);
+
+                       }, 500);		
+		            }else{
+
+                       sort = temp.menu;
+                       console.log(sort)
+		            }
+                    
+		            
+	             }else{
+	               formDetailSub(p_menu,role,ListData,role_menu);
+	               var form = {
+		           'menu':role_menu,
+		           'role_id':roleid_new,
+		           };
+
+		            localStorage.setItem('root_menu', JSON.stringify(form));
+	             }  
+	               
+		          
+             
+	    		}, 500);
+	        }); 
+
+	        $('#tabRoleSub').slimScroll({
+	            height: '400px',
+	            railVisible: true,
+	            alwaysVisible: true,
+	            railOpacity: 0.4
+	        });  
+                 
+   }
+
+
+   function formSubAction(items,slug,name){
+     $('#tabDragSub').remove();
+     $('#Back-List').show();
+     $('.modal-title').text('Edit Aksi '+ name);
+     var row = '';
+
+				row +=`<table class="table table-bordered">`;
+			 row +=`<tbody>`;
+				 row +=`<tr>`;
+					 row +=`<th style="width: 10px">#</th>`;
+					 row +=`<th>Aksi</th>`;
+				 row +=`</tr>`;
+
+				  
+
+				 for(let i=0; i<items.option.length; i++)
+				 { 	
+                   
+				 	if(items.option[i].checked == true)
+				    {		
+			 	 
+				 	 row +=`<tr>`;
+						 row +=`<td><input id="action-`+ i +`" type="checkbox" checked  name="status" id="status" value="`+ items.option[i].action +`" ></td>`;
+						 row +=`<td>`+ items.option[i].name +`</td>`;
+					 row +=`</tr>`;
+
+					}else{
+                      
+                      row +=`<tr>`;
+						 row +=`<td><input  type="checkbox"  name="status" id="status" value="`+ items.option[i].action +`" ></td>`;
+						 row +=`<td>`+ items.option[i].name +`</td>`;
+					 row +=`</tr>`; 
+
+					} 
+
+				}
+
+
+			 row +=`</tbody>`;
+			  row +=`</table> `;
+
+
+   	    $('#TableAction-'+ slug).html(row);
+   }
+
+   function formSubList(tasks,slug)
+   {
+
+   	  var row = '';
+
+   	  row +=`<div id="tabDragSub">`; 
+        row +=`<div id="tabRoleSub" class="nested-sortable-sub padding-bottom-30">`;             
+						tasks.forEach(function(items, index) 
+						{
+                  
+		                   row +=`<div id="list-role" data-sortable-id="${items.slug}" class="list-group-item pull-left full" style="" draggable="false">`;
+
+		                     row +=`<div class="list-group pointer margin-none">`;
+                               row +=`<div class="row-checkbox pull-left full">`;
+                             
+						            row +=`<div class="checkbox-form pull-left">`;
+							            row +=`<span class="black pull-left padding-05-05">`;
+							           		row +=`<img width="20" src="${items.icon}">`;
+							           	row +=`</span>`;
+						           	row +=`</div>`;
+
+						           	row +=`<div class="pull-left checkbox-label">${items.name}</div>`;
+                                    
+                                    row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
+                                       
+
+                                       row +=`<span id="Back-Menu-${slug}" data-param_menu="${slug}" data-param_sub="${items.slug}" data-param_index="${index}"   class="padding-05-05" data-placement="top" title="Kembali Ke Menu Utama">`;
+                                         row +=`<i class="fa fa-undo"></i>`;
+                                         row +=`<i class="border-right-white"></i>`;
+                                       row +=`</span>`;
+
+                                       
+                                       row +=`<span id="Edit-Menu-${slug}" data-param_menu="${slug}" data-param_sub="${items.slug}" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`;
+                                       row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`;
+                                       row +=`<i class="border-right-white"></i>`;
+                                       row +=`</span>`;
+
+
+                                       row +=`<span id="Hapus-Menu-${slug}" data-param_menu="${slug}" data-param_sub="${items.slug}" data-param_index="${index}" data-param_id="0" data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`;
+                                       		row +=`<i class="fa fa-trash"></i>`;
+                                       row +=`</span>`;
+
+
+
+                                    row +=`</div>`;
+
+                                 row +=`</div>`;
+                               row +=`</div>`; 
+                            row +=`</div>`; 
+
+                             
+					     });
+           row +=`</div>`; 
+        row +=`</div>`; 
+
+                        return row;
    }
 
 
@@ -797,12 +1404,12 @@
 	           
                let findtask = data.find(o => o.name === role);
            	   listMenuRole(findtask)
+              
 	        },
 	        error: function(error) {
 	            console.error(error);
 	        }
         });
-
 
    }
 
@@ -817,10 +1424,11 @@
           { 	
           	var result = JSON.parse(data.tasks);
           	role_menu = result;
+          	console.log(role_menu)
             result.forEach(function(item, index) {
  
                     var row = '';
-                   	row +=`<div id="list-role" data-id="${item.slug}" class="list-group-item pull-left full" style="" draggable="false">`;
+                   	row +=`<div id="list-role" data-sortable-id="${item.slug}" class="list-group-item pull-left full" style="" draggable="false">`;
                    	    
                    	   row +=`<div class="list-group pointer margin-none">`; 
                             row +=`<div class="row-checkbox pull-left full">`; 
@@ -828,22 +1436,65 @@
                                 row +=`<div class="checkbox-form pull-left">`; 
                                      row +=`<span class="black pull-left padding-05-05">`;
                                         row +=`<img width="20" src="${item.icon}">`;
+                                        if(item.tasks.length > 0)
+						                {
+				                            row +=`<small id="count-${item.slug}" class="submenu-count label pull-right bg-yellow">${item.tasks.length} </small>`;
+				                        }
                                      row +=`</span>`;
                                 row +=`</div>`;  
 
-		                        row +=`<div class="pull-left checkbox-label">`; 
+		                        row +=`<div class="pull-left checkbox-label text-bold font-16">`; 
 		                          row +=`${item.name}`; 
 		                        row +=`</div>`;
+		                       
+			                    row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
 
-		                        row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
+			                    if(item.tasks.length > 0)
+		                        {
+                                     row +=`<span id="View-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"    data-toggle="tooltip" data-placement="top" title="Lihat Sub Menu"  class="padding-05-05 dropdown-toggle">`; 
+			                           row +=`<i class="fa fa-eye"></i>`; 
+			                           row +=`<i class="border-right-white"></i>`;
+			                        row +=`</span>`;
 
+		                        } 	
+
+
+ 								if(item.parent =='sub')
+		                        { 	
+
+	                                row +=`<span  data-toggle="dropdown" aria-expanded="false"  class="padding-05-05 dropdown-toggle">`; 
+			                           row +=`<i class="fa fa-window-restore"></i>`; 
+			                           row +=`<i class="border-right-white"></i>`;
+			                        row +=`</span>`;
+
+			                         row +=`<ul class="dropdown-menu dropMove">`;
+
+			                          for(let i =0; i<role_menu.length; i++)
+			                          {
+			                          	if(role_menu[i].parent == 'menu')
+			                            {
+			                            	 row +=`<li><a  id="Setting-Menu" data-param_menu="${role_menu[i].slug}" data-param_sub="${item.slug}" data-param_index="${index}">`;
+			                            	 row +=`<img width="20" src="`+ role_menu[i].icon +`">`;
+			                            	 row +=` `+ role_menu[i].name +``;
+			                            	 row +=`</a></li>`;
+			                            }		
+			                          	
+			                          }	
+										 
+										
+									row +=`</ul>`;
+
+		                        }
+
+                                if(item.parent !='menu')
+		                        { 
 		                            row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
                                                 row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
                                                 row +=`<i class="border-right-white"></i>`; 
-                                            row +=`</span>`;  
+                                    row +=`</span>`;  
+                                }
 
-
-                                    row +=`<span id="Hapus-Real" data-param_id="${index}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
+                                    row +=`<span id="Hapus-Real" data-param_menu="${item.slug}" data-param_id="${index}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
                                             row +=`<i class="fa fa-trash"></i>`; 
                                             row +=`</span>`;          
 
@@ -851,53 +1502,15 @@
 
                                 
                             row +=`<div id="modal-edit-${item.slug}" class="modal fade" role="dialog">`;
-							row +=`<div id="FormEdit-${item.slug}"></div>`;
+								row +=`<div id="FormEdit-${item.slug}"></div>`;
 							row +=`</div>`;
 
                             row +=`</div>`;
 
                       row +=`</div>`;
 
-
-
-                      row +=`<div class="list-group pointer nested-sortable"></div>`;
+  
 		            row +=`</div>`;
-
-
-
-
-
-        //               row +=`<div id="list-role" data-id="${item.slug}" class="row-checkbox " >`;
-        // 				row +=`<div class="nested-sortable-content">`;
-        //                       row +=`<div class="checkbox-form pull-left">`; 
-        //                              row +=`<span class="black pull-left padding-05-05">`;
-        //                                 row +=`<img width="20" src="${item.icon}">`;
-        //                              row +=`</span>`;
-        //                         row +=`</div>`;  
-
-        //                         row +=`<div class="pull-left checkbox-label">`; 
-		      //                     row +=`${item.name}`; 
-		      //                   row +=`</div>`;
-
-		      //                   row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
-        //                             row +=`<span id="Edit-Real" data-param_id="${item.slug}" data-toggle="modal" data-target="#modal-edit-${item.slug}"  data-toggle="tooltip" data-placement="top" title="Setting Aksi Menu" class="padding-05-05">`; 
-        //                                         row +=`<i data-toggle="modal" data-target="#AddPages" class="fa fa-cog"></i>`; 
-        //                                         row +=`<i class="border-right-white"></i>`; 
-        //                                     row +=`</span>`;  
-
-
-        //                             row +=`<span id="Hapus-Real" data-param_id="${index}"   data-toggle="tooltip" data-placement="top" title="Hapus Setting" class="padding-05-05">`; 
-        //                                     row +=`<i class="fa fa-trash"></i>`; 
-        //                                     row +=`</span>`;          
-
-        //                         row +=`</div>`;
-
-        //                         row +=`<div id="modal-edit-${item.slug}" class="modal fade" role="dialog">`;
-								// 	row +=`<div id="FormEdit-${item.slug}"></div>`;
-								// row +=`</div>`;
-        				
-        //               row +=`</div>`;
-
 
                  content.append(row);
             });
@@ -913,10 +1526,13 @@
 
        }
 
-       //RoleNested();
-    
+   
+      // RoleNested();
 
    }
+
+
+    
 
     function GetMenu(id){
 
@@ -1034,6 +1650,22 @@
          content.append(row);
     }  
 
+        $('#ContentMenu').slimScroll({
+            height: '400px',
+            railVisible: true,
+            alwaysVisible: true,
+            railOpacity: 0.4
+        });
+
+        $('#tabDrag').slimScroll({
+            height: '400px',
+            railVisible: true,
+            alwaysVisible: true,
+            railOpacity: 0.4
+        });
+
+        
+
     
    	}
 
@@ -1065,19 +1697,29 @@
           var temp =  JSON.parse(menu);       
           var form = [];
           var merge = [];
-   		  
+   		  var iclass = '';
           loadingRole();
           
           $('#list-role').hide();
           $('#role-null').hide();
           if(temp)
           {
+          	 if(item.parent == 'menu')
+          	 {
+                iclass = item.slug+ ' treeview';
+          	 }else{
+                iclass = item.slug;
+          	 } 	
 	          	 form = [{
 	          	  'id': item.id,	
 	              'name':item.name,
+	              'parent':item.parent,
+	              'class': iclass,
 	              'slug':item.slug,
+	              'active':false,
 	              'path_web':item.path_web,
 	              'icon':item.icon,
+	              'icon_hover':item.icon_hover,
 	              'option':item.option,
 	              'tasks':[],
 	            }];
@@ -1088,15 +1730,25 @@
              
               
           }else{
-
+            
+            if(item.parent == 'menu')
+          	 {
+                iclass = item.slug+ ' treeview';
+          	 }else{
+                iclass = item.slug;
+          	 }
           	 //roleid_old = find.role_id; 
           	 //isi baru
           	 merge = [{
-          	  'id': item.id, 	
+      	 	  'id': item.id,	
               'name':item.name,
+              'parent':item.parent,
+              'class':iclass,
               'slug':item.slug,
+              'active':false, 
               'path_web':item.path_web,
               'icon':item.icon,
+              'icon_hover':item.icon_hover,
               'option':item.option,
               'tasks':[],
             }];
@@ -1164,37 +1816,95 @@
 
    	}
 
+   	function loadingRoleSub(){
 
-   	function DeleteSetting(index,role){
+   	 var val = '';
+	 val +=`<div id="loading-role"  class="mt-20 ">`; 
+	        val +=`<div class="list-group">`;
+	                 val +=`<div class="text-bold text-center">Loading ...</div>`;
+	         val +=`</div>`;   
+     	val +=`</div>`;
+    $('#tabRoleSub').html(val);
+
+   	}
+
+
+    function DeleteSetting(p_menu,index,role){
             
-            loadingRole();
+             loadingRole();
+             var RoleData =[];
+	   	     if(role_menu.length > 1)
+	   	     {
+	   	     	
+	   	     	if(p_menu !='')
+	   	        {
+	   	        	    localStorage.removeItem('root_menu');
+                        var ListReal = role_menu.find(o => o.slug === p_menu);
+            			var SubMenu = ListReal.tasks;
+            			
+            			if(SubMenu.length > 0)
+	   	                {
+	   	                	SubMenu.splice(index, 1);
+            			    ListReal.tasks =  SubMenu;
+            			    RoleData = role_menu;   
+	                	}else{
+	                		role_menu.splice(index, 1);
+                            RoleData = role_menu;
+	                	}
 
-            setTimeout(function() { 
-	             	
-			   	     if(role_menu.length > 1)
-			   	     {
-			   	     	 localStorage.removeItem('root_menu');
-                         role_menu.splice(index, 1); 
-                         var form = {'menu':role_menu,'role_id':roleid_new};
-                         UpdateListItem(form,role,roleid_new)
+	                	
 
-			   	     }else{
-			   	     	localStorage.removeItem('root_menu');
-			   	     	DeleteMenuRole(role,roleid_new)
-			   	     	   
-			   	     } 	
+	                
+	   	        }else{
+
+                        localStorage.removeItem('root_menu');
+                        role_menu.splice(index, 1);
+                        RoleData = role_menu;
+                         
+	   	        }
+
+
+	   	                var form = {'menu': JSON.stringify(RoleData),'role_id':roleid_new}; 
+		                UpdateListItem(form,role,roleid_new)		
+	   	     	 
+	             
+	   	     }else{
+               
+	   	     	if(p_menu !='')
+	   	        {
+	   	        	    localStorage.removeItem('root_menu');
+                        var ListReal = role_menu.find(o => o.slug === p_menu);
+            			var SubMenu = ListReal.tasks;
+            			SubMenu.splice(index, 1);
+
+            			if(SubMenu.length > 0)
+	   	                {
+            			     ListReal.tasks =  SubMenu;   
+		                     var form = {'menu': JSON.stringify(role_menu),'role_id':roleid_new}; 
+		                     UpdateListItem(form,role,roleid_new)
+
+	                	}else{
+                           
+		                    localStorage.removeItem('root_menu');
+	   	     	            DeleteMenuRole(role,roleid_new)
+	                	}
+
+	   	        }else{
+
+                        localStorage.removeItem('root_menu');
+	   	     	        DeleteMenuRole(role,roleid_new)
+	   	        }	
+
+	   	     	
+	   	     	   
+	   	     } 	
              		
-
-            }, 1000);  
-	      //$('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
-             
 
    }
 
     function UpdateListItem(form,role,role_id){
                   
-
-     
+             
 	          $.ajax({
 	            type:"POST",
 	            url: BASE_URL+'/api/menu/role/save',
@@ -1210,7 +1920,7 @@
 	             		GetSettingRole(find.value);
 	             		
 	             		
-	                }, 1000);  
+	                }, 500);  
 	                     
 	            },
 	            error: (respons)=>{
@@ -1222,6 +1932,9 @@
 
    function editMenuView(item)
    	{
+
+   		var icon = '';
+   		var icon_hover = '';
         var photo = '';
    		let row = ``;
             row +=`<div class="modal-dialog">`;
@@ -1238,8 +1951,20 @@
                                  
 				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
 				                  row +=`<label>Nama</label>`;
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">
-				                  <span id="name-messages-`+ item.id +`"></span>`;
+				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">`;
+				                  row +=`<span id="name-messages-`+ item.id +`"></span>`;
+				                 row +=`</div>`;
+
+				                  row +=`<div id="parent-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                  row +=`<label>Parent</label>`;
+
+				                      row +=`<select id="parent-`+ item.id +`" data-style="btn-default" name="parent"  class="selectpicker form-control" title="Pilihan Menu">
+							                   <option value="menu">Jadikan Menu</option>
+							                   <option value="sub">Jadikan Sub Menu</option>
+							                   
+							              </select>`;
+
+				                  row +=`<span id="parent-messages-`+ item.id +`"></span>`;
 				                 row +=`</div>`;
 
 
@@ -1251,11 +1976,19 @@
 
 					             row +=`<div id="icon-alert-`+ item.id +`" class="form-group has-feedback">`;
 					                 row +=`<label>Icon :</label>`;
-					                 row +=`<input id="AddFiles" type="file"  name="upload_photo" >`;
+					                 row +=`<input id="AddIcon" type="file"  name="upload_photo" >`;
 					                 row +=`<span id="icon-messages-`+ item.id +`"></span>`;
 					             row +=`</div>`;
 
-            					 row +=`<div class="form-group has-feedback user-photo"><img style="background:#000;" width="30" height="30"  src="`+ item.icon +`"></div>`;
+            					 row +=`<div class="form-group has-feedback icon-photo"><img style="background:#000;" width="30" height="30"  src="`+ item.icon +`"></div>`;
+
+            					 row +=`<div id="icon-hover-alert-`+ item.id +`" class="form-group has-feedback">`;
+					                 row +=`<label>Icon Hover:</label>`;
+					                 row +=`<input id="AddIconHover" type="file"  name="upload_photo" >`;
+					                 row +=`<span id="icon-hover-messages-`+ item.id +`"></span>`;
+					             row +=`</div>`;
+
+            					 row +=`<div class="form-group has-feedback icon-hover-photo"><img style="background:#fff;" width="30" height="30"  src="`+ item.icon_hover +`"></div>`;
 
 				                    
 
@@ -1278,7 +2011,22 @@
 
             $('#FormEdit-'+ item.id).html(row); 
 
-            $("#AddFiles").change((event)=> {     
+            SelectParent(item);
+
+            $('#parent').change(function() {
+		        selectedVal = $(this).find("option:selected").val();
+		        if(selectedVal =='menu')
+		        {
+		          $('#path-web-alert').hide();
+		        }else{
+		          $('#path-web-alert').show();
+		        }  
+		        
+
+		    });
+
+            
+            $("#AddIcon").change((event)=> {     
             
             const files = event.target.files
             let filename = files[0].name
@@ -1287,14 +2035,14 @@
 
                     if(files[0].name.toUpperCase().includes(".PNG"))
                     {
-                        photo = fileReader.result;
-                        $('.user-photo').html('<img style="background:#000;" width="30" height="30"  src="'+ photo +'">');
+                        icon = fileReader.result;
+                        $('.icon-photo').html('<img style="background:#000;" width="30" height="30"  src="'+ icon +'">');
                     }else if(files[0].name.toUpperCase().includes(".JPEG")){
-                        photo = fileReader.result;
-                        $('.user-photo').html('<img style="background:#000;" width="30" height="30"  src="'+ photo +'">');
+                        icon = fileReader.result;
+                        $('.icon-photo').html('<img style="background:#000;" width="30" height="30"  src="'+ icon +'">');
                     }else if(files[0].name.toUpperCase().includes(".JPG")){
-                        photo = fileReader.result;
-                        $('.user-photo').html('<img style="background:#000;" width="30" height="30" src="'+ photo +'">');
+                        icon = fileReader.result;
+                        $('.icon-photo').html('<img style="background:#000;" width="30" height="30" src="'+ icon +'">');
                     }else{
                       Swal.fire({
                         icon: 'info',
@@ -1307,7 +2055,38 @@
             })
             fileReader.readAsDataURL(files[0])
 
-    }); 
+        }); 
+
+        $("#AddIconHover").change((event)=> {     
+            
+            const files = event.target.files
+            let filename = files[0].name
+            const fileReader = new FileReader()
+            fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PNG"))
+                    {
+                        icon_hover = fileReader.result;
+                        $('.icon-hover-photo').html('<img style="background:#fff;" width="30" height="30"  src="'+ icon_hover +'">');
+                    }else if(files[0].name.toUpperCase().includes(".JPEG")){
+                        icon_hover = fileReader.result;
+                        $('.icon-hover-photo').html('<img style="background:#fff;" width="30" height="30"  src="'+ icon_hover +'">');
+                    }else if(files[0].name.toUpperCase().includes(".JPG")){
+                        icon_hover = fileReader.result;
+                        $('.icon-hover-photo').html('<img style="background:#fff;" width="30" height="30" src="'+ icon_hover +'">');
+                    }else{
+                      Swal.fire({
+                        icon: 'info',
+                        title: 'Tipe file tidak diizinkan!',
+                        confirmButtonColor: '#000',
+                        confirmButtonText: 'OK'
+                      });  
+                    } 
+                  
+            })
+            fileReader.readAsDataURL(files[0])
+
+    });     
    
 
     $( "#ContentMenu" ).on( "click", "#update-menu", (e) => {
@@ -1318,8 +2097,10 @@
 	              
 		          var form = {
 		              'name':data[0].value,
-		              'path_web':data[1].value,
-		              'icon':photo,
+		              'parent':data[1].value,
+		              'path_web':data[2].value,
+		              'icon':icon,
+		              'icon_hover':icon_hover,
 		             
 		          };
 
@@ -1376,6 +2157,38 @@
 
    	}
 
+
+   	function SelectParent(item){
+          console.log(item)
+          
+          var select =  $('#parent-'+item.id);
+          select.selectpicker('val', item.parent);
+          select.selectpicker('refresh');
+
+          if(item.parent =='menu')
+          {
+          	$('#path-web-alert-'+ item.id).hide();
+          }else{
+          	$('#path-web-alert-'+ item.id).show();
+          } 
+
+          $('#parent-'+item.id).change(function() {
+		        selectedVal = $(this).find("option:selected").val();
+		        if(selectedVal =='menu')
+		        {
+		            $('#path-web-alert-'+ item.id).hide();
+		        }else{
+		          	$('#path-web-alert-'+ item.id).show();
+		        }  
+		        
+
+		    });	
+
+
+    }
+
+
+
    	function deleteItemMenu(id){
 
 		$.ajax({
@@ -1425,12 +2238,21 @@
 	for (var i = 0; i < nestedSortables.length; i++) {
 		new Sortable(nestedSortables[i], {
 			group: 'nested',
-			animation: 500,
+			animation: 1000,
 			ghostClass: 'moving-card',
-			onChange: function (evt) {
+			onEnd: function (evt) {
 	            // Callback when sorting is finished
 	            const sortedData = getSortedData(sortableContainer);
 	            console.log(sortedData);
+
+		   		var form = {
+		           'menu':sortedData,
+		           'role_id':roleid_new,
+		        };
+		        localStorage.setItem('root_menu', JSON.stringify(form));
+                $('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
+                 
+               
            }
 			
 		});
@@ -1438,130 +2260,198 @@
 	
   }
     // Function to collect sorted data
-    function getSortedData(container,event) {
-        const sortedData = [];
-
-        const lists = container.querySelectorAll('#tabRole');
-        const items = [];
-        const find = [];
-        lists.forEach(function (list) {
-            const listId = list.getAttribute('data-id');
-            const listItems = list.querySelectorAll('#list-role');
-
-            listItems.forEach(function (item, index) {
-                const name = item.getAttribute('data-id');
-              
-                   items.push({
-                    name: name,
-                    tasks: getNestedSortedData(item),
-                   });
-              	
-               
-            });
-
-         
-        });
-        return items;
-    }
-
-    // Function to collect nested sorted data
-    function getNestedSortedData(parentItem) {
-        const nestedData = [];
-
-        const nestedLists = parentItem.querySelectorAll('.nested-sortable');
-        const items = [];
-
-        nestedLists.forEach(function (list) {
-            const listId = list.getAttribute('data-id');
-           
-            const listItems = list.querySelectorAll('#list-role');
-
-            listItems.forEach(function (item, index) {
-
-                const itemId = item.getAttribute('data-id');
-                items.push({
-                    name: itemId,
-                   
-                });
-            });
-        });
-
-        return items;
-    }
-
-    
-  //  function RoleNested(){
+    function getSortedData(container)
+    {
         
-  //       const groupClass = ".nested-sortable";
-	 //   	var nestedSortables = [...document.querySelectorAll(groupClass)];
-  //       const main = nestedSortables[0];
-  //       const handleSelector = groupClass;
-  //       const dataIdAttr = "data-id";  
+      const root = document.getElementById('tabRole');
+      return serialize(root);
+   
+    }
 
-  //       const sortableContainer = createdDraggableNestedList(
-		//   nestedSortables,
-		//   main,
-		//   handleSelector,
-		//   dataIdAttr,
-		//   groupClass
-		// );
-		// showOutputData(main,groupClass,dataIdAttr);
-		  
-    
-  //  }
+   function serialize(sortable) {
+   	  const nestedQuery = '.nested-sortable';
+	  const slug = 'sortableId';
+	  var serialized = [];
+	  var children = [].slice.call(sortable.children);
+      var menu = localStorage.getItem('root_menu');
+      var temp =  JSON.parse(menu);
+	 
+      var find = []; 
 
-  //  function createdDraggableNestedList(
-		//   nestedSortables,
-		//   container,
-		//   handleSelector = ".drag-handle",
-		//   dataIdAttr,
-		//   groupClass
-		// ) {
-		//   let sortableContainer = null;
-		//   for (let i = 0; i < nestedSortables.length; i++) {
-		//     const sortable = new Sortable(nestedSortables[i], {
-		//       group: "nested",
-		//       handle: handleSelector,
-		//       ghostClass: "sortable-placeholder",
-		//       dataIdAttr: dataIdAttr,
-		//       animation: 800,
-		//       fallbackOnBody: true,
-		//       swapThreshold: 0.65,
-		//       invertedSwapThreshold: 0.5,
-		//       invertSwap: true,
-		//       onChange: () => showOutputData(container,groupClass,dataIdAttr)
+	  for (var i in children)
+	  {
+		    var nested = children[i].querySelector(nestedQuery);
+		    var param =  children[i].dataset[slug];
+	        
+	        if(temp)
+	        { 
+	          find = temp.menu.find(o => o.slug == param); 
+	        }else{
+	       	  find = role_menu.find(o => o.slug === param);
+	        }	
+
+		    serialized.push({
+		      id: find.id,
+		      name:find.name,
+		      parent:find.parent,
+		      active:find.active,
+		      class:find.class,	
+		      slug: find.slug,
+		      icon:find.icon,
+		      icon_hover:find.icon_hover,
+		      option:find.option,
+		      path_web:find.path_web,
+		      tasks: find.tasks
+		    });
+
+	  }
+
+	  return serialized;
+	 
+  }
+
+
+  // function serializeSub(sortable)
+  // {
+  //  	  const nestedQuery = '.nested-sortable';
+	 //  const slug = 'sortableId';
+	 //  var serialized = [];
+	 //  var children = [].slice.call(sortable.children);
+	 //  var menu = localStorage.getItem('root_menu');
+  //     var temp =  JSON.parse(menu);
+  //     var find = [];
+	 //  for (var i in children) 
+	 //  {
+	 //      var nested = children[i].querySelector(nestedQuery);
+	 //      var param =  children[i].dataset[slug];
+	 //      if(temp)
+	 //      { 
+	 //         find = temp.menu.find(o => o.slug === param);
+	         
+	 //      }else{
+	 //         find = role_menu.find(o => o.slug === param);
+	        
+	 //      }	
+             
+  //          serialized.push({
+		//       id: find.id,
+		//       name:find.name,
+		//       parent:find.parent,
+		//       active:find.active,
+		//       class:find.class,	
+		//       slug: find.slug,
+		//       icon:find.icon,
+		//       icon_hover:find.icon_hover,
+		//       option:find.option,
+		//       path_web:find.path_web,
+		//       tasks: nested ? serializeSub(nested) : []
 		//     });
-		//     if (nestedSortables[i] === container) {
-		//       sortableContainer = sortable;
-		//     }
-		//   }
-		//   return sortableContainer;
-  //  }
 
- //    function showOutputData(container,groupClass,dataIdAttr) {
-	//   const data = toHierarchy(container, groupClass, dataIdAttr);
-	//   console.log(JSON.stringify(data, null, 2))
-	//   //$("#output").text(JSON.stringify(data, null, 2));
-	// }
+	 //  }
+	 //  return serialized
+  // }
 
-	// function toHierarchy(sortable, childrenSelector, dataAttributeSelector) {
-	//   const serialized = [];
-	//   const children = [...sortable.children];
 
-	//   for (let child of children) {
-	//     const nestedChildren = child.querySelector(childrenSelector);
-	//     const data = child.getAttribute(dataAttributeSelector);
-	//     if (data) {
-	//       serialized.push({
-	//         data: data,
-	//         children: nestedChildren
-	//           ? toHierarchy(child, childrenSelector, dataAttributeSelector)
-	//           : []
-	//       });
-	//     }
-	//   }
-	//   return serialized;
-	// }
+   function RoleNestedSub(menus){
+      
+     var nestedSortables = [].slice.call(document.querySelectorAll('.nested-sortable-sub'));
+     const sortableContainer = document.getElementById('tabDragSub');
+	// Loop through each nested sortable element
+	for (var i = 0; i < nestedSortables.length; i++) {
+		new Sortable(nestedSortables[i], {
+			group: 'nested',
+			animation: 1000,
+			ghostClass: 'moving-card',
+			onEnd: function (evt) {
+
+				var menu = localStorage.getItem('root_menu');
+	 			var temp =  JSON.parse(menu);
+				  
+	            const sortedData = getSortedDataSub(sortableContainer,menus);
+	       		if(temp)
+	            {
+                    let find = temp.menu.find(o => o.slug == menus);
+                    find.tasks = sortedData;
+                    var form = {
+			           'menu':temp.menu,
+			           'role_id':roleid_new,
+			        };
+	            }else{
+                   
+                    let find = role_menu.find(o => o.slug == menus);
+                    find.tasks = sortedData;
+			   		var form = {
+			           'menu':role_menu,
+			           'role_id':roleid_new,
+			        };
+
+	            } 	
+
+		        localStorage.setItem('root_menu', JSON.stringify(form));
+
+           }
+			
+		});
+	}
+	
+  }
+
+   function getSortedDataSub(container,menus)
+   {
+        
+      const root = document.getElementById('tabRoleSub');
+      return serializeDetail(root,menus);
+   
+    }
+
+   function serializeDetail(sortable,menus) {
+   	  const nestedQuery = '.nested-sortable-sub';
+	  const slug = 'sortableId';
+	  var serialized = [];
+	  var children = [].slice.call(sortable.children);
+      var menu = localStorage.getItem('root_menu');
+	  var temp =  JSON.parse(menu);
+	 
+      var find = []; 
+
+	  for (var i in children)
+	  {
+		    var nested = children[i].querySelector(nestedQuery);
+		    var param =  children[i].dataset[slug];
+	        
+	        if(temp)
+	        { 
+	           let item = temp.menu.find(o => o.slug == menus);
+	           find =  item.tasks.find(o => o.slug == param);
+	       
+	        }else{
+	       	  let item = role_menu.find(o => o.slug === menus);
+	       	  find =   item.tasks.find(o => o.slug == param);
+	        }	
+
+		    serialized.push({
+		      id: find.id,
+		      name:find.name,
+		      parent:find.parent,
+		      active:find.active,
+		      class:find.class,	
+		      slug: find.slug,
+		      icon:find.icon,
+		      icon_hover:find.icon_hover,
+		      option:find.option,
+		      path_web:find.path_web,
+		      tasks:[]
+		      // tasks: nested ? serializeDetail(nested) : []
+		    });
+
+	  }
+
+	  return serialized;
+	 
+  }
+
+
+
      
   });
 </script> 

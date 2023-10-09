@@ -137,15 +137,16 @@ class AuthApiController extends Controller
     {
 
         $RoleUser = RoleUser::where('user_id',Auth::User()->id)->first()->role_id;
-        // $role = RequestMenuRoles::Roles($RoleUser);
-        // $res = array();
+        $role = RequestMenuRoles::Roles($RoleUser);
+        $res = array();
         if($RoleUser)
         {
-            //$dataMenu = json_decode($role);
+            $dataMenu = json_decode($role);
             $userSidebar = RequestAuth::requestUserSidebar();
-           // $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
+            $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
+      
         } 
-        return response()->json(['status'=>true,'user_sidebar'=>$userSidebar],200);
+        return response()->json(['status'=>true,'user_sidebar'=>$userSidebar,'user_menu'=>$sidebar],200);
 
     }
 

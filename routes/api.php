@@ -35,6 +35,7 @@ use App\Http\Controllers\API\NotificationApiController;
 use App\Http\Controllers\API\ActionApiController;
 use App\Http\Controllers\API\KriteriaApiController;
 use App\Http\Controllers\API\BimsosApiController;
+use App\Http\Controllers\API\PenyelesaianApiController;
 
 Route::middleware(['jwt.auth'])->group(function () {
 
@@ -44,8 +45,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
     Route::get('select-periode', [PeriodeApiController::class, 'listAll']);
     Route::get('select-periode-semester', [PeriodeApiController::class, 'listAllSemester']);
-    Route::get('profile', [AuthApiController::class, 'getAuthUser']);
-    Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::post('user/photo', [AuthApiController::class, 'updatePhoto']);
@@ -68,22 +67,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('perencanaan/approve_selected', [PerencanaanApiController::class, 'approveSelected']);
     Route::put('perencanaan/upload_laporan/{id}', [PerencanaanApiController::class, 'upload_laporan']);
     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
-
-    Route::get('penyelesaian_masalah', [PenyelesaianApiController::class, 'index']);
-    Route::get('penyelesaian_masalah/export', [PenyelesaianApiController::class, 'export']);
-    Route::post('penyelesaian_masalah', [PenyelesaianApiController::class, 'store']);
-    Route::put('penyelesaian_masalah/{id}', [PenyelesaianApiController::class, 'update']);
-    Route::put('penyelesaian_masalah/approve/{id}', [PenyelesaianApiController::class, 'approve']);
-    Route::put('penyelesaian_masalah/approve_edit/{id}', [PenyelesaianApiController::class, 'approve_edit']);
-    Route::put('penyelesaian_masalah/unapprove/{id}', [PenyelesaianApiController::class, 'unapprove']);
-    Route::put('penyelesaian_masalah/reqedit/{id}', [PenyelesaianApiController::class, 'reqedit']);
-    Route::put('penyelesaian_masalah/reqrevisi/{id}', [PenyelesaianApiController::class, 'reqrevisi']);
-    Route::get('penyelesaian_masalah/edit/{id}', [PenyelesaianApiController::class, 'edit']);
-    Route::post('penyelesaian_masalah/search', [PenyelesaianApiController::class, 'search']);
-    Route::post('penyelesaian_masalah/selected', [PenyelesaianApiController::class, 'deleteSelected']);
-    Route::post('penyelesaian_masalah/approve_selected', [PenyelesaianApiController::class, 'approveSelected']);
-    Route::put('penyelesaian_masalah/upload_laporan/{id}', [PenyelesaianApiController::class, 'upload_laporan']);
-    Route::delete('penyelesaian_masalah/{id}', [PenyelesaianApiController::class, 'delete']);
 
     Route::get('user', [UserApiController::class, 'index']);
     Route::post('user', [UserApiController::class, 'store']);
@@ -150,7 +133,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('kendala', [KendalaApiController::class, 'store']);
     Route::post('kendala/search', [KendalaApiController::class, 'searchKendala']);
     Route::put('kendala/{id}', [KendalaApiController::class, 'update']);
-    Route::post('kendala/selected', [KendalaApiController::class, 'deleteSelected']);
+    Route::post('kendala/selected', [KendalaApiController::class, 'deleteKendala']);
     Route::delete('kendala/{id}', [KendalaApiController::class, 'delete']);
 
     Route::get('kendala/{id}', [KendalaApiController::class, 'show']);
@@ -160,13 +143,15 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('masalah/list-replay/{id}', [KendalaApiController::class, 'listreplay']);
     Route::post('masalah/comment', [KendalaApiController::class, 'saveComment']);
     Route::put('masalah/update-replay/{id}', [KendalaApiController::class, 'updatereplay']);
+    Route::post('masalah/selected', [KendalaApiController::class, 'masalahSelected']);
     Route::delete('masalah/delete-replay/{id}', [KendalaApiController::class, 'deletereplay']);
+    Route::delete('masalah/delete-all/{id}', [KendalaApiController::class, 'deleteMasalah']);
 
     Route::get('forum', [ForumApiController::class, 'index']);
     Route::post('forum', [ForumApiController::class, 'store']);
     Route::post('forum/search', [ForumApiController::class, 'searchForum']);
     Route::put('forum/{id}', [ForumApiController::class, 'update']);
-    Route::post('forum/selected', [ForumApiController::class, 'deleteSelected']);
+    Route::post('forum/selected', [ForumApiController::class, 'deleteForum']);
     Route::delete('forum/{id}', [ForumApiController::class, 'delete']);
 
     Route::get('topic/{id}', [ForumApiController::class, 'show']);
@@ -177,6 +162,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('topic/comment', [ForumApiController::class, 'saveComment']);
     Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
     Route::delete('topic/delete-replay/{id}', [ForumApiController::class, 'deletereplay']);
+    Route::delete('topic/delete-all/{id}', [ForumApiController::class, 'deleteTopic']);
 
     Route::get('notification', [NotificationApiController::class, 'index']);
     Route::get('notif', [NotificationApiController::class, 'show']);
@@ -221,4 +207,15 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('bimsos/request_edit/{id}', [BimsosApiController::class, 'request_edit']);
     Route::put('bimsos/request_revisi/{id}', [BimsosApiController::class, 'request_revisi']);
     Route::put('bimsos/approve_edit/{id}', [BimsosApiController::class, 'approve_edit']);
+    Route::delete('bimsos/{id}', [BimsosApiController::class, 'delete']);
+
+    Route::get('penyelesaian/datalist', [PenyelesaianApiController::class, 'jsonData']);
+    Route::post('penyelesaian', [PenyelesaianApiController::class, 'store']);
+    Route::get('penyelesaian/edit/{id}', [PenyelesaianApiController::class, 'edit']);
+    Route::put('penyelesaian/{id}', [PenyelesaianApiController::class, 'update']);
+    Route::post('penyelesaian/selected', [PenyelesaianApiController::class, 'deleteSelected']);
+    Route::put('penyelesaian/request_edit/{id}', [PenyelesaianApiController::class, 'request_edit']);
+    Route::put('penyelesaian/request_revisi/{id}', [PenyelesaianApiController::class, 'request_revisi']);
+    Route::put('penyelesaian/approve_edit/{id}', [PenyelesaianApiController::class, 'approve_edit']);
+    Route::delete('penyelesaian/{id}', [PenyelesaianApiController::class, 'delete']);
 });

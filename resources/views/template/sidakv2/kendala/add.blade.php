@@ -7,7 +7,7 @@
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button"  id="close1" class="close" data-dismiss="modal">&times;</button>
+        <button type="button"   class="clear-input close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Tambah Kendala</h4>
       </div>
       <form  id="FormSubmit" >
@@ -36,13 +36,13 @@
                 <div class="radio">
                     <label>
                       <input  type="radio" name="status" id="" value="Y"   checked>
-                      Aktif
+                      Publish
                     </label>
                 </div>
                 <div class="radio">
                     <label>
                       <input   type="radio" name="status" id="" value="N" >
-                     Non Aktif
+                     Draft
                     </label>
                 </div>
                 <span id="status-messages"></span>
@@ -56,7 +56,7 @@
        
       </div>
       <div class="modal-footer">
-        <button type="button" id="close2" class="btn btn-default" data-dismiss="modal">Tutup</button>
+        <button type="button"  class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>
         <button id="simpan" type="button" class="btn btn-primary" >Simpan</button>
       </div>
     </form>
@@ -71,13 +71,7 @@
 <script type="text/javascript">
  $(function(){
 
-   $("#close1").click(()=> {  
-      DefaultNull();
-   });
-
-   $("#close2").click(()=> {  
-      DefaultNull();
-   });
+   
      
   $("#simpan").click( () => {
 
@@ -140,13 +134,7 @@
           });
      });
 
-   function DefaultNull()
-       {
    
-           $("input").val(null);
-           $('#modal-add').modal('toggle');
-
-        }
 
   });
   </script>

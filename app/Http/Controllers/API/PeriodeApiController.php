@@ -339,8 +339,7 @@ class PeriodeApiController extends Controller
             $query->whereIn(
                 'year',
                 DB::table('perencanaan')
-                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                    ->where('status', 16)
+                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)                    
             );
         }
 

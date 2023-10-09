@@ -114,7 +114,7 @@ class ForumApiController extends Controller
            $messages = RequestForum::fieldsDataTopicDetail($saveData->id,$request);
            TopicDetail::create($messages);
             //result
-            return response()->json(['status'=>true,'id'=>$saveData,'message'=>'Insert data sucessfully']);
+            return response()->json(['status'=>true,'id'=>$messages,'message'=>'Insert data sucessfully']);
         }    
 
     }
@@ -152,8 +152,9 @@ class ForumApiController extends Controller
 
            //send notif
                 $type = 'Topic';
+                $url = '';
                 $messages = Auth::User()->username.' mengomentari tautan anda';
-                $notif = RequestNotification::fieldsData($type,$messages);
+                $notif = RequestNotification::fieldsData($type,$messages,$url);
                 Notification::create($notif);
          
             //result
@@ -235,7 +236,7 @@ class ForumApiController extends Controller
 
             
             $insert = RequestForum::fieldsData($request); 
-            $json = json_encode($insert);
+           
             
              $log = array(             
             'category'=> 'LOG_DATA_FORUM',
@@ -262,7 +263,7 @@ class ForumApiController extends Controller
           return response()->json($validation,400);  
         }else{
             
-               $update = RequestForum::fieldsData($request);
+                $update = RequestForum::fieldsData($request);
                //Audit Log
                  $log = array(             
                 'category'=> 'LOG_DATA_FORUM',
@@ -307,15 +308,16 @@ class ForumApiController extends Controller
 
     }
 
+
+
     public function deletereplay($id){
         $messages['messages'] = false;
         $_res = TopicDetail::find($id);
-         
-        $find = TopicDetail::where('role_id',$key)->first();
-        $log = array(             
+       
+            $log = array(             
                 'category'=> 'LOG_DATA_FORUM',
                 'group_menu'=>'menghapus_data_forum',
-                'description'=> '<b>'.$find->category.'</b> telah dihapus',
+                'description'=> '<b>'.$_res->messages.'</b> telah dihapus',
                 );
             $datalog = RequestAuditLog::fieldsData($log); 
          
@@ -333,15 +335,46 @@ class ForumApiController extends Controller
 
     }
 
-    public function deleteSelected(Request $request){
+
+    public function deleteTopic($id){
+
+       $messages['messages'] = false;
+        $_res = Topic::find($id);
+    
+            $log = array(             
+                'category'=> 'LOG_DATA_FORUM',
+                'group_menu'=>'menghapus_data_forum',
+                'description'=> '<b>'.$_res->category.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log); 
+         
+          
+        if(empty($_res)){
+            return response()->json(['messages' => false]);
+        }
+
+        $results = $_res->delete();
+        if($results){
+            $messages['messages'] = true;
+        }
+        return response()->json($messages);
+
+    }
+
+    public function deleteForum(Request $request){
         $messages['messages'] = false;
         foreach($request->data as $key)
         {
+             $find = Forum::where('id',$key)->first();
+             $log = array(             
+                'category'=> 'LOG_DATA_FORUM',
+                'group_menu'=>'menghapus_data_forum',
+                'description'=> '<b>'.$find->category.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);     
             $results = Forum::where('id',(int)$key)->delete();
         }
 
-
-        
 
         if($results){
             $messages['messages'] = true;
