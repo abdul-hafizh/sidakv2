@@ -67,7 +67,7 @@
 
 
 <!-- Modal -->
-<div id="modal-add" class="modal fade in" role="dialog">
+<div id="modal-add" class="modal fade" aria-hidden="true">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -89,6 +89,7 @@
           <div class="row">
             <div id="sub_menu_slug-alert" class="form-group has-feedback col-md-12">
               <label>Jenis </label>
+              <input type="hidden" class="form-control" name="id_bimsos" id="id_bimsos" value="">
               <select class="form-control select-jenis" name="sub_menu_slug" id="sub_menu_slug">
                 <option value="">-Pilih Tipe-</option>
                 <option value="is_tenaga_pendamping">Tenaga Pendamping</option>
@@ -330,6 +331,7 @@
       $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
       $('#FormSubmit select').removeAttr('disabled');
       var form = [
+        'id_bimsos',
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
@@ -349,7 +351,9 @@
 
     $('#simpan').on('click', function() {
       var formData = new FormData($('#FormSubmit')[0]);
+      console.log(formData);
       var form = [
+        'id_bimsos',
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
@@ -415,11 +419,12 @@
       });
     });
 
-    $("#datatable").on("click", ".modalUbah", function() {
+    $("#datatable").on("click", ".modalUbah", function(e) {
       $('#judulModalLabel').html('Form Ubah');
       //  $('.modal-footer button[type=button]').html('Ubah Data');
       $('#simpan').hide();
       var form = [
+        'id_bimsos',
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
@@ -436,11 +441,13 @@
         $('#' + field + '-messages').removeClass('help-block').html('');
       }
 
-      const id = $(this).data('param_id');
+      const id = e.currentTarget.dataset.param_id;
+      //document.getElementById('FormSubmit').id = 'FormSubmit' + id;
       $.ajax({
         url: BASE_URL + '/api/bimsos/edit/' + id,
         method: 'GET',
         success: function(data) {
+          $('#id_bimsos').val(data.id);
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
           $('#tgl_bimtek').val(data.tgl_bimtek);
@@ -557,9 +564,11 @@
         $('.select-periode-mdl').select2();
       }
 
-      $("#update").click(() => {
-        var data = $("#FormSubmit").serializeArray();
+      $('#update').on('click', function() {
+        var formData = new FormData($('#FormSubmit')[0]);
+        console.log(formData);
         var form = [
+          'id_bimsos',
           'periode_id_mdl',
           'sub_menu_slug',
           'nama_kegiatan',
@@ -569,17 +578,29 @@
           'jml_peserta',
           'ringkasan_kegiatan'
         ];
-        data.push({
-          name: 'status',
-          value: '13'
-        });
+        formData.append("status", 13);
+        $('#progressModal').show();
         $.ajax({
-          type: "PUT",
-          url: BASE_URL + '/api/bimsos/' + id,
-          data: data,
-          cache: false,
-          dataType: "json",
+          type: "POST",
+          url: BASE_URL + '/api/bimsos/update/' + id,
+          data: formData,
+          processData: false,
+          contentType: false,
+          xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = (evt.loaded / evt.total) * 100;
+                $('#progress').css('width', percentComplete + '%');
+                $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                // Place upload progress bar visibility code here
+              }
+            }, false);
+
+            return xhr;
+          },
           success: (respons) => {
+            $('#progressModal').hide();
             Swal.fire({
               title: 'Sukses!',
               text: 'Berhasil Disimpan',
@@ -596,6 +617,8 @@
             //
           },
           error: (respons) => {
+            $('#progressModal').hide();
+
             errors = respons.responseJSON;
             for (let i = 0; i < form.length; i++) {
               const field = form[i];

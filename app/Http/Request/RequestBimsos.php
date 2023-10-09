@@ -76,7 +76,7 @@ class RequestBimsos
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
-            $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+            $edit_url =  '<a href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></a>';
 
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
@@ -89,7 +89,7 @@ class RequestBimsos
             $row[]  = GeneralHelpers::formatDate($val->tgl_bimtek);
             $row[]  = $val->lokasi_bimtek;
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
-            $row[]  = RequestBimsos::getLabelStatus($val->status_laporan_id, $val->request_edit);
+            $row[]  = RequestBimsos::getLabelStatus('13', 'false');
             $row[]  = $edit_url . " " . $delete_url;
 
             $temp[] = $row;
@@ -256,17 +256,17 @@ class RequestBimsos
     }
     public static function getLabelStatus($status, $requestEdit)
     {
-        if ($status === 13) {
+        if ($status == 13) {
             if ($requestEdit === "false") {
                 return "Draft";
             } elseif ($requestEdit === "true") {
                 return "Draft (Edit)";
             }
-        } elseif ($status === 14) {
+        } elseif ($status == 14) {
             if ($requestEdit === "false") {
                 return "Terkirim";
             }
-        } elseif ($status === 15) {
+        } elseif ($status == 15) {
             if ($requestEdit === "false") {
                 return "Request Revision";
             } elseif ($requestEdit === "true") {
