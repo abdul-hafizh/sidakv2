@@ -796,14 +796,14 @@
 								    {		
 							 	 
 								 	 row +=`<tr>`;
-										 row +=`<td><input id="action-`+ i +`" type="checkbox" checked  name="status" id="status" value="`+ item.option[i].action +`" ></td>`;
+										 row +=`<td><input id="action-`+ item.option[i].action +`" type="checkbox" checked  name="status" class="status"  data-param_id="`+ item.option[i].action +`" value="`+ item.option[i].action +`" ></td>`;
 										 row +=`<td>`+ item.option[i].name +`</td>`;
 									 row +=`</tr>`;
 
 									}else{
                                       
                                       row +=`<tr>`;
-										 row +=`<td><input  type="checkbox"  name="status" id="status" value="`+ item.option[i].action +`" ></td>`;
+										 row +=`<td><input  type="checkbox"  name="status" id="action-`+ item.option[i].action +`" value="`+ item.option[i].action +`"  data-param_id="`+ item.option[i].action +`"class="status"></td>`;
 										 row +=`<td>`+ item.option[i].name +`</td>`;
 									 row +=`</tr>`; 
 
@@ -834,6 +834,100 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ slug).html(row); 
+
+            $(".modal-content").on( "click", ".status", (e) => {
+            	 let action = e.currentTarget.dataset.param_id;
+            	 // if(action =='read-only')
+            	 // {
+
+            	 	 // var data = item.option.find(o => o.action === action);
+                //      if(data.action == 'read-only')
+                //      {
+                //      	if(data.checked ==true)
+                //         {
+                //         	 data.checked = false;
+                //         }else{
+                //         	data.checked = true;
+                //         }		
+                     
+                //      }
+                     for(let i=0; i<item.option.length; i++)
+				     {
+                          var readonly = $('#action-'+ item.option[i].action);	
+
+				      if(item.option[i].action == 'read-only')
+				      {   
+				      	  
+                          if(readonly[0].checked == true)
+                          {
+                          	  $('#action-'+ item.option[i].action).prop('checked', true);
+                          }else{
+                          	  $('#action-'+ item.option[i].action).prop('checked', false);
+                          }
+                        
+                           
+                          
+				      }else{
+				      	 $('#action-'+ item.option[i].action).prop('checked', false);
+				      }
+
+				     } 	
+                    
+                     
+
+
+
+                     console.log(item.option)
+        //     	 	for(let i=0; i<item.option.length; i++)
+				    // {
+				    //   var readonly = $('#action-'+ item.option[i].action);	
+
+				    //   if(item.option[i].action == 'read-only')
+				    //   {   
+				      	  
+        //                   if(readonly[0].checked == true)
+        //                   {
+        //                   	  $('#action-'+ item.option[i].action).prop('checked', true);
+        //                   }
+                        
+                           
+                          
+				    //   }else{
+				    //   	 $('#action-'+ item.option[i].action).prop('checked', false);
+				    //   }
+
+
+
+				    //   // if(readonly[0].checked == false)
+				    //   // {
+				    //   // 	   $('#action-'+ item.option[i].action).prop('checked', true);
+				    //   // }else{
+				    //   // 	   $('#action-readonly').prop('checked', false);
+				    //   // }	
+                          
+                        
+                        
+                       
+				      	
+					 
+        //             }
+            	// }	
+		     
+		    });
+
+
+		   // $('#select-all').on('change', function() {
+		   //      $('.item-checkbox').prop('checked', $(this).is(':checked'));
+		          
+		   //       const checkedCount = $('.item-checkbox:checked').length;
+		   //       if(checkedCount >0)
+		   //       {
+		   //          $('#delete-selected').prop("disabled", false);
+		   //       }else{
+		   //          $('#delete-selected').prop("disabled", true);
+		   //       }  
+		        
+		   //  });
 
 
             $(".modal-content").on( "click", "#update_action-"+ slug, (e) => {
