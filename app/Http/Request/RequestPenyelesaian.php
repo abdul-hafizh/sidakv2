@@ -72,7 +72,12 @@ class RequestPenyelesaian
         $result = $data->get();
 
         foreach ($result as $key => $val) {            
-            $log_url =  '<button id="Log" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
+            
+            $log_url = "";
+
+            if(!empty($val->alasan_edit) || !empty($val->alasan_edit)) {
+                $log_url =  '<button id="Log" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
+            }
             $edit_url =  '<button id="Edit" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
