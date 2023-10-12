@@ -23,7 +23,7 @@ class ValidationMenus
         $validator =  Validator::make($request->all(), 
         [
             'name'  => 'required',
-            'slug'  => 'required',
+            'slug' => 'required|unique:menus,slug',
             'parent'  => 'required',
             // 'path_web' =>'required_if:parent,sub',
             'icon'  => 'required',
@@ -77,7 +77,10 @@ class ValidationMenus
         $validator =  Validator::make($request->all(), 
         [
             'name' => 'required',
-            'slug'  => 'required',
+            'slug' => [
+                'required',
+                Rule::unique('menus')->ignore($id),
+            ], 
             'parent'  => 'required',
             // 'path_web' => [
             //     'required_if:parent,sub',
