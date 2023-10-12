@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Kriteria;
 use App\Models\Kendala;
+use App\Models\User;
 use App\Models\KendalaDetail;
 use App\Models\Notification;
 use App\Helpers\GeneralPaginate;
@@ -14,6 +15,11 @@ use App\Http\Request\Validation\ValidationKriteria;
 use App\Http\Request\Validation\ValidationKendala;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestAuditLog;
+use App\Http\Request\RequestDaerah;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\KendalaPermasalahan;
+use App\Mail\TanggapanKendala;
+
 use DB;
 use Auth;
 
@@ -141,39 +147,53 @@ class KendalaApiController extends Controller
 
            $insert = RequestKendala::fieldsDataKendalaDetail($request->kendala_id,$request);  
 
+
+            //create menu
+           $saveData = KendalaDetail::create($insert);
+           $last = RequestKendala::MessagesLast($saveData->id,$request->kendala_id);
+            $category =  RequestKendala::Category($request->kendala_id);
+            $url = url('kendala/'.$category.'/'.$request->kendala_id);
+            $access = RequestAuth::Access();
+              //send notif
+            if($access =="admin" || $access =="pusat")
+            {
+
+                $type = 'kendala';
+            
+                $messages = 'Tanggapan atas kendala '.$request->permasalahan.' sudah dibalas Admin';
+                $notif = RequestNotification::fieldsData($type,$messages,$url);
+                Notification::create($notif);
+
+                 $text_name = 'Kementerian Investasi';
+                 $pusat = User::where('username','pusat')->first()->email;
+                 $name_send = User::where('username',$saveData->sender)->first() ;
+                 Mail::to($name_send->email)->send(new TanggapanKendala($name_send->name,$url,$request->permasalahan,$request->messages, $text_name));
+               
+
+            }else{
+
+                  $type = 'kendala';
+                 $messages = Auth::User()->username.' meminta tanggapan atas kendala '.$request->permasalahan;
+                
+                 $notif = RequestNotification::fieldsData($type,$messages,$url);
+                 Notification::create($notif);
+
+                 $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+                 $pusat = User::where('username','pusat')->first()->email;
+                 $text_name = 'Kementerian Investasi';
+                 Mail::to($pusat)->send(new KendalaPermasalahan($text_name,$url,$request->permasalahan,$request->messages, $daerah_name));
+
+
+
+            }    
+           
+           
            $log = array(             
             'category'=> 'LOG_DATA_LIST_KENDALA',
             'group_menu'=>'upload_data_list_kendala',
             'description'=>'Menambahkan data kendala <b>'.$request->permasalahan.'</b>',
             );
             $datalog = RequestAuditLog::fieldsData($log);
-
-            //create menu
-           $saveData = KendalaDetail::create($insert);
-           $last = RequestKendala::MessagesLast($saveData->id,$request->kendala_id);
-
-            $access = RequestAuth::Access();
-              //send notif
-            if($access !="admin" || $access !="pusat")
-            {
-                 $type = 'kendala';
-                 $messages = Auth::User()->username.' meminta tanggapan atas kendala '.$request->permasalahan;
-                 $url = '';
-                 $notif = RequestNotification::fieldsData($type,$messages,$url);
-                 Notification::create($notif);
-
-            }else{
-                
-                $type = 'kendala';
-                $url = '';
-                $messages = 'Tanggapan atas kendala '.$request->permasalahan.' sudah dibalas Admin';
-                $notif = RequestNotification::fieldsData($type,$messages,$url);
-                Notification::create($notif);
-
-
-            }    
-           
-
             
          
             //result

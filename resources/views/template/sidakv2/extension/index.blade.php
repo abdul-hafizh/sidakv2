@@ -1,16 +1,41 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15">
-    <div  class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
+
+	@if($access =='admin' || $access == 'pusat' )
+       <div class="row margin-top-bottom-20">
+            <div class="col-lg-3 pd-right">
+                <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi / Kabupaten"></select>
+            </div>   
+
+            <div class="col-lg-3 pd-right ">
+                <input type="date" id="search-input" class="form-control border-radius-20" placeholder="Cari Tanggal Pengajuan">
+            </div>  
+
+           <div class="col-lg-3 pd-right">
+                <div class="btn-group">
+                    <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+                    <button id="refresh" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>  
+
+     </div> 
+    @else
+
+     <div  class="col-sm-4 pull-left padding-default full margin-top-bottom-20">
         <div class="pull-right width-25">
             <div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
+				<input type="date" id="search-input" placeholder="Cari Tanggal Pengajuan" class="form-control height-35 border-radius-left">
 				<span class="input-group-btn">
 				<button id="Search" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-search"></i></button>
 				</span>
 			</div>
         </div> 	
-    </div> 	
+    </div>
+     
+      
+
+    @endif	
 
 	<div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
@@ -26,6 +51,14 @@
 			<div id="ShowChecklist" style="display:none;" class="pull-left padding-9-0 margin-left-button">
 				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
 					 Hapus
+				</button>
+
+			</div>
+
+
+			<div id="ShowApproval" style="display:none;" class="pull-left padding-9-0 margin-left-button">
+				<button type="button" disabled id="approve-selected" class="btn btn-danger border-radius-10">
+					 Approval
 				</button>
 
 			</div>
@@ -63,13 +96,27 @@
 				<table class="table table-hover text-nowrap">
 					<thead>
 						<tr>
-							<th id="ShowChecklistAll" style="display:none;" ><input id="select-all" class="span-title" type="checkbox"></th>
-							<th><div id="ShowChecklistAll" style="display:none;"  class="split-table"></div><span class="span-title">No</span>  </th>
-							<th><div class="split-table"></div><span class="span-title"> extension </span></th>
+
 							
+
+
+                            <th id="ShowChecklistApproved" style="display:none;" ><input id="select-all" class="span-title" type="checkbox"></th>
+
+							<th id="ShowChecklistAll" style="display:none;" ><input id="select-all" class="span-title" type="checkbox"></th>
+
+							
+
+							<th id="BorderAppoved" style="display:none;"><div class="split-table"></div><span class="span-title">No</span>  </th>
+							<th id="BorderDeleted" style="display:none;"><div class="split-table"></div><span class="span-title">No</span>  </th>
+
+							@if($access =='admin' || $access == 'pusat' )
+							<th><div class="split-table"></div><span class="span-title"> Nama Daerah </span></th>
+							@endif
 							<th><div class="split-table"></div><span class="span-title"> Tanggal Berahir </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Pengajuan Perpanjangan </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Alasan </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Status </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Tanggal Dibuat </span></th>
 							<th ><div class="split-table"></div><span class="span-title"> Aksi </span></th> 
 							
 						</tr>
@@ -89,6 +136,11 @@
 	</div>
      @include('template/sidakv2/extension.add')
      @include('template/sidakv2/extension.export')
+
+     <div id="modal-detail" class="modal fade" role="dialog">
+     
+     </div>  	
+
 <script type="text/javascript">
 
  $(document).ready(function() {
@@ -101,6 +153,22 @@
     let page = 1;
     var list = [];
     const total = 0;
+    var year_id = [];
+    var date_expired = '';
+    var daerah_id = '';
+    var search = '';
+
+    var url = window.location.href; 
+	var currentDomain = window.location.hostname;
+	var segments = url.split('/'); 
+
+	
+
+    SelectDaerah();
+    ChangeDaerah();
+    
+    	
+  
 
      $("#ExportButton").click(function() {
 	     $.ajax({
@@ -162,11 +230,18 @@
          if(checkedCount >0)
          {
          	$('#delete-selected').prop("disabled", false);
+         	$('#approve-selected').prop("disabled", false);
          }else{
          	$('#delete-selected').prop("disabled", true);
+            $('#approve-selected').prop("disabled", true);	
          } 
 
     });
+
+   
+
+
+    
 
      // Refresh selected button
     $('#refresh').on('click', function() {
@@ -207,11 +282,47 @@
         
     });
 
+
+    // Approve selected button
+    $('#approve-selected').on('click', function() {
+        const selectedIds = [];
+        $('.item-checkbox:checked').each(function() {
+            selectedIds.push($(this).data('id'));
+        });
+
+         Swal.fire({
+		      title: 'Apakah anda yakin Approved?',
+		    
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#d33',
+		      cancelButtonColor: '#3085d6',
+		      confirmButtonText: 'Ya'
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+		        // Perform the delete action here, e.g., using an AJAX request
+		        // Send selected IDs for deletion (e.g., via AJAX)
+   				 ApprovedItems(selectedIds);
+		        
+		        Swal.fire(
+		          'Deleted!',
+		          'Data berhasil dihapus.',
+		          'success'
+		        );
+		      }
+		    });
+
+        
+    });
+
     // Individual item checkboxes
     $('.item-checkbox').on('change', function() {
         const allChecked = $('.item-checkbox:checked').length === $('.item-checkbox').length;
         $('.select-all').prop('checked', allChecked);
+        
     });
+
+
       
     // keyup search  
     $('#search-input').keyup( () => {
@@ -271,6 +382,77 @@
 	     }    
     });
 
+    function SelectDaerah(){
+
+	    $.ajax({
+	        url: BASE_URL +'/api/select-daerah',
+	        method: 'GET',
+	        dataType: 'json',
+	        success: function(data) {
+	            // Populate SelectPicker options using received data
+	            $.each(data, function(index, option) {
+	                $('#daerah_id').append($('<option>', {
+	                  value: option.value,
+	                  text: option.text
+	                }));
+	            });
+
+	            // Refresh the SelectPicker to apply the new options
+	            $('#daerah_id').selectpicker('refresh');
+	        },
+	        error: function(error) {
+	            console.error(error);
+	        }
+	    });
+
+    }
+
+    function ChangeDaerah(){
+
+    	 $('#daerah_id').on('change', function() {
+       var value = $(this).val();         
+            if(value)
+            {   
+                 var per_page = $('#row_page').val();
+                 const content = $('#content');
+                 content.empty();
+                 let row = ``;
+                 row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
+                  content.append(row);
+                  daerah_id = $('#daerah_id').val();
+
+                  if(daerah_id !='')
+                  {
+                    var url = BASE_URL + `/api/extension/search?page=${page}&per_page=${per_page}`;
+                    var method = 'POST';
+                  } 
+
+                $.ajax({
+                    url: url,
+                    method: method,
+                    data:{'search':search,'daerah_id':daerah_id},
+                    success: function(response) {
+                        list = response.data;
+                        resultTotal(response.total);
+                        listOptions(response.options);
+                        
+                        updateContent(response.data,response.options);
+                        updatePagination(response.current_page, response.last_page);
+
+                        
+
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
+            }
+
+
+    });   
+
+    }
+
     // Function to fetch data from the API
     function fetchData(page) {
     	  
@@ -285,7 +467,8 @@
             url: BASE_URL+ `/api/extension?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
-            	list = response.data;
+            	list = response.data;	
+            	NotifDetail();
                 resultTotal(response.total);
                 listOptions(response.options);
                 updateContent(response.data,response.options);
@@ -319,17 +502,65 @@
                     {
                         row +=ChecklistTable(item);
                     }
-                 }       
+                 }
+
+                 if(opt.action == 'approval')
+                 {
+                    if(opt.checked == true)
+                    {
+                          row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+           
+                    }
+                 }        
               }); 
 
                row +=`<td>${item.number}</td>`;
-               row +=`<td>${item.name}</td>`;
-              
-               row +=`<td>${item.startdate_convert}</td>`;
-               row +=`<td>${item.enddate_convert}</td>`;
-               row +=`<td>${item.status.status_convert}</td>`;
+               if(item.access =='admin' || item.access =='pusat')
+               {
+               	row +=`<td>${item.daerah_name}</td>`;
+               }	
+               row +=`<td>${item.expireddate.expired_convert}</td>`;
+               row +=`<td>${item.extensiondate.extension_convert}</td>`;
+               row +=`<td>${item.description.desc_convert}</td>`;
+               if(item.status.status_db =='Y')
+               {
+	               	if(item.checklist == 'Approved')
+	                {
+	                   row +=`<td><small class="label pull-right  bg-green">${item.checklist}</small> </td>`;
+	                }else{
+	                	row +=`<td><small class="label pull-right bg-yellow">${item.checklist}</small> </td>`;
+	                }		
+               	 
+               }else{
+               	  row +=`<td>${item.status.status_convert}  </td>`;
+               }	
+               
+               row +=`<td>${item.created_at}</td>`;
                row +=`<td>`; 
-                row +=`<div class="btn-group">`;
+
+                if(item.access =='admin' || item.access =='pusat')
+               {
+                 row +=`<div class="btn-group pull-left ">`;
+               }else{
+                  row +=`<div class="btn-group pull-left list-menu-table-periode">`;
+               }
+
+               if(item.access =='admin' || item.access =='pusat')
+               {
+               
+	                if(item.checklist == 'Proses')
+	                {
+	                   row +=`<button id="Approved" data-param_type="approved" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Approved Data"  class="btn btn-primary"><i class="fa fa-check"></i></button>`;
+	                }else{
+	                   
+	                   row +=`<button id="Approved" data-param_type="not_approved" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Batalkan Approved Data"  class="btn btn-primary"><i class="fa fa-ban"></i></button>`;
+
+	                }
+	            }     
+
+
+
+	          
 
                   row +=`<button id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
 
@@ -340,8 +571,8 @@
                         {
                            if(opt.checked == true)
                            { 
-                                row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
-                              
+                                
+                                row += BtnTableEdit(item);
                             }    
 
                         } 
@@ -359,11 +590,13 @@
 
                   });
 
+
+
                   row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
                      row +=`<div id="FormEdit-${item.id}"></div>`;
                   row +=`</div>`;
 
-
+   
               
 
                 row +=`</div>`;
@@ -388,130 +621,63 @@
 	         if(checkedCount>0)
 	         {
 	           $('#delete-selected').prop("disabled", false);
+	           $('#approve-selected').prop("disabled", false);
 	         }else{
 	           $('#delete-selected').prop("disabled", true);
+	           $('#approve-selected').prop("disabled", true);
 	         } 	
    		});
+
+   		$("#content").on( "click", "#Approved", (e) => {
+             
+                let id = e.currentTarget.dataset.param_id;
+                let type = e.currentTarget.dataset.param_type;
+
+                if(type == 'approved')
+                {
+                   var item = 'Approved';
+                }else{
+                    var item = 'Batalkan Approved'; 
+                } 	
+
+		        Swal.fire({
+				      title: 'Apakah anda yakin '+ item +'?',
+				      icon: 'warning',
+				      showCancelButton: true,
+				      confirmButtonColor: '#d33',
+				      cancelButtonColor: '#3085d6',
+				      confirmButtonText: 'Ya'
+				    }).then((result) => {
+				      if (result.isConfirmed) {
+				        // Perform the delete action here, e.g., using an AJAX request
+				        // You can use the itemId to identify the item to be deleted
+				        approvedItem(id,type);
+				        
+				        Swal.fire(
+				          'Appoved!',
+				          'Data berhasil diapprove.',
+				          'success'
+				        );
+				      }
+				    });
+
+	       
+           
+        });
 
 
    		$( "#content" ).on( "click", "#Detail", (e) => {
              
             let id = e.currentTarget.dataset.param_id;
-            const item = list.find(o => o.id == id); 
-           
-            
-            let row = ``;
-            row +=`<div class="modal-dialog">`;
-                row +=`<div class="modal-content">`;
-
-				       row +=`<div class="modal-header">`;
-				         row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Detail extension</h4>`;
-				       row +=`</div>`;
-
-				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
-					        row +=`<div class="modal-body">`;
-                               
-                                 
-				                 
-
-				                  row +=`<div id="semester-alert-`+ item.id +`" class="form-group has-feedback" >`;
-					              row +=`<label>Semester</label>`;
-					              row +=`<select  id="semester-`+ item.id +`" class="selectpicker form-control" name="semester">`;
-					                  row +=`<option value="">Pilih Semester</option>`;
-                                      row +=`<option value="01" >Semester 01</option>`;
-                                      row +=`<option value="02">Semester 02</option>`;
-					                     
-					              row +=`</select>`;
-					              row +=`<span id="semester-messages-`+ item.id +`"></span>`;
-					            row +=`</div>`;
-
-					            row +=`<div id="year-alert-`+ item.id +`" class="form-group has-feedback" >`;
-					              row +=`<label>Tahun</label>`;
-					              row +=`<input readonly maxlength="4" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Year" value="`+ item.year +`">`;
-					              row +=`<span id="year-messages-`+ item.id +`"></span>`;
-					            row +=`</div>`;
-
-                                 row +=`<div id="startdate-alert-`+ item.id +`" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Tanggal Mulai</label>`;
-				                  row +=`<input readonly type="date" class="form-control" name="startdate" placeholder="Tanggal Mulai" value="`+ item.startdate +`">
-				                  <span id="startdate-messages-`+ item.id +`"></span>`;
-				                  row +=`</div>`;
-
-
-				                    row +=`<div id="enddate-alert-`+ item.id +`" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Tanggal Berahir</label>`;
-				                  row +=`<input readonly type="date" class="form-control" name="enddate" placeholder="Tanggal Berahir" value="`+ item.enddate +`">
-				                  <span id="enddate-messages-`+ item.id +`"></span>`;
-				                  row +=`</div>`;
-
-
-				                  row +=`<div id="description-alert-`+ item.id +`" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Keterangan</label>`;
-				                  row +=`<textarea readonly type="text" name="description" class="form-control">`+ item.description +`</textarea>`;
-				                  row +=`<span id="description-messages-`+ item.id +`"></span>`;
-				                  row +=`</div>`;
-
-
-			                    row +=`<div class="radio">`;
-				                    row +=`<label>`;
-				                    if(item.status.status_db =='Y')
-				                    {
-				                        row +=`<input disabled type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
-				                    }else{
-				                    	row +=`<input disabled type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
-				                    } 	
-				                 
-				                      row +=`Publish`;
-				                    row +=`</label>`;
-				                row +=`</div>`;
-				                row +=`<div class="radio">`;
-				                    row +=`<label>`;
-				                      if(item.status.status_db =='N')
-				                    {
-				                        row +=`<input  disabled type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
-				                    }else{
-				                    	row +=`<input  disabled type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
-				                    } 
-
-				                     
-				                     row +=`Draft`;
-				                    row +=`</label>`;
-				                row +=`</div>`;
-
-                            row +=`</div>`;
-
-
-                            row +=`<div class="modal-footer">`;
-						        row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
-
-						         
-     						row +=`</div>`;
-						    row +=`</div>`;
-
-
-					    row +=`</form>`;     
-                row +=`</div>`;
-            row +=`</div>`   
-
-            $('#FormEdit-'+ item.id).html(row); 
-
-            // Set a specific option as selected
-               let select = $('#semester-'+ item.id);
-		       var selectedValue = item.semester;
-		       select.val(selectedValue);
-		       // Refresh the SelectPicker
-		       select.prop('disabled', true); 
-		       select.selectpicker('refresh');
+            GetDetailModal(id);
         });
 
         $( "#content" ).on( "click", "#Edit", (e) => {
              
             let id = e.currentTarget.dataset.param_id;
-            const item = list.find(o => o.id == id); 
+            const item = list.find(o => o.id == id);
+         
+            
            
             
             let row = ``;
@@ -520,7 +686,7 @@
 
 				       row +=`<div class="modal-header">`;
 				         row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit extension</h4>`;
+				         row +=`<h4 class="modal-title">Edit Pengajuan Periode</h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
@@ -531,8 +697,8 @@
 
 				                  row +=`<div id="semester-alert-`+ item.id +`" class="form-group has-feedback" >`;
 					              row +=`<label>Semester</label>`;
-					              row +=`<select id="semester-`+ item.id +`" class="selectpicker form-control" name="semester">`;
-					                  row +=`<option value="">Pilih Semester</option>`;
+					              row +=`<select id="semester-`+ item.id +`"  class="selectpicker form-control" name="semester">`;
+					                
                                       row +=`<option value="01" >Semester 01</option>`;
                                       row +=`<option value="02">Semester 02</option>`;
 					                     
@@ -542,59 +708,40 @@
 
 					            row +=`<div id="year-alert-`+ item.id +`" class="form-group has-feedback" >`;
 					              row +=`<label>Tahun</label>`;
-					              row +=`<input maxlength="4" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Year" value="`+ item.year +`">`;
+					              
+					               row +=`<select id="year-`+ item.id +`" class="form-control selectpicker" data-style="btn-default" name="year">`;
+					                  
+					              row +=`</select>`;
 					              row +=`<span id="year-messages-`+ item.id +`"></span>`;
 					            row +=`</div>`;
 
-                                 row +=`<div id="startdate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+                                 
+				                row +=`<div id="expireddate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+					              row +=`<label>Tanggal Berahir</label>`;
 
-				                  row +=`<label>Tanggal Mulai</label>`;
-				                  row +=`<input type="date" class="form-control" name="startdate" placeholder="Tanggal Mulai" value="`+ item.startdate +`">
-				                  <span id="startdate-messages-`+ item.id +`"></span>`;
-				                  row +=`</div>`;
+					             
+					              row +=`<div id="confirm_expired-`+ item.id +`" class="confirm_expired-`+ item.id +` text-bold alert alert-danger alert-dismissible"></div>`;
+					              row +=`<span id="expireddate-messages-`+ item.id +`"> </span>`;
+					            row +=`</div>`;
 
 
-				                    row +=`<div id="enddate-alert-`+ item.id +`" class="form-group has-feedback" >`;
-
-				                  row +=`<label>Tanggal Berahir</label>`;
-				                  row +=`<input type="date" class="form-control" name="enddate" placeholder="Tanggal Berahir" value="`+ item.enddate +`">
-				                  <span id="enddate-messages-`+ item.id +`"></span>`;
-				                  row +=`</div>`;
+				                row +=`<div id="extensiondate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+					              row +=`<label>Pengajuan Perpanjangan</label>`;
+					              row +=`<input id="extensiondate-`+ item.id +`"  type="date" class="form-control" name="extensiondate" value="`+ item.extensiondate.extension_db +`">`;
+					              row +=`<span id="extensiondate-messages-`+ item.id +`"></span>`;
+					            row +=`</div>`;
+ 
 
 
 				                  row +=`<div id="description-alert-`+ item.id +`" class="form-group has-feedback" >`;
 
 				                  row +=`<label>Keterangan</label>`;
-				                  row +=`<textarea type="text" name="description" class="form-control">`+ item.description +`</textarea>`;
+				                  row +=`<textarea type="text" name="description" class="form-control">`+ item.description.desc_db +`</textarea>`;
 				                  row +=`<span id="description-messages-`+ item.id +`"></span>`;
 				                  row +=`</div>`;
 
 
-			                    row +=`<div class="radio">`;
-				                    row +=`<label>`;
-				                    if(item.status.status_db =='Y')
-				                    {
-				                        row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" checked>`;	
-				                    }else{
-				                    	row +=`<input  type="radio" name="status" id="status`+ item.id +`" value="Y" >`;
-				                    } 	
-				                 
-				                      row +=`Publish`;
-				                    row +=`</label>`;
-				                row +=`</div>`;
-				                row +=`<div class="radio">`;
-				                    row +=`<label>`;
-				                      if(item.status.status_db =='N')
-				                    {
-				                        row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" checked>`;
-				                    }else{
-				                    	row +=`<input   type="radio" name="status" id="status-N`+ item.id +`" value="N" >`;
-				                    } 
-
-				                     
-				                     row +=`Draft`;
-				                    row +=`</label>`;
-				                row +=`</div>`;
+			                    
 
                             row +=`</div>`;
 
@@ -602,9 +749,13 @@
                             row +=`<div class="modal-footer">`;
 						        row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
 
-						          row +=`<button id="update" data-param_id="`+ item.id +`" type="button" class="btn btn-primary" >Update</button>`;
-						            row +=`<button id="load-simpan" type="button" disabled class="btn btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>
-     						</div>`;
+						          row +=`<button id="update-`+ item.id +`" data-param_id="`+ item.id +`" type="button" class="btn color-white btn-warning" >Update</button>`;
+						            row +=`<button id="kirim-`+ item.id +`" type="button" class="btn btn-primary color-white" >Kirim</button>`; 
+						            row +=`<button id="load-update" type="button" disabled class="btn  btn-default" style="display:none;"><i class="fa fa-spinner fa-spin"></i>&nbsp;&nbsp;Proses</button>`;
+
+
+
+     						row +`</div>`;
 						    row +=`</div>`;
 
 
@@ -615,110 +766,34 @@
             $('#FormEdit-'+ item.id).html(row); 
 
             // Set a specific option as selected
-               let select = $('#semester-'+ item.id);
-		       var selectedValue = item.semester;
-		       select.val(selectedValue);
+               let select_semester = $('#semester-'+ item.id);
+		       var selectedSemester = item.semester;
+		       select_semester.val(selectedSemester);
 		       // Refresh the SelectPicker
-		       select.selectpicker('refresh');
-                
+		       select_semester.selectpicker('refresh');
 
-            $( ".modal-content" ).on( "click", "#update", (e) => {
-		          let id = e.currentTarget.dataset.param_id;
-	              var data = $("#FormSubmit-"+ id).serializeArray();
-	              $("#update").hide();
-	              $("#load-simpan").show();
-	              
-		                var form = {
-		          	     
-		          	      'semester':data[0].value,
-			              'year':data[1].value,
-			              'startdate':data[2].value,
-			              'enddate':data[3].value,
-			              'description':data[4].value,
-			              'status':data[5].value,
+                   
+		       
+		   
+		       getYearSelected(item.year,selectedSemester,item);
+		      
 
-		          	    };
+		       $('#semester-'+ item.id).on('change', function() {
+			       var value = $(this).val();  
+			     
+			          $('#year-'+ item.id).empty();
+                      $('#year-'+ item.id).attr('title','Pilih Tahun') 
+                      var selected = '';
+			          getYearSelected(selected,value,item);
+
+			    }); 
 
 
-
-					$.ajax({
-			            type:"PUT",
-			            url: BASE_URL+'/api/extension/'+ id,
-			            data:form,
-			            cache: false,
-			            dataType: "json",
-			            success: (respons) =>{
-			                   Swal.fire({
-			                        title: 'Sukses!',
-			                        text: 'Berhasil Diupdate',
-			                        icon: 'success',
-			                        confirmButtonText: 'OK'
-			                        
-			                    }).then((result) => {
-			                        if (result.isConfirmed) {
-			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/extension');
-			                        }
-			                    });
-
-			                   //
-			            },
-			            error: (respons)=>{
-			                errors = respons.responseJSON;
-			                $("#update").show();
-			                $("#load-simpan").hide();
- 
-			                if(errors.messages.name)
-			                {
-			                     $('#name-alert-'+id).addClass('has-error');
-			                     $('#name-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
-			                }else{
-			                    $('#name-alert-'+id).removeClass('has-error');
-			                    $('#name-messages-'+id).removeClass('help-block').html('');
-			                }
-
-			                if(errors.messages.semester)
-			                {
-			                     $('#semester-alert-'+id).addClass('has-error');
-			                     $('#semester-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.semester +'</strong>');
-			                }else{
-			                    $('#semester-alert-'+id).removeClass('has-error');
-			                    $('#semester-messages-'+id).removeClass('help-block').html('');
-			                }
-
-			                if(errors.messages.year)
-			                {
-			                     $('#year-alert-'+id).addClass('has-error');
-			                     $('#year-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.year +'</strong>');
-			                }else{
-			                    $('#year-alert-'+id).removeClass('has-error');
-			                    $('#year-messages-'+id).removeClass('help-block').html('');
-			                }
-
-			                if(errors.messages.startdate)
-			                {
-			                     $('#startdate-alert-'+id).addClass('has-error');
-			                     $('#startdate-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.startdate +'</strong>');
-			                }else{
-			                    $('#startdate-alert-'+id).removeClass('has-error');
-			                    $('#startdate-messages-'+id).removeClass('help-block').html('');
-			                }
-
-			                if(errors.messages.enddate)
-			                {
-			                     $('#enddate-alert-'+id).addClass('has-error');
-			                     $('#enddate-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.enddate +'</strong>');
-			                }else{
-			                    $('#enddate-alert-'+id).removeClass('has-error');
-			                    $('#enddate-messages-'+id).removeClass('help-block').html('');
-			                }
-
-			                
-			            }
-			          });
- 
-		        
-	        });  
+                ChangeYear(item);
+                AlertExtentionFirst(item); 
+                   
+                ExtensionChange(item)
+    
             
         });
 
@@ -760,6 +835,339 @@
        
         
     }
+     function NotifDetail(){
+       const item = list.find(o => o.id == segments[5]); 
+       if(item)
+       {    
+	       if(segments[5])
+	       {  
+			 var row = '';
+	          row += `<div id="FormEdit-`+ segments[5] +`"></div>`;
+	          $('#modal-detail').html(row);
+	            GetDetailModal(segments[5])  
+	          $('#modal-detail').modal('show');
+	       }
+       } 
+     }
+   	
+
+     function GetDetailModal(id){
+
+        const item = list.find(o => o.id == id); 
+        if(item)
+        { 	
+        
+        let row = ``;
+        row +=`<div class="modal-dialog">`;
+            row +=`<div class="modal-content">`;
+
+			       row +=`<div class="modal-header">`;
+			         row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
+			         row +=`<h4 class="modal-title">Detail Perpanjangan Periode</h4>`;
+			       row +=`</div>`;
+
+			       row +=`<form   id="FormSubmit-`+ item.id +`">`;
+				        row +=`<div class="modal-body">`;
+                           
+                             
+			                
+
+
+			                  row +=`<div id="semester-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				              row +=`<label>Semester</label>`;
+				              row +=`<select  id="semester-`+ item.id +`" class="selectpicker form-control" name="semester">`;
+				                  row +=`<option value="">Pilih Semester</option>`;
+                                  row +=`<option value="01" >Semester 01</option>`;
+                                  row +=`<option value="02">Semester 02</option>`;
+				                     
+				              row +=`</select>`;
+				              row +=`<span id="semester-messages-`+ item.id +`"></span>`;
+				            row +=`</div>`;
+
+				            row +=`<div id="year-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				              row +=`<label>Tahun</label>`;
+				              row +=`<input readonly maxlength="4" type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '');" class="form-control" name="year" placeholder="Year" value="`+ item.year +`">`;
+				              row +=`<span id="year-messages-`+ item.id +`"></span>`;
+				            row +=`</div>`;
+
+
+			                row +=`<div id="expireddate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				              row +=`<label>Tanggal Berahir</label>`;
+				              row +=`<input readonly type="text" class="form-control" value="`+ item.expireddate.expired_db +`">`;
+				              row +=`<span id="expireddate-messages-`+ item.id +`"></span>`;
+				            row +=`</div>`;
+
+
+			                row +=`<div id="extensiondate-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				              row +=`<label>Pengajuan Perpanjangan</label>`;
+				              row +=`<input readonly type="text" class="form-control" value="`+ item.extensiondate.extension_db +`">`;
+				              row +=`<span id="extensiondate-messages-`+ item.id +`"></span>`;
+				            row +=`</div>`;
+
+
+                             
+
+
+			                  row +=`<div id="description-alert-`+ item.id +`" class="form-group has-feedback" >`;
+
+			                  row +=`<label>Keterangan</label>`;
+			                  row +=`<textarea readonly type="text" name="description" class="form-control">`+ item.description.desc_db +`</textarea>`;
+			                  row +=`<span id="description-messages-`+ item.id +`"></span>`;
+			                  row +=`</div>`;
+
+
+		                    
+
+                        row +=`</div>`;
+
+
+                        row +=`<div class="modal-footer">`;
+					        row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+					         
+ 						row +=`</div>`;
+					    row +=`</div>`;
+
+
+				    row +=`</form>`;     
+            row +=`</div>`;
+        row +=`</div>`   
+
+        $('#FormEdit-'+ item.id).html(row); 
+
+        // Set a specific option as selected
+           let select = $('#semester-'+ item.id);
+	       var selectedValue = item.semester;
+	       select.val(selectedValue);
+	       // Refresh the SelectPicker
+	       select.prop('disabled', true); 
+	       select.selectpicker('refresh');
+        }
+     }
+
+      function getYearSelected(selected,value,item){
+        year_id = [];
+        $.ajax({
+            url: BASE_URL +'/api/select-year?semester='+ value,
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+
+                // Populate SelectPicker options using received data
+                $.each(data, function(index, option) {
+                    $('#year-'+ item.id).append($('<option>', {
+                      value: option.value,
+                      text: option.text
+                    }));
+                });
+                year_id = data; 
+            
+                 if(selected)
+                 {
+                 	$('#year-'+ item.id).val(selected);
+                 	let find = data.find(o => o.value === selected);
+                    $('.confirm_expired-'+ item.id).text(find.enddate_convert);
+                 } 	
+                 	
+                 $('#year-'+ item.id).selectpicker('refresh');
+               
+               
+                
+                
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+
+      }
+
+      function ChangeYear(item){
+       
+      
+        $('#year-'+ item.id).change(function() {
+           selectedVal = $(this).find("option:selected").val();
+           let find = year_id.find(o => o.value === selectedVal);
+            
+           date_expired = find.enddate;
+         
+           $('.confirm_expired-'+ item.id).text(find.enddate_convert);
+          
+           ChangeAlert(item,find.enddate)
+         
+        });
+
+        
+
+        EditData(item.id);
+
+    }
+
+    function ExtensionChange(item){
+           
+    	 $('#extensiondate-'+ item.id).on('change', function() {
+           var value = $(this).val();          
+           ChangeAlert(item,value)
+        });
+
+    }
+
+    function AlertExtentionFirst(item){
+           
+      		if(item.expireddate.expired_db > item.extensiondate.extension_db || item.expireddate.expired_db == item.extensiondate.extension_db)
+           {
+              $('#update-'+ item.id).prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+              $('#kirim-'+ item.id).prop('disabled', true).removeClass('btn-warning').addClass('btn-default');
+
+
+              $('#extensiondate-alert-'+ item.id).addClass('has-error');
+              $('#extensiondate-messages-'+ item.id).addClass('help-block').html('<strong>Tanggal pengajuan maksimal lebih dari tanggal masa berahir '+ item.expireddate.expired_db +'</strong>');
+           }else{
+             
+              $('#extensiondate-alert-'+ item.id).removeClass('has-error');
+              $('#extensiondate-messages-'+ item.id).removeClass('help-block').html('');
+           }
+
+    }
+
+    function ChangeAlert(item,value){
+
+  
+            var extensiondate = $('#extensiondate-'+ item.id).val();
+            if(value > extensiondate  || extensiondate == value)
+           {
+              $('#update-'+ item.id).prop('disabled', true).removeClass('btn-primary').addClass('btn-default');
+              $('#kirim-'+ item.id).prop('disabled', true).removeClass('btn-warning').addClass('btn-default');
+              $('#extensiondate-alert-'+ item.id).addClass('has-error');
+              $('#extensiondate-messages-'+ item.id).addClass('help-block').html('<strong>Tanggal pengajuan maksimal lebih dari tanggal masa berahir '+ value +'</strong>');
+           }else{
+              $('#update-'+ item.id).prop('disabled', false).removeClass('btn-default').addClass('btn-warning');
+              $('#kirim-'+ item.id).prop('disabled', false).removeClass('btn-default').addClass('btn-primary'); 
+              $('#extensiondate-alert-'+ item.id).removeClass('has-error');
+              $('#extensiondate-messages-'+ item.id).removeClass('help-block').html('');
+           }
+
+     
+
+    }
+
+     function EditData(id)
+    {
+         $("#update-"+ id).click( () => {
+            UpdateData('N',id);
+          
+         });
+
+         $("#kirim-"+ id).click( () => {
+            UpdateData('Y',id);
+          
+         });
+
+  
+    }
+
+    function UpdateData(status,id){
+
+    
+		        
+	              var data = $("#FormSubmit-"+ id).serializeArray();
+	            
+	              $("#update-"+id).hide();
+	              $("#kirim-"+id).hide();
+	              $("#load-update").show();
+	               var form = {
+		              
+		              'semester':data[0].value,
+		              'year':data[1].value,
+		              'expireddate':date_expired,
+		              'extensiondate':data[2].value,
+		              'description':data[3].value,
+		              'status':status,
+		             
+		             
+		          };
+                     if(status == 'Y')
+                     {
+                     	var vstatus = 'Dikirim';
+                     }else{
+                     	var vstatus = 'Disimpan';
+                     } 	
+
+
+					$.ajax({
+			            type:"PUT",
+			            url: BASE_URL+'/api/extension/'+ id,
+			            data:form,
+			            cache: false,
+			            dataType: "json",
+			            success: (respons) =>{
+			                   Swal.fire({
+			                        title: 'Sukses!',
+			                        text: 'Berhasil '+vstatus,
+			                        icon: 'success',
+			                        confirmButtonText: 'OK'
+			                        
+			                    }).then((result) => {
+			                        if (result.isConfirmed) {
+			                            // User clicked "Yes, proceed!" button
+			                            window.location.replace('/extension');
+			                        }
+			                    });
+
+			                   //
+			            },
+			            error: (respons)=>{
+			                errors = respons.responseJSON;
+			                $("#update-"+ id).show();
+			                $("#kirim-"+ id).show();
+			                $("#load-update").hide();
+ 
+			                if(errors.messages.semester)
+			                {
+			                     $('#semester-alert').addClass('has-error');
+			                     $('#semester-messages').addClass('help-block').html('<strong>'+ errors.messages.semester +'</strong>');
+			                }else{
+			                    $('#semester-alert').removeClass('has-error');
+			                    $('#semester-messages').removeClass('help-block').html('');
+			                }
+
+			                if(errors.messages.year)
+			                {
+			                     $('#year-alert').addClass('has-error');
+			                     $('#year-messages').addClass('help-block').html('<strong>'+ errors.messages.year +'</strong>');
+			                }else{
+			                    $('#year-alert').removeClass('has-error');
+			                    $('#year-messages').removeClass('help-block').html('');
+			                }
+
+			                if(errors.messages.extensiondate)
+			                {
+			                     $('#extensiondate-alert').addClass('has-error');
+			                     $('#extensiondate-messages').addClass('help-block').html('<strong>'+ errors.messages.extensiondate +'</strong>');
+			                }else{
+			                    $('#extensiondate-alert').removeClass('has-error');
+			                    $('#extensiondate-messages').removeClass('help-block').html('');
+			                }
+
+			               
+			                 if(errors.messages.description)
+			                {
+			                     $('#description-alert').addClass('has-error');
+			                     $('#description-messages').addClass('help-block').html('<strong>'+ errors.messages.description +'</strong>');
+			                }else{
+			                    $('#description-alert').removeClass('has-error');
+			                    $('#description-messages').removeClass('help-block').html('');
+			                }  
+
+			                
+			            }
+			          });
+ 
+		        
+	     
+
+    }
+
 
      function resultTotal(total){
        $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
@@ -770,7 +1178,7 @@
         // Send the selected IDs for deletion using AJAX
        
         $.ajax({
-            url:  BASE_URL +`/api/extension/selected`,
+            url:  BASE_URL +`/api/extension/selected?type=deleted`,
             method: 'POST',
             data: { data: ids },
             success: function(response) {
@@ -783,6 +1191,28 @@
             }
         });
     }
+
+
+    // Function to delete items
+    function ApprovedItems(ids) {
+        // Send the selected IDs for deletion using AJAX
+       
+        $.ajax({
+            url:  BASE_URL +`/api/extension/selected?type=approved`,
+            method: 'POST',
+            data: { data: ids },
+            success: function(response) {
+                // Handle success (e.g., remove deleted items from the list)
+                fetchData(page);
+                $('#approve-selected').prop("disabled", true);
+            },
+            error: function(error) {
+                console.error('Error deleting items:', error);
+            }
+        });
+    }
+
+    
 
 
     function deleteItem(id){
@@ -801,12 +1231,28 @@
 
     }
 
+    function approvedItem(id,type){
+       
+       $.ajax({
+		    url:  BASE_URL +`/api/extension/`+ type +`/`+ id,
+		    method: 'PUT',
+		    success: function(response) {
+		        // Handle success (e.g., remove deleted items from the list)
+		        fetchData(page);
+		    },
+		    error: function(error) {
+		        console.error('Error deleting items:', error);
+		    }
+		});
+
+    }
+
     function ChecklistTable(item){
          
            var row = '';
            if(item.deleted == true)
            {
-                row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+               row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
            }else{
                row +=`<td><input disabled  type="checkbox"></td></td>`;  
              
@@ -815,12 +1261,43 @@
            return row;
     }
 
+   function BtnTableEdit(item){
+   
+      var row = ''; 
+       if(item.deleted == true)
+       {  
+
+       	  if(item.status.status_db == 'Y')
+       	  {
+                row +=`<button disabled  data-toggle="tooltip" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`; 
+       	  }else{
+       	  	  row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+       	  }	
+
+        
+        }else{
+             row +=`<button disabled  data-toggle="tooltip" title="Edit Data"  type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`; 
+
+
+        } 
+
+        return row;
+
+   } 
+
    function BtnTableDelete(item){
         
        var row = ''; 
-        if(item.deleted == true)
+       if(item.deleted == true)
        {
-            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       	  if(item.status.status_db == 'Y')
+       	  {
+              row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       	  }else{
+              
+              row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+       	  }	
+            
        }else{
             row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
        }
@@ -847,6 +1324,22 @@
                }    
            }
 
+            if(item.action =='approval')
+            {
+               if(item.checked ==true)
+               {
+                   $('#ShowApproval').show();
+                   $('#ShowChecklistApproved').show(); 
+                   $('#ShowChecklistApproved').show();
+                   $('#BorderAppoved').show();
+               }else{
+                   $('#ShowApproval').hide();
+                   $('#ShowChecklistApproved').hide();
+                   $('#ShowChecklistApproved').hide();
+                   $('#BorderAppoved').hide();
+               } 
+            }
+
 
 
 
@@ -856,9 +1349,12 @@
                {
                    $('#ShowChecklist').show();
                    $('#ShowChecklistAll').show();
+                   $('#BorderDeleted').show();
+                   
                }else{
                    $('#ShowChecklist').hide();
                    $('#ShowChecklistAll').hide();
+                   $('#BorderDeleted').hide();
                } 
             }
 

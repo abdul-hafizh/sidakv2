@@ -80,20 +80,21 @@ class RequestNotification
              }else{
                  $temp[$key]['photo'] = RequestAuth::photoUser($val->sender);
                
-             }   
+             } 
+                $temp[$key]['id'] = $val->id;   
              $temp[$key]['name'] = ucwords(strtolower($val->type)); 
                $temp[$key]['url'] = $val->url; 
             $temp[$key]['messages'] = $messages;
             $temp[$key]['created_at'] = GeneralHelpers::timeAgo($val['created_at']);
           } 
 
-        if($_COOKIE['access'] !='admin' && $_COOKIE['access'] !='pusat')
+        if($_COOKIE['access'] =='admin' && $_COOKIE['access'] =='pusat')
         {
           $total = Notification::where(['view_from'=>'false','sender'=>Auth::User()->username])->count();
           $total_all = Notification::where('sender',Auth::User()->username)->count();  
         }else{
-          $total = Notification::where(['view_sender'=>'false'])->count();
-          $total_all = Notification::where(['view_sender'=>'false'])->count();   
+          $total = Notification::where('from','!=',Auth::User()->username)->where(['view_sender'=>'false'])->count();
+          $total_all = Notification::where('from','!=',Auth::User()->username)->where(['view_sender'=>'false'])->count();   
         }  
            
           if($total>0)
@@ -110,9 +111,9 @@ class RequestNotification
    }
 
 
-   public static function check(){
+   public static function check($id){
 
-      $check = Notification::where(['updated_by'=>Auth::User()->username])->first();
+      $check = Notification::where(['id'=>$id,'view_from'=>'true'])->first();
       if($check)
       {
         $result = true;

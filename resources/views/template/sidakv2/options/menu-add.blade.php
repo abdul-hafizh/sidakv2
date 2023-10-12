@@ -19,8 +19,14 @@
 
             <div id="name-alert" class="form-group has-feedback" >
               <label>Nama : </label>
-              <input type="text" class="form-control" name="name" placeholder="Nama" value="">
+              <input type="text" class="form-control" oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);"  name="name" placeholder="Nama" value="">
               <span id="name-messages" class="span-messages"></span>
+            </div>
+
+            <div id="slug-alert" class="form-group has-feedback" >
+              <label>Koneksi Optional : </label>
+              <input type="text" oninput="this.value = this.value.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').replace(/--+/g, '-').trim();" class="form-control" name="slug" placeholder="Koneksi Optional" value="">
+              <span id="slug-messages" class="span-messages"></span>
             </div>
 
             <div id="parent-alert" class="form-group has-feedback" >
@@ -163,8 +169,9 @@
           
           var form = {
               'name':data[0].value,
-              'parent':data[1].value,
-              'path_web':data[2].value,
+              'slug':data[1].value,
+              'parent':data[2].value,
+              'path_web':data[3].value,
               'icon':icon,
               'icon_hover':icon_hover,
              
@@ -198,13 +205,22 @@
                 
                
 
-                if(errors.messages.parent)
+                if(errors.messages.name)
                 {
                      $('#name-alert').addClass('has-error');
                      $('#name-messages').addClass('help-block').html('<strong>'+ errors.messages.name +'</strong>');
                 }else{
                     $('#name-alert').removeClass('has-error');
                     $('#name-messages').removeClass('help-block').html('');
+                }
+
+                 if(errors.messages.slug)
+                {
+                     $('#slug-alert').addClass('has-error');
+                     $('#slug-messages').addClass('help-block').html('<strong>'+ errors.messages.slug +'</strong>');
+                }else{
+                    $('#slug-alert').removeClass('has-error');
+                    $('#slug-messages').removeClass('help-block').html('');
                 }
 
 

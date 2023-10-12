@@ -132,6 +132,17 @@ class PeriodeApiController extends Controller
         return response()->json(['selected' => $selected, 'result' => $periode]);
     }
 
+    public function listYear(Request $request)
+    {
+         $query =  DB::table('periode as a')
+         ->select('a.id', 'a.slug', 'a.year','a.startdate','a.enddate')
+         ->where(['a.semester'=>$request->semester,'a.status'=>'Y']);
+         $data = $query->get();
+         $periode = RequestPeriode::SelectYear($data);
+         return response()->json($periode);
+
+    }    
+
     public function search(Request $request)
     {
         $search = $request->search;

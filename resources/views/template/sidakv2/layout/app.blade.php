@@ -135,15 +135,26 @@
 
             $('[data-toggle="tooltip"]').tooltip();
 
-            $("#update-notif").click(() => {
-                UpdateData();
-            });
+
+
+            
           
-          if(segments[3] !='login')
-          {
+        if(segments[3] !='login')
+        {
             getNotif();
-          }  
+
+
+           $("#menu-notif" ).on( "click", "#updateNotif", (e) => {
+             
+              let id = e.currentTarget.dataset.param_id;
+            
+                UpdateData(id);
+            });
         }
+
+        }
+
+
        
 
         $(".clear-input").click(()=> {   
@@ -169,10 +180,10 @@
             $('.selectpicker').selectpicker('refresh');
         }
 
-         function UpdateData() {
+            function UpdateData(id) {
                 $.ajax({
-                    url: BASE_URL + `/api/notif-update`,
-                    method: 'GET',
+                    url: BASE_URL + `/api/notif-update/`+ id,
+                    method: 'PUT',
                     success: function(response) {
                         $('#total-notif').html('');
                     },
@@ -195,10 +206,10 @@
                         if (response.data.length > 0) {
                             response.data.forEach(function (item, index) {
                                 var row = "";
-                                row += `<li>`;
+                                row += `<li id="updateNotif" data-param_id="`+ item.id +`">`;
                                 if(item.url !='')
                                 {
-                                  row += `<a href="${item.url}">`;  
+                                  row += `<a href="`+ item.url +`" >`;  
                                 }else{
                                   row += `<a >`;  
                                 }    
@@ -218,10 +229,16 @@
                             // Tambahkan total-notif dan total-notif-all
                             $("#total-notif").append(response.total_not_show);
                             $("#total-notif-all").append("You have " + response.total_all + " messages");
+
+  
+
                         } else {
                             var row = `<li><a>Data Kosong</a></li>`;
                             $("#menu-notif").append(row);
                         }
+
+
+
                     },
                     error: function (error) {
                        // console.error("Error fetching data:", error);

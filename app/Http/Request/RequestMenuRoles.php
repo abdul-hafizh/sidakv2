@@ -134,14 +134,14 @@ class RequestMenuRoles
             {
                 $icon = url('/template/'.$template.'/img/user.png');
             }else{
-                $icon = url('/images/menu/'.$value->icon);
+                $icon = url('/file/menu/'.$value->icon);
             }  
 
             if($value->icon_hover =="")
             {
                 $icon_hover = url('/template/'.$template.'/img/user.png');
             }else{
-                $icon_hover = url('/images/menu/'.$value->icon_hover);
+                $icon_hover = url('/file/menu/'.$value->icon_hover);
             }  
 
            $arr[$key]['active'] = $active;
@@ -195,14 +195,14 @@ class RequestMenuRoles
                     {
                         $icon = url('/template/'.$template.'/img/user.png');
                     }else{
-                        $icon = url('/images/menu/'.$value->icon);
+                        $icon = url('/file/menu/'.$value->icon);
                     }  
 
                     if($value->icon_hover =="")
                     {
                         $icon_hover = url('/template/'.$template.'/img/user.png');
                     }else{
-                        $icon_hover = url('/images/menu/'.$value->icon_hover);
+                        $icon_hover = url('/file/menu/'.$value->icon_hover);
                     }    
                    $result[$key]['active'] = $value->active;
                    $result[$key]['id'] = $value->id;

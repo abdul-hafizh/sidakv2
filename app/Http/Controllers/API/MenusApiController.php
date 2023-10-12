@@ -104,57 +104,26 @@ class MenusApiController extends Controller
         {
           return response()->json($validation,400);  
         }else{
+
+            if($request->path_web =="#")
+            {    
             
-           $insert = RequestMenus::fieldsData($request);  
-            $slug = rand(1000,9999);
-            if($request->icon)
-            {   
-               
-                $sourceIcon = explode(";base64,", $request->icon);
-                $extFileIcon = explode("image/", $sourceIcon[0]);
-                $extentionsIcon = $extFileIcon[1];
-                $fileDirIcon = '/images/menu/';
-                $imageIcon = base64_decode($sourceIcon[1]);
-                $filePathIcon = public_path() .$fileDirIcon;
-                $icon = time() . '-' . $slug.'.'.$extentionsIcon;
-                $successIcon = file_put_contents($filePathIcon.$icon, $imageIcon);
-             
-                $menu_icon = ["icon"=>$icon];
-                $merge = array_merge($insert,$menu_icon);
+                  $data = RequestMenus::CreateMenu($request);   
+                  $saveAccount = Menus::create($data);
+                   return response()->json(['status'=>true,'id'=>$saveAccount,'message'=>'Insert data sucessfully']);    
             }else{
-                $merge = $insert;
+
+                $check = Menus::where('path_web',$request->path_web)->count();
+                if($check > 0)
+                {
+                    $err['messages']['path_web'] = 'URL Sudah Pernah dibuat';
+                    return response()->json($err,400);  
+                }else{
+                    $data = RequestMenus::CreateMenu($request);   
+                    $saveAccount = Menus::create($data);
+                    return response()->json(['status'=>true,'id'=>$saveAccount,'message'=>'Insert data sucessfully']);    
+                }    
             }
-
-            if($request->icon_hover)
-            {   
-               
-                $sourceHover = explode(";base64,", $request->icon_hover);
-                $extFileHover = explode("image/", $sourceHover[0]);
-                $extentionsHover = $extFileHover[1];
-                $fileDirHover = '/images/menu/';
-                $imageHover = base64_decode($sourceHover[1]);
-                $filePathHover = public_path() .$fileDirHover;
-                $hover = time() . '-hover-' . $slug.'.'.$extentionsHover;
-                $successHover = file_put_contents($filePathHover.$hover, $imageHover);
-             
-                $icon_hover = ["icon_hover"=>$hover];
-             
-                $photo_icon = array_merge($merge,$icon_hover);
-            }else{
-                $photo_icon = $merge;
-            }
-
-
-            $log = array(             
-            'category'=> 'LOG_DATA_MENU',
-            'group_menu'=>'upload_data_menu',
-            'description'=>'Menambahkan data menu <b>'.$request->name.'</b>',
-            );
-            $datalog = RequestAuditLog::fieldsData($log);
-
-          $saveAccount = Menus::create($photo_icon);
-           return response()->json(['status'=>true,'id'=>$saveAccount,'message'=>'Insert data sucessfully']);    
-            
         }    
 
     }
@@ -168,68 +137,38 @@ class MenusApiController extends Controller
             return response()->json($validation,400);  
         }else{
 
-             $update = RequestMenus::fieldsData($request);
-             $slug = rand(1000,9999);
-             if($request->icon)
-             {   
-               
-                $sourceIcon = explode(";base64,", $request->icon);
-                $extFileIcon = explode("image/", $sourceIcon[0]);
-                $extentionsIcon = $extFileIcon[1];
-                $fileDirIcon = '/images/menu/';
-                $imageIcon = base64_decode($sourceIcon[1]);
-                $filePathIcon = public_path() .$fileDirIcon;
-                $icon = time() . '-' . $slug.'.'.$extentionsIcon;
-                $successIcon = file_put_contents($filePathIcon.$icon, $imageIcon);
-                
-                $check = Menus::find($id);
-                if($check)
-                { 
-                   File::delete(public_path() .$fileDirIcon.$check->icon);
-                } 
-                $menu_icon = ["icon"=>$icon];
-                $merge = array_merge($update,$menu_icon);
-                
+            if($request->path_web =="#")
+            {
+                  $data = RequestMenus::UpdateMenu($request,$id);
+                  $UpdateAccount = Menus::where('id',$id)->update($data);
+                  return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
+             
             }else{
-                $merge = $update;
 
-            }
-
-            if($request->icon_hover)
-            {   
-               
-                $sourceHover = explode(";base64,", $request->icon_hover);
-                $extFileHover = explode("image/", $sourceHover[0]);
-                $extentionsHover = $extFileHover[1];
-                $fileDirHover = '/images/menu/';
-                $imageHover = base64_decode($sourceHover[1]);
-                $filePathHover = public_path() .$fileDirHover;
-                $hover = time() . '-hover-' . $slug.'.'.$extentionsHover;
-                $successHover = file_put_contents($filePathHover.$hover, $imageHover);
-                $check = Menus::find($id);
+                $check = Menus::where('path_web',$request->path_web)->first();
                 if($check)
-                { 
-                   File::delete(public_path() .$fileDirHover.$check->icon_hover);
-                } 
-                $icon_hover = ["icon_hover"=>$hover];
-                $photo_icon = array_merge($merge,$icon_hover);
-            }else{
-                $photo_icon = $merge;
-            }
+                {
+                   if($check->name == $request->name)
+                   {    
+                     $err['messages']['path_web'] = 'URL Sudah Pernah dibuat';
+                     return response()->json($err,400);
+                   }else{
+                      $err['messages']['path_web'] = 'URL Sudah Pernah dibuat';
+                      return response()->json($err,400);
+                   } 
+                }else{
 
+                 
 
+                    $data = RequestMenus::UpdateMenu($request,$id);
+                    $UpdateAccount = Menus::where('id',$id)->update($data);
+                    return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
+                
+                }    
 
+            }     
 
-                $log = array(             
-                'category'=> 'LOG_DATA_MENU',
-                'group_menu'=>'mengubah_data_menu',
-                'description'=>'Mengubah data menu <b>'.$request->name.'</b>',
-                );
-                $datalog = RequestAuditLog::fieldsData($log);
-                //Audit Log
-
-            $UpdateAccount = Menus::where('id',$id)->update($photo_icon);
-            return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
+           
         
           
         } 
@@ -245,7 +184,7 @@ class MenusApiController extends Controller
         if(empty($_res)){
             return response()->json(['messages' => false]);
         }else{
-             $fileDir = '/images/menu/';
+             $fileDir = '/file/menu/';
             if(file_exists(public_path() .$fileDir.$_res->icon)) {
                File::delete(public_path() .$fileDir.$_res->icon);
             } 

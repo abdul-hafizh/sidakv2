@@ -13,8 +13,8 @@ class ValidationExtension
            
             'semester'  => 'Semester',
             'year'  => 'Tahun',
-            'startdate'  => 'Tanggal Mulai',
-            'enddate'  => 'Tanggal Berahir',
+            'extensiondate'  => 'Tanggal Pengajuan',
+            'description'  => 'Alasan Pengajuan',
             
            
         ];
@@ -24,8 +24,8 @@ class ValidationExtension
            
             'semester'  => 'required|max:2',
             'year'  => 'required|max:4',
-            'startdate'  => 'required',
-            'enddate'  => 'required',  
+            'extensiondate'  => 'required',
+            'description'  => 'required',  
         ]);
 
         $validator->setAttributeNames($fields); 
@@ -42,12 +42,12 @@ class ValidationExtension
                 $err['messages']['year'] = $errors->first('year');
             }
 
-            if($errors->has('startdate')){
-                $err['messages']['startdate'] = $errors->first('startdate');
+            if($errors->has('extensiondate')){
+                $err['messages']['extensiondate'] = $errors->first('extensiondate');
             }
 
-             if($errors->has('enddate')){
-                $err['messages']['enddate'] = $errors->first('enddate');
+             if($errors->has('description')){
+                $err['messages']['description'] = $errors->first('description');
             }
 
             return $err;
@@ -62,8 +62,8 @@ class ValidationExtension
            
             'semester'  => 'Semester',
             'year'  => 'Tahun',
-            'startdate'  => 'Tanggal Mulai',
-            'enddate'  => 'Tanggal Berahir',
+            'extensiondate'  => 'Tanggal Pengajuan',
+            'description'  => 'Alasan Pengajuan',
             
            
         ];
@@ -72,8 +72,8 @@ class ValidationExtension
         [
             'semester'  => 'required|max:2',
             'year'  => 'required|max:4',
-            'startdate'  => 'required',
-            'enddate'  => 'required',  
+            'extensiondate'  => 'required',
+            'description'  => 'required',  
         ]);
 
         $validator->setAttributeNames($fields); 
@@ -90,49 +90,18 @@ class ValidationExtension
                 $err['messages']['year'] = $errors->first('year');
             }
 
-            if($errors->has('startdate')){
-                $err['messages']['startdate'] = $errors->first('startdate');
+            if($errors->has('extensiondate')){
+                $err['messages']['extensiondate'] = $errors->first('extensiondate');
             }
 
-             if($errors->has('enddate')){
-                $err['messages']['enddate'] = $errors->first('enddate');
+             if($errors->has('description')){
+                $err['messages']['description'] = $errors->first('description');
             }
 
             return $err;
        }
   }
 
-  public static function validationSemester($request,$id){
-        $err = array(); 
-        
-        $fields = [
-           
-            'semester'  => 'Semester',
-            
-        ];
-
-        $validator =  Validator::make($request->all(), 
-        [
-             'semester' => [
-                'required',
-                Rule::unique('periode')->ignore($id),
-            ],
-          
-        ]);
-
-        $validator->setAttributeNames($fields); 
-        if ($validator->fails()) {
-         
-            $errors = $validator->errors();
-           
-
-            if($errors->has('semester')){
-                $err['messages']['semester'] = $errors->first('semester');
-            }
-
-
-            return $err;
-       }
-  }
+ 
 
 }
