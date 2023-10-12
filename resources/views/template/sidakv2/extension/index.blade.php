@@ -547,6 +547,9 @@
 
                if(item.access =='admin' || item.access =='pusat')
                {
+
+               	 if(item.status.status_db =='Y')
+                {
                
 	                if(item.checklist == 'Proses')
 	                {
@@ -556,6 +559,8 @@
 	                   row +=`<button id="Approved" data-param_type="not_approved" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Batalkan Approved Data"  class="btn btn-primary"><i class="fa fa-ban"></i></button>`;
 
 	                }
+
+	             }   
 	            }     
 
 
