@@ -740,7 +740,7 @@
 
                });
 
-               $( "#ShowPDF" ).on( "click", "#GetModalPdf", (e) => {
+               $("#ShowPDF").on("click", "#GetModalPdf", (e) => {
                     let file = e.currentTarget.dataset.param_id;      
                     let row = ``;
                      row +=`<div class="modal-dialog">`;
