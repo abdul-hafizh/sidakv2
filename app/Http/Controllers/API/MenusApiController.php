@@ -156,7 +156,10 @@ class MenusApiController extends Controller
                             $UpdateAccount = Menus::where('id',$id)->update($data);
                             return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
 
-                      }  
+                      }else{
+                         $err['messages']['path_web'] = 'URL Sudah Pernah dibuat';
+                         return response()->json($err,400);
+                      } 
                    
                    }else{
                       $err['messages']['path_web'] = 'URL Sudah Pernah dibuat';
