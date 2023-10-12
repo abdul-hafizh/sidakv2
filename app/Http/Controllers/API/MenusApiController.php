@@ -145,13 +145,19 @@ class MenusApiController extends Controller
              
             }else{
 
-                $check = Menus::where('path_web',$request->path_web)->first();
+                $check = Menus::where(['path_web'=>$request->path_web])->first();
                 if($check)
                 {
                    if($check->name == $request->name)
-                   {    
-                     $err['messages']['path_web'] = 'URL Sudah Pernah dibuat';
-                     return response()->json($err,400);
+                   {  
+                      if($check->created_by == Auth::User()->username)
+                      {
+                            $data = RequestMenus::UpdateMenu($request,$id);
+                            $UpdateAccount = Menus::where('id',$id)->update($data);
+                            return response()->json(['status'=>true,'id'=>$UpdateAccount,'message'=>'Update data sucessfully']);
+
+                      }  
+                   
                    }else{
                       $err['messages']['path_web'] = 'URL Sudah Pernah dibuat';
                       return response()->json($err,400);
