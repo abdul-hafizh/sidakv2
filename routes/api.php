@@ -83,7 +83,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('pagu/check', [PaguTargetApiController::class, 'check']);
     Route::get('pagutarget/datalist', [PaguTargetApiController::class, 'jsonData']);
     Route::post('pagutarget/total_pagu', [PaguTargetApiController::class, 'total_pagu']);
- 
+
     Route::post('pagutarget', [PaguTargetApiController::class, 'store']);
     Route::post('pagutarget/import_excel', [PaguTargetApiController::class, 'import_excel']);
     // Route::get('pagutarget/download_file', [PaguTargetApiController::class, 'download_excel']);
@@ -202,7 +202,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('bimsos/datalist', [BimsosApiController::class, 'jsonData']);
     Route::post('bimsos', [BimsosApiController::class, 'store']);
     Route::get('bimsos/edit/{id}', [BimsosApiController::class, 'edit']);
-    Route::put('bimsos/{id}', [BimsosApiController::class, 'update']);
+    Route::post('bimsos/update/{id}', [BimsosApiController::class, 'update']);
+    Route::delete('bimsos/{id}', [BimsosApiController::class, 'delete']);
     Route::post('bimsos/selected', [BimsosApiController::class, 'deleteSelected']);
     Route::put('bimsos/request_edit/{id}', [BimsosApiController::class, 'request_edit']);
     Route::put('bimsos/request_revisi/{id}', [BimsosApiController::class, 'request_revisi']);

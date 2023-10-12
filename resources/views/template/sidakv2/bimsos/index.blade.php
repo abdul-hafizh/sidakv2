@@ -1,5 +1,6 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
+
 <style>
 	.dataTables_wrapper .dataTables_paginate .paginate_button {
 		border: 1px solid #1f3897;
@@ -146,6 +147,8 @@
 							<th><span class="border-left-table"> Aksi </span> </th>
 						</tr>
 					</thead>
+					<tbody>
+					</tbody>
 				</table>
 			</div>
 		</div>

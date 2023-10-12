@@ -153,23 +153,33 @@
 					<option value="-1">All</option>
 				</select>
 			</div>
-			<div  class="pull-left padding-9-0 margin-left-button">
-				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
-					Hapus
-				</button>
-				<!-- <button type="button" class="btn btn-primary">
+			<<<<<<< HEAD <div class="pull-left padding-9-0 margin-left-button">
+				=======
+				<div class="pull-left padding-9-0 margin-left-button">
+					>>>>>>> 1149d26f9b0aeb88e0b57516f742751ac86fa517
+					<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
+						Hapus
+					</button>
+					<!-- <button type="button" class="btn btn-primary">
 					<i aria-hidden="true" class="fa fa-search"></i> Search
 				</button> -->
-				<button id="ShowAdd" style="display:none;" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
-					Tambah Data
-				</button>
-				<button   type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#modal-import">
-					IMPORT EXCEL
-				</button>
-				<button id="ShowExport" type="button" class="btn btn-info border-radius-10" >
-					
-				</button>
-			</div>
+					<button id="ShowAdd" style="display:none;" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
+						Tambah Data
+					</button>
+					<<<<<<< HEAD <button type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#modal-import">
+						IMPORT EXCEL
+						</button>
+						<button id="ShowExport" type="button" class="btn btn-info border-radius-10">
+
+							=======
+							<button type="button" class="btn btn-warning border-radius-10" data-toggle="modal" data-target="#modal-import">
+								IMPORT EXCEL
+							</button>
+							<button id="ShowExport" type="button" class="btn btn-info border-radius-10">
+
+								>>>>>>> 1149d26f9b0aeb88e0b57516f742751ac86fa517
+							</button>
+				</div>
 
 
 		</div>
@@ -190,16 +200,21 @@
 					<thead>
 						<tr>
 
-							<th rowspan="2" >
+							<th rowspan="2">
 								<input type="checkbox" id="checkAll">
-                              
+
 							</th>
-							<th rowspan="2"><div  class="split-table"></div>  <span  class="span-title">Nama Daerah </span> </th>
-							<th rowspan="2"><span class="border-left-table">Type </span> </th>
-							<th rowspan="2"><span class="border-left-table">Periode </span></th>
-							<th colspan="3" class="dt-head-center">Pagu</th>
-							<th colspan="4" class="dt-head-center border-left-table">Target</th>
-							<th rowspan="2"  ><span class="border-left-table"> Aksi </span> </th>
+							<th rowspan="2">
+								<div class="split-table"></div> <span class="span-title">Nama Daerah </span>
+							</th>
+							<<<<<<< HEAD=======<th rowspan="2">
+								<div class="split-table"></div> <span class="span-title">Nama Daerah </span> </th>
+								>>>>>>> 1149d26f9b0aeb88e0b57516f742751ac86fa517
+								<th rowspan="2"><span class="border-left-table">Type </span> </th>
+								<th rowspan="2"><span class="border-left-table">Periode </span></th>
+								<th colspan="3" class="dt-head-center">Pagu</th>
+								<th colspan="4" class="dt-head-center border-left-table">Target</th>
+								<th rowspan="2"><span class="border-left-table"> Aksi </span> </th>
 						</tr>
 						<tr>
 							<th><span class="border-left-table"> APBN (Rp) </span> </th>
@@ -349,7 +364,7 @@
 					'targets': 0,
 					'searchable': false,
 					'orderable': false,
-					
+
 					'className': 'dt-body-center',
 					'render': function(data, type, full, meta) {
 						return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
@@ -368,36 +383,59 @@
 				[1, 'asc']
 			],
 			initComplete: (settings, json) => {
-				
+
 				$('.dataTables_paginate').appendTo('#datatable_paginate');
 				listOptions(json.options);
 			}
 		});
 
-		function listOptions(data){
-       
-	        data.forEach(function(item, index) 
-           {
-	           if(item.action =='create')
-	           {
-	               if(item.checked ==true)
-	               {
-	                   $('#ShowAdd').show();
-	                   $('#ShowImport').show();
-	               }else{
-	                  $('#ShowAdd').hide();
-	                  $('#ShowImport').hide();
-	               }    
-	           }
+		<<
+		<< << < HEAD
+
+		function listOptions(data) {
+
+			data.forEach(function(item, index) {
+				if (item.action == 'create') {
+					if (item.checked == true) {
+						$('#ShowAdd').show();
+						$('#ShowImport').show();
+					} else {
+						$('#ShowAdd').hide();
+						$('#ShowImport').hide();
+					}
+				}
 
 
 
 
-      
 
-       
-           });
-	    }
+
+
+			});
+		} ===
+		=== =
+		function listOptions(data) {
+
+			data.forEach(function(item, index) {
+				if (item.action == 'create') {
+					if (item.checked == true) {
+						$('#ShowAdd').show();
+						$('#ShowImport').show();
+					} else {
+						$('#ShowAdd').hide();
+						$('#ShowImport').hide();
+					}
+				}
+
+
+
+
+
+
+
+			});
+		} >>>
+		>>> > 1149 d26f9b0aeb88e0b57516f742751ac86fa517
 
 		function reformatNumber(data, row, column, node) {
 			// replace spaces with nothing; replace commas with points.
