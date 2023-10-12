@@ -61,10 +61,16 @@ class PenyelesaianApiController extends Controller
             $insert = RequestPenyelesaian::fieldsData($request);
 
             if ($request->hasFile('lap_profile')) {
-                $file_profile = $request->file('lap_profile');
-                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
+                $file_profile2 = $request->file('lap_profile');
+                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
                 $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
                 $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
+            }
+            if ($request->hasFile('lap_profile2')) {
+                $file_profile2 = $request->file('lap_profile2');
+                $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
+                $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
+                $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile2;
             }
             if ($request->hasFile('lap_peserta')) {
                 $file_hadir = $request->file('lap_peserta');
@@ -77,6 +83,12 @@ class PenyelesaianApiController extends Controller
                 $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
                 $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
                 $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
+            }
+            if ($request->hasFile('lap_notula2')) {
+                $file_notula2 = $request->file('lap_notula2');
+                $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
+                $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
+                $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula2;
             }
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
@@ -138,6 +150,12 @@ class PenyelesaianApiController extends Controller
                 $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
                 $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
             }
+            if ($request->hasFile('lap_profile2')) {
+                $file_profile2 = $request->file('lap_profile2');
+                $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
+                $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
+                $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile2;
+            }
             if ($request->hasFile('lap_peserta')) {
                 $file_hadir = $request->file('lap_peserta');
                 $lap_peserta = 'lap_peserta_' . time() . '_' . $file_hadir->getClientOriginalName();
@@ -149,6 +167,12 @@ class PenyelesaianApiController extends Controller
                 $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
                 $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
                 $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
+            }
+            if ($request->hasFile('lap_notula2')) {
+                $file_notula2 = $request->file('lap_notula2');
+                $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
+                $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
+                $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula2;
             }
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');

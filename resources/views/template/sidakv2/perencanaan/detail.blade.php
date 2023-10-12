@@ -513,13 +513,13 @@
                               }
                               
                               data.options.forEach(function(item, index) 
-                              {       
-                                   if(item.action =='read-only')
+                              {
+                                   if(item.action == 'update')
                                    {
                                         if(item.checked == true) {
-                                             rows_btn+= '<button type="button" disabled class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Request Edit</button>';
-                                        } else {
                                              rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit"><i class="fa fa-pencil"></i> Request Edit</button>';
+                                        } else {
+                                             rows_btn+= '<button type="button" disabled class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Request Edit</button>';
                                         }
                                    }
                                    
