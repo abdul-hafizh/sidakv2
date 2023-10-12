@@ -148,7 +148,7 @@ class MenusApiController extends Controller
                 $check = Menus::where(['path_web'=>$request->path_web])->first();
                 if($check)
                 {
-                   if($check->name == $request->name)
+                   if($check->path_web == $request->path_web)
                    {  
                       if($check->created_by == Auth::User()->username)
                       {
