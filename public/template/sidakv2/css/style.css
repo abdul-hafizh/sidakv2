@@ -271,6 +271,14 @@ padding: 0px 12px 0px 0px!important;
     width:190px ;
 }
 
+.list-menu-table-periode{
+    width:115px ;
+}
+
+.color-white{
+    color: #fff;
+}
+
 #countdown{
     text-align: center;
     padding: 0px 0px 9px;

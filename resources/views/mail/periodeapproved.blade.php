@@ -28,18 +28,19 @@
                         <h2 class="center" style="text-align:center !important;margin: 10px 0px;">
                             SIDAK BKPM
                         </h2>
-                        <h3 style="text-align:center;">Forgot Password</h3>
+                        <h3 style="text-align:center;">Permohonan Persetujuan </h3>
                     
                         
-                        <h3 style="text-align:left;margin: 25px 0px 0px;">Hai, {{ $username }}</h3>
-
-                        <h4>Link URL Forgot Password</h4>
+                        <p style="font-size: 14px;text-align:left;margin: 25px 0px 0px;">Kepada, {{ $username }}</p>
+                        <p style="font-size: 14px;text-align:left;margin: 25px 0px 0px;">Mohon persetujuan Perpanjangan Periode  {{ $year }} Semester  {{ $semester }} </p>
+                      <!--   <h3>Link URL Detail Permohonan Persetujuan/Approval Batas periode </h3> -->
 
                         <table style="margin: 15px 0px; width: 100%;">
                             <tr>
                                 <td>
                                     <div class="alert alert-success" style="border-radius:5px;padding:15px;color:#827a7a;background:#d6f5e0;">
-                                      <h3> <b>{{ $url }}</b></h3>
+                                   <!--    <h3> <b>{{ $url }}</b></h3> -->
+                                          <h3>{{ $status }}</h3>
                                     </div>
 
                                 </td>
@@ -48,12 +49,12 @@
 
                        
                         
-
+<!-- 
                         <table style="margin: 15px 0px; width: 100%;">
                              <tr>
                                 <td>Atas perhatiannya, kami ucapkan terima kasih.</td>
                              </tr>
-                        </table>
+                        </table> -->
 
                         <table  style="margin: 0px 0px 15px; width: 100%;">
                              <tr>

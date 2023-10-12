@@ -78,9 +78,9 @@ class NotificationApiController extends Controller
 
     }
 
-    public function update(Request $request)
+    public function update($id,Request $request)
     {
-        $check =  RequestNotification::check();
+        $check =  RequestNotification::check($id);
         if($check ==false)
         {
 
@@ -90,7 +90,7 @@ class NotificationApiController extends Controller
               $update = Notification::where(['from'=>'pusat','sender'=>Auth::User()->username])->Orwhere(['from'=>'admin','sender'=>Auth::User()->username])->update(['view_from'=>'true','updated_by'=>Auth::User()->username]);
             }else{
                
-               $update = Notification::where('sender','pusat')->update(['view_sender'=>'true','updated_by'=>Auth::User()->username]);
+               $update = Notification::where(['id'=>$id,'sender'=>'pusat'])->update(['view_sender'=>'true','updated_by'=>Auth::User()->username]);
             }   
             return response()->json(['status'=>'success','messages'=>'Update notif success']);
         }else{

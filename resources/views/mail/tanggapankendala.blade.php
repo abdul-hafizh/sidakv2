@@ -28,18 +28,26 @@
                         <h2 class="center" style="text-align:center !important;margin: 10px 0px;">
                             SIDAK BKPM
                         </h2>
-                        <h3 style="text-align:center;">Forgot Password</h3>
+                        <h3 style="text-align:center;">Permohonan Tanggapan </h3>
                     
                         
-                        <h3 style="text-align:left;margin: 25px 0px 0px;">Hai, {{ $username }}</h3>
+                        <p style="font-size: 14px;text-align:left;margin: 25px 0px 10px;">Kepada, {{ $username }} </p>
+                        <p style="font-size: 14px;text-align:left;margin: 25px 0px 0px;">  Tanggapan atas kendala permasalahan {{ $permasalahan }} telah ditanggapi,    </p>
 
-                        <h4>Link URL Forgot Password</h4>
+                           <p style="font-size: 14px;text-align:left;margin: 25px 0px 10px;">
+                            <b>Pesan :</b> {{ $description }}
+                           </p> 
+
+                        <h3>Link URL Detail Kendala </h3>
+
+
 
                         <table style="margin: 15px 0px; width: 100%;">
                             <tr>
                                 <td>
                                     <div class="alert alert-success" style="border-radius:5px;padding:15px;color:#827a7a;background:#d6f5e0;">
                                       <h3> <b>{{ $url }}</b></h3>
+                                        
                                     </div>
 
                                 </td>
@@ -48,19 +56,19 @@
 
                        
                         
-
+<!-- 
                         <table style="margin: 15px 0px; width: 100%;">
                              <tr>
                                 <td>Atas perhatiannya, kami ucapkan terima kasih.</td>
                              </tr>
-                        </table>
+                        </table> -->
 
                         <table  style="margin: 0px 0px 15px; width: 100%;">
                              <tr>
                                 <td>Hormat Kami,</td>
                              </tr>
                              <tr>
-                                <td>Kementerian Investasi</td>
+                                <td>{{ $daerah_name }}</td>
                              </tr>
                         </table>
                             

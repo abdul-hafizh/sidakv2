@@ -7,7 +7,8 @@ use Auth;
 use App\Helpers\GeneralHelpers;
 use App\Models\PaguTarget;
 use App\Models\Extension;
-use App\Models\Perencanaan;
+use App\Http\Request\RequestDaerah;
+use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestMenuRoles;
 
 class RequestExtension
@@ -27,30 +28,41 @@ class RequestExtension
       foreach ($data as $key => $val) {
          if ($val->status == 'Y') {
             $status = 'Terkirim';
-         }else if ($val->status == 'A') {
-           $status = 'Approved';
          }else{
            $status = 'Draft';
          
          };
 
+         if($val->checklist =='not_approved')
+         {
+            $checklist = 'Proses';
+         }else{
+            $checklist = 'Approved';
+         }   
+
+         $description =  $val->description;
+         if (strlen($description) > 30) {
+             $description = substr($description, 0, 30) . "...";
+         } 
+
          $temp[$key]['number'] = $numberNext++;
          $temp[$key]['id'] = $val->id;
-         $temp[$key]['daerah_id'] = $val->name;
+         $temp[$key]['daerah_id'] = $val->daerah_id;
+         $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
          $temp[$key]['semester'] = $val->semester;
          $temp[$key]['year'] = $val->year;
-         $temp[$key]['expireddate'] = $val->expireddate;
-         $temp[$key]['extensiondate'] = $val->extensiondate;
-         $temp[$key]['description'] = $val->description;
-         $temp[$key]['expireddate_convert'] = GeneralHelpers::formatDate($val->startdate);
-         $temp[$key]['extensiondate_convert'] = GeneralHelpers::formatDate($val->enddate);
-        
+         $temp[$key]['access'] = RequestAuth::Access();
+         $temp[$key]['expireddate'] = array('expired_db' => $val->expireddate, 'expired_convert' => GeneralHelpers::formatDate($val->expireddate));
+         $temp[$key]['extensiondate'] = array('extension_db' => $val->extensiondate, 'extension_convert' => GeneralHelpers::formatDate($val->extensiondate));
+         $temp[$key]['description'] = array('desc_db' => $val->description, 'desc_convert' => $description);
+      
          $temp[$key]['deleted'] = RequestExtension::checkValidate($val->status);
+         $temp[$key]['checklist'] = $checklist;
          $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
-         $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
+         $temp[$key]['created_at'] = GeneralHelpers::dates($val->created_at);
 
-         $temp[$key]['startdate_format'] = GeneralHelpers::formatExcel($val->startdate);
-         $temp[$key]['enddate_format'] = GeneralHelpers::formatExcel($val->enddate);
+         // $temp[$key]['startdate_format'] = GeneralHelpers::formatExcel($val->startdate);
+         // $temp[$key]['enddate_format'] = GeneralHelpers::formatExcel($val->enddate);
          $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
       }
 
@@ -69,24 +81,33 @@ class RequestExtension
       return $result;
    }
 
+   public static function checkValidate($status){
+       
+       if($status == 'Y')
+       {
+          $result = false;
+       }else{
+         $result = true;
+       }  
+       return $result;
+
+   }
+
   
 
    public static function fieldsData($request)
    {
-      if ($request->semester == '01') {
-         $name = 'Semester 1 Tahun ' . $request->year;
-      } else {
-         $name = 'Semester 2 Tahun ' . $request->year;
-      }
+      
 
       $fields = [
-         'name'  =>  $name,
-         'slug' =>  $request->year . $request->semester,
+         'daerah_id'  =>  Auth::User()->daerah_id,
          'semester' => $request->semester,
          'year' => $request->year,
-         'startdate' => $request->startdate,
-         'enddate' => $request->enddate,
+         'expireddate' => $request->expireddate,
+         'extensiondate' => $request->extensiondate,
+         'description' => $request->description,
          'status' => $request->status,
+         'checklist'=>'not_approved',
          'created_by' => Auth::User()->username,
          'created_at' => date('Y-m-d H:i:s'),
       ];

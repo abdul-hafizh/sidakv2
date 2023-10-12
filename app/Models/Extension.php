@@ -20,6 +20,7 @@ class Extension extends Model
         'expireddate',
         'extensiondate',
         'status',
+        'checklist',
         'description',
         'created_by'
        

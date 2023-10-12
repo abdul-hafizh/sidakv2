@@ -106,7 +106,8 @@
 	    </div>
 	</div>
      @include('template/sidakv2/kendala.masalahAdd')  
-     @include('template/sidakv2/kendala.exportKendala') 
+     @include('template/sidakv2/kendala.exportKendala')
+     <div id="modal-detail" class="modal fade" role="dialog"> </div>  
 <script type="text/javascript">
 
  $(document).ready(function() {
@@ -124,6 +125,10 @@
     var segments = url.split('/');   // Split the URL by '/'
     var topic = segments[4]; // Index 4 corresponds to the second segment
     var category = '';
+
+     var url = window.location.href; 
+    var currentDomain = window.location.hostname;
+    var segments = url.split('/');
     
     $("#ExportButton").click(function() {
         $.ajax({
@@ -318,6 +323,7 @@
             	list = response.data;
                 resultTotal(response.total);
 	            listOptions(response.options);
+                 NotifDetail();
 	            updateContent(response.data,response.options);
 	            updatePagination(response.current_page, response.last_page);
             },
@@ -457,6 +463,132 @@
         
     }
 
+     function NotifDetail(){
+      const item = list.find(o => o.id == segments[5]); 
+       if(item)
+       {    
+           if(segments[5])
+           {  
+              var row = '';
+              row += `<div id="FormEdit-`+ item.id +`"></div>`;
+              
+
+              $('#modal-detail').html(row);
+              $('#modal-detail').modal('show');
+
+              GetDetailNotif(item);
+
+
+           }
+       } 
+
+       
+     }
+
+     function GetDetailNotif(item){
+         
+           $.ajax({
+                url:  BASE_URL +`/api/masalah/list-replay/`+ item.id,
+                method: 'GET',
+                success: function(response) {
+                    var data  = response;
+                    var row = '';
+                    row +=`<div class="modal-dialog">`;
+                            row +=`<div class="modal-content pull-left full">`;
+
+                               row +=`<div class="modal-header pull-left full">`;
+                                 row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
+                                 row +=`<h4 class="modal-title">Kendala | `+ item.category +` </h4>`;
+                               row +=`</div>`;
+
+                               row +=`<form  id="FormSubmit-`+ item.id +`">`;
+                                    row +=`<div class="pull-left full modal-body ">`;
+
+                                           row +=`<div id="succes"></div>`;    
+                                           row +=`<div  class="pull-left full form-group ">`;
+                                           row +=`<label >Masalah : `+ item.permasalahan +`</label>`;
+                                           row +=`</div>`;  
+
+
+                                           row +=`<div  class="pull-left full form-group" >`;
+                                              row +=`<div id="replayNew" ></div>`;
+                                                row +=`<div id="slimScrollDiv">`;
+                                                data.forEach(function(items, index) {
+                                                      
+                                                        row +=`<div id="list-${index}" class="form-group pull-left full border-list">`;     
+                                                            row +=`<div class="col-sm-2">`;
+                                                            row +=`<img class="chat-img" src="${items.photo}" alt="${items.username}" class="offline">`;    
+                                                                   
+                                                            row +=`</div>`; 
+                                                            row +=`<div class="margin-top-7 col-sm-8">`;
+                                                                   row +=`<input class="text-username" disabled type="text" value="${items.username}">`;
+                                                                        row +=`<textarea id="comment-edit-`+ items.id +`" readonly class="form-control textarea-fixed-replay text-message resize-hide">${items.messages}</textarea>`;
+                                                            row +=`</div>`; 
+                                                             
+                                                             row +=`<div id="divclose-`+ items.id +`" style="display:none;" class="col-sm-2 padding-none ">`;
+
+                                                             row +=`<button  id="Close-Edit" data-param_index="`+ index +`" data-param_id="`+ items.id +`"   type="button" class="pull-right btn btn-primary"><i class="fa fa-times" aria-hidden="true"></i></button>`;
+                                                            row +=`</div>`; 
+
+                                                         row +=`<div id="btn-update-`+ items.id +`" style="display:none;" class="pull-left full"  >`;
+
+                                                         row +=`<div class="pull-left col-sm-2"></div>`;
+                                                      
+                                                         row +=`<div class="pull-left col-sm-8 padding-top-bottom-com">`;
+                                                            row +=`<button id="update-topic" data-param_id="`+ items.id +`" type="button" class="update-topic-`+ items.id +` pull-right btn btn-primary" >Update</button>`;
+                                                         row +=`</div>`;
+
+                                                        row +=`</div>`;     
+                                                        if(items.action == true)
+                                                        {
+                                                            row +=`<div id="option-`+ items.id +`" class="margin-top-32 col-sm-2 btn-group btn-group-forum padding-none ">`;
+                                                             
+
+                                                               row +=`<button id="Edit" data-param_index="`+ index +`" data-param_id="`+ items.id +`"   type="button" class="btn btn-primary"><i class="fa fa-pencil" aria-hidden="true"></i></button>`;
+                                                             row +=`<button id="deleted" data-param_index="`+ index +`" data-param_id="`+ items.id +`"  type="button" class="btn btn-primary"><i class="fa fa-trash" aria-hidden="true"></i></button>`;
+
+
+                                                            row +=`</div>`;
+                                                        }   
+
+                                                        row +=`</div>`;
+                                               
+                                                });
+                                                row +=`</div>`;
+                                           row +=`</div>`;
+
+                                           
+                                 
+                                    row +=`</div>`;
+            
+                                    row +=`<div class="pull-left full modal-footer">`;
+                                        row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
+
+                                        
+                                          
+                                    row +=`</div>`;
+
+
+                                row +=`</form>`;     
+                        row +=`</div>`;
+                    row +=`</div>`;
+
+                    $('#modal-detail').html(row);
+
+                     $('#slimScrollDiv').slimScroll({
+                        height: '200px',
+                        railVisible: true,
+                        alwaysVisible: true,
+                        railOpacity: 0.4
+                    });
+                    
+                },
+                error: function(error) {
+                    console.error('Error deleting items:', error);
+                }
+            });
+    }
+
     function getlistComment(item){
          
            $.ajax({
@@ -465,19 +597,21 @@
 			    success: function(response) {
 			    	
 			        viewComment(response,item);
-			       
+			      
 			        
 			    },
 			    error: function(error) {
 			        console.error('Error deleting items:', error);
 			    }
 			});
+
+           
          
 
     }
 
      function viewComment(data,item){
-       
+         
        let row = ``;
             row +=`<div class="modal-dialog">`;
                 row +=`<div class="modal-content pull-left full">`;
