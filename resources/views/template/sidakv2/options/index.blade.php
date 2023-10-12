@@ -2125,8 +2125,9 @@
 	              
 		          var form = {
 		              'name':data[0].value,
-		              'parent':data[1].value,
-		              'path_web':data[2].value,
+		              'slug':data[1].value,
+		              'parent':data[2].value,
+		              'path_web':data[3].value,
 		              'icon':icon,
 		              'icon_hover':icon_hover,
 		             
