@@ -66,15 +66,27 @@
 <section class="content-header pd-left-right-15">
 	<div class="form-group row">
 		<div class="col-sm-3">
-			<label>Jenis </label>
-			<select class="form-control" name="jenis_sub" id="jenis_sub">
-				<option value="">-Pilih Tipe-</option>
-				<!-- <option value="is_tenaga_pendamping">Tenaga Pendamping</option> -->
+			<label>Periode </label>
+			<select class="form-control border-radius-20" name="periode_id2" id="periode_id2" ></select>
+		</div>
+		<div class="col-sm-3">
+			<label>Jenis Kegiatan </label>
+			<select class="form-control border-radius-20" name="jenis_sub" id="jenis_sub">
+				<option value="">Pilih Jenis Kegiatan</option>
+				<option value="identifikasi">Identifikasi Penyelesaian</option>
+				<option value="penyelesaian">Penyelesaian Masalah</option>
+				<option value="evaluasi">Evaluasi Penyelesaian</option>
 			</select>
 		</div>
 		<div class="col-sm-3">
-			<label>Periode </label>
-			<select id="periode_id" class="select-periode2 form-control" name="periode_id"></select>
+			<label>Status </label>
+			<select class="form-control border-radius-20" name="search_status" id="search_status">
+				<option value="">Pilih Status</option>
+				<option value="1">Draft</option>
+				<option value="2">Request Edit</option>
+				<option value="3">Terkirim</option>
+				<option value="4">Perlu Perbaikan</option>
+			</select>
 		</div>
 		<div class="col-sm-3">
 			<label>Search</label>
@@ -84,7 +96,6 @@
 					<button id="Search" type="button" class="btn btn-search btn-flat height-35"><i class="fa fa-search"></i></button>
 					<button id="Clear" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-times-circle"></i></button>
 				</span>
-
 			</div>
 		</div>
 	</div>
@@ -129,7 +140,7 @@
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>
 							<th><span class="border-left-table">Nama Kegiatan </span> </th>
-							<th><span class="border-left-table">Sub Menu </span> </th>
+							<th><span class="border-left-table">Sub Kegiatan </span> </th>
 							<th><span class="border-left-table">Tanggal Kegiatan </span></th>
 							<th><span class="border-left-table">Lokasi </span></th>
 							<th><span class="border-left-table">Biaya </span></th>
@@ -148,29 +159,6 @@
 @push('scripts')
 
 <script>
-	var search = '';
-	hasil_sum(search);
-
-	function hasil_sum(search) {
-		if (search !== "")
-			var filter = JSON.stringify(search);
-		$.ajax({
-			url: BASE_URL + '/api/pagutarget/total_pagu',
-			method: 'POST',
-			data: {
-				data: filter
-			},
-			dataType: 'json',
-			success: function(result) {
-				$('#total_apbn').html(result.total_apbn);
-				$('#total_promosi').html(result.total_promosi);
-				$('#total_all').html(result.total_all);
-			},
-			error: function(error) {
-				console.error(error);
-			}
-		});
-	}
 
 	$(function() {
 
@@ -252,13 +240,13 @@
 			};
 		}
 
-		$('.select-periode2').select2(
+		$('#periode_id2').select2(
 			$.ajax({
 				url: BASE_URL + '/api/select-periode-semester',
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {
-					periode = '<option value="">- Pilih -</option>';
+					periode = '<option value="">Pilih Periode</option>';
 					$.each(data.periode, function(key, val) {
 						var select = '';
 						if (data.tahunSemester == val.value)
@@ -266,7 +254,7 @@
 						periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
 
 					});
-					$('#periode_id').html(periode);
+					$('#periode_id2').html(periode);
 				}
 			})
 		);
@@ -277,7 +265,7 @@
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {
-					periode = '<option value="">- Pilih -</option>';
+					periode = '<option value="">Pilih Periode</option>';
 					$.each(data.periode, function(key, val) {
 						var select = '';
 						if (data.tahunSemester == val.value)
@@ -294,24 +282,23 @@
 			var filter = [{
 				search_input: $("#search-input").val(),
 				jenis_sub: $("#jenis_sub").val(),
-				periode_id: $("#periode_id").val()
+				search_status: $("#search_status").val(),
+				periode_id: $("#periode_id2").val()
 			}, ];
 			table.search(this.value).draw();
-			hasil_sum(filter);
 		}, 1000));
 
 		$("#Search").on("click", function() {
 			var filter = [{
 				search_input: $("#search-input").val(),
 				jenis_sub: $("#jenis_sub").val(),
-				periode_id: $("#periode_id").val()
+				search_status: $("#search_status").val(),
+				periode_id: $("#periode_id2").val()
 			}, ];
 
-			hasil_sum(filter);
 			table.column(0).search(JSON.stringify(filter), true, true);
 			table.draw();
 		});
-
 
 		$("#datatable").on("click", "#Destroy", (e) => {
 			let id = e.currentTarget.dataset.param_id;
@@ -390,10 +377,10 @@
 		$("#Clear").on("click", function() {
 			var filter = '';
 			$("#jenis_sub").val("").trigger("change");
-			$("#periode_id").val("").trigger("change");
+			$("#search_status").val("").trigger("change");
+			$("#periode_id2").val("").trigger("change");
 			$("#search-input").val("");
 
-			hasil_sum(filter);
 			table.search("").columns().search("").draw();
 		});
 
@@ -413,7 +400,7 @@
 				}
 			}
 		});
-
 	});
+
 </script>
 @endpush

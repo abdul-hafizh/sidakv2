@@ -53,6 +53,7 @@ class BimsosApiController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         $validation = ValidationBimsos::validation($request);
         if ($validation) {
             return response()->json($validation, 400);
@@ -172,7 +173,8 @@ class BimsosApiController extends Controller
                 $err['messages']['jml_peserta'] = 'Jumlah Peserta melebihi perencanaan.';
                 return response()->json($err, 400);
             }
-            $UpdateData = Bimsos::where('id', $id)->update($update);
+            $id_bimsos = $request->id_bimsos;
+            $UpdateData = Bimsos::where('id', $id_bimsos)->update($update);
             return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
         }
     }
