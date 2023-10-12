@@ -173,19 +173,51 @@
             <div class="row">
               <div id="notula-alert" class="form-group has-feedback col-md-12">
                   <label>Notula Rapat </label>
+                  <a href="#" class="text-bold" id="modal-notula" style="margin-left: 5px"><small>(Tampilkan File Notula)</small></a>
                   <input type="file" class="form-control" name="lap_notula" id="AddFilesNotula" accept=".pdf">
                   <div id="ShowPdfNotula" style="margin-top:8px"></div>
                   <span id="file-notula-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>                  
+                  <div class="modal fade" id="pdfNotula" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">File PDF Notula</h5>
+                        </div>
+                        <div class="modal-body">
+                            <iframe id="frameNotula" src="" frameborder="0" width="100%" height="500"></iframe>
+                        </div>
+                        <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        </div> 
+                      </div>
+                    </div>
+                  </div>           
               </div>
             </div>
             <div class="row">
               <div id="lap_evaluasi-alert" class="form-group has-feedback col-md-12">
                   <label>Laporan Hasil Evaluasi </label>
+                  <a href="#" class="text-bold" id="modal-eval" style="margin-left: 5px"><small>(Tampilkan File Evaluasi)</small></a>
                   <input type="file" class="form-control" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
                   <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
                   <span id="file-evaluasi-alert-messages"></span>
                   <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                  <div class="modal fade" id="pdfEval" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">File PDF Evaluasi</h5>
+                        </div>
+                        <div class="modal-body">
+                            <iframe id="frameEvaluasi" src="" frameborder="0" width="100%" height="500"></iframe>
+                        </div>
+                        <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        </div> 
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -436,7 +468,15 @@
         success: function(data) {
           subMenu(data.sub_menu_slug);
           getPeriode(data.periode_id);
-          getAnggaran(data.periode_id, data.sub_menu_slug);
+          getAnggaran(data.periode_id, data.sub_menu_slug);          
+
+          $('#modal-notula').click(function() {
+            tampilkanModalNotula(data.lap_notula);
+          });
+
+          $('#modal-eval').click(function() {
+            tampilkanModalEvaluasi(data.lap_evaluasi);
+          });
 
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
@@ -509,10 +549,9 @@
               $('#kirim').hide();
               $('#request_revision').show();
             }
-          }
+          }          
         }
-
-      })
+      })      
 
       function subMenu(sub_menu_slug) {
         if (sub_menu_slug == 'identifikasi') {
@@ -547,7 +586,43 @@
           }
         })
         $('.select-periode-mdl').select2();        
-      }      
+      }
+
+      function tampilkanModalNotula(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameNotula').attr('src', blobUrl);
+                $('#pdfNotula').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalEvaluasi(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameEvaluasi').attr('src', blobUrl);
+                $('#pdfEval').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
 
       $("#update").click(() => {
         var data = $("#FormSubmit").serializeArray();
