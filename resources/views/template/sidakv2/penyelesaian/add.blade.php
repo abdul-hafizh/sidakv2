@@ -207,6 +207,27 @@
   </div>
 </div>
 
+<div id="modal-log" class="modal fade in" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Log Data</h4>
+      </div>
+
+      <div class="modal-body" style="height: 550px; overflow-y: auto;">        
+        <div class="row">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <div id="modal-req-edit" class="modal fade in" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">

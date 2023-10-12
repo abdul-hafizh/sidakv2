@@ -71,10 +71,9 @@ class RequestPenyelesaian
         $numberNext = 1;
         $result = $data->get();
 
-        foreach ($result as $key => $val) {
-            $edit_url = "";
-            $delete_url = "";
-            $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+        foreach ($result as $key => $val) {            
+            $log_url =  '<button id="Log" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
+            $edit_url =  '<button id="Edit" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
             $numberNext++;
@@ -86,7 +85,7 @@ class RequestPenyelesaian
             $row[] = $val->lokasi;
             $row[] = GeneralHelpers::formatRupiah($val->biaya);
             $row[] = RequestPenyelesaian::getLabelStatus($val->status_laporan_id, $val->request_edit);
-            $row[] = $edit_url . " " . $delete_url;
+            $row[] = $edit_url . " " . $delete_url . " " . $log_url;
 
             $temp[] = $row;
         }
