@@ -21,7 +21,6 @@ use Maatwebsite\Excel\Facades\Excel;
 class PenyelesaianApiController extends Controller
 {
 
-
     public function __construct()
     {
     }
