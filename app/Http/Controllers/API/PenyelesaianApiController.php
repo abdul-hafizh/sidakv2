@@ -7,6 +7,7 @@ use File;
 use Response;
 use Illuminate\Http\Request;
 use App\Models\Penyelesaian;
+use App\Models\AuditLogRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Request\RequestPenyelesaian;
 use App\Http\Request\RequestAuth;
@@ -256,6 +257,12 @@ class PenyelesaianApiController extends Controller
         $update = RequestPenyelesaian::fieldReqEdit($request);
         $results = Penyelesaian::where('id', $id)->update($update);
 
+        if($results) {
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPenyelesaian::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
+        }
+
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }
 
@@ -272,6 +279,12 @@ class PenyelesaianApiController extends Controller
 
         $update = RequestPenyelesaian::fieldReqRevisi($request);
         $results = Penyelesaian::where('id', $id)->update($update);
+
+        if($results) {
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPenyelesaian::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
+        }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }
