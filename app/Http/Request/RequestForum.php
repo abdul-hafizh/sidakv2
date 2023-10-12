@@ -103,7 +103,7 @@ class RequestForum
             $temp[$key]['name'] = $val->name;
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['category'] = RequestForum::categoryForum($val->forum_id);
-            
+            $temp[$key]['access'] = RequestAuth::Access();
             $temp[$key]['total_messsage'] = RequestForum::TotalMessage($val->id,$val->created_by).' Komentar';
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);

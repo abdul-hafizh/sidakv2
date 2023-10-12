@@ -230,9 +230,14 @@
                         {
                            if(opt.checked == true)
                            {
+
+                           	 if(item.access == 'admin' || item.access == 'pusat')
+	                         {  
                              
                             
 	                         row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+	                         }
 
                            } 
                         } 
