@@ -32,7 +32,17 @@ class ExtensionApiController extends Controller
 
     public function index(Request $request)
     {
-        $query = Extension::orderBy('created_at', 'DESC');
+
+        $access = RequestAuth::Access(); 
+        $tahunSemester = GeneralHelpers::semesterToday();
+
+        if($access == 'daerah' ||  $access == 'province') { 
+             $query = Extension::where('daerah_id',Auth::User()->daerah_id)->orderBy('created_at', 'DESC');
+        } else {
+             $query = Extension::orderBy('created_at', 'DESC');
+        }
+
+       
         if ($request->per_page != 'all') {
             $data = $query->paginate($request->per_page);
         } else {
