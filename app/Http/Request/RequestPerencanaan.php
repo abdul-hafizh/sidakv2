@@ -147,6 +147,7 @@ class RequestPerencanaan
         $temp['id'] = $data->id;
         $temp['periode_id'] = $data->periode_id;
         $temp['access'] = RequestAuth::Access();
+        $temp['options'] = RequestMenuRoles::ActionPage('perencanaan');
         $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
         $temp['pagu_apbn'] = GeneralHelpers::formatRupiah($data->pagu_apbn);
         $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->pagu_promosi);
