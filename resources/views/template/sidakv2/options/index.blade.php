@@ -1365,14 +1365,14 @@
 				    {		
 			 	 
 				 	 row +=`<tr>`;
-						 row +=`<td><input id="action-`+ i +`" type="checkbox" checked  name="status" id="status" value="`+ items.option[i].action +`" ></td>`;
+						 row +=`<td><input id="action-`+ items.option[i].action +`" type="checkbox" checked  name="status" class="status"  data-param_id="`+ items.option[i].action +`" value="`+ items.option[i].action +`" ></td>`;
 						 row +=`<td>`+ items.option[i].name +`</td>`;
 					 row +=`</tr>`;
 
 					}else{
                       
                       row +=`<tr>`;
-						 row +=`<td><input  type="checkbox"  name="status" id="status" value="`+ items.option[i].action +`" ></td>`;
+						 row +=`<td><input  id="action-`+ items.option[i].action +`" type="checkbox"   name="status" class="status"  data-param_id="`+ items.option[i].action +`" value="`+ items.option[i].action +`" ></td>`;
 						 row +=`<td>`+ items.option[i].name +`</td>`;
 					 row +=`</tr>`; 
 
@@ -1386,6 +1386,57 @@
 
 
    	    $('#TableAction-'+ slug).html(row);
+
+
+        $(".modal-content").on( "click", ".status", (e) => {
+            	 let action = e.currentTarget.dataset.param_id;
+            	 if(action =='read-only')
+            	 {
+
+            	 	for(let i=0; i<items.option.length; i++)
+				    {
+				      var readonly = $('#action-'+ items.option[i].action);	
+
+				      if(items.option[i].action == 'read-only')
+				      {   
+				      	  
+                          if(readonly[0].checked == true)
+                          {
+                          	  $('#action-'+ items.option[i].action).prop('checked', true);
+                          }
+                          
+                          
+				      }else{
+				      	 $('#action-'+ items.option[i].action).prop('checked', false);
+				      }
+
+					 
+                    }
+            	 }else{
+
+                     	for(let i=0; i<items.option.length; i++)
+				        {
+						      var readonly = $('#action-'+ items.option[i].action);	
+
+						      if(items.option[i].action != 'read-only')
+						      {  
+
+                                
+		                          if(readonly[0].checked == true)
+		                          {
+		                          	  $('#action-'+ items.option[i].action).prop('checked', true);
+		                          }
+                        
+						      }else{
+						      	 $('#action-'+ items.option[i].action).prop('checked', false);
+						      }
+						      
+						}      	
+
+            	 }	
+		     
+		    });
+
    }
 
    function formSubList(tasks,slug)
