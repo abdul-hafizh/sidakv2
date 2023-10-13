@@ -837,23 +837,12 @@
 
             $(".modal-content").on( "click", ".status", (e) => {
             	 let action = e.currentTarget.dataset.param_id;
-            	 // if(action =='read-only')
-            	 // {
+            	 if(action =='read-only')
+            	 {
 
-            	 	 // var data = item.option.find(o => o.action === action);
-                //      if(data.action == 'read-only')
-                //      {
-                //      	if(data.checked ==true)
-                //         {
-                //         	 data.checked = false;
-                //         }else{
-                //         	data.checked = true;
-                //         }		
-                     
-                //      }
-                     for(let i=0; i<item.option.length; i++)
-				     {
-                          var readonly = $('#action-'+ item.option[i].action);	
+            	 	for(let i=0; i<item.option.length; i++)
+				    {
+				      var readonly = $('#action-'+ item.option[i].action);	
 
 				      if(item.option[i].action == 'read-only')
 				      {   
@@ -861,73 +850,42 @@
                           if(readonly[0].checked == true)
                           {
                           	  $('#action-'+ item.option[i].action).prop('checked', true);
-                          }else{
-                          	  $('#action-'+ item.option[i].action).prop('checked', false);
                           }
-                        
-                           
+                          
                           
 				      }else{
 				      	 $('#action-'+ item.option[i].action).prop('checked', false);
 				      }
 
-				     } 	
-                    
-                     
-
-
-
-                     console.log(item.option)
-        //     	 	for(let i=0; i<item.option.length; i++)
-				    // {
-				    //   var readonly = $('#action-'+ item.option[i].action);	
-
-				    //   if(item.option[i].action == 'read-only')
-				    //   {   
-				      	  
-        //                   if(readonly[0].checked == true)
-        //                   {
-        //                   	  $('#action-'+ item.option[i].action).prop('checked', true);
-        //                   }
-                        
-                           
-                          
-				    //   }else{
-				    //   	 $('#action-'+ item.option[i].action).prop('checked', false);
-				    //   }
-
-
-
-				    //   // if(readonly[0].checked == false)
-				    //   // {
-				    //   // 	   $('#action-'+ item.option[i].action).prop('checked', true);
-				    //   // }else{
-				    //   // 	   $('#action-readonly').prop('checked', false);
-				    //   // }	
-                          
-                        
-                        
-                       
-				      	
 					 
-        //             }
-            	// }	
+                    }
+            	 }else{
+
+                     	for(let i=0; i<item.option.length; i++)
+				        {
+						      var readonly = $('#action-'+ item.option[i].action);	
+
+						      if(item.option[i].action != 'read-only')
+						      {  
+
+                                
+		                          if(readonly[0].checked == true)
+		                          {
+		                          	  $('#action-'+ item.option[i].action).prop('checked', true);
+		                          }
+                        
+						      }else{
+						      	 $('#action-'+ item.option[i].action).prop('checked', false);
+						      }
+						      
+						}      	
+
+            	 }	
 		     
 		    });
 
 
-		   // $('#select-all').on('change', function() {
-		   //      $('.item-checkbox').prop('checked', $(this).is(':checked'));
-		          
-		   //       const checkedCount = $('.item-checkbox:checked').length;
-		   //       if(checkedCount >0)
-		   //       {
-		   //          $('#delete-selected').prop("disabled", false);
-		   //       }else{
-		   //          $('#delete-selected').prop("disabled", true);
-		   //       }  
-		        
-		   //  });
+		  
 
 
             $(".modal-content").on( "click", "#update_action-"+ slug, (e) => {

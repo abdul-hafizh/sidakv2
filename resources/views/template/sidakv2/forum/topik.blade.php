@@ -209,8 +209,12 @@
 	                 if(opt.action == 'delete')
 	                 {
 	                    if(opt.checked == true)
-	                    {
-	                        row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	                    { 
+	                      
+	                          row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	                     
+	                    }else{
+	                    	row +=`<td><input disabled  class="item-checkbox"   type="checkbox"></td></td>`;
 	                    }
 	                 }       
 	              });
@@ -231,18 +235,38 @@
                            if(opt.checked == true)
                            {
 
-                           	 if(item.access == 'admin' || item.access == 'pusat')
-	                         {  
-                             
+                           	  
+	                              row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+	                        }else{
+
+                               row +=`<button disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+	                        }    
+
+	                           // if(item.deleted == 'false')
+                            //    {
+
+                            //    	  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                           	  
+	                           	  
+                            //     }else{
+
+                            //     	row +=`<button disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                            //     }
+	                           
+
                             
-	                         row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
-
-	                         }
-
-                           } 
                         } 
 
                     });
+
+	                  // if(item.access == 'admin' || item.access =='pusat')
+	                  // {
+	                  // 	row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                  // }	
+
+	                   
 
 
 	                  row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;

@@ -164,10 +164,10 @@ class KendalaApiController extends Controller
                 $notif = RequestNotification::fieldsData($type,$messages,$url);
                 Notification::create($notif);
 
-                 $text_name = 'Kementerian Investasi';
-                 $pusat = User::where('username','pusat')->first()->email;
-                 $name_send = User::where('username',$saveData->sender)->first() ;
-                 Mail::to($name_send->email)->send(new TanggapanKendala($name_send->name,$url,$request->permasalahan,$request->messages, $text_name));
+                 // $text_name = 'Kementerian Investasi';
+                 // $pusat = User::where('username','pusat')->first()->email;
+                 // $name_send = User::where('username',$saveData->sender)->first() ;
+                 // Mail::to($name_send->email)->send(new TanggapanKendala($name_send->name,$url,$request->permasalahan,$request->messages, $text_name));
                
 
             }else{
@@ -178,10 +178,10 @@ class KendalaApiController extends Controller
                  $notif = RequestNotification::fieldsData($type,$messages,$url);
                  Notification::create($notif);
 
-                 $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
-                 $pusat = User::where('username','pusat')->first()->email;
-                 $text_name = 'Kementerian Investasi';
-                 Mail::to($pusat)->send(new KendalaPermasalahan($text_name,$url,$request->permasalahan,$request->messages, $daerah_name));
+                 // $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+                 // $pusat = User::where('username','pusat')->first()->email;
+                 // $text_name = 'Kementerian Investasi';
+                 // Mail::to($pusat)->send(new KendalaPermasalahan($text_name,$url,$request->permasalahan,$request->messages, $daerah_name));
 
 
 
