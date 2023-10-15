@@ -89,7 +89,7 @@ class RequestBimsos
             $row[]  = GeneralHelpers::formatDate($val->tgl_bimtek);
             $row[]  = $val->lokasi_bimtek;
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
-            $row[]  = RequestBimsos::getLabelStatus('13', 'false');
+            $row[]  = RequestBimsos::getLabelStatus($val->status_laporan_id, $val->request_edit);
             $row[]  = $edit_url . " " . $delete_url;
 
             $temp[] = $row;
@@ -256,17 +256,17 @@ class RequestBimsos
     }
     public static function getLabelStatus($status, $requestEdit)
     {
-        if ($status == 13) {
+        if ($status == "13") {
             if ($requestEdit === "false") {
                 return "Draft";
             } elseif ($requestEdit === "true") {
                 return "Draft (Edit)";
             }
-        } elseif ($status == 14) {
+        } elseif ($status == "14") {
             if ($requestEdit === "false") {
                 return "Terkirim";
             }
-        } elseif ($status == 15) {
+        } elseif ($status == "15") {
             if ($requestEdit === "false") {
                 return "Request Revision";
             } elseif ($requestEdit === "true") {

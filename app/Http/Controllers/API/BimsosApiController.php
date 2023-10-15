@@ -53,7 +53,6 @@ class BimsosApiController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
         $validation = ValidationBimsos::validation($request);
         if ($validation) {
             return response()->json($validation, 400);

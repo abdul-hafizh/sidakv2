@@ -202,6 +202,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('bimsos', [BimsosApiController::class, 'store']);
     Route::get('bimsos/edit/{id}', [BimsosApiController::class, 'edit']);
     Route::post('bimsos/update/{id}', [BimsosApiController::class, 'update']);
+    Route::post('bimsos/kirim/{id}', [BimsosApiController::class, 'update']);
     Route::delete('bimsos/{id}', [BimsosApiController::class, 'delete']);
     Route::post('bimsos/selected', [BimsosApiController::class, 'deleteSelected']);
     Route::put('bimsos/request_edit/{id}', [BimsosApiController::class, 'request_edit']);
