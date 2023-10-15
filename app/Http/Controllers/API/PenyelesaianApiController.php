@@ -233,6 +233,18 @@ class PenyelesaianApiController extends Controller
         $access = RequestAuth::Access();
         $result = Penyelesaian::where(['id' => $id])->first();
         $result['access'] = $access;
+
+        return response()->json($result);
+    }
+
+    public function log($id)
+    {        
+        $result = Penyelesaian::leftJoin('audit_log_request as log', 'penyelesaian.id', '=', 'log.kegiatan_id')
+            ->select('penyelesaian.nama_kegiatan', 'penyelesaian.sub_menu', 'log.*')
+            ->where('penyelesaian.id', $id)
+            ->orderBy('log.id', 'desc')
+            ->get();
+
         return response()->json($result);
     }
 

@@ -224,6 +224,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('penyelesaian/datalist', [PenyelesaianApiController::class, 'jsonData']);
     Route::post('penyelesaian', [PenyelesaianApiController::class, 'store']);
     Route::get('penyelesaian/edit/{id}', [PenyelesaianApiController::class, 'edit']);
+    Route::get('penyelesaian/log/{id}', [PenyelesaianApiController::class, 'log']);
     Route::put('penyelesaian/{id}', [PenyelesaianApiController::class, 'update']);
     Route::post('penyelesaian/selected', [PenyelesaianApiController::class, 'deleteSelected']);
     Route::put('penyelesaian/request_edit/{id}', [PenyelesaianApiController::class, 'request_edit']);
