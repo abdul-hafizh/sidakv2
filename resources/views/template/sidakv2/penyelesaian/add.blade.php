@@ -104,7 +104,7 @@
             <div class="row">
               <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
                   <label>Profile Pelaku Usaha </label>
-                  <a href="#" class="text-bold text-profile" id="modal-profile" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
+                  <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
                   <input type="file" class="form-control" name="lap_profile" id="AddFilesProfile" accept=".pdf">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
                   <span id="file-profile-alert-messages"></span>
@@ -132,11 +132,10 @@
             <div class="row">
               <div id="lap_peserta-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Hadir </label>
-                <a href="#" class="text-bold text-peserta" id="modal-peserta" style="margin-left: 5px"><small>(Tampilkan Daftar Hadir)</small></a>
+                <a href="#" class="text-bold text-peserta" id="modal-peserta" data-target="Peserta" style="margin-left: 5px"><small>(Tampilkan Daftar Hadir)</small></a>
                 <input type="file" class="form-control" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
                 <div id="ShowPdfPeserta" style="margin-top:8px"></div>
-                <span id="file-peserta-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                <span id="file-peserta-alert-messages"></span>                
                 <div class="modal fade" id="pdfPeserta" role="dialog" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -157,11 +156,10 @@
             <div class="row">
               <div id="lap_profile2-alert" class="form-group has-feedback col-md-12">
                 <label>Profile Pelaku Usaha </label>
-                <a href="#" class="text-bold text-profile2" id="modal-profile2" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
+                <a href="#" class="text-bold text-profile2" id="modal-profile2" data-target="Profile2" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
                 <input type="file" class="form-control" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
                 <div id="ShowPdfProfile2" style="margin-top:8px"></div>
                 <span id="file-profile2-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
                 <div class="modal fade" id="pdfProfile2" role="dialog" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -182,11 +180,10 @@
             <div class="row">
               <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Narasumber </label>
-                <a href="#" class="text-bold text-narasumber" id="modal-narasumber" style="margin-left: 5px"><small>(Tampilkan Narasumber)</small></a>
+                <a href="#" class="text-bold text-narasumber" id="modal-narasumber" data-target="Narasumber" style="margin-left: 5px"><small>(Tampilkan Narasumber)</small></a>
                 <input type="file" class="form-control" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
                 <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
                 <span id="file-narasumber-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
                 <div class="modal fade" id="pdfNarasumber" role="dialog" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -207,11 +204,10 @@
             <div class="row">
               <div id="notula2-alert" class="form-group has-feedback col-md-12">
                 <label>Notula Kegiatan </label>
-                <a href="#" class="text-bold text-notula2" id="modal-notula2" style="margin-left: 5px"><small>(Tampilkan Notula)</small></a>
+                <a href="#" class="text-bold text-notula2" id="modal-notula2" data-target="Notula2" style="margin-left: 5px"><small>(Tampilkan Notula)</small></a>
                 <input type="file" class="form-control" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
                 <div id="ShowPdfNotula2" style="margin-top:8px"></div>
                 <span id="file-notula2-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
                 <div class="modal fade" id="pdfNotula2" role="dialog" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -232,11 +228,10 @@
             <div class="row">
               <div id="lap_lkpm-alert" class="form-group has-feedback col-md-12">
                 <label>Laporan LKPM </label>
-                <a href="#" class="text-bold text-lkpm" id="modal-lkpm" style="margin-left: 5px"><small>(Tampilkan LKPM)</small></a>
+                <a href="#" class="text-bold text-lkpm" id="modal-lkpm" data-target="Lkpm" style="margin-left: 5px"><small>(Tampilkan LKPM)</small></a>
                 <input type="file" class="form-control" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
                 <div id="ShowPdfLkpm" style="margin-top:8px"></div>
                 <span id="file-lkpm-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
                 <div class="modal fade" id="pdfLkpm" role="dialog" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -257,11 +252,11 @@
             <div class="row">
               <div id="lap_document-alert" class="form-group has-feedback col-md-12">
                 <label>Laporan Dokumentasi </label>
-                <a href="#" class="text-bold text-doc" id="modal-doc" style="margin-left: 5px"><small>(Tampilkan Dokumentasi)</small></a>
+                <a href="#" class="text-bold text-doc" id="modal-doc" data-target="Doc" style="margin-left: 5px"><small>(Tampilkan Dokumentasi)</small></a>
                 <input type="file" class="form-control" name="lap_document" id="AddFilesDoc" accept=".pdf">
                 <div id="ShowPdfDoc" style="margin-top:8px"></div>
                 <span id="file-doc-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                <small class="text-red">*semua file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
                 <div class="modal fade" id="pdfDoc" role="dialog" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
@@ -285,11 +280,10 @@
             <div class="row">
               <div id="notula-alert" class="form-group has-feedback col-md-12">
                   <label>Notula Rapat </label>
-                  <a href="#" class="text-bold text-notula" id="modal-notula" style="margin-left: 5px"><small>(Tampilkan File Notula)</small></a>
+                  <a href="#" class="text-bold text-notula" id="modal-notula" data-target="Notula" style="margin-left: 5px"><small>(Tampilkan File Notula)</small></a>
                   <input type="file" class="form-control" name="lap_notula" id="AddFilesNotula" accept=".pdf">
                   <div id="ShowPdfNotula" style="margin-top:8px"></div>
-                  <span id="file-notula-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>                  
+                  <span id="file-notula-alert-messages"></span>                  
                   <div class="modal fade" id="pdfNotula" role="dialog" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
@@ -310,12 +304,12 @@
             <div class="row">
               <div id="lap_evaluasi-alert" class="form-group has-feedback col-md-12">
                   <label>Laporan Hasil Evaluasi </label>
-                  <a href="#" class="text-bold text-eval" id="modal-eval" style="margin-left: 5px"><small>(Tampilkan File Evaluasi)</small></a>
+                  <a href="#" class="text-bold text-eval" id="modal-eval" data-target="Evaluasi" style="margin-left: 5px"><small>(Tampilkan File Evaluasi)</small></a>
                   <input type="file" class="form-control" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
                   <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
                   <span id="file-evaluasi-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-                  <div class="modal fade" id="pdfEval" role="dialog" aria-hidden="true">
+                  <small class="text-red">*semua file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                  <div class="modal fade" id="pdfEvaluasi" role="dialog" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -352,16 +346,31 @@
 </div>
 
 <div id="modal-log" class="modal fade in" role="dialog">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header bg-primary">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Log Data</h4>
       </div>
 
-      <div class="modal-body" style="height: 550px; overflow-y: auto;">        
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">        
         <div class="row">
-
+          <div class="card-body table-responsive">
+            <table id="dataLog" class="table table-hover text-nowrap">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Nama Kegiatan</th>
+                  <th>Sub Kegiatan</th>
+                  <th>Alasan</th>
+                  <th>Dibuat Oleh</th>
+                  <th>Tanggal Dibuat</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div class="modal-footer">
@@ -586,55 +595,63 @@
       $.ajax({
         url: BASE_URL + '/api/penyelesaian/edit/' + id,
         method: 'GET',
-        success: function(data) {
+        success: function(data) {          
           subMenu(data.sub_menu_slug);
           getPeriode(data.periode_id);
           getAnggaran(data.periode_id, data.sub_menu_slug);      
           
-          $('.text-peserta').show();
-          $('.text-profile').show();
-          $('.text-profile2').show();
-          $('.text-notula').show();
-          $('.text-notula2').show();
-          $('.text-narasumber').show();
-          $('.text-lkpm').show();
-          $('.text-doc').show();
-          $('.text-eval').show();
+          var data_file = {
+            peserta: data.lap_peserta,
+            profile: data.lap_profile,
+            profile2: data.lap_profile2,
+            notula: data.lap_notula, 
+            notula2: data.lap_notula2,
+            narasumber: data.lap_narasumber,
+            lkpm: data.lap_lkpm,
+            doc: data.lap_document,
+            eval: data.lap_evaluasi 
+          };
+
+          $.each(data_file, function (key, value) {            
+            if (value && value.length > 0) {
+              $('.text-' + key).show();
+            }
+          });
 
           $('#modal-peserta').click(function() {
-            tampilkanModalPeserta(data.lap_peserta);
+            tampilkanModalPdf(data.lap_peserta, 'Peserta');
           });
 
           $('#modal-profile').click(function() {
-            tampilkanModalProfile(data.lap_profile);
+            tampilkanModalPdf(data.lap_profile, 'Profile');
           });
 
           $('#modal-profile2').click(function() {
-            tampilkanModalProfile2(data.lap_profile);
+            tampilkanModalPdf(data.lap_profile, 'Profile2');
           });
 
           $('#modal-narasumber').click(function() {
-            tampilkanModalNarasumber(data.lap_narasumber);
+            tampilkanModalPdf(data.lap_narasumber, 'Narasumber');
           });
 
           $('#modal-notula').click(function() {
-            tampilkanModalNotula(data.lap_notula);
+            tampilkanModalPdf(data.lap_notula, 'Notula');
           });
 
           $('#modal-notula2').click(function() {
-            tampilkanModalNotula2(data.lap_notula);
+            tampilkanModalPdf(data.lap_notula, 'Notula2');
           });
 
           $('#modal-lkpm').click(function() {
-            tampilkanModalLkpm(data.lap_lkpm);
+            tampilkanModalPdf(data.lap_lkpm, 'Lkpm');
           });
 
           $('#modal-doc').click(function() {
-            tampilkanModalDoc(data.lap_document);
+            tampilkanModalPdf(data.lap_document, 'Doc');
           });
 
           $('#modal-eval').click(function() {
-            tampilkanModalEvaluasi(data.lap_evaluasi);
+            tampilkanModalPdf(data.lap_evaluasi, 'Evaluasi');
           });
 
           $('#sub_menu_slug').val(data.sub_menu_slug);
@@ -710,7 +727,7 @@
             }
           }          
         }
-      })      
+      })
 
       function subMenu(sub_menu_slug) {
         if (sub_menu_slug == 'identifikasi') {
@@ -747,167 +764,24 @@
         $('.select-periode-mdl').select2();        
       }
 
-      function tampilkanModalPeserta(url) {
+      function tampilkanModalPdf(url, textId) {
         $.ajax({
-            url: url,
+            url: BASE_URL + '/' + url,
             method: 'GET',
             xhrFields: {
                 responseType: 'blob'
             },
+            async: true,
             success: function(data) {
                 var blobUrl = URL.createObjectURL(data);
-                $('#framePeserta').attr('src', blobUrl);
-                $('#pdfPeserta').modal('show');
+                $('#frame' + textId).attr('src', blobUrl);
+                $('#pdf' + textId).modal('show');
             },
             error: function() {
                 alert('Gagal mengambil file PDF.');
             }
         });
-      }
-
-      function tampilkanModalProfile(url) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                var blobUrl = URL.createObjectURL(data);
-                $('#frameProfile').attr('src', blobUrl);
-                $('#pdfProfile').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil file PDF.');
-            }
-        });
-      }
-
-      function tampilkanModalProfile2(url) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                var blobUrl = URL.createObjectURL(data);
-                $('#frameProfile2').attr('src', blobUrl);
-                $('#pdfProfile2').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil file PDF.');
-            }
-        });
-      }
-
-      function tampilkanModalNotula(url) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                var blobUrl = URL.createObjectURL(data);
-                $('#frameNotula').attr('src', blobUrl);
-                $('#pdfNotula').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil file PDF.');
-            }
-        });
-      }
-
-      function tampilkanModalNotula2(url) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                var blobUrl = URL.createObjectURL(data);
-                $('#frameNotula2').attr('src', blobUrl);
-                $('#pdfNotula2').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil file PDF.');
-            }
-        });
-      }
-
-      function tampilkanModalNarasumber(url) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                var blobUrl = URL.createObjectURL(data);
-                $('#frameNarasumber').attr('src', blobUrl);
-                $('#pdfNarasumber').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil file PDF.');
-            }
-        });
-      }
-
-      function tampilkanModalLpkm(url) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                var blobUrl = URL.createObjectURL(data);
-                $('#frameLkpm').attr('src', blobUrl);
-                $('#pdfLkpm').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil file PDF.');
-            }
-        });
-      }
-
-      function tampilkanModalDoc(url) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                var blobUrl = URL.createObjectURL(data);
-                $('#frameDoc').attr('src', blobUrl);
-                $('#pdfDoc').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil file PDF.');
-            }
-        });
-      }
-
-      function tampilkanModalEvaluasi(url) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(data) {
-                var blobUrl = URL.createObjectURL(data);
-                $('#frameEvaluasi').attr('src', blobUrl);
-                $('#pdfEval').modal('show');
-            },
-            error: function() {
-                alert('Gagal mengambil file PDF.');
-            }
-        });
-      }
+      }      
 
       $("#update").click(() => {
         var data = $("#FormSubmit").serializeArray();
@@ -1138,6 +1012,38 @@
         });
       }
 
+    });
+
+    $("#datatable").on("click", ".modalLog", function() {      
+      const id = $(this).data('param_id');
+      $.ajax({
+        url: BASE_URL + '/api/penyelesaian/log/' + id,
+        method: 'GET',
+        success: function(data_log) {             
+          dataLogRequset(data_log);
+        },
+        error: function() {
+          alert('Gagal mengambil data.');
+        }
+      })
+
+      function dataLogRequset(data_log) {        
+        var tableBody = $('#dataLog tbody');
+        tableBody.empty();
+
+        $.each(data_log, function(index, val) {          
+          var row = '<tr>' +
+            '<td>' + (index + 1) + '</td>' +
+            '<td>' + val.nama_kegiatan + '</td>' +
+            '<td>' + val.sub_menu + '</td>' +
+            '<td>' + val.alasan_request + '</td>' +
+            '<td>' + val.created_by + '</td>' +
+            '<td>' + val.created_at + '</td>' +
+            '</tr>';
+
+          tableBody.append(row);
+        });
+      }
     });
 
     $("#AddFilesProfile").change((event)=> {
@@ -1418,16 +1324,16 @@
                   row_peserta +=`<div class="modal-header">`;
                         row_peserta +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_peserta +=`<h4 class="modal-title">Lihat File Daftar Hadir</h4>`;
-                  row_peserta +=`</div>`;               
+                  row_peserta +=`</div>`;   
                   row_peserta +=`<div class="modal-body">`; 
                   if(file_peserta)
                   {  
                     row_peserta +=`<embed src="`+file_peserta+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_peserta +=`</div>`;               
+                  row_peserta +=`</div>`;   
                   row_peserta +=`<div class="modal-footer">`;
                         row_peserta +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_peserta +=`</div>`;                         
+                  row_peserta +=`</div>`;             
               row_peserta +=`</div>`;
         row_peserta +=`</div>`; 
 
@@ -1443,16 +1349,16 @@
                   row_profile +=`<div class="modal-header">`;
                         row_profile +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_profile +=`<h4 class="modal-title">Lihat File Profile</h4>`;
-                  row_profile +=`</div>`;               
+                  row_profile +=`</div>`;   
                   row_profile +=`<div class="modal-body">`; 
                   if(file_profile)
                   {  
                     row_profile +=`<embed src="`+file_profile+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_profile +=`</div>`;               
+                  row_profile +=`</div>`;   
                   row_profile +=`<div class="modal-footer">`;
                         row_profile +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_profile +=`</div>`;                         
+                  row_profile +=`</div>`;             
               row_profile +=`</div>`;
         row_profile +=`</div>`; 
 
@@ -1468,16 +1374,16 @@
                   row_profile2 +=`<div class="modal-header">`;
                         row_profile2 +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_profile2 +=`<h4 class="modal-title">Lihat File Profile</h4>`;
-                  row_profile2 +=`</div>`;               
+                  row_profile2 +=`</div>`;   
                   row_profile2 +=`<div class="modal-body">`; 
                   if(file_profile2)
                   {  
                     row_profile2 +=`<embed src="`+file_profile2+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_profile2 +=`</div>`;               
+                  row_profile2 +=`</div>`;   
                   row_profile2 +=`<div class="modal-footer">`;
                         row_profile2 +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_profile2 +=`</div>`;                         
+                  row_profile2 +=`</div>`;             
               row_profile2 +=`</div>`;
         row_profile2 +=`</div>`; 
 
@@ -1493,16 +1399,16 @@
                   row_nara +=`<div class="modal-header">`;
                         row_nara +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_nara +=`<h4 class="modal-title">Lihat File Narasumber</h4>`;
-                  row_nara +=`</div>`;               
+                  row_nara +=`</div>`;   
                   row_nara +=`<div class="modal-body">`; 
                   if(file_nara)
                   {  
                     row_nara +=`<embed src="`+file_nara+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_nara +=`</div>`;               
+                  row_nara +=`</div>`;   
                   row_nara +=`<div class="modal-footer">`;
                         row_nara +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_nara +=`</div>`;                         
+                  row_nara +=`</div>`;             
               row_nara +=`</div>`;
         row_nara +=`</div>`; 
 
@@ -1518,16 +1424,16 @@
                   row_notula +=`<div class="modal-header">`;
                         row_notula +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_notula +=`<h4 class="modal-title">Lihat File Notula</h4>`;
-                  row_notula +=`</div>`;               
+                  row_notula +=`</div>`;   
                   row_notula +=`<div class="modal-body">`; 
                   if(file_notula)
                   {  
                     row_notula +=`<embed src="`+file_notula+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_notula +=`</div>`;               
+                  row_notula +=`</div>`;   
                   row_notula +=`<div class="modal-footer">`;
                         row_notula +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_notula +=`</div>`;                         
+                  row_notula +=`</div>`;             
               row_notula +=`</div>`;
         row_notula +=`</div>`; 
 
@@ -1543,16 +1449,16 @@
                   row_notula2 +=`<div class="modal-header">`;
                         row_notula2 +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_notula2 +=`<h4 class="modal-title">Lihat File Notula</h4>`;
-                  row_notula2 +=`</div>`;               
+                  row_notula2 +=`</div>`;   
                   row_notula2 +=`<div class="modal-body">`; 
                   if(file_notula2)
                   {  
                     row_notula2 +=`<embed src="`+file_notula2+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_notula2 +=`</div>`;               
+                  row_notula2 +=`</div>`;   
                   row_notula2 +=`<div class="modal-footer">`;
                         row_notula2 +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_notula2 +=`</div>`;                         
+                  row_notula2 +=`</div>`;             
               row_notula2 +=`</div>`;
         row_notula2 +=`</div>`; 
 
@@ -1568,16 +1474,16 @@
                   row_lkpm +=`<div class="modal-header">`;
                         row_lkpm +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_lkpm +=`<h4 class="modal-title">Lihat File LKPM</h4>`;
-                  row_lkpm +=`</div>`;               
+                  row_lkpm +=`</div>`;   
                   row_lkpm +=`<div class="modal-body">`; 
                   if(file_lkpm)
                   {  
                     row_lkpm +=`<embed src="`+file_lkpm+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_lkpm +=`</div>`;               
+                  row_lkpm +=`</div>`;   
                   row_lkpm +=`<div class="modal-footer">`;
                         row_lkpm +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_lkpm +=`</div>`;                         
+                  row_lkpm +=`</div>`;             
               row_lkpm +=`</div>`;
         row_lkpm +=`</div>`; 
 
@@ -1593,16 +1499,16 @@
                   row_doc +=`<div class="modal-header">`;
                         row_doc +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_doc +=`<h4 class="modal-title">Lihat File Dokumen</h4>`;
-                  row_doc +=`</div>`;               
+                  row_doc +=`</div>`;   
                   row_doc +=`<div class="modal-body">`; 
                   if(file_doc)
                   {  
                     row_doc +=`<embed src="`+file_doc+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_doc +=`</div>`;               
+                  row_doc +=`</div>`;   
                   row_doc +=`<div class="modal-footer">`;
                         row_doc +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_doc +=`</div>`;                         
+                  row_doc +=`</div>`;             
               row_doc +=`</div>`;
         row_doc +=`</div>`; 
 
@@ -1618,16 +1524,16 @@
                   row_eval +=`<div class="modal-header">`;
                         row_eval +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
                         row_eval +=`<h4 class="modal-title">Lihat File Evaluasi</h4>`;
-                  row_eval +=`</div>`;               
+                  row_eval +=`</div>`;   
                   row_eval +=`<div class="modal-body">`; 
                   if(file_eval)
                   {  
                     row_eval +=`<embed src="`+file_eval+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_eval +=`</div>`;               
+                  row_eval +=`</div>`;   
                   row_eval +=`<div class="modal-footer">`;
                         row_eval +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_eval +=`</div>`;                         
+                  row_eval +=`</div>`;             
               row_eval +=`</div>`;
         row_eval +=`</div>`; 
 
