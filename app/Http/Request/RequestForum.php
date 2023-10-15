@@ -102,8 +102,10 @@ class RequestForum
             $temp[$key]['id'] = $val->id;
             $temp[$key]['name'] = $val->name;
             $temp[$key]['slug'] = $val->slug;
+            $temp[$key]['deleted'] = RequestForum::checkValidate($val->id);
             $temp[$key]['category'] = RequestForum::categoryForum($val->forum_id);
-            
+            $temp[$key]['access'] = RequestAuth::Access();
+            $temp[$key]['action'] = RequestKendala::CheckAction($val->created_by);
             $temp[$key]['total_messsage'] = RequestForum::TotalMessage($val->id,$val->created_by).' Komentar';
             $temp[$key]['status'] = array('status_db' => $val->status, 'status_convert' => $status);
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
@@ -126,6 +128,18 @@ class RequestForum
 
    }
 
+   public static function checkValidate($id){
+
+       $data = TopicDetail::where('topic_id',$id)->count();
+       if($data > 0)
+       {
+          $result = false;
+       }else{
+          $result = true;
+       } 
+
+       return $result;
+  }
    
 
    public static function TotalMessage($topic_id,$created_by)

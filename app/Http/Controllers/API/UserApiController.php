@@ -312,16 +312,16 @@ class UserApiController extends Controller
         $_res = array();
         $column_search  = array('username', 'name','email','phone');
         
-        $province = Provinces::select('id')->where('id',$search_daerah);
-        $daerah_id = Regencies::select('id')->union($province)->where('province_id',$search_daerah)->get();
-
+        //$province = Provinces::select('id')->where('id',$search_daerah);
+       // $daerah_id = Regencies::select('id')->union($province)->where('province_id',$search_daerah)->get();
+         $query  = User::orderBy('id','DESC');
         if($search == '')
         {
-             $query  = User::whereIn('daerah_id',$daerah_id)->orderBy('id','DESC');
+            $query  = User::where('daerah_id',$search_daerah);
         }else{
 
             $i = 0;
-            $query  = User::orderBy('id','DESC');
+           
             foreach ($column_search as $item)
             {
                 if ($search) 

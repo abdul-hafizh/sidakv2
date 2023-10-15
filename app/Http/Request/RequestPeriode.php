@@ -102,6 +102,24 @@ class RequestPeriode
       return  $temp;
    }
 
+    public static function SelectYear($data)
+   {
+      $temp = array();
+
+      foreach ($data as $key => $val)
+      {
+
+            $temp[$key]['value'] = $val->year;
+            $temp[$key]['text'] = 'Periode ' . $val->year;
+            $temp[$key]['startdate'] = $val->startdate;
+            $temp[$key]['enddate'] = $val->enddate; 
+            $temp[$key]['startdate_convert'] = GeneralHelpers::dates($val->startdate);
+            $temp[$key]['enddate_convert'] = GeneralHelpers::dates($val->enddate);      
+      }
+
+      return  $temp;
+   }
+
    public static function getDetailPagu($slug, $type)
    {
 

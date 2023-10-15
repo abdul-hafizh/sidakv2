@@ -6,6 +6,7 @@ use DB;
 use Auth;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
+use App\Models\Perencanaan;
 use App\Models\Penyelesaian;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestSettingApps;
@@ -70,10 +71,14 @@ class RequestPenyelesaian
         $numberNext = 1;
         $result = $data->get();
 
-        foreach ($result as $key => $val) {
-            $edit_url = "";
-            $delete_url = "";
-            $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+        foreach ($result as $key => $val) {            
+            
+            $log_url = "";
+
+            if(!empty($val->alasan_edit) || !empty($val->alasan_edit)) {
+                $log_url =  '<button id="Log" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
+            }
+            $edit_url =  '<button id="Edit" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
             $numberNext++;
@@ -85,7 +90,7 @@ class RequestPenyelesaian
             $row[] = $val->lokasi;
             $row[] = GeneralHelpers::formatRupiah($val->biaya);
             $row[] = RequestPenyelesaian::getLabelStatus($val->status_laporan_id, $val->request_edit);
-            $row[] = $edit_url . " " . $delete_url;
+            $row[] = $edit_url . " " . $delete_url . " " . $log_url;
 
             $temp[] = $row;
         }
@@ -182,28 +187,49 @@ class RequestPenyelesaian
 
     public static function GetSumPenyelesaian($request)
     {
-        $temp = array();
         $year = substr((string)$request->periode_id_mdl, 0, 4);
-        $periode = Penyelesaian::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14])->where('periode_id', 'LIKE', $year . '%');
+        $daerah_id = Auth::user()->daerah_id;
+        $status_laporan_id = 14;
 
-        $temp['biaya'] = $request->biaya + $periode->sum('biaya');
-        $temp['jml_perusahaan'] = $request->jml_perusahaan + $periode->sum('jml_perusahaan');
+        $biayaTotal = Penyelesaian::where('daerah_id', $daerah_id)
+            ->where('status_laporan_id', $status_laporan_id)
+            ->where('periode_id', 'LIKE', $year . '%')
+            ->sum('biaya');
+
+        $jmlPerusahaanTotal = Penyelesaian::where('sub_menu_slug', 'penyelesaian')
+            ->where('daerah_id', $daerah_id)
+            ->where('status_laporan_id', $status_laporan_id)
+            ->where('periode_id', 'LIKE', $year . '%')
+            ->sum('jml_perusahaan');
+
+        $temp = [
+            'biaya' => $request->biaya + $biayaTotal,
+            'jml_perusahaan' => $request->jml_perusahaan + $jmlPerusahaanTotal,
+        ];
 
         return json_decode(json_encode($temp), FALSE);
     }
 
     public static function fieldsData($request)
     {
+        $subMenuMapping = [
+            'identifikasi' => 'Identifikasi Penyelesaian',
+            'penyelesaian' => 'Penyelesaian Masalah',
+            'evaluasi' => 'Evaluasi Penyelesaian',
+        ];
+    
+        $jenis = $subMenuMapping[$request->sub_menu_slug] ?? '';
+
         $fields =
             [
-                'sub_menu' => $request->sub_menu_slug,
+                'sub_menu' => $jenis,
                 'sub_menu_slug' => $request->sub_menu_slug,
                 'nama_kegiatan' => $request->nama_kegiatan,
                 'tgl_kegiatan' => $request->tgl_kegiatan,
                 'lokasi' => $request->lokasi,
                 'biaya' => $request->biaya,
                 'jml_perusahaan' => $request->jml_perusahaan,
-                'status_laporan_id' => 13,
+                'status_laporan_id' => $request->status == 14 ? 14 : 13,
                 'request_edit' => 'false',
                 'periode_id' => $request->periode_id_mdl,
                 'daerah_id' => Auth::User()->daerah_id,
@@ -217,27 +243,29 @@ class RequestPenyelesaian
     public static function fieldReqEdit($request)
     {
         $fields = [
-            'alasan_edit' => $request->alasan_edit,
+            'alasan_edit' => $request->alasan,
             'request_edit' => 'true',
             'status_laporan_id' => 15,
             'modified_by' => Auth::User()->username,
             'updated_at' => date('Y-m-d H:i:s'),
-        ];
+        ];        
 
         return $fields;
     }
+
     public static function fieldReqRevisi($request)
     {
         $fields = [
-            'alasan_edit' => $request->alasan_revisi,
-            'request_edit' => 'false',
-            'status_laporan_id' => 15,
+            'alasan_revisi' => $request->alasan,
+            'request_edit' => 'reject',
+            'status_laporan_id' => 13,
             'modified_by' => Auth::User()->username,
             'updated_at' => date('Y-m-d H:i:s'),
         ];
 
         return $fields;
     }
+    
     public static function fieldApprEdit($request)
     {
         $fields = [
@@ -245,6 +273,21 @@ class RequestPenyelesaian
             'status_laporan_id' => $request->status,
             'modified_by' => Auth::User()->username,
             'updated_at' => date('Y-m-d H:i:s'),
+        ];
+
+        return $fields;
+    }
+
+    public static function fieldLogRequest($request)
+    {
+        $fields = [
+            'kegiatan_id' => $request->id, 
+            'jenis_kegiatan' => $request->jenis_kegiatan,
+            'type' => $request->type,
+            'alasan_request' => $request->alasan,
+            'username' => Auth::User()->username,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => Auth::User()->name
         ];
 
         return $fields;
@@ -259,16 +302,16 @@ class RequestPenyelesaian
                 return "Draft (Edit)";
             } elseif ($requestEdit === "revisi") {
                 return "Draft (Revision)";
-            } elseif ($requestEdit === "reject" || $requestEdit === "reject_doc") {
-                return "Draft (Unapprove)";
+            } elseif ($requestEdit === "reject") {
+                return "Perlu Perbaikan";
             }
         } elseif ($status === 14) {
             if ($requestEdit === "false") {
-                return "Terkirim (Waiting Approval)";
+                return "Terkirim";
             }
         } elseif ($status === 15) {
             if ($requestEdit === "false") {
-                return "Terkirim (Waiting Approval)";
+                return "Terkirim";
             } elseif ($requestEdit === "true") {
                 return "Request Edit";
             }

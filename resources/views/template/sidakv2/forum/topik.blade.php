@@ -209,8 +209,12 @@
 	                 if(opt.action == 'delete')
 	                 {
 	                    if(opt.checked == true)
-	                    {
-	                        row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	                    { 
+	                      
+	                          row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+	                     
+	                    }else{
+	                    	row +=`<td><input disabled  class="item-checkbox"   type="checkbox"></td></td>`;
 	                    }
 	                 }       
 	              });
@@ -230,14 +234,39 @@
                         {
                            if(opt.checked == true)
                            {
-                             
-                            
-	                         row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
 
-                           } 
+                           	  
+	                              row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+	                        }else{
+
+                               row +=`<button disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+
+	                        }    
+
+	                           // if(item.deleted == 'false')
+                            //    {
+
+                            //    	  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                           	  
+	                           	  
+                            //     }else{
+
+                            //     	row +=`<button disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                            //     }
+	                           
+
+                            
                         } 
 
                     });
+
+	                  // if(item.access == 'admin' || item.access =='pusat')
+	                  // {
+	                  // 	row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                  // }	
+
+	                   
 
 
 	                  row +=`<div id="modal-edit-${item.id}" class="modal fade" role="dialog">`;
@@ -361,9 +390,10 @@
 		                           row +=`</div>`;	
 
 
-		                           row +=`<div id="slimScrollDiv" class="pull-left full form-group" style="height: 200px; overflow: auto;background: #fafafa;">`;
+		                           row +=`<div class="pull-left full form-group">`;
                                       row +=`<div id="replayNew" ></div>`;
-
+                                      
+                                      row +=`<div id="slimScrollDiv">`;
                                       data.forEach(function(items, index) {
 			                                  
 												row +=`<div id="list-${index}" class="form-group pull-left full border-list">`;		
@@ -403,7 +433,7 @@
 												row +=`</div>`;
 							           
 			                            });
-
+                                    row +=`</div>`;
                                    row +=`</div>`;
 
                                       row +=`<div class="form-group has-feedback pull-left full" >`;
@@ -658,7 +688,12 @@
                 
 		    });    
 
-
+          $('#slimScrollDiv').slimScroll({
+            height: '200px',
+            railVisible: true,
+            alwaysVisible: true,
+            railOpacity: 0.4
+        });
 
     }
 

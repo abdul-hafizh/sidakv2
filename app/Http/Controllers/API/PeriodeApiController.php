@@ -7,10 +7,12 @@ use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Periode;
+use App\Models\Perencanaan;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPeriode;
 use App\Http\Request\Validation\ValidationPeriode;
 use App\Http\Request\RequestAuditLog;
+use App\Http\Request\RequestPerencanaan;
 use App\Helpers\GeneralHelpers;
 use App\Helpers\GeneralPaginate;
 
@@ -129,6 +131,17 @@ class PeriodeApiController extends Controller
         $periode = RequestPeriode::SelectAll($data, $request->type,$request->action);
         return response()->json(['selected' => $selected, 'result' => $periode]);
     }
+
+    public function listYear(Request $request)
+    {
+         $query =  DB::table('periode as a')
+         ->select('a.id', 'a.slug', 'a.year','a.startdate','a.enddate')
+         ->where(['a.semester'=>$request->semester,'a.status'=>'Y']);
+         $data = $query->get();
+         $periode = RequestPeriode::SelectYear($data);
+         return response()->json($periode);
+
+    }    
 
     public function search(Request $request)
     {
@@ -339,7 +352,7 @@ class PeriodeApiController extends Controller
             $query->whereIn(
                 'year',
                 DB::table('perencanaan')
-                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)                    
+                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
             );
         }
 
@@ -350,6 +363,23 @@ class PeriodeApiController extends Controller
             "tahunSemester" => $tahunSemester,
             "periode" => $periode,
         );
+
+        return response()->json($output);
+    }
+
+    public function listAnggaran($id)
+    {           
+        $data = Perencanaan::leftJoin('pagu_target', function($join) {
+            $join->on('perencanaan.periode_id', '=', 'pagu_target.periode_id')
+                 ->on('perencanaan.daerah_id', '=', 'pagu_target.daerah_id');
+        })
+        ->select('perencanaan.*')
+        ->where('perencanaan.periode_id', substr($id, 0, 4))
+        ->where('perencanaan.daerah_id', Auth::User()->daerah_id)
+        ->first();        
+
+        $output = RequestPerencanaan::GetDetailID($data); 
+
         return response()->json($output);
     }
 }

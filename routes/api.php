@@ -36,6 +36,8 @@ use App\Http\Controllers\API\ActionApiController;
 use App\Http\Controllers\API\KriteriaApiController;
 use App\Http\Controllers\API\BimsosApiController;
 use App\Http\Controllers\API\PenyelesaianApiController;
+use App\Http\Controllers\API\ExtensionApiController;
+
 
 Route::middleware(['jwt.auth'])->group(function () {
 
@@ -44,7 +46,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('select-kabupaten', [DaerahApiController::class, 'listAllKabupaten']);
     Route::get('select-province', [DaerahApiController::class, 'listAllProvince']);
     Route::get('select-periode', [PeriodeApiController::class, 'listAll']);
+    Route::get('select-year', [PeriodeApiController::class, 'listYear']);
     Route::get('select-periode-semester', [PeriodeApiController::class, 'listAllSemester']);
+    Route::get('select-anggaran/{id}', [PeriodeApiController::class, 'listAnggaran']);
     Route::get('profile', [AuthApiController::class, 'getAuthUser']);
     Route::get('user/menu', [AuthApiController::class, 'sidebar']);
     Route::post('user/photo', [AuthApiController::class, 'updatePhoto']);
@@ -124,6 +128,14 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::delete('periode/{id}', [PeriodeApiController::class, 'delete']);
     Route::post('periode/selected', [PeriodeApiController::class, 'deleteSelected']);
 
+    Route::get('extension', [ExtensionApiController::class, 'index']);
+    Route::post('extension', [ExtensionApiController::class, 'store']);
+    Route::post('extension/search', [ExtensionApiController::class, 'search']);
+    Route::put('extension/{type}/{id}', [ExtensionApiController::class, 'approved']);
+    Route::put('extension/{id}', [ExtensionApiController::class, 'update']);
+    Route::delete('extension/{id}', [ExtensionApiController::class, 'delete']);
+    Route::post('extension/selected', [ExtensionApiController::class, 'deleteSelected']);
+
     Route::get('auditlog', [AuditLogApiController::class, 'index']);
     Route::post('auditlog/search', [AuditLogApiController::class, 'search']);
     Route::delete('auditlog/{id}', [AuditLogApiController::class, 'delete']);
@@ -166,7 +178,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
     Route::get('notification', [NotificationApiController::class, 'index']);
     Route::get('notif', [NotificationApiController::class, 'show']);
-    Route::get('notif-update', [NotificationApiController::class, 'update']);
+    Route::put('notif-update/{id}', [NotificationApiController::class, 'update']);
 
     Route::get('menu', [MenusApiController::class, 'index']);
     Route::post('menu', [MenusApiController::class, 'store']);

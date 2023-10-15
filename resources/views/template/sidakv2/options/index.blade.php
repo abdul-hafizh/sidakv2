@@ -72,7 +72,7 @@
 </div>
 @include('template/sidakv2/options.menu-add')
 @include('template/sidakv2/options.role-add')
-  <script src="https://sortablejs.github.io/Sortable/Sortable.js"></script>
+ 
 
 
     
@@ -85,13 +85,13 @@
       var role_menu = [];
       var submenu_real = ''; 
       var sort = [];  
-     
+      var base_asset = window.location.origin+'/file/menu/';
    
       localStorage.removeItem('root_menu');
       var selectedValue = 'admin';  
       var menu = localStorage.getItem('root_menu');
       var temp =  JSON.parse(menu); 
-
+    
 
 
    	  GetRole();
@@ -122,8 +122,8 @@
     }
 
     function SelectRole(data){
-        $('#selectRole').html('<select id="role_id"  class="selectpicker" data-style="bg-navy" ></select>');
-        var select =  $('#role_id');
+        $('#selectRole').html('<select id="role_option"  class="selectpicker" data-style="bg-navy" ></select>');
+        var select =  $('#role_option');
         $.each(data, function(index, option) {
             select.append($('<option>', {
               value: option.value,
@@ -343,13 +343,14 @@
     function ChangeRole(data){
     	
 
-    	$('#role_id').change(function() {
+    	$('#role_option').change(function() {
            selectedVal = $(this).find("option:selected").val();
            let find = data.find(o => o.value === selectedVal);
            roleid_new = find.id;
        
            console.log(roleid_new+' Role baru')
-           var role_menu = [];
+           // role_menu = [];
+           localStorage.removeItem('root_menu');
            GetMenu(find.id);
            ViewTabMenu(find,data);
            RoleNested();
@@ -656,7 +657,7 @@
        { 
        	 
             temp.menu.forEach(function(item, index) {
-            	  console.log(item.tasks.length)
+            	
             var row = '';
            	row +=`<div id="list-role" data-sortable-id="${item.slug}" class="list-group-item pull-left full" style="" draggable="false">`;
            	    
@@ -665,7 +666,7 @@
                    
                         row +=`<div class="checkbox-form pull-left">`; 
                              row +=`<span class="black pull-left padding-05-05">`;
-                                row +=`<img width="20" src="${item.icon}">`;
+                                row +=`<img width="20" src="${ base_asset+item.icon}">`;
                                     if(item.tasks.length > 0)
 					                {
 			                            row +=`<small class="submenu-count label pull-right bg-yellow">${item.tasks.length} </small>`;
@@ -673,7 +674,7 @@
                              row +=`</span>`;
                         row +=`</div>`;  
 
-                        row +=`<div class="pull-left checkbox-label text-bold font-16">`; 
+                        row +=`<div data-toggle="tooltip" data-placement="top" title="${item.slug}" class="pull-left checkbox-label text-bold font-16">`; 
                           row +=`${item.name}`; 
                         row +=`</div>`;
 
@@ -709,7 +710,7 @@
 			                          	if(temp.menu[i].parent == 'menu')
 			                            {
 			                            	 row +=`<li><a  id="Setting-Menu" data-param_menu="${temp.menu[i].slug}" data-param_sub="${item.slug}" data-param_index="${index}">`;
-			                            	 row +=`<img width="20" src="`+ temp.menu[i].icon +`">`;
+			                            	 row +=`<img width="20" src="`+ base_asset+temp.menu[i].icon +`">`;
 			                            	 row +=` `+ temp.menu[i].name +``;
 			                            	 row +=`</a></li>`;
 			                            }		
@@ -795,14 +796,14 @@
 								    {		
 							 	 
 								 	 row +=`<tr>`;
-										 row +=`<td><input id="action-`+ i +`" type="checkbox" checked  name="status" id="status" value="`+ item.option[i].action +`" ></td>`;
+										 row +=`<td><input id="action-`+ item.option[i].action +`" type="checkbox" checked  name="status" class="status"  data-param_id="`+ item.option[i].action +`" value="`+ item.option[i].action +`" ></td>`;
 										 row +=`<td>`+ item.option[i].name +`</td>`;
 									 row +=`</tr>`;
 
 									}else{
                                       
                                       row +=`<tr>`;
-										 row +=`<td><input  type="checkbox"  name="status" id="status" value="`+ item.option[i].action +`" ></td>`;
+										 row +=`<td><input  type="checkbox"  name="status" id="action-`+ item.option[i].action +`" value="`+ item.option[i].action +`"  data-param_id="`+ item.option[i].action +`"class="status"></td>`;
 										 row +=`<td>`+ item.option[i].name +`</td>`;
 									 row +=`</tr>`; 
 
@@ -833,6 +834,58 @@
             row +=`</div>`   
 
             $('#FormEdit-'+ slug).html(row); 
+
+            $(".modal-content").on( "click", ".status", (e) => {
+            	 let action = e.currentTarget.dataset.param_id;
+            	 if(action =='read-only')
+            	 {
+
+            	 	for(let i=0; i<item.option.length; i++)
+				    {
+				      var readonly = $('#action-'+ item.option[i].action);	
+
+				      if(item.option[i].action == 'read-only')
+				      {   
+				      	  
+                          if(readonly[0].checked == true)
+                          {
+                          	  $('#action-'+ item.option[i].action).prop('checked', true);
+                          }
+                          
+                          
+				      }else{
+				      	 $('#action-'+ item.option[i].action).prop('checked', false);
+				      }
+
+					 
+                    }
+            	 }else{
+
+                     	for(let i=0; i<item.option.length; i++)
+				        {
+						      var readonly = $('#action-'+ item.option[i].action);	
+
+						      if(item.option[i].action != 'read-only')
+						      {  
+
+                                
+		                          if(readonly[0].checked == true)
+		                          {
+		                          	  $('#action-'+ item.option[i].action).prop('checked', true);
+		                          }
+                        
+						      }else{
+						      	 $('#action-'+ item.option[i].action).prop('checked', false);
+						      }
+						      
+						}      	
+
+            	 }	
+		     
+		    });
+
+
+		  
 
 
             $(".modal-content").on( "click", "#update_action-"+ slug, (e) => {
@@ -884,7 +937,7 @@
                 } 	
 
               
-	            var role_id = $('#role_id').val();
+	            var role_id = $('#role_option').val();
 	            let find = role.find(o => o.value === role_id);
                  
 		   		var form = {
@@ -948,7 +1001,7 @@
                  var menu = localStorage.getItem('root_menu');
 	  			 var temp =  JSON.parse(menu);
 		          var input = $("#FormSubmit-"+ slug).serializeArray();
-		           var role_id = $('#role_id').val();
+		           var role_id = $('#role_option').val();
 			       var find = role.find(o => o.value === role_id);
 
 			    
@@ -1352,11 +1405,11 @@
                              
 						            row +=`<div class="checkbox-form pull-left">`;
 							            row +=`<span class="black pull-left padding-05-05">`;
-							           		row +=`<img width="20" src="${items.icon}">`;
+							           		row +=`<img width="20" src="${ base_asset+items.icon}">`;
 							           	row +=`</span>`;
 						           	row +=`</div>`;
 
-						           	row +=`<div class="pull-left checkbox-label">${items.name}</div>`;
+						           	row +=`<div data-toggle="tooltip" data-placement="top" title="${items.slug}" class="pull-left checkbox-label text-bold font-16" >${items.name}</div>`;
                                     
                                     row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
                                        
@@ -1435,7 +1488,7 @@
 	                       
                                 row +=`<div class="checkbox-form pull-left">`; 
                                      row +=`<span class="black pull-left padding-05-05">`;
-                                        row +=`<img width="20" src="${item.icon}">`;
+                                        row +=`<img width="20" src="${base_asset+item.icon}">`;
                                         if(item.tasks.length > 0)
 						                {
 				                            row +=`<small id="count-${item.slug}" class="submenu-count label pull-right bg-yellow">${item.tasks.length} </small>`;
@@ -1443,7 +1496,7 @@
                                      row +=`</span>`;
                                 row +=`</div>`;  
 
-		                        row +=`<div class="pull-left checkbox-label text-bold font-16">`; 
+		                        row +=`<div  data-toggle="tooltip" data-placement="top" title="${item.slug}" class="pull-left checkbox-label text-bold font-16">`; 
 		                          row +=`${item.name}`; 
 		                        row +=`</div>`;
 		                       
@@ -1474,7 +1527,7 @@
 			                          	if(role_menu[i].parent == 'menu')
 			                            {
 			                            	 row +=`<li><a  id="Setting-Menu" data-param_menu="${role_menu[i].slug}" data-param_sub="${item.slug}" data-param_index="${index}">`;
-			                            	 row +=`<img width="20" src="`+ role_menu[i].icon +`">`;
+			                            	 row +=`<img width="20" src="`+ base_asset+role_menu[i].icon +`">`;
 			                            	 row +=` `+ role_menu[i].name +``;
 			                            	 row +=`</a></li>`;
 			                            }		
@@ -1609,10 +1662,11 @@
 	   	        row +=`<div class="padding-5-0 form-group  col-sm-12 grup-checkbox">`;
 	   	        	row +=`<div class="row-checkbox">`;
 	   	        		row +=`<span class="black pull-left padding-05-05">`;
-	   	        			row +=`<img  width='20' src="${item.icon}" />`;
+	   	        			row +=`<img  width='20' src="${base_asset+item.icon}" />`;
 	   	        		row +=`</span>`;
 	   	        		row +=`<div class="pull-left checkbox-label">`;
-	   	        			row +=`<span class="text-bold font-16">${item.name}</span>`;
+	   	        			row +=`<span class="text-bold font-16"  data-toggle="tooltip" data-placement="top" title="${item.path_web}">${item.name}</span>`;
+	   	        			
 	   	        		row +=`</div>`;
 
 	   	        		row +=`<div class="pull-right padding-05-05 bg-list-menu-btn">`;
@@ -1795,9 +1849,9 @@
 
 		       localStorage.setItem('root_menu', JSON.stringify(form));
                GetSettingRole(roleid_new);
-               let find = menu_list.find(o => o.id === item.id);
-               find.move = false;
-               contentMenu(menu_list);
+               // let find = menu_list.find(o => o.id === item.id);
+               // find.move = false;
+               // contentMenu(menu_list);
                $('#SaveRole').prop("disabled", false).removeClass('btn-default').addClass('btn-primary');
              
 	    }, 500);
@@ -1844,15 +1898,26 @@
             			
             			if(SubMenu.length > 0)
 	   	                {
-	   	                	SubMenu.splice(index, 1);
-            			    ListReal.tasks =  SubMenu;
-            			    RoleData = role_menu;   
+
+	   	                	var datasub =  SubMenu.find(o => o.slug === p_menu);
+	   	                	if(datasub)
+	   	                    {
+                               SubMenu.splice(index, 1);
+            			       ListReal.tasks =  SubMenu;
+            			       RoleData = role_menu;   
+	   	                    }else{
+                               role_menu.splice(index, 1);
+            			       RoleData = role_menu;  
+	   	                    }		
+	   	            
+
 	                	}else{
+
 	                		role_menu.splice(index, 1);
                             RoleData = role_menu;
 	                	}
 
-	                	
+	              	
 
 	                
 	   	        }else{
@@ -1951,8 +2016,14 @@
                                  
 				                 row +=`<div id="name-alert-`+ item.id +`" class="form-group has-feedback" >`;
 				                  row +=`<label>Nama</label>`;
-				                  row +=`<input type="text" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">`;
+				                  row +=`<input type="text" oninput="this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1);" class="form-control" name="name" placeholder="Nama" value="`+ item.name +`">`;
 				                  row +=`<span id="name-messages-`+ item.id +`"></span>`;
+				                 row +=`</div>`;
+
+				                 row +=`<div id="slug-alert-`+ item.id +`" class="form-group has-feedback" >`;
+				                  row +=`<label>Koneksi Optional</label>`;
+				                  row +=`<input type="text" id="text-slug" class="form-control" name="slug" placeholder="Koneksi Optional" value="`+ item.slug +`">`;
+				                  row +=`<span id="slug-messages-`+ item.id +`"></span>`;
 				                 row +=`</div>`;
 
 				                  row +=`<div id="parent-alert-`+ item.id +`" class="form-group has-feedback" >`;
@@ -1980,7 +2051,7 @@
 					                 row +=`<span id="icon-messages-`+ item.id +`"></span>`;
 					             row +=`</div>`;
 
-            					 row +=`<div class="form-group has-feedback icon-photo"><img style="background:#000;" width="30" height="30"  src="`+ item.icon +`"></div>`;
+            					 row +=`<div class="form-group has-feedback icon-photo"><img style="background:#000;" width="30" height="30"  src=" `+ base_asset +``+ item.icon +`"></div>`;
 
             					 row +=`<div id="icon-hover-alert-`+ item.id +`" class="form-group has-feedback">`;
 					                 row +=`<label>Icon Hover:</label>`;
@@ -1988,7 +2059,7 @@
 					                 row +=`<span id="icon-hover-messages-`+ item.id +`"></span>`;
 					             row +=`</div>`;
 
-            					 row +=`<div class="form-group has-feedback icon-hover-photo"><img style="background:#fff;" width="30" height="30"  src="`+ item.icon_hover +`"></div>`;
+            					 row +=`<div class="form-group has-feedback icon-hover-photo"><img style="background:#fff;" width="30" height="30"  src="`+base_asset +``+ item.icon_hover +`"></div>`;
 
 				                    
 
@@ -2012,6 +2083,15 @@
             $('#FormEdit-'+ item.id).html(row); 
 
             SelectParent(item);
+
+            $('#text-slug').on('input', function() {
+                var inputValue = $(this).val().toLowerCase()
+                    .replace(/[^\w\s-]/g, '')    // Remove non-word characters
+                    .replace(/\s+/g, '-')       // Replace spaces with hyphens
+                    .replace(/--+/g, '-')      // Replace consecutive hyphens with a single hyphen
+                    .trim();
+               $('#text-slug').val(inputValue)
+            });
 
             $('#parent').change(function() {
 		        selectedVal = $(this).find("option:selected").val();
@@ -2097,8 +2177,9 @@
 	              
 		          var form = {
 		              'name':data[0].value,
-		              'parent':data[1].value,
-		              'path_web':data[2].value,
+		              'slug':data[1].value,
+		              'parent':data[2].value,
+		              'path_web':data[3].value,
 		              'icon':icon,
 		              'icon_hover':icon_hover,
 		             
@@ -2130,8 +2211,8 @@
 			            },
 			            error: (respons)=>{
 			                errors = respons.responseJSON;
-			                $("#update").show();
-			                $("#load-simpan").hide();
+			                 $("#update-menu").show();
+	             			 $("#load-update-menu").hide();
  
 			                if(errors.messages.name)
 			                {
@@ -2143,7 +2224,23 @@
 			                }
 
 			                
+                            if(errors.messages.parent)
+			                {
+			                     $('#parent-alert-'+id).addClass('has-error');
+			                     $('#parent-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.parent +'</strong>');
+			                }else{
+			                    $('#parent-alert-'+id).removeClass('has-error');
+			                    $('#parent-messages-'+id).removeClass('help-block').html('');
+			                }
 
+			                if(errors.messages.path_web)
+			                {
+			                     $('#path-web-alert-'+id).addClass('has-error');
+			                     $('#path-web-messages-'+id).addClass('help-block').html('<strong>'+ errors.messages.path_web +'</strong>');
+			                }else{
+			                    $('#path-web-alert-'+id).removeClass('has-error');
+			                    $('#path-web-messages-'+id).removeClass('help-block').html('');
+			                } 
 			               
 
 			                

@@ -27,43 +27,7 @@
     right: 10px;
     cursor: pointer;
   }
-
-  /* Styling untuk progress bar */
-  #progress-container {
-    text-align: center;
-  }
-
-  #progress-bar {
-    width: 100%;
-    background-color: #ccc;
-    border-radius: 4px;
-  }
-
-  #progress {
-    height: 20px;
-    background-color: #4caf50;
-    border-radius: 4px;
-    transition: width 0.3s ease-in-out;
-  }
-
-  #progress-label {
-    margin-top: 10px;
-    font-weight: bold;
-  }
 </style>
-
-<div id="progressModal" class="modal-loading" style="display:none;position:relative;z-index:9999999">
-  <div class="modal-content2">
-    <span class="close" id="closeProgressModal">&times;</span>
-    <h2>Upload Progress</h2>
-    <div id="progress-container">
-      <div id="progress-bar">
-        <div id="progress" style="width: 0%"></div>
-      </div>
-      <div id="progress-label">0%</div>
-    </div>
-  </div>
-</div>
 
 <div id="modal-add" class="modal fade in" role="dialog">
   <div class="modal-dialog">
@@ -73,7 +37,13 @@
         <h4 class="modal-title" id="judulModalLabel">Tambah Data</h4>
       </div>
       <form id="FormSubmit" enctype="multipart/form-data">
-        <div class="modal-body" style="height: 550px; overflow-y: auto;">
+        <div class="modal-body" style="height: 650px; overflow-y: auto;">
+          <div class="row" id="alasan-view" style="display: none">
+            <div class="form-group has-feedback col-md-12">
+              <strong class="text-red" id="alasan-edit-view"></strong>
+              <strong class="text-red" id="alasan-revisi-view"></strong>
+            </div>
+          </div>
           <div class="row">
             <div id="periode_id_mdl-alert" class="form-group has-feedback col-md-12">
               <label>Periode </label>
@@ -93,7 +63,7 @@
               </select>
               <span id="sub_menu_slug-messages"></span>
             </div>
-          </div>
+          </div>          
           <div class="row">
             <div id="nama_kegiatan-alert" class="form-group has-feedback col-md-12">
               <label>Nama Kegiatan </label>
@@ -110,7 +80,7 @@
           </div>          
           <div class="row">
             <div id="biaya-alert" class="form-group has-feedback col-md-12">
-              <label>Biaya Kegiatan</label>
+              <label>Biaya Kegiatan</label> <small class="text-red" id="anggaran"></small>
               <input type="number" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
               <span id="biaya-messages"></span>
             </div>
@@ -118,7 +88,7 @@
           <div class="row">
             <div id="jml_perusahaan-alert" class="form-group has-feedback col-md-12">
               <label>Jumlah Perusahaan </label>
-              <input type="number" class="form-control" name="jml_perusahaan" id="jml_perusahaan" placeholder="Jumlah Perusahaan " value="">
+              <input type="number" class="form-control" min="0" max="500" name="jml_perusahaan" id="jml_perusahaan" placeholder="Jumlah Perusahaan " value="">
               <span id="jml_perusahaan-messages"></span>
             </div>
           </div>
@@ -134,10 +104,26 @@
             <div class="row">
               <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
                   <label>Profile Pelaku Usaha </label>
+                  <a href="#" class="text-bold text-profile" id="modal-profile" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
                   <input type="file" class="form-control" name="lap_profile" id="AddFilesProfile" accept=".pdf">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
                   <span id="file-profile-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                  <div class="modal fade" id="pdfProfile" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">File PDF Profile Pelaku Usaha</h5>
+                        </div>
+                        <div class="modal-body">
+                            <iframe id="frameProfile" src="" frameborder="0" width="100%" height="500"></iframe>
+                        </div>
+                        <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        </div> 
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -146,55 +132,151 @@
             <div class="row">
               <div id="lap_peserta-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Hadir </label>
+                <a href="#" class="text-bold text-peserta" id="modal-peserta" style="margin-left: 5px"><small>(Tampilkan Daftar Hadir)</small></a>
                 <input type="file" class="form-control" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
                 <div id="ShowPdfPeserta" style="margin-top:8px"></div>
                 <span id="file-peserta-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                <div class="modal fade" id="pdfPeserta" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">File PDF Daftar Hadir</h5>
+                      </div>
+                      <div class="modal-body">
+                          <iframe id="framePeserta" src="" frameborder="0" width="100%" height="500"></iframe>
+                      </div>
+                      <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                      </div> 
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
               <div id="lap_profile2-alert" class="form-group has-feedback col-md-12">
                 <label>Profile Pelaku Usaha </label>
+                <a href="#" class="text-bold text-profile2" id="modal-profile2" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
                 <input type="file" class="form-control" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
                 <div id="ShowPdfProfile2" style="margin-top:8px"></div>
                 <span id="file-profile2-alert-messages"></span>
-                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                <div class="modal fade" id="pdfProfile2" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">File PDF Profile Pelaku Usaha</h5>
+                      </div>
+                      <div class="modal-body">
+                          <iframe id="frameProfile2" src="" frameborder="0" width="100%" height="500"></iframe>
+                      </div>
+                      <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                      </div> 
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
               <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12">
-                  <label>Daftar Narasumber </label>
-                  <input type="file" class="form-control" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
-                  <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
-                  <span id="file-narasumber-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                <label>Daftar Narasumber </label>
+                <a href="#" class="text-bold text-narasumber" id="modal-narasumber" style="margin-left: 5px"><small>(Tampilkan Narasumber)</small></a>
+                <input type="file" class="form-control" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
+                <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
+                <span id="file-narasumber-alert-messages"></span>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                <div class="modal fade" id="pdfNarasumber" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">File PDF Narasumber</h5>
+                      </div>
+                      <div class="modal-body">
+                        <iframe id="frameNarasumber" src="" frameborder="0" width="100%" height="500"></iframe>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                      </div> 
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
               <div id="notula2-alert" class="form-group has-feedback col-md-12">
-                  <label>Notula Kegiatan </label>
-                  <input type="file" class="form-control" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
-                  <div id="ShowPdfNotula2" style="margin-top:8px"></div>
-                  <span id="file-notula2-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                <label>Notula Kegiatan </label>
+                <a href="#" class="text-bold text-notula2" id="modal-notula2" style="margin-left: 5px"><small>(Tampilkan Notula)</small></a>
+                <input type="file" class="form-control" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
+                <div id="ShowPdfNotula2" style="margin-top:8px"></div>
+                <span id="file-notula2-alert-messages"></span>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                <div class="modal fade" id="pdfNotula2" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">File PDF Notula</h5>
+                      </div>
+                      <div class="modal-body">
+                          <iframe id="frameNotula2" src="" frameborder="0" width="100%" height="500"></iframe>
+                      </div>
+                      <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                      </div> 
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
               <div id="lap_lkpm-alert" class="form-group has-feedback col-md-12">
-                  <label>Laporan LKPM </label>
-                  <input type="file" class="form-control" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
-                  <div id="ShowPdfLkpm" style="margin-top:8px"></div>
-                  <span id="file-lkpm-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                <label>Laporan LKPM </label>
+                <a href="#" class="text-bold text-lkpm" id="modal-lkpm" style="margin-left: 5px"><small>(Tampilkan LKPM)</small></a>
+                <input type="file" class="form-control" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
+                <div id="ShowPdfLkpm" style="margin-top:8px"></div>
+                <span id="file-lkpm-alert-messages"></span>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                <div class="modal fade" id="pdfLkpm" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">File PDF LKPM</h5>
+                      </div>
+                      <div class="modal-body">
+                          <iframe id="frameLkpm" src="" frameborder="0" width="100%" height="500"></iframe>
+                      </div>
+                      <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                      </div> 
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
               <div id="lap_document-alert" class="form-group has-feedback col-md-12">
-                  <label>Laporan Dokumentasi </label>
-                  <input type="file" class="form-control" name="lap_document" id="AddFilesDoc" accept=".pdf">
-                  <div id="ShowPdfDoc" style="margin-top:8px"></div>
-                  <span id="file-doc-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                <label>Laporan Dokumentasi </label>
+                <a href="#" class="text-bold text-doc" id="modal-doc" style="margin-left: 5px"><small>(Tampilkan Dokumentasi)</small></a>
+                <input type="file" class="form-control" name="lap_document" id="AddFilesDoc" accept=".pdf">
+                <div id="ShowPdfDoc" style="margin-top:8px"></div>
+                <span id="file-doc-alert-messages"></span>
+                <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                <div class="modal fade" id="pdfDoc" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title">File PDF Dokumentasi</h5>
+                      </div>
+                      <div class="modal-body">
+                          <iframe id="frameDoc" src="" frameborder="0" width="100%" height="500"></iframe>
+                      </div>
+                      <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                      </div> 
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -203,19 +285,51 @@
             <div class="row">
               <div id="notula-alert" class="form-group has-feedback col-md-12">
                   <label>Notula Rapat </label>
+                  <a href="#" class="text-bold text-notula" id="modal-notula" style="margin-left: 5px"><small>(Tampilkan File Notula)</small></a>
                   <input type="file" class="form-control" name="lap_notula" id="AddFilesNotula" accept=".pdf">
                   <div id="ShowPdfNotula" style="margin-top:8px"></div>
                   <span id="file-notula-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>                  
+                  <div class="modal fade" id="pdfNotula" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">File PDF Notula</h5>
+                        </div>
+                        <div class="modal-body">
+                            <iframe id="frameNotula" src="" frameborder="0" width="100%" height="500"></iframe>
+                        </div>
+                        <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        </div> 
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
             <div class="row">
               <div id="lap_evaluasi-alert" class="form-group has-feedback col-md-12">
                   <label>Laporan Hasil Evaluasi </label>
+                  <a href="#" class="text-bold text-eval" id="modal-eval" style="margin-left: 5px"><small>(Tampilkan File Evaluasi)</small></a>
                   <input type="file" class="form-control" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
                   <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
                   <span id="file-evaluasi-alert-messages"></span>
-                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 1.3 MB</small>
+                  <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+                  <div class="modal fade" id="pdfEval" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">File PDF Evaluasi</h5>
+                        </div>
+                        <div class="modal-body">
+                            <iframe id="frameEvaluasi" src="" frameborder="0" width="100%" height="500"></iframe>
+                        </div>
+                        <div class="modal-footer">
+                              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        </div> 
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
@@ -233,6 +347,27 @@
         </div>
 
       </form>
+    </div>
+  </div>
+</div>
+
+<div id="modal-log" class="modal fade in" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Log Data</h4>
+      </div>
+
+      <div class="modal-body" style="height: 550px; overflow-y: auto;">        
+        <div class="row">
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+
     </div>
   </div>
 </div>
@@ -285,10 +420,21 @@
     $('#tab_identifikasi').hide();
     $('#tab_penyelesaian').hide();
     $('#tab_evaluasi').hide();
-
+    $('.text-peserta').hide();
+    $('.text-profile').hide();
+    $('.text-profile2').hide();
+    $('.text-notula').hide();
+    $('.text-notula2').hide();
+    $('.text-narasumber').hide();
+    $('.text-lkpm').hide();
+    $('.text-doc').hide();
+    $('.text-eval').hide();
+    
     $('#sub_menu_slug').on('change', function() {
       
       let sub_menu_slug = $('#sub_menu_slug').val();
+
+      getAnggaran($('#periode_id_mdl').val(), sub_menu_slug);
 
       if (sub_menu_slug == 'identifikasi') {
         $('#tab_identifikasi').show();
@@ -303,7 +449,28 @@
         $('#tab_penyelesaian').hide();
         $('#tab_evaluasi').show();
       }
-    })
+    })    
+
+    $('#periode_id_mdl').on('change', function() {
+      getAnggaran($('#periode_id_mdl').val(), $('#sub_menu_slug').val());  
+    })    
+
+    function getAnggaran(periode_id, jenis) {
+      $.ajax({
+        url: BASE_URL + '/api/select-anggaran/' + periode_id,
+        method: 'get',
+        dataType: 'json',
+        success: function(data) {
+          if (jenis == 'identifikasi') {
+            $('#anggaran').html('Anggaran/Tahun: ' + data.penyelesaian_identifikasi_pagu_convert)
+          } else if (jenis == 'penyelesaian') {
+            $('#anggaran').html('Anggaran/Tahun: ' + data.penyelesaian_realisasi_pagu_convert)
+          } else if (jenis == 'evaluasi') {
+            $('#anggaran').html('Anggaran/Tahun: ' + data.penyelesaian_evaluasi_pagu_convert)
+          }
+        }
+      })        
+    }
 
     $('#tambah').on('click', function() {
       $('#judulModalLabel').html('Tambah Data')
@@ -313,8 +480,13 @@
       $('#approve_edit').hide();
       $('#request_revision').hide();
       $('#request_edit').hide();
-      $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
+      $('#tab_identifikasi').hide();
+      $('#tab_penyelesaian').hide();
+      $('#tab_evaluasi').hide();
+      $('#FormSubmit input').removeAttr('readonly');
       $('#FormSubmit select').removeAttr('disabled');
+      $('#anggaran').html("");
+
       var form = [
         'periode_id_mdl',
         'sub_menu_slug',
@@ -322,8 +494,7 @@
         'tgl_kegiatan',
         'lokasi',
         'biaya',
-        'jml_perusahaan',
-        'ringkasan_kegiatan'
+        'jml_perusahaan'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -343,9 +514,7 @@
         'lokasi',
         'biaya',
         'jml_perusahaan'
-      ];
-      
-      $('#progressModal').show();
+      ];      
 
       $.ajax({
         type: "POST",
@@ -366,7 +535,6 @@
           return xhr;
         },
         success: (respons) => {
-          $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
             text: 'Berhasil Disimpan',
@@ -380,8 +548,6 @@
           });
         },
         error: (respons) => {
-          $('#progressModal').hide();
-
           errors = respons.responseJSON;
           for (let i = 0; i < form.length; i++) {
             const field = form[i];
@@ -407,8 +573,7 @@
         'tgl_kegiatan',
         'lokasi',
         'biaya',
-        'jml_perusahaan',
-        'ringkasan_kegiatan'
+        'jml_perusahaan'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -422,16 +587,73 @@
         url: BASE_URL + '/api/penyelesaian/edit/' + id,
         method: 'GET',
         success: function(data) {
+          subMenu(data.sub_menu_slug);
+          getPeriode(data.periode_id);
+          getAnggaran(data.periode_id, data.sub_menu_slug);      
+          
+          $('.text-peserta').show();
+          $('.text-profile').show();
+          $('.text-profile2').show();
+          $('.text-notula').show();
+          $('.text-notula2').show();
+          $('.text-narasumber').show();
+          $('.text-lkpm').show();
+          $('.text-doc').show();
+          $('.text-eval').show();
+
+          $('#modal-peserta').click(function() {
+            tampilkanModalPeserta(data.lap_peserta);
+          });
+
+          $('#modal-profile').click(function() {
+            tampilkanModalProfile(data.lap_profile);
+          });
+
+          $('#modal-profile2').click(function() {
+            tampilkanModalProfile2(data.lap_profile);
+          });
+
+          $('#modal-narasumber').click(function() {
+            tampilkanModalNarasumber(data.lap_narasumber);
+          });
+
+          $('#modal-notula').click(function() {
+            tampilkanModalNotula(data.lap_notula);
+          });
+
+          $('#modal-notula2').click(function() {
+            tampilkanModalNotula2(data.lap_notula);
+          });
+
+          $('#modal-lkpm').click(function() {
+            tampilkanModalLkpm(data.lap_lkpm);
+          });
+
+          $('#modal-doc').click(function() {
+            tampilkanModalDoc(data.lap_document);
+          });
+
+          $('#modal-eval').click(function() {
+            tampilkanModalEvaluasi(data.lap_evaluasi);
+          });
+
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
           $('#tgl_kegiatan').val(data.tgl_kegiatan);
           $('#lokasi').val(data.lokasi);
           $('#biaya').val(data.biaya);
           $('#jml_perusahaan').val(data.jml_perusahaan);
-          $('#ringkasan_kegiatan').val(data.ringkasan_kegiatan);
-          $('#is_skpd_sesuai').val(data.is_skpd_sesuai);
-          getPeriode(data.periode_id);
-          subMenu(data.sub_menu_slug);
+
+          if(data.status_laporan_id == 13 && data.request_edit == 'reject') {    
+            $('#alasan-view').show();
+            $('#alasan-revisi-view').html('Alasan Perbaikan: ' + data.alasan_revisi);
+          }
+
+          if(data.status_laporan_id == 15 && data.request_edit == 'true') {       
+            $('#alasan-view').show();
+            $('#alasan-edit-view').html('Alasan Edit: ' + data.alasan_edit);
+          }
+
           if (data.access == 'daerah' || data.access == 'province') {
             $('#approve_edit').hide();
             $('#request_revision').hide();
@@ -439,18 +661,18 @@
               $('#update').show();
               $('#kirim').show();
               $('#request_edit').hide();
-              $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
+              $('#FormSubmit input').removeAttr('readonly');
               $('#FormSubmit select').removeAttr('disabled');
             } else if (data.status_laporan_id == 15) {
               if (data.request_edit == 'false') {
                 $('#update').show();
                 $('#kirim').show();
-                $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
+                $('#FormSubmit input').removeAttr('readonly');
                 $('#FormSubmit select').removeAttr('disabled');
               } else {
                 $('#update').hide();
                 $('#kirim').hide();
-                $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
+                $('#FormSubmit input').attr('readonly', 'readonly');
                 $('#FormSubmit select').attr('disabled', 'true');
               }
               $('#request_edit').hide();
@@ -458,11 +680,11 @@
               $('#update').hide();
               $('#kirim').hide();
               $('#request_edit').show();
-              $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
+              $('#FormSubmit input').attr('readonly', 'readonly');
               $('#FormSubmit select').attr('disabled', 'true');
             }
           } else {
-            $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
+            $('#FormSubmit input').attr('readonly', 'readonly');
             $('#FormSubmit select').attr('disabled', 'true');
             $('#request_edit').hide();
             if (data.status_laporan_id == 13) {
@@ -486,40 +708,27 @@
               $('#kirim').hide();
               $('#request_revision').show();
             }
-          }
+          }          
         }
-
-      })
+      })      
 
       function subMenu(sub_menu_slug) {
-        if (sub_menu_slug == 'is_tenaga_pendamping') {
-          $('#jml_perusahaan-alert').hide();
-          $('#lap_notula-alert').hide();
-          $('#lap_survei-alert').hide();
-          $('#lap_narasumber-alert').hide();
-          $('#lap_materi-alert').hide();
-          $('#lap_document-alert').hide();
-          $('#lap_pendamping-alert').show();
-        } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
-          $('#jml_perusahaan-alert').show();
-          $('#lap_notula-alert').show();
-          $('#lap_survei-alert').show();
-          $('#lap_narasumber-alert').show();
-          $('#lap_materi-alert').show();
-          $('#lap_document-alert').show();
-          $('#lap_pendamping-alert').hide();
-        } else {
-          $('#jml_perusahaan-alert').show();
-          $('#lap_notula-alert').show();
-          $('#lap_survei-alert').show();
-          $('#lap_narasumber-alert').show();
-          $('#lap_materi-alert').show();
-          $('#lap_document-alert').show();
-          $('#lap_pendamping-alert').hide();
+        if (sub_menu_slug == 'identifikasi') {
+          $('#tab_identifikasi').show();
+          $('#tab_penyelesaian').hide();
+          $('#tab_evaluasi').hide();
+        } else if (sub_menu_slug == 'penyelesaian') {
+          $('#tab_identifikasi').hide();
+          $('#tab_penyelesaian').show();
+          $('#tab_evaluasi').hide();
+        } else if (sub_menu_slug == 'evaluasi') {
+          $('#tab_identifikasi').hide();
+          $('#tab_penyelesaian').hide();
+          $('#tab_evaluasi').show();
         }
       }
 
-      function getPeriode(periode_id) {
+      function getPeriode(periode_id) {   
         $.ajax({
           url: BASE_URL + '/api/select-periode-semester',
           method: 'get',
@@ -535,7 +744,169 @@
             $('#periode_id_mdl').html(periode)
           }
         })
-        $('.select-periode-mdl').select2();
+        $('.select-periode-mdl').select2();        
+      }
+
+      function tampilkanModalPeserta(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#framePeserta').attr('src', blobUrl);
+                $('#pdfPeserta').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalProfile(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameProfile').attr('src', blobUrl);
+                $('#pdfProfile').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalProfile2(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameProfile2').attr('src', blobUrl);
+                $('#pdfProfile2').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalNotula(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameNotula').attr('src', blobUrl);
+                $('#pdfNotula').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalNotula2(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameNotula2').attr('src', blobUrl);
+                $('#pdfNotula2').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalNarasumber(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameNarasumber').attr('src', blobUrl);
+                $('#pdfNarasumber').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalLpkm(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameLkpm').attr('src', blobUrl);
+                $('#pdfLkpm').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalDoc(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameDoc').attr('src', blobUrl);
+                $('#pdfDoc').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
+      }
+
+      function tampilkanModalEvaluasi(url) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(data) {
+                var blobUrl = URL.createObjectURL(data);
+                $('#frameEvaluasi').attr('src', blobUrl);
+                $('#pdfEval').modal('show');
+            },
+            error: function() {
+                alert('Gagal mengambil file PDF.');
+            }
+        });
       }
 
       $("#update").click(() => {
@@ -547,8 +918,7 @@
           'tgl_kegiatan',
           'lokasi',
           'biaya',
-          'jml_perusahaan',
-          'ringkasan_kegiatan'
+          'jml_perusahaan'
         ];
         data.push({
           name: 'status',
@@ -572,8 +942,6 @@
                 window.location.replace('/penyelesaian');
               }
             });
-
-            //
           },
           error: (respons) => {
             errors = respons.responseJSON;
@@ -600,8 +968,7 @@
           'tgl_kegiatan',
           'lokasi',
           'biaya',
-          'jml_perusahaan',
-          'ringkasan_kegiatan'
+          'jml_perusahaan'
         ];
         data.push({
           name: 'status',
@@ -616,7 +983,7 @@
           success: (respons) => {
             Swal.fire({
               title: 'Sukses!',
-              text: 'Berhasil Disimpan',
+              text: 'Berhasil Terkirim Ke Pusat.',
               icon: 'success',
               confirmButtonText: 'OK'
 
@@ -625,8 +992,6 @@
                 window.location.replace('/penyelesaian');
               }
             });
-
-            //
           },
           error: (respons) => {
             errors = respons.responseJSON;
@@ -684,7 +1049,9 @@
         }).then((result) => {
           if (result.isConfirmed) {
             var form = {
-              "alasan_edit": $("#alasan_edit").val()
+              "alasan": $("#alasan_edit").val(),
+              "jenis_kegiatan": "Penyelesaian",
+              "type": "request_edit"
             };
             if ($("#alasan_edit").val() != '') {
               req_edit(form);
@@ -732,7 +1099,9 @@
         }).then((result) => {
           if (result.isConfirmed) {
             var form = {
-              "alasan_revisi": $("#alasan_revisi").val()
+              "alasan": $("#alasan_revisi").val(),
+              "jenis_kegiatan": "Penyelesaian",
+              "type": "revisi"
             };
             if ($("#alasan_revisi").val() != '') {
               req_revisi(form);
@@ -771,59 +1140,498 @@
 
     });
 
-    $("#AddFilesProfile").change((event)=> {     
+    $("#AddFilesProfile").change((event)=> {
+        const files_profile = event.target.files
+        let filename_profile = files_profile[0].name
+        const fileReaderProfile = new FileReader()
+        fileReaderProfile.addEventListener('load', () => {
+          if(files_profile[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_profile = fileReaderProfile.result;
             
-        const files = event.target.files
-        let filename = files[0].name
-        const fileReader = new FileReader()
-        fileReader.addEventListener('load', () => {
-              if(files[0].name.toUpperCase().includes(".PDF"))
-              {
-                  file_pdf = fileReader.result;
-                  
-                  var ros = '';
-                        ros +=`<a href="#" id="GetModalPdfProfile" data-param_id="`+file_pdf+`" data-toggle="modal" data-target="#modal-show" data-toggle="tooltip" data-placement="top" title="Lihat Data PDF">Lihat File Profile</a>`;
-                        ros +=`<div id="modal-show" class="modal fade" role="dialog">`;
-                            ros +=`<div id="ViewProfilePDF"></div>`;
-                        ros +=`</div>`;
+            var ros_profile = '';
+                  ros_profile +=`<a href="#" id="GetModalPdfProfile" data-param_id="`+file_pdf_profile+`" data-toggle="modal" data-target="#modal-show-profile" data-toggle="tooltip" data-placement="top" title="Lihat Data PDF">Lihat File Profile</a>`;
+                  ros_profile +=`<div id="modal-show-profile" class="modal fade" role="dialog">`;
+                      ros_profile +=`<div id="ViewProfilePDF"></div>`;
+                  ros_profile +=`</div>`;
 
-                  $('#ShowPdfProfile').html(ros);
-              } else {
-                  Swal.fire({
-                        icon: 'info',
-                        title: 'Hanya File PDF Yang Diizinkan.',
-                        confirmButtonColor: '#000',
-                        confirmButtonText: 'OK'
-                  });  
-              }
+            $('#ShowPdfProfile').html(ros_profile);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
         })
 
-        fileReader.readAsDataURL(files[0])
+        fileReaderProfile.readAsDataURL(files_profile[0])
 
     });
 
-    $( "#ShowPdfProfile" ).on( "click", "#GetModalPdfProfile", (e) => {
-        let file = e.currentTarget.dataset.param_id;      
-        let row = ``;
-          row +=`<div class="modal-dialog">`;
-              row +=`<div class="modal-content">`;
-                  row +=`<div class="modal-header">`;
-                        row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-                        row +=`<h4 class="modal-title">Lihat Dokumen Perencanaan</h4>`;
-                  row +=`</div>`;               
-                  row +=`<div class="modal-body">`; 
-                  if(file)
-                  {  
-                        row +=`<embed src="`+file+`#page=1&zoom=65" width="575" height="500">`;
-                  }     
-                  row +=`</div>`;               
-                  row +=`<div class="modal-footer">`;
-                        row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row +=`</div>`;                         
-              row +=`</div>`;
-        row +=`</div>`; 
+    $("#AddFilesProfile2").change((event)=> {
+        const files_profile2 = event.target.files
+        let filename_profile2 = files_profile2[0].name
+        const fileReaderProfile2 = new FileReader()
+        fileReaderProfile2.addEventListener('load', () => {
+          if(files_profile2[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_profile2 = fileReaderProfile2.result;
+            
+            var ros_profile2 = '';
+                  ros_profile2 +=`<a href="#" id="GetModalPdfProfile2" data-param_id="`+file_pdf_profile2+`" data-toggle="modal" data-target="#modal-show-profile2" data-toggle="tooltip" data-placement="top" title="Lihat Data PDF">Lihat File Profile</a>`;
+                  ros_profile2 +=`<div id="modal-show-profile2" class="modal fade" role="dialog">`;
+                      ros_profile2 +=`<div id="ViewProfile2PDF"></div>`;
+                  ros_profile2 +=`</div>`;
 
-        $('#ViewProfilePDF').html(row);   
+            $('#ShowPdfProfile2').html(ros_profile2);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
+        })
+
+        fileReaderProfile2.readAsDataURL(files_profile2[0])
+
+    });
+
+    $("#AddFilesNarasumber").change((event)=> {
+        const files_narasumber = event.target.files
+        let filename_narasumber = files_narasumber[0].name
+        const fileReaderNarasumber = new FileReader()
+        fileReaderNarasumber.addEventListener('load', () => {
+          if(files_narasumber[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_narasumber = fileReaderNarasumber.result;
+            
+            var ros_narasumber = '';
+              ros_narasumber +=`<a href="#" id="GetModalPdfNarasumber" data-param_id="`+file_pdf_narasumber+`" data-toggle="modal" data-target="#modal-show-narasumber" data-toggle="tooltip" data-placement="top" title="Lihat Data PDF">Lihat File Narasumber</a>`;
+                  ros_narasumber +=`<div id="modal-show-narasumber" class="modal fade" role="dialog">`;
+                      ros_narasumber +=`<div id="ViewNarasumberPDF"></div>`;
+                  ros_narasumber +=`</div>`;
+
+            $('#ShowPdfNarasumber').html(ros_narasumber);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
+        })
+
+        fileReaderNarasumber.readAsDataURL(files_narasumber[0])
+
+    });
+
+    $("#AddFilesPeserta").change((event)=> {
+        const files_peserta = event.target.files
+        let filename_peserta = files_peserta[0].name
+        const fileReaderPeserta = new FileReader()
+        fileReaderPeserta.addEventListener('load', () => {
+          if(files_peserta[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_peserta = fileReaderPeserta.result;
+            
+            var ros_profile = '';
+                  ros_profile +=`<a href="#" id="GetModalPdfPeserta" data-param_id="`+file_pdf_peserta+`" data-toggle="modal" data-target="#modal-show-peserta" data-toggle="tooltip" data-placement="top" title="Lihat Data PDF">Lihat File Peserta</a>`;
+                  ros_profile +=`<div id="modal-show-peserta" class="modal fade" role="dialog">`;
+                      ros_profile +=`<div id="ViewPesertaPDF"></div>`;
+                  ros_profile +=`</div>`;
+
+            $('#ShowPdfPeserta').html(ros_profile);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
+        })
+
+        fileReaderPeserta.readAsDataURL(files_peserta[0])
+
+    });
+
+    $("#AddFilesNotula").change((event)=> {
+        const files_notula = event.target.files
+        let filename_notula = files_notula[0].name
+        const fileReaderNotula = new FileReader()
+        fileReaderNotula.addEventListener('load', () => {
+          if(files_notula[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_notula = fileReaderNotula.result;
+            
+            var ros_not = '';
+                  ros_not +=`<a href="#" id="GetModalPdfNotula" data-param_id="`+file_pdf_notula+`" data-toggle="modal" data-target="#modal-show-notula" data-toggle="tooltip" data-placement="top" title="Lihat File PDF">Lihat File Notula</a>`;
+                  ros_not +=`<div id="modal-show-notula" class="modal fade" role="dialog">`;
+                      ros_not +=`<div id="ViewNotulaPDF"></div>`;
+                  ros_not +=`</div>`;
+
+            $('#ShowPdfNotula').html(ros_not);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
+        })
+
+        fileReaderNotula.readAsDataURL(files_notula[0])
+
+    });
+
+    $("#AddFilesNotula2").change((event)=> {
+        const files_notula2 = event.target.files
+        let filename_notula2 = files_notula2[0].name
+        const fileReaderNotula2 = new FileReader()
+        fileReaderNotula2.addEventListener('load', () => {
+          if(files_notula2[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_notula2 = fileReaderNotula2.result;
+            
+            var ros_not2 = '';
+                  ros_not2 +=`<a href="#" id="GetModalPdfNotula2" data-param_id="`+file_pdf_notula2+`" data-toggle="modal" data-target="#modal-show-notula2" data-toggle="tooltip" data-placement="top" title="Lihat File PDF">Lihat File Notula</a>`;
+                  ros_not2 +=`<div id="modal-show-notula2" class="modal fade" role="dialog">`;
+                      ros_not2 +=`<div id="ViewNotula2PDF"></div>`;
+                  ros_not2 +=`</div>`;
+
+            $('#ShowPdfNotula2').html(ros_not2);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
+        })
+
+        fileReaderNotula2.readAsDataURL(files_notula2[0])
+
+    });
+
+    $("#AddFilesLkpm").change((event)=> {
+        const files_lkpm = event.target.files
+        let filename_lkpm = files_lkpm[0].name
+        const fileReaderLkpm = new FileReader()
+        fileReaderLkpm.addEventListener('load', () => {
+          if(files_lkpm[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_lkpm = fileReaderLkpm.result;
+            
+            var ros_lkpm = '';
+                  ros_lkpm +=`<a href="#" id="GetModalPdfLkpm" data-param_id="`+file_pdf_lkpm+`" data-toggle="modal" data-target="#modal-show-lkpm" data-toggle="tooltip" data-placement="top" title="Lihat File PDF">Lihat File LKPM</a>`;
+                  ros_lkpm +=`<div id="modal-show-lkpm" class="modal fade" role="dialog">`;
+                      ros_lkpm +=`<div id="ViewLkpmPDF"></div>`;
+                  ros_lkpm +=`</div>`;
+
+            $('#ShowPdfLkpm').html(ros_lkpm);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
+        })
+
+        fileReaderLkpm.readAsDataURL(files_lkpm[0])
+
+    });
+
+    $("#AddFilesDoc").change((event)=> {
+        const files_doc = event.target.files
+        let filename_doc = files_doc[0].name
+        const fileReaderDoc = new FileReader()
+        fileReaderDoc.addEventListener('load', () => {
+          if(files_doc[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_doc = fileReaderDoc.result;
+            
+            var ros_doc = '';
+                  ros_doc +=`<a href="#" id="GetModalPdfDoc" data-param_id="`+file_pdf_doc+`" data-toggle="modal" data-target="#modal-show-doc" data-toggle="tooltip" data-placement="top" title="Lihat File PDF">Lihat File Dokumen</a>`;
+                  ros_doc +=`<div id="modal-show-doc" class="modal fade" role="dialog">`;
+                      ros_doc +=`<div id="ViewDocPDF"></div>`;
+                  ros_doc +=`</div>`;
+
+            $('#ShowPdfDoc').html(ros_doc);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
+        })
+
+        fileReaderDoc.readAsDataURL(files_doc[0])
+
+    });
+
+    $("#AddFilesEvaluasi").change((event)=> {
+        const files_eval = event.target.files
+        let filename_eval = files_eval[0].name
+        const fileReaderEval = new FileReader()
+        fileReaderEval.addEventListener('load', () => {
+          if(files_eval[0].name.toUpperCase().includes(".PDF"))
+          {
+            file_pdf_eval = fileReaderEval.result;
+            
+            var ros_eval = '';
+                  ros_eval +=`<a href="#" id="GetModalPdfEvaluasi" data-param_id="`+file_pdf_eval+`" data-toggle="modal" data-target="#modal-show-eval" data-toggle="tooltip" data-placement="top" title="Lihat File PDF">Lihat File Evaluasi</a>`;
+                  ros_eval +=`<div id="modal-show-eval" class="modal fade" role="dialog">`;
+                      ros_eval +=`<div id="ViewEvaluasiPDF"></div>`;
+                  ros_eval +=`</div>`;
+
+            $('#ShowPdfEvaluasi').html(ros_eval);
+          } else {
+              Swal.fire({
+                    icon: 'info',
+                    title: 'Hanya File PDF Yang Diizinkan.',
+                    confirmButtonColor: '#000',
+                    confirmButtonText: 'OK'
+              });  
+          }
+        })
+
+        fileReaderEval.readAsDataURL(files_eval[0])
+
+    });
+
+    $("#ShowPdfPeserta").on("click", "#GetModalPdfPeserta", (e) => {
+        let file_peserta = e.currentTarget.dataset.param_id;      
+        let row_peserta = ``;
+          row_peserta +=`<div class="modal-dialog">`;
+              row_peserta +=`<div class="modal-content">`;
+                  row_peserta +=`<div class="modal-header">`;
+                        row_peserta +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_peserta +=`<h4 class="modal-title">Lihat File Daftar Hadir</h4>`;
+                  row_peserta +=`</div>`;               
+                  row_peserta +=`<div class="modal-body">`; 
+                  if(file_peserta)
+                  {  
+                    row_peserta +=`<embed src="`+file_peserta+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_peserta +=`</div>`;               
+                  row_peserta +=`<div class="modal-footer">`;
+                        row_peserta +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_peserta +=`</div>`;                         
+              row_peserta +=`</div>`;
+        row_peserta +=`</div>`; 
+
+        $('#ViewPesertaPDF').html(row_peserta);   
+
+    });
+
+    $("#ShowPdfProfile").on("click", "#GetModalPdfProfile", (e) => {
+        let file_profile = e.currentTarget.dataset.param_id;      
+        let row_profile = ``;
+          row_profile +=`<div class="modal-dialog">`;
+              row_profile +=`<div class="modal-content">`;
+                  row_profile +=`<div class="modal-header">`;
+                        row_profile +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_profile +=`<h4 class="modal-title">Lihat File Profile</h4>`;
+                  row_profile +=`</div>`;               
+                  row_profile +=`<div class="modal-body">`; 
+                  if(file_profile)
+                  {  
+                    row_profile +=`<embed src="`+file_profile+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_profile +=`</div>`;               
+                  row_profile +=`<div class="modal-footer">`;
+                        row_profile +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_profile +=`</div>`;                         
+              row_profile +=`</div>`;
+        row_profile +=`</div>`; 
+
+        $('#ViewProfilePDF').html(row_profile);   
+
+    });
+
+    $("#ShowPdfProfile2").on("click", "#GetModalPdfProfile2", (e) => {
+        let file_profile2 = e.currentTarget.dataset.param_id;      
+        let row_profile2 = ``;
+          row_profile2 +=`<div class="modal-dialog">`;
+              row_profile2 +=`<div class="modal-content">`;
+                  row_profile2 +=`<div class="modal-header">`;
+                        row_profile2 +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_profile2 +=`<h4 class="modal-title">Lihat File Profile</h4>`;
+                  row_profile2 +=`</div>`;               
+                  row_profile2 +=`<div class="modal-body">`; 
+                  if(file_profile2)
+                  {  
+                    row_profile2 +=`<embed src="`+file_profile2+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_profile2 +=`</div>`;               
+                  row_profile2 +=`<div class="modal-footer">`;
+                        row_profile2 +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_profile2 +=`</div>`;                         
+              row_profile2 +=`</div>`;
+        row_profile2 +=`</div>`; 
+
+        $('#ViewProfile2PDF').html(row_profile2);   
+
+    });
+
+    $("#ShowPdfNarasumber").on("click", "#GetModalPdfNarasumber", (e) => {
+        let file_nara = e.currentTarget.dataset.param_id;      
+        let row_nara = ``;
+          row_nara +=`<div class="modal-dialog">`;
+              row_nara +=`<div class="modal-content">`;
+                  row_nara +=`<div class="modal-header">`;
+                        row_nara +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_nara +=`<h4 class="modal-title">Lihat File Narasumber</h4>`;
+                  row_nara +=`</div>`;               
+                  row_nara +=`<div class="modal-body">`; 
+                  if(file_nara)
+                  {  
+                    row_nara +=`<embed src="`+file_nara+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_nara +=`</div>`;               
+                  row_nara +=`<div class="modal-footer">`;
+                        row_nara +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_nara +=`</div>`;                         
+              row_nara +=`</div>`;
+        row_nara +=`</div>`; 
+
+        $('#ViewNarasumberPDF').html(row_nara);   
+
+    });
+
+    $("#ShowPdfNotula").on("click", "#GetModalPdfNotula", (e) => {
+        let file_notula = e.currentTarget.dataset.param_id;      
+        let row_notula = ``;
+          row_notula +=`<div class="modal-dialog">`;
+              row_notula +=`<div class="modal-content">`;
+                  row_notula +=`<div class="modal-header">`;
+                        row_notula +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_notula +=`<h4 class="modal-title">Lihat File Notula</h4>`;
+                  row_notula +=`</div>`;               
+                  row_notula +=`<div class="modal-body">`; 
+                  if(file_notula)
+                  {  
+                    row_notula +=`<embed src="`+file_notula+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_notula +=`</div>`;               
+                  row_notula +=`<div class="modal-footer">`;
+                        row_notula +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_notula +=`</div>`;                         
+              row_notula +=`</div>`;
+        row_notula +=`</div>`; 
+
+        $('#ViewNotulaPDF').html(row_notula);   
+
+    });
+
+    $("#ShowPdfNotula2").on("click", "#GetModalPdfNotula2", (e) => {
+        let file_notula2 = e.currentTarget.dataset.param_id;      
+        let row_notula2 = ``;
+          row_notula2 +=`<div class="modal-dialog">`;
+              row_notula2 +=`<div class="modal-content">`;
+                  row_notula2 +=`<div class="modal-header">`;
+                        row_notula2 +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_notula2 +=`<h4 class="modal-title">Lihat File Notula</h4>`;
+                  row_notula2 +=`</div>`;               
+                  row_notula2 +=`<div class="modal-body">`; 
+                  if(file_notula2)
+                  {  
+                    row_notula2 +=`<embed src="`+file_notula2+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_notula2 +=`</div>`;               
+                  row_notula2 +=`<div class="modal-footer">`;
+                        row_notula2 +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_notula2 +=`</div>`;                         
+              row_notula2 +=`</div>`;
+        row_notula2 +=`</div>`; 
+
+        $('#ViewNotula2PDF').html(row_notula2);   
+
+    });
+
+    $("#ShowPdfLkpm").on("click", "#GetModalPdfLkpm", (e) => {
+        let file_lkpm = e.currentTarget.dataset.param_id;      
+        let row_lkpm = ``;
+          row_lkpm +=`<div class="modal-dialog">`;
+              row_lkpm +=`<div class="modal-content">`;
+                  row_lkpm +=`<div class="modal-header">`;
+                        row_lkpm +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_lkpm +=`<h4 class="modal-title">Lihat File LKPM</h4>`;
+                  row_lkpm +=`</div>`;               
+                  row_lkpm +=`<div class="modal-body">`; 
+                  if(file_lkpm)
+                  {  
+                    row_lkpm +=`<embed src="`+file_lkpm+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_lkpm +=`</div>`;               
+                  row_lkpm +=`<div class="modal-footer">`;
+                        row_lkpm +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_lkpm +=`</div>`;                         
+              row_lkpm +=`</div>`;
+        row_lkpm +=`</div>`; 
+
+        $('#ViewLkpmPDF').html(row_lkpm);   
+
+    });
+
+    $("#ShowPdfDoc").on("click", "#GetModalPdfDoc", (e) => {
+        let file_doc = e.currentTarget.dataset.param_id;      
+        let row_doc = ``;
+          row_doc +=`<div class="modal-dialog">`;
+              row_doc +=`<div class="modal-content">`;
+                  row_doc +=`<div class="modal-header">`;
+                        row_doc +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_doc +=`<h4 class="modal-title">Lihat File Dokumen</h4>`;
+                  row_doc +=`</div>`;               
+                  row_doc +=`<div class="modal-body">`; 
+                  if(file_doc)
+                  {  
+                    row_doc +=`<embed src="`+file_doc+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_doc +=`</div>`;               
+                  row_doc +=`<div class="modal-footer">`;
+                        row_doc +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_doc +=`</div>`;                         
+              row_doc +=`</div>`;
+        row_doc +=`</div>`; 
+
+        $('#ViewDocPDF').html(row_doc);   
+
+    });
+
+    $("#ShowPdfEvaluasi").on("click", "#GetModalPdfEvaluasi", (e) => {
+        let file_eval = e.currentTarget.dataset.param_id;      
+        let row_eval = ``;
+          row_eval +=`<div class="modal-dialog">`;
+              row_eval +=`<div class="modal-content">`;
+                  row_eval +=`<div class="modal-header">`;
+                        row_eval +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_eval +=`<h4 class="modal-title">Lihat File Evaluasi</h4>`;
+                  row_eval +=`</div>`;               
+                  row_eval +=`<div class="modal-body">`; 
+                  if(file_eval)
+                  {  
+                    row_eval +=`<embed src="`+file_eval+`#page=1&zoom=65" width="575" height="500">`;
+                  }     
+                  row_eval +=`</div>`;               
+                  row_eval +=`<div class="modal-footer">`;
+                        row_eval +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                  row_eval +=`</div>`;                         
+              row_eval +=`</div>`;
+        row_eval +=`</div>`; 
+
+        $('#ViewEvaluasiPDF').html(row_eval);   
 
     });
 

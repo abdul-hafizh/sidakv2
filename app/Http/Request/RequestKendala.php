@@ -140,6 +140,16 @@ class RequestKendala
        return $result;
   }
 
+  public static function Category($kendala_id){
+     $data = Kendala::where('id',$kendala_id)->first();
+     if($data)
+     {
+        $result = RequestKendala::categoryKendala($data->kriteria_id);
+     }  
+
+     return $result; 
+  }
+
  
 
    public static function TotalMessage($kendala_id)
@@ -257,13 +267,27 @@ class RequestKendala
    {
         $uuid = Str::uuid()->toString();
 
-        $pusat = User::where(['username'=>'pusat'])->first();
-        if($pusat)
+        $access = RequestAuth::Access();
+        if($access =="admin" || $access =="pusat")
         {
-            $sender = $pusat->username;
-        }else{
-            $sender = 'null';
-        }
+             $data = Kendala::where('id',$kendala_id)->first();
+             if( $data)
+             {
+                 $sender = $data->from;
+
+             }
+           
+         }else{
+
+             $pusat = User::where(['username'=>'pusat'])->first();
+            if($pusat)
+            {
+                $sender = $pusat->username;
+            }
+
+            
+         }
+
 
         $fields = [ 
             'id'=> $uuid,

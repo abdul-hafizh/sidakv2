@@ -18,6 +18,7 @@ use App\Helpers\GeneralHelpers;
 use App\Models\Perencanaan;
 use App\Models\Notification;
 use App\Models\AuditLog;
+use App\Models\AuditLogRequest;
 
 class PerencanaanApiController extends Controller
 {
@@ -196,10 +197,10 @@ class PerencanaanApiController extends Controller
             
         } else {            
 
-            $update = RequestPerencanaan::fieldsData($request);            
+            $update = RequestPerencanaan::fieldsData($request);
             $UpdateData = Perencanaan::where('id',$id)->update($update);
             
-            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);            
+            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
         }   
     }
 
@@ -296,7 +297,7 @@ class PerencanaanApiController extends Controller
 
         }
 
-        $update = RequestPerencanaan::fieldAlasan($request);            
+        $update = RequestPerencanaan::fieldAlasan($request);
         $results = Perencanaan::where('id', $id)->update($update);
 
         if($results){
@@ -305,6 +306,10 @@ class PerencanaanApiController extends Controller
             $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Perencanaan Tahun ' . $_res->periode_id;
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
+
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPerencanaan::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
 
             $messages['messages'] = true;
         }
@@ -334,6 +339,10 @@ class PerencanaanApiController extends Controller
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
 
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPerencanaan::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
+
             $messages['messages'] = true;
         }
         
@@ -352,7 +361,7 @@ class PerencanaanApiController extends Controller
 
         }
 
-        $update = RequestPerencanaan::fieldReqedit($request);            
+        $update = RequestPerencanaan::fieldReqedit($request);
         $results = Perencanaan::where('id', $id)->update($update);
 
         if($results){
@@ -361,6 +370,10 @@ class PerencanaanApiController extends Controller
             $messages_desc = strtoupper(Auth::User()->username) . ' Request Edit Perencanaan Tahun ' . $_res->periode_id;
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
+
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPerencanaan::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
 
             $messages['messages'] = true;
         }
@@ -380,7 +393,7 @@ class PerencanaanApiController extends Controller
 
         }
 
-        $update = RequestPerencanaan::fieldReqrevisi($request);            
+        $update = RequestPerencanaan::fieldReqrevisi($request);
         $results = Perencanaan::where('id', $id)->update($update);
 
         if($results){
@@ -389,6 +402,10 @@ class PerencanaanApiController extends Controller
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Perbaikan Pada Perencanaan Tahun ' . $_res->periode_id;
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
+
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPerencanaan::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
 
             $messages['messages'] = true;
         }
@@ -534,7 +551,7 @@ class PerencanaanApiController extends Controller
             $results = $_res->where('id', $id)->update([ 'lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
 
             //result
-            return response()->json(['status' => true, 'messages' => 'Update data sucessfully']);            
+            return response()->json(['status' => true, 'messages' => 'Update data sucessfully']);
         }  
     }
 }    

@@ -57,10 +57,10 @@
 
                         <table  style="margin: 0px 0px 15px; width: 100%;">
                              <tr>
-                                <td>Salam hangat,</td>
+                                <td>Hormat Kami,</td>
                              </tr>
                              <tr>
-                                <td>Admin Sidak | BKPM</td>
+                                <td>Kementerian Investasi</td>
                              </tr>
                         </table>
                             

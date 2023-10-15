@@ -147,6 +147,7 @@ class RequestPerencanaan
         $temp['id'] = $data->id;
         $temp['periode_id'] = $data->periode_id;
         $temp['access'] = RequestAuth::Access();
+        $temp['options'] = RequestMenuRoles::ActionPage('perencanaan');
         $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
         $temp['pagu_apbn'] = GeneralHelpers::formatRupiah($data->pagu_apbn);
         $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->pagu_promosi);
@@ -287,7 +288,7 @@ class RequestPerencanaan
     public static function fieldAlasan($request)
     {
         $fields = [
-            'alasan_unapprove' => $request->alasan_unapprove,
+            'alasan_unapprove' => $request->alasan,
             'request_edit' => 'reject',
             'status' => 13,
             'created_by' => Auth::User()->username,
@@ -300,7 +301,7 @@ class RequestPerencanaan
     public static function fieldAlasanDoc($request)
     {
         $fields = [
-            'alasan_unapprove_doc' => $request->alasan_unapprove_doc,
+            'alasan_unapprove_doc' => $request->alasan,
             'request_edit' => 'reject_doc',
             'status' => 13,
             'created_by' => Auth::User()->username,
@@ -313,7 +314,7 @@ class RequestPerencanaan
     public static function fieldReqedit($request)
     {
         $fields = [
-            'alasan_edit' => $request->alasan_edit,
+            'alasan_edit' => $request->alasan,
             'request_edit' => 'true',
             'status' => 15,
             'created_by' => Auth::User()->username,
@@ -326,11 +327,26 @@ class RequestPerencanaan
     public static function fieldReqrevisi($request)
     {
         $fields = [
-            'alasan_revisi' => $request->alasan_revisi,
+            'alasan_revisi' => $request->alasan,
             'request_edit' => 'revisi',
             'status' => 13,
             'created_by' => Auth::User()->username,
             'created_at' => date('Y-m-d H:i:s'),
+        ];
+
+        return $fields;
+    }
+
+    public static function fieldLogRequest($request)
+    {
+        $fields = [
+            'kegiatan_id' => $request->id, 
+            'jenis_kegiatan' => $request->jenis_kegiatan,
+            'type' => $request->type,
+            'alasan_request' => $request->alasan,
+            'username' => Auth::User()->username,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => Auth::User()->name
         ];
 
         return $fields;

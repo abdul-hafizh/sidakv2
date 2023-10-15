@@ -11,6 +11,8 @@ use App\Models\RoleMenu;
 use App\Models\Action;
 use App\Http\Request\RequestMenuRoles;
 use App\Http\Request\RequestSettingApps;
+use App\Http\Request\RequestAuditLog;
+use File;
 class RequestMenus
 {
 
@@ -27,14 +29,14 @@ class RequestMenus
             {
                 $icon = url('/template/'.$template.'/img/user.png');
             }else{
-                $icon = url('/images/menu/'.$val->icon);
+                $icon = url('/file/menu/'.$val->icon);
             }  
 
             if($val->icon_hover =="")
             {
                 $icon_hover = url('/template/'.$template.'/img/user.png');
             }else{
-                $icon_hover = url('/images/menu/'.$val->icon_hover);
+                $icon_hover = url('/file/menu/'.$val->icon_hover);
             }  
 
             $temp[$key]['id'] = $val->id;
@@ -43,11 +45,12 @@ class RequestMenus
             $temp[$key]['slug'] = $val->slug;
             $temp[$key]['path_web'] = $val->path_web;
             $temp[$key]['option'] = RequestMenus::ActionList();
-            $temp[$key]['icon'] = $icon;
-            $temp[$key]['icon_hover'] = $icon_hover;
+            $temp[$key]['icon'] = $val->icon;
+            $temp[$key]['icon_hover'] =$val->icon_hover;
             $temp[$key]['edit'] = false;
             $temp[$key]['tasks'] = [];
-            $temp[$key]['move'] = RequestMenus::MoveCheck($role_id,$val->slug);
+          //  $temp[$key]['move'] = RequestMenus::MoveCheck($role_id,$val->slug);
+            $temp[$key]['move'] = true;
             $temp[$key]['status'] = $val->status;
 
            
@@ -56,6 +59,125 @@ class RequestMenus
         $results['result'] = $temp;
         $results['total'] = count($data);
         return $results;
+
+   }
+
+   public static function CreateMenu($request)
+   {
+
+            $insert = RequestMenus::fieldsData($request);  
+            $slug = rand(1000,9999);
+            if($request->icon)
+            {   
+               
+                $sourceIcon = explode(";base64,", $request->icon);
+                $extFileIcon = explode("image/", $sourceIcon[0]);
+                $extentionsIcon = $extFileIcon[1];
+                $fileDirIcon = '/file/menu/';
+                $imageIcon = base64_decode($sourceIcon[1]);
+                $filePathIcon = public_path() .$fileDirIcon;
+                $icon = time() . '-' . $slug.'.'.$extentionsIcon;
+                $successIcon = file_put_contents($filePathIcon.$icon, $imageIcon);
+             
+                $menu_icon = ["icon"=>$icon];
+                $merge = array_merge($insert,$menu_icon);
+            }else{
+                $merge = $insert;
+            }
+
+            if($request->icon_hover)
+            {   
+               
+                $sourceHover = explode(";base64,", $request->icon_hover);
+                $extFileHover = explode("image/", $sourceHover[0]);
+                $extentionsHover = $extFileHover[1];
+                $fileDirHover = '/file/menu/';
+                $imageHover = base64_decode($sourceHover[1]);
+                $filePathHover = public_path() .$fileDirHover;
+                $hover = time() . '-hover-' . $slug.'.'.$extentionsHover;
+                $successHover = file_put_contents($filePathHover.$hover, $imageHover);
+             
+                $icon_hover = ["icon_hover"=>$hover];
+             
+                $photo_icon = array_merge($merge,$icon_hover);
+            }else{
+                $photo_icon = $merge;
+            }
+
+
+            $log = array(             
+            'category'=> 'LOG_DATA_MENU',
+            'group_menu'=>'upload_data_menu',
+            'description'=>'Menambahkan data menu <b>'.$request->name.'</b>',
+            );
+            $datalog = RequestAuditLog::fieldsData($log);
+
+      return $photo_icon;      
+
+
+   }
+
+   public static function UpdateMenu($request,$id){
+
+
+             $update = RequestMenus::fieldsData($request);
+             $slug = rand(1000,9999);
+             if($request->icon)
+             {   
+               
+                $sourceIcon = explode(";base64,", $request->icon);
+                $extFileIcon = explode("image/", $sourceIcon[0]);
+                $extentionsIcon = $extFileIcon[1];
+                $fileDirIcon = '/file/menu/';
+                $imageIcon = base64_decode($sourceIcon[1]);
+                $filePathIcon = public_path() .$fileDirIcon;
+                $icon = time() . '-' . $slug.'.'.$extentionsIcon;
+                $successIcon = file_put_contents($filePathIcon.$icon, $imageIcon);
+                
+                $check = Menus::find($id);
+                if($check)
+                { 
+                   File::delete(public_path() .$fileDirIcon.$check->icon);
+                } 
+                $menu_icon = ["icon"=>$icon];
+                $merge = array_merge($update,$menu_icon);
+                
+            }else{
+                $merge = $update;
+
+            }
+
+            if($request->icon_hover)
+            {   
+               
+                $sourceHover = explode(";base64,", $request->icon_hover);
+                $extFileHover = explode("image/", $sourceHover[0]);
+                $extentionsHover = $extFileHover[1];
+                $fileDirHover = '/file/menu/';
+                $imageHover = base64_decode($sourceHover[1]);
+                $filePathHover = public_path() .$fileDirHover;
+                $hover = time() . '-hover-' . $slug.'.'.$extentionsHover;
+                $successHover = file_put_contents($filePathHover.$hover, $imageHover);
+                $check = Menus::find($id);
+                if($check)
+                { 
+                   File::delete(public_path() .$fileDirHover.$check->icon_hover);
+                } 
+                $icon_hover = ["icon_hover"=>$hover];
+                $photo_icon = array_merge($merge,$icon_hover);
+            }else{
+                $photo_icon = $merge;
+            }
+
+            $log = array(             
+            'category'=> 'LOG_DATA_MENU',
+            'group_menu'=>'mengubah_data_menu',
+            'description'=>'Mengubah data menu <b>'.$request->name.'</b>',
+            );
+            $datalog = RequestAuditLog::fieldsData($log);
+            //Audit Log
+
+            return $photo_icon;
 
    }
 
@@ -174,8 +296,8 @@ class RequestMenus
     
         
         $fields = [  
-                'name'  =>  $request->name,
-                'slug' =>  $slug,
+                'name'  =>  ucfirst($request->name),
+                'slug' =>   strtolower(trim($request->slug)),
                 'parent'  => $request->parent,
                 'path_web'  =>  $path_web,
                 // 'path_api'  =>  $path_api,

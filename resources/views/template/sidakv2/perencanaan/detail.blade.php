@@ -511,7 +511,20 @@
                               if(data.lap_rencana != '') {
                                    rows_btn+= download_link;
                               }
-                              rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit"><i class="fa fa-pencil"></i> Request Edit</button>';
+                              
+                              data.options.forEach(function(item, index) 
+                              {
+                                   if(item.action == 'update')
+                                   {
+                                        if(item.checked == true) {
+                                             rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit"><i class="fa fa-pencil"></i> Request Edit</button>';
+                                        } else {
+                                             rows_btn+= '<button type="button" disabled class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Request Edit</button>';
+                                        }
+                                   }
+                                   
+                              });                              
+
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
 
@@ -584,7 +597,9 @@
                     }).then((result) => {
                          if (result.isConfirmed) {
                               var form = {
-                                   "alasan_unapprove": $("#alasan_unapprove_inp").val()
+                                   "alasan": $("#alasan_unapprove_inp").val(),
+                                   "jenis_kegiatan": "Perencanaan",
+                                   "type": "unapprove"
                               };
                               if($("#alasan_unapprove_inp").val() != '') {  
                                    unapproveItem(form);
@@ -610,7 +625,9 @@
                     }).then((result) => {
                          if (result.isConfirmed) {
                               var form = {
-                                   "alasan_unapprove_doc": $("#alasan_unapprove_doc_inp").val()
+                                   "alasan": $("#alasan_unapprove_doc_inp").val(),
+                                   "jenis_kegiatan": "Perencanaan",
+                                   "type": "unapprove_doc"
                               };
                               if($("#alasan_unapprove_doc_inp").val() != '') {  
                                    unapproveDocItem(form);
@@ -636,7 +653,9 @@
                     }).then((result) => {
                          if (result.isConfirmed) {
                               var form = {
-                                   "alasan_edit": $("#alasan_edit_inp").val()
+                                   "alasan": $("#alasan_edit_inp").val(),
+                                   "jenis_kegiatan": "Perencanaan",
+                                   "type": "request_edit"
                               };
                               if($("#alasan_edit_inp").val() != '') {  
                                    reqeditItem(form);
@@ -662,7 +681,9 @@
                     }).then((result) => {
                          if (result.isConfirmed) {
                               var form = {
-                                   "alasan_revisi": $("#alasan_revisi_inp").val()
+                                   "alasan": $("#alasan_revisi_inp").val(),
+                                   "jenis_kegiatan": "Perencanaan",
+                                   "type": "revisi"
                               };
                               if($("#alasan_revisi_inp").val() != '') {  
                                    reqrevisiItem(form);
@@ -732,7 +753,7 @@
 
                });
 
-               $( "#ShowPDF" ).on( "click", "#GetModalPdf", (e) => {
+               $("#ShowPDF").on("click", "#GetModalPdf", (e) => {
                     let file = e.currentTarget.dataset.param_id;      
                     let row = ``;
                      row +=`<div class="modal-dialog">`;
