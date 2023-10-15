@@ -40,6 +40,9 @@ class RequestBimsos
             if ($filterjs[0]->jenis_sub) {
                 $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
+            if ($filterjs[0]->search_status) {
+                $data->where('status_laporan_id', $filterjs[0]->search_status);
+            }
             if ($filterjs[0]->periode_id) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
             } else {
@@ -211,7 +214,7 @@ class RequestBimsos
     public static function fieldReqEdit($request)
     {
         $fields = [
-            'alasan_edit' => $request->alasan_edit,
+            'alasan_edit' => $request->alasan,
             'request_edit' => 'true',
             'status_laporan_id' => 15,
             'modified_by' => Auth::User()->username,
@@ -223,7 +226,7 @@ class RequestBimsos
     public static function fieldReqRevisi($request)
     {
         $fields = [
-            'alasan_edit' => $request->alasan_revisi,
+            'alasan_edit' => $request->alasan,
             'request_edit' => 'false',
             'status_laporan_id' => 15,
             'modified_by' => Auth::User()->username,
@@ -239,6 +242,21 @@ class RequestBimsos
             'status_laporan_id' => $request->status,
             'modified_by' => Auth::User()->username,
             'updated_at' => date('Y-m-d H:i:s'),
+        ];
+
+        return $fields;
+    }
+
+    public static function fieldLogRequest($request)
+    {
+        $fields = [
+            'kegiatan_id' => $request->id,
+            'jenis_kegiatan' => $request->jenis_kegiatan,
+            'type' => $request->type,
+            'alasan_request' => $request->alasan,
+            'username' => Auth::User()->username,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => Auth::User()->name
         ];
 
         return $fields;

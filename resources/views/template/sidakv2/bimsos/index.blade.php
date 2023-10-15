@@ -82,6 +82,16 @@
 			<select id="periode_id2" class="select-periode2 form-control" name="periode_id2"></select>
 		</div>
 		<div class="col-sm-3">
+			<label>Status </label>
+			<select class="form-control" name="search_status" id="search_status">
+				<option value="">Pilih Status</option>
+				<option value="13">Draft</option>
+				<option value="15">Request Edit</option>
+				<option value="14">Terkirim</option>
+				<option value="15">Request Revision</option>
+			</select>
+		</div>
+		<div class="col-sm-3">
 			<label>Search</label>
 			<div class="input-group input-group-sm border-radius-20">
 				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
@@ -307,6 +317,7 @@
 		$('#search-input').keyup(delay(function(e) {
 			var filter = [{
 				search_input: $("#search-input").val(),
+				search_status: $("#search_status").val(),
 				jenis_sub: $("#jenis_sub").val(),
 				periode_id: $("#periode_id2").val()
 			}, ];
@@ -317,6 +328,7 @@
 		$("#Search").on("click", function() {
 			var filter = [{
 				search_input: $("#search-input").val(),
+				search_status: $("#search_status").val(),
 				jenis_sub: $("#jenis_sub").val(),
 				periode_id: $("#periode_id2").val()
 			}, ];

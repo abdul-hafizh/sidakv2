@@ -43,7 +43,7 @@ class PeriodeApiController extends Controller
         $query =  DB::table('periode as a');
 
         if ($access == 'daerah' ||  $access == 'province') {
-              $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan');
+            $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan');
             $query->where('c.daerah_id', Auth::User()->daerah_id);
 
             if ($request->type == 'POST' && $request->action == 'perencanaan') {
@@ -52,74 +52,68 @@ class PeriodeApiController extends Controller
                     DB::table('perencanaan')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-            } else if($request->type == 'GET' && $request->action == 'perencanaan') {
+            } else if ($request->type == 'GET' && $request->action == 'perencanaan') {
                 $query->whereIn(
                     'year',
                     DB::table('perencanaan')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-            }else if ($request->type == 'POST' && $request->action == 'pengawasan') {
+            } else if ($request->type == 'POST' && $request->action == 'pengawasan') {
                 $query->whereNotIn(
                     'year',
                     DB::table('pengawasan')
                         ->select('periode_id')->where('slug', Auth::User()->daerah_id)
                 );
-            }else if($request->type == 'GET' && $request->action == 'pengawasan') {
+            } else if ($request->type == 'GET' && $request->action == 'pengawasan') {
                 $query->whereIn(
                     'year',
                     DB::table('pengawasan')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-
-            }else if ($request->type == 'POST' && $request->action == 'bimsos') {
+            } else if ($request->type == 'POST' && $request->action == 'bimsos') {
                 $query->whereNotIn(
                     'year',
                     DB::table('bimsos')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-            }else if($request->type == 'GET' && $request->action == 'bimsos') {
+            } else if ($request->type == 'GET' && $request->action == 'bimsos') {
                 $query->whereIn(
                     'year',
                     DB::table('bimsos')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-
-            }else if ($request->type == 'POST' && $request->action == 'penyelesaian') {
+            } else if ($request->type == 'POST' && $request->action == 'penyelesaian') {
                 $query->whereNotIn(
                     'year',
                     DB::table('penyelesaian')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-            }else if($request->type == 'GET' && $request->action == 'penyelesaian') {
+            } else if ($request->type == 'GET' && $request->action == 'penyelesaian') {
                 $query->whereIn(
                     'year',
                     DB::table('penyelesaian')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-
-            }else if ($request->type == 'POST' && $request->action == 'promosi') {
+            } else if ($request->type == 'POST' && $request->action == 'promosi') {
                 $query->whereNotIn(
                     'year',
                     DB::table('promosi')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-            }else if($request->type == 'GET' && $request->action == 'promosi') {
+            } else if ($request->type == 'GET' && $request->action == 'promosi') {
                 $query->whereIn(
                     'year',
                     DB::table('promosi')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-
             }
 
             $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id')->groupBy('year');
-              
-
         } else {
             $query->select('a.id', 'a.slug', 'a.year');
             $query->groupBy('a.year');
         }
-       
+
         $query->where('a.status', 'Y');
         $data = $query->get();
         if ($data->count() != 0) {
@@ -128,20 +122,19 @@ class PeriodeApiController extends Controller
             $selected = true;
         }
 
-        $periode = RequestPeriode::SelectAll($data, $request->type,$request->action);
+        $periode = RequestPeriode::SelectAll($data, $request->type, $request->action);
         return response()->json(['selected' => $selected, 'result' => $periode]);
     }
 
     public function listYear(Request $request)
     {
-         $query =  DB::table('periode as a')
-         ->select('a.id', 'a.slug', 'a.year','a.startdate','a.enddate')
-         ->where(['a.semester'=>$request->semester,'a.status'=>'Y']);
-         $data = $query->get();
-         $periode = RequestPeriode::SelectYear($data);
-         return response()->json($periode);
-
-    }    
+        $query =  DB::table('periode as a')
+            ->select('a.id', 'a.slug', 'a.year', 'a.startdate', 'a.enddate')
+            ->where(['a.semester' => $request->semester, 'a.status' => 'Y']);
+        $data = $query->get();
+        $periode = RequestPeriode::SelectYear($data);
+        return response()->json($periode);
+    }
 
     public function search(Request $request)
     {
@@ -337,7 +330,7 @@ class PeriodeApiController extends Controller
         return response()->json($messages);
     }
 
-    
+
     public function listAllSemester(Request $request)
     {
         $access = RequestAuth::Access();
@@ -352,7 +345,7 @@ class PeriodeApiController extends Controller
             $query->whereIn(
                 'year',
                 DB::table('perencanaan')
-                    ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                    ->select('periode_id')->where(['daerah_id' => Auth::User()->daerah_id, 'status' => 16])->groupBy('periode_id')
             );
         }
 
@@ -368,17 +361,17 @@ class PeriodeApiController extends Controller
     }
 
     public function listAnggaran($id)
-    {           
-        $data = Perencanaan::leftJoin('pagu_target', function($join) {
+    {
+        $data = Perencanaan::leftJoin('pagu_target', function ($join) {
             $join->on('perencanaan.periode_id', '=', 'pagu_target.periode_id')
-                 ->on('perencanaan.daerah_id', '=', 'pagu_target.daerah_id');
+                ->on('perencanaan.daerah_id', '=', 'pagu_target.daerah_id');
         })
-        ->select('perencanaan.*')
-        ->where('perencanaan.periode_id', substr($id, 0, 4))
-        ->where('perencanaan.daerah_id', Auth::User()->daerah_id)
-        ->first();        
+            ->select('perencanaan.*')
+            ->where('perencanaan.periode_id', substr($id, 0, 4))
+            ->where('perencanaan.daerah_id', Auth::User()->daerah_id)
+            ->first();
 
-        $output = RequestPerencanaan::GetDetailID($data); 
+        $output = RequestPerencanaan::GetDetailID($data);
 
         return response()->json($output);
     }
