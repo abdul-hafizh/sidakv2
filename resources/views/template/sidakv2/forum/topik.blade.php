@@ -214,6 +214,8 @@
 	                          row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
 	                     
 	                    }else{
+
+	                    	
 	                    	row +=`<td><input disabled  class="item-checkbox"   type="checkbox"></td></td>`;
 	                    }
 	                 }       
