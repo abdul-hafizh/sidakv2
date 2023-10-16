@@ -259,12 +259,12 @@ class PenyelesaianApiController extends Controller
         $result = Periode::rightJoin('periode_extension', function($join) {
                 $join->on('periode.semester', '=', 'periode_extension.semester')
                      ->on('periode.year', '=', 'periode_extension.year');
-                })    
-            ->where('slug', $id)
-            ->where('status', 'Y')
-            ->whereDate('startdate', '>=', $formattedDate)
-            ->whereDate('enddate', '<=', $formattedDate)
-            ->orderBy('created_at', 'desc')
+                })
+            ->where('periode.slug', $id)
+            ->where('periode.status', 'Y')
+            ->whereDate('periode.startdate', '>=', $formattedDate)
+            ->whereDate('periode.enddate', '<=', $formattedDate)
+            ->orderBy('periode.created_at', 'desc')
             ->first();
 
         return response()->json($result);
