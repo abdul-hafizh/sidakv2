@@ -469,7 +469,6 @@
         url: BASE_URL + '/api/penyelesaian/cekPeriode/' + val_periode,
         method: 'GET',
         success: function(data_ext) {
-          console.log(data_ext.status);
           if (data_ext.status != 'Y') {
               $('#simpan').hide();
               showErrorMessageAndRedirect();
