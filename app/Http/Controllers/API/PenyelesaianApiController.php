@@ -353,7 +353,7 @@ class PenyelesaianApiController extends Controller
 
             $type = 'penyelesaian';
             $url = 'penyelesaian';
-            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Requet Dokumen';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit';
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);            
         }
@@ -379,6 +379,12 @@ class PenyelesaianApiController extends Controller
             $request->merge(['id' => $id]);
             $dataLog = RequestPenyelesaian::fieldLogRequest($request);
             $saveLog = AuditLogRequest::create($dataLog);
+
+            $type = 'penyelesaian';
+            $url = 'penyelesaian';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Revisi';
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
+            Notification::create($notif);
         }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
