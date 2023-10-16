@@ -479,7 +479,7 @@
                   success: function(data_ext) {
                       if (data_ext.checklist != 'approved') {
                         $('#simpan').hide();
-                        showErrorMessageAndRedirect();
+                        showErrorMessageAndRedirectEx();
                       }
                   },
                   error: function() {
@@ -496,8 +496,21 @@
 
     function showErrorMessageAndRedirect() {
       Swal.fire({
-          title: 'Waktu Pengisian Sudah Habis.',
-          text: 'Periksa kembali jadwal input data.',
+          title: 'Periode Input Data Sudah Habis.',
+          text: 'Periksa kembali periode input data.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+      }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.replace('/penyelesaian');
+          }
+      });
+    }
+
+    function showErrorMessageAndRedirectEx() {
+      Swal.fire({
+          title: 'Periode Tambahan Input Data Sudah Habis.',
+          text: 'Periksa kembali periode input data.',
           icon: 'error',
           confirmButtonText: 'OK'
       }).then((result) => {

@@ -260,6 +260,7 @@ class PenyelesaianApiController extends Controller
             ->where('status', 'Y')
             ->whereDate('startdate', '>=', $formattedDate)
             ->whereDate('enddate', '<=', $formattedDate)
+            ->orderBy('created_at', 'desc')
             ->first();
 
         return response()->json($result);
@@ -278,6 +279,7 @@ class PenyelesaianApiController extends Controller
             ->where('semester', $semester)
             ->whereDate('extensiondate', '<=', $formattedDate)
             ->where('daerah_id', Auth::user()->daerah_id)
+            ->orderBy('created_at', 'desc')
             ->first();
 
         return response()->json($result);
