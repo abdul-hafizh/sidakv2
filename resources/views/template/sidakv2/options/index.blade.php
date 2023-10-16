@@ -431,7 +431,7 @@
              
     	     var menu = localStorage.getItem('root_menu');
        		 var temp =  JSON.parse(menu);
-       		 console.log(temp)
+       		// console.log(temp)
              
 	   		 var form = {
 	           'menu':JSON.stringify(temp.menu),
@@ -1528,7 +1528,7 @@
           { 	
           	var result = JSON.parse(data.tasks);
           	role_menu = result;
-          	console.log(role_menu)
+          	// console.log(role_menu)
             result.forEach(function(item, index) {
  
                     var row = '';
@@ -2391,7 +2391,7 @@
 			onEnd: function (evt) {
 	            // Callback when sorting is finished
 	            const sortedData = getSortedData(sortableContainer);
-	            console.log(sortedData);
+	            //console.log(sortedData);
 
 		   		var form = {
 		           'menu':sortedData,

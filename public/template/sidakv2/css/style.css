@@ -127,7 +127,20 @@
  padding: 6px 0px;
 }
 
+.text-justify{
+     text-align: justify;
+}
 
+.-abjad{
+  text-wrap: wrap!important;
+  
+}
+
+.pra-a{
+    float: left;
+    width: 35px!important;
+   
+}
 
 .pd-right{
 padding: 0px 12px 0px 0px!important;
