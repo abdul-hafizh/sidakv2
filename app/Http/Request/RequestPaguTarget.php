@@ -98,7 +98,7 @@ class RequestPaguTarget
         $numberNext = 1;
         //dd($data);
         $result = $data->get();
-        $options = RequestMenuRoles::ActionPage('pagu-apbn');
+        $options = RequestMenuRoles::ActionPage('paguapbn');
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
