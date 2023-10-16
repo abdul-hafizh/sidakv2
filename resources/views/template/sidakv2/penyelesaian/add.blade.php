@@ -461,7 +461,32 @@
     })    
 
     $('#periode_id_mdl').on('change', function() {
-      getAnggaran($('#periode_id_mdl').val(), $('#sub_menu_slug').val());  
+      var val_periode = $('#periode_id_mdl').val();
+      getAnggaran(val_periode, $('#sub_menu_slug').val());  
+
+      $.ajax({
+        url: BASE_URL + '/api/penyelesaian/cekPeriode/' + val_periode,
+        method: 'GET',
+        success: function(data_ext) {
+          if (data_ext.checklist != 'approved') {
+            Swal.fire({
+              title: 'Waktu Pengisian Sudah Habis.',
+              text: 'Periksa kembali jadwal input data.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+  
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.replace('/penyelesaian');
+              }
+            });
+          }
+        },
+        error: function() {
+          alert('Gagal mengambil data.');
+        }
+      })      
+
     })    
 
     function getAnggaran(periode_id, jenis) {
