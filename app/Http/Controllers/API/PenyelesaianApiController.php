@@ -5,8 +5,12 @@ namespace App\Http\Controllers\API;
 use Auth;
 use File;
 use Response;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Penyelesaian;
+use App\Models\AuditLogRequest;
+use App\Models\Periode;
+use App\Models\PeriodeExtension;
 use App\Http\Controllers\Controller;
 use App\Http\Request\RequestPenyelesaian;
 use App\Http\Request\RequestAuth;
@@ -19,7 +23,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PenyelesaianApiController extends Controller
 {
-
 
     public function __construct()
     {
@@ -61,10 +64,16 @@ class PenyelesaianApiController extends Controller
             $insert = RequestPenyelesaian::fieldsData($request);
 
             if ($request->hasFile('lap_profile')) {
-                $file_profile = $request->file('lap_profile');
-                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
+                $file_profile2 = $request->file('lap_profile');
+                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
                 $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
                 $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
+            }
+            if ($request->hasFile('lap_profile2')) {
+                $file_profile2 = $request->file('lap_profile2');
+                $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
+                $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
+                $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile2;
             }
             if ($request->hasFile('lap_peserta')) {
                 $file_hadir = $request->file('lap_peserta');
@@ -77,6 +86,12 @@ class PenyelesaianApiController extends Controller
                 $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
                 $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
                 $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
+            }
+            if ($request->hasFile('lap_notula2')) {
+                $file_notula2 = $request->file('lap_notula2');
+                $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
+                $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
+                $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula2;
             }
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
@@ -138,6 +153,12 @@ class PenyelesaianApiController extends Controller
                 $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
                 $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
             }
+            if ($request->hasFile('lap_profile2')) {
+                $file_profile2 = $request->file('lap_profile2');
+                $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
+                $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
+                $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile2;
+            }
             if ($request->hasFile('lap_peserta')) {
                 $file_hadir = $request->file('lap_peserta');
                 $lap_peserta = 'lap_peserta_' . time() . '_' . $file_hadir->getClientOriginalName();
@@ -149,6 +170,12 @@ class PenyelesaianApiController extends Controller
                 $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
                 $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
                 $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
+            }
+            if ($request->hasFile('lap_notula2')) {
+                $file_notula2 = $request->file('lap_notula2');
+                $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
+                $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
+                $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula2;
             }
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
@@ -209,6 +236,50 @@ class PenyelesaianApiController extends Controller
         $access = RequestAuth::Access();
         $result = Penyelesaian::where(['id' => $id])->first();
         $result['access'] = $access;
+
+        return response()->json($result);
+    }
+
+    public function log($id)
+    {        
+        $result = Penyelesaian::leftJoin('audit_log_request as log', 'penyelesaian.id', '=', 'log.kegiatan_id')
+            ->select('penyelesaian.nama_kegiatan', 'penyelesaian.sub_menu', 'log.*')
+            ->where('penyelesaian.id', $id)
+            ->orderBy('log.id', 'desc')
+            ->get();
+
+        return response()->json($result);
+    }
+
+    public function cekPeriode($id)
+    {        
+        $today = Carbon::now();
+        $formattedDate = $today->format('Y-m-d');
+
+        $result = Periode::where('slug', $id)
+            ->where('status', 'Y')
+            ->whereDate('startdate', '>=', $formattedDate)
+            ->whereDate('enddate', '<=', $formattedDate)
+            ->first();
+
+        return response()->json($result);
+    }
+
+    public function cekPeriodeEx($id)
+    {        
+        $year = substr($id, 0, 4);
+        $semester = substr($id, 4);
+
+        $today = Carbon::now();
+        $formattedDate = $today->format('Y-m-d');
+
+        $result = PeriodeExtension::where('year', $year)
+            ->where('checklist', 'approved')
+            ->where('semester', $semester)
+            ->whereDate('extensiondate', '<=', $formattedDate)
+            ->where('daerah_id', Auth::user()->daerah_id)
+            ->first();
+
         return response()->json($result);
     }
 
@@ -256,6 +327,12 @@ class PenyelesaianApiController extends Controller
         $update = RequestPenyelesaian::fieldReqEdit($request);
         $results = Penyelesaian::where('id', $id)->update($update);
 
+        if($results) {
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPenyelesaian::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
+        }
+
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }
 
@@ -272,6 +349,12 @@ class PenyelesaianApiController extends Controller
 
         $update = RequestPenyelesaian::fieldReqRevisi($request);
         $results = Penyelesaian::where('id', $id)->update($update);
+
+        if($results) {
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPenyelesaian::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
+        }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }

@@ -35,6 +35,7 @@ use App\Http\Controllers\API\NotificationApiController;
 use App\Http\Controllers\API\ActionApiController;
 use App\Http\Controllers\API\KriteriaApiController;
 use App\Http\Controllers\API\BimsosApiController;
+use App\Http\Controllers\API\PenyelesaianApiController;
 use App\Http\Controllers\API\ExtensionApiController;
 
 
@@ -213,6 +214,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('bimsos', [BimsosApiController::class, 'store']);
     Route::get('bimsos/edit/{id}', [BimsosApiController::class, 'edit']);
     Route::post('bimsos/update/{id}', [BimsosApiController::class, 'update']);
+    Route::post('bimsos/kirim/{id}', [BimsosApiController::class, 'update']);
     Route::delete('bimsos/{id}', [BimsosApiController::class, 'delete']);
     Route::post('bimsos/selected', [BimsosApiController::class, 'deleteSelected']);
     Route::put('bimsos/request_edit/{id}', [BimsosApiController::class, 'request_edit']);
@@ -223,6 +225,9 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('penyelesaian/datalist', [PenyelesaianApiController::class, 'jsonData']);
     Route::post('penyelesaian', [PenyelesaianApiController::class, 'store']);
     Route::get('penyelesaian/edit/{id}', [PenyelesaianApiController::class, 'edit']);
+    Route::get('penyelesaian/log/{id}', [PenyelesaianApiController::class, 'log']);
+    Route::get('penyelesaian/cekPeriode/{id}', [PenyelesaianApiController::class, 'cekPeriode']);
+    Route::get('penyelesaian/cekPeriodeEx/{id}', [PenyelesaianApiController::class, 'cekPeriodeEx']);
     Route::put('penyelesaian/{id}', [PenyelesaianApiController::class, 'update']);
     Route::post('penyelesaian/selected', [PenyelesaianApiController::class, 'deleteSelected']);
     Route::put('penyelesaian/request_edit/{id}', [PenyelesaianApiController::class, 'request_edit']);
