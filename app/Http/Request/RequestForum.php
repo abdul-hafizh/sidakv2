@@ -129,6 +129,7 @@ class RequestForum
    }
 
    public static function checkValidate($id){
+      
 
        $data = TopicDetail::where('topic_id',$id)->count();
        if($data > 0)
@@ -168,7 +169,7 @@ class RequestForum
           $temp[$key]['id'] = $val->id;
           $temp[$key]['username'] = $val->created_by;
           $temp[$key]['photo'] = RequestAuth::photoUser($val->created_by);
-          $temp[$key]['action'] = RequestKendala::CheckAction($val->created_by);
+          $temp[$key]['action'] = RequestForum::CheckAction($val->created_by);
           $temp[$key]['messages'] = $val->messages; 
           $temp[$key]['deleted'] = true;
        } 
