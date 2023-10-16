@@ -23,7 +23,7 @@ class NotificationApiController extends Controller
         {
           $query = Notification::where('from','pusat')->Orwhere('from','admin')->orderBy('created_at', 'DESC');
         }else{
-         $query = Notification::orderBy('created_at', 'DESC');
+         $query = Notification::where('sender', Auth::User()->username)->orderBy('created_at', 'DESC');
 
         }  
          if($request->per_page !='all')
