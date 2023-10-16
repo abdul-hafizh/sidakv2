@@ -256,7 +256,11 @@ class PenyelesaianApiController extends Controller
         $today = Carbon::now();
         $formattedDate = $today->format('Y-m-d');
 
-        $result = Periode::where('slug', $id)
+        $result = Periode::rightJoin('periode_extension', function($join) {
+                $join->on('periode.semester', '=', 'periode_extension.semester')
+                     ->on('periode.year', '=', 'periode_extension.year');
+                })    
+            ->where('slug', $id)
             ->where('status', 'Y')
             ->whereDate('startdate', '>=', $formattedDate)
             ->whereDate('enddate', '<=', $formattedDate)
