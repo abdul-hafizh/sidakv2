@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perencanaan/edit/{id}', [PerencanaanController::class, 'edit']);
     Route::get('/perencanaan/detail/{id}', [PerencanaanController::class, 'show']);
     Route::get('/perencanaan/generate_pdf/{id}', [PerencanaanController::class, 'generate_pdf']);
-    Route::get('/pagutarget', [PaguTargetController::class, 'index']);
+    Route::get('/paguapbn', [PaguTargetController::class, 'index']);
     Route::get('/kendala', [KendalaController::class, 'index']);
     Route::get('/kendala/{topic}/{id}', [KendalaController::class, 'show']);
     Route::get('/forum', [ForumController::class, 'index']);
