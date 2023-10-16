@@ -480,6 +480,8 @@
                       if (data_ext.checklist != 'approved') {
                         $('#simpan').hide();
                         showErrorMessageAndRedirectEx();
+                      } else {
+                        $('#simpan').show();
                       }
                   },
                   error: function() {
@@ -501,9 +503,7 @@
           icon: 'error',
           confirmButtonText: 'OK'
       }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.replace('/penyelesaian');
-          }
+          
       });
     }
 
@@ -514,9 +514,7 @@
           icon: 'error',
           confirmButtonText: 'OK'
       }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.replace('/penyelesaian');
-          }
+          
       });
     }
 
