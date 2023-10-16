@@ -469,6 +469,7 @@
         method: 'GET',
         success: function(data_ext) {
           if (data_ext.checklist != 'approved') {
+            $('#simpan').hide();
             Swal.fire({
               title: 'Waktu Pengisian Sudah Habis.',
               text: 'Periksa kembali jadwal input data.',
