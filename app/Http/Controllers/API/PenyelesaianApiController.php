@@ -256,17 +256,27 @@ class PenyelesaianApiController extends Controller
         $today = Carbon::now();
         $formattedDate = $today->format('Y-m-d');
 
-        $result = Periode::rightJoin('periode_extension', function($join) {
-                $join->on('periode.semester', '=', 'periode_extension.semester')
-                     ->on('periode.year', '=', 'periode_extension.year');
-                })
-            ->select('periode.*')
-            ->where('periode.slug', $id)
-            ->where('periode.status', 'Y')
-            ->whereDate('periode.startdate', '>=', $formattedDate)
-            ->whereDate('periode.enddate', '<=', $formattedDate)
-            ->orderBy('periode.created_at', 'desc')
+        $year = substr($id, 0, 4);
+        $semester = substr($id, 4);
+
+        $cek_exten = PeriodeExtension::where('year', $year)
+            ->where('semester', $semester)
+            ->orderBy('created_at', 'desc')
             ->first();
+
+        $result = Periode::where('slug', $id)
+            ->where('status', 'Y')
+            ->whereDate('startdate', '>=', $formattedDate)
+            ->whereDate('enddate', '<=', $formattedDate)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if($cek_exten) {
+            $result = Periode::where('slug', $id)
+                ->where('status', 'Y')                
+                ->orderBy('created_at', 'desc')
+                ->first();
+        } 
 
         return response()->json($result);
     }
