@@ -40,6 +40,9 @@ class RequestBimsos
             if ($filterjs[0]->jenis_sub) {
                 $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
+            if ($filterjs[0]->search_status) {
+                $data->where('status_laporan_id', $filterjs[0]->search_status);
+            }
             if ($filterjs[0]->periode_id) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
             } else {
@@ -89,7 +92,7 @@ class RequestBimsos
             $row[]  = GeneralHelpers::formatDate($val->tgl_bimtek);
             $row[]  = $val->lokasi_bimtek;
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
-            $row[]  = RequestBimsos::getLabelStatus('13', 'false');
+            $row[]  = RequestBimsos::getLabelStatus($val->status_laporan_id, $val->request_edit);
             $row[]  = $edit_url . " " . $delete_url;
 
             $temp[] = $row;
@@ -211,7 +214,7 @@ class RequestBimsos
     public static function fieldReqEdit($request)
     {
         $fields = [
-            'alasan_edit' => $request->alasan_edit,
+            'alasan_edit' => $request->alasan,
             'request_edit' => 'true',
             'status_laporan_id' => 15,
             'modified_by' => Auth::User()->username,
@@ -223,7 +226,7 @@ class RequestBimsos
     public static function fieldReqRevisi($request)
     {
         $fields = [
-            'alasan_edit' => $request->alasan_revisi,
+            'alasan_edit' => $request->alasan,
             'request_edit' => 'false',
             'status_laporan_id' => 15,
             'modified_by' => Auth::User()->username,
@@ -244,6 +247,21 @@ class RequestBimsos
         return $fields;
     }
 
+    public static function fieldLogRequest($request)
+    {
+        $fields = [
+            'kegiatan_id' => $request->id,
+            'jenis_kegiatan' => $request->jenis_kegiatan,
+            'type' => $request->type,
+            'alasan_request' => $request->alasan,
+            'username' => Auth::User()->username,
+            'created_at' => date('Y-m-d H:i:s'),
+            'created_by' => Auth::User()->name
+        ];
+
+        return $fields;
+    }
+
     public static function getLabelSubMenu($status)
     {
         if ($status == 'is_tenaga_pendamping')
@@ -256,17 +274,17 @@ class RequestBimsos
     }
     public static function getLabelStatus($status, $requestEdit)
     {
-        if ($status == 13) {
+        if ($status == "13") {
             if ($requestEdit === "false") {
                 return "Draft";
             } elseif ($requestEdit === "true") {
                 return "Draft (Edit)";
             }
-        } elseif ($status == 14) {
+        } elseif ($status == "14") {
             if ($requestEdit === "false") {
                 return "Terkirim";
             }
-        } elseif ($status == 15) {
+        } elseif ($status == "15") {
             if ($requestEdit === "false") {
                 return "Request Revision";
             } elseif ($requestEdit === "true") {

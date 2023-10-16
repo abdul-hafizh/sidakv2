@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestBimsos;
+use App\Models\AuditLogRequest;
 use App\Models\Bimsos;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
@@ -53,7 +54,6 @@ class BimsosApiController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
         $validation = ValidationBimsos::validation($request);
         if ($validation) {
             return response()->json($validation, 400);
@@ -254,14 +254,12 @@ class BimsosApiController extends Controller
         $update = RequestBimsos::fieldReqEdit($request);
         $results = Bimsos::where('id', $id)->update($update);
 
-        // if ($results) {
-        //     $type = 'perencanaan';
-        //     $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Perencanaan Tahun ' . $_res->periode_id;
-        //     $notif = RequestNotification::fieldsData($type, $messages_desc);
-        //     Notification::create($notif);
+        if ($results) {
+            $request->merge(['id' => $id]);
+            $dataLog = RequestBimsos::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
+        }
 
-        //     $messages['messages'] = true;
-        // }
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }
 
