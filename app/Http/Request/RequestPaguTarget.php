@@ -102,26 +102,6 @@ class RequestPaguTarget
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
-            
-            foreach($options as $rows => $row)
-            {
-               if($row->action == 'update')
-               {
-                    if($row->checked == true)
-                    {
-                            
-                              
-                        $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
-                    }    
-
-               } 
-               
-                if($row->action == 'delete')
-                {
-                    if($row->checked == true)
-                    {
-                        
-                        $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
             foreach ($options as $rows => $row) {
                 if ($row->action == 'update') {
