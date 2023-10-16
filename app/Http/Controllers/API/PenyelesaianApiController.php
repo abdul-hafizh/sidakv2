@@ -11,9 +11,11 @@ use App\Models\Penyelesaian;
 use App\Models\AuditLogRequest;
 use App\Models\Periode;
 use App\Models\PeriodeExtension;
+use App\Models\Notification;
 use App\Http\Controllers\Controller;
 use App\Http\Request\RequestPenyelesaian;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestNotification;
 use App\Http\Request\Validation\ValidationPenyelesaian;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
@@ -348,6 +350,12 @@ class PenyelesaianApiController extends Controller
             $request->merge(['id' => $id]);
             $dataLog = RequestPenyelesaian::fieldLogRequest($request);
             $saveLog = AuditLogRequest::create($dataLog);
+
+            $type = 'penyelesaian';
+            $url = 'penyelesaian';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Requet Dokumen';
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
+            Notification::create($notif);            
         }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
