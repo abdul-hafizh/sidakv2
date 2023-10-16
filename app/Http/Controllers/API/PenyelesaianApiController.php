@@ -8,6 +8,7 @@ use Response;
 use Illuminate\Http\Request;
 use App\Models\Penyelesaian;
 use App\Models\AuditLogRequest;
+use App\Models\PeriodeExtension;
 use App\Http\Controllers\Controller;
 use App\Http\Request\RequestPenyelesaian;
 use App\Http\Request\RequestAuth;
@@ -244,6 +245,20 @@ class PenyelesaianApiController extends Controller
             ->where('penyelesaian.id', $id)
             ->orderBy('log.id', 'desc')
             ->get();
+
+        return response()->json($result);
+    }
+
+    public function cekPeriode($id)
+    {        
+        $year = substr($id, 0, 4);
+        $semester = substr($id, 4);
+
+        $result = PeriodeExtension::where('year', $year)
+            ->where('checklist', 'approved')
+            ->where('semester', $semester)
+            ->where('daerah_id', Auth::User()->daerah_id)
+            ->first();
 
         return response()->json($result);
     }
