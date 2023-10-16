@@ -260,6 +260,7 @@ class PenyelesaianApiController extends Controller
                 $join->on('periode.semester', '=', 'periode_extension.semester')
                      ->on('periode.year', '=', 'periode_extension.year');
                 })
+            ->select('periode.*')
             ->where('periode.slug', $id)
             ->where('periode.status', 'Y')
             ->whereDate('periode.startdate', '>=', $formattedDate)
