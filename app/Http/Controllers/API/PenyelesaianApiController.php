@@ -5,9 +5,11 @@ namespace App\Http\Controllers\API;
 use Auth;
 use File;
 use Response;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Penyelesaian;
 use App\Models\AuditLogRequest;
+use App\Models\Periode;
 use App\Models\PeriodeExtension;
 use App\Http\Controllers\Controller;
 use App\Http\Request\RequestPenyelesaian;
@@ -251,13 +253,31 @@ class PenyelesaianApiController extends Controller
 
     public function cekPeriode($id)
     {        
+        $today = Carbon::now();
+        $formattedDate = $today->format('Y-m-d');
+
+        $result = Periode::where('slug', $id)
+            ->where('status', 'Y')
+            ->whereDate('startdate', '>=', $formattedDate)
+            ->whereDate('enddate', '<=', $formattedDate)
+            ->first();
+
+        return response()->json($result);
+    }
+
+    public function cekPeriodeEx($id)
+    {        
         $year = substr($id, 0, 4);
         $semester = substr($id, 4);
+
+        $today = Carbon::now();
+        $formattedDate = $today->format('Y-m-d');
 
         $result = PeriodeExtension::where('year', $year)
             ->where('checklist', 'approved')
             ->where('semester', $semester)
-            ->where('daerah_id', Auth::User()->daerah_id)
+            ->whereDate('extensiondate', '<=', $formattedDate)
+            ->where('daerah_id', Auth::user()->daerah_id)
             ->first();
 
         return response()->json($result);

@@ -461,34 +461,54 @@
     })    
 
     $('#periode_id_mdl').on('change', function() {
+
       var val_periode = $('#periode_id_mdl').val();
       getAnggaran(val_periode, $('#sub_menu_slug').val());  
-
+    
       $.ajax({
         url: BASE_URL + '/api/penyelesaian/cekPeriode/' + val_periode,
         method: 'GET',
         success: function(data_ext) {
-          if (data_ext.checklist != 'approved') {
-            $('#simpan').hide();
-            Swal.fire({
-              title: 'Waktu Pengisian Sudah Habis.',
-              text: 'Periksa kembali jadwal input data.',
-              icon: 'error',
-              confirmButtonText: 'OK'
-  
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.replace('/penyelesaian');
-              }
-            });
+          if (data_ext.status != 'Y') {
+              $('#simpan').hide();
+              showErrorMessageAndRedirect();
+          } else {
+              $.ajax({
+                  url: BASE_URL + '/api/penyelesaian/cekPeriodeEx/' + val_periode,
+                  method: 'GET',
+                  success: function(data_ext) {
+                      if (data_ext.checklist != 'approved') {
+                        $('#simpan').hide();
+                        showErrorMessageAndRedirect();
+                      }
+                  },
+                  error: function() {
+                    handleAjaxError();
+                  }
+              });
           }
         },
         error: function() {
-          alert('Gagal mengambil data.');
+          handleAjaxError();
         }
-      })      
+      });
+    });
 
-    })    
+    function showErrorMessageAndRedirect() {
+      Swal.fire({
+          title: 'Waktu Pengisian Sudah Habis.',
+          text: 'Periksa kembali jadwal input data.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+      }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.replace('/penyelesaian');
+          }
+      });
+    }
+
+    function handleAjaxError() {
+    }  
 
     function getAnggaran(periode_id, jenis) {
       $.ajax({

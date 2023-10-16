@@ -227,6 +227,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('penyelesaian/edit/{id}', [PenyelesaianApiController::class, 'edit']);
     Route::get('penyelesaian/log/{id}', [PenyelesaianApiController::class, 'log']);
     Route::get('penyelesaian/cekPeriode/{id}', [PenyelesaianApiController::class, 'cekPeriode']);
+    Route::get('penyelesaian/cekPeriodeEx/{id}', [PenyelesaianApiController::class, 'cekPeriodeEx']);
     Route::put('penyelesaian/{id}', [PenyelesaianApiController::class, 'update']);
     Route::post('penyelesaian/selected', [PenyelesaianApiController::class, 'deleteSelected']);
     Route::put('penyelesaian/request_edit/{id}', [PenyelesaianApiController::class, 'request_edit']);
