@@ -9,6 +9,7 @@ use App\Helpers\GeneralHelpers;
 use App\Models\Perencanaan;
 use App\Models\Penyelesaian;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestSettingApps;
 use Illuminate\Support\Facades\Validator;
 
@@ -22,8 +23,8 @@ class RequestPenyelesaian
         $tahunSemester = GeneralHelpers::semesterToday();
         $getRequest = $request->all();
         $access = RequestAuth::Access();
-        $column_order = ['', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
-        $column_search = ['nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
+        $column_order = ['', 'daerah_id', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
+        $column_search = ['daerah_id', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
         $order = ['created_at' => 'desc'];
 
         $data = DB::table('penyelesaian');       
@@ -95,12 +96,13 @@ class RequestPenyelesaian
             if(!empty($val->alasan_edit) || !empty($val->alasan_edit)) {
                 $log_url =  '<button id="Log" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
             }
-            $edit_url =  '<button id="Edit" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+            $edit_url = '<button id="Edit" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
             $numberNext++;
             $row   = array();
             $row[] = $val->id;
+            $row[] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $row[] = $val->nama_kegiatan;
             $row[] = $val->sub_menu;
             $row[] = GeneralHelpers::formatDate($val->tgl_kegiatan);

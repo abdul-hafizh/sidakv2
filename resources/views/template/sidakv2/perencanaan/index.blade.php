@@ -42,7 +42,7 @@
 
     <div class="row">
         <div class="col-sm-2" style="margin-bottom: 9px;">
-            <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
+            <select class="selectpicker" data-style="btn-default" id="periode_id" title="Pilih Periode"></select>
         </div> 	
         <div class="col-sm-2" style="margin-bottom: 9px;">
             <select class="selectpicker" name="type_daerah" data-style="btn-default" id="type_daerah" title="Pilih Type Wilayah">
@@ -71,8 +71,8 @@
         </div> 	
         <div class="col-lg-2">
             <div class="btn-group">
-                <button id="Search" type="button" title="Cari" class="btn btn-info"><i class="fa fa-filter"></i> Cari</button>
-                <button id="Reset" type="button" title="Reset" class="btn btn-info"><i class="fa fa-refresh"></i></button>
+                <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+                <button id="Reset" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
             </div>
         </div>
     </div> 	

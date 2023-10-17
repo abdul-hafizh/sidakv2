@@ -328,13 +328,13 @@
     <div class="modal-content">
       <div class="modal-header bg-primary">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Log Data</h4>
+        <h4 class="modal-title">Log Data Perbaikan/Request Edit</h4>
       </div>
 
       <div class="modal-body" style="height: 500px; overflow-y: auto;">        
         <div class="row">
           <div class="card-body table-responsive">
-            <table id="dataLog" class="table table-hover text-nowrap">
+            <table id="dataLog" class="table table-hover text-nowrap" style="margin: 20px">
               <thead>
                 <tr>
                   <th>No</th>
@@ -722,9 +722,9 @@
               if (data.request_edit == 'false') {
                 $('#update-' + id).hide();
                 $('#kirim-' + id).hide();
-                $('#approve_edit').hide();
+                $('#approve_edit-' + id).hide();
               } else {
-                $('#approve_edit').show();
+                $('#approve_edit-' + id).show();
                 $('#update-' + id).hide();
                 $('#kirim-' + id).hide();
               }
@@ -1047,13 +1047,16 @@
         tableBody.empty();
 
         $.each(data_log, function(index, val) {          
+
+          var date = new Date(val.created_at);
+
           var row = '<tr>' +
             '<td>' + (index + 1) + '</td>' +
             '<td>' + val.nama_kegiatan + '</td>' +
             '<td>' + val.sub_menu + '</td>' +
             '<td>' + val.alasan_request + '</td>' +
             '<td>' + val.created_by + '</td>' +
-            '<td>' + val.created_at + '</td>' +
+            '<td>' + date.toLocaleDateString() + '</td>' +
             '</tr>';
 
           tableBody.append(row);
