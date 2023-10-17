@@ -384,6 +384,18 @@ class PenyelesaianApiController extends Controller
         $update = RequestPenyelesaian::fieldApprEdit($request);
         $results = Penyelesaian::where('id', $id)->update($update);
 
+        if($results) {
+            $request->merge(['id' => $id]);
+            $dataLog = RequestPenyelesaian::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
+
+            $type = 'penyelesaian';
+            $url = 'penyelesaian';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Request Edit Telah Diapprove';
+            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
+            Notification::create($notif);
+        }
+
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }
 }

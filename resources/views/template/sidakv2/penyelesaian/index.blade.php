@@ -64,23 +64,20 @@
 </style>
 
 <section class="content-header pd-left-right-15">
-	<div class="form-group row">
-		<div class="col-sm-3">
-			<label>Periode </label>
-			<select class="form-control border-radius-20" name="periode_id2" id="periode_id2" ></select>
+	<div class="row">
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<select class="selectpicker" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode"></select>
 		</div>
-		<div class="col-sm-3">
-			<label>Jenis Kegiatan </label>
-			<select class="form-control border-radius-20" name="jenis_sub" id="jenis_sub">
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
 				<option value="">Pilih Jenis Kegiatan</option>
 				<option value="identifikasi">Identifikasi Penyelesaian</option>
 				<option value="penyelesaian">Penyelesaian Masalah</option>
 				<option value="evaluasi">Evaluasi Penyelesaian</option>
 			</select>
 		</div>
-		<div class="col-sm-3">
-			<label>Status </label>
-			<select class="form-control border-radius-20" name="search_status" id="search_status">
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<select class="selectpicker" name="search_status" id="search_status">
 				<option value="">Pilih Status</option>
 				<option value="13">Draft</option>
 				<option value="15">Request Edit</option>
@@ -88,17 +85,17 @@
 				<option value="13">Perlu Perbaikan</option>
 			</select>
 		</div>
-		<div class="col-sm-3">
-			<label>Search</label>
-			<div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
-				<span class="input-group-btn">
-					<button id="Search" type="button" class="btn btn-search btn-flat height-35"><i class="fa fa-search"></i></button>
-					<button id="Clear" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-times-circle"></i></button>
-				</span>
-			</div>
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<input type="text" id="search-input" placeholder="Cari" class="form-control border-radius-13">
 		</div>
+		<div class="col-lg-2">
+            <div class="btn-group">
+                <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+                <button id="Clear" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
+            </div>
+        </div>
 	</div>
+
 	<div class="col-sm-4 pull-left padding-default full dataTables_wrapper">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
@@ -139,6 +136,7 @@
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>
+							<th><span class="border-left-table">Nama Daerah </span> </th>
 							<th><span class="border-left-table">Nama Kegiatan </span> </th>
 							<th><span class="border-left-table">Sub Kegiatan </span> </th>
 							<th><span class="border-left-table">Tanggal Kegiatan </span></th>
