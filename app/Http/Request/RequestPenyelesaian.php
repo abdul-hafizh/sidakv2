@@ -18,39 +18,56 @@ class RequestPenyelesaian
     {
         $temp = array();
         $temp2 = array();
+        $validStatus = [13, 14, 15];
         $tahunSemester = GeneralHelpers::semesterToday();
         $getRequest = $request->all();
         $access = RequestAuth::Access();
         $column_order = ['', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
         $column_search = ['nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
-        $order = ['created_date' => 'DESC'];
+        $order = ['created_at' => 'desc'];
 
         $data = DB::table('penyelesaian');       
 
         if ($access == 'daerah' || $access == 'province') {
             $data->where('daerah_id', Auth()->User()->daerah_id);
         }
-
         if ($request->filled('length')) {
             $data->offset($request->input('start'))->limit($request->input('length'));
         }
 
         $searchColumn = $request->input('columns');
+
         if (!empty($searchColumn[0]['search']['value'])) {
             $value = $searchColumn[0]['search']['value'];
             $filterjs = json_decode($value);
 
-            if ($filterjs[0]->jenis_sub) {
+            if (!empty($filterjs[0]->jenis_sub)) {
                 $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
-            if ($filterjs[0]->periode_id) {
+
+            if (in_array($filterjs[0]->search_status, $validStatus)) {
+                if ($filterjs[0]->search_status_text == 'Perlu Perbaikan') {
+                    $data->where('status_laporan_id', $filterjs[0]->search_status)
+                        ->where('request_edit', 'reject');
+                } elseif ($filterjs[0]->search_status_text == 'Draft') {
+                    $data->where('status_laporan_id', $filterjs[0]->search_status)
+                        ->where(function ($query) {
+                            $query->where('request_edit', 'false')
+                                ->orWhere('request_edit', 'true');
+                        });
+                } else {
+                    $data->where('status_laporan_id', $filterjs[0]->search_status);
+                }
+            }
+
+            if (!empty($filterjs[0]->periode_id)) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
             } else {
                 $data->where('periode_id', $tahunSemester);
             }
         } else {
             $data->where('periode_id', $tahunSemester);
-        }        
+        }
 
         $searchValue = $request->input('search.value');
         if ($searchValue) {
@@ -300,8 +317,6 @@ class RequestPenyelesaian
                 return "Draft";
             } elseif ($requestEdit === "true") {
                 return "Draft (Edit)";
-            } elseif ($requestEdit === "revisi") {
-                return "Draft (Revision)";
             } elseif ($requestEdit === "reject") {
                 return "Perlu Perbaikan";
             }
@@ -310,14 +325,11 @@ class RequestPenyelesaian
                 return "Terkirim";
             }
         } elseif ($status === 15) {
-            if ($requestEdit === "false") {
-                return "Terkirim";
-            } elseif ($requestEdit === "true") {
+            if ($requestEdit === "true") {
                 return "Request Edit";
             }
-        } elseif ($status === 16 && $requestEdit === "false") {
-            return "Approved";
         }
+        
         return "Label tidak ditemukan";
     }
 }
