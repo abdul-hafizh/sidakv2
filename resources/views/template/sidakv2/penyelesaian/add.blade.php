@@ -113,13 +113,11 @@
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">File PDF Profile Pelaku Usaha</h5>
+                          <button type="button" class="close" onclick="$('#pdfProfile').modal('hide');">&times;</button>
+                          <h5 class="modal-title">File PDF Profile Pelaku Usaha</h5>
                         </div>
                         <div class="modal-body">
-                            <iframe id="frameProfile" src="" frameborder="0" width="100%" height="500"></iframe>
-                        </div>
-                        <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                          <iframe id="frameProfile" src="" frameborder="0" width="100%" height="500"></iframe>
                         </div> 
                       </div>
                     </div>
@@ -140,13 +138,11 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title">File PDF Daftar Hadir</h5>
+                        <button type="button" class="close" onclick="$('#pdfPeserta').modal('hide');">&times;</button>
+                        <h5 class="modal-title">File PDF Daftar Hadir</h5>
                       </div>
                       <div class="modal-body">
-                          <iframe id="framePeserta" src="" frameborder="0" width="100%" height="500"></iframe>
-                      </div>
-                      <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <iframe id="framePeserta" src="" frameborder="0" width="100%" height="500"></iframe>
                       </div> 
                     </div>
                   </div>
@@ -164,13 +160,11 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title">File PDF Profile Pelaku Usaha</h5>
+                        <button type="button" class="close" onclick="$('#pdfProfile2').modal('hide');">&times;</button>
+                        <h5 class="modal-title">File PDF Profile Pelaku Usaha</h5>
                       </div>
                       <div class="modal-body">
-                          <iframe id="frameProfile2" src="" frameborder="0" width="100%" height="500"></iframe>
-                      </div>
-                      <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <iframe id="frameProfile2" src="" frameborder="0" width="100%" height="500"></iframe>
                       </div> 
                     </div>
                   </div>
@@ -188,13 +182,11 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
+                        <button type="button" class="close" onclick="$('#pdfNarasumber').modal('hide');">&times;</button>
                         <h5 class="modal-title">File PDF Narasumber</h5>
                       </div>
                       <div class="modal-body">
                         <iframe id="frameNarasumber" src="" frameborder="0" width="100%" height="500"></iframe>
-                      </div>
-                      <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                       </div> 
                     </div>
                   </div>
@@ -212,14 +204,12 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title">File PDF Notula</h5>
+                        <button type="button" class="close" onclick="$('#pdfNotula2').modal('hide');">&times;</button>
+                        <h5 class="modal-title">File PDF Notula</h5>
                       </div>
                       <div class="modal-body">
-                          <iframe id="frameNotula2" src="" frameborder="0" width="100%" height="500"></iframe>
+                        <iframe id="frameNotula2" src="" frameborder="0" width="100%" height="500"></iframe>
                       </div>
-                      <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                      </div> 
                     </div>
                   </div>
                 </div>
@@ -236,13 +226,11 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title">File PDF LKPM</h5>
+                        <button type="button" class="close" onclick="$('#pdfLkpm').modal('hide');">&times;</button>
+                        <h5 class="modal-title">File PDF LKPM</h5>
                       </div>
                       <div class="modal-body">
-                          <iframe id="frameLkpm" src="" frameborder="0" width="100%" height="500"></iframe>
-                      </div>
-                      <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <iframe id="frameLkpm" src="" frameborder="0" width="100%" height="500"></iframe>
                       </div> 
                     </div>
                   </div>
@@ -261,13 +249,11 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title">File PDF Dokumentasi</h5>
+                        <button type="button" class="close" onclick="$('#pdfDoc').modal('hide');">&times;</button>
+                        <h5 class="modal-title">File PDF Dokumentasi</h5>
                       </div>
                       <div class="modal-body">
-                          <iframe id="frameDoc" src="" frameborder="0" width="100%" height="500"></iframe>
-                      </div>
-                      <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                        <iframe id="frameDoc" src="" frameborder="0" width="100%" height="500"></iframe>
                       </div> 
                     </div>
                   </div>
@@ -288,13 +274,11 @@
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">File PDF Notula</h5>
+                          <button type="button" class="close" onclick="$('#pdfNotula').modal('hide');">&times;</button>
+                          <h5 class="modal-title">File PDF Notula</h5>
                         </div>
                         <div class="modal-body">
-                            <iframe id="frameNotula" src="" frameborder="0" width="100%" height="500"></iframe>
-                        </div>
-                        <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                          <iframe id="frameNotula" src="" frameborder="0" width="100%" height="500"></iframe>
                         </div> 
                       </div>
                     </div>
@@ -313,13 +297,11 @@
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">File PDF Evaluasi</h5>
+                          <button type="button" class="close" onclick="$('#pdfEvaluasi').modal('hide');">&times;</button>
+                          <h5 class="modal-title">File PDF Evaluasi</h5>
                         </div>
                         <div class="modal-body">
-                            <iframe id="frameEvaluasi" src="" frameborder="0" width="100%" height="500"></iframe>
-                        </div>
-                        <div class="modal-footer">
-                              <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                          <iframe id="frameEvaluasi" src="" frameborder="0" width="100%" height="500"></iframe>
                         </div> 
                       </div>
                     </div>
@@ -327,18 +309,14 @@
               </div>
             </div>
           </div>
-
         </div>
 
-        <div class="modal-footer">
-          <button class="btn btn-default" data-dismiss="modal">Tutup</button>
-          <button id="simpan" type="button" class="btn btn-primary" style="display: none;">Simpan</button>
-          <button id="update" type="button" class="btn btn-info" style="display: none;">Ubah</button>
-          <button id="kirim" type="button" class="btn btn-warning" style="display: none;">Kirim</button>
-          <button id="approve_edit" type="button" class="btn btn-warning" style="display: none;">Approve Edit</button>
-          <button id="request_edit" type="button" class="btn btn-warning" data-toggle="modal" style="display: none;" data-target="#modal-req-edit">Mengajukan Edit</button>
-          <button id="request_revision" type="button" class="btn btn-warning" data-toggle="modal" style="display: none;" data-target="#modal-req-revision">Mengajukan Revisi</button>
+        <div class="modal-footer modal-add2">
+          <button class="btn btn-default" data-dismiss="modal">Close</button>
+          <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
         </div>
+
+        <div class="modal-footer modal-edit"></div>
 
       </form>
     </div>
@@ -468,58 +446,28 @@
       $.ajax({
         url: BASE_URL + '/api/penyelesaian/cekPeriode/' + val_periode,
         method: 'GET',
-        success: function(data_ext) {
-          if (data_ext.status != 'Y') {
+        success: function(res) {
+          if (res.status != 'Y') {
               $('#simpan').hide();
-              showErrorMessageAndRedirect();
+              Swal.fire({
+                title: 'Periode Input Data Sudah Habis.',
+                text: 'Periksa kembali periode input data.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+              }).then((result) => {});
           } else {
-              $.ajax({
-                  url: BASE_URL + '/api/penyelesaian/cekPeriodeEx/' + val_periode,
-                  method: 'GET',
-                  success: function(data_ext) {
-                      if (data_ext.checklist != 'approved') {
-                        $('#simpan').hide();
-                        showErrorMessageAndRedirectEx();
-                      } else {
-                        $('#simpan').show();
-                      }
-                  },
-                  error: function() {
-                    handleAjaxError();
-                  }
-              });
+            $('#simpan').show();              
           }
         },
         error: function() {
-          handleAjaxError();
+          Swal.fire({
+            title: 'Data tidak ditemukan.',          
+            icon: 'error',
+            confirmButtonText: 'OK'
+          }).then((result) => {});
         }
       });
-    });
-
-    function showErrorMessageAndRedirect() {
-      Swal.fire({
-          title: 'Periode Input Data Sudah Habis.',
-          text: 'Periksa kembali periode input data.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-      }).then((result) => {
-          
-      });
-    }
-
-    function showErrorMessageAndRedirectEx() {
-      Swal.fire({
-          title: 'Periode Tambahan Input Data Sudah Habis.',
-          text: 'Periksa kembali periode input data.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-      }).then((result) => {
-          
-      });
-    }
-
-    function handleAjaxError() {
-    }  
+    }); 
 
     function getAnggaran(periode_id, jenis) {
       $.ajax({
@@ -540,9 +488,9 @@
 
     $('#tambah').on('click', function() {
       $('#judulModalLabel').html('Tambah Data')
-      $('#simpan').show();
-      $('#update').hide();
-      $('#kirim').hide();
+      $('.modal-edit').hide();
+      $('.modal-add2').show();
+      $('#alasan-view').hide();
       $('#approve_edit').hide();
       $('#request_revision').hide();
       $('#request_edit').hide();
@@ -631,6 +579,7 @@
 
     $("#datatable").on("click", ".modalUbah", function() {
       $('#judulModalLabel').html('Ubah Data');
+      $('.modal-add2').hide();
       $('#simpan').hide();
       var form = [
         'periode_id_mdl',
@@ -652,10 +601,13 @@
       $.ajax({
         url: BASE_URL + '/api/penyelesaian/edit/' + id,
         method: 'GET',
-        success: function(data) {          
+        success: function(data) {               
+          footer_modal(id);     
           subMenu(data.sub_menu_slug);
           getPeriode(data.periode_id);
-          getAnggaran(data.periode_id, data.sub_menu_slug);      
+          getAnggaran(data.periode_id, data.sub_menu_slug);    
+          
+          $('.modal-edit').show();
           
           var data_file = {
             peserta: data.lap_peserta,
@@ -710,7 +662,7 @@
           $('#modal-eval').click(function() {
             tampilkanModalPdf(data.lap_evaluasi, 'Evaluasi');
           });
-
+          
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
           $('#tgl_kegiatan').val(data.tgl_kegiatan);
@@ -718,69 +670,69 @@
           $('#biaya').val(data.biaya);
           $('#jml_perusahaan').val(data.jml_perusahaan);
 
-          if(data.status_laporan_id == 13 && data.request_edit == 'reject') {    
-            $('#alasan-view').show();
-            $('#alasan-revisi-view').html('Alasan Perbaikan: ' + data.alasan_revisi);
-          }
-
-          if(data.status_laporan_id == 15 && data.request_edit == 'true') {       
-            $('#alasan-view').show();
-            $('#alasan-edit-view').html('Alasan Edit: ' + data.alasan_edit);
+          if (data.status_laporan_id == 13 && data.request_edit == 'reject') {
+              $('#alasan-view').show();
+              $('#alasan-revisi-view').html('Alasan Perbaikan: ' + data.alasan_revisi);
+          } else if (data.status_laporan_id == 15 && data.request_edit == 'true') {
+              $('#alasan-view').show();
+              $('#alasan-edit-view').html('Alasan Edit: ' + data.alasan_edit);
+          } else {
+              $('#alasan-view').hide();
           }
 
           if (data.access == 'daerah' || data.access == 'province') {
-            $('#approve_edit').hide();
-            $('#request_revision').hide();
+            $('#approve_edit-' + id).hide();
+            $('#request_revision-' + id).hide();
             if (data.status_laporan_id == 13) {
-              $('#update').show();
-              $('#kirim').show();
-              $('#request_edit').hide();
+              $('#update-' + id).show();
+              $('#kirim-' + id).show();
+              $('#request_edit-' + id).hide();
               $('#FormSubmit input').removeAttr('readonly');
               $('#FormSubmit select').removeAttr('disabled');
             } else if (data.status_laporan_id == 15) {
               if (data.request_edit == 'false') {
-                $('#update').show();
-                $('#kirim').show();
+                $('#update-' + id).show();
+                $('#kirim-' + id).show();
                 $('#FormSubmit input').removeAttr('readonly');
                 $('#FormSubmit select').removeAttr('disabled');
               } else {
-                $('#update').hide();
-                $('#kirim').hide();
+                $('#update-' + id).hide();
+                $('#kirim-' + id).hide();
                 $('#FormSubmit input').attr('readonly', 'readonly');
                 $('#FormSubmit select').attr('disabled', 'true');
               }
-              $('#request_edit').hide();
+              $('#request_edit-' + id).hide();
             } else {
-              $('#update').hide();
-              $('#kirim').hide();
-              $('#request_edit').show();
+              $('#update-' + id).hide();
+              $('#kirim-' + id).hide();
+              $('#request_edit-' + id).show();
               $('#FormSubmit input').attr('readonly', 'readonly');
               $('#FormSubmit select').attr('disabled', 'true');
             }
           } else {
             $('#FormSubmit input').attr('readonly', 'readonly');
             $('#FormSubmit select').attr('disabled', 'true');
-            $('#request_edit').hide();
+            $('#request_edit-' + id).hide();
             if (data.status_laporan_id == 13) {
-              $('#update').hide();
-              $('#kirim').hide();
-              $('#request_revision').hide();
+              $('#update-' + id).hide();
+              $('#kirim-' + id).hide();
+              $('#request_revision-' + id).hide();
 
             } else if (data.status_laporan_id == 15) {
               if (data.request_edit == 'false') {
-                $('#update').hide();
-                $('#kirim').hide();
+                $('#update-' + id).hide();
+                $('#kirim-' + id).hide();
                 $('#approve_edit').hide();
               } else {
                 $('#approve_edit').show();
-                $('#update').hide();
-                $('#kirim').hide();
+                $('#update-' + id).hide();
+                $('#kirim-' + id).hide();
               }
               $('#request_revision').hide();
             } else {
-              $('#update').hide();
-              $('#kirim').hide();
-              $('#request_revision').show();
+              $('#update-' + id).hide();
+              $('#kirim-' + id).hide();
+              $('#request_revision-' + id).show();
             }
           }          
         }
@@ -838,136 +790,7 @@
                 alert('Gagal mengambil file PDF.');
             }
         });
-      }      
-
-      $("#update").click(() => {
-        var data = $("#FormSubmit").serializeArray();
-        var form = [
-          'periode_id_mdl',
-          'sub_menu_slug',
-          'nama_kegiatan',
-          'tgl_kegiatan',
-          'lokasi',
-          'biaya',
-          'jml_perusahaan'
-        ];
-        data.push({
-          name: 'status',
-          value: '13'
-        });
-        $.ajax({
-          type: "PUT",
-          url: BASE_URL + '/api/penyelesaian/' + id,
-          data: data,
-          cache: false,
-          dataType: "json",
-          success: (respons) => {
-            Swal.fire({
-              title: 'Sukses!',
-              text: 'Berhasil Disimpan',
-              icon: 'success',
-              confirmButtonText: 'OK'
-
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.replace('/penyelesaian');
-              }
-            });
-          },
-          error: (respons) => {
-            errors = respons.responseJSON;
-            for (let i = 0; i < form.length; i++) {
-              const field = form[i];
-              if (errors.messages[field]) {
-                $('#' + field + '-alert').addClass('has-error');
-                $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
-              } else {
-                $('#' + field + '-alert').removeClass('has-error');
-                $('#' + field + '-messages').removeClass('help-block').html('');
-              }
-            }
-          }
-        });
-      });
-
-      $("#kirim").click(() => {
-        var data = $("#FormSubmit").serializeArray();
-        var form = [
-          'periode_id_mdl',
-          'sub_menu_slug',
-          'nama_kegiatan',
-          'tgl_kegiatan',
-          'lokasi',
-          'biaya',
-          'jml_perusahaan'
-        ];
-        data.push({
-          name: 'status',
-          value: '14'
-        });
-        $.ajax({
-          type: "PUT",
-          url: BASE_URL + '/api/penyelesaian/' + id,
-          data: data,
-          cache: false,
-          dataType: "json",
-          success: (respons) => {
-            Swal.fire({
-              title: 'Sukses!',
-              text: 'Berhasil Terkirim Ke Pusat.',
-              icon: 'success',
-              confirmButtonText: 'OK'
-
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.replace('/penyelesaian');
-              }
-            });
-          },
-          error: (respons) => {
-            errors = respons.responseJSON;
-            for (let i = 0; i < form.length; i++) {
-              const field = form[i];
-              if (errors.messages[field]) {
-                $('#' + field + '-alert').addClass('has-error');
-                $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
-              } else {
-                $('#' + field + '-alert').removeClass('has-error');
-                $('#' + field + '-messages').removeClass('help-block').html('');
-              }
-            }
-          }
-        });
-      });
-
-      $("#approve_edit").click(() => {
-        var data = {
-          "status": 13,
-          "request_edit": "false",
-        };
-        $.ajax({
-          type: "PUT",
-          url: BASE_URL + '/api/penyelesaian/approve_edit/' + id,
-          data: data,
-          cache: false,
-          dataType: "json",
-          success: (respons) => {
-            Swal.fire({
-              title: 'Sukses!',
-              text: 'Berhasil Disimpan',
-              icon: 'success',
-              confirmButtonText: 'OK'
-
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.location.replace('/penyelesaian');
-              }
-            });
-
-            //
-          }
-        });
-      });
+      }            
 
       $("#modal_edit").click(() => {
         Swal.fire({
@@ -1066,6 +889,141 @@
               }
             });
           },
+        });
+      }
+
+      function footer_modal(id_modal) {
+        let row = ``;
+        row += `<button class="btn btn-default" data-dismiss="modal">Close</button>`;
+        row += `<button id="simpan" type="button" class="btn btn-primary" style="display: none;">Simpan</button>`;
+
+        row += `<button id="update-` + id_modal + `" type="button" class="btn btn-info" style="display: none;">Ubah</button>`;
+        row += `<button id="kirim-` + id_modal + `" type="button" class="btn btn-warning" style="display: none;">Kirim</button>`;
+        row += `<button id="approve_edit-` + id_modal + `" type="button" class="btn btn-warning" style="display: none;">Approve Edit</button>`;
+        row += `<button id="request_edit-` + id_modal + `" type="button" class="btn btn-warning" data-toggle="modal" style="display: none;" data-target="#modal-req-edit">Mengajukan Edit</button>`;
+        row += `<button id="request_revision-` + id_modal + `" type="button" class="btn btn-warning" data-toggle="modal" style="display: none;" data-target="#modal-req-revision">Mengajukan Revisi</button>`;
+        $('.modal-edit').html(row);
+
+        $('#update-' + id_modal).on('click', function() {
+          var formData = new FormData($('#FormSubmit')[0]);
+          var form = [
+            'periode_id_mdl',
+            'sub_menu_slug',
+            'nama_kegiatan',
+            'tgl_kegiatan',
+            'lokasi',
+            'biaya',
+            'jml_perusahaan'
+          ];
+          formData.append("status", 13);
+          $.ajax({
+            type: "POST",
+            url: BASE_URL + '/api/penyelesaian/update/' + id_modal,
+            data: formData,
+            processData: false,
+            contentType: false,            
+            success: (respons) => {
+              Swal.fire({
+                title: 'Sukses!',
+                text: 'Berhasil Disimpan',
+                icon: 'success',
+                confirmButtonText: 'OK'
+
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.replace('/penyelesaian');
+                }
+              });
+            },
+            error: (respons) => {
+              errors = respons.responseJSON;
+              for (let i = 0; i < form.length; i++) {
+                const field = form[i];
+                if (errors.messages[field]) {
+                  $('#' + field + '-alert').addClass('has-error');
+                  $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
+                } else {
+                  $('#' + field + '-alert').removeClass('has-error');
+                  $('#' + field + '-messages').removeClass('help-block').html('');
+                }
+              }
+            }
+          });
+        });
+
+        $('#kirim-' + id_modal).on('click', function() {
+          console.log(id_modal);
+          var formData = new FormData($('#FormSubmit')[0]);
+          var form = [
+            'periode_id_mdl',
+            'sub_menu_slug',
+            'nama_kegiatan',
+            'tgl_kegiatan',
+            'lokasi',
+            'biaya',
+            'jml_perusahaan'
+          ];
+          formData.append("status", 14);
+          $.ajax({
+            type: "POST",
+            url: BASE_URL + '/api/penyelesaian/kirim/' + id_modal,
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: (respons) => {
+              Swal.fire({
+                title: 'Sukses!',
+                text: 'Berhasil Disimpan',
+                icon: 'success',
+                confirmButtonText: 'OK'
+
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.replace('/penyelesaian');
+                }
+              });
+            },
+            error: (respons) => {
+              errors = respons.responseJSON;
+              for (let i = 0; i < form.length; i++) {
+                const field = form[i];
+                if (errors.messages[field]) {
+                  $('#' + field + '-alert').addClass('has-error');
+                  $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
+                } else {
+                  $('#' + field + '-alert').removeClass('has-error');
+                  $('#' + field + '-messages').removeClass('help-block').html('');
+                }
+              }
+            }
+          });
+        });
+
+        $("#approve_edit-" + id_modal).click(() => {
+          var data = {
+            "status": 13,
+            "request_edit": "true",
+          };
+          $.ajax({
+            type: "PUT",
+            url: BASE_URL + '/api/penyelesaian/approve_edit/' + id_modal,
+            data: data,
+            cache: false,
+            dataType: "json",
+            success: (respons) => {
+              Swal.fire({
+                title: 'Sukses!',
+                text: 'Berhasil Disimpan',
+                icon: 'success',
+                confirmButtonText: 'OK'
+
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  window.location.replace('/penyelesaian');
+                }
+              });
+            }
+          });
         });
       }
 
@@ -1404,7 +1362,7 @@
           row_profile +=`<div class="modal-dialog">`;
               row_profile +=`<div class="modal-content">`;
                   row_profile +=`<div class="modal-header">`;
-                        row_profile +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_profile +=`<button type="button" class="close" onclick="$('#modal-show-profile').modal('hide');">&times;</button>`;
                         row_profile +=`<h4 class="modal-title">Lihat File Profile</h4>`;
                   row_profile +=`</div>`;   
                   row_profile +=`<div class="modal-body">`; 
@@ -1413,9 +1371,6 @@
                     row_profile +=`<embed src="`+file_profile+`#page=1&zoom=65" width="575" height="500">`;
                   }     
                   row_profile +=`</div>`;   
-                  row_profile +=`<div class="modal-footer">`;
-                        row_profile +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_profile +=`</div>`;             
               row_profile +=`</div>`;
         row_profile +=`</div>`; 
 

@@ -82,10 +82,10 @@
 			<label>Status </label>
 			<select class="form-control border-radius-20" name="search_status" id="search_status">
 				<option value="">Pilih Status</option>
-				<option value="1">Draft</option>
-				<option value="2">Request Edit</option>
-				<option value="3">Terkirim</option>
-				<option value="4">Perlu Perbaikan</option>
+				<option value="13">Draft</option>
+				<option value="15">Request Edit</option>
+				<option value="14">Terkirim</option>
+				<option value="13">Perlu Perbaikan</option>
 			</select>
 		</div>
 		<div class="col-sm-3">
@@ -283,6 +283,7 @@
 				search_input: $("#search-input").val(),
 				jenis_sub: $("#jenis_sub").val(),
 				search_status: $("#search_status").val(),
+				search_status_text: $("#search_status option:selected").text(),
 				periode_id: $("#periode_id2").val()
 			}, ];
 			table.search(this.value).draw();
@@ -293,6 +294,7 @@
 				search_input: $("#search-input").val(),
 				jenis_sub: $("#jenis_sub").val(),
 				search_status: $("#search_status").val(),
+				search_status_text: $("#search_status option:selected").text(),
 				periode_id: $("#periode_id2").val()
 			}, ];
 
