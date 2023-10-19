@@ -46,6 +46,10 @@ class RequestPenyelesaian
                 $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
 
+            if (!empty($filterjs[0]->daerah_id)) {
+                $data->where('daerah_id', $filterjs[0]->daerah_id);
+            }
+
             if (in_array($filterjs[0]->search_status, $validStatus)) {
                 if ($filterjs[0]->search_status_text == 'Perlu Perbaikan') {
                     $data->where('status_laporan_id', $filterjs[0]->search_status)

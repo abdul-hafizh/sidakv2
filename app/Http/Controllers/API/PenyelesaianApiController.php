@@ -63,6 +63,15 @@ class PenyelesaianApiController extends Controller
 
         } else {
 
+            $existingData = Penyelesaian::where('periode_id', $request->periode_id_mdl)
+                ->where('daerah_id', Auth::User()->daerah_id)
+                ->where('sub_menu_slug', $request->sub_menu_slug)
+                ->first();
+
+            if ($existingData) {
+                return response()->json(['status' => false, 'message' => 'Data sudah ada pada semester ini.']);
+            }
+
             $insert = RequestPenyelesaian::fieldsData($request);
 
             if ($request->hasFile('lap_profile')) {

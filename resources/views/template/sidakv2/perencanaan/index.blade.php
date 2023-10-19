@@ -269,7 +269,7 @@
             let type_daerah = $('#type_daerah').val();
             let url = type_daerah === 'Provinsi' ? 'select-province' : 'select-kabupaten';
 
-             $.ajax({
+            $.ajax({
               url: BASE_URL +'/api/' + url,
               method: 'GET',
               dataType: 'json',
@@ -285,11 +285,9 @@
                  select.selectpicker('refresh');
               },
               error: function(error) {
-              console.error(error);
+                console.error(error);
               }
-          });
-
-            
+            });
         });
 
         $('#row_page').on('change', function() {
