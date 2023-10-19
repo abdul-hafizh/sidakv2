@@ -659,16 +659,25 @@
                     cache: false,
                     dataType: "json",
                     success: (respons) =>{
-                         Swal.fire({
-                              title: 'Sukses!',
-                              text: pesan,
-                              icon: 'success',
-                              confirmButtonText: 'OK'                        
-                         }).then((result) => {
-                              if (result.isConfirmed) {
-                                   window.location.replace('/perencanaan');
-                              }
-                         });
+                         if(respons.status) {
+                              Swal.fire({
+                                   title: 'Sukses!',
+                                   text: pesan,
+                                   icon: 'success',
+                                   confirmButtonText: 'OK'                        
+                              }).then((result) => {
+                                   if (result.isConfirmed) {
+                                        window.location.replace('/perencanaan');
+                                   }
+                              });
+                         } else {
+                              Swal.fire({
+                                   title: 'Gagal Mengolah Data',
+                                   text: respons.message,
+                                   icon: 'error',
+                                   confirmButtonText: 'OK'                        
+                              }).then((result) => {});
+                         }
                     },
 
                     error: (respons) => {
