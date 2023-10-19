@@ -99,7 +99,7 @@
           </div>
      </div>   
 
-     <div class="btn-requset-doc"></div> 
+     <div class="btn-request-doc"></div> 
 
      <div class="btn-footer"></div> 
 
@@ -476,7 +476,7 @@
                     rows_doc+= '</div>';
                }
 
-               $('.btn-requset-doc').html(rows_doc);
+               $('.btn-request-doc').html(rows_doc);
 
                if(data.access == 'pusat') {
                     if(data.status_code != 13) {
@@ -798,7 +798,7 @@
                          success: (respons) =>{
                               Swal.fire({
                                    title: 'Sukses!',
-                                   text: 'Berhasil Diupdate',
+                                   text: 'Berhasil upload data.',
                                    icon: 'success',
                                    confirmButtonText: 'OK'
                                    

@@ -14,13 +14,17 @@ class PerencanaanMail extends Mailable
     public $url;
     public $periode;
     public $daerah_name;
+    public $judul;
+    public $kepada;
+    public $subject;
+    public $pesan;
   
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($username,$url,$periode,$daerah_name,$judul,$kepada,$subject,$pesan)
+    public function __construct($username,$url,$periode,$daerah_name,$judul,$kepada,$subject,$pesan,$type)
     {
         $this->username = $username;
         $this->url = $url;
@@ -30,6 +34,7 @@ class PerencanaanMail extends Mailable
         $this->kepada = $kepada;
         $this->subject = $subject;
         $this->pesan = $pesan;
+        $this->type = $type;
     }
 
     /**
@@ -39,7 +44,22 @@ class PerencanaanMail extends Mailable
      */
     public function build()
     {
-         return $this->from(env('MAIL_USERNAME', 'SIDAK BKPM'))->subject('Permohonan Persetujuan/Approval Perencanaan DAK tahun ' . $this->periode . ' Kab/Prop ' . $this->daerah_name)->view('mail.perencanaan');
+        $from = env('MAIL_USERNAME', 'SIDAK BKPM');
+        $daerah_name = $this->daerah_name;
+        $subject = '';
 
+        if ($this->type == 'kirim') {
+            $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK Tahun ';
+        } elseif ($this->type == 'upload_doc') {
+            $subject = 'Permohonan Persetujuan/Approval Dokumen Perencanaan DAK Tahun ';
+        } elseif ($this->type == 'request_edit') {
+            $subject = 'Permohonan Persetujuan/Approval Request Edit Perencanaan DAK Tahun ';
+        } elseif ($this->type == 'revisi') {
+            $subject = 'Permohonan Perbaikan Perencanaan DAK Tahun ';
+        }
+
+        $subject .= $this->periode . ' Kab/Prop ' . $daerah_name;
+
+        return $this->from($from)->subject($subject)->view('mail.perencanaan');
     }
 }
