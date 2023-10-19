@@ -8,8 +8,10 @@ use File;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Request\Validation\ValidationPerencanaan;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestAuditLog;
 use App\Http\Request\RequestPerencanaan;
 use App\Http\Request\RequestNotification;
@@ -17,8 +19,10 @@ use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\Perencanaan;
 use App\Models\Notification;
+use App\Models\User;
 use App\Models\AuditLog;
 use App\Models\AuditLogRequest;
+use App\Mail\PerencanaanMail;
 
 class PerencanaanApiController extends Controller
 {
@@ -26,7 +30,6 @@ class PerencanaanApiController extends Controller
     {   
         $this->perPage = GeneralPaginate::limit();
         $this->UploadFolder = GeneralPaginate::uploadPhotoFolder();
-       
     }
 
     public function index(Request $request)
@@ -158,50 +161,116 @@ class PerencanaanApiController extends Controller
         return response()->json($result);
     }
        
-    public function store(Request $request){
-
-        $validation = ValidationPerencanaan::validation($request);
-
-        if($validation)
-        {
-          
-            return response()->json($validation, 400);  
-
-        } else {
-            
-            $insert = RequestPerencanaan::fieldsData($request);  
-            $saveData = Perencanaan::create($insert);
-
-            if($saveData && $request->type == 'kirim')
-            {
-                $type = 'perencanaan';
-                $url = 'perencanaan/detail/' . $saveData->id;
-                $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
-                $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
-                Notification::create($notif);
-            }  
-
-            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);    
-            
-        } 
-    }
+    public function store(Request $request){       
+        
+        DB::beginTransaction(); 
+    
+        try {
+            $validation = ValidationPerencanaan::validation($request);
+    
+            if($validation)
+            {            
+                DB::rollBack();
+                return response()->json($validation, 400);  
+            } else {
+                $insert = RequestPerencanaan::fieldsData($request);  
+                $saveData = Perencanaan::create($insert);
+    
+                if($saveData && $request->type == 'kirim')
+                {                    
+                    $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+    
+                    $pusat = User::where('username','pusat')->first()->email;
+                    $judul = 'Permohonan Persetujuan/Approval Perencanaan DAK';
+                    $kepada = 'Kementerian Investasi';
+                    $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK tahun ' . $request->periode_id . ' Kab/Prop ' . $daerah_name;
+                    $pesan = 'Mohon persetujuan untuk perencanaan DAK tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;
+                    
+                    $url = 'perencanaan/detail/' . $saveData->id; 
+                    
+                    $sendMail = Mail::to($pusat)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan));
+    
+                    $type = 'perencanaan';
+                    $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
+                    $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                    $insertNotif = Notification::create($notif);
+    
+                    if ($insertNotif) {
+                        DB::commit();
+                        return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
+                    } else {
+                        DB::rollBack(); 
+                        return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                    }
+                } else {
+                    DB::rollBack();
+                    return response()->json(['status' => false, 'message' => 'Gagal menyimpan data Perencanaan']);
+                }
+            }
+        } catch (\Exception $e) {
+            DB::rollBack(); 
+            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan dalam menyimpan data']);
+        }
+    }    
 
     public function update($id, Request $request){
+
+        DB::beginTransaction(); 
      
-        $validation = ValidationPerencanaan::validationUpdate($request,$id);
+        try {
+            $validation = ValidationPerencanaan::validationUpdate($request,$id);
 
-        if($validation)
-        {
+            if($validation)
+            {
+            
+                return response()->json($validation, 400);  
+                
+            } else {            
+
+                $update = RequestPerencanaan::fieldsData($request);
+                $UpdateData = Perencanaan::where('id',$id)->update($update);
+
+                if ($UpdateData) {
+                    if ($request->type == 'kirim') {
+                        $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
         
-            return response()->json($validation, 400);  
-            
-        } else {            
-
-            $update = RequestPerencanaan::fieldsData($request);
-            $UpdateData = Perencanaan::where('id',$id)->update($update);
-            
-            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
-        }   
+                        $pusat = User::where('username','pusat')->first()->email;
+                        $judul = 'Permohonan Persetujuan/Approval Perencanaan DAK';
+                        $kepada = 'Kementerian Investasi';
+                        $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK tahun ' . $request->periode_id . ' Kab/Prop ' . $daerah_name;
+                        $pesan = 'Mohon persetujuan untuk perencanaan DAK tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;
+                        
+                        $url = 'perencanaan/detail/' . $saveData->id; 
+                        
+                        $sendMail = Mail::to($pusat)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan));
+        
+                        $type = 'perencanaan';
+                        $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
+                        $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                        $insertNotif = Notification::create($notif);
+        
+                        if ($insertNotif) {
+                            DB::commit();
+                            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+                        } else {
+                            DB::rollBack(); 
+                            return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                        }
+                    } else {
+                        DB::commit();
+                        return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+                    }
+                    
+                } else {
+                    DB::rollBack(); 
+                    return response()->json(['status' => false, 'message' => 'Gagal update data.']);
+                }
+                
+            }   
+        } catch (\Exception $e) {
+            DB::rollBack(); 
+            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan dalam update data']);
+        }
     }
 
     public function request_doc($id){

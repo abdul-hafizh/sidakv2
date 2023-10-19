@@ -68,6 +68,10 @@ class RequestPerencanaan
                 $temp[$key]['updated_at'] = GeneralHelpers::tanggal_indo($val->updated_at);
                 $temp[$key]['lap_rencana'] = $val->lap_rencana;
                 $temp[$key]['status_code'] = $val->status;
+                $temp[$key]['alasan_unapprove'] = $val->alasan_unapprove;
+                $temp[$key]['alasan_unapprove_doc'] = $val->alasan_unapprove_doc;
+                $temp[$key]['alasan_edit'] = $val->alasan_edit;
+                $temp[$key]['alasan_revisi'] = $val->alasan_revisi;
                 $temp[$key]['created_at_export'] = $val->created_at;
                 $temp[$key]['updated_at_export'] = $val->updated_at;
             }
