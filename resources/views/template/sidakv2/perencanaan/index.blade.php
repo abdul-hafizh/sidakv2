@@ -43,16 +43,9 @@
     <div class="row">
         <div class="col-sm-2" style="margin-bottom: 9px;">
             <select class="selectpicker" data-style="btn-default" id="periode_id" title="Pilih Periode"></select>
-        </div> 	
+        </div> 	        
         <div class="col-sm-2" style="margin-bottom: 9px;">
-            <select class="selectpicker" name="type_daerah" data-style="btn-default" id="type_daerah" title="Pilih Type Wilayah">
-                <option value="">Pilih Tipe Wilayah</option>
-                <option value="Provinsi">Provinsi</option>
-                <option value="Kabupaten">Kabupaten</option>
-            </select>
-        </div>
-        <div class="col-sm-2" style="margin-bottom: 9px;">
-            <select id="daerah_id" class="selectpicker" data-style="btn-default" name="daerah_id" title="Pilih Daerah" data-live-search="true" disabled>
+            <select id="daerah_id" class="selectpicker" data-style="btn-default" name="daerah_id" title="Pilih Daerah" data-live-search="true">
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
@@ -264,31 +257,26 @@
                 console.error(error);
             }
         });
-
-        $('#type_daerah').on('change', function () {
-            let type_daerah = $('#type_daerah').val();
-            let url = type_daerah === 'Provinsi' ? 'select-province' : 'select-kabupaten';
-
-            $.ajax({
-              url: BASE_URL +'/api/' + url,
-              method: 'GET',
-              dataType: 'json',
-              success: function(data) {
-                  var select =  $('#daerah_id')
-                  $.each(data, function(index, option) {
-                      select.append($('<option>', {
+                    
+        $.ajax({
+            url: BASE_URL +'/api/select-daerah',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var select =  $('#daerah_id')
+                $.each(data, function(index, option) {
+                    select.append($('<option>', {
                         value: option.value,
                         text: option.text
-                      }));
-                  });
-                 select.prop('disabled', false);
-                 select.selectpicker('refresh');
-              },
-              error: function(error) {
+                    }));
+                });
+                select.prop('disabled', false);
+                select.selectpicker('refresh');
+            },
+            error: function(error) {
                 console.error(error);
-              }
-            });
-        });
+            }
+        });        
 
         $('#row_page').on('change', function() {
             var value = $(this).val();         
