@@ -535,30 +535,26 @@
         data: formData,
         processData: false,
         contentType: false,
-        xhr: function() {
-          var xhr = new window.XMLHttpRequest();
-          xhr.upload.addEventListener("progress", function(evt) {
-            if (evt.lengthComputable) {
-              var percentComplete = (evt.loaded / evt.total) * 100;
-              $('#progress').css('width', percentComplete + '%');
-              $('#progress-label').text(percentComplete.toFixed(2) + '%');
-            }
-          }, false);
-
-          return xhr;
-        },
         success: (respons) => {
-          Swal.fire({
-            title: 'Sukses!',
-            text: 'Berhasil Disimpan',
-            icon: 'success',
-            confirmButtonText: 'OK'
-
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.replace('/penyelesaian');
-            }
-          });
+          if(respons.status) {
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Berhasil Disimpan',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.replace('/penyelesaian');
+              }
+            });
+          } else {
+            Swal.fire({
+              title: 'Gagal Simpan!',
+              text: respons.message,
+              icon: 'error',
+              confirmButtonText: 'OK'
+            }).then((result) => {});
+          }
         },
         error: (respons) => {
           errors = respons.responseJSON;

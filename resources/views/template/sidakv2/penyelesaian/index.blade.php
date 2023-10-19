@@ -1,6 +1,10 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <style>
+	.inner {
+		max-height: 200px !important;
+	}
+
 	.dataTables_wrapper .dataTables_paginate .paginate_button {
 		border: 1px solid #1f3897;
 		display: inline;
@@ -66,7 +70,9 @@
 <section class="content-header pd-left-right-15">
 	<div class="row">
 		<div class="col-sm-2" style="margin-bottom: 9px;">
-			<select class="selectpicker" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode"></select>
+			<select class="selectpicker" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
+				<option value="">Pilih Daerah</option>
+			</select>
 		</div>
 		<div class="col-sm-2" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
@@ -76,6 +82,11 @@
 				<option value="evaluasi">Evaluasi Penyelesaian</option>
 			</select>
 		</div>
+		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
+            <select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Daerah" data-live-search="true">
+                <option value="">Pilih Daerah</option>
+            </select>
+        </div>
 		<div class="col-sm-2" style="margin-bottom: 9px;">
 			<select class="selectpicker" name="search_status" id="search_status">
 				<option value="">Pilih Status</option>
@@ -159,6 +170,25 @@
 <script>
 
 	$(function() {
+		$.ajax({
+			url: BASE_URL +'/api/select-daerah',
+			method: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				var select =  $('#daerah_id')
+				$.each(data, function(index, option) {
+					select.append($('<option>', {
+						value: option.value,
+						text: option.text
+					}));
+				});
+				select.prop('disabled', false);
+				select.selectpicker('refresh');
+			},
+			error: function(error) {
+				console.error(error);
+			}
+		});
 
 		var table = $('#datatable').DataTable({
 			processing: true,
@@ -237,25 +267,23 @@
 				}, ms || 0);
 			};
 		}
+		
+		$.ajax({
+			url: BASE_URL + '/api/select-periode-semester',
+			method: 'get',
+			dataType: 'json',
+			success: function(data) {
+				periode = '<option value="">Pilih Periode</option>';
+				$.each(data.periode, function(key, val) {
+					var select = '';
+					if (data.tahunSemester == val.value)
+						select = 'selected';
+					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
 
-		$('#periode_id2').select2(
-			$.ajax({
-				url: BASE_URL + '/api/select-periode-semester',
-				method: 'get',
-				dataType: 'json',
-				success: function(data) {
-					periode = '<option value="">Pilih Periode</option>';
-					$.each(data.periode, function(key, val) {
-						var select = '';
-						if (data.tahunSemester == val.value)
-							select = 'selected';
-						periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
-
-					});
-					$('#periode_id2').html(periode);
-				}
-			})
-		);
+				});
+				$('#periode_id2').html(periode);
+			}
+		})
 
 		$('.select-periode-mdl').select2(
 			$.ajax({
@@ -280,6 +308,7 @@
 			var filter = [{
 				search_input: $("#search-input").val(),
 				jenis_sub: $("#jenis_sub").val(),
+				daerah_id: $("#daerah_id").val(),
 				search_status: $("#search_status").val(),
 				search_status_text: $("#search_status option:selected").text(),
 				periode_id: $("#periode_id2").val()
@@ -291,6 +320,7 @@
 			var filter = [{
 				search_input: $("#search-input").val(),
 				jenis_sub: $("#jenis_sub").val(),
+				daerah_id: $("#daerah_id").val(),
 				search_status: $("#search_status").val(),
 				search_status_text: $("#search_status option:selected").text(),
 				periode_id: $("#periode_id2").val()
@@ -377,6 +407,7 @@
 		$("#Clear").on("click", function() {
 			var filter = '';
 			$("#jenis_sub").val("").trigger("change");
+			$("#daerah_id").val("").trigger("change");
 			$("#search_status").val("").trigger("change");
 			$("#periode_id2").val("").trigger("change");
 			$("#search-input").val("");
