@@ -1,5 +1,12 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
+
+<style>
+    .inner {
+		max-height: 200px !important;
+	}
+</style>
+
 <section class="content-header pd-left-right-15">    
     <div class="row padding-default" style="margin-bottom: 20px">
 		<div class="col-lg-4 col-sm-12">
