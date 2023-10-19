@@ -324,7 +324,7 @@
 </div>
 
 <div id="modal-log" class="modal fade in" role="dialog">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-primary">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -338,8 +338,7 @@
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Nama Kegiatan</th>
-                  <th>Sub Kegiatan</th>
+                  <th>Jenis</th>
                   <th>Alasan</th>
                   <th>Dibuat Oleh</th>
                   <th>Tanggal Dibuat</th>
@@ -1052,8 +1051,7 @@
 
           var row = '<tr>' +
             '<td>' + (index + 1) + '</td>' +
-            '<td>' + val.nama_kegiatan + '</td>' +
-            '<td>' + val.sub_menu + '</td>' +
+            '<td>' + val.type + '</td>' +
             '<td>' + val.alasan_request + '</td>' +
             '<td>' + val.created_by + '</td>' +
             '<td>' + date.toLocaleDateString() + '</td>' +
