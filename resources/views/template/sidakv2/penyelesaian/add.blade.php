@@ -959,6 +959,7 @@
             'jml_perusahaan'
           ];
           formData.append("status", 14);
+          formData.append("type", "kirim");
           $.ajax({
             type: "POST",
             url: BASE_URL + '/api/penyelesaian/kirim/' + id_modal,

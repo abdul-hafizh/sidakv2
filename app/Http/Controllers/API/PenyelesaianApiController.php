@@ -7,14 +7,17 @@ use File;
 use Response;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Penyelesaian;
 use App\Models\AuditLogRequest;
 use App\Models\Periode;
 use App\Models\PeriodeExtension;
 use App\Models\Notification;
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use App\Http\Request\RequestPenyelesaian;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestNotification;
 use App\Http\Request\Validation\ValidationPenyelesaian;
 use App\Helpers\GeneralPaginate;
@@ -22,6 +25,7 @@ use App\Helpers\GeneralHelpers;
 use App\Imports\PenyelesaianImport;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Mail\PenyelesaianMail;
 
 class PenyelesaianApiController extends Controller
 {
@@ -143,7 +147,11 @@ class PenyelesaianApiController extends Controller
 
             $saveData = Penyelesaian::create($insert);
             
-            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Insert data sucessfully']);
+            if($saveData) {
+                return response()->json(['status' => true, 'id' => $saveData->id, 'message' => 'Berhasil simpan data.']);
+            } else {                
+                return response()->json(['status' => false, 'id' => 0, 'message' => 'Gagal simpan data.']);
+            }            
         }
     }
 
@@ -227,7 +235,36 @@ class PenyelesaianApiController extends Controller
 
             $UpdateData = Penyelesaian::where('id', $id)->update($update);
 
-            return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+            if($UpdateData && $request->type == 'kirim') {
+                $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+
+                $url = url('penyelesaian/' . $saveData->id);
+                $tahun = substr($request->periode_id_mdl, 0, 4);
+                $semester = substr($request->periode_id_mdl, 4); 
+                $sub_kegiatan = ucwords($request->sub_menu_slug);
+    
+                $pusat = User::where('username','pusat')->first()->email;
+                $judul = 'Penyelesaian Masalah (' . $sub_kegiatan . ')';
+                $kepada = 'Kementerian Investasi';
+                $subject = 'Permohonan Persetujuan/Approval Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
+                $pesan = 'Mohon persetujuan untuk Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
+    
+                $type = 'penyelesaian';
+                $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                $insertNotif = Notification::create($notif);
+
+                if($insertNotif) {
+                    Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
+                    return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil kirim data']);
+                } else {
+                    return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal kirim data']);
+                }
+            } else if ($UpdateData) {
+                return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil ubah data']);
+            } else {
+                return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal ubah data']);
+            }
         }
     }
 
@@ -341,11 +378,30 @@ class PenyelesaianApiController extends Controller
             $dataLog = RequestPenyelesaian::fieldLogRequest($request);
             $saveLog = AuditLogRequest::create($dataLog);
 
+            $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+
+            $tahun = substr($request->periode_id_mdl, 0, 4);
+            $semester = substr($request->periode_id_mdl, 4); 
+            $sub_kegiatan = ucwords($request->sub_menu_slug);
+
+            $url = url('penyelesaian/' . $id);
             $type = 'penyelesaian';
-            $url = 'penyelesaian';
-            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit Penyelesaian Masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
-            Notification::create($notif);            
+            $insertNotif = Notification::create($notif);                    
+
+            $pusat = User::where('username','pusat')->first()->email;
+            $judul = 'Penyelesaian Masalah (' . $sub_kegiatan . ')';
+            $kepada = 'Kementerian Investasi';
+            $subject = 'Permohonan Request Edit Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
+            $pesan = 'Mohon persetujuan untuk request edit menu penyelesaian masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
+
+            if($insertNotif) {
+                Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'request_edit'));
+                return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil request edit data']);
+            } else {
+                return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal request edit data']);
+            }
         }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
@@ -368,13 +424,32 @@ class PenyelesaianApiController extends Controller
         if($results) {
             $request->merge(['id' => $id]);
             $dataLog = RequestPenyelesaian::fieldLogRequest($request);
-            $saveLog = AuditLogRequest::create($dataLog);
+            $saveLog = AuditLogRequest::create($dataLog);            
+
+            $daerah_name = RequestDaerah::GetDaerahWhereName($_res->daerah_id);
+
+            $tahun = substr($request->periode_id_mdl, 0, 4);
+            $semester = substr($request->periode_id_mdl, 4); 
+            $sub_kegiatan = ucwords($request->sub_menu_slug);
 
             $type = 'penyelesaian';
-            $url = 'penyelesaian';
-            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Revisi';
+            $url = url('penyelesaian');
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Revisi Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
-            Notification::create($notif);
+            $insertNotif = Notification::create($notif);                   
+
+            $email_daerah = User::where('username', $_res->created_by)->first()->email;
+            $judul = 'Penyelesaian Masalah (' . $sub_kegiatan . ')';
+            $kepada = 'Pemerintah Daerah ' . $daerah_name;
+            $subject = 'Permohonan Perbaikan Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
+            $pesan = 'Mohon persetujuan untuk perbaikan data penyelesaian masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
+
+            if($insertNotif) {
+                Mail::to('abdulha05518@gmail.com')->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'revisi'));
+                return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil kirim perbaikan data']);
+            } else {
+                return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal kirim perbaikan data']);
+            }
         }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
