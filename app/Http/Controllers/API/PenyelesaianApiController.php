@@ -382,7 +382,7 @@ class PenyelesaianApiController extends Controller
 
             $tahun = substr($request->periode_id_mdl, 0, 4);
             $semester = substr($request->periode_id_mdl, 4); 
-            $sub_kegiatan = ucwords($request->sub_menu_slug);
+            $sub_kegiatan = ucwords($_res->sub_menu_slug);
 
             $url = url('penyelesaian/' . $id);
             $type = 'penyelesaian';
@@ -430,7 +430,7 @@ class PenyelesaianApiController extends Controller
 
             $tahun = substr($request->periode_id_mdl, 0, 4);
             $semester = substr($request->periode_id_mdl, 4); 
-            $sub_kegiatan = ucwords($request->sub_menu_slug);
+            $sub_kegiatan = ucwords($_res->sub_menu_slug);
 
             $type = 'penyelesaian';
             $url = url('penyelesaian');
