@@ -54,11 +54,11 @@ class PenyelesaianMail extends Mailable
         $subject = '';
 
         if ($this->type == 'kirim') {
-            $subject = 'Permohonan Persetujuan/Approval Penyelesaian Masalah DAK Tahun ';
+            $subject = 'Permohonan Approval Penyelesaian Masalah (' . ucwords($this->sub_kegiatan) . ') Tahun ';
         } elseif ($this->type == 'request_edit') {
-            $subject = 'Permohonan Persetujuan/Approval Request Edit Penyelesaian Masalah DAK Tahun ';
+            $subject = 'Permohonan Approval Request Edit Penyelesaian Masalah (' . ucwords($this->sub_kegiatan) . ') Tahun ';
         } elseif ($this->type == 'revisi') {
-            $subject = 'Permohonan Perbaikan Penyelesaian Masalah DAK Tahun ';
+            $subject = 'Permohonan Perbaikan Penyelesaian Masalah (' . ucwords($this->sub_kegiatan) . ') Tahun ';
         }
 
         $subject .= $this->periode . ' Semester ' . $this->semester . ', Kab/Prop ' . $daerah_name;
