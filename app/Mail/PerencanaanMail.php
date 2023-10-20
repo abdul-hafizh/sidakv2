@@ -18,6 +18,7 @@ class PerencanaanMail extends Mailable
     public $kepada;
     public $subject;
     public $pesan;
+    public $type;
   
     /**
      * Create a new message instance.

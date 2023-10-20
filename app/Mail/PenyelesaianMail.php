@@ -20,6 +20,7 @@ class PenyelesaianMail extends Mailable
     public $kepada;
     public $subject;
     public $pesan;
+    public $type;
   
     /**
      * Create a new message instance.
@@ -53,17 +54,15 @@ class PenyelesaianMail extends Mailable
         $subject = '';
 
         if ($this->type == 'kirim') {
-            $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK Tahun ';
-        } elseif ($this->type == 'upload_doc') {
-            $subject = 'Permohonan Persetujuan/Approval Dokumen Perencanaan DAK Tahun ';
+            $subject = 'Permohonan Persetujuan/Approval Penyelesaian Masalah DAK Tahun ';
         } elseif ($this->type == 'request_edit') {
-            $subject = 'Permohonan Persetujuan/Approval Request Edit Perencanaan DAK Tahun ';
+            $subject = 'Permohonan Persetujuan/Approval Request Edit Penyelesaian Masalah DAK Tahun ';
         } elseif ($this->type == 'revisi') {
-            $subject = 'Permohonan Perbaikan Perencanaan DAK Tahun ';
+            $subject = 'Permohonan Perbaikan Penyelesaian Masalah DAK Tahun ';
         }
 
-        $subject .= $this->periode . ' Kab/Prop ' . $daerah_name;
+        $subject .= $this->periode . ' Semester ' . $this->semester . ', Kab/Prop ' . $daerah_name;
 
-        return $this->from($from)->subject($subject)->view('mail.perencanaan');
+        return $this->from($from)->subject($subject)->view('mail.penyelesaian');
     }
 }

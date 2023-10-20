@@ -195,7 +195,7 @@ class PerencanaanApiController extends Controller
                     $judul = 'Perencanaan DAK';
                     $kepada = 'Kementerian Investasi';
                     $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK Tahun ' . $request->periode_id . ' Kab/Prop ' . $daerah_name;
-                    $pesan = 'Mohon persetujuan untuk perencanaan DAK Tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;                    
+                    $pesan = 'Mohon persetujuan untuk perencanaan DAK Tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;
     
                     $type = 'perencanaan';
                     $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
@@ -247,7 +247,7 @@ class PerencanaanApiController extends Controller
                         $judul = 'Permohonan Persetujuan/Approval Perencanaan DAK';
                         $kepada = 'Kementerian Investasi';
                         $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK Tahun ' . $request->periode_id . ' Kab/Prop ' . $daerah_name;
-                        $pesan = 'Mohon persetujuan untuk perencanaan DAK Tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;                        
+                        $pesan = 'Mohon persetujuan untuk perencanaan DAK Tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;    
         
                         $type = 'perencanaan';
                         $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
