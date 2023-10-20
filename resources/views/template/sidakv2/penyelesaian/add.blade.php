@@ -1335,7 +1335,7 @@
           row_peserta +=`<div class="modal-dialog">`;
               row_peserta +=`<div class="modal-content">`;
                   row_peserta +=`<div class="modal-header">`;
-                        row_peserta +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_peserta +=`<button type="button" class="close" onclick="$('#modal-show-peserta').modal('hide');">&times;</button>`;
                         row_peserta +=`<h4 class="modal-title">Lihat File Daftar Hadir</h4>`;
                   row_peserta +=`</div>`;   
                   row_peserta +=`<div class="modal-body">`; 
@@ -1344,9 +1344,6 @@
                     row_peserta +=`<embed src="`+file_peserta+`#page=1&zoom=65" width="575" height="500">`;
                   }     
                   row_peserta +=`</div>`;   
-                  row_peserta +=`<div class="modal-footer">`;
-                        row_peserta +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_peserta +=`</div>`;             
               row_peserta +=`</div>`;
         row_peserta +=`</div>`; 
 
@@ -1382,7 +1379,7 @@
           row_profile2 +=`<div class="modal-dialog">`;
               row_profile2 +=`<div class="modal-content">`;
                   row_profile2 +=`<div class="modal-header">`;
-                        row_profile2 +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_profile2 +=`<button type="button" class="close" onclick="$('#modal-show-profile2').modal('hide');">&times;</button>`;
                         row_profile2 +=`<h4 class="modal-title">Lihat File Profile</h4>`;
                   row_profile2 +=`</div>`;   
                   row_profile2 +=`<div class="modal-body">`; 
@@ -1391,9 +1388,6 @@
                     row_profile2 +=`<embed src="`+file_profile2+`#page=1&zoom=65" width="575" height="500">`;
                   }     
                   row_profile2 +=`</div>`;   
-                  row_profile2 +=`<div class="modal-footer">`;
-                        row_profile2 +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_profile2 +=`</div>`;             
               row_profile2 +=`</div>`;
         row_profile2 +=`</div>`; 
 
@@ -1407,7 +1401,7 @@
           row_nara +=`<div class="modal-dialog">`;
               row_nara +=`<div class="modal-content">`;
                   row_nara +=`<div class="modal-header">`;
-                        row_nara +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_nara +=`<button type="button" class="close" onclick="$('#modal-show-narasumber').modal('hide');">&times;</button>`;
                         row_nara +=`<h4 class="modal-title">Lihat File Narasumber</h4>`;
                   row_nara +=`</div>`;   
                   row_nara +=`<div class="modal-body">`; 
@@ -1416,9 +1410,6 @@
                     row_nara +=`<embed src="`+file_nara+`#page=1&zoom=65" width="575" height="500">`;
                   }     
                   row_nara +=`</div>`;   
-                  row_nara +=`<div class="modal-footer">`;
-                        row_nara +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_nara +=`</div>`;             
               row_nara +=`</div>`;
         row_nara +=`</div>`; 
 
@@ -1432,7 +1423,7 @@
           row_notula +=`<div class="modal-dialog">`;
               row_notula +=`<div class="modal-content">`;
                   row_notula +=`<div class="modal-header">`;
-                        row_notula +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_notula +=`<button type="button" class="close" onclick="$('#modal-show-notula').modal('hide');">&times;</button>`;
                         row_notula +=`<h4 class="modal-title">Lihat File Notula</h4>`;
                   row_notula +=`</div>`;   
                   row_notula +=`<div class="modal-body">`; 
@@ -1441,9 +1432,6 @@
                     row_notula +=`<embed src="`+file_notula+`#page=1&zoom=65" width="575" height="500">`;
                   }     
                   row_notula +=`</div>`;   
-                  row_notula +=`<div class="modal-footer">`;
-                        row_notula +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_notula +=`</div>`;             
               row_notula +=`</div>`;
         row_notula +=`</div>`; 
 
@@ -1457,7 +1445,7 @@
           row_notula2 +=`<div class="modal-dialog">`;
               row_notula2 +=`<div class="modal-content">`;
                   row_notula2 +=`<div class="modal-header">`;
-                        row_notula2 +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_notula2 +=`<button type="button" class="close" onclick="$('#modal-show-notula2').modal('hide');">&times;</button>`;
                         row_notula2 +=`<h4 class="modal-title">Lihat File Notula</h4>`;
                   row_notula2 +=`</div>`;   
                   row_notula2 +=`<div class="modal-body">`; 
@@ -1466,9 +1454,6 @@
                     row_notula2 +=`<embed src="`+file_notula2+`#page=1&zoom=65" width="575" height="500">`;
                   }     
                   row_notula2 +=`</div>`;   
-                  row_notula2 +=`<div class="modal-footer">`;
-                        row_notula2 +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_notula2 +=`</div>`;             
               row_notula2 +=`</div>`;
         row_notula2 +=`</div>`; 
 
@@ -1482,7 +1467,7 @@
           row_lkpm +=`<div class="modal-dialog">`;
               row_lkpm +=`<div class="modal-content">`;
                   row_lkpm +=`<div class="modal-header">`;
-                        row_lkpm +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_lkpm +=`<button type="button" class="close" onclick="$('#modal-show-lkpm').modal('hide');">&times;</button>`;
                         row_lkpm +=`<h4 class="modal-title">Lihat File LKPM</h4>`;
                   row_lkpm +=`</div>`;   
                   row_lkpm +=`<div class="modal-body">`; 
@@ -1491,9 +1476,6 @@
                     row_lkpm +=`<embed src="`+file_lkpm+`#page=1&zoom=65" width="575" height="500">`;
                   }     
                   row_lkpm +=`</div>`;   
-                  row_lkpm +=`<div class="modal-footer">`;
-                        row_lkpm +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_lkpm +=`</div>`;             
               row_lkpm +=`</div>`;
         row_lkpm +=`</div>`; 
 
@@ -1507,7 +1489,7 @@
           row_doc +=`<div class="modal-dialog">`;
               row_doc +=`<div class="modal-content">`;
                   row_doc +=`<div class="modal-header">`;
-                        row_doc +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_doc +=`<button type="button" class="close" onclick="$('#modal-show-doc').modal('hide');">&times;</button>`;
                         row_doc +=`<h4 class="modal-title">Lihat File Dokumen</h4>`;
                   row_doc +=`</div>`;   
                   row_doc +=`<div class="modal-body">`; 
@@ -1516,9 +1498,6 @@
                     row_doc +=`<embed src="`+file_doc+`#page=1&zoom=65" width="575" height="500">`;
                   }     
                   row_doc +=`</div>`;   
-                  row_doc +=`<div class="modal-footer">`;
-                        row_doc +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_doc +=`</div>`;             
               row_doc +=`</div>`;
         row_doc +=`</div>`; 
 
@@ -1532,7 +1511,7 @@
           row_eval +=`<div class="modal-dialog">`;
               row_eval +=`<div class="modal-content">`;
                   row_eval +=`<div class="modal-header">`;
-                        row_eval +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                        row_eval +=`<button type="button" class="close" onclick="$('#modal-show-eval').modal('hide');">&times;</button>`;
                         row_eval +=`<h4 class="modal-title">Lihat File Evaluasi</h4>`;
                   row_eval +=`</div>`;   
                   row_eval +=`<div class="modal-body">`; 
@@ -1540,10 +1519,7 @@
                   {  
                     row_eval +=`<embed src="`+file_eval+`#page=1&zoom=65" width="575" height="500">`;
                   }     
-                  row_eval +=`</div>`;   
-                  row_eval +=`<div class="modal-footer">`;
-                        row_eval +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
-                  row_eval +=`</div>`;             
+                  row_eval +=`</div>`;            
               row_eval +=`</div>`;
         row_eval +=`</div>`; 
 
