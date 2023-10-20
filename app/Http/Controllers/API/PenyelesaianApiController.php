@@ -238,7 +238,7 @@ class PenyelesaianApiController extends Controller
             if($UpdateData && $request->type == 'kirim') {
                 $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
 
-                $url = url('penyelesaian/' . $saveData->id);
+                $url = url('penyelesaian/' . $id);
                 $tahun = substr($request->periode_id_mdl, 0, 4);
                 $semester = substr($request->periode_id_mdl, 4); 
                 $sub_kegiatan = ucwords($request->sub_menu_slug);
