@@ -37,7 +37,7 @@ class PenyelesaianApiController extends Controller
     public function check(Request $request)
     {
         if ($request->periode_id != "") {
-            $Data = Penyelesaian::where(['periode_id' => $request->periode_id, 'daerah_id' => Auth::User()->daerah_id])->orderBy('id', 'DESC')->first();
+            $Data = Penyelesaian::where(['periode_id' => $request->periode_id, 'daerah_id' => Auth::User()->daerah_id])->orderBy('created_at', 'DESC')->first();
         } else {
             $Data = [];
         }
@@ -64,90 +64,54 @@ class PenyelesaianApiController extends Controller
         $validation = ValidationPenyelesaian::validation($request);
         if ($validation) {
             return response()->json($validation, 400);
-        } else {
-
-            $existingData = Penyelesaian::where('periode_id', $request->periode_id_mdl)
-                ->where('daerah_id', Auth::User()->daerah_id)
-                ->where('sub_menu_slug', $request->sub_menu_slug)
-                ->first();
-
-            if ($existingData) {
-                return response()->json(['status' => false, 'message' => 'Data sudah ada pada semester ini.']);
-            }
+        } else {            
 
             $insert = RequestPenyelesaian::fieldsData($request);
 
-            if ($request->hasFile('lap_profile')) {
-                $file_profile = $request->file('lap_profile');
-                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
-                $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
-                $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
-            }
-            if ($request->hasFile('lap_profile2')) {
-                $file_profile2 = $request->file('lap_profile2');
-                $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
-                $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
-                $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile2;
-            }
-            if ($request->hasFile('lap_peserta')) {
-                $file_hadir = $request->file('lap_peserta');
-                $lap_peserta = 'lap_peserta_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path('laporan/penyelesaian'), $lap_peserta);
-                $insert['lap_peserta'] = 'laporan/penyelesaian/' . $lap_peserta;
-            }
-            if ($request->hasFile('lap_notula')) {
-                $file_notula = $request->file('lap_notula');
-                $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
-                $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
-            }
-            if ($request->hasFile('lap_notula2')) {
-                $file_notula2 = $request->file('lap_notula2');
-                $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
-                $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
-                $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula2;
-            }
-            if ($request->hasFile('lap_narasumber')) {
-                $file_narasumber = $request->file('lap_narasumber');
-                $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/penyelesaian'), $lap_narasumber);
-                $insert['lap_narasumber'] = 'laporan/penyelesaian/' . $lap_narasumber;
-            }
-            if ($request->hasFile('lap_lkpm')) {
-                $file_lkpm = $request->file('lap_lkpm');
-                $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
-                $file_lkpm->move(public_path('laporan/penyelesaian'), $lap_lkpm);
-                $insert['lap_lkpm'] = 'laporan/penyelesaian/' . $lap_lkpm;
-            }
-            if ($request->hasFile('lap_evaluasi')) {
-                $file_evaluasi = $request->file('lap_evaluasi');
-                $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
-                $file_evaluasi->move(public_path('laporan/penyelesaian'), $lap_evaluasi);
-                $insert['lap_evaluasi'] = 'laporan/penyelesaian/' . $lap_evaluasi;
-            }
-            if ($request->hasFile('lap_document')) {
-                $file_document = $request->file('lap_document');
-                $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/penyelesaian'), $lap_document);
-                $insert['lap_document'] = 'laporan/penyelesaian/' . $lap_document;
+            $files = [
+                'lap_profile' => 'File Profile',
+                'lap_profile2' => 'File Profile',
+                'lap_peserta' => 'File Daftar Hadir',
+                'lap_notula' => 'File Notula',
+                'lap_notula2' => 'File Notula',
+                'lap_narasumber' => 'File Narasumber',
+                'lap_lkpm' => 'File LKPM',
+                'lap_evaluasi' => 'File Evaluasi',
+                'lap_document' => 'File Dokumentasi',
+            ];
+    
+            foreach ($files as $inputName => $fileType) {
+                if ($request->hasFile($inputName)) {
+                    $file = $request->file($inputName);
+                    $filename = $inputName . '_' . time() . '_' . $file->getClientOriginalName();
+                    $file->move(public_path('laporan/penyelesaian'), $filename);
+                    $insert[$inputName] = 'laporan/penyelesaian/' . $filename;                    
+                }
             }
 
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);
             $sumPenyelesaian = RequestPenyelesaian::GetSumPenyelesaian($request);
 
-            if ($result->total_pagu < $sumPenyelesaian->biaya) {
-                $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.';
-                return response()->json($err, 400);
-            }
-            if ($result->total_target < $sumPenyelesaian->jml_perusahaan) {
-                $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
+            if (
+                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_pagu < $sumPenyelesaian->biaya) ||
+                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_pagu < $sumPenyelesaian->biaya) ||
+                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_pagu < $sumPenyelesaian->biaya)
+            ) { $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.'; }
+            
+            if (
+                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
+                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
+                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
+            ) { $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.'; }
+            
+            if (!empty($err)) {
                 return response()->json($err, 400);
             }
 
             $saveData = Penyelesaian::create($insert);
 
             if ($saveData) {
-                return response()->json(['status' => true, 'id' => $saveData->id, 'message' => 'Berhasil simpan data.']);
+                return response()->json(['status' => true, 'result'=>$saveData, 'id' => $saveData->id, 'message' => 'Berhasil simpan data.']);
             } else {
                 return response()->json(['status' => false, 'id' => 0, 'message' => 'Gagal simpan data.']);
             }
@@ -164,70 +128,43 @@ class PenyelesaianApiController extends Controller
 
             $update = RequestPenyelesaian::fieldsData($request);
 
-            if ($request->hasFile('lap_profile')) {
-                $file_profile = $request->file('lap_profile');
-                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
-                $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
-                $update['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
-            }
-            if ($request->hasFile('lap_profile2')) {
-                $file_profile2 = $request->file('lap_profile2');
-                $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
-                $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
-                $update['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile2;
-            }
-            if ($request->hasFile('lap_peserta')) {
-                $file_hadir = $request->file('lap_peserta');
-                $lap_peserta = 'lap_peserta_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path('laporan/penyelesaian'), $lap_peserta);
-                $update['lap_peserta'] = 'laporan/penyelesaian/' . $lap_peserta;
-            }
-            if ($request->hasFile('lap_notula')) {
-                $file_notula = $request->file('lap_notula');
-                $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
-                $update['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
-            }
-            if ($request->hasFile('lap_notula2')) {
-                $file_notula2 = $request->file('lap_notula2');
-                $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
-                $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
-                $update['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula2;
-            }
-            if ($request->hasFile('lap_narasumber')) {
-                $file_narasumber = $request->file('lap_narasumber');
-                $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/penyelesaian'), $lap_narasumber);
-                $update['lap_narasumber'] = 'laporan/penyelesaian/' . $lap_narasumber;
-            }
-            if ($request->hasFile('lap_lkpm')) {
-                $file_lkpm = $request->file('lap_lkpm');
-                $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
-                $file_lkpm->move(public_path('laporan/penyelesaian'), $lap_lkpm);
-                $update['lap_lkpm'] = 'laporan/penyelesaian/' . $lap_lkpm;
-            }
-            if ($request->hasFile('lap_evaluasi')) {
-                $file_evaluasi = $request->file('lap_evaluasi');
-                $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
-                $file_evaluasi->move(public_path('laporan/penyelesaian'), $lap_evaluasi);
-                $update['lap_evaluasi'] = 'laporan/penyelesaian/' . $lap_evaluasi;
-            }
-            if ($request->hasFile('lap_document')) {
-                $file_document = $request->file('lap_document');
-                $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/penyelesaian'), $lap_document);
-                $update['lap_document'] = 'laporan/penyelesaian/' . $lap_document;
+            $files = [
+                'lap_profile' => 'File Profile',
+                'lap_profile2' => 'File Profile',
+                'lap_peserta' => 'File Daftar Hadir',
+                'lap_notula' => 'File Notula',
+                'lap_notula2' => 'File Notula',
+                'lap_narasumber' => 'File Narasumber',
+                'lap_lkpm' => 'File LKPM',
+                'lap_evaluasi' => 'File Evaluasi',
+                'lap_document' => 'File Dokumentasi',
+            ];
+    
+            foreach ($files as $inputName => $fileType) {
+                if ($request->hasFile($inputName)) {
+                    $file = $request->file($inputName);
+                    $filename = $inputName . '_' . time() . '_' . $file->getClientOriginalName();
+                    $file->move(public_path('laporan/penyelesaian'), $filename);
+                    $update[$inputName] = 'laporan/penyelesaian/' . $filename;
+                }
             }
 
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);
             $sumPenyelesaian = RequestPenyelesaian::GetSumPenyelesaian($request);
 
-            if ($result->total_pagu < $sumPenyelesaian->biaya) {
-                $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.';
-                return response()->json($err, 400);
-            }
-            if ($result->total_target < $sumPenyelesaian->jml_perusahaan) {
-                $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
+            if(
+                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_pagu < $sumPenyelesaian->biaya) ||
+                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_pagu < $sumPenyelesaian->biaya) ||
+                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_pagu < $sumPenyelesaian->biaya)
+            ) { $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.'; }
+            
+            if(
+                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
+                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
+                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
+            ) { $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.'; }
+            
+            if (!empty($err)) {
                 return response()->json($err, 400);
             }
 
