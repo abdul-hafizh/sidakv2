@@ -74,6 +74,13 @@
 				<option value="">Pilih Periode</option>
 			</select>
 		</div>
+		@if($access =='admin' || $access == 'pusat' )
+		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
+            <select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Daerah" data-live-search="true">
+                <option value="">Pilih Daerah</option>
+            </select>
+        </div>
+		@endif
 		<div class="col-sm-2" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
 				<option value="">Pilih Jenis Kegiatan</option>
@@ -82,11 +89,6 @@
 				<option value="evaluasi" {{ $ss_sub_menu_slug === 'evaluasi' ? 'selected' : '' }}>Evaluasi Penyelesaian</option>
 			</select>
 		</div>
-		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
-            <select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Daerah" data-live-search="true">
-                <option value="">Pilih Daerah</option>
-            </select>
-        </div>
 		<div class="col-sm-2" style="margin-bottom: 9px;">
 			<select class="selectpicker" name="search_status" id="search_status">
 				<option value="">Pilih Status</option>
@@ -204,7 +206,7 @@
 				periode = '<option value="">Pilih Periode</option>';
 				$.each(data.periode, function(key, val) {
 					var select = '';
-					if (ss_periode_id == val.value)
+					if (data.tahunSemester == val.value)
 						select = 'selected';
 					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
 
@@ -253,7 +255,7 @@
 					}
 				},
 				{
-					targets: [5],
+					targets: [6],
 					className: 'dt-body-right'
 				},
 				{

@@ -252,16 +252,16 @@ class RequestPenyelesaian
     {
         $year = substr((string)$request->periode_id_mdl, 0, 4);
         $daerah_id = Auth::user()->daerah_id;
-        $status_laporan_id = 14;
+        $sub_kegiatan = $request->sub_menu_slug;
 
         $biayaTotal = Penyelesaian::where('daerah_id', $daerah_id)
-            ->where('status_laporan_id', $status_laporan_id)
+            ->where('sub_menu_slug', $sub_kegiatan)
             ->where('periode_id', 'LIKE', $year . '%')
             ->sum('biaya');
 
         $jmlPerusahaanTotal = Penyelesaian::where('sub_menu_slug', 'penyelesaian')
             ->where('daerah_id', $daerah_id)
-            ->where('status_laporan_id', $status_laporan_id)
+            ->where('sub_menu_slug', $sub_kegiatan)
             ->where('periode_id', 'LIKE', $year . '%')
             ->sum('jml_perusahaan');
 
