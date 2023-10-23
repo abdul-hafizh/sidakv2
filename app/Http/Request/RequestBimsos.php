@@ -9,6 +9,7 @@ use App\Helpers\GeneralHelpers;
 use App\Models\Bimsos;
 use App\Models\Perencanaan;
 use App\Http\Request\RequestSettingApps;
+use App\Http\Request\RequestDaerah;
 use DB;
 
 class RequestBimsos
@@ -48,6 +49,9 @@ class RequestBimsos
             } else {
                 $data->where('periode_id', $tahunSemester);
             }
+            if ($filterjs[0]->daerah_id) {
+                $data->where('daerah_id', $filterjs[0]->daerah_id);
+            }
         } else {
             $data->where('periode_id', $tahunSemester);
         }
@@ -86,7 +90,7 @@ class RequestBimsos
             $numberNext++;
             $row    = array();
             $row[]  = $val->id;
-
+            $row[]  = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $row[]  = $val->nama_kegiatan;
             $row[]  = RequestBimsos::getLabelSubMenu($val->sub_menu_slug);
             $row[]  = GeneralHelpers::formatDate($val->tgl_bimtek);
