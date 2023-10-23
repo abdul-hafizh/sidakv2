@@ -593,7 +593,6 @@
         processData: false,
         contentType: false,
         success: (respons) => {
-          console.log(respons);
           if(respons.status) {
             Swal.fire({
               title: 'Sukses!',
