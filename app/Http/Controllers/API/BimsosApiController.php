@@ -63,6 +63,13 @@ class BimsosApiController extends Controller
         } else {
             $insert = RequestBimsos::fieldsData($request);
 
+            if ($request->status == 14) {
+                $validationFile = ValidationBimsos::validationFile($request);
+                if ($validationFile) {
+                    return response()->json($validationFile, 400);
+                }
+            }
+
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
                 $lap_hadir = 'lap_hadir_' . time() . '_' . $file_hadir->getClientOriginalName();
@@ -106,6 +113,7 @@ class BimsosApiController extends Controller
                 $insert['lap_document'] = 'laporan/bimsos/' . $lap_document;
             }
 
+
             $saveData = Bimsos::create($insert);
             //result
             if ($saveData && $request->status == 14) {
@@ -148,6 +156,13 @@ class BimsosApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
+
+            if ($request->status == 14) {
+                $validationFile = ValidationBimsos::validationUpdateFile($request, $id);
+                if ($validationFile) {
+                    return response()->json($validationFile, 400);
+                }
+            }
 
             $update = RequestBimsos::fieldsData($request);
             //update account
