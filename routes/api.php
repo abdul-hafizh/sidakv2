@@ -249,8 +249,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('promosi/{type}/{id}', [PromosiApiController::class, 'approved']);
     Route::post('promosi/selected', [PromosiApiController::class, 'deleteSelected']);
     Route::post('promosi/search', [PromosiApiController::class, 'search']);
-    // Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
-    // Route::delete('user/{id}', [UserApiController::class, 'delete']);
+    Route::delete('promosi/{id}', [PromosiApiController::class, 'delete']);
     // Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     // Route::post('user/update', [UserApiController::class, 'updateProfile']);
     // Route::post('user/status', [UserApiController::class, 'StatusConfirm']);
