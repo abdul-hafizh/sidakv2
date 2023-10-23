@@ -620,16 +620,16 @@
 
                                          
 
-               // if (total_promosi != pagu_promosi) {
-               //      Swal.fire({
-               //           icon: 'info',
-               //           title: 'Peringatan',
-               //           text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-               //           confirmButtonColor: '#000',
-               //           showConfirmButton: true,
-               //           confirmButtonText: 'OK',
-               //      });
-               // } else {
+               if (total_promosi != pagu_promosi) {
+                    Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                    });
+               } else {
                     if(data.length >0)
                     {
                         SendingData(form,data);
@@ -646,7 +646,7 @@
    
                //  
                
-               //}
+               }
 
           });
 
@@ -792,6 +792,7 @@
                                    text: option.text
                               }));
                          });
+
                          
                          $('#periode_id').prop('disabled', data.selected);
                          select.selectpicker('refresh');
@@ -803,9 +804,10 @@
                $('#periode_id').on('change', function() {
                     var index = $(this).val();
                     let find = periode.find(o => o.value === index); 
+                   
                     pagu_promosi = find.pagu_promosi; 
                     //isi pagu
-                    var promosi = accounting.formatNumber(find.promosi, 0, ".", "."); 
+                    var promosi = accounting.formatNumber(find.pagu_promosi, 0, ".", "."); 
                     $('#pagu_promosi').html('<b>Rp '+ promosi +'</b>');
                
                     //isi input

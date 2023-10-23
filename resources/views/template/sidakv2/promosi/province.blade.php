@@ -66,11 +66,7 @@
     <div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
             
-            <div id="ShowChecklist" style="display:none;" class="pull-left padding-9-0 margin-left-button">
-                <button type="button" disabled="" id="approve-selected" class="btn btn-danger border-radius-10">
-                     Approve
-                </button>
-            </div>
+            
                                  
             <div  id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
                 <button type="button" id="add" class="btn btn-primary border-radius-10">
@@ -697,7 +693,7 @@
 					   
 					    if(item.request_edit == 'true')
 					    {
-                           $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
+                              $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
 					    }else{
 					    	$('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
 					    } 	
@@ -796,6 +792,12 @@
       }else{
                row +=`<button type="button" id="Edit" data-param_id="`+ item.id +`" class="btn btn-warning col-md-2">`;
 				row +=`<i class="fa fa-pencil"></i> Edit</button>`;
+
+
+              row +=`<button type="button" id="Destroy" data-param_id="`+ item.id +`" class="btn bg-navy col-md-2">`;
+                    row +=`<i class="fa fa-trash"></i> Delete</button>`;      
+
+
       }	
 
         	row +=`</div>`;
@@ -853,10 +855,38 @@
             
         });
 
-           ModalRequestEdit(item.id)
+         $( "#btn-action" ).on( "click", "#Destroy", (e) => {
+             let id = e.currentTarget.dataset.param_id;
 
 
+             Swal.fire({
+                     title: 'Apakah anda yakin hapus?',
+                   
+                     icon: 'warning',
+                     showCancelButton: true,
+                     confirmButtonColor: '#d33',
+                     cancelButtonColor: '#3085d6',
+                     confirmButtonText: 'Ya'
+                   }).then((result) => {
+                     if (result.isConfirmed) {
+                       // Perform the delete action here, e.g., using an AJAX request
+                       // You can use the itemId to identify the item to be deleted
+                       deleteItem(id);
+                       
+                       Swal.fire(
+                         'Deleted!',
+                         'Data berhasil dihapus.',
+                         'success'
+                       );
+                     }
+                   });
 
+        }); 
+
+        ModalRequestEdit(item.id)
+
+
+ 
         
     	
     }
@@ -927,20 +957,36 @@
 
 
 
-            if(item.action =='delete')
-            {
-               if(item.checked ==true)
-               {
-                   $('#ShowChecklist').show();
-                   $('#ShowChecklistAll').show();
-               }else{
-                   $('#ShowChecklist').hide();
-                   $('#ShowChecklistAll').hide();
-               } 
-            }
+            // if(item.action =='delete')
+            // {
+            //    if(item.checked ==true)
+            //    {
+            //        $('#ShowChecklist').show();
+            //        $('#ShowChecklistAll').show();
+            //    }else{
+            //        $('#ShowChecklist').hide();
+            //        $('#ShowChecklistAll').hide();
+            //    } 
+            // }
 
        
        });
+    }
+
+     function deleteItem(id){
+
+          $.ajax({
+              url:  BASE_URL +`/api/promosi/`+ id,
+              method: 'DELETE',
+              success: function(response) {
+                  // Handle success (e.g., remove deleted items from the list)
+                  fetchData(page,year);
+              },
+              error: function(error) {
+                  console.error('Error deleting items:', error);
+              }
+          });
+
     }
 
     function getperiode(periode_id){

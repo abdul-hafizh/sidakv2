@@ -153,18 +153,19 @@
                     'type': 'draft',
                };
 
-                                         
+                       console.log(total_promosi)
+               console.log(pagu_promosi)                   
 
-               // if (total_promosi != pagu_promosi) {
-               //      Swal.fire({
-               //           icon: 'info',
-               //           title: 'Peringatan',
-               //           text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-               //           confirmButtonColor: '#000',
-               //           showConfirmButton: true,
-               //           confirmButtonText: 'OK',
-               //      });
-               // } else {
+               if (total_promosi != pagu_promosi) {
+                    Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                    });
+               } else {
                     if(data.length >0)
                     {
                         SendingData(form,data);
@@ -181,7 +182,7 @@
    
                //  
                
-               //}
+               }
 
           });
 
@@ -194,8 +195,9 @@
                     'status_laporan_id':14,
                     'type': 'kirim',
                };
-
-                                          
+               
+               console.log(total_promosi)
+               console.log(pagu_promosi)                           
 
                if (total_promosi != pagu_promosi) {
                     Swal.fire({
@@ -230,7 +232,7 @@
 
           function calculatePraProduksi() {
                var total_pra_produksi = 0;
-          
+                total_promosi = 0;
                $(".pra_produksi").each(function() {
                     total_pra_produksi += parseFloat($(this).val());
                });
@@ -248,7 +250,7 @@
 
           function calculateProduksi() {
                var total_produksi = 0;
-
+                total_promosi = 0;
                $(".produksi").each(function() {
                     total_produksi += parseFloat($(this).val());
                });
@@ -264,7 +266,7 @@
 
           function calculatePascaProduksi() {
                var total_pasca_produksi = 0;
-
+                total_promosi = 0;
                $(".pasca_produksi").each(function() {
                     total_pasca_produksi += parseFloat($(this).val());
                });
@@ -279,6 +281,7 @@
           }
 
           function totalRencana() {
+
                
                total_promosi = temp_total_pra_produksi + temp_total_produksi + temp_total_pasca_produksi;
                var number = total_promosi;
@@ -333,6 +336,7 @@
 
           function updateContent(item)
           {
+
             const content = $('#content');
            // Clear previous data
             content.empty();
@@ -848,9 +852,11 @@
                $('#periode_id').on('change', function() {
                     var index = $(this).val();
                     let find = periode.find(o => o.value === index); 
+                   
                     pagu_promosi = find.pagu_promosi; 
                     //isi pagu
-                    $('#pagu_promosi').html('<b>'+find.pagu_promosi_convert+'</b>');
+                    var promosi = accounting.formatNumber(find.pagu_promosi, 0, ".", "."); 
+                    $('#pagu_promosi').html('<b>Rp '+ promosi +'</b>');
                
                     
                     

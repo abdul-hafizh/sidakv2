@@ -285,7 +285,7 @@ class PromosiApiController extends Controller
 
         $log = array(
             'category' => 'LOG_DATA_PROMOSI',
-            'group_menu' => 'menghapus_data_provinsi',
+            'group_menu' => 'menghapus_data_promosi',
             'description' => '<b>Promosi ' . $_res->periode_id . '</b> telah dihapus',
         );
         $datalog = RequestAuditLog::fieldsData($log);

@@ -152,7 +152,7 @@ class RequestPromosi
           $result['total_promosi'] =  'Rp 0'; 
       }
     
-      $result['options'] = RequestMenuRoles::ActionPage('extension');
+      $result['options'] = RequestMenuRoles::ActionPage('promosi');
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();
          $result['last_page'] = $data->lastPage();
@@ -270,7 +270,8 @@ class RequestPromosi
 
          $temp['pagu_promosi_convert'] =  GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($val->periode_id));
          $temp['total_promosi_convert'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($val->periode_id));
-
+         $temp['pagu_promosi'] =  RequestPaguTarget::PaguPromosi($val->periode_id);
+         $temp['total_promosi'] = RequestPromosi::TotalPromosi($val->periode_id);  
          return $temp;
 
    }
