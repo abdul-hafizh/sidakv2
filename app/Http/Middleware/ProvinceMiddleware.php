@@ -24,7 +24,13 @@ class ProvinceMiddleware
            
             if($_COOKIE['access'] != 'province')
             {
-               abort(404); 
+
+                if($_COOKIE['access'] != 'pusat')
+                {
+                    dd('ddx'); 
+                }    
+               // abort(404); 
+               
             }
  
         }else{

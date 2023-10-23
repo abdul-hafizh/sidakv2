@@ -136,14 +136,32 @@
   
 }
 
+.margin-center-84{
+    margin:0px 84px;
+}
+
 .pra-a{
     float: left;
     width: 35px!important;
    
 }
 
+.padding-top-bottom-12{
+    padding: 12px 0px!important;
+}
+
 .pd-right{
 padding: 0px 12px 0px 0px!important;
+}
+
+.split-table-right {
+    background: #0e298f;
+    height: 44px;
+    width: 3px;
+    border: 1px solid #0e298f;
+    border-radius: 3px;
+    float: right;
+  
 }
 
 
