@@ -106,8 +106,6 @@ class RequestPaguTarget
             foreach ($options as $rows => $row) {
                 if ($row->action == 'update') {
                     if ($row->checked == true) {
-
-
                         $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
                     }
                 }

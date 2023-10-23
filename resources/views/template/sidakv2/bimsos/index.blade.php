@@ -67,23 +67,24 @@
 
 
 <section class="content-header pd-left-right-15">
-	<div class="form-group row">
-		<div class="col-sm-3">
-			<label>Jenis </label>
-			<select class="form-control" name="jenis_sub" id="jenis_sub">
+	<div class="form-group row margin-top-bottom-20">
+		<div class="col-sm-2">
+			<select id="daerah_id" name="daerah_id" data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi / Kabupaten"></select>
+		</div>
+
+		<div class="col-sm-2">
+			<select class="selectpicker" name="jenis_sub" id="jenis_sub" title="Jenis">
 				<option value="">-Pilih Tipe-</option>
 				<option value="is_tenaga_pendamping">Tenaga Pendamping</option>
 				<option value="is_bimtek_ipbbr">Bimtek Implementasi Perizinan Berusaha Berbasis Resiko</option>
 				<option value="is_bimtek_ippbbr">Bimtek Implementasi Pengawasan Perizinan Berusaha Berbasis Resiko</option>
 			</select>
 		</div>
-		<div class="col-sm-3">
-			<label>Periode </label>
-			<select id="periode_id2" class="select-periode2 form-control" name="periode_id2"></select>
+		<div class="col-sm-2">
+			<select id="periode_id2" name="periode_id2" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
 		</div>
-		<div class="col-sm-3">
-			<label>Status </label>
-			<select class="form-control" name="search_status" id="search_status">
+		<div class="col-sm-2">
+			<select class="selectpicker" name="search_status" id="search_status" title="Status">
 				<option value="">Pilih Status</option>
 				<option value="13">Draft</option>
 				<option value="15">Request Edit</option>
@@ -91,15 +92,13 @@
 				<option value="15">Request Revision</option>
 			</select>
 		</div>
-		<div class="col-sm-3">
-			<label>Search</label>
-			<div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
-				<span class="input-group-btn">
-					<button id="Search" type="button" class="btn btn-search btn-flat height-35"><i class="fa fa-search"></i></button>
-					<button id="Clear" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-times-circle"></i></button>
-				</span>
-
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<input type="text" id="search-input" class="form-control border-radius-13" placeholder="Pencarian">
+		</div>
+		<div class="col-lg-2">
+			<div class="btn-group">
+				<button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+				<button id="Clear" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
 			</div>
 		</div>
 	</div>
@@ -148,6 +147,7 @@
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>
+							<th><span class="border-left-table">Nama Daerah </span> </th>
 							<th><span class="border-left-table">Nama Kegiatan </span> </th>
 							<th><span class="border-left-table">Sub Menu </span> </th>
 							<th><span class="border-left-table">Tanggal Kegiatan </span></th>
@@ -220,6 +220,9 @@
 							return reformatNumber(data, row, column, node);
 						}
 					}
+				},
+				exportOptions: {
+					columns: [1, 2, 3, 4, 5, 6, 7]
 				}
 			}],
 			dom: 'Bprti',
@@ -295,6 +298,30 @@
 			})
 		);
 
+		$('.select-periode2').select2(
+
+			$.ajax({
+				url: BASE_URL + '/api/select-daerah',
+				method: 'GET',
+				dataType: 'json',
+				success: function(data) {
+					// Populate SelectPicker options using received data
+					$.each(data, function(index, option) {
+						$('#daerah_id').append($('<option>', {
+							value: option.value,
+							text: option.text
+						}));
+					});
+
+					// Refresh the SelectPicker to apply the new options
+					$('#daerah_id').selectpicker('refresh');
+				},
+				error: function(error) {
+					console.error(error);
+				}
+			})
+		);
+
 		$('.select-periode-mdl').select2(
 			$.ajax({
 				url: BASE_URL + '/api/select-periode-semester',
@@ -318,6 +345,7 @@
 			var filter = [{
 				search_input: $("#search-input").val(),
 				search_status: $("#search_status").val(),
+				daerah_id: $("#daerah_id").val(),
 				jenis_sub: $("#jenis_sub").val(),
 				periode_id: $("#periode_id2").val()
 			}, ];
@@ -329,6 +357,7 @@
 			var filter = [{
 				search_input: $("#search-input").val(),
 				search_status: $("#search_status").val(),
+				daerah_id: $("#daerah_id").val(),
 				jenis_sub: $("#jenis_sub").val(),
 				periode_id: $("#periode_id2").val()
 			}, ];
@@ -420,6 +449,7 @@
 			var filter = '';
 			$("#jenis_sub").val("").trigger("change");
 			$("#periode_id2").val("").trigger("change");
+			$("#daerah_id").val("").trigger("change");
 			$("#search-input").val("");
 
 			hasil_sum(filter);
