@@ -64,7 +64,6 @@ class PenyelesaianApiController extends Controller
         $validation = ValidationPenyelesaian::validation($request);
         if ($validation) {
             return response()->json($validation, 400);
-
         } else {
 
             $existingData = Penyelesaian::where('periode_id', $request->periode_id_mdl)
@@ -146,12 +145,12 @@ class PenyelesaianApiController extends Controller
             }
 
             $saveData = Penyelesaian::create($insert);
-            
-            if($saveData) {
+
+            if ($saveData) {
                 return response()->json(['status' => true, 'id' => $saveData->id, 'message' => 'Berhasil simpan data.']);
-            } else {                
+            } else {
                 return response()->json(['status' => false, 'id' => 0, 'message' => 'Gagal simpan data.']);
-            }            
+            }
         }
     }
 
@@ -161,7 +160,6 @@ class PenyelesaianApiController extends Controller
         $validation = ValidationPenyelesaian::validationUpdate($request, $id);
         if ($validation) {
             return response()->json($validation, 400);
-
         } else {
 
             $update = RequestPenyelesaian::fieldsData($request);
@@ -235,26 +233,26 @@ class PenyelesaianApiController extends Controller
 
             $UpdateData = Penyelesaian::where('id', $id)->update($update);
 
-            if($UpdateData && $request->type == 'kirim') {
+            if ($UpdateData && $request->type == 'kirim') {
                 $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
 
                 $url = url('penyelesaian/' . $id);
                 $tahun = substr($request->periode_id_mdl, 0, 4);
-                $semester = substr($request->periode_id_mdl, 4); 
+                $semester = substr($request->periode_id_mdl, 4);
                 $sub_kegiatan = ucwords($request->sub_menu_slug);
-    
-                $pusat = User::where('username','pusat')->first()->email;
+
+                $pusat = User::where('username', 'pusat')->first()->email;
                 $judul = 'Penyelesaian Masalah (' . $sub_kegiatan . ')';
                 $kepada = 'Kementerian Investasi';
                 $subject = 'Permohonan Persetujuan/Approval Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
                 $pesan = 'Mohon persetujuan untuk Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
-    
+
                 $type = 'penyelesaian';
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
                 $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
                 $insertNotif = Notification::create($notif);
 
-                if($insertNotif) {
+                if ($insertNotif) {
                     Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
                     return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil kirim data']);
                 } else {
@@ -269,7 +267,7 @@ class PenyelesaianApiController extends Controller
     }
 
     public function import_excel(Request $request)
-    {        
+    {
         $this->validate($request, [
             'file' => 'required|mimes:csv,xls,xlsx'
         ]);
@@ -289,7 +287,7 @@ class PenyelesaianApiController extends Controller
     }
 
     public function log($id)
-    {        
+    {
         $result = Penyelesaian::leftJoin('audit_log_request as log', 'penyelesaian.id', '=', 'log.kegiatan_id')
             ->select('penyelesaian.nama_kegiatan', 'penyelesaian.sub_menu', 'log.*')
             ->where('penyelesaian.id', $id)
@@ -300,15 +298,20 @@ class PenyelesaianApiController extends Controller
     }
 
     public function cekPeriode($id)
-    {        
+    {
         $today = Carbon::now();
         $formattedDate = $today->format('Y-m-d');
+        $daerah_id =  Auth::User()->daerah_id;
 
         $year = substr($id, 0, 4);
         $semester = substr($id, 4);
 
         $cek_exten = PeriodeExtension::where('year', $year)
             ->where('semester', $semester)
+            ->whereDate('expireddate', '<=', $formattedDate)
+            ->whereDate('extensiondate', '>=', $formattedDate)
+            ->where('daerah_id', $daerah_id)
+            ->where('checklist', 'approved')
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -319,12 +322,12 @@ class PenyelesaianApiController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
-        if($cek_exten) {
+        if ($cek_exten) {
             $result = Periode::where('slug', $id)
-                ->where('status', 'Y')                
+                ->where('status', 'Y')
                 ->orderBy('created_at', 'desc')
                 ->first();
-        } 
+        }
 
         return response()->json($result);
     }
@@ -373,7 +376,7 @@ class PenyelesaianApiController extends Controller
         $update = RequestPenyelesaian::fieldReqEdit($request);
         $results = Penyelesaian::where('id', $id)->update($update);
 
-        if($results) {
+        if ($results) {
             $request->merge(['id' => $id]);
             $dataLog = RequestPenyelesaian::fieldLogRequest($request);
             $saveLog = AuditLogRequest::create($dataLog);
@@ -381,22 +384,22 @@ class PenyelesaianApiController extends Controller
             $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
 
             $tahun = substr($_res->periode_id_mdl, 0, 4);
-            $semester = substr($_res->periode_id_mdl, 4); 
+            $semester = substr($_res->periode_id_mdl, 4);
             $sub_kegiatan = ucwords($_res->sub_menu_slug);
 
             $url = url('penyelesaian/' . $id);
             $type = 'penyelesaian';
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit Penyelesaian Masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
-            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
-            $insertNotif = Notification::create($notif);                    
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $insertNotif = Notification::create($notif);
 
-            $pusat = User::where('username','pusat')->first()->email;
+            $pusat = User::where('username', 'pusat')->first()->email;
             $judul = 'Penyelesaian Masalah (' . $sub_kegiatan . ')';
             $kepada = 'Kementerian Investasi';
             $subject = 'Permohonan Request Edit Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
             $pesan = 'Mohon persetujuan untuk request edit menu penyelesaian masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
 
-            if($insertNotif) {
+            if ($insertNotif) {
                 Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'request_edit'));
                 return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil request edit data']);
             } else {
@@ -421,22 +424,22 @@ class PenyelesaianApiController extends Controller
         $update = RequestPenyelesaian::fieldReqRevisi($request);
         $results = Penyelesaian::where('id', $id)->update($update);
 
-        if($results) {
+        if ($results) {
             $request->merge(['id' => $id]);
             $dataLog = RequestPenyelesaian::fieldLogRequest($request);
-            $saveLog = AuditLogRequest::create($dataLog);            
+            $saveLog = AuditLogRequest::create($dataLog);
 
             $daerah_name = RequestDaerah::GetDaerahWhereName($_res->daerah_id);
 
             $tahun = substr($_res->periode_id_mdl, 0, 4);
-            $semester = substr($_res->periode_id_mdl, 4); 
+            $semester = substr($_res->periode_id_mdl, 4);
             $sub_kegiatan = ucwords($_res->sub_menu_slug);
 
             $type = 'penyelesaian';
             $url = url('penyelesaian');
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Revisi Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
-            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
-            $insertNotif = Notification::create($notif);                   
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $insertNotif = Notification::create($notif);
 
             $email_daerah = User::where('username', $_res->created_by)->first()->email;
             $judul = 'Penyelesaian Masalah (' . $sub_kegiatan . ')';
@@ -444,7 +447,7 @@ class PenyelesaianApiController extends Controller
             $subject = 'Permohonan Perbaikan Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
             $pesan = 'Mohon persetujuan untuk perbaikan data penyelesaian masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
 
-            if($insertNotif) {
+            if ($insertNotif) {
                 Mail::to('abdulha05518@gmail.com')->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'revisi'));
                 return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil kirim perbaikan data']);
             } else {
@@ -468,7 +471,7 @@ class PenyelesaianApiController extends Controller
         $update = RequestPenyelesaian::fieldApprEdit($request);
         $results = Penyelesaian::where('id', $id)->update($update);
 
-        if($results) {
+        if ($results) {
             $request->merge(['id' => $id]);
             $dataLog = RequestPenyelesaian::fieldLogRequest($request);
             $saveLog = AuditLogRequest::create($dataLog);
@@ -476,7 +479,7 @@ class PenyelesaianApiController extends Controller
             $type = 'penyelesaian';
             $url = 'penyelesaian';
             $messages_desc = strtoupper(Auth::User()->username) . ' Request Edit Telah Diapprove';
-            $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
             Notification::create($notif);
         }
 

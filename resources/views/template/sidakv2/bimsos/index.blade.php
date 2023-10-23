@@ -97,8 +97,8 @@
 		</div>
 		<div class="col-lg-2">
 			<div class="btn-group">
-				<button id="Search" type="button" title="Cari" class="btn btn-info"><i class="fa fa-filter"></i> Cari</button>
-				<button id="Clear" type="button" title="Reset" class="btn btn-info"><i class="fa fa-refresh"></i></button>
+				<button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+				<button id="Clear" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
 			</div>
 		</div>
 	</div>
