@@ -51,11 +51,13 @@
         <div class="col-sm-2" style="margin-bottom: 9px;">
             <select class="selectpicker" data-style="btn-default" id="periode_id" title="Pilih Periode"></select>
         </div> 	        
+        @if($access == 'admin' || $access == 'pusat' )
         <div class="col-sm-2" style="margin-bottom: 9px;">
             <select id="daerah_id" class="selectpicker" data-style="btn-default" name="daerah_id" title="Pilih Daerah" data-live-search="true">
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
+        @endif
         <div class="col-sm-2" style="margin-bottom: 9px;">    
             <select id="search_status" class="selectpicker" data-style="btn-default" title="Pilih Status">
                 <option value="1">Draft</option>

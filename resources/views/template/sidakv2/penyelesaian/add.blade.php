@@ -314,6 +314,7 @@
         <div class="modal-footer modal-add2">
           <button class="btn btn-default" data-dismiss="modal">Close</button>
           <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
+          <button id="kirim" type="button" class="btn btn-primary">Kirim</button>
         </div>
 
         <div class="modal-footer modal-edit"></div>
@@ -550,6 +551,63 @@
           } else {
             Swal.fire({
               title: 'Gagal Simpan!',
+              text: respons.message,
+              icon: 'error',
+              confirmButtonText: 'OK'
+            }).then((result) => {});
+          }
+        },
+        error: (respons) => {
+          errors = respons.responseJSON;
+          for (let i = 0; i < form.length; i++) {
+            const field = form[i];
+            if (errors.messages[field]) {
+              $('#' + field + '-alert').addClass('has-error');
+              $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
+            } else {
+              $('#' + field + '-alert').removeClass('has-error');
+              $('#' + field + '-messages').removeClass('help-block').html('');
+            }
+          }
+        }
+      });
+    });
+
+    $('#kirim').on('click', function() {
+      var formData = new FormData($('#FormSubmit')[0]);
+      var form = [
+        'periode_id_mdl',
+        'sub_menu_slug',
+        'nama_kegiatan',
+        'tgl_kegiatan',
+        'lokasi',
+        'biaya',
+        'jml_perusahaan'
+      ];      
+      formData.append("type", "kirim");
+
+      $.ajax({
+        type: "POST",
+        url: BASE_URL + '/api/penyelesaian',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: (respons) => {
+          console.log(respons);
+          if(respons.status) {
+            Swal.fire({
+              title: 'Sukses!',
+              text: 'Berhasil Kirim ke Pusat',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                window.location.replace('/penyelesaian');
+              }
+            });
+          } else {
+            Swal.fire({
+              title: 'Gagal Kirim ke Pusat!',
               text: respons.message,
               icon: 'error',
               confirmButtonText: 'OK'
@@ -946,8 +1004,7 @@
           });
         });
 
-        $('#kirim-' + id_modal).on('click', function() {
-          console.log(id_modal);
+        $('#kirim-' + id_modal).on('click', function() {          
           var formData = new FormData($('#FormSubmit')[0]);
           var form = [
             'periode_id_mdl',
@@ -967,6 +1024,7 @@
             processData: false,
             contentType: false,
             success: (respons) => {
+              console.log(respons);
               Swal.fire({
                 title: 'Sukses!',
                 text: 'Berhasil Disimpan',

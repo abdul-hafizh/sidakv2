@@ -21,13 +21,15 @@ class PerencanaanController extends Controller
     {      
         $title = 'Perencanaan Tahun Anggaran';
         $log = array(             
-            'menu' => $title,
+            'menu' => $title,            
             'slug' => 'perencanaan',
             'url' => 'perencanaan'
         );
         
+        $access = RequestAuth::Access();
         RequestSystemLog::CreateLog($log);  
-        $with =  ['title' => $title,'template'=>'template/'.$this->template];
+
+        $with =  ['title' => $title,'access' => $access,'template' => 'template/'.$this->template];
 
         return view('template/' . $this->template . '.perencanaan.index')->with($with);
         

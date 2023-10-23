@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestSystemLog;
+use App\Http\Request\RequestAuth;
 
 class PenyelesaianController extends Controller
 {
@@ -23,6 +24,7 @@ class PenyelesaianController extends Controller
             'url' => 'penyelesaian'
         );
 
+        $access = RequestAuth::Access();
         RequestSystemLog::CreateLog($log);
 
         $ss_daerah_id = empty(Session::get('daerah_id')) ? '' : Session::get('daerah_id');
@@ -35,6 +37,7 @@ class PenyelesaianController extends Controller
             ->with(
                 [
                     'title' =>  $title,
+                    'access' => $access,
                     'template' => 'template/' . $this->template,                    
                     'ss_daerah_id' => $ss_daerah_id,
                     'ss_periode_id' => $ss_periode_id,
