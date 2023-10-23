@@ -23,7 +23,12 @@ class PusatMiddleware
         {
             if($_COOKIE['access'] != 'pusat')
             {
-               abort(404); 
+                if( $_COOKIE['access'] != 'province')
+                {
+                    dd('tes');
+                }    
+               // abort(404); 
+                
             }
 
         }else{

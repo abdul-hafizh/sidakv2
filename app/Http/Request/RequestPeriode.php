@@ -9,6 +9,7 @@ use App\Models\PaguTarget;
 use App\Models\Periode;
 use App\Models\Perencanaan;
 use App\Http\Request\RequestMenuRoles;
+use App\Http\Request\RequestAuth;
 
 class RequestPeriode
 {
@@ -69,31 +70,40 @@ class RequestPeriode
    public static function SelectAll($data, $type,$action)
    {
       $temp = array();
-
+      $access = RequestAuth::Access();
       foreach ($data as $key => $val) {
 
        
-            $temp[$key]['value'] = $val->slug;
-            $temp[$key]['text'] = 'Periode ' . $val->year;
+            // $temp[$key]['value'] = $val->slug;
+            // $temp[$key]['text'] = 'Periode ' . $val->year;
+
+
 
             if($action =="perencanaan" )
             {
                   $temp[$key]['value'] = $val->year;
                   $temp[$key]['text'] = 'Periode ' . $val->year;
-                  if ($type == "POST") {
+             }else if($action =="pagu" ){
+                  $temp[$key]['value'] = $val->year;
+                  $temp[$key]['text'] = 'Periode ' . $val->year;
+             }else if($action =="promosi" ){
+                  $temp[$key]['value'] = $val->year;
+                  $temp[$key]['text'] = 'Periode ' . $val->year; 
+             }else{
+                $temp[$key]['value'] = $val->slug;
+                $temp[$key]['text'] = 'Periode ' . $val->year;
+             }
+
+
+              if($access =="province" || $access =="kabupaten")
+               {
                      $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
                      $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
                      $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
                      $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
                      $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan;
-                  }
-             }else if($action =="pagu" ){
-                  $temp[$key]['value'] = $val->year;
-                  $temp[$key]['text'] = 'Periode ' . $val->year;
-             }else{
-                $temp[$key]['value'] = $val->slug;
-                $temp[$key]['text'] = 'Periode ' . $val->year;
-             }
+                     $temp[$key]['pagu_promosi'] = $val->pagu_promosi;
+               } 
   
 
          
