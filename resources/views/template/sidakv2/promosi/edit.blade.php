@@ -91,466 +91,8 @@
                              </tr>
                               
                          </thead>
-                         <tbody>
-                              <tr>
-                            <td colspan="9" class="text-center font-bold">Proses Pengadaan Barang/Jasa</td>
-                             </tr> 
-                              <tr lass="pull-left full">
-                            <td rowspan="9" class="font-bold text-center">1</td>
-                            <td colspan="4" class="font-bold"> Pra Produksi Meliputi : </td>
-                            <td><strong id="total_pra_produksi">Rp 0</td>
-                            <td></td>
-                            </tr>
-                       <tr>
-                         <td class="font-bold">A.</td>
-                         <td class="-abjad font-bold">Rapat Teknis Membahas Rencana Kerja Antara Lain Menentukan Proyek/Peluang/Potensi Invenstasi Yang Akan Tampil Dalam Video</td>
-                         <td>
-                              <div id="startdate-a-pra-alert" class="margin-none form-group"> 
-                                   <input  type="date"  disabled id="startdate_a_pra" name="startdate_a_pra" class="form-control ">
-                                   <span id="startdate-a-pra-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-a-pra-alert" class="margin-none form-group"> 
-                                        <input type="date"  disabled id="enddate_a_pra" name="enddate_a_pra" class="form-control">
-                                 <span id="enddate-a-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-a-pra-alert" class="margin-none form-group">
-                                        <input type="number" id="budget_a_pra" disabled   min="0" oninput="this.value = Math.abs(this.value)" placeholder="Budget" value="0" name="budget_a_pra" class="form-control pra_produksi">
-                                 <span id="budget-a-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-a-pra-alert" class="margin-none form-group">
-                                        <input type="text" disabled id="desc_a_pra" name="desc_a_pra" class="form-control">
-                                 <span id="desc-a-pra-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr>
-                         <td class="font-bold">B.</td>
-                         <td class="font-bold">Membuat Storyline</td>
-                         <td>
-                              <div id="startdate-b-pra-alert" class="margin-none form-group"> 
-                                   <input type="date"  disabled name="startdate_b_pra" class="form-control">
-                                   <span id="startdate-b-pra-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-b-pra-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_b_pra" class="form-control">
-                                 <span id="enddate-b-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-b-pra-alert" class="margin-none form-group">
-                                        <input id="budget_b_pra_alert"  placeholder="Budget" value="0"  type="number" min="0" disabled oninput="this.value = Math.abs(this.value)" name="budget_b_pra" class="form-control pra_produksi">
-                                 <span id="budget-b-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-b-pra-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_b_pra" class="form-control">
-                                 <span id="desc-b-pra-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr >
-                         <td class="font-bold">C.</td>
-                         <td class="font-bold">Membuat StoryBoard</td>
-                       <td>
-                              <div id="startdate-c-pra-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_c_pra" class="form-control">
-                                   <span id="startdate-c-pra-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-c-pra-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_c_pra" class="form-control">
-                                 <span id="enddate-c-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-c-pra-alert" class="margin-none form-group">
-                                        <input type="number" disabled min="0"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_c_pra" class="form-control pra_produksi">
-                                 <span id="budget-c-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-c-pra-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_c_pra" class="form-control">
-                                 <span id="desc-c-pra-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr >
-                         <td class="font-bold">D.</td>
-                         <td class="font-bold">Penentuan Lokasi</td>
-                         <td>
-                              <div id="startdate-d-pra-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_d_pra" class="form-control">
-                                   <span id="startdate-d-pra-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-d-pra-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_d_pra" class="form-control">
-                                 <span id="enddate-d-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-d-pra-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_d_pra" class="form-control pra_produksi">
-                                 <span id="budget-d-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-d-pra-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_d_pra" class="form-control">
-                                 <span id="desc-d-pra-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                        <tr>
-                         <td class="font-bold">E.</td>
-                         <td class="font-bold">Pemilihan Talent</td>
-                         <td>
-                              <div id="startdate-e-pra-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_e_pra" class="form-control">
-                                   <span id="startdate-e-pra-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-e-pra-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_e_pra" class="form-control">
-                                 <span id="enddate-e-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-e-pra-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_e_pra" class="form-control pra_produksi">
-                                 <span id="budget-e-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-e-pra-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_e_pra" class="form-control">
-                                 <span id="desc-e-pra-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr >
-                         <td class="font-bold">F.</td>
-                         <td class="font-bold">Pemilihan Pelaku Usaha Yang Memberikan Testimoni</td>     
-                         <td>
-                              <div id="startdate-f-pra-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_f_pra" class="form-control pra-produksi">
-                                   <span id="startdate-f-pra-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-f-pra-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_f_pra" class="form-control">
-                                 <span id="enddate-f-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-f-pra-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_f_pra" class="form-control pra_produksi">
-                                 <span id="budget-f-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-f-pra-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_f_pra" class="form-control">
-                                 <span id="desc-f-pra-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr>
-                         <td class="font-bold">G.</td>
-                         <td class="font-bold">Pemilihan Element Audio Visual</td>
-                         <td>
-                              <div id="startdate-g-pra-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_g_pra_alert" class="form-control pra-produksi">
-                                   <span id="startdate-g-pra-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-g-pra-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_g_pra" class="form-control">
-                                 <span id="enddate-g-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-g-pra-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" oninput="this.value = Math.abs(this.value)" name="budget_g_pra"   placeholder="Budget" value="0" class="form-control pra_produksi">
-                                 <span id="budget-g-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-g-pra-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_g_pra"  class="form-control">
-                                 <span id="desc-g-pra-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr >
-                         <td class="font-bold">H.</td>
-                         <td class="font-bold">Pemilihan Video Editing Tools</td>
-                       <td>
-                              <div id="startdate-h-pra-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_h_pra" class="form-control">
-                                   <span id="startdate-h-pra-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-h-pra-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_h_pra" class="form-control">
-                                 <span id="enddate-h-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-h-pra-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_h_pra" class="form-control pra_produksi">
-                                 <span id="budget-h-pra-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-h-pra-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_h_pra" class="form-control">
-                                 <span id="desc-h-pra-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-
-                            <tr >
-                            <td rowspan="3" class="font-bold text-center">2</td>
-                            <td colspan="4" class="font-bold"> Produksi : </td>
-                            <td><strong id="total_produksi">Rp 0</td>
-                            <td></td> 
-
-                            
-                            </tr>
-                             <tr>
-                         <td class="font-bold">A.</td>
-                         <td class="-abjad font-bold">Pengambilan Gambar Testimoni Pelaku Usaha</td>
-                         <td>
-                              <div id="startdate-a-pro-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_a_pro" class="form-control">
-                                   <span id="startdate-a-pro-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-a-pro-alert" class="margin-none form-group"> 
-                                 <input type="date" disabled name="enddate_a_pro" class="form-control">
-                                 <span id="enddate-a-pro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-a-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0"  oninput="this.value = Math.abs(this.value)" name="budget_a_pro" class="form-control produksi">
-                                 <span id="budget-a-pro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-a-pro-alert" class="margin-none form-group">
-                                        <input type="text"  disabled name="desc_a_pro"  class="form-control">
-                                 <span id="desc-a-pro-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr>
-                         <td class="font-bold">B.</td>
-                         <td class="-abjad font-bold">Pengambilan Gambar Di Lapangan Dan Pengumpulan Video</td>
-                         <td>
-                              <div id="startdate-b-pro-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_b_pro" class="form-control">
-                                   <span id="startdate-b-pro-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-b-pro-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_b_pro" class="form-control">
-                                 <span id="enddate-b-pro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-b-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_b_pro" class="form-control produksi">
-                                 <span id="budget-b-pro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-b-pro-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_b_pro" class="form-control">
-                                 <span id="desc-b-pro-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                            <tr>
-                            <td rowspan="9" class="font-bold text-center">3</td>
-                            <td colspan="4" class="font-bold"> Pasca Produksi : </td>
-                             <td><strong id="total_pasca_produksi">Rp 0</td>
-                            <td></td>
-                            </tr>
-                            <tr>
-                         <td class="font-bold">A.</td>
-                         <td class="-abjad font-bold">Editing Video</td>
-                         <td>
-                              <div id="startdate-a-ppro-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_a_ppro" class="form-control">
-                                   <span id="startdate-a-ppro-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-a-ppro-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_a_ppro" class="form-control">
-                                 <span id="enddate-a-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-a-ppro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_a_ppro" class="form-control pasca_produksi">
-                                 <span id="budget-a-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-a-ppro-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_a_ppro" class="form-control">
-                                 <span id="desc-a-ppro-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr>
-                         <td class="font-bold">B.</td>
-                         <td class="font-bold">Motion Grafik</td>
-                         <td>
-                              <div id="startdate-b-ppro-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_b_ppro" class="form-control">
-                                   <span id="startdate-b-ppro-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-b-ppro-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_b_ppro" class="form-control">
-                                 <span id="enddate-b-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-b-ppro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_b_ppro" class="form-control pasca_produksi">
-                                 <span id="budget-b-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-b-ppro-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_b_ppro" class="form-control pasca-produksi">
-                                 <span id="desc-b-ppro-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr >
-                         <td class="font-bold">C.</td>
-                         <td class="font-bold">Music Compose Dan Mixing</td>
-                       <td>
-                              <div id="startdate-c-ppro-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_c_ppro" class="form-control">
-                                   <span id="startdate-c-ppro-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-c-ppro-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_c_ppro" class="form-control">
-                                 <span id="enddate-c-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-c-ppro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_c_ppro" class="form-control pasca_produksi">
-                                 <span id="budget-c-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-c-ppro-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_c_ppro" class="form-control">
-                                 <span id="desc-c-ppro-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                       <tr >
-                         <td class="font-bold">D.</td>
-                         <td class="font-bold">Voice Over Talent</td>
-                         <td>
-                              <div id="startdate-d-ppro-alert" class="margin-none form-group"> 
-                                   <input type="date" disabled name="startdate_d_ppro" class="form-control">
-                                   <span id="startdate-d-ppro-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-d-ppro-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled name="enddate_d_ppro" class="form-control">
-                                 <span id="enddate-d-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-d-ppro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_d_ppro" class="form-control pasca_produksi">
-                                 <span id="budget-d-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-d-ppro-alert" class="margin-none form-group">
-                                        <input type="text" disabled name="desc_d_ppro" class="form-control">
-                                 <span id="desc-d-ppro-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>
-                        <tr>
-                         <td class="font-bold">E.</td>
-                         <td class="font-bold">Subtitle</td>
-                         <td>
-                              <div id="startdate-e-ppro-alert" class="margin-none form-group"> 
-                                   <input type="date" id="tgl_awal_subtitle" disabled name="startdate_e_ppro" class="form-control">
-                                   <span id="startdate-e-ppro-messages"></span>
-                            </div>
-                         </td>
-                              <td>
-                            <div id="enddate-e-ppro-alert" class="margin-none form-group"> 
-                                        <input type="date" disabled id="tgl_ahir_subtitle" name="enddate_e_ppro" class="form-control">
-                                 <span id="enddate-e-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                            <div id="budget-e-ppro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_e_ppro" id="budget_subtitle" class="form-control pasca_produksi">
-                                 <span id="budget-e-ppro-messages"></span>
-                            </div>
-                              </td>
-                              <td>
-                                   <div id="desc-e-ppro-alert" class="margin-none form-group">
-                                        <input type="text" id="keterangan_subtitle" disabled name="desc_e_ppro" class="form-control ">
-                                 <span id="desc-e-ppro-messages"></span>
-                            </div>
-
-                              </td>
-                       </tr>       
+                         <tbody id="content">
+                                     
                          </tbody>
                          
                     </table>
@@ -562,8 +104,8 @@
 
           <div class="box-footer">
                <div class="btn-group just-center">
-                    <button id="simpan" disabled type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> SIMPAN</button>
-                    <button id="kirim" disabled type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>
+                    <button id="update"  type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> Update</button>
+                    <button id="kirim"  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>
                </div> 
           </div> 
      </form>
@@ -574,6 +116,7 @@
      $(document).ready(function() {
 
           var periode =[];
+          var periode_id = 0;
           var pagu_promosi = 0;
           var total_promosi = 0;
           var total_pra_produksi = 0;       
@@ -584,32 +127,24 @@
           var temp_total_produksi = 0;
           var temp_total_pasca_produksi = 0;
 
+          var url = window.location.href; 
+          var segments = url.split('/');  
+
           $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
      
           $('#pagu_promosi').html('<b>Rp. 0</b>');           
           $('#total_promosi').html('<b>Rp. 0</b>');           
  
           
-          getperiode();  
+         
+          getPromosiDetail(); 
 
 
-          $(".pra_produksi").on("input", function() {
-               calculatePraProduksi();
-              
-          });          
-
-          $(".produksi").on("input", function() {
-               calculateProduksi();
-          });
-
-          $(".pasca_produksi").on("input", function() {
-               calculatePascaProduksi();
-          });
-
+          
            
        
 
-          $("#simpan").click( () => {
+          $("#update").click( () => {
 
               
                var data = $("#FormSubmit").serializeArray();  
@@ -775,15 +310,523 @@
                }
                
                $('#total_promosi').html('<b>Rp. '+formattedNumber+'</b>');
-               // $('#total_rencana_sec').html('<b>Rp. '+formattedNumber+'</b>');
-               // $('#total_rencana_inp').val(number);
+               
           }
 
-          function getperiode(){
+          function getPromosiDetail(){
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
-                    url: BASE_URL +'/api/select-periode?type=POST&action=promosi',
+                    url: BASE_URL +'/api/promosi/'+ segments[5],
+                    success: function(data) {
+                         periode_id = data.periode_id;
+                         total_promosi = data.total_promosi;
+                         pagu_promosi = data.pagu_promosi;
+                         updateContent(data);
+                       
+                    },
+                    error: function( error) {}
+               });
+
+
+          }
+
+          function updateContent(item)
+          {
+            const content = $('#content');
+           // Clear previous data
+            content.empty();
+
+     
+               let row = ``;
+            
+                              row +=`<tr>`;
+                            row +=`<td colspan="9" class="text-center font-bold">Proses Pengadaan Barang/Jasa</td>`;
+                             row +=`</tr>`;  
+                              row +=`<tr lass="pull-left full">`;
+                            row +=`<td rowspan="9" class="font-bold text-center">1.</td>`;
+                            row +=`<td colspan="4" class="font-bold"> Pra Produksi Meliputi : </td>`;
+                              row +=`<td><strong id="total_pra_produksi">${item.total_pra_produksi }</td>`;
+                             row +=`<td></td>`;
+                            row +=`</tr>`;
+                       row +=`<tr>`;
+                         row +=`<td class="font-bold">A.</td>`;
+                         row +=`<td class="-abjad font-bold">Rapat Teknis Membahas Rencana Kerja Antara Lain Menentukan Proyek/Peluang/Potensi Invenstasi Yang Akan Tampil Dalam Video</td>`;
+                         row +=`<td>`;
+                              row +=`<div id="startdate-a-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input  type="date" id="startdate_a_pra" name="startdate_a_pra" value="${item.tgl_awal_peluang}" class="form-control">`;
+                                   row +=`<span id="startdate-a-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-a-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input  type="date" id="enddate_a_pra" name="enddate_a_pra"  value="${item.tgl_ahir_peluang}" class="form-control">`;
+                                 row +=`<span id="enddate-a-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-a-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  id="budget_a_pra" type="number" name="budget_a_pra" value="${item.budget_peluang}" class="form-control pra_produksi">`;
+                                 row +=`<span id="budget-a-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-a-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" id="desc_a_pra" name="desc_a_pra" value="${item.keterangan_peluang}" class="form-control">`;
+                                 row +=`<span id="desc-a-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;
+                       row +=`<tr>`;
+                         row +=`<td class="font-bold">B.</td>`;
+                         row +=`<td class="font-bold">Membuat Storyline</td>`;
+                         row +=`<td>`;
+                              row +=`<div id="startdate-b-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input  type="date" name="startdate_b_pra" value="${item.tgl_awal_storyline}" class="form-control">`;
+                                   row +=`<span id="startdate-b-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-b-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input  type="date" name="enddate_b_pra" value="${item.tgl_ahir_storyline}" class="form-control">`;
+                                 row +=`<span id="enddate-b-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-b-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="number" name="budget_b_pra" value="${item.budget_storyline}" class="form-control pra_produksi">`;
+                                 row +=`<span id="budget-b-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-b-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" name="desc_b_pra" value="${item.keterangan_storyline}" class="form-control">`;
+                                 row +=`<span id="desc-b-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;
+                       row +=`<tr >`;
+                         row +=`<td class="font-bold">C.</td>`;
+                         row +=`<td class="font-bold">Membuat StoryBoard</td>`;
+                       row +=`<td>`;
+                              row +=`<div id="startdate-c-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input  type="date" name="startdate_c_pra" value="${item.tgl_awal_storyboard}" class="form-control">`;
+                                   row +=`<span id="startdate-c-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-c-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input  type="date" name="enddate_c_pra" value="${item.tgl_ahir_storyboard}" class="form-control">`;
+                                 row +=`<span id="enddate-c-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-c-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="number" name="budget_c_pra" value="${item.budget_storyboard}"  class="form-control pra_produksi">`;
+                                 row +=`<span id="budget-c-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-c-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" name="desc_c_pra" value="${item.keterangan_storyboard}"  class="form-control">`;
+                                 row +=`<span id="desc-c-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;
+                       row +=`<tr >`;
+                         row +=`<td class="font-bold">D.</td>`;
+                         row +=`<td class="font-bold">Penentuan Lokasi</td>`;
+                         row +=`<td>`;
+                              row +=`<div id="startdate-d-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input  type="date" name="startdate_d_pra" value="${item.tgl_awal_lokasi}"   class="form-control">`;
+                                   row +=`<span id="startdate-d-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                           row +=`<div id="enddate-d-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input  type="date" name="enddate_d_pra" value="${item.tgl_ahir_lokasi}"  class="form-control">`;
+                                 row +=`<span id="enddate-d-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-d-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="number" name="budget_d_pra" value="${item.budget_lokasi}"  class="form-control pra_produksi">`;
+                                 row +=`<span id="budget-d-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-d-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" name="desc_d_pra" value="${item.keterangan_lokasi}"  class="form-control">`;
+                                 row +=`<span id="desc-d-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;
+                        row +=`<tr>`;
+                         row +=`<td class="font-bold">E.</td>`;
+                         row +=`<td class="font-bold">Pemilihan Talent</td>`;
+                         row +=`<td>`;
+                              row +=`<div id="startdate-e-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input  type="date" name="startdate_e_pra" value="${item.tgl_awal_talent}" class="form-control">`;
+                                   row +=`<span id="startdate-e-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-e-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input  type="date" name="enddate_e_pra" value="${item.tgl_ahir_talent}" class="form-control">`;
+                                 row +=`<span id="enddate-e-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-e-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="number" name="budget_e_pra" value="${item.budget_talent}" class="form-control pra_produksi">`;
+                                 row +=`<span id="budget-e-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-e-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" name="desc_e_pra" value="${item.keterangan_talent}"   class="form-control">`;
+                                 row +=`<span id="desc-e-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;
+                       row +=`<tr >`;
+                         row +=`<td class="font-bold">F.</td>`;
+                         row +=`<td class="font-bold">Pemilihan Pelaku Usaha Yang Memberikan Testimoni</td>`; 
+                         row +=`<td>`;
+                              row +=`<div id="startdate-f-pra-alert" class="margin-none form-group">`;
+                                   row +=`<input  type="date" name="startdate_f_pra" value="${item.tgl_awal_testimoni}"  class="form-control">`;
+                                   row +=`<span id="startdate-f-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-f-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input  type="date" name="enddate_f_pra" value="${item.tgl_ahir_testimoni}" class="form-control">`;
+                                 row +=`<span id="enddate-f-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-f-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="number" name="budget_f_pra" value="${item.budget_testimoni}" class="form-control pra_produksi">`;
+                                 row +=`<span id="budget-f-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-f-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" name="desc_f_pra" value="${item.keterangan_testimoni}"   class="form-control">`;
+                                 row +=`<span id="desc-f-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;
+                       row +=`<tr>`;
+                         row +=`<td class="font-bold">G.</td>`;
+                         row +=`<td class="font-bold">Pemilihan Element Audio Visual</td>`;
+                         row +=`<td>`;
+                              row +=`<div id="startdate-g-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input  type="date" name="startdate_g_pra_alert" value="${item.tgl_awal_audio}"  class="form-control">`;
+                                   row +=`<span id="startdate-g-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-g-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input  type="date" name="enddate_g_pra" value="${item.tgl_ahir_audio}" class="form-control">`;
+                                 row +=`<span id="enddate-g-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-g-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="number" name="budget_g_pra" value="${item.budget_audio}" class="form-control pra_produksi">`;
+                                 row +=`<span id="budget-g-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-g-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" name="desc_g_pra" value="${item.keterangan_audio}"   class="form-control">`;
+                                 row +=`<span id="desc-g-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;
+                       row +=`<tr >`;
+                         row +=`<td class="font-bold">H.</td>`;
+                         row +=`<td class="font-bold">Pemilihan Video Editing Tools</td>`;
+                       row +=`<td>`;
+                              row +=`<div id="startdate-h-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input  type="date" name="startdate_h_pra" value="${item.tgl_awal_editing}" class="form-control">`;
+                                   row +=`<span id="startdate-h-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-h-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input  type="date" name="enddate_h_pra" value="${item.tgl_ahir_editing}" class="form-control">`;
+                                 row +=`<span id="enddate-h-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-h-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" name="budget_h_pra" value="${item.budget_editing}" class="form-control pra_produksi">`;
+                                 row +=`<span id="budget-h-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-h-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input  type="text" name="desc_h_pra" value="${item.keterangan_editing}"   class="form-control">`;
+                                 row +=`<span id="desc-h-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;
+
+                             row +=`<tr >`;
+                             row +=`<td rowspan="3" class="font-bold text-center">2.</td>`;
+                             row +=`<td colspan="4" class="font-bold"> Produksi : </td>`;
+                             row +=`<td><strong id="total_produksi">${item.total_produksi }</td>`;
+                             row +=`<td></td>`;
+
+                             row +=`</tr>`;
+                              row +=`<tr>`;
+                          row +=`<td class="font-bold">A.</td>`;
+                          row +=`<td class="-abjad font-bold">Pengambilan Gambar Testimoni Pelaku Usaha</td>`;
+                          row +=`<td>`;
+                               row +=`<div id="startdate-a-pro-alert" class="margin-none form-group">`; 
+                                    row +=`<input  type="date" name="startdate_a_pro" value="${item.tgl_awal_gambar}"  class="form-control">`;
+                                    row +=`<span id="startdate-a-pro-messages"></span>`;
+                             row +=`</div>`;
+                          row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="enddate-a-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input  type="date" name="enddate_a_pro" value="${item.tgl_ahir_gambar}" class="form-control">`;
+                                  row +=`<span id="enddate-a-pro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="budget-a-pro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="number" name="budget_a_pro" value="${item.budget_gambar}" class="form-control">`;
+                                  row +=`<span id="budget-a-pro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                                    row +=`<div id="desc-a-pro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="text" name="desc_a_pro" value="${item.keterangan_gambar}"   class="form-control">`;
+                                  row +=`<span id="desc-a-pro-messages"></span>`;
+                             row +=`</div>`;
+
+                               row +=`</td>`;
+                        row +=`</tr>`;
+                        row +=`<tr>`;
+                          row +=`<td class="font-bold">B.</td>`;
+                          row +=`<td class="-abjad font-bold">Pengambilan Gambar Di Lapangan Dan Pengumpulan Video</td>`;
+                          row +=`<td>`;
+                               row +=`<div id="startdate-b-pro-alert" class="margin-none form-group">`; 
+                                    row +=`<input  type="date" name="startdate_b_pro" value="${item.tgl_awal_video}" class="form-control">`;
+                                    row +=`<span id="startdate-b-pro-messages"></span>`;
+                             row +=`</div>`;
+                          row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="enddate-b-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input  type="date" name="enddate_b_pro" value="${item.tgl_ahir_video}" class="form-control">`;
+                                  row +=`<span id="enddate-b-pro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="budget-b-pro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="number" name="budget_b_pro " value="${item.budget_video}" class="form-control">`;
+                                  row +=`<span id="budget-b-pro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                              row +=`<td>`;
+                                    row +=`<div id="desc-b-pro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="text" name="desc_b_pro" value="${item.keterangan_video}"   class="form-control">`;
+                                  row +=`<span id="desc-b-pro-messages"></span>`;
+                             row +=`</div>`;
+
+                               row +=`</td>`;
+                        row +=`</tr>`;
+                            row +=`<tr>`;
+                            row +=`<td rowspan="9" class="font-bold text-center">3.</td>`;
+                            row +=`<td colspan="4" class="font-bold"> Pasca Produksi : </td>`;
+                            row +=`<td><strong id="total_produksi">${item.total_pasca_produksi }</td>`;
+                            row +=`<td></td>`;
+                            row +=`</tr>`;
+                             row +=`<tr>`;
+                          row +=`<td class="font-bold">A.</td>`;
+                          row +=`<td class="-abjad font-bold">Editing Video</td>`;
+                          row +=`<td>`;
+                               row +=`<div id="startdate-a-ppro-alert" class="margin-none form-group">`; 
+                                    row +=`<input  type="date" name="startdate_a_ppro" value="${item.tgl_awal_editvideo}" class="form-control">`;
+                                    row +=`<span id="startdate-a-ppro-messages"></span>`;
+                             row +=`</div>`;
+                          row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="enddate-a-ppro-alert" class="margin-none form-group">`; 
+                                         row +=`<input  type="date" name="enddate_a_ppro"  value="${item.tgl_ahir_editvideo}" class="form-control">`;
+                                  row +=`<span id="enddate-a-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="budget-a-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="number" name="budget_a_ppro" value="${item.budget_editvideo}" class="form-control">`;
+                                  row +=`<span id="budget-a-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                                    row +=`<div id="desc-a-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="text" name="desc_a_ppro" value="${item.keterangan_editvideo}"   class="form-control">`;
+                                  row +=`<span id="desc-a-ppro-messages"></span>`;
+                             row +=`</div>`;
+
+                               row +=`</td>`;
+                        row +=`</tr>`;
+                        row +=`<tr>`;
+                          row +=`<td class="font-bold">B.</td>`;
+                          row +=`<td class="font-bold">Motion Grafik</td>`;
+                          row +=`<td>`;
+                               row +=`<div id="startdate-b-ppro-alert" class="margin-none form-group">`; 
+                                    row +=`<input  type="date" name="startdate_b_ppro" value="${item.tgl_awal_grafik}" class="form-control">`;
+                                    row +=`<span id="startdate-b-ppro-messages"></span>`;
+                             row +=`</div>`;
+                          row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="enddate-b-ppro-alert" class="margin-none form-group">`; 
+                                         row +=`<input  type="date" name="enddate_b_ppro" value="${item.tgl_ahir_grafik}" class="form-control">`;
+                                  row +=`<span id="enddate-b-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="budget-b-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="number" name="budget_b_ppro" value="${item.budget_grafik}" class="form-control">`;
+                                  row +=`<span id="budget-b-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                                    row +=`<div id="desc-b-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="text" name="desc_b_ppro" value="${item.keterangan_grafik}"   class="form-control">`;
+                                  row +=`<span id="desc-b-ppro-messages"></span>`;
+                             row +=`</div>`;
+
+                               row +=`</td>`;
+                       row +=` </tr>`;
+                        row +=`<tr >`;
+                          row +=`<td class="font-bold">C.</td>`;
+                          row +=`<td class="font-bold">Music Compose Dan Mixing</td>`;
+                        row +=`<td>`;
+                               row +=`<div id="startdate-c-ppro-alert" class="margin-none form-group">`; 
+                                    row +=`<input  type="date" name="startdate_c_ppro" value="${item.tgl_awal_mixing}"  class="form-control">`;
+                                    row +=`<span id="startdate-c-ppro-messages"></span>`;
+                             row +=`</div>`;
+                          row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="enddate-c-ppro-alert" class="margin-none form-group">`; 
+                                         row +=`<input  type="date" name="enddate_c_ppro" value="${item.tgl_ahir_mixing}" class="form-control">`;
+                                  row +=`<span id="enddate-c-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="budget-c-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="number" name="budget_c_ppro" value="${item.budget_mixing}" class="form-control">`;
+                                  row +=`<span id="budget-c-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                                    row +=`<div id="desc-c-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="text" name="desc_c_ppro" value="${item.keterangan_mixing}"   class="form-control">`;
+                                  row +=`<span id="desc-c-ppro-messages"></span>`;
+                             row +=`</div>`;
+
+                               row +=`</td>`;
+                       row +=`</tr>`;
+                        row +=`<tr >`;
+                          row +=`<td class="font-bold">D.</td>`;
+                          row +=`<td class="font-bold">Voice Over Talent</td>`;
+                          row +=`<td>`;
+                               row +=`<div id="startdate-d-ppro-alert" class="margin-none form-group">`; 
+                                    row +=`<input  type="date" name="startdate_d_ppro" value="${item.tgl_awal_voice}"  class="form-control">`;
+                                    row +=`<span id="startdate-d-ppro-messages"></span>`;
+                             row +=`</div>`;
+                          row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="enddate-d-ppro-alert" class="margin-none form-group">`; 
+                                         row +=`<input  type="date" name="enddate_d_ppro" value="${item.tgl_ahir_voice}" class="form-control">`;
+                                  row +=`<span id="enddate-d-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="budget-d-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="number" name="budget_d_ppro" value="${item.budget_voice}" class="form-control">`;
+                                  row +=`<span id="budget-d-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                                    row +=`<div id="desc-d-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="text" name="desc_d_ppro" value="${item.keterangan_voice}"   class="form-control">`;
+                                  row +=`<span id="desc-d-ppro-messages"></span>`;
+                             row +=`</div>`;
+
+                               row +=`</td>`;
+                        row +=`</tr>`;
+                         row +=`<tr>`;
+                          row +=`<td class="font-bold">E.</td>`;
+                          row +=`<td class="font-bold">Subtitle</td>`;
+                          row +=`<td>`;
+                               row +=`<div id="startdate-e-ppro-alert" class="margin-none form-group">`; 
+                                    row +=`<input  type="date" name="startdate_e_ppro" value="${item.tgl_awal_subtitle}" class="form-control">`;
+                                    row +=`<span id="startdate-e-ppro-messages"></span>`;
+                             row +=`</div>`;
+                          row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="enddate-e-ppro-alert" class="margin-none form-group">`; 
+                                         row +=`<input  type="date" name="enddate_d_ppro" value="${item.tgl_ahir_subtitle}"  class="form-control">`;
+                                  row +=`<span id="enddate-e-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                             row +=`<div id="budget-e-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="number" name="budget_e_ppro" value="${item.budget_subtitle}" class="form-control">`;
+                                  row +=`<span id="budget-e-ppro-messages"></span>`;
+                             row +=`</div>`;
+                               row +=`</td>`;
+                               row +=`<td>`;
+                                    row +=`<div id="desc-e-ppro-alert" class="margin-none form-group">`;
+                                         row +=`<input  type="text" name="desc_e_ppro" value="${item.keterangan_subtitle}"   class="form-control">`;
+                                  row +=`<span id="desc-e-ppro-messages"></span>`;
+                             row +=`</div>`;
+
+                              row +=`</td>`;
+                       row +=`</tr>`;        
+                           //  BtnAction(item.id,item.status_laporan_id);
+
+                       content.append(row);
+
+                        getperiode(item.periode_id); 
+                       $('#pagu_promosi').html('<b>'+item.pagu_promosi_convert+'</b>');
+                       $('#total_promosi').html('<b>'+item.total_promosi_convert+'</b>');
+      
+                   $(".pra_produksi").on("input", function() {
+                         calculatePraProduksi();
+                        
+                    });          
+
+                    $(".produksi").on("input", function() {
+                         calculateProduksi();
+                    });
+
+                    $(".pasca_produksi").on("input", function() {
+                         calculatePascaProduksi();
+                    });
+
+ 
+         }
+
+          function getperiode(periode_id){
+               $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: BASE_URL +'/api/select-periode?type=PUT&action=promosi',
                     success: function(data) {
                          var select =  $('#periode_id');
                          $.each(data.result, function(index, option) {
@@ -793,7 +836,9 @@
                               }));
                          });
                          
-                         $('#periode_id').prop('disabled', data.selected);
+                           
+                        
+                         select.val(periode_id);
                          select.selectpicker('refresh');
                          periode = data.result; 
                     },
@@ -805,13 +850,10 @@
                     let find = periode.find(o => o.value === index); 
                     pagu_promosi = find.pagu_promosi; 
                     //isi pagu
-                    var promosi = accounting.formatNumber(find.promosi, 0, ".", "."); 
-                    $('#pagu_promosi').html('<b>Rp '+ promosi +'</b>');
+                    $('#pagu_promosi').html('<b>'+find.pagu_promosi_convert+'</b>');
                
-                    //isi input
-                    $("input").prop("disabled", false);
-                    $("#simpan").prop("disabled", false);
-                    $("#kirim").prop("disabled", false);
+                    
+                    
                     
                });
           }
@@ -820,7 +862,7 @@
 
           function SendingData(form,data) {
 
-               var pesan = (form.type === 'kirim') ? 'Terkirim ke Pusat.' : 'Berhasil Simpan.';
+               var pesan = (form.type === 'kirim') ? 'Terkirim ke Pusat.' : 'Berhasil Diupdate.';
                var periode_id = $('#periode_id').val(); 
                var arr = {
                     'periode_id':periode_id,
@@ -903,8 +945,8 @@
               
           
                $.ajax({
-                    type:"POST",
-                    url: BASE_URL+'/api/promosi',
+                    type:"PUT",
+                    url: BASE_URL+'/api/promosi/'+ segments[5],
                     data:arr,
                     cache: false,
                     dataType: "json",

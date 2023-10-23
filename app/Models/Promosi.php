@@ -5,15 +5,17 @@ namespace App\Models;
 use Eloquent as Model;
 // use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Uuids;
-class Periode extends Model
+
+
+class Promosi extends Model
 {
      // use SoftDeletes;
     use Uuids;
-    public $table = 'periode';
+    public $table = 'promosi';
     // protected $dates = ['deleted_at'];
 
     public $fillable = [
-            "nama_kegiatan",
+            
             "periode_id",
             "daerah_id",
             "tgl_awal_peluang",
@@ -79,6 +81,8 @@ class Periode extends Model
             "created_by",
             "request_edit",
             "status_laporan_id",
+            "alasan",
+            "checklist",
        
     ];
 

@@ -89,18 +89,43 @@ class PeriodeApiController extends Controller
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
             } else if ($request->type == 'GET' && $request->action == 'penyelesaian') {
+
+              if($access !="admin" ||  $access !="pusat")
+              {
+
                 $query->whereIn(
                     'year',
                     DB::table('penyelesaian')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
+                ); 
+              }else{
+
+                 $query->whereIn(
+                    'year',
+                    DB::table('penyelesaian')
+                        ->select('periode_id')
+                ); 
+
+              }  
+               
+
+             //promosi   
             } else if ($request->type == 'POST' && $request->action == 'promosi') {
                 $query->whereNotIn(
                     'year',
                     DB::table('promosi')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
+            } else if ($request->type == 'PUT' && $request->action == 'promosi') {
+                $query->whereIn(
+                    'year',
+                    DB::table('pagu_target')
+                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                );
+                    
             } else if ($request->type == 'GET' && $request->action == 'promosi') {
+               
+
                 $query->whereIn(
                     'year',
                     DB::table('promosi')
