@@ -8,8 +8,10 @@ use File;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Request\Validation\ValidationPerencanaan;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestAuditLog;
 use App\Http\Request\RequestPerencanaan;
 use App\Http\Request\RequestNotification;
@@ -17,8 +19,10 @@ use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\Perencanaan;
 use App\Models\Notification;
+use App\Models\User;
 use App\Models\AuditLog;
 use App\Models\AuditLogRequest;
+use App\Mail\PerencanaanMail;
 
 class PerencanaanApiController extends Controller
 {
@@ -26,7 +30,6 @@ class PerencanaanApiController extends Controller
     {   
         $this->perPage = GeneralPaginate::limit();
         $this->UploadFolder = GeneralPaginate::uploadPhotoFolder();
-       
     }
 
     public function index(Request $request)
@@ -40,7 +43,7 @@ class PerencanaanApiController extends Controller
              $query = Perencanaan::orderBy('created_at', 'DESC');
         }
 
-        $query->where('periode_id', substr($tahunSemester, 0, 4));
+        // $query->where('periode_id', substr($tahunSemester, 0, 4));
 
         if($request->per_page !='all')
         {
@@ -158,50 +161,122 @@ class PerencanaanApiController extends Controller
         return response()->json($result);
     }
        
-    public function store(Request $request){
+    public function store(Request $request){       
+        
+        DB::beginTransaction(); 
+    
+        try {
+            $validation = ValidationPerencanaan::validation($request);
+    
+            if($validation)
+            {            
+                DB::rollBack();
+                return response()->json($validation, 400);  
+            } else {
 
-        $validation = ValidationPerencanaan::validation($request);
+                $existingData = Perencanaan::where('periode_id', $request->periode_id)
+                ->where('daerah_id', Auth::User()->daerah_id)
+                ->first();
 
-        if($validation)
-        {
-          
-            return response()->json($validation, 400);  
-
-        } else {
+                if ($existingData) {
+                    DB::rollBack();
+                    return response()->json(['status' => false, 'message' => 'Perencanaan sudah ada pada periode ini.']);
+                }
             
-            $insert = RequestPerencanaan::fieldsData($request);  
-            $saveData = Perencanaan::create($insert);
-
-            if($saveData && $request->type == 'kirim')
-            {
-                $type = 'perencanaan';
-                $url = 'perencanaan/detail/' . $saveData->id;
-                $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
-                $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
-                Notification::create($notif);
-            }  
-
-            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);    
-            
-        } 
-    }
+                $insert = RequestPerencanaan::fieldsData($request);  
+                $saveData = Perencanaan::create($insert);
+    
+                if($saveData && $request->type == 'kirim')
+                {                    
+                    $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+    
+                    $url = url('perencanaan/detail/' . $saveData->id);
+                    $pusat = User::where('username','pusat')->first()->email;
+                    $judul = 'Perencanaan DAK';
+                    $kepada = 'Kementerian Investasi';
+                    $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK Tahun ' . $request->periode_id . ' Kab/Prop ' . $daerah_name;
+                    $pesan = 'Mohon persetujuan untuk perencanaan DAK Tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;
+    
+                    $type = 'perencanaan';
+                    $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
+                    $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                    $insertNotif = Notification::create($notif);
+    
+                    if ($insertNotif) {
+                        DB::commit();
+                        Mail::to($pusat)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
+                        return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
+                    } else {
+                        DB::rollBack(); 
+                        return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                    }
+                } else {
+                    DB::rollBack();
+                    return response()->json(['status' => false, 'message' => 'Gagal menyimpan data Perencanaan']);
+                }
+            }
+        } catch (\Exception $e) {
+            DB::rollBack(); 
+            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan dalam menyimpan data']);
+        }
+    }    
 
     public function update($id, Request $request){
+
+        DB::beginTransaction(); 
      
-        $validation = ValidationPerencanaan::validationUpdate($request,$id);
+        try {
+            $validation = ValidationPerencanaan::validationUpdate($request,$id);
 
-        if($validation)
-        {
+            if($validation)
+            {
+            
+                return response()->json($validation, 400);  
+                
+            } else {            
+
+                $update = RequestPerencanaan::fieldsData($request);
+                $UpdateData = Perencanaan::where('id',$id)->update($update);
+
+                if ($UpdateData) {
+                    if ($request->type == 'kirim') {
+                        $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
         
-            return response()->json($validation, 400);  
-            
-        } else {            
-
-            $update = RequestPerencanaan::fieldsData($request);
-            $UpdateData = Perencanaan::where('id',$id)->update($update);
-            
-            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
-        }   
+                        $url = url('perencanaan/detail/' . $id);
+                        $pusat = User::where('username','pusat')->first()->email;
+                        $judul = 'Permohonan Persetujuan/Approval Perencanaan DAK';
+                        $kepada = 'Kementerian Investasi';
+                        $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK Tahun ' . $request->periode_id . ' Kab/Prop ' . $daerah_name;
+                        $pesan = 'Mohon persetujuan untuk perencanaan DAK Tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;    
+        
+                        $type = 'perencanaan';
+                        $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
+                        $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                        $insertNotif = Notification::create($notif);
+        
+                        if ($insertNotif) {
+                            DB::commit();
+                            Mail::to($pusat)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
+                            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+                        } else {
+                            DB::rollBack(); 
+                            return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                        }
+                    } else {
+                        DB::commit();
+                        return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+                    }
+                    
+                } else {
+                    DB::rollBack(); 
+                    return response()->json(['status' => false, 'message' => 'Gagal update data.']);
+                }
+                
+            }   
+        } catch (\Exception $e) {
+            DB::rollBack(); 
+            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan dalam update data']);
+        }
     }
 
     public function request_doc($id){
@@ -230,6 +305,63 @@ class PerencanaanApiController extends Controller
         
         return response()->json($messages);
 
+    }
+
+    public function upload_laporan($id, Request $request)
+    {                
+        $validation = ValidationPerencanaan::validationUploadFile($request, $id);
+
+        $_res = Perencanaan::find($id);
+          
+        if(empty($_res)){
+            return response()->json(['messages' => false]);
+        }        
+
+        if($validation)
+        {
+            return response()->json($validation, 400);
+
+        } else {
+                          
+            $source = explode(";base64,", $request->lap_rencana);
+            $fileDir = '/file/perencanaan/';
+            $image = base64_decode($source[1]);
+            $filePath = public_path() . $fileDir;
+            $filepdf = time() .'.pdf';
+            $success = file_put_contents($filePath.$filepdf, $image);
+
+            $daerah_name = RequestDaerah::GetDaerahWhereName($_res->daerah_id);
+
+            $url = url('perencanaan/detail/' . $id);
+            $pusat = User::where('username','pusat')->first()->email;
+            $judul = 'Perencanaan DAK';
+            $kepada = 'Kementerian Investasi';
+            $subject = 'Permohonan Persetujuan/Approval Dokumen Perencanaan DAK Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name;
+            $pesan = 'Mohon persetujuan untuk dokumen perencanaan DAK Tahun ' . $_res->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;  
+            
+            $check = Perencanaan::where('id', $request->id_perencanaan)->first();
+            if($check)
+            { 
+                File::delete(public_path() . $fileDir . $check->lap_rencana);
+            } 
+            
+            $json = json_encode(['lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
+            $log = array(             
+                'action'=> 'Update Perencanaan',
+                'slug'=>'update-perencanaan',
+                'type'=>'put',
+                'json_field'=> $json,
+                'url'=>'api/perencanaan/'.$id
+            );
+
+            $datalog =  RequestAuditLog::fieldsData($log);
+
+            $results = $_res->where('id', $id)->update([ 'lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
+            
+            Mail::to($pusat)->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'upload_doc'));
+
+            return response()->json(['status' => true, 'messages' => 'Update data sucessfully']);
+        }  
     }
 
     public function approve($id){
@@ -366,7 +498,7 @@ class PerencanaanApiController extends Controller
 
         if($results){
             $type = 'perencanaan';
-            $url = 'perencanaan/detail/' . $id;
+            $url = url('perencanaan/detail/' . $id);
             $messages_desc = strtoupper(Auth::User()->username) . ' Request Edit Perencanaan Tahun ' . $_res->periode_id;
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
@@ -374,6 +506,16 @@ class PerencanaanApiController extends Controller
             $request->merge(['id' => $id]);
             $dataLog = RequestPerencanaan::fieldLogRequest($request);
             $saveLog = AuditLogRequest::create($dataLog);
+
+            $daerah_name = RequestDaerah::GetDaerahWhereName($_res->daerah_id);
+
+            $pusat = User::where('username','pusat')->first()->email;
+            $judul = 'Perencanaan DAK';
+            $kepada = 'Kementerian Investasi';
+            $subject = 'Permohonan Persetujuan Request edit Perencanaan DAK Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name;
+            $pesan = 'Mohon persetujuan untuk Request edit Perencanaan DAK Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
+
+            Mail::to($pusat)->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'request_edit'));
 
             $messages['messages'] = true;
         }
@@ -388,9 +530,7 @@ class PerencanaanApiController extends Controller
         $_res = Perencanaan::find($id);
           
         if(empty($_res)){
-            
             return response()->json(['messages' => false]);
-
         }
 
         $update = RequestPerencanaan::fieldReqrevisi($request);
@@ -398,7 +538,7 @@ class PerencanaanApiController extends Controller
 
         if($results){
             $type = 'perencanaan';
-            $url = 'perencanaan/detail/' . $id;
+            $url = url('perencanaan/detail/' . $id);
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Perbaikan Pada Perencanaan Tahun ' . $_res->periode_id;
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url);
             Notification::create($notif);
@@ -406,6 +546,16 @@ class PerencanaanApiController extends Controller
             $request->merge(['id' => $id]);
             $dataLog = RequestPerencanaan::fieldLogRequest($request);
             $saveLog = AuditLogRequest::create($dataLog);
+
+            $daerah_name = RequestDaerah::GetDaerahWhereName($_res->daerah_id);
+
+            $email_daerah = User::where('username', $_res->created_by)->first()->email;
+            $judul = 'Perencanaan DAK';
+            $kepada = 'Pemerintah Daerah ' . $daerah_name;
+            $subject = 'Permohonan Perbaikan Perencanaan DAK Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name;
+            $pesan = 'Mohon untuk memperbaiki Perencanaan DAK Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
+
+            Mail::to('abdulha05518@gmail.com')->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'revisi'));
 
             $messages['messages'] = true;
         }
@@ -463,7 +613,18 @@ class PerencanaanApiController extends Controller
         }
 
         return response()->json($messages);
-    }    
+    }
+    
+    public function log($id)
+    {        
+        $result = Perencanaan::leftJoin('audit_log_request as log', 'perencanaan.id', '=', 'log.kegiatan_id')
+            ->select('log.*')
+            ->where('perencanaan.id', $id)
+            ->orderBy('log.id', 'desc')
+            ->get();
+
+        return response()->json($result);
+    }
 
     public function deleteSelected(Request $request){
         $messages['messages'] = false;
@@ -503,55 +664,5 @@ class PerencanaanApiController extends Controller
         }
         
         return response()->json($messages);
-    }
-
-    public function upload_laporan($id, Request $request)
-    {                
-        $validation = ValidationPerencanaan::validationUploadFile($request, $id);
-
-        $_res = Perencanaan::find($id);
-          
-        if(empty($_res)){
-            
-            return response()->json(['messages' => false]);
-
-        }        
-
-        if($validation)
-        {
-            return response()->json($validation, 400);
-
-        } else {
-                          
-            $source = explode(";base64,", $request->lap_rencana);
-            $fileDir = '/file/perencanaan/';
-            $image = base64_decode($source[1]);
-            $filePath = public_path() . $fileDir;
-            $filepdf = time() .'.pdf';
-            $success = file_put_contents($filePath.$filepdf, $image);
-            
-            $check = Perencanaan::where('id', $request->id_perencanaan)->first();
-            if($check)
-            { 
-                File::delete(public_path() . $fileDir . $check->lap_rencana);
-            } 
-            
-            //Audit Log
-            $json = json_encode(['lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
-            $log = array(             
-                'action'=> 'Update Perencanaan',
-                'slug'=>'update-perencanaan',
-                'type'=>'put',
-                'json_field'=> $json,
-                'url'=>'api/perencanaan/'.$id
-            );
-            $datalog =  RequestAuditLog::fieldsData($log);
-
-            //update data
-            $results = $_res->where('id', $id)->update([ 'lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
-
-            //result
-            return response()->json(['status' => true, 'messages' => 'Update data sucessfully']);
-        }  
-    }
+    }    
 }    

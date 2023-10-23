@@ -338,6 +338,36 @@
       }
     })
 
+    $('#periode_id_mdl').on('change', function() {
+
+      var val_periode = $('#periode_id_mdl').val();
+
+      $.ajax({
+        url: BASE_URL + '/api/penyelesaian/cekPeriode/' + val_periode,
+        method: 'GET',
+        success: function(res) {
+          if (res.status != 'Y') {
+            $('#simpan').hide();
+            Swal.fire({
+              title: 'Periode Input Data Sudah Habis.',
+              text: 'Periksa kembali periode input data.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            }).then((result) => {});
+          } else {
+            $('#simpan').show();
+          }
+        },
+        error: function() {
+          Swal.fire({
+            title: 'Data tidak ditemukan.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          }).then((result) => {});
+        }
+      });
+    });
+
     $('#simpan').on('click', function() {
       var formData = new FormData($('#FormSubmit')[0]);
       console.log(formData);
@@ -387,7 +417,6 @@
               window.location.replace('/bimsos');
             }
           });
-
           //
         },
         error: (respons) => {
@@ -404,6 +433,11 @@
               $('#' + field + '-messages').removeClass('help-block').html('');
             }
           }
+          Swal.fire({
+            title: 'Periksa kembali data anda.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          }).then((result) => {});
         }
       });
     });
@@ -875,6 +909,11 @@
                   $('#' + field + '-messages').removeClass('help-block').html('');
                 }
               }
+              Swal.fire({
+                title: 'Periksa kembali data anda.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+              }).then((result) => {});
             }
           });
         });

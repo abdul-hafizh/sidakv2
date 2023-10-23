@@ -9,8 +9,10 @@ use App\Helpers\GeneralHelpers;
 use App\Models\Perencanaan;
 use App\Models\Penyelesaian;
 use App\Http\Request\RequestAuth;
+use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestSettingApps;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 
 class RequestPenyelesaian
 {
@@ -18,19 +20,19 @@ class RequestPenyelesaian
     {
         $temp = array();
         $temp2 = array();
+        $validStatus = [13, 14, 15];
         $tahunSemester = GeneralHelpers::semesterToday();
         $getRequest = $request->all();
         $access = RequestAuth::Access();
-        $column_order = ['', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
-        $column_search = ['nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
-        $order = ['created_date' => 'DESC'];
+        $column_order = ['', 'daerah_id', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
+        $column_search = ['daerah_id', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
+        $order = ['created_at' => 'desc'];
 
         $data = DB::table('penyelesaian');       
 
         if ($access == 'daerah' || $access == 'province') {
             $data->where('daerah_id', Auth()->User()->daerah_id);
         }
-
         if ($request->filled('length')) {
             $data->offset($request->input('start'))->limit($request->input('length'));
         }
@@ -39,18 +41,78 @@ class RequestPenyelesaian
         if (!empty($searchColumn[0]['search']['value'])) {
             $value = $searchColumn[0]['search']['value'];
             $filterjs = json_decode($value);
-
-            if ($filterjs[0]->jenis_sub) {
+                        
+            if (!empty($filterjs[0]->jenis_sub)) {
                 $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
+                Session::put('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
-            if ($filterjs[0]->periode_id) {
+
+            if (!empty($filterjs[0]->daerah_id)) {
+                $data->where('daerah_id', $filterjs[0]->daerah_id);
+                Session::put('daerah_id', $filterjs[0]->daerah_id);
+            }
+
+            if (in_array($filterjs[0]->search_status, $validStatus)) {
+                Session::put('status_laporan_id', $filterjs[0]->search_status);
+                Session::put('status_laporan_text', $filterjs[0]->search_status_text);
+                if ($filterjs[0]->search_status_text == 'Perlu Perbaikan') {
+                    $data->where('status_laporan_id', $filterjs[0]->search_status)
+                        ->where('request_edit', 'reject');
+                } elseif ($filterjs[0]->search_status_text == 'Draft') {
+                    $data->where('status_laporan_id', $filterjs[0]->search_status)
+                        ->where(function ($query) {
+                            $query->where('request_edit', 'false')
+                                ->orWhere('request_edit', 'true');
+                        });
+                } else {
+                    $data->where('status_laporan_id', $filterjs[0]->search_status);
+                }
+            }
+
+            if (!empty($filterjs[0]->periode_id)) {
+                Session::put('periode_id', $filterjs[0]->periode_id);
                 $data->where('periode_id', $filterjs[0]->periode_id);
             } else {
                 $data->where('periode_id', $tahunSemester);
             }
+
         } else {
-            $data->where('periode_id', $tahunSemester);
-        }        
+
+            $ss_sub_menu_slug = Session::get('sub_menu_slug');
+            $ss_daerah_id = Session::get('daerah_id');
+            $ss_periode_id = Session::get('periode_id');
+            $ss_status_laporan_id = Session::get('status_laporan_id');
+            $ss_status_laporan_text = Session::get('status_laporan_text');
+
+            if (!empty($ss_sub_menu_slug)) {
+                $data->where('sub_menu_slug', $ss_sub_menu_slug);
+            }
+
+            if (!empty($ss_daerah_id)) {
+                $data->where('daerah_id', $ss_daerah_id);
+            }
+
+            if (!empty($ss_status_laporan_id)) {
+                if ($ss_status_laporan_text == 'Perlu Perbaikan') {
+                    $data->where('status_laporan_id', $ss_status_laporan_id)
+                        ->where('request_edit', 'reject');
+                } elseif ($ss_status_laporan_text == 'Draft') {
+                    $data->where('status_laporan_id', $ss_status_laporan_id)
+                        ->where(function ($query) {
+                            $query->where('request_edit', 'false')
+                                ->orWhere('request_edit', 'true');
+                        });
+                } else {
+                    $data->where('status_laporan_id', $ss_status_laporan_id);
+                }
+            }
+
+            if (!empty($ss_periode_id)) {
+                $data->where('periode_id', $ss_periode_id);
+            } else {
+                $data->where('periode_id', $tahunSemester);
+            }
+        }
 
         $searchValue = $request->input('search.value');
         if ($searchValue) {
@@ -78,12 +140,13 @@ class RequestPenyelesaian
             if(!empty($val->alasan_edit) || !empty($val->alasan_edit)) {
                 $log_url =  '<button id="Log" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
             }
-            $edit_url =  '<button id="Edit" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+            $edit_url = '<button id="Edit" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
             $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
             $numberNext++;
             $row   = array();
             $row[] = $val->id;
+            $row[] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $row[] = $val->nama_kegiatan;
             $row[] = $val->sub_menu;
             $row[] = GeneralHelpers::formatDate($val->tgl_kegiatan);
@@ -300,8 +363,6 @@ class RequestPenyelesaian
                 return "Draft";
             } elseif ($requestEdit === "true") {
                 return "Draft (Edit)";
-            } elseif ($requestEdit === "revisi") {
-                return "Draft (Revision)";
             } elseif ($requestEdit === "reject") {
                 return "Perlu Perbaikan";
             }
@@ -310,14 +371,11 @@ class RequestPenyelesaian
                 return "Terkirim";
             }
         } elseif ($status === 15) {
-            if ($requestEdit === "false") {
-                return "Terkirim";
-            } elseif ($requestEdit === "true") {
+            if ($requestEdit === "true") {
                 return "Request Edit";
             }
-        } elseif ($status === 16 && $requestEdit === "false") {
-            return "Approved";
         }
+        
         return "Label tidak ditemukan";
     }
 }
