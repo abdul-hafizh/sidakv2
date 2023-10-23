@@ -238,6 +238,20 @@ class RequestPaguTarget
         return json_decode(json_encode($temp2), FALSE);
     }
 
+    public static function PaguPromosi($year)
+    {
+       $pagu = PaguTarget::where(['periode_id'=>$year,'daerah_id'=>Auth::User()->daerah_id])->first();
+       if($pagu)
+       {
+        $result = $pagu->pagu_promosi;
+       }else{
+        $result = 0;
+       } 
+
+       return $result; 
+ 
+    }
+
 
 
     public static function fieldsData($request)

@@ -287,17 +287,7 @@ class ExtensionApiController extends Controller
     {
         $messages['messages'] = false;
 
-        $json = json_encode($request->data);
-        //Audit Log
-        $log = array(
-            'action' => 'Delete Extension Select',
-            'slug' => 'delete-Extension-select',
-            'type' => 'post',
-            'json_field' => $json,
-            'url' => 'api/Extension/selected/'
-        );
-
-        RequestAuditLog::fieldsData($log);
+        
 
         foreach ($request->data as $key) 
         {
@@ -315,7 +305,7 @@ class ExtensionApiController extends Controller
                 'group_menu' => 'menghapus_data_periode',
                 'description' => '<b>' . $name . '</b> telah dihapus',
                 );
-                // $datalog = RequestAuditLog::fieldsData($log);
+                $datalog = RequestAuditLog::fieldsData($log);
                 $results = Extension::where('id', (int)$key)->delete();
 
             }else{
@@ -325,13 +315,13 @@ class ExtensionApiController extends Controller
                     'group_menu' => 'approval_data_periode',
                     'description' => '<b>' . $name . '</b> telah diaprove',
                 );
-                // $datalog = RequestAuditLog::fieldsData($log);
+                $datalog = RequestAuditLog::fieldsData($log);
                 $results = Extension::where('id', (int)$key)->update(['checklist'=>'approved']);
 
                 $type = 'periode';
                 $url = '';
-                $messages = 'Pengajuan perpanjangan periode sampai tanggal '.$request->extensiondate.' sudah approved oleh admin';
-                $notif = RequestNotification::fieldsData($type,$messages,$url);
+                $msg = 'Pengajuan perpanjangan periode sampai tanggal '.$request->extensiondate.' sudah approved oleh admin';
+                $notif = RequestNotification::fieldsData($type,$msg,$url);
                 Notification::create($notif);
 
             }   

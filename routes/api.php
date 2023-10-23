@@ -37,6 +37,9 @@ use App\Http\Controllers\API\KriteriaApiController;
 use App\Http\Controllers\API\BimsosApiController;
 use App\Http\Controllers\API\PenyelesaianApiController;
 use App\Http\Controllers\API\ExtensionApiController;
+use App\Http\Controllers\API\PromosiApiController;
+
+
 
 
 Route::middleware(['jwt.auth'])->group(function () {
@@ -236,4 +239,20 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('penyelesaian/request_revisi/{id}', [PenyelesaianApiController::class, 'request_revisi']);
     Route::put('penyelesaian/approve_edit/{id}', [PenyelesaianApiController::class, 'approve_edit']);
     Route::delete('penyelesaian/{id}', [PenyelesaianApiController::class, 'delete']);
+
+
+    Route::get('promosi', [PromosiApiController::class, 'index']);
+    Route::post('promosi', [PromosiApiController::class, 'store']);
+    Route::get('promosi/{id}', [PromosiApiController::class, 'show']);
+    Route::put('promosi/{id}', [PromosiApiController::class, 'update']);
+    Route::post('promosi/requestedit/{id}', [PromosiApiController::class, 'reqedit']);
+    Route::put('promosi/{type}/{id}', [PromosiApiController::class, 'approved']);
+    Route::post('promosi/selected', [PromosiApiController::class, 'deleteSelected']);
+    Route::post('promosi/search', [PromosiApiController::class, 'search']);
+    // Route::post('user/selected', [UserApiController::class, 'deleteSelected']);
+    // Route::delete('user/{id}', [UserApiController::class, 'delete']);
+    // Route::get('user/profile', [UserApiController::class, 'GetUserID']);
+    // Route::post('user/update', [UserApiController::class, 'updateProfile']);
+    // Route::post('user/status', [UserApiController::class, 'StatusConfirm']);
+    // Route::post('user/sendmail', [UserApiController::class, 'sendMail']);
 });
