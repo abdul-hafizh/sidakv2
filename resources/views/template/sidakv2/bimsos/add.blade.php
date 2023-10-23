@@ -213,6 +213,7 @@
         <div class="modal-footer modal-add2">
           <button class="btn btn-default" data-dismiss="modal">Close</button>
           <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
+          <button id="kirim" type="button" class="btn btn-warning">Kirim</button>
         </div>
         <div class="modal-footer modal-edit">
         </div>
@@ -407,14 +408,93 @@
           $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
-            text: 'Berhasil Disimpan',
+            text: respons.message,
             icon: 'success',
             confirmButtonText: 'OK'
 
           }).then((result) => {
             if (result.isConfirmed) {
               // User clicked "Yes, proceed!" button
-              window.location.replace('/bimsos');
+              $('#modal-add').hide();
+              $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
+              $('#datatable').DataTable().ajax.reload();
+            }
+          });
+          //
+        },
+        error: (respons) => {
+          $('#progressModal').hide();
+
+          errors = respons.responseJSON;
+          for (let i = 0; i < form.length; i++) {
+            const field = form[i];
+            if (errors.messages[field]) {
+              $('#' + field + '-alert').addClass('has-error');
+              $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
+            } else {
+              $('#' + field + '-alert').removeClass('has-error');
+              $('#' + field + '-messages').removeClass('help-block').html('');
+            }
+          }
+          Swal.fire({
+            title: 'Periksa kembali data anda.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          }).then((result) => {});
+        }
+      });
+    });
+    $('#kirim').on('click', function() {
+      var formData = new FormData($('#FormSubmit')[0]);
+      console.log(formData);
+      var form = [
+        'id_bimsos',
+        'periode_id_mdl',
+        'sub_menu_slug',
+        'nama_kegiatan',
+        'tgl_bimtek',
+        'lokasi_bimtek',
+        'biaya_kegiatan',
+        'jml_peserta',
+        'ringkasan_kegiatan'
+      ];
+      formData.append("status", 14);
+      $('#progressModal').show();
+      $.ajax({
+        type: "POST",
+        url: BASE_URL + '/api/bimsos',
+        data: formData,
+        processData: false,
+        contentType: false,
+        xhr: function() {
+          var xhr = new window.XMLHttpRequest();
+          xhr.upload.addEventListener("progress", function(evt) {
+            if (evt.lengthComputable) {
+              var percentComplete = (evt.loaded / evt.total) * 100;
+              $('#progress').css('width', percentComplete + '%');
+              $('#progress-label').text(percentComplete.toFixed(2) + '%');
+              // Place upload progress bar visibility code here
+            }
+          }, false);
+
+          return xhr;
+        },
+        success: (respons) => {
+          $('#progressModal').hide();
+          Swal.fire({
+            title: 'Sukses!',
+            text: respons.message,
+            icon: 'success',
+            confirmButtonText: 'OK'
+
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // User clicked "Yes, proceed!" button
+              $('#modal-add').hide();
+              $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
+              $('#datatable').DataTable().ajax.reload();
             }
           });
           //
@@ -719,12 +799,16 @@
           success: (respons) => {
             Swal.fire({
               title: 'Sukses!',
-              text: 'Berhasil mengajukan edit.',
+              text: respons.message,
               icon: 'success',
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/bimsos');
+                $('#modal-add').hide();
+                $('#modal-req-edit').hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           },
@@ -742,7 +826,9 @@
         }).then((result) => {
           if (result.isConfirmed) {
             var form = {
-              "alasan_revisi": $("#alasan_revisi").val()
+              "alasan": $("#alasan_revisi").val(),
+              "jenis_kegiatan": "Bimsos",
+              "type": "request_revision"
             };
             if ($("#alasan_revisi").val() != '') {
               req_revisi(form);
@@ -768,12 +854,16 @@
           success: (respons) => {
             Swal.fire({
               title: 'Sukses!',
-              text: 'Berhasil mengajukan edit.',
+              text: respons.message,
               icon: 'success',
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/bimsos');
+                $('#modal-add').hide();
+                $('#modal-req-revision').hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           },
@@ -830,14 +920,18 @@
               $('#progressModal').hide();
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: respons.message,
                 icon: 'success',
                 confirmButtonText: 'OK'
 
               }).then((result) => {
                 if (result.isConfirmed) {
                   // User clicked "Yes, proceed!" button
-                  window.location.replace('/bimsos');
+                  $('#modal-add').hide();
+                  $('body').removeClass('modal-open');
+                  $('.modal-backdrop').remove();
+                  $('#datatable').DataTable().ajax.reload();
+
                 }
               });
 
@@ -884,14 +978,17 @@
             success: (respons) => {
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: respons.message,
                 icon: 'success',
                 confirmButtonText: 'OK'
 
               }).then((result) => {
                 if (result.isConfirmed) {
                   // User clicked "Yes, proceed!" button
-                  window.location.replace('/bimsos');
+                  $('#modal-add').hide();
+                  $('body').removeClass('modal-open');
+                  $('.modal-backdrop').remove();
+                  $('#datatable').DataTable().ajax.reload();
                 }
               });
 
@@ -932,14 +1029,17 @@
             success: (respons) => {
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: respons.message,
                 icon: 'success',
                 confirmButtonText: 'OK'
 
               }).then((result) => {
                 if (result.isConfirmed) {
                   // User clicked "Yes, proceed!" button
-                  window.location.replace('/bimsos');
+                  $('#modal-add').hide();
+                  $('body').removeClass('modal-open');
+                  $('.modal-backdrop').remove();
+                  $('#datatable').DataTable().ajax.reload();
                 }
               });
 
