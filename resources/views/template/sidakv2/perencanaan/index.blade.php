@@ -1,5 +1,12 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
+
+<style>
+    .inner {
+		max-height: 200px !important;
+	}
+</style>
+
 <section class="content-header pd-left-right-15">    
     <div class="row padding-default" style="margin-bottom: 20px">
 		<div class="col-lg-4 col-sm-12">
@@ -42,17 +49,10 @@
 
     <div class="row">
         <div class="col-sm-2" style="margin-bottom: 9px;">
-            <select id="periode_id" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
-        </div> 	
+            <select class="selectpicker" data-style="btn-default" id="periode_id" title="Pilih Periode"></select>
+        </div> 	        
         <div class="col-sm-2" style="margin-bottom: 9px;">
-            <select class="selectpicker" name="type_daerah" data-style="btn-default" id="type_daerah" title="Pilih Type Wilayah">
-                <option value="">Pilih Tipe Wilayah</option>
-                <option value="Provinsi">Provinsi</option>
-                <option value="Kabupaten">Kabupaten</option>
-            </select>
-        </div>
-        <div class="col-sm-2" style="margin-bottom: 9px;">
-            <select id="daerah_id" class="selectpicker" data-style="btn-default" name="daerah_id" title="Pilih Daerah" data-live-search="true" disabled>
+            <select id="daerah_id" class="selectpicker" data-style="btn-default" name="daerah_id" title="Pilih Daerah" data-live-search="true">
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
@@ -71,8 +71,8 @@
         </div> 	
         <div class="col-lg-2">
             <div class="btn-group">
-                <button id="Search" type="button" title="Cari" class="btn btn-info"><i class="fa fa-filter"></i> Cari</button>
-                <button id="Reset" type="button" title="Reset" class="btn btn-info"><i class="fa fa-refresh"></i></button>
+                <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+                <button id="Reset" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
             </div>
         </div>
     </div> 	
@@ -200,6 +200,41 @@
      </div>
 </div>
 
+<div id="modal-log" class="modal fade in" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Log Data Perbaikan/Request Edit</h4>
+      </div>
+
+      <div class="modal-body" style="height: 500px; overflow-y: auto;">        
+        <div class="row">
+          <div class="card-body table-responsive">
+            <table id="dataLog" class="table table-hover text-nowrap" style="margin: 20px">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Jenis</th>
+                  <th>Alasan</th>
+                  <th>Dibuat Oleh</th>
+                  <th>Tanggal Dibuat</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal">Tutup</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 @include('template/sidakv2/perencanaan.export')
 
 <script type="text/javascript">
@@ -229,35 +264,26 @@
                 console.error(error);
             }
         });
-
-        $('#type_daerah').on('change', function () {
-            let type_daerah = $('#type_daerah').val();
-            let url = type_daerah === 'Provinsi' ? 'select-province' : 'select-kabupaten';
-
-             $.ajax({
-              url: BASE_URL +'/api/' + url,
-              method: 'GET',
-              dataType: 'json',
-              success: function(data) {
-                  // Populate SelectPicker options using received data
-                  var select =  $('#daerah_id')
-                  $.each(data, function(index, option) {
-                      select.append($('<option>', {
+                    
+        $.ajax({
+            url: BASE_URL +'/api/select-daerah',
+            method: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var select =  $('#daerah_id')
+                $.each(data, function(index, option) {
+                    select.append($('<option>', {
                         value: option.value,
                         text: option.text
-                      }));
-                  });
-                 select.prop('disabled', false);
-                 // Refresh the SelectPicker to apply the new options
-                 select.selectpicker('refresh');
-              },
-              error: function(error) {
-              console.error(error);
-              }
-          });
-
-            
-        });
+                    }));
+                });
+                select.prop('disabled', false);
+                select.selectpicker('refresh');
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });        
 
         $('#row_page').on('change', function() {
             var value = $(this).val();         
@@ -344,7 +370,6 @@
 
         $("#ExportButton").click(function() {
             $.ajax({
-                //url: BASE_URL+ `/api/perencanaan/export`,
                 url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
                 method: 'GET',
                 success: function(response) {
@@ -479,82 +504,42 @@
 
                     row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
 
-                    if(item.status_code == 13)
-                    {    
-
-                        options.forEach(function(opt, arr) 
-                        {
-
-                            if(opt.action == 'update')
-                            {
-                               if(opt.checked == true)
-                               { 
-                                   
-                                  row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                                } 
-
-                            }
-
-
-                             if(opt.action == 'delete')
-                            {
-                               if(opt.checked == true)
-                               {
-                                 
-                                  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
-
-                               } 
-                            }    
-
-
-                        });   
-
-                }else{
-                   
-                   row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-
-                    row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
-
-                }
-
-
-
-                    // if(item.deleted == false)
-                    // {
-                    //     if(detailed.checked == true)
-                    //     {  
-                    //         row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                    //     }   
-                    //     if(edited.checked == true)
-                    //     { 
-                    //         row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                    //     }
-                    //     if(deleted.checked == true)
-                    //     {
-                    //         row +=`<button id="Destroy" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`; 
-                    //     }
-                    // } else {
-
-                    //     if(detailed.checked == true)
-                    //     {   
-                    //         row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
-                    //     }
-                    //     if(edited.checked == true)
-                    //     {                            
-                    //         row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                    //     }                        
-                    //     if(deleted.checked == true)
-                    //     { 
-                    //         row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
-                    //     } 
-                    // }
-                    
                     if(item.access == 'pusat' && item.status_code == 16 && item.request_edit == 'false') {
                         row += '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa fa-pencil"></i></button>';
                     }               
 
                     if(item.access == 'daerah' && ([14, 15, 16].includes(item.status_code) && item.request_edit === 'false') || (item.status_code === 14 && item.request_edit === 'request_doc')) {                         
                         row += '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-reqedit" title="Request Edit"><i class="fa fa-pencil"></i></button>';
+                    }
+
+                    if(item.status_code == 13)
+                    {    
+                        options.forEach(function(opt, arr) 
+                        {
+                            if(opt.action == 'update')
+                            {
+                                if(opt.checked == true)
+                                {                                    
+                                  row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                                } 
+                            }
+                            if(opt.action == 'delete')
+                            {
+                                if(opt.checked == true)
+                                {                                 
+                                  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+                                } 
+                            }    
+                        });   
+
+                    } else {
+                    
+                        row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                        row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+                    }
+
+                    if(item.alasan_edit !== null || item.alasan_revisi !== null || item.alasan_unapprove !== null || item.alasan_unapprove_doc !== null) {
+                        row += `<button id="Log" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>`;
                     }
 
                     row +=`</div>`;
@@ -629,7 +614,21 @@
                         );
                     }
                 });
-            }); 
+            });
+            
+            $( "#content" ).on( "click", "#Log", (e) => {
+                let id = e.currentTarget.dataset.param_id;
+                $.ajax({
+                    url: BASE_URL + '/api/perencanaan/log/' + id,
+                    method: 'GET',
+                    success: function(data_log) {             
+                        dataLogRequset(data_log);
+                    },
+                    error: function() {
+                        alert('Gagal mengambil data.');
+                    }
+                })
+            });
 
             $("#reqedit").click( () => {
                 Swal.fire({
@@ -726,6 +725,26 @@
                     },
                 });
             }
+
+            function dataLogRequset(data_log) {        
+                var tableBody = $('#dataLog tbody');
+                tableBody.empty();
+
+                $.each(data_log, function(index, val) {          
+
+                    var date = new Date(val.created_at);
+
+                    var row = '<tr>' +
+                        '<td>' + (index + 1) + '</td>' +
+                        '<td>' + val.type + '</td>' +
+                        '<td>' + val.alasan_request + '</td>' +
+                        '<td>' + val.created_by + '</td>' +
+                        '<td>' + date.toLocaleDateString() + '</td>' +
+                        '</tr>';
+
+                    tableBody.append(row);
+                });
+            }
         }
 
         function deleteItem(id){
@@ -745,16 +764,12 @@
            $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
         }
 
-        
-
-          
-
         function listOptions(data){
-            
+
             data.forEach(function(item, index) 
-           {
-               if(item.action =='create')
-               {
+            {
+                if(item.action =='create')
+                {
                    if(item.checked ==true)
                    {
                        $('#ShowAdd').show();
@@ -763,20 +778,7 @@
                       $('#ShowAdd').hide();
                       $('#ShowImport').hide();
                    }    
-               }
-
-                //  if(item.action =='delete')
-                // {
-                //    if(item.checked ==true)
-                //    {
-                //        $('#ShowChecklist').show();
-                //        $('#ShowChecklistAll').show();
-                //    }else{
-                //        $('#ShowChecklist').hide();
-                //        $('#ShowChecklistAll').hide();
-                //    } 
-                // }
-
+                }
 
                 if(item.action =='approval')
                 {
@@ -789,8 +791,6 @@
                        $('#ShowChecklistAll').hide();
                    } 
                 }
-
-           
            });
         }
 

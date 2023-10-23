@@ -70,6 +70,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
     Route::post('perencanaan/approve_selected', [PerencanaanApiController::class, 'approveSelected']);
     Route::put('perencanaan/upload_laporan/{id}', [PerencanaanApiController::class, 'upload_laporan']);
+    Route::get('perencanaan/log/{id}', [PerencanaanApiController::class, 'log']);
     Route::delete('perencanaan/{id}', [PerencanaanApiController::class, 'delete']);
 
     Route::get('user', [UserApiController::class, 'index']);
@@ -222,11 +223,15 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('bimsos/approve_edit/{id}', [BimsosApiController::class, 'approve_edit']);
     Route::delete('bimsos/{id}', [BimsosApiController::class, 'delete']);
 
-    Route::get('penyelesaian/datalist', [PenyelesaianApiController::class, 'jsonData']);
     Route::post('penyelesaian', [PenyelesaianApiController::class, 'store']);
-    Route::get('penyelesaian/edit/{id}', [PenyelesaianApiController::class, 'edit']);
-    Route::put('penyelesaian/{id}', [PenyelesaianApiController::class, 'update']);
     Route::post('penyelesaian/selected', [PenyelesaianApiController::class, 'deleteSelected']);
+    Route::post('penyelesaian/update/{id}', [PenyelesaianApiController::class, 'update']);
+    Route::post('penyelesaian/kirim/{id}', [PenyelesaianApiController::class, 'update']);
+    Route::get('penyelesaian/datalist', [PenyelesaianApiController::class, 'jsonData']);
+    Route::get('penyelesaian/edit/{id}', [PenyelesaianApiController::class, 'edit']);
+    Route::get('penyelesaian/log/{id}', [PenyelesaianApiController::class, 'log']);
+    Route::get('penyelesaian/cekPeriode/{id}', [PenyelesaianApiController::class, 'cekPeriode']);
+    Route::put('penyelesaian/{id}', [PenyelesaianApiController::class, 'update']);
     Route::put('penyelesaian/request_edit/{id}', [PenyelesaianApiController::class, 'request_edit']);
     Route::put('penyelesaian/request_revisi/{id}', [PenyelesaianApiController::class, 'request_revisi']);
     Route::put('penyelesaian/approve_edit/{id}', [PenyelesaianApiController::class, 'approve_edit']);

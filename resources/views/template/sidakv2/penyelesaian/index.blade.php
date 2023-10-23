@@ -1,6 +1,10 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <style>
+	.inner {
+		max-height: 200px !important;
+	}
+
 	.dataTables_wrapper .dataTables_paginate .paginate_button {
 		border: 1px solid #1f3897;
 		display: inline;
@@ -64,45 +68,48 @@
 </style>
 
 <section class="content-header pd-left-right-15">
-	<div class="form-group row">
-		<div class="col-sm-3">
-			<label>Periode </label>
-			<select class="form-control border-radius-20" name="periode_id2" id="periode_id2" ></select>
+	<div class="row">
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<select class="selectpicker" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
+				<option value="">Pilih Periode</option>
+			</select>
 		</div>
-		<div class="col-sm-3">
-			<label>Jenis Kegiatan </label>
-			<select class="form-control border-radius-20" name="jenis_sub" id="jenis_sub">
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
 				<option value="">Pilih Jenis Kegiatan</option>
-				<option value="identifikasi">Identifikasi Penyelesaian</option>
-				<option value="penyelesaian">Penyelesaian Masalah</option>
-				<option value="evaluasi">Evaluasi Penyelesaian</option>
+				<option value="identifikasi" {{ $ss_sub_menu_slug === 'identifikasi' ? 'selected' : '' }}>Identifikasi Penyelesaian</option>
+				<option value="penyelesaian" {{ $ss_sub_menu_slug === 'penyelesaian' ? 'selected' : '' }}>Penyelesaian Masalah</option>
+				<option value="evaluasi" {{ $ss_sub_menu_slug === 'evaluasi' ? 'selected' : '' }}>Evaluasi Penyelesaian</option>
 			</select>
 		</div>
-		<div class="col-sm-3">
-			<label>Status </label>
-			<select class="form-control border-radius-20" name="search_status" id="search_status">
+		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
+            <select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Daerah" data-live-search="true">
+                <option value="">Pilih Daerah</option>
+            </select>
+        </div>
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<select class="selectpicker" name="search_status" id="search_status">
 				<option value="">Pilih Status</option>
-				<option value="1">Draft</option>
-				<option value="2">Request Edit</option>
-				<option value="3">Terkirim</option>
-				<option value="4">Perlu Perbaikan</option>
+				<option value="13">Draft</option>
+				<option value="15">Request Edit</option>
+				<option value="14">Terkirim</option>
+				<option value="13">Perlu Perbaikan</option>
 			</select>
 		</div>
-		<div class="col-sm-3">
-			<label>Search</label>
-			<div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
-				<span class="input-group-btn">
-					<button id="Search" type="button" class="btn btn-search btn-flat height-35"><i class="fa fa-search"></i></button>
-					<button id="Clear" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-times-circle"></i></button>
-				</span>
-			</div>
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<input type="text" id="search-input" placeholder="Cari" class="form-control border-radius-13">
 		</div>
+		<div class="col-lg-2">
+            <div class="btn-group">
+                <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+                <button id="Clear" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
+            </div>
+        </div>
 	</div>
+
 	<div class="col-sm-4 pull-left padding-default full dataTables_wrapper">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-
 				<select id="row_page" class="selectpicker" data-style="btn-default">
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
@@ -118,8 +125,7 @@
 				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
-				<button type="button" class="btn btn-info border-radius-10" id="exportData">
-				</button>
+				<button type="button" class="btn btn-info border-radius-10" id="exportData"></button>
 			</div>
 		</div>
 		<div class="pull-right width-50 ">
@@ -139,6 +145,7 @@
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>
+							<th><span class="border-left-table">Nama Daerah </span> </th>
 							<th><span class="border-left-table">Nama Kegiatan </span> </th>
 							<th><span class="border-left-table">Sub Kegiatan </span> </th>
 							<th><span class="border-left-table">Tanggal Kegiatan </span></th>
@@ -160,7 +167,51 @@
 
 <script>
 
-	$(function() {
+	$(function() {		
+		var ss_periode_id = @json($ss_periode_id);
+		var ss_daerah_id = @json($ss_daerah_id);
+
+		$.ajax({
+			url: BASE_URL + '/api/select-daerah',
+			method: 'GET',
+			dataType: 'json',
+			success: function (data) {
+				var select = $('#daerah_id');
+				$.each(data, function (index, option) {
+					var $option = $('<option>', {
+						value: option.value,
+						text: option.text
+					});
+					if (option.value === ss_daerah_id) {
+						$option.prop('selected', true);
+					}
+					select.append($option);
+				});
+
+				select.prop('disabled', false);
+				select.selectpicker('refresh');
+			},
+			error: function (error) {
+				console.error(error);
+			}
+		});
+
+		$.ajax({
+			url: BASE_URL + '/api/select-periode-semester',
+			method: 'get',
+			dataType: 'json',
+			success: function(data) {
+				periode = '<option value="">Pilih Periode</option>';
+				$.each(data.periode, function(key, val) {
+					var select = '';
+					if (ss_periode_id == val.value)
+						select = 'selected';
+					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+
+				});
+				$('#periode_id2').html(periode);
+			}
+		})
 
 		var table = $('#datatable').DataTable({
 			processing: true,
@@ -178,13 +229,14 @@
 			},
 			buttons: [{
 				extend: 'excel',
-				text: 'Export excel',
+				text: 'Export Excel',
 				exportOptions: {
 					format: {
 						body: function(data, row, column, node) {
 							return reformatNumber(data, row, column, node);
 						}
-					}
+					},
+					columns: [ 0, 1, 2, 3, 4, 5, 6, 7 ]
 				}
 			}],
 			dom: 'Bprti',
@@ -238,26 +290,7 @@
 					callback.apply(context, args);
 				}, ms || 0);
 			};
-		}
-
-		$('#periode_id2').select2(
-			$.ajax({
-				url: BASE_URL + '/api/select-periode-semester',
-				method: 'get',
-				dataType: 'json',
-				success: function(data) {
-					periode = '<option value="">Pilih Periode</option>';
-					$.each(data.periode, function(key, val) {
-						var select = '';
-						if (data.tahunSemester == val.value)
-							select = 'selected';
-						periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
-
-					});
-					$('#periode_id2').html(periode);
-				}
-			})
-		);
+		}		
 
 		$('.select-periode-mdl').select2(
 			$.ajax({
@@ -282,7 +315,9 @@
 			var filter = [{
 				search_input: $("#search-input").val(),
 				jenis_sub: $("#jenis_sub").val(),
+				daerah_id: $("#daerah_id").val(),
 				search_status: $("#search_status").val(),
+				search_status_text: $("#search_status option:selected").text(),
 				periode_id: $("#periode_id2").val()
 			}, ];
 			table.search(this.value).draw();
@@ -292,7 +327,9 @@
 			var filter = [{
 				search_input: $("#search-input").val(),
 				jenis_sub: $("#jenis_sub").val(),
+				daerah_id: $("#daerah_id").val(),
 				search_status: $("#search_status").val(),
+				search_status_text: $("#search_status option:selected").text(),
 				periode_id: $("#periode_id2").val()
 			}, ];
 
@@ -377,6 +414,7 @@
 		$("#Clear").on("click", function() {
 			var filter = '';
 			$("#jenis_sub").val("").trigger("change");
+			$("#daerah_id").val("").trigger("change");
 			$("#search_status").val("").trigger("change");
 			$("#periode_id2").val("").trigger("change");
 			$("#search-input").val("");

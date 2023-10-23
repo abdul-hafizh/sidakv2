@@ -21,6 +21,8 @@ use App\Http\Controllers\KriteriaController;
 use App\Http\Controllers\BimsosController;
 use App\Http\Controllers\PenyelesaianController;
 use App\Http\Controllers\ExtensionController;
+use App\Http\Controllers\PromosiController;
+
 
 
 Route::get('/', function () {
@@ -41,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perencanaan/edit/{id}', [PerencanaanController::class, 'edit']);
     Route::get('/perencanaan/detail/{id}', [PerencanaanController::class, 'show']);
     Route::get('/perencanaan/generate_pdf/{id}', [PerencanaanController::class, 'generate_pdf']);
-    Route::get('/pagutarget', [PaguTargetController::class, 'index']);
+    Route::get('/paguapbn', [PaguTargetController::class, 'index']);
     Route::get('/kendala', [KendalaController::class, 'index']);
     Route::get('/kendala/{topic}/{id}', [KendalaController::class, 'show']);
     Route::get('/forum', [ForumController::class, 'index']);
@@ -51,6 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penyelesaian', [PenyelesaianController::class, 'index']);
     Route::get('/extension', [ExtensionController::class, 'index']);
     Route::get('/extension/show/{id}', [ExtensionController::class, 'show']);
+    Route::get('/promosi', [PromosiController::class, 'index']);
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
