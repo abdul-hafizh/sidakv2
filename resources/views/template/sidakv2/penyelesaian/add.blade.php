@@ -105,7 +105,7 @@
               <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
                   <label>Profile Pelaku Usaha </label>
                   <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
-                  <input type="file" class="form-control" name="lap_profile" id="AddFilesProfile" accept=".pdf">
+                  <input type="file" class="form-control file-access" name="lap_profile" id="AddFilesProfile" accept=".pdf">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
                   <span id="file-profile-alert-messages"></span>
                   <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -131,7 +131,7 @@
               <div id="lap_peserta-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Hadir </label>
                 <a href="#" class="text-bold text-peserta" id="modal-peserta" data-target="Peserta" style="margin-left: 5px"><small>(Tampilkan Daftar Hadir)</small></a>
-                <input type="file" class="form-control" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
                 <div id="ShowPdfPeserta" style="margin-top:8px"></div>
                 <span id="file-peserta-alert-messages"></span>                
                 <div class="modal fade" id="pdfPeserta" role="dialog" aria-hidden="true">
@@ -267,7 +267,7 @@
               <div id="notula-alert" class="form-group has-feedback col-md-12">
                   <label>Notula Rapat </label>
                   <a href="#" class="text-bold text-notula" id="modal-notula" data-target="Notula" style="margin-left: 5px"><small>(Tampilkan File Notula)</small></a>
-                  <input type="file" class="form-control" name="lap_notula" id="AddFilesNotula" accept=".pdf">
+                  <input type="file" class="form-control file-access" name="lap_notula" id="AddFilesNotula" accept=".pdf">
                   <div id="ShowPdfNotula" style="margin-top:8px"></div>
                   <span id="file-notula-alert-messages"></span>                  
                   <div class="modal fade" id="pdfNotula" role="dialog" aria-hidden="true">
@@ -289,7 +289,7 @@
               <div id="lap_evaluasi-alert" class="form-group has-feedback col-md-12">
                   <label>Laporan Hasil Evaluasi </label>
                   <a href="#" class="text-bold text-eval" id="modal-eval" data-target="Evaluasi" style="margin-left: 5px"><small>(Tampilkan File Evaluasi)</small></a>
-                  <input type="file" class="form-control" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
+                  <input type="file" class="form-control file-access" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
                   <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
                   <span id="file-evaluasi-alert-messages"></span>
                   <small class="text-red">*semua file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
