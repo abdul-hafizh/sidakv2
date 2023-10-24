@@ -152,8 +152,9 @@ class RequestPromosi
                 $result['pagu_promosi'] = 'Rp 0';
                 $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id));
            }else{
-               $result['pagu_promosi'] = GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosiPr($year,Auth::User()->daerah_id));
-               $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id)));
+               $result['pagu_promosi'] = GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($year,Auth::User()->daerah_id));
+
+               $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id));
            } 
          
       }else{
