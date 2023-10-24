@@ -214,7 +214,7 @@ class PenyelesaianApiController extends Controller
                 $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
                 $update['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
             } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'identifikasi' && $_res->lap_profile == NULL) {
+                if ($request->type == 'kirim' && $request->sub_menu_slug == 'identifikasi' && empty($_res->lap_profile)) {
                     return response()->json(['status' => false, 'message' => 'File Profile Wajib Diisi.']);
                 }
             }
@@ -310,17 +310,17 @@ class PenyelesaianApiController extends Controller
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);
             $sumPenyelesaian = RequestPenyelesaian::GetSumPenyelesaian($request);
 
-            // if(
-            //     ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_pagu < $sumPenyelesaian->biaya) ||
-            //     ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_pagu < $sumPenyelesaian->biaya) ||
-            //     ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_pagu < $sumPenyelesaian->biaya)
-            // ) { $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.'; }
+            if(
+                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_pagu < $sumPenyelesaian->biaya) ||
+                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_pagu < $sumPenyelesaian->biaya) ||
+                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_pagu < $sumPenyelesaian->biaya)
+            ) { $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.'; }
             
-            // if(
-            //     ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
-            //     ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
-            //     ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
-            // ) { $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.'; }
+            if(
+                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
+                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
+                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
+            ) { $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.'; }
             
             if (!empty($err)) {
                 return response()->json($err, 400);
