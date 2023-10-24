@@ -188,7 +188,7 @@ class PromosiApiController extends Controller
         }
 
         $results = $_res->where('id',$id)->update(['alasan'=>$request->alasan,'request_edit'=>'true','checklist'=>'not_approved']);
-
+         $access = RequestAuth::Access();
         if($access !="admin" || $access !="pusat")
         {
                  $type = 'promosi';

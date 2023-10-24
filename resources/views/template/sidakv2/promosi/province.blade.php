@@ -692,8 +692,8 @@
                        }	
 					   
 					    if(item.request_edit == 'true')
-					    {
-                              $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
+					    { 
+                               $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
 					    }else{
 					    	$('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
 					    } 	
