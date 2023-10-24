@@ -737,6 +737,7 @@
             $('#approve_edit-' + id).hide();
             $('#request_revision-' + id).hide();
             if (data.status_laporan_id == 13) {
+              $('.file-access').show();
               $('#update-' + id).show();
               $('#kirim-' + id).show();
               $('#request_edit-' + id).hide();
@@ -744,12 +745,13 @@
               $('#FormSubmit select').removeAttr('disabled');
             } else if (data.status_laporan_id == 15) {
               if (data.request_edit == 'false') {
+                $('.file-access').show();
                 $('#update-' + id).show();
                 $('#kirim-' + id).show();
                 $('#FormSubmit input').removeAttr('readonly');
                 $('#FormSubmit select').removeAttr('disabled');
               } else {
-                $('.file-access').remove();
+                $('.file-access').hide();
                 $('#update-' + id).hide();
                 $('#kirim-' + id).hide();
                 $('#FormSubmit input').attr('readonly', 'readonly');
@@ -760,12 +762,12 @@
               $('#update-' + id).hide();
               $('#kirim-' + id).hide();
               $('#request_edit-' + id).show();
-              $('.file-access').remove();
+              $('.file-access').hide();
               $('#FormSubmit input').attr('readonly', 'readonly');
               $('#FormSubmit select').attr('disabled', 'true');
             }
           } else {
-            $('.file-access').remove();
+            $('.file-access').hide();
             $('#FormSubmit input').attr('readonly', 'readonly');
             $('#FormSubmit select').attr('disabled', 'true');
             $('#request_edit-' + id).hide();
