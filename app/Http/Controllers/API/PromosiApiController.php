@@ -192,7 +192,7 @@ class PromosiApiController extends Controller
         if($access !="admin" || $access !="pusat")
         {
                  $type = 'promosi';
-                 $messages = $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan,
+                 $messages = $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan;
                  $url = url('promosi/show/'.$saveData->id);
                  $notif = RequestNotification::fieldsData($type,$messages,$url);
                  Notification::create($notif);
