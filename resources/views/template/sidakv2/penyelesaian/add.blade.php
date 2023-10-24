@@ -760,6 +760,7 @@
               $('#update-' + id).hide();
               $('#kirim-' + id).hide();
               $('#request_edit-' + id).show();
+              $('.file-access').remove();
               $('#FormSubmit input').attr('readonly', 'readonly');
               $('#FormSubmit select').attr('disabled', 'true');
             }
