@@ -584,6 +584,7 @@
         'biaya',
         'jml_perusahaan'
       ];      
+      formData.append("status", 14);
       formData.append("type", "kirim");
 
       $.ajax({
@@ -1026,7 +1027,7 @@
               console.log(respons);
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: 'Berhasil Kirim ke Pusat.',
                 icon: 'success',
                 confirmButtonText: 'OK'
 
@@ -1055,7 +1056,7 @@
         $("#approve_edit-" + id_modal).click(() => {
           var data = {
             "status": 13,
-            "request_edit": "true",
+            "request_edit": "true"
           };
           $.ajax({
             type: "PUT",
@@ -1066,7 +1067,7 @@
             success: (respons) => {
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: 'Berhasil Diapprove.',
                 icon: 'success',
                 confirmButtonText: 'OK'
 

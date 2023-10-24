@@ -80,13 +80,15 @@
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
+		@else
+		<input type="hidden" class="form-control" name="daerah_id" id="daerah_id" value="">
 		@endif
 		<div class="col-sm-2" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
 				<option value="">Pilih Jenis Kegiatan</option>
-				<option value="identifikasi" {{ $ss_sub_menu_slug === 'identifikasi' ? 'selected' : '' }}>Identifikasi Penyelesaian</option>
-				<option value="penyelesaian" {{ $ss_sub_menu_slug === 'penyelesaian' ? 'selected' : '' }}>Penyelesaian Masalah</option>
-				<option value="evaluasi" {{ $ss_sub_menu_slug === 'evaluasi' ? 'selected' : '' }}>Evaluasi Penyelesaian</option>
+				<option value="identifikasi">Identifikasi Penyelesaian</option>
+				<option value="penyelesaian">Penyelesaian Masalah</option>
+				<option value="evaluasi">Evaluasi Penyelesaian</option>
 			</select>
 		</div>
 		<div class="col-sm-2" style="margin-bottom: 9px;">
@@ -170,9 +172,6 @@
 <script>
 
 	$(function() {		
-		var ss_periode_id = @json($ss_periode_id);
-		var ss_daerah_id = @json($ss_daerah_id);
-
 		$.ajax({
 			url: BASE_URL + '/api/select-daerah',
 			method: 'GET',
@@ -184,10 +183,6 @@
 						value: option.value,
 						text: option.text
 					});
-					if (option.value === ss_daerah_id) {
-						$option.prop('selected', true);
-					}
-					select.append($option);
 				});
 
 				select.prop('disabled', false);
