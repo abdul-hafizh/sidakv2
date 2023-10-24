@@ -705,6 +705,7 @@
           } else {
             $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
             $('#FormSubmit select').attr('disabled', 'true');
+            $('#FormSubmit file').removeAttr("disabled");
             $('#request_edit-' + id).hide();
             if (data.status_laporan_id == 13) {
               $('#update-' + id).hide();
