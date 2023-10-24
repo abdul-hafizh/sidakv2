@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestSystemLog;
+use App\Http\Request\RequestAuth;
 
 class BimsosController extends Controller
 {
@@ -22,11 +23,13 @@ class BimsosController extends Controller
             'url' => 'bimsos'
         );
         RequestSystemLog::CreateLog($log);
+        $access = RequestAuth::Access();
 
         return view('template/' . $this->template . '.bimsos.index')
             ->with(
                 [
                     'title' =>  $title,
+                    'access' => $access,
                     'template' => 'template/' . $this->template
                 ]
             );

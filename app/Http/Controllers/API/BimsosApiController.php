@@ -63,6 +63,13 @@ class BimsosApiController extends Controller
         } else {
             $insert = RequestBimsos::fieldsData($request);
 
+            if ($request->status == 14) {
+                $validationFile = ValidationBimsos::validationFile($request);
+                if ($validationFile) {
+                    return response()->json($validationFile, 400);
+                }
+            }
+
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
                 $lap_hadir = 'lap_hadir_' . time() . '_' . $file_hadir->getClientOriginalName();
@@ -106,9 +113,39 @@ class BimsosApiController extends Controller
                 $insert['lap_document'] = 'laporan/bimsos/' . $lap_document;
             }
 
+
             $saveData = Bimsos::create($insert);
             //result
-            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Insert data sucessfully']);
+            if ($saveData && $request->status == 14) {
+                $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+
+                $url = url('bimsos/' . $saveData);
+                $tahun = substr($request->periode_id_mdl, 0, 4);
+                $semester = substr($request->periode_id_mdl, 4);
+                $sub_kegiatan = ucwords($request->sub_menu_slug);
+
+                // $pusat = User::where('username', 'pusat')->first()->email;
+                // $judul = 'Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ')';
+                // $kepada = 'Kementerian Investasi';
+                // $subject = 'Permohonan Persetujuan/Approval Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
+                // $pesan = 'Mohon persetujuan untuk Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
+
+                $type = 'bimsos';
+                $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                $insertNotif = Notification::create($notif);
+
+                if ($insertNotif) {
+                    //  Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
+                    return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil kirim data']);
+                } else {
+                    return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal kirim data']);
+                }
+            } else if ($saveData) {
+                return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil simpan data']);
+            } else {
+                return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal simpan data']);
+            }
         }
     }
 
@@ -119,6 +156,13 @@ class BimsosApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
+
+            if ($request->status == 14) {
+                $validationFile = ValidationBimsos::validationUpdateFile($request, $id);
+                if ($validationFile) {
+                    return response()->json($validationFile, 400);
+                }
+            }
 
             $update = RequestBimsos::fieldsData($request);
             //update account
@@ -209,8 +253,6 @@ class BimsosApiController extends Controller
             } else {
                 return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal ubah data']);
             }
-
-            return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
         }
     }
 
@@ -293,6 +335,31 @@ class BimsosApiController extends Controller
             $request->merge(['id' => $id]);
             $dataLog = RequestBimsos::fieldLogRequest($request);
             $saveLog = AuditLogRequest::create($dataLog);
+
+            $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+
+            $url = url('bimsos/' . $id);
+            $tahun = substr($request->periode_id_mdl, 0, 4);
+            $semester = substr($request->periode_id_mdl, 4);
+            $sub_kegiatan = ucwords($request->sub_menu_slug);
+
+            // $pusat = User::where('username', 'pusat')->first()->email;
+            // $judul = 'Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ')';
+            // $kepada = 'Kementerian Investasi';
+            // $subject = 'Meminta Request Edit Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
+            // $pesan = 'Meminta Request Edit untuk Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
+
+            $type = 'bimsos';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $insertNotif = Notification::create($notif);
+
+            if ($insertNotif) {
+                //  Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
+                return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil request edit data']);
+            } else {
+                return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal request edit data']);
+            }
         }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
@@ -312,14 +379,36 @@ class BimsosApiController extends Controller
         $update = RequestBimsos::fieldReqRevisi($request);
         $results = Bimsos::where('id', $id)->update($update);
 
-        // if ($results) {
-        //     $type = 'perencanaan';
-        //     $messages_desc = strtoupper(Auth::User()->username) . ' Tidak Menyetujui Perencanaan Tahun ' . $_res->periode_id;
-        //     $notif = RequestNotification::fieldsData($type, $messages_desc);
-        //     Notification::create($notif);
+        if ($results) {
+            $request->merge(['id' => $id]);
+            $dataLog = RequestBimsos::fieldLogRequest($request);
+            $saveLog = AuditLogRequest::create($dataLog);
 
-        //     $messages['messages'] = true;
-        // }
+            $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+
+            $url = url('bimsos/' . $id);
+            $tahun = substr($request->periode_id_mdl, 0, 4);
+            $semester = substr($request->periode_id_mdl, 4);
+            $sub_kegiatan = ucwords($request->sub_menu_slug);
+
+            // $pusat = User::where('username', 'pusat')->first()->email;
+            // $judul = 'Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ')';
+            // $kepada = 'Kementerian Investasi';
+            // $subject = 'Meminta Request Edit Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
+            // $pesan = 'Meminta Request Edit untuk Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
+
+            $type = 'bimsos';
+            $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request revisi Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $insertNotif = Notification::create($notif);
+
+            if ($insertNotif) {
+                //  Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
+                return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil request revisi data']);
+            } else {
+                return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal request revisi data']);
+            }
+        }
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }
 
