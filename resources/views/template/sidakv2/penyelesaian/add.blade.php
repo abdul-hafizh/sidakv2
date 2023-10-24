@@ -105,7 +105,7 @@
               <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
                   <label>Profile Pelaku Usaha </label>
                   <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
-                  <input type="file" class="form-control" name="lap_profile" id="AddFilesProfile" accept=".pdf">
+                  <input type="file" class="form-control file-access" name="lap_profile" id="AddFilesProfile" accept=".pdf">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
                   <span id="file-profile-alert-messages"></span>
                   <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -131,7 +131,7 @@
               <div id="lap_peserta-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Hadir </label>
                 <a href="#" class="text-bold text-peserta" id="modal-peserta" data-target="Peserta" style="margin-left: 5px"><small>(Tampilkan Daftar Hadir)</small></a>
-                <input type="file" class="form-control" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
                 <div id="ShowPdfPeserta" style="margin-top:8px"></div>
                 <span id="file-peserta-alert-messages"></span>                
                 <div class="modal fade" id="pdfPeserta" role="dialog" aria-hidden="true">
@@ -153,7 +153,7 @@
               <div id="lap_profile2-alert" class="form-group has-feedback col-md-12">
                 <label>Profile Pelaku Usaha </label>
                 <a href="#" class="text-bold text-profile2" id="modal-profile2" data-target="Profile2" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
-                <input type="file" class="form-control" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
                 <div id="ShowPdfProfile2" style="margin-top:8px"></div>
                 <span id="file-profile2-alert-messages"></span>
                 <div class="modal fade" id="pdfProfile2" role="dialog" aria-hidden="true">
@@ -175,7 +175,7 @@
               <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Narasumber </label>
                 <a href="#" class="text-bold text-narasumber" id="modal-narasumber" data-target="Narasumber" style="margin-left: 5px"><small>(Tampilkan Narasumber)</small></a>
-                <input type="file" class="form-control" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
                 <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
                 <span id="file-narasumber-alert-messages"></span>
                 <div class="modal fade" id="pdfNarasumber" role="dialog" aria-hidden="true">
@@ -197,7 +197,7 @@
               <div id="notula2-alert" class="form-group has-feedback col-md-12">
                 <label>Notula Kegiatan </label>
                 <a href="#" class="text-bold text-notula2" id="modal-notula2" data-target="Notula2" style="margin-left: 5px"><small>(Tampilkan Notula)</small></a>
-                <input type="file" class="form-control" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
                 <div id="ShowPdfNotula2" style="margin-top:8px"></div>
                 <span id="file-notula2-alert-messages"></span>
                 <div class="modal fade" id="pdfNotula2" role="dialog" aria-hidden="true">
@@ -219,7 +219,7 @@
               <div id="lap_lkpm-alert" class="form-group has-feedback col-md-12">
                 <label>Laporan LKPM </label>
                 <a href="#" class="text-bold text-lkpm" id="modal-lkpm" data-target="Lkpm" style="margin-left: 5px"><small>(Tampilkan LKPM)</small></a>
-                <input type="file" class="form-control" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
                 <div id="ShowPdfLkpm" style="margin-top:8px"></div>
                 <span id="file-lkpm-alert-messages"></span>
                 <div class="modal fade" id="pdfLkpm" role="dialog" aria-hidden="true">
@@ -241,7 +241,7 @@
               <div id="lap_document-alert" class="form-group has-feedback col-md-12">
                 <label>Laporan Dokumentasi </label>
                 <a href="#" class="text-bold text-doc" id="modal-doc" data-target="Doc" style="margin-left: 5px"><small>(Tampilkan Dokumentasi)</small></a>
-                <input type="file" class="form-control" name="lap_document" id="AddFilesDoc" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_document" id="AddFilesDoc" accept=".pdf">
                 <div id="ShowPdfDoc" style="margin-top:8px"></div>
                 <span id="file-doc-alert-messages"></span>
                 <small class="text-red">*semua file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -267,7 +267,7 @@
               <div id="notula-alert" class="form-group has-feedback col-md-12">
                   <label>Notula Rapat </label>
                   <a href="#" class="text-bold text-notula" id="modal-notula" data-target="Notula" style="margin-left: 5px"><small>(Tampilkan File Notula)</small></a>
-                  <input type="file" class="form-control" name="lap_notula" id="AddFilesNotula" accept=".pdf">
+                  <input type="file" class="form-control file-access" name="lap_notula" id="AddFilesNotula" accept=".pdf">
                   <div id="ShowPdfNotula" style="margin-top:8px"></div>
                   <span id="file-notula-alert-messages"></span>                  
                   <div class="modal fade" id="pdfNotula" role="dialog" aria-hidden="true">
@@ -289,7 +289,7 @@
               <div id="lap_evaluasi-alert" class="form-group has-feedback col-md-12">
                   <label>Laporan Hasil Evaluasi </label>
                   <a href="#" class="text-bold text-eval" id="modal-eval" data-target="Evaluasi" style="margin-left: 5px"><small>(Tampilkan File Evaluasi)</small></a>
-                  <input type="file" class="form-control" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
+                  <input type="file" class="form-control file-access" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
                   <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
                   <span id="file-evaluasi-alert-messages"></span>
                   <small class="text-red">*semua file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -545,7 +545,9 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/penyelesaian');
+                $('#modal-add').hide();
+                $('body').removeClass('modal-open');                
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           } else {
@@ -584,6 +586,7 @@
         'biaya',
         'jml_perusahaan'
       ];      
+      formData.append("status", 14);
       formData.append("type", "kirim");
 
       $.ajax({
@@ -601,7 +604,9 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/penyelesaian');
+                $('#modal-add').hide();
+                $('body').removeClass('modal-open');                
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           } else {
@@ -736,6 +741,7 @@
             $('#approve_edit-' + id).hide();
             $('#request_revision-' + id).hide();
             if (data.status_laporan_id == 13) {
+              $('.file-access').show();
               $('#update-' + id).show();
               $('#kirim-' + id).show();
               $('#request_edit-' + id).hide();
@@ -743,11 +749,13 @@
               $('#FormSubmit select').removeAttr('disabled');
             } else if (data.status_laporan_id == 15) {
               if (data.request_edit == 'false') {
+                $('.file-access').show();
                 $('#update-' + id).show();
                 $('#kirim-' + id).show();
                 $('#FormSubmit input').removeAttr('readonly');
                 $('#FormSubmit select').removeAttr('disabled');
               } else {
+                $('.file-access').hide();
                 $('#update-' + id).hide();
                 $('#kirim-' + id).hide();
                 $('#FormSubmit input').attr('readonly', 'readonly');
@@ -758,10 +766,12 @@
               $('#update-' + id).hide();
               $('#kirim-' + id).hide();
               $('#request_edit-' + id).show();
+              $('.file-access').hide();
               $('#FormSubmit input').attr('readonly', 'readonly');
               $('#FormSubmit select').attr('disabled', 'true');
             }
           } else {
+            $('.file-access').hide();
             $('#FormSubmit input').attr('readonly', 'readonly');
             $('#FormSubmit select').attr('disabled', 'true');
             $('#request_edit-' + id).hide();
@@ -887,7 +897,10 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/penyelesaian');
+                $('#modal-add').hide();
+                $('#modal-req-edit').hide();
+                $('body').removeClass('modal-open');
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           },
@@ -937,7 +950,9 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/penyelesaian');
+                $('#modal-add').hide();
+                $('#modal-req-revision').hide();
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           },
@@ -1023,18 +1038,25 @@
             processData: false,
             contentType: false,
             success: (respons) => {
-              console.log(respons);
-              Swal.fire({
-                title: 'Sukses!',
-                text: 'Berhasil Disimpan',
-                icon: 'success',
-                confirmButtonText: 'OK'
-
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.replace('/penyelesaian');
-                }
-              });
+              if(respons.status) {
+                Swal.fire({
+                  title: 'Sukses!',
+                  text: 'Berhasil Kirim ke Pusat',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.replace('/penyelesaian');
+                  }
+                });
+              } else {
+                Swal.fire({
+                  title: 'Gagal Kirim ke Pusat!',
+                  text: respons.message,
+                  icon: 'error',
+                  confirmButtonText: 'OK'
+                }).then((result) => {});
+              }
             },
             error: (respons) => {
               errors = respons.responseJSON;
@@ -1055,7 +1077,7 @@
         $("#approve_edit-" + id_modal).click(() => {
           var data = {
             "status": 13,
-            "request_edit": "true",
+            "request_edit": "true"
           };
           $.ajax({
             type: "PUT",
@@ -1066,7 +1088,7 @@
             success: (respons) => {
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: 'Berhasil Diapprove.',
                 icon: 'success',
                 confirmButtonText: 'OK'
 

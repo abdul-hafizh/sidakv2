@@ -28,6 +28,8 @@ class RequestPromosi
          $numberNext = (($page * $data->count()) - ($data->count() - 1));
       }
 
+      $access = RequestAuth::Access();
+
       foreach ($data as $key => $val) {
          if ($val->status_laporan_id == '14') {
             $status = 'Terkirim';
@@ -57,7 +59,7 @@ class RequestPromosi
          $temp[$key]['id'] = $val->id;
        
          $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
-         $temp[$key]['access'] = RequestAuth::Access();
+         $temp[$key]['access'] = $access;
          $temp[$key]['checklist'] = $checklist;
          $temp[$key]['periode_id'] = $val->periode_id;
          $temp[$key]['daerah_id'] = $val->daerah_id;
@@ -144,14 +146,25 @@ class RequestPromosi
       $result['data'] = $temp;
       if($data->count() > 0){
            $result['periode_id'] = $year;
-           $result['pagu_promosi'] = GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($year));
-           $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year));
+
+           if($access =='pusat')
+           {
+                $result['pagu_promosi'] = 'Rp 0';
+                $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id));
+           }else{
+               $result['pagu_promosi'] = GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($year,Auth::User()->daerah_id));
+
+               $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id));
+           } 
+         
       }else{
           $result['periode_id'] = '';
           $result['pagu_promosi'] = 'Rp 0';
           $result['total_promosi'] =  'Rp 0'; 
       }
-    
+
+      $result['total_daerah'] = Promosi::groupBy('daerah_id')->count();
+      $result['total_requestedit'] = Promosi::where(['request_edit'=>'true'])->count();
       $result['options'] = RequestMenuRoles::ActionPage('promosi');
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();
@@ -166,17 +179,23 @@ class RequestPromosi
       return $result;
    }
 
-   public static function TotalPromosi($year){
+   public static function TotalPromosi($year,$daerah_id){
 
      $access = RequestAuth::Access();  
      if($access =='province')
      {
-        $data = Promosi::select(DB::raw('SUM(budget_peluang + budget_storyline + budget_storyboard + budget_lokasi + budget_talent + budget_testimoni + budget_audio + budget_editing + budget_gambar + budget_video + budget_editvideo + budget_grafik + budget_mixing + budget_voice + budget_subtitle) as total '))->where(['periode_id'=>$year,'daerah_id'=>Auth::User()->daerah_id])->first()->total;
+        $data = Promosi::select(DB::raw('SUM(budget_peluang + budget_storyline + budget_storyboard + budget_lokasi + budget_talent + budget_testimoni + budget_audio + budget_editing + budget_gambar + budget_video + budget_editvideo + budget_grafik + budget_mixing + budget_voice + budget_subtitle) as total '))->where(['periode_id'=>$year,'daerah_id'=>$daerah_id])->first()->total;
 
-        return $data;
+       
+     }else if($access =='pusat'){
+
+         $data = Promosi::select(DB::raw('SUM(budget_peluang + budget_storyline + budget_storyboard + budget_lokasi + budget_talent + budget_testimoni + budget_audio + budget_editing + budget_gambar + budget_video + budget_editvideo + budget_grafik + budget_mixing + budget_voice + budget_subtitle) as total '))->where(['periode_id'=>$year])->first()->total;
+
+       
+
      } 
  
-
+         return $data;
    }
 
 
@@ -268,10 +287,10 @@ class RequestPromosi
          $temp['status_laporan_id'] = $val->status_laporan_id;
          $temp['status'] = array('status_db' => $val->status, 'status_convert' => $status);
 
-         $temp['pagu_promosi_convert'] =  GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($val->periode_id));
-         $temp['total_promosi_convert'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($val->periode_id));
-         $temp['pagu_promosi'] =  RequestPaguTarget::PaguPromosi($val->periode_id);
-         $temp['total_promosi'] = RequestPromosi::TotalPromosi($val->periode_id);  
+         $temp['pagu_promosi_convert'] =  GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($val->periode_id,$val->daerah_id));
+         $temp['total_promosi_convert'] = GeneralHelpers::formatRupiah($val->budget_peluang + $val->budget_storyline + $val->budget_storyboard + $val->budget_lokasi + $val->budget_talent +  $val->budget_testimoni + $val->budget_audio + $val->budget_editing + $val->budget_gambar + $val->budget_video + $val->budget_editvideo + $val->budget_grafik + $val->budget_mixing + $val->budget_voice + $val->budget_subtitle);
+         $temp['pagu_promosi'] =  RequestPaguTarget::PaguPromosi($val->periode_id,$val->daerah_id);
+         $temp['total_promosi'] = $val->budget_peluang + $val->budget_storyline + $val->budget_storyboard + $val->budget_lokasi + $val->budget_talent +  $val->budget_testimoni + $val->budget_audio + $val->budget_editing + $val->budget_gambar + $val->budget_video + $val->budget_editvideo + $val->budget_grafik + $val->budget_mixing + $val->budget_voice + $val->budget_subtitle;  
          return $temp;
 
    }

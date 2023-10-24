@@ -1,6 +1,51 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 <section class="content-header pd-left-right-15">
+
+	<div class="row padding-default" style="margin-bottom: 20px">
+               
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">     
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Total Budget Promosi</span>
+                                        <h3 class="card-text" id="total_promosi"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">     
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Total Daerah</span>
+                                        <h3 class="card-text" id="total_daerah"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">     
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Total Request Edit</span>
+                                        <h3 class="card-text" id="total_requestedit"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+              
+          </div>
+
     <div class="row margin-top-bottom-20">
 
     	    <div class="col-sm-2" style="margin-bottom: 9px;">
@@ -134,8 +179,13 @@
     const total = 0;
     var year = new Date().getFullYear();
     var search = '';
-     var status = '';
+    var status = '';
+    var total_promosi = 0;
+    var total_daerah = 0;
+    var total_requestedit = 0;
+    var daerah_id = 0;
 
+      $('#total_promosi').html('<b>Rp. 0</b>');
 	$('#periode_id').on('change', function() {
 		var index = $(this).val();
 		let find = periode.find(o => o.value === index);
@@ -217,7 +267,7 @@
 
      // Refresh selected button
     $('#refresh').on('click', function() {
-    	
+    	localStorage.removeItem('search');
         fetchData(page,year);
   
         $('#search-input').val('');
@@ -371,6 +421,10 @@
  		 periode_id = $('#periode_id').val();
  		 daerah_id = $('#daerah_id').val();
  		 status = $('#status').val();
+
+ 		  var form = {'periode_id':periode_id,'daerah_id':daerah_id,'status':status,'search':search};
+          localStorage.setItem('search', JSON.stringify(form));
+
  		 // if(search)
  		 // { 	
 	 		 const content = $('#content');
@@ -414,7 +468,7 @@
               
     }
 
-    function getdaerah(){
+    function getdaerah(daerah_id){
 
     	$.ajax({
         url: BASE_URL +'/api/select-province',
@@ -428,6 +482,11 @@
                   text: option.text
                 }));
             });
+
+            if(daerah_id !=0)
+            {
+            	 $('#daerah_id').val(daerah_id);
+            }  	
 
             // Refresh the SelectPicker to apply the new options
             $('#daerah_id').selectpicker('refresh');
@@ -478,16 +537,44 @@
 		let row = ``;
 		row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
 		content.append(row);
+		var url = '';
+		var method = '';
+		var data = {};
+
+		var tmp = JSON.parse(localStorage.getItem('search'));
+		if(tmp)
+	    {
+
+	       url = BASE_URL+ `/api/promosi/search?page=${page}&per_page=${itemsPerPage}&periode_id=${tmp.periode_id}`;
+           method = 'POST';
+           data = {'search':tmp.search,'daerah_id':tmp.daerah_id,'status':tmp.status};
+
+           getdaerah(tmp.daerah_id);
+           $('#status').val(tmp.status);
+           $('#search-input').val(tmp.search);
+           $('#status').selectpicker('refresh')
+
+	    }else{
+           url = BASE_URL+ `/api/promosi?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`;
+           method = 'GET';
+          
+	    }		
+       		
 
         $.ajax({
-            url: BASE_URL+ `/api/promosi?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`,
-            method: 'GET',
+            url: url,
+            method: method,
+            data:data,
             success: function(response) {
             	list = response.data;
                 resultTotal(response.total);
                 listOptions(response.options);
                 updateContent(response.data,response.options);
                 updatePagination(response.current_page, response.last_page);
+
+                $('#total_promosi').html('<b>'+response.total_promosi+'</b>');
+            	$('#total_daerah').html('<b>'+response.total_daerah+'</b>');
+            	$('#total_requestedit').html('<b>'+response.total_requestedit+'</b>');
             },
             error: function(error) {
                 console.error('Error fetching data:', error);
@@ -567,7 +654,7 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                  row +=`<button id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
+                  row +=`<button id="Detail" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
 
 
                if(item.access =='admin' || item.access =='pusat')
@@ -660,8 +747,8 @@
    		$( "#content" ).on( "click", "#Detail", (e) => {
              
             let id = e.currentTarget.dataset.param_id;
-            const item = list.find(o => o.id == id); 
-           
+          //  const item = list.find(o => o.id == id); 
+            window.location.replace('/promosi/detail/'+ id); 
            
        });
 
@@ -1025,7 +1112,7 @@
     // Initial data fetch
     fetchData(currentPage,year);
     getperiode(year);
-    getdaerah();
+    getdaerah(daerah_id);
 });
      </script>
 

@@ -121,14 +121,14 @@ class PromosiApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
-           
+                $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id); 
            
             
                 $insert = RequestPromosi::fieldsData($request); 
                 $log = array(
                     'category' => 'LOG_DATA_PROMOSI',
                     'group_menu' => 'upload_data_promosi',
-                    'description' => 'Menambahkan data pengajuan periode <b> ' . $request->extensiondate . '</b>',
+                    'description' => 'Menambahkan data promosi '.$daerah_name.' periode <b> ' . $request->periode_id . '</b>',
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
                 //create menu
@@ -140,16 +140,16 @@ class PromosiApiController extends Controller
                     if($access !="admin" || $access !="pusat")
                     {
                          $type = 'promosi';
-                         $messages = Auth::User()->username.' Permohonan Persetujuan/Approval sampai tanggal '.$request->extensiondate;
+                         $messages = Auth::User()->username.' Menambahkan Menambahkan promosi '.$daerah_name.' periode '.$request->periode_id;
                          $url = url('promosi/show/'.$saveData->id);
                          $notif = RequestNotification::fieldsData($type,$messages,$url);
                          Notification::create($notif);
                          $datafrom = User::where('username','pusat')->first();
 
-                         $description = $request->description;
-                         $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
-                         $pusat = User::where('username','pusat')->first()->email;
-                         Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
+                        // $description = $request->description;
+                        
+                         // $pusat = User::where('username','pusat')->first()->email;
+                         // Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
                       
 
                     }
@@ -180,11 +180,26 @@ class PromosiApiController extends Controller
         );
         $datalog = RequestAuditLog::fieldsData($log);
 
+ 
+
+
         if (empty($_res)) {
             return response()->json(['messages' => false]);
         }
 
         $results = $_res->where('id',$id)->update(['alasan'=>$request->alasan,'request_edit'=>'true','checklist'=>'not_approved']);
+         $access = RequestAuth::Access();
+        if($access !="admin" || $access !="pusat")
+        {
+                 $type = 'promosi';
+                 $messages = $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan;
+                 $url = url('promosi/show/'.$saveData->id);
+                 $notif = RequestNotification::fieldsData($type,$messages,$url);
+                 Notification::create($notif);
+                 $datafrom = User::where('username','pusat')->first();
+
+        }
+
         if ($results) {
             $messages['messages'] = true;
         }

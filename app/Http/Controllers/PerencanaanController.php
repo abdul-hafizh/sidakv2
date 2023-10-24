@@ -43,11 +43,14 @@ class PerencanaanController extends Controller
             'slug' => 'perencanaan',
             'url' =>' perencanaan'
         );
+
+        $access = RequestAuth::Access();
         RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.add')
         ->with([
             'title' => $title,
+            'access' => $access,
             'template' => 'template/'.$this->template ]);
     }
 
@@ -59,11 +62,14 @@ class PerencanaanController extends Controller
             'slug' => 'perencanaan',
             'url' => 'perencanaan'
         );
+
+        $access = RequestAuth::Access();
         RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.edit')
         ->with([
             'title' => $title,
+            'access' => $access,
             'template' => 'template/'.$this->template ]);
     }
 
@@ -75,11 +81,14 @@ class PerencanaanController extends Controller
             'slug' => 'perencanaan',
             'url' => 'perencanaan'
         );
+
+        $access = RequestAuth::Access();
         RequestSystemLog::CreateLog($log);  
 
         return view('template/' . $this->template . '.perencanaan.detail')
         ->with([
             'title' => $title,
+            'access' => $access,
             'template' => 'template/'.$this->template ]);
     }
 

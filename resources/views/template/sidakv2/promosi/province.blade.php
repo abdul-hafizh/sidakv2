@@ -30,17 +30,17 @@
                </div>
 
                <div class="col-lg-4 col-md-6 col-sm-12">
-               <div class="box-body btn-primary border-radius-13">		
-                    <div class="card-body table-responsive p-0">
-                         <div class="media">
-                              <div class="media-body text-left">
-                                   <span>Periode <span id="periode_selected" class="pd-top-bottom-5"></span></span>
-                                   <h3 class="card-text" id="status-view"></h3>                                   
+                    <div class="box-body btn-primary border-radius-13">		
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Periode <span id="periode_selected" class="pd-top-bottom-5"></span></span>
+                                        <h3 class="card-text" id="status-view"></h3>                                   
+                                   </div>
                               </div>
-                         </div>
-                    </div>			
-					</div>
-				</div>
+                         </div>			
+     			</div>
+			</div>
 
           </div>
           <div class="box box-solid box-primary">
@@ -63,7 +63,7 @@
           </div>
 
 
-    <div class="col-sm-4 pull-left padding-default full">
+     <div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
             
             
@@ -692,8 +692,8 @@
                        }	
 					   
 					    if(item.request_edit == 'true')
-					    {
-                              $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
+					    { 
+                               $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
 					    }else{
 					    	$('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
 					    } 	
