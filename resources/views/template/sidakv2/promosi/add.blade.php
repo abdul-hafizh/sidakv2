@@ -23,7 +23,7 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Total Perencanaan</span>
+                                        <span>Total Promosi</span>
                                         <h3 class="card-text" id="total_promosi"></h3>
                                    </div>
                               </div>
@@ -804,7 +804,7 @@
                $('#periode_id').on('change', function() {
                     var index = $(this).val();
                     let find = periode.find(o => o.value === index); 
-                   
+
                     pagu_promosi = find.pagu_promosi; 
                     //isi pagu
                     var promosi = accounting.formatNumber(find.pagu_promosi, 0, ".", "."); 

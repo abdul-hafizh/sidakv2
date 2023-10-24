@@ -23,7 +23,7 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Total Budget Promosi</span>
+                                        <span>Total Promosi</span>
                                         <h3 class="card-text" id="total_promosi"></h3>
                                    </div>
                               </div>
