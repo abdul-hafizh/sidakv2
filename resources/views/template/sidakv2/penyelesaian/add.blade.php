@@ -749,6 +749,7 @@
                 $('#FormSubmit input').removeAttr('readonly');
                 $('#FormSubmit select').removeAttr('disabled');
               } else {
+                $('.file-access').remove();
                 $('#update-' + id).hide();
                 $('#kirim-' + id).hide();
                 $('#FormSubmit input').attr('readonly', 'readonly');
