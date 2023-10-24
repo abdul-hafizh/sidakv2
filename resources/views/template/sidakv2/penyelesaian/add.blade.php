@@ -1024,18 +1024,25 @@
             processData: false,
             contentType: false,
             success: (respons) => {
-              console.log(respons);
-              Swal.fire({
-                title: 'Sukses!',
-                text: 'Berhasil Kirim ke Pusat.',
-                icon: 'success',
-                confirmButtonText: 'OK'
-
-              }).then((result) => {
-                if (result.isConfirmed) {
-                  window.location.replace('/penyelesaian');
-                }
-              });
+              if(respons.status) {
+                Swal.fire({
+                  title: 'Sukses!',
+                  text: 'Berhasil Kirim ke Pusat',
+                  icon: 'success',
+                  confirmButtonText: 'OK'
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.replace('/penyelesaian');
+                  }
+                });
+              } else {
+                Swal.fire({
+                  title: 'Gagal Kirim ke Pusat!',
+                  text: respons.message,
+                  icon: 'error',
+                  confirmButtonText: 'OK'
+                }).then((result) => {});
+              }
             },
             error: (respons) => {
               errors = respons.responseJSON;
