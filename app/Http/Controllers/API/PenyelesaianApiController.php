@@ -214,7 +214,7 @@ class PenyelesaianApiController extends Controller
                 $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
                 $update['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
             } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'identifikasi' && empty($_res->lap_profile)) {
+                if ($request->type == 'kirim' && $request->sub_menu_slug == 'identifikasi' && $_res->lap_profile == NULL) {
                     return response()->json(['status' => false, 'message' => 'File Profile Wajib Diisi.']);
                 }
             }
