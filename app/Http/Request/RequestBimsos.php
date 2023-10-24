@@ -85,7 +85,8 @@ class RequestBimsos
             $delete_url = "";
             $edit_url =  '<a href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></a>';
             if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
-                $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
+                if ($val->status_laporan_id != 14)
+                    $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
             }
 
             $numberNext++;
