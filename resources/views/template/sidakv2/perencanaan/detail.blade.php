@@ -20,6 +20,20 @@
                     </div>
                </div>
 		</div>
+
+          <div class="col-lg-4 col-md-6 col-sm-12" id="promosi-header">
+               <div class="box-body btn-primary border-radius-13">
+                    <div class="card-body table-responsive p-0">
+                         <div class="media">
+                              <div class="media-body text-left">
+                                   <span>Pagu Promosi</span>
+                                   <h3 class="card-text" id="pagu_promosi_header"></h3>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+
 		<div class="col-lg-4 col-md-6 col-sm-12">
                <div class="box-body btn-primary border-radius-13">			
                     <div class="card-body table-responsive p-0">
@@ -237,9 +251,15 @@
           function getdataid(data)
           {
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
+               $('#pagu_promosi_header').html('<b>'+data.pagu_promosi+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
                $('#status-view').html('<b>'+data.status+'</b>');    
+               $('#promosi-header').hide();
+
+               if(data.pagu_promosi_cek > 0) {                    
+                    $('#promosi-header').show();
+               }
 
                if(data.status_code == 15 && data.request_edit == 'true' && data.alasan_edit != null) {
                     $('#div-edit').show();     
@@ -408,6 +428,40 @@
                          row+= '<span id="penyelesaian-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
+
+               if (data.pagu_promosi_cek > 0) {
+                    row+= '<tr>';
+                         row+= '<td><strong>4</strong></td>';
+                         row+= '<td class="text-left"><strong>Penyusunan Bahan Promosi Penanaman Modal</strong></td>';
+                         row+= '<td class="text-center"><strong>1</strong></td>';
+                         row+= '<td class="text-center"><strong>Video</strong></td>';
+                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
+                    row+= '</tr>';
+     
+                    row+= '<tr class="border-bottom">';
+                         row+= '<td>&nbsp;</td>';
+                         row+= '<td>A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>';
+                         row+= '<td>';
+                              row+= '<div class="margin-none form-group">';
+                                   row+= '<input name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
+                              row+= '</div>';
+                         row+= '</td>';
+                         row+= '<td>';
+                              row+= '<input name="promosi_pengadaan_satuan" type="text" class="form-control" placeholder="Video" value="Video" readonly>';
+                         row+= '</td>';
+                         row+= '<td>';
+                              row+= '<div class="margin-none form-group">';
+                                   row+= '<input name="promosi_pengadaan_pagu" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
+                              row+= '</div>';
+                         row+= '</td>';
+                    row+= '</tr>';
+                    
+                    row+= '<tr>';
+                         row+= '<td colspan="3">&nbsp;</td>';
+                         row+= '<td class="text-right"><strong>Total Promosi :</strong></td>';
+                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
+                    row+= '</tr>';
+               }
 
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';

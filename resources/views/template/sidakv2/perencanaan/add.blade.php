@@ -18,6 +18,20 @@
                          </div>
                     </div>
                </div>
+               @if($access == 'province')
+               <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Pagu Promosi</span>
+                                        <h3 class="card-text" id="pagu_promosi_header"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               @endif
                <div class="col-lg-4 col-md-6 col-sm-12">
                     <div class="box-body btn-primary border-radius-13">			
                          <div class="card-body table-responsive p-0">
@@ -225,7 +239,7 @@
                                         <td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>
                                         <td>
                                            <div id="penyelesaian-evaluasi-target-alert" class="margin-none form-group">  
-                                                <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-evaluasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -235,10 +249,47 @@
                                         <td>
                                              <div id="penyelesaian-evaluasi-pagu-alert" class="margin-none form-group"> 
                                                   <input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
-                                             <span id="penyelesaian-evaluasi-pagu-messages"></span>
-                                          </div>   
+                                                  <span id="penyelesaian-evaluasi-pagu-messages"></span>
+                                             </div>   
                                         </td>
                                    </tr>
+                                   @if($access == 'province')
+                                   <tr>
+                                        <td><strong>4</strong></td>
+                                        <td class="text-left"><strong>Penyusunan Bahan Promosi Penanaman Modal</strong></td>
+                                        <td class="text-center"><strong>1</strong></td>
+                                        <td class="text-center"><strong>Video</strong></td>
+                                        <td class="text-right"><strong id="total_promosi_pagu">Rp 0</strong></td>
+                                   </tr>
+                                   <tr class="border-bottom">
+                                        <td>&nbsp;</td>
+                                        <td>A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>
+                                        <td>
+                                             <div class="margin-none form-group">  
+                                                  <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>
+                                             </div>  
+                                        </td>
+                                        <td>
+                                             <input id="promosi_pengadaan_satuan" name="promosi_pengadaan_target" type="text" class="form-control" placeholder="Video" value="Video" readonly>
+                                        </td>
+                                        <td>
+                                             <div class="margin-none form-group"> 
+                                                  <input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden">
+                                                  <input id="promosi_pengadaan_pagu_convert" name="promosi_pengadaan_pagu_convert" type="text" class="form-control text-right" placeholder="Pagu" value="0" disabled>
+                                             </div>   
+                                        </td>
+                                   </tr>
+                                   <tr>
+                                        <td colspan="3">&nbsp;</td>
+                                        <td class="text-right"><strong>Total Promosi :</strong></td>
+                                        <td class="text-right"><span id="promosi_pagu_sec"></span></td>
+                                   </tr>                                   
+                                   @else
+                                        <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" value="0">
+                                        <input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="number" value="">
+                                        <input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden" value="0">
+                                   @endif
+
                                    <tr>
                                         <td colspan="3">&nbsp;</td>
                                         <td class="text-right"><strong>Total PAGU :</strong></td>
@@ -326,6 +377,9 @@
           $('#lokasi').val(user_sidebar.daerah_name);
           $('#pagu_apbn').html('<b>Rp. 0</b>');           
           $('#pagu_apbn_sec').html('<b>Rp. 0</b>');           
+          $('#pagu_promosi_header').html('<b>Rp. 0</b>');           
+          $('#promosi_pagu_sec').html('<b>Rp. 0</b>');           
+          $('#total_promosi_pagu').html('<b>Rp. 0</b>');           
           $('#total_rencana').html('<b>Rp. 0</b>');           
           $('#total_rencana_sec').html('<b>Rp. 0</b>'); 
           
@@ -374,6 +428,10 @@
                     "penyelesaian_realisasi_pagu": $("#penyelesaian_realisasi_pagu").val(),
                     "penyelesaian_evaluasi_target": $("#penyelesaian_evaluasi_target").val(),
                     "penyelesaian_evaluasi_pagu": $("#penyelesaian_evaluasi_pagu").val(),
+
+                    "promosi_pengadaan_target": $("#promosi_pengadaan_target").val(),
+                    "promosi_pengadaan_satuan": $("#promosi_pengadaan_satuan").val(),
+                    "promosi_pengadaan_pagu": $("#promosi_pengadaan_pagu").val(),
 
                     "lokasi": $("#lokasi").val(),
                     "tgl_tandatangan": $("#tgl_tandatangan").val(),
@@ -439,6 +497,10 @@
                     "penyelesaian_realisasi_pagu": $("#penyelesaian_realisasi_pagu").val(),
                     "penyelesaian_evaluasi_target": $("#penyelesaian_evaluasi_target").val(),
                     "penyelesaian_evaluasi_pagu": $("#penyelesaian_evaluasi_pagu").val(),
+
+                    "promosi_pengadaan_target": $("#promosi_pengadaan_target").val(),
+                    "promosi_pengadaan_satuan": $("#promosi_pengadaan_satuan").val(),
+                    "promosi_pengadaan_pagu": $("#promosi_pengadaan_pagu").val(),
 
                     "lokasi": $("#lokasi").val(),
                     "tgl_tandatangan": $("#tgl_tandatangan").val(),
@@ -613,6 +675,11 @@
                     //isi pagu
                     $('#pagu_apbn').html('<b>'+find.pagu_apbn+'</b>');
                     $('#pagu_apbn_sec').html('<b>'+find.pagu_apbn+'</b>');
+                    $('#pagu_promosi_header').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
+                    $('#promosi_pagu_sec').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
+                    $('#promosi_pengadaan_pagu').val(find.pagu_promosi);
+                    $('#promosi_pengadaan_pagu_convert').val('Rp. '+find.pagu_promosi.toLocaleString('id-ID'));
+                    $('#total_promosi_pagu').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#pagu_apbn_inp').val(find.pagu_apbn.replace(/[^0-9]/g, ''));
                     
                     //isi target pengawasan
