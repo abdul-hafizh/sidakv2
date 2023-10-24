@@ -80,6 +80,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/promosi', [PromosiController::class, 'index']);
     Route::get('/promosi/add', [PromosiController::class, 'add']);
     Route::get('/promosi/edit/{id}', [PromosiController::class, 'edit']);
+    Route::get('/promosi/detail/{id}', [PromosiController::class, 'show']);
     Route::get('/promosi/download/{id}', [PromosiController::class, 'generate']);
   });
 

@@ -80,6 +80,26 @@ class PromosiController extends Controller
             );
     }
 
+
+     public function show($id,Request $request)
+    {
+        $title = 'Detail Promosi';
+        $log = array(
+            'menu' => $title,
+            'slug' => 'detail-promosi',
+            'url' => 'promosi/detail/'.$id
+        );
+        RequestSystemLog::CreateLog($log);
+
+        return view('template/' . $this->template . '.promosi.detail')
+            ->with(
+                [
+                    'title' =>  $title,
+                    'template' => 'template/' . $this->template
+                ]
+            );
+    }
+
      public function generate($id)
     {
         $get_data = Promosi::where('id', $id)->first();

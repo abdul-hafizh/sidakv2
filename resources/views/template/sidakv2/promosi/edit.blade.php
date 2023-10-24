@@ -23,7 +23,7 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Total Perencanaan</span>
+                                        <span>Total Budget Promosi</span>
                                         <h3 class="card-text" id="total_promosi"></h3>
                                    </div>
                               </div>
@@ -114,7 +114,7 @@
 <script type="text/javascript">
 
      $(document).ready(function() {
-
+    
           var periode =[];
           var periode_id = 0;
           var pagu_promosi = 0;
@@ -122,7 +122,7 @@
           var total_pra_produksi = 0;       
           var total_produksi = 0;
           var total_pasca_produksi = 0;
-        
+          var temp_total_budget = 0;
           var temp_total_pra_produksi = 0;
           var temp_total_produksi = 0;
           var temp_total_pasca_produksi = 0;
@@ -153,8 +153,7 @@
                     'type': 'draft',
                };
 
-                       console.log(total_promosi)
-               console.log(pagu_promosi)                   
+                                   
 
                if (total_promosi != pagu_promosi) {
                     Swal.fire({
@@ -196,8 +195,7 @@
                     'type': 'kirim',
                };
                
-               console.log(total_promosi)
-               console.log(pagu_promosi)                           
+                                     
 
                if (total_promosi != pagu_promosi) {
                     Swal.fire({
@@ -228,11 +226,21 @@
 
           });
 
+           function updateTotalPromosi() {
+               var total_pagu_inp = 0;
+               $(".promosi_inp").each(function() {
+                    total_pagu_inp += parseInt($(this).val());
+               });
+
+               temp_total_budget = total_pagu_inp;
+               totalRencana();
+          }  
+
 
 
           function calculatePraProduksi() {
                var total_pra_produksi = 0;
-                total_promosi = 0;
+               
                $(".pra_produksi").each(function() {
                     total_pra_produksi += parseFloat($(this).val());
                });
@@ -250,7 +258,7 @@
 
           function calculateProduksi() {
                var total_produksi = 0;
-                total_promosi = 0;
+
                $(".produksi").each(function() {
                     total_produksi += parseFloat($(this).val());
                });
@@ -266,7 +274,7 @@
 
           function calculatePascaProduksi() {
                var total_pasca_produksi = 0;
-                total_promosi = 0;
+
                $(".pasca_produksi").each(function() {
                     total_pasca_produksi += parseFloat($(this).val());
                });
@@ -283,7 +291,7 @@
           function totalRencana() {
 
                
-               total_promosi = temp_total_pra_produksi + temp_total_produksi + temp_total_pasca_produksi;
+               total_promosi = temp_total_budget;
                var number = total_promosi;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
                var periode_id = $('#periode_id').val();
@@ -291,7 +299,7 @@
 
                if(periode_id)
                {    
-                   
+                     console.log(pagu_promosi)
                     if(pagu_promosi < total_promosi) {
                          Swal.fire({
                               icon: 'info',
@@ -323,8 +331,7 @@
                     url: BASE_URL +'/api/promosi/'+ segments[5],
                     success: function(data) {
                          periode_id = data.periode_id;
-                         total_promosi = data.total_promosi;
-                         pagu_promosi = data.pagu_promosi;
+                       
                          updateContent(data);
                        
                     },
@@ -370,7 +377,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-a-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  id="budget_a_pra" type="number" name="budget_a_pra" value="${item.budget_peluang}" class="form-control pra_produksi">`;
+                                        row +=`<input  id="budget_a_pra" type="number" name="budget_a_pra" value="${item.budget_peluang}" class="form-control promosi_inp pra_produksi">`;
                                  row +=`<span id="budget-a-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -399,7 +406,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-b-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_b_pra" value="${item.budget_storyline}" class="form-control pra_produksi">`;
+                                        row +=`<input  type="number" name="budget_b_pra" value="${item.budget_storyline}" class="form-control pra_produksi promosi_inp">`;
                                  row +=`<span id="budget-b-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -428,7 +435,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-c-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_c_pra" value="${item.budget_storyboard}"  class="form-control pra_produksi">`;
+                                        row +=`<input  type="number" name="budget_c_pra" value="${item.budget_storyboard}"  class="form-control pra_produksi promosi_inp">`;
                                  row +=`<span id="budget-c-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -457,7 +464,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-d-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_d_pra" value="${item.budget_lokasi}"  class="form-control pra_produksi">`;
+                                        row +=`<input  type="number" name="budget_d_pra" value="${item.budget_lokasi}"  class="form-control pra_produksi promosi_inp">`;
                                  row +=`<span id="budget-d-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -486,7 +493,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-e-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_e_pra" value="${item.budget_talent}" class="form-control pra_produksi">`;
+                                        row +=`<input  type="number" name="budget_e_pra" value="${item.budget_talent}" class="form-control pra_produksi promosi_inp">`;
                                  row +=`<span id="budget-e-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -515,7 +522,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-f-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_f_pra" value="${item.budget_testimoni}" class="form-control pra_produksi">`;
+                                        row +=`<input  type="number" name="budget_f_pra" value="${item.budget_testimoni}" class="form-control pra_produksi promosi_inp">`;
                                  row +=`<span id="budget-f-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -544,7 +551,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-g-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_g_pra" value="${item.budget_audio}" class="form-control pra_produksi">`;
+                                        row +=`<input  type="number" name="budget_g_pra" value="${item.budget_audio}" class="form-control pra_produksi promosi_inp">`;
                                  row +=`<span id="budget-g-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -573,7 +580,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-h-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="budget_h_pra" value="${item.budget_editing}" class="form-control pra_produksi">`;
+                                        row +=`<input  type="text" name="budget_h_pra" value="${item.budget_editing}" class="form-control pra_produksi promosi_inp">`;
                                  row +=`<span id="budget-h-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -610,7 +617,7 @@
                                row +=`</td>`;
                                row +=`<td>`;
                              row +=`<div id="budget-a-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_a_pro" value="${item.budget_gambar}" class="form-control">`;
+                                         row +=`<input  type="number" name="budget_a_pro" value="${item.budget_gambar}" class="form-control produksi promosi_inp">`;
                                   row +=`<span id="budget-a-pro-messages"></span>`;
                              row +=`</div>`;
                                row +=`</td>`;
@@ -639,7 +646,7 @@
                                row +=`</td>`;
                                row +=`<td>`;
                              row +=`<div id="budget-b-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_b_pro " value="${item.budget_video}" class="form-control">`;
+                                         row +=`<input  type="number" name="budget_b_pro " value="${item.budget_video}" class="form-control produksi promosi_inp">`;
                                   row +=`<span id="budget-b-pro-messages"></span>`;
                              row +=`</div>`;
                                row +=`</td>`;
@@ -674,7 +681,7 @@
                                row +=`</td>`;
                                row +=`<td>`;
                              row +=`<div id="budget-a-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_a_ppro" value="${item.budget_editvideo}" class="form-control">`;
+                                         row +=`<input  type="number" name="budget_a_ppro" value="${item.budget_editvideo}" class="form-control pasca_produksi promosi_inp">`;
                                   row +=`<span id="budget-a-ppro-messages"></span>`;
                              row +=`</div>`;
                                row +=`</td>`;
@@ -703,7 +710,7 @@
                                row +=`</td>`;
                                row +=`<td>`;
                              row +=`<div id="budget-b-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_b_ppro" value="${item.budget_grafik}" class="form-control">`;
+                                         row +=`<input  type="number" name="budget_b_ppro" value="${item.budget_grafik}" class="form-control pasca_produksi promosi_inp">`;
                                   row +=`<span id="budget-b-ppro-messages"></span>`;
                              row +=`</div>`;
                                row +=`</td>`;
@@ -732,7 +739,7 @@
                                row +=`</td>`;
                                row +=`<td>`;
                              row +=`<div id="budget-c-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_c_ppro" value="${item.budget_mixing}" class="form-control">`;
+                                         row +=`<input  type="number" name="budget_c_ppro" value="${item.budget_mixing}" class="form-control pasca_produksi promosi_inp">`;
                                   row +=`<span id="budget-c-ppro-messages"></span>`;
                              row +=`</div>`;
                                row +=`</td>`;
@@ -761,7 +768,7 @@
                                row +=`</td>`;
                                row +=`<td>`;
                              row +=`<div id="budget-d-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_d_ppro" value="${item.budget_voice}" class="form-control">`;
+                                         row +=`<input  type="number" name="budget_d_ppro" value="${item.budget_voice}" class="form-control pasca_produksi promosi_inp">`;
                                   row +=`<span id="budget-d-ppro-messages"></span>`;
                              row +=`</div>`;
                                row +=`</td>`;
@@ -784,13 +791,13 @@
                           row +=`</td>`;
                                row +=`<td>`;
                              row +=`<div id="enddate-e-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input  type="date" name="enddate_d_ppro" value="${item.tgl_ahir_subtitle}"  class="form-control">`;
+                                         row +=`<input  type="date" name="enddate_d_ppro" value="${item.tgl_ahir_subtitle}"  class="form-control  ">`;
                                   row +=`<span id="enddate-e-ppro-messages"></span>`;
                              row +=`</div>`;
                                row +=`</td>`;
                                row +=`<td>`;
                              row +=`<div id="budget-e-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_e_ppro" value="${item.budget_subtitle}" class="form-control">`;
+                                         row +=`<input  type="number" name="budget_e_ppro" value="${item.budget_subtitle}" class="form-control pasca_produksi promosi_inp">`;
                                   row +=`<span id="budget-e-ppro-messages"></span>`;
                              row +=`</div>`;
                                row +=`</td>`;
@@ -805,8 +812,10 @@
                            //  BtnAction(item.id,item.status_laporan_id);
 
                        content.append(row);
+                       pagu_promosi = item.pagu_promosi;
+                       getperiode(item.periode_id); 
+                       $(".promosi_inp").on("input", updateTotalPromosi);
 
-                        getperiode(item.periode_id); 
                        $('#pagu_promosi').html('<b>'+item.pagu_promosi_convert+'</b>');
                        $('#total_promosi').html('<b>'+item.total_promosi_convert+'</b>');
       
@@ -854,6 +863,7 @@
                     let find = periode.find(o => o.value === index); 
                    
                     pagu_promosi = find.pagu_promosi; 
+
                     //isi pagu
                     var promosi = accounting.formatNumber(find.pagu_promosi, 0, ".", "."); 
                     $('#pagu_promosi').html('<b>Rp '+ promosi +'</b>');
