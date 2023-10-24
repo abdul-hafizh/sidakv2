@@ -153,7 +153,7 @@
               <div id="lap_profile2-alert" class="form-group has-feedback col-md-12">
                 <label>Profile Pelaku Usaha </label>
                 <a href="#" class="text-bold text-profile2" id="modal-profile2" data-target="Profile2" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
-                <input type="file" class="form-control" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
                 <div id="ShowPdfProfile2" style="margin-top:8px"></div>
                 <span id="file-profile2-alert-messages"></span>
                 <div class="modal fade" id="pdfProfile2" role="dialog" aria-hidden="true">
@@ -175,7 +175,7 @@
               <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Narasumber </label>
                 <a href="#" class="text-bold text-narasumber" id="modal-narasumber" data-target="Narasumber" style="margin-left: 5px"><small>(Tampilkan Narasumber)</small></a>
-                <input type="file" class="form-control" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
                 <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
                 <span id="file-narasumber-alert-messages"></span>
                 <div class="modal fade" id="pdfNarasumber" role="dialog" aria-hidden="true">
@@ -197,7 +197,7 @@
               <div id="notula2-alert" class="form-group has-feedback col-md-12">
                 <label>Notula Kegiatan </label>
                 <a href="#" class="text-bold text-notula2" id="modal-notula2" data-target="Notula2" style="margin-left: 5px"><small>(Tampilkan Notula)</small></a>
-                <input type="file" class="form-control" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
                 <div id="ShowPdfNotula2" style="margin-top:8px"></div>
                 <span id="file-notula2-alert-messages"></span>
                 <div class="modal fade" id="pdfNotula2" role="dialog" aria-hidden="true">
@@ -219,7 +219,7 @@
               <div id="lap_lkpm-alert" class="form-group has-feedback col-md-12">
                 <label>Laporan LKPM </label>
                 <a href="#" class="text-bold text-lkpm" id="modal-lkpm" data-target="Lkpm" style="margin-left: 5px"><small>(Tampilkan LKPM)</small></a>
-                <input type="file" class="form-control" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
                 <div id="ShowPdfLkpm" style="margin-top:8px"></div>
                 <span id="file-lkpm-alert-messages"></span>
                 <div class="modal fade" id="pdfLkpm" role="dialog" aria-hidden="true">
@@ -241,7 +241,7 @@
               <div id="lap_document-alert" class="form-group has-feedback col-md-12">
                 <label>Laporan Dokumentasi </label>
                 <a href="#" class="text-bold text-doc" id="modal-doc" data-target="Doc" style="margin-left: 5px"><small>(Tampilkan Dokumentasi)</small></a>
-                <input type="file" class="form-control" name="lap_document" id="AddFilesDoc" accept=".pdf">
+                <input type="file" class="form-control file-access" name="lap_document" id="AddFilesDoc" accept=".pdf">
                 <div id="ShowPdfDoc" style="margin-top:8px"></div>
                 <span id="file-doc-alert-messages"></span>
                 <small class="text-red">*semua file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -763,9 +763,9 @@
               $('#FormSubmit select').attr('disabled', 'true');
             }
           } else {
+            $('.file-access').remove();
             $('#FormSubmit input').attr('readonly', 'readonly');
             $('#FormSubmit select').attr('disabled', 'true');
-            $('#FormSubmit file').remove();
             $('#request_edit-' + id).hide();
             if (data.status_laporan_id == 13) {
               $('#update-' + id).hide();
