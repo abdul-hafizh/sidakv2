@@ -95,7 +95,7 @@ class RequestPeriode
              }
 
 
-              if($access =="province" || $access =="kabupaten")
+              if($access =="province" || $access =="daerah")
                {
                      $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
                      $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
