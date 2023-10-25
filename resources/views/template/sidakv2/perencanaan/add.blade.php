@@ -24,7 +24,7 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Pagu Promosi</span>
+                                        <span id="label-peta">Pagu Promosi</span>
                                         <h3 class="card-text" id="pagu_promosi_header"></h3>
                                    </div>
                               </div>
@@ -256,14 +256,14 @@
                                    @if($access == 'province')
                                    <tr>
                                         <td><strong>4</strong></td>
-                                        <td class="text-left"><strong>Penyusunan Bahan Promosi Penanaman Modal</strong></td>
+                                        <td class="text-left"><strong id="label-peta-judul">Penyusunan Bahan Promosi Penanaman Modal</strong></td>
                                         <td class="text-center"><strong>1</strong></td>
                                         <td class="text-center"><strong>Video</strong></td>
                                         <td class="text-right"><strong id="total_promosi_pagu">Rp 0</strong></td>
                                    </tr>
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
-                                        <td>A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>
+                                        <td id="label-peta-sub">A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>
                                         <td>
                                              <div class="margin-none form-group">  
                                                   <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>
@@ -274,14 +274,14 @@
                                         </td>
                                         <td>
                                              <div class="margin-none form-group"> 
-                                                  <input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden">
+                                                  <input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden" value="0">
                                                   <input id="promosi_pengadaan_pagu_convert" name="promosi_pengadaan_pagu_convert" type="text" class="form-control text-right" placeholder="Pagu" value="0" disabled>
                                              </div>   
                                         </td>
                                    </tr>
                                    <tr>
                                         <td colspan="3">&nbsp;</td>
-                                        <td class="text-right"><strong>Total Promosi :</strong></td>
+                                        <td class="text-right"><strong id="label-peta-total">Total Promosi :</strong></td>
                                         <td class="text-right"><span id="promosi_pagu_sec"></span></td>
                                    </tr>                                   
                                    @else
@@ -671,6 +671,18 @@
                $('#periode_id').on('change', function() {
                     var index = $(this).val();
                     let find = periode.find(o => o.value === index); 
+
+                    if(index > 2023) {                         
+                         $('#label-peta').text('Pagu Peta Potensi');
+                         $('#label-peta-judul').text('Penyusunan Bahan Peta Pontesi');
+                         $('#label-peta-sub').text('A. Penyediaan File sebagai Bahan Peta Potensi');
+                         $('#label-peta-total').text('Total Peta Pontesi');
+                    } else {
+                         $('#label-peta').text('Pagu Promosi');
+                         $('#label-peta-judul').text('Penyusunan Bahan Promosi Penanaman Modal');
+                         $('#label-peta-sub').text('A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal');
+                         $('#label-peta-total').text('Total Promosi');
+                    }
 
                     //isi pagu
                     $('#pagu_apbn').html('<b>'+find.pagu_apbn+'</b>');
