@@ -150,15 +150,29 @@
     padding: 12px 0px!important;
 }
 
+.position-top-10{
+    position: relative;
+    top: 10px!important;
+}
+
+.border-bottom-th{
+    border-bottom: 2px solid #f4f4f4!important;
+}
+
 .pd-right{
 padding: 0px 12px 0px 0px!important;
+}
+
+.spasi-row{
+        position: relative;
+    left: 13px!important;
 }
 
 .split-table-right {
     background: #0e298f;
     height: 44px;
-    width: 3px;
-    border: 1px solid #0e298f;
+  
+    border: 2px solid #0e298f;
     border-radius: 3px;
     float: right;
   
@@ -1037,8 +1051,7 @@ padding: 0px 12px 0px 0px!important;
 .split-table{
     background: #0e298f;
     height: 44px;
-    width: 3px;
-    border: 1px solid #0e298f;
+    border: 2px solid #0e298f;
     border-radius: 3px;
     float: left;
     margin: 0px 16px 0px 0px;
