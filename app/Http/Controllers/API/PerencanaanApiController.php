@@ -35,12 +35,13 @@ class PerencanaanApiController extends Controller
     public function index(Request $request)
     {                
         $access = RequestAuth::Access(); 
-        $tahunSemester = GeneralHelpers::semesterToday();
+        $year = $request->periode_id;
+        //$tahunSemester = GeneralHelpers::semesterToday();
 
         if($access == 'daerah' ||  $access == 'province') { 
-             $query = Perencanaan::where('daerah_id',Auth::User()->daerah_id)->orderBy('created_at', 'DESC');
+             $query = Perencanaan::where(['daerah_id'=>Auth::User()->daerah_id,'periode_id'=>$year])->orderBy('created_at', 'DESC');
         } else {
-             $query = Perencanaan::orderBy('created_at', 'DESC');
+             $query = Perencanaan::where(['periode_id'=>$year])->orderBy('created_at', 'DESC');
         }
 
         if($request->per_page !='all')
