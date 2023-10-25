@@ -119,8 +119,101 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table class="table table-hover text-nowrap">
-					<thead>
+				<table class="table table-hover text-nowrap" border="0">
+                    <thead>
+                        <tr>
+                           <th rowspan="2" id="ShowChecklistAll" style="display:none;">
+                                <input id="select-all" class="border-left-table" type="checkbox">
+                            </th>
+                            <th rowspan="2"  class=" font-bold">No</th>
+                            <th rowspan="2" colspan="2" class="text-center font-bold">
+                              <div class="split-table"></div>
+                              <span class="padding-top-bottom-12 ">Nama Daerah</span>
+                            
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table spasi-row"></div>
+                            </th>
+                            <th colspan="3" class="text-center font-bold border-bottom-th">  
+                              <span class="padding-top-bottom-12">Pengawasan</span> 
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table spasi-row"></div>
+                            </th>
+                            <th colspan="3" class="text-center font-bold">
+                              <span class="padding-top-bottom-12 ">Bimsos</span>
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table spasi-row"></div>
+                            </th>
+                          
+                            <th colspan="3" class="text-center font-bold">  
+                             
+                              <span class="padding-top-bottom-12">Penyelesaian Masalah</span> 
+                            </th>
+                             <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table"></div>
+                              <span class="padding-top-bottom-12">Promosi</span>
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table"></div>
+                              <span class="padding-top-bottom-12">Total</span>
+                            </th>
+                            <th rowspan="2" class="text-center font-bold">
+                              <div class="split-table"></div>
+                              <span class="padding-top-bottom-12">Status</span>
+                            </th>
+                            <th rowspan="2" class="text-center font-bold">
+                              <div class="split-table"></div>
+                              <span class="padding-top-bottom-12">Aksi</span>
+                            </th>
+
+
+
+                            
+                        </tr>
+                        <tr>
+                            <th  class="text-center font-bold">
+                                <span class="padding-top-bottom-12">Analisa</span>
+                            </th>
+                            <th  class="text-center font-bold">
+                                <div class="split-table"></div>
+                               <span class="padding-top-bottom-12 position-top-10">Inspeksi</span>
+                            </th>
+                             <th  class="text-center font-bold">
+                                <div class="split-table"></div>
+                               <span class="padding-top-bottom-12 position-top-10">Evaluasi</span>
+                            </th>
+
+                             <th  class="text-center font-bold">   
+                                <span class="padding-top-bottom-12">Perizinan</span>
+                            </th>
+                             <th   class="text-center font-bold">
+                              <div class="split-table spasi-row"></div>
+                            </th>
+                            <th  class="text-center font-bold">
+                               
+                               <span class="span-title">Pengawasan</span>
+                            </th>
+
+                             <th  class="text-center font-bold">
+                                <span class="padding-top-bottom-12">Identifikasi</span>
+                            </th>
+                            <th  class="text-center font-bold">
+                                <div class="split-table"></div>
+                               <span class="padding-top-bottom-12 position-top-10">Realisasi</span>
+                            </th>
+                             <th  class="text-center font-bold">
+                                <div class="split-table"></div>
+                               <span class="padding-top-bottom-12 position-top-10">Evaluasi</span>
+                            </th>
+                        </tr>
+
+
+                       
+                        
+                    </thead>
+					<!-- <thead>
 						<tr>
 							<th rowspan="2" id="ShowChecklistAll" style="display:none;" class="th-checkbox">
                                 <input id="select-all" class="border-left-table" type="checkbox">
@@ -147,7 +240,7 @@
 							<th><span class="border-left-table">Realisasi </span></th>
 							<th><span class="border-left-table">Evaluasi </span></th>
 						</tr>
-					</thead>
+					</thead> -->
 
 					<tbody id="content"></tbody>
 
@@ -433,7 +526,7 @@
             content.empty();
           
             let row = ``;
-                row +=`<tr><td colspan="12" align="center"> <b>Loading ...</b></td></tr>`;
+                row +=`<tr><td colspan="18" align="center"> <b>Loading ...</b></td></tr>`;
                 content.append(row);
 
             $.ajax({
@@ -481,37 +574,42 @@
                 total_bimsos += item.total_rencana_bimsos;
                 total_masalah += item.total_rencana_masalah;
 
-                var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + item.lap_rencana + '" class="btn btn-danger" title="Download PDF" target="_blank" style="margin-right: 4px"><i class="fa fa-download"></i></a>';
+                var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + item.lap_rencana + '" class="pointer btn-padding-action pull-left" title="Download PDF" target="_blank" style="margin-right: 4px"><i class="fa-icon icon-download"></i></a>';
 
-                row +=`<td class="table-padding-second">${item.number}</td>`;
-                row +=`<td class="table-padding-second">${item.nama_daerah}</td>`;
-                row +=`<td class="table-padding-second">${item.periode}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.pengawas_analisa_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.pengawas_inspeksi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.pengawas_evaluasi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.bimtek_perizinan_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.bimtek_pengawasan_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.penyelesaian_identifikasi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.penyelesaian_realisasi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.penyelesaian_evaluasi_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.promosi_pengadaan_pagu_convert}</td>`;
-                row +=`<td class="table-padding-second text-right">${item.total_pagu}</td>`;
-                row +=`<td class="table-padding-second">${item.status}</td>`;
-                row +=`<td class="table-padding-second">${item.updated_at}</td>`;
+                row +=`<td>${item.number}</td>`;
+                row +=`<td colspan="2">${item.nama_daerah}</td>`;
+                 row +=`<td></td>`;
+                row +=`<td class="text-right">${item.pengawas_analisa_pagu_convert}</td>`;
+                row +=`<td class="text-right">${item.pengawas_inspeksi_pagu_convert}</td>`;
+                row +=`<td class="text-right">${item.pengawas_evaluasi_pagu_convert}</td>`;
+                row +=`<td></td>`;
+                row +=`<td class="text-right">${item.bimtek_perizinan_pagu_convert}</td>`;
+                row +=`<td></td>`;
+                row +=`<td class="text-right">${item.bimtek_pengawasan_pagu_convert}</td>`;
+                  row +=`<td></td>`;
+                row +=`<td class="text-right">${item.penyelesaian_identifikasi_pagu_convert}</td>`;
+                row +=`<td class="text-right">${item.penyelesaian_realisasi_pagu_convert}</td>`;
+                row +=`<td class="text-right">${item.penyelesaian_evaluasi_pagu_convert}</td>`;
+                
+                row +=`<td class="text-right">${item.promosi_pengadaan_pagu_convert}</td>`;
+
+                row +=`<td class="text-right">${item.total_pagu}</td>`;
+                row +=`<td>${item.status}</td>`;
+                // // row +=`<td class="table-padding-second">${item.updated_at}</td>`;
                 row +=`<td>`; 
                     row +=`<div class="btn-action">`;
                     if(item.lap_rencana != '') {                                   
                         row += download_link;
                     }
 
-                    row +=`<button id="Detail" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Detail Data"><i class="fa fa-eye"></i></button>`;
+                    row +=`<div id="Detail" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left" title="Detail Data"><i class="fa-icon icon-detail"></i></div>`;
 
                     if(item.access == 'pusat' && item.status_code == 16 && item.request_edit == 'false') {
-                        row += '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa fa-pencil"></i></button>';
+                        row += '<div type="button" class="pointer btn-padding-action pull-left" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>';
                     }               
 
                     if(item.access == 'daerah' && ([14, 15, 16].includes(item.status_code) && item.request_edit === 'false') || (item.status_code === 14 && item.request_edit === 'request_doc')) {                         
-                        row += '<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modal-reqedit" title="Request Edit"><i class="fa fa-pencil"></i></button>';
+                        row += '<div class="pointer btn-padding-action pull-left" data-toggle="modal" data-target="#modal-reqedit" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>';
                     }
 
                     if(item.status_code == 13)
@@ -522,26 +620,26 @@
                             {
                                 if(opt.checked == true)
                                 {                                    
-                                  row +=`<button id="Edit" data-param_id="${item.id}" type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
+                                  row +=`<div id="Edit" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left" title="Edit Data"><i class="fa-icon icon-edit"></i></div>`;
                                 } 
                             }
                             if(opt.action == 'delete')
                             {
                                 if(opt.checked == true)
                                 {                                 
-                                  row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+                                  row +=`<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
                                 } 
                             }    
                         });   
 
                     } else {
                     
-                        row +=`<button disabled type="button" class="btn btn-primary" title="Edit Data"><i class="fa fa-pencil"></i></button>`;
-                        row +=`<button disabled type="button" class="btn btn-primary" title="Hapus Data"><i class="fa fa-trash"></i></button>`;
+                        row +=`<div disabled type="button" class="pointer btn-padding-action pull-left" title="Edit Data"><i class="fa-icon icon-edit"></i></div>`;
+                        row +=`<div disabled type="button" class="pointer btn-padding-action pull-left" title="Hapus Data"><i class="fa-icon icon-destroy"></i></div>`;
                     }
 
                     if(item.alasan_edit !== null || item.alasan_revisi !== null || item.alasan_unapprove !== null || item.alasan_unapprove_doc !== null) {
-                        row += `<button id="Log" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>`;
+                        row += `<div id="Log" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa-icon icon-detail" ></i></div>`;
                     }
 
                     row +=`</div>`;

@@ -127,7 +127,7 @@
                 contentType: false,
                 processData: false,
                 success: (response) => {
-                  window.location.replace('/pagutarget');
+                  window.location.replace('/paguapbn');
                 },
                 error: function(response) {
                   $('#file-input-error').text(response.responseJSON.errors.file);

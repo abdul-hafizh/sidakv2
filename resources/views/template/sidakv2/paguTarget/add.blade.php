@@ -236,7 +236,7 @@
             }).then((result) => {
               if (result.isConfirmed) {
                 // User clicked "Yes, proceed!" button
-                window.location.replace('/pagutarget');
+                window.location.replace('/paguapbn');
               }
             });
 
@@ -354,7 +354,7 @@
           }).then((result) => {
             if (result.isConfirmed) {
               // User clicked "Yes, proceed!" button
-              window.location.replace('/pagutarget');
+              window.location.replace('/paguapbn');
             }
           });
 

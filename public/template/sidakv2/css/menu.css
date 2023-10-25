@@ -351,4 +351,30 @@
     background-repeat: no-repeat;
 }
 
+.icon-download{
+   
+    background: url('../img/download_grey.png');
+    background-repeat: no-repeat;
+}
+
+.icon-download:hover{
+   
+    background: url('../img/download_blue.png');
+    background-repeat: no-repeat;
+}
+
+.icon-reqedit{
+   
+    background: url('../img/reqedit_grey.png');
+    background-repeat: no-repeat;
+}
+
+.icon-reqedit:hover{
+   
+    background: url('../img/reqedit_blue.png');
+    background-repeat: no-repeat;
+}
+
+
+
 
