@@ -18,7 +18,7 @@
     <script type="text/javascript">
         const BASE_URL = window.location.origin;
     </script>
-    <link rel="icon" type="image/x-icon" href="{{ config('app.url').$template.'/img/fave-icon.png' }}">
+    <link rel="icon" type="image/x-icon" href="{{ config('app.url').$template.'/img/faveicon.png' }}">
     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/bootstrap.min.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/font-awesome.min.css' }}">
@@ -33,7 +33,7 @@
     <link rel="stylesheet" href="{{ config('app.url').$template.'/plugin/select2/css/select2.min.css' }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{ config('app.url').$template.'/plugin/selectpicker/css/bootstrap-select.min.css' }}">
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/sweetalert2.min.css'}}">
-    <!-- <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}"> -->
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
    

@@ -457,9 +457,9 @@
                row +=`<td class="padding-text-table">${item.name}</td>`;
                row +=`<td class="padding-text-table">${item.province_name}</td>`;
                row +=`<td>`; 
-                row +=`<div class="btn-group">`;
+                row +=`<div class="btn-group list-menu-table">`;
 
-                  row +=`<button id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
+                  row +=`<div id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-detail" ></i></div>`;
 
 
                    options.forEach(function(opt, arr) 
@@ -468,7 +468,7 @@
                         {
                            if(opt.checked == true)
                            { 
-                                row +=`<button id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
+                                row +=`<div id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`;
                               
                             }    
 
@@ -838,9 +838,9 @@
        var row = ''; 
         if(item.deleted == true)
        {
-            row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+            row +=`<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
        }else{
-            row +=`<button disabled  data-toggle="tooltip" title="Hapus Data"  type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`; 
+            row +=`<div disabled  data-toggle="tooltip" title="Hapus Data" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
        }
 
 

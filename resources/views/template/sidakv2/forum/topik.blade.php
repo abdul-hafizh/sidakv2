@@ -234,8 +234,8 @@
 	               row +=`<td>${item.total_messsage}</td>`;
 	               
 	               row +=`<td>`; 
-	                 row +=`<div class="btn-group">`;
-	                row +=`<button id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Komentar" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
+	                 row +=`<div class="btn-group list-menu-table">`;
+	                row +=`<div id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Komentar"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-detail" ></i></div>`;
 	            
 	               
 
@@ -248,16 +248,16 @@
                                if(item.action == true)
                                {
                            	  
-	                              row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                              row +=`<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}"class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`;
 
 	                            }else{
 
-	                               row +=`<button disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;	
+	                               row +=`<div disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data"  class="pointer btn-padding-action pull-left"><i class="fa fa-trash" ></i></div>`;	
 	                            }  
 
 	                        }else{
 
-                               row +=`<button disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+                               row +=`<div disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`;
 
 	                        }    
 
