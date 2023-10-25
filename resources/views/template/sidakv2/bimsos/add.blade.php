@@ -151,9 +151,9 @@
               <label>Daftar hadir</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_hadir" style="display: none" style="margin-left: 5px"><small>(Tampilkan Daftar hadir)</small></a>
               <input type="hidden" class="form-control" name="lap_hadir_file" id="lap_hadir_file" value="">
-              <input type="file" class="form-control" name="lap_hadir" id="lap_hadir" accept=".pdf">
+              <input type="file" class="form-control file-access" name="lap_hadir" id="lap_hadir" accept=".pdf">
               <span id="lap_hadir-messages"></span>
-              <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
           <div class="row">
@@ -161,9 +161,9 @@
               <label>Laporan Tenaga Pendamping</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_pendamping" style="display: none" style="margin-left: 5px"><small>(Tampilkan Tenaga Pendamping)</small></a>
               <input type="hidden" class="form-control" name="lap_pendamping_file" id="lap_pendamping_file" value="">
-              <input type="file" class="form-control" name="lap_pendamping" id="lap_pendamping" accept=".pdf">
+              <input type="file" class="form-control file-access" name="lap_pendamping" id="lap_pendamping" accept=".pdf">
               <span id="lap_pendamping-messages"></span>
-              <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
           <div class="row">
@@ -171,9 +171,9 @@
               <label>Notula Kegiatan</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_notula" style="display: none" style="margin-left: 5px"><small>(Tampilkan Notula Kegiatan)</small></a>
               <input type="hidden" class="form-control" name="lap_notula_file" id="lap_notula_file" value="">
-              <input type="file" class="form-control" name="lap_notula" id="lap_notula" accept=".pdf">
+              <input type="file" class="form-control file-access" name="lap_notula" id="lap_notula" accept=".pdf">
               <span id="lap_notula-messages"></span>
-              <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
           <div class="row">
@@ -181,9 +181,9 @@
               <label>Hasil Survey</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_survey" style="display: none" style="margin-left: 5px"><small>(Tampilkan Hasil Survey)</small></a>
               <input type="hidden" class="form-control" name="lap_survey_file" id="lap_survey_file" value="">
-              <input type="file" class="form-control" name="lap_survey" id="lap_survey" accept=".pdf">
+              <input type="file" class="form-control file-access" name="lap_survey" id="lap_survey" accept=".pdf">
               <span id="lap_survey-messages"></span>
-              <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
           <div class="row">
@@ -191,9 +191,9 @@
               <label>Daftar Narasumber</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_narasumber" style="display: none" style="margin-left: 5px"><small>(Tampilkan Daftar Narasumber)</small></a>
               <input type="hidden" class="form-control" name="lap_narasumber_file" id="lap_narasumber_file" value="">
-              <input type="file" class="form-control" name="lap_narasumber" id="lap_narasumber" accept=".pdf">
+              <input type="file" class="form-control file-access" name="lap_narasumber" id="lap_narasumber" accept=".pdf">
               <span id="lap_narasumber-messages"></span>
-              <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
           <div class="row">
@@ -201,9 +201,9 @@
               <label>Materi</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_materi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Materi)</small></a>
               <input type="hidden" class="form-control" name="lap_materi_file" id="lap_materi_file" value="">
-              <input type="file" class="form-control" name="lap_materi" id="lap_materi" accept=".pdf">
+              <input type="file" class="form-control file-access" name="lap_materi" id="lap_materi" accept=".pdf">
               <span id="lap_materi-messages"></span>
-              <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
           <div class="row">
@@ -211,9 +211,9 @@
               <label>Laporan Dokumentasi</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_document" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Dokumentasi)</small></a>
               <input type="hidden" class="form-control" name="lap_document_file" id="lap_document_file" value="">
-              <input type="file" class="form-control" name="lap_document" id="lap_document" accept=".pdf">
+              <input type="file" class="form-control file-access" name="lap_document" id="lap_document" accept=".pdf">
               <span id="lap_document-messages"></span>
-              <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
         </div>
@@ -669,6 +669,7 @@
             $('#approve_edit-' + id).hide();
             $('#request_revision-' + id).hide();
             if (data.status_laporan_id == 13) {
+              $('.file-access').show();
               $('#update-' + id).show();
               $('#kirim-' + id).show();
               $('#request_edit-' + id).hide();
@@ -679,11 +680,13 @@
               if (data.request_edit == 'false') {
                 $('#update-' + id).show();
                 $('#kirim-' + id).show();
+                $('.file-access').show();
                 $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
                 $('#FormSubmit select').removeAttr('disabled');
               } else {
                 $('#update-' + id).hide();
                 $('#kirim-' + id).hide();
+                $('.file-access').hide();
                 $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
                 $('#FormSubmit select').attr('disabled', 'true');
               }
@@ -699,13 +702,16 @@
               $('#kirim-' + id).hide();
               $('#request_edit-' + id).show();
               $('#alasan_req').hide();
+              $('.file-access').hide();
               $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
               $('#FormSubmit select').attr('disabled', 'true');
             }
           } else {
             $('#FormSubmit input,#FormSubmit textarea').attr('readonly', 'readonly');
             $('#FormSubmit select').attr('disabled', 'true');
+            $('#FormSubmit file').removeAttr("disabled");
             $('#request_edit-' + id).hide();
+            $('.file-access').hide();
             if (data.status_laporan_id == 13) {
               $('#update-' + id).hide();
               $('#kirim-' + id).hide();
