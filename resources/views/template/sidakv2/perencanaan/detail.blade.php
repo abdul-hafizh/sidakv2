@@ -7,44 +7,9 @@
 <style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
 
 <div class="content">
-     <div class="row padding-default" style="margin-bottom: 20px">
-		<div class="col-lg-4 col-md-6 col-sm-12">
-               <div class="box-body btn-primary border-radius-13">
-                    <div class="card-body table-responsive p-0">
-                         <div class="media">
-                              <div class="media-body text-left">
-                                   <span>Pagu APBN</span>
-                                   <h3 class="card-text" id="pagu_apbn"></h3>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-		</div>
-		<div class="col-lg-4 col-md-6 col-sm-12">
-               <div class="box-body btn-primary border-radius-13">			
-                    <div class="card-body table-responsive p-0">
-                         <div class="media">
-                              <div class="media-body text-left">
-                                   <span>Total Perencanaan</span>
-                                   <h3 class="card-text" id="total_rencana"></h3>
-                              </div>
-                         </div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4 col-md-6 col-sm-12">
-               <div class="box-body btn-primary border-radius-13">		
-                    <div class="card-body table-responsive p-0">
-                         <div class="media">
-                              <div class="media-body text-left">
-                                   <span>Periode <span id="selectPeriode" class="pd-top-bottom-5"></span></span>
-                                   <h3 class="card-text" id="status-view"></h3>                                   
-                              </div>
-                         </div>
-                    </div>			
-			</div>
-		</div>
-	</div>
+     <div class="row" style="margin-bottom: 20px">
+          <div id="header-conclusion"></div>     
+     </div>
 
      <div class="box box-solid box-primary" id="div-edit">
           <div class="box-body">
@@ -235,12 +200,7 @@
           }
    
           function getdataid(data)
-          {
-               $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
-               $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
-               $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
-               $('#status-view').html('<b>'+data.status+'</b>');    
-
+          {               
                if(data.status_code == 15 && data.request_edit == 'true' && data.alasan_edit != null) {
                     $('#div-edit').show();     
                     $('#alasan-edit-view').html('<b>Alasan Edit : '+data.alasan_edit+'</b>').addClass('col-lg-12 text-red');
@@ -252,10 +212,44 @@
                var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + data.lap_rencana + '" class="btn btn-danger col-md-2" target="_blank"><i class="fa fa-download"></i> Download PDF</a>';
                var generate_pdf = '<a href="'+BASE_URL+'/perencanaan/generate_pdf/'+ data.id + '" class="btn btn-success blink-text col-md-2" target="_blank">Generate PDF</a>';         
 
+               var header_row = '';
                var row = '';
                var rows = '';
                var rows_btn = '';
                var rows_doc = '';
+
+               var data_label = [
+                    { label: 'Pagu APBN', id: 'pagu_apbn' },
+                    { label: 'Total Perencanaan', id: 'total_rencana' },
+                    { label: 'Status', id: 'status-view' }
+               ];
+
+               if (data.pagu_promosi_cek > 0) {
+                    data_label.splice(1, 0, { label: 'Pagu Promosi', id: 'pagu_promosi_header' });
+               }
+
+               $.each(data_label, function (index, item) {
+                    header_row += '<div class="col-lg-' + (data.pagu_promosi_cek > 0 ? '3' : '4') + ' col-md-6 col-sm-12">';
+                    header_row += '<div class="box-body btn-primary border-radius-13">';
+                    header_row += '<div class="card-body table-responsive p-0">';
+                    header_row += '<div class="media">';
+                    header_row += '<div class="media-body text-left">';
+                    header_row += '<span>' + item.label + '</span>';
+                    header_row += '<h3 class="card-text" id="' + item.id + '"></h3>';
+                    header_row += '</div>';
+                    header_row += '</div>';
+                    header_row += '</div>';
+                    header_row += '</div>';
+                    header_row += '</div>';
+               });
+
+               $('#header-conclusion').html(header_row);
+
+               $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
+               $('#pagu_promosi_header').html('<b>'+data.pagu_promosi+'</b>');
+               $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
+               $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
+               $('#status-view').html('<b>'+data.status+'</b>');
 
                row+= '<tr>';
                     row+= '<td><strong>1</strong></td>';
@@ -408,6 +402,40 @@
                          row+= '<span id="penyelesaian-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
+
+               if (data.pagu_promosi_cek > 0) {
+                    row+= '<tr>';
+                         row+= '<td><strong>4</strong></td>';
+                         row+= '<td class="text-left"><strong>Penyusunan Bahan Promosi Penanaman Modal</strong></td>';
+                         row+= '<td class="text-center"><strong>1</strong></td>';
+                         row+= '<td class="text-center"><strong>Video</strong></td>';
+                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
+                    row+= '</tr>';
+     
+                    row+= '<tr class="border-bottom">';
+                         row+= '<td>&nbsp;</td>';
+                         row+= '<td>A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>';
+                         row+= '<td>';
+                              row+= '<div class="margin-none form-group">';
+                                   row+= '<input name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
+                              row+= '</div>';
+                         row+= '</td>';
+                         row+= '<td>';
+                              row+= '<input name="promosi_pengadaan_satuan" type="text" class="form-control" placeholder="Video" value="Video" readonly>';
+                         row+= '</td>';
+                         row+= '<td>';
+                              row+= '<div class="margin-none form-group">';
+                                   row+= '<input name="promosi_pengadaan_pagu" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
+                              row+= '</div>';
+                         row+= '</td>';
+                    row+= '</tr>';
+                    
+                    row+= '<tr>';
+                         row+= '<td colspan="3">&nbsp;</td>';
+                         row+= '<td class="text-right"><strong>Total Promosi :</strong></td>';
+                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
+                    row+= '</tr>';
+               }
 
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';

@@ -155,6 +155,7 @@ class RequestPerencanaan
         $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
         $temp['pagu_apbn'] = GeneralHelpers::formatRupiah($data->pagu_apbn);
         $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->pagu_promosi);
+        $temp['pagu_promosi_cek'] = $data->pagu_promosi;
         $temp['total_rencana'] =  GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu + $data->pengawas_evaluasi_pagu + $data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu + $data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu);
 
         $temp['target_pengawasan'] = $data->target_pengawasan;
@@ -272,6 +273,10 @@ class RequestPerencanaan
             'penyelesaian_realisasi_pagu' => $request->penyelesaian_realisasi_pagu,
             'penyelesaian_evaluasi_target' => $request->penyelesaian_evaluasi_target,
             'penyelesaian_evaluasi_pagu' => $request->penyelesaian_evaluasi_pagu,
+
+            'promosi_pengadaan_target' => $request->promosi_pengadaan_target,
+            'promosi_pengadaan_satuan' => $request->promosi_pengadaan_satuan,
+            'promosi_pengadaan_pagu' => $request->promosi_pengadaan_pagu,
 
             'periode_id' => $request->periode_id,
             'nama_pejabat' => $request->nama_pejabat,

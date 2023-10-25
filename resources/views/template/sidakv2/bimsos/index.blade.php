@@ -69,9 +69,15 @@
 <section class="content-header pd-left-right-15">
 	<div class="form-group row margin-top-bottom-20">
 		<div class="col-sm-2">
+			<select id="periode_id2" name="periode_id2" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
+		</div>
+		@if($access =='admin' || $access == 'pusat' )
+		<div class="col-sm-2">
 			<select id="daerah_id" name="daerah_id" data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Provinsi / Kabupaten"></select>
 		</div>
-
+		@else
+		<input type="hidden" class="form-control" name="daerah_id" id="daerah_id" value="">
+		@endif
 		<div class="col-sm-2">
 			<select class="selectpicker" name="jenis_sub" id="jenis_sub" title="Jenis">
 				<option value="">-Pilih Tipe-</option>
@@ -79,9 +85,6 @@
 				<option value="is_bimtek_ipbbr">Bimtek Implementasi Perizinan Berusaha Berbasis Resiko</option>
 				<option value="is_bimtek_ippbbr">Bimtek Implementasi Pengawasan Perizinan Berusaha Berbasis Resiko</option>
 			</select>
-		</div>
-		<div class="col-sm-2">
-			<select id="periode_id2" name="periode_id2" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
 		</div>
 		<div class="col-sm-2">
 			<select class="selectpicker" name="search_status" id="search_status" title="Status">
@@ -121,9 +124,11 @@
 				<!-- <button type="button" class="btn btn-primary">
 					<i aria-hidden="true" class="fa fa-search"></i> Search
 				</button> -->
+				@if($access =='daerah' || $access == 'province' )
 				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
+				@endif
 				<button type="button" class="btn btn-info border-radius-10" id="exportData">
 				</button>
 			</div>

@@ -150,6 +150,7 @@
             <div id="lap_hadir-alert" class="form-group has-feedback col-md-12">
               <label>Daftar hadir</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_hadir" style="display: none" style="margin-left: 5px"><small>(Tampilkan Daftar hadir)</small></a>
+              <input type="hidden" class="form-control" name="lap_hadir_file" id="lap_hadir_file" value="">
               <input type="file" class="form-control" name="lap_hadir" id="lap_hadir" accept=".pdf">
               <span id="lap_hadir-messages"></span>
               <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -158,7 +159,8 @@
           <div class="row">
             <div id="lap_pendamping-alert" class="form-group has-feedback col-md-12">
               <label>Laporan Tenaga Pendamping</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_pendamping" style="margin-left: 5px"><small>(Tampilkan Tenaga Pendamping)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_pendamping" style="display: none" style="margin-left: 5px"><small>(Tampilkan Tenaga Pendamping)</small></a>
+              <input type="hidden" class="form-control" name="lap_pendamping_file" id="lap_pendamping_file" value="">
               <input type="file" class="form-control" name="lap_pendamping" id="lap_pendamping" accept=".pdf">
               <span id="lap_pendamping-messages"></span>
               <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -167,7 +169,8 @@
           <div class="row">
             <div id="lap_notula-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Notula Kegiatan</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_notula" style="margin-left: 5px"><small>(Tampilkan Notula Kegiatan)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_notula" style="display: none" style="margin-left: 5px"><small>(Tampilkan Notula Kegiatan)</small></a>
+              <input type="hidden" class="form-control" name="lap_notula_file" id="lap_notula_file" value="">
               <input type="file" class="form-control" name="lap_notula" id="lap_notula" accept=".pdf">
               <span id="lap_notula-messages"></span>
               <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -176,7 +179,8 @@
           <div class="row">
             <div id="lap_survey-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Hasil Survey</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_survey" style="margin-left: 5px"><small>(Tampilkan Hasil Survey)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_survey" style="display: none" style="margin-left: 5px"><small>(Tampilkan Hasil Survey)</small></a>
+              <input type="hidden" class="form-control" name="lap_survey_file" id="lap_survey_file" value="">
               <input type="file" class="form-control" name="lap_survey" id="lap_survey" accept=".pdf">
               <span id="lap_survey-messages"></span>
               <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -185,7 +189,8 @@
           <div class="row">
             <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Daftar Narasumber</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_narasumber" style="margin-left: 5px"><small>(Tampilkan Daftar Narasumber)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_narasumber" style="display: none" style="margin-left: 5px"><small>(Tampilkan Daftar Narasumber)</small></a>
+              <input type="hidden" class="form-control" name="lap_narasumber_file" id="lap_narasumber_file" value="">
               <input type="file" class="form-control" name="lap_narasumber" id="lap_narasumber" accept=".pdf">
               <span id="lap_narasumber-messages"></span>
               <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -194,7 +199,8 @@
           <div class="row">
             <div id="lap_materi-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Materi</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_materi" style="margin-left: 5px"><small>(Tampilkan Materi)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_materi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Materi)</small></a>
+              <input type="hidden" class="form-control" name="lap_materi_file" id="lap_materi_file" value="">
               <input type="file" class="form-control" name="lap_materi" id="lap_materi" accept=".pdf">
               <span id="lap_materi-messages"></span>
               <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -203,7 +209,8 @@
           <div class="row">
             <div id="lap_document-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Laporan Dokumentasi</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_document" style="margin-left: 5px"><small>(Tampilkan Laporan Dokumentasi)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_document" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Dokumentasi)</small></a>
+              <input type="hidden" class="form-control" name="lap_document_file" id="lap_document_file" value="">
               <input type="file" class="form-control" name="lap_document" id="lap_document" accept=".pdf">
               <span id="lap_document-messages"></span>
               <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -213,6 +220,7 @@
         <div class="modal-footer modal-add2">
           <button class="btn btn-default" data-dismiss="modal">Close</button>
           <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
+          <button id="kirim" type="button" class="btn btn-warning">Kirim</button>
         </div>
         <div class="modal-footer modal-edit">
         </div>
@@ -290,6 +298,7 @@
         $('#lap_notula-alert').hide();
         $('#lap_survei-alert').hide();
         $('#lap_narasumber-alert').hide();
+        $('#lap_survey-alert').hide();
         $('#lap_materi-alert').hide();
         $('#lap_document-alert').hide();
         $('#lap_pendamping-alert').show();
@@ -298,6 +307,7 @@
         $('#lap_notula-alert').show();
         $('#lap_survei-alert').show();
         $('#lap_narasumber-alert').show();
+        $('#lap_survey-alert').show();
         $('#lap_materi-alert').show();
         $('#lap_document-alert').show();
         $('#lap_pendamping-alert').hide();
@@ -306,6 +316,7 @@
         $('#lap_notula-alert').show();
         $('#lap_survei-alert').show();
         $('#lap_narasumber-alert').show();
+        $('#lap_survey-alert').show();
         $('#lap_materi-alert').show();
         $('#lap_document-alert').show();
         $('#lap_pendamping-alert').hide();
@@ -328,7 +339,14 @@
         'lokasi_bimtek',
         'biaya_kegiatan',
         'jml_peserta',
-        'ringkasan_kegiatan'
+        'ringkasan_kegiatan',
+        'lap_hadir',
+        'lap_pendamping',
+        'lap_notula',
+        'lap_survey',
+        'lap_narasumber',
+        'lap_materi',
+        'lap_document'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -407,14 +425,100 @@
           $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
-            text: 'Berhasil Disimpan',
+            text: respons.message,
             icon: 'success',
             confirmButtonText: 'OK'
 
           }).then((result) => {
             if (result.isConfirmed) {
               // User clicked "Yes, proceed!" button
-              window.location.replace('/bimsos');
+              $('#modal-add').hide();
+              $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
+              $('#datatable').DataTable().ajax.reload();
+            }
+          });
+          //
+        },
+        error: (respons) => {
+          $('#progressModal').hide();
+
+          errors = respons.responseJSON;
+          for (let i = 0; i < form.length; i++) {
+            const field = form[i];
+            if (errors.messages[field]) {
+              $('#' + field + '-alert').addClass('has-error');
+              $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
+            } else {
+              $('#' + field + '-alert').removeClass('has-error');
+              $('#' + field + '-messages').removeClass('help-block').html('');
+            }
+          }
+          Swal.fire({
+            title: 'Periksa kembali data anda.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          }).then((result) => {});
+        }
+      });
+    });
+    $('#kirim').on('click', function() {
+      var formData = new FormData($('#FormSubmit')[0]);
+      console.log(formData);
+      var form = [
+        'id_bimsos',
+        'periode_id_mdl',
+        'sub_menu_slug',
+        'nama_kegiatan',
+        'tgl_bimtek',
+        'lokasi_bimtek',
+        'biaya_kegiatan',
+        'jml_peserta',
+        'ringkasan_kegiatan',
+        'lap_hadir',
+        'lap_pendamping',
+        'lap_notula',
+        'lap_survey',
+        'lap_narasumber',
+        'lap_materi',
+        'lap_document'
+      ];
+      formData.append("status", 14);
+      $('#progressModal').show();
+      $.ajax({
+        type: "POST",
+        url: BASE_URL + '/api/bimsos',
+        data: formData,
+        processData: false,
+        contentType: false,
+        xhr: function() {
+          var xhr = new window.XMLHttpRequest();
+          xhr.upload.addEventListener("progress", function(evt) {
+            if (evt.lengthComputable) {
+              var percentComplete = (evt.loaded / evt.total) * 100;
+              $('#progress').css('width', percentComplete + '%');
+              $('#progress-label').text(percentComplete.toFixed(2) + '%');
+              // Place upload progress bar visibility code here
+            }
+          }, false);
+
+          return xhr;
+        },
+        success: (respons) => {
+          $('#progressModal').hide();
+          Swal.fire({
+            title: 'Sukses!',
+            text: respons.message,
+            icon: 'success',
+            confirmButtonText: 'OK'
+
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // User clicked "Yes, proceed!" button
+              $('#modal-add').hide();
+              $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
+              $('#datatable').DataTable().ajax.reload();
             }
           });
           //
@@ -455,7 +559,14 @@
         'lokasi_bimtek',
         'biaya_kegiatan',
         'jml_peserta',
-        'ringkasan_kegiatan'
+        'ringkasan_kegiatan',
+        'lap_hadir',
+        'lap_pendamping',
+        'lap_notula',
+        'lap_survey',
+        'lap_narasumber',
+        'lap_materi',
+        'lap_document'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -482,59 +593,73 @@
           $('.modal-edit').show();
           if (data.lap_hadir) {
             $('#modal-lap_hadir').show();
+            $('#lap_hadir_file').val(data.lap_hadir);
             $('#modal-lap_hadir').click(function() {
               tampilkanModal(data.lap_hadir);
             });
           } else {
             $('#modal-lap_hadir').hide();
+            $('#lap_hadir_file').val('');
           }
           if (data.lap_pendamping) {
             $('#modal-lap_pendamping').show();
+            $('#lap_pendamping_file').val(data.lap_pendamping);
             $('#modal-lap_pendamping').click(function() {
               tampilkanModal(data.lap_pendamping);
             });
           } else {
             $('#modal-lap_pendamping').hide();
+            $('#lap_pendamping_file').val('');
           }
           if (data.lap_notula) {
             $('#modal-lap_notula').show();
+            $('#lap_notula_file').val(data.lap_notula);
             $('#modal-lap_notula').click(function() {
               tampilkanModal(data.lap_notula);
             });
           } else {
             $('#modal-lap_notula').hide();
+            $('#lap_notula_file').val('');
           }
           if (data.lap_survey) {
             $('#modal-lap_survey').show();
+            $('#lap_survey_file').val(data.lap_survey);
             $('#modal-lap_survey').click(function() {
               tampilkanModal(data.lap_survey);
             });
           } else {
             $('#modal-lap_survey').hide();
+            $('#lap_survey_file').val('');
           }
           if (data.lap_narasumber) {
             $('#modal-lap_narasumber').show();
+            $('#lap_narasumber_file').val(data.lap_narasumber);
             $('#modal-lap_narasumber').click(function() {
               tampilkanModal(data.lap_narasumber);
             });
           } else {
             $('#modal-lap_narasumber').hide();
+            $('#lap_narasumber_file').val('');
           }
           if (data.lap_materi) {
             $('#modal-lap_materi').show();
+            $('#lap_materi_file').val(data.lap_materi);
             $('#modal-lap_materi').click(function() {
               tampilkanModal(data.lap_materi);
             });
           } else {
             $('#modal-lap_materi').hide();
+            $('#lap_materi_file').val('');
           }
           if (data.lap_document) {
             $('#modal-lap_document').show();
+            $('#lap_document_file').val(data.lap_document);
             $('#modal-lap_document').click(function() {
               tampilkanModal(data.lap_document);
             });
           } else {
             $('#modal-lap_document').hide();
+            $('#lap_document_file').val('');
           }
 
           getPeriode(data.periode_id);
@@ -639,6 +764,7 @@
           $('#lap_notula-alert').hide();
           $('#lap_survei-alert').hide();
           $('#lap_narasumber-alert').hide();
+          $('#lap_survey-alert').hide();
           $('#lap_materi-alert').hide();
           $('#lap_document-alert').hide();
           $('#lap_pendamping-alert').show();
@@ -647,6 +773,7 @@
           $('#lap_notula-alert').show();
           $('#lap_survei-alert').show();
           $('#lap_narasumber-alert').show();
+          $('#lap_survey-alert').show();
           $('#lap_materi-alert').show();
           $('#lap_document-alert').show();
           $('#lap_pendamping-alert').hide();
@@ -655,6 +782,7 @@
           $('#lap_notula-alert').show();
           $('#lap_survei-alert').show();
           $('#lap_narasumber-alert').show();
+          $('#lap_survey-alert').show();
           $('#lap_materi-alert').show();
           $('#lap_document-alert').show();
           $('#lap_pendamping-alert').hide();
@@ -719,12 +847,16 @@
           success: (respons) => {
             Swal.fire({
               title: 'Sukses!',
-              text: 'Berhasil mengajukan edit.',
+              text: respons.message,
               icon: 'success',
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/bimsos');
+                $('#modal-add').hide();
+                $('#modal-req-edit').hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           },
@@ -742,7 +874,9 @@
         }).then((result) => {
           if (result.isConfirmed) {
             var form = {
-              "alasan_revisi": $("#alasan_revisi").val()
+              "alasan": $("#alasan_revisi").val(),
+              "jenis_kegiatan": "Bimsos",
+              "type": "request_revision"
             };
             if ($("#alasan_revisi").val() != '') {
               req_revisi(form);
@@ -768,12 +902,16 @@
           success: (respons) => {
             Swal.fire({
               title: 'Sukses!',
-              text: 'Berhasil mengajukan edit.',
+              text: respons.message,
               icon: 'success',
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                window.location.replace('/bimsos');
+                $('#modal-add').hide();
+                $('#modal-req-revision').hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           },
@@ -803,7 +941,14 @@
             'lokasi_bimtek',
             'biaya_kegiatan',
             'jml_peserta',
-            'ringkasan_kegiatan'
+            'ringkasan_kegiatan',
+            'lap_hadir',
+            'lap_pendamping',
+            'lap_notula',
+            'lap_survey',
+            'lap_narasumber',
+            'lap_materi',
+            'lap_document'
           ];
           formData.append("status", 13);
           $('#progressModal').show();
@@ -830,14 +975,18 @@
               $('#progressModal').hide();
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: respons.message,
                 icon: 'success',
                 confirmButtonText: 'OK'
 
               }).then((result) => {
                 if (result.isConfirmed) {
                   // User clicked "Yes, proceed!" button
-                  window.location.replace('/bimsos');
+                  $('#modal-add').hide();
+                  $('body').removeClass('modal-open');
+                  $('.modal-backdrop').remove();
+                  $('#datatable').DataTable().ajax.reload();
+
                 }
               });
 
@@ -872,7 +1021,14 @@
             'lokasi_bimtek',
             'biaya_kegiatan',
             'jml_peserta',
-            'ringkasan_kegiatan'
+            'ringkasan_kegiatan',
+            'lap_hadir',
+            'lap_pendamping',
+            'lap_notula',
+            'lap_survey',
+            'lap_narasumber',
+            'lap_materi',
+            'lap_document'
           ];
           formData.append("status", 14);
           $.ajax({
@@ -884,14 +1040,17 @@
             success: (respons) => {
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: respons.message,
                 icon: 'success',
                 confirmButtonText: 'OK'
 
               }).then((result) => {
                 if (result.isConfirmed) {
                   // User clicked "Yes, proceed!" button
-                  window.location.replace('/bimsos');
+                  $('#modal-add').hide();
+                  $('body').removeClass('modal-open');
+                  $('.modal-backdrop').remove();
+                  $('#datatable').DataTable().ajax.reload();
                 }
               });
 
@@ -932,14 +1091,17 @@
             success: (respons) => {
               Swal.fire({
                 title: 'Sukses!',
-                text: 'Berhasil Disimpan',
+                text: respons.message,
                 icon: 'success',
                 confirmButtonText: 'OK'
 
               }).then((result) => {
                 if (result.isConfirmed) {
                   // User clicked "Yes, proceed!" button
-                  window.location.replace('/bimsos');
+                  $('#modal-add').hide();
+                  $('body').removeClass('modal-open');
+                  $('.modal-backdrop').remove();
+                  $('#datatable').DataTable().ajax.reload();
                 }
               });
 

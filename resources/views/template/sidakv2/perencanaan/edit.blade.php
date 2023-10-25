@@ -6,42 +6,39 @@
 <div class="content">
      <form id="FormSubmit">
           <div class="row" style="margin-bottom: 20px">
-               <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box-body btn-primary border-radius-13">
-                         <div class="card-body table-responsive p-0">
+          @if($access == 'province')
+               @php $ids = ['pagu_apbn', 'pagu_promosi_header', 'total_rencana', 'status-view']; @endphp
+               @foreach(['Pagu APBN', 'Pagu Promosi', 'Total Perencanaan', 'Status'] as $index => $label)
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                         <div class="box-body btn-primary border-radius-13">
+                              <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Pagu APBN</span>
-                                        <h3 class="card-text" id="pagu_apbn"></h3>
+                                        <span>{{ $label }}</span>
+                                        <h3 class="card-text" id="{{ $ids[$index] }}"></h3>
                                    </div>
+                              </div>
                               </div>
                          </div>
                     </div>
-               </div>
-               <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box-body btn-primary border-radius-13">
-                         <div class="card-body table-responsive p-0">
+               @endforeach
+          @else
+               @php $ids = ['pagu_apbn', 'total_rencana', 'status-view']; @endphp
+               @foreach(['Pagu APBN', 'Total Perencanaan', 'Status'] as $index => $label)
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                         <div class="box-body btn-primary border-radius-13">
+                              <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Total Perencanaan</span>
-                                        <h3 class="card-text" id="total_rencana"></h3>
+                                        <span>{{ $label }}</span>
+                                        <h3 class="card-text" id="{{ $ids[$index] }}"></h3>
                                    </div>
+                              </div>
                               </div>
                          </div>
                     </div>
-               </div>
-               <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box-body btn-primary border-radius-13">		
-                         <div class="card-body table-responsive p-0">
-                              <div class="media">
-                                   <div class="media-body text-left">
-                                        <span>Status </span>
-                                        <h3 class="card-text" id="status-view"></h3>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
+               @endforeach
+          @endif
           </div>
 
           <div class="box box-solid box-primary">
@@ -178,6 +175,10 @@
                     "penyelesaian_evaluasi_target": $("#penyelesaian_evaluasi_target").val(),
                     "penyelesaian_evaluasi_pagu": $("#penyelesaian_evaluasi_pagu").val(),
 
+                    "promosi_pengadaan_target": $("#promosi_pengadaan_target").val(),
+                    "promosi_pengadaan_satuan": $("#promosi_pengadaan_satuan").val(),
+                    "promosi_pengadaan_pagu": $("#promosi_pengadaan_pagu").val(),
+
                     "lokasi": $("#lokasi").val(),
                     "tgl_tandatangan": $("#tgl_tandatangan").val(),
                     "nama_pejabat": $("#nama_pejabat").val(),
@@ -243,6 +244,10 @@
                     "penyelesaian_evaluasi_target": $("#penyelesaian_evaluasi_target").val(),
                     "penyelesaian_evaluasi_pagu": $("#penyelesaian_evaluasi_pagu").val(),
 
+                    "promosi_pengadaan_target": $("#promosi_pengadaan_target").val(),
+                    "promosi_pengadaan_satuan": $("#promosi_pengadaan_satuan").val(),
+                    "promosi_pengadaan_pagu": $("#promosi_pengadaan_pagu").val(),
+
                     "lokasi": $("#lokasi").val(),
                     "tgl_tandatangan": $("#tgl_tandatangan").val(),
                     "nama_pejabat": $("#nama_pejabat").val(),
@@ -284,6 +289,7 @@
           function getdataid(data)
           {
                $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
+               $('#pagu_promosi_header').html('<b>'+data.pagu_promosi+'</b>');
                $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
                $('#total_rencana_sec').html('<b>'+data.total_rencana+'</b>');
                $('#pagu_apbn_inp').val(data.pagu_apbn.replace(/[^0-9]/g, ''));
@@ -454,6 +460,44 @@
                          row+= '<span id="penyelesaian-evaluasi-pagu-messages"></span>';
                     row+= '</td>';
                row+= '</tr>';
+
+               if (data.access == 'province') {
+                    row+= '<tr>';
+                         row+= '<td><strong>4</strong></td>';
+                         row+= '<td class="text-left"><strong>Penyusunan Bahan Promosi Penanaman Modal</strong></td>';
+                         row+= '<td class="text-center"><strong>1</strong></td>';
+                         row+= '<td class="text-center"><strong>Video</strong></td>';
+                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
+                    row+= '</tr>';
+     
+                    row+= '<tr class="border-bottom">';
+                         row+= '<td>&nbsp;</td>';
+                         row+= '<td>A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>';
+                         row+= '<td>';
+                              row+= '<div class="margin-none form-group">';
+                                   row+= '<input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
+                              row+= '</div>';
+                         row+= '</td>';
+                         row+= '<td>';
+                              row+= '<input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="text" class="form-control" placeholder="Video" value="Video" readonly>';
+                         row+= '</td>';
+                         row+= '<td>';
+                              row+= '<div class="margin-none form-group">';
+                                   row+= '<input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
+                              row+= '</div>';
+                         row+= '</td>';
+                    row+= '</tr>';
+                    
+                    row+= '<tr>';
+                         row+= '<td colspan="3">&nbsp;</td>';
+                         row+= '<td class="text-right"><strong>Total Promosi :</strong></td>';
+                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
+                    row+= '</tr>';
+               } else {
+                    row+= '<input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="hidden" value="0">';
+                    row+= '<input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="hidden" value="">';
+                    row+= '<input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden" value="0">';
+               }
 
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
@@ -629,41 +673,6 @@
 
                     error: function( error) {}
                });
-
-               $('#periode_id').on('change', function() {
-                    var index = $(this).val();
-                    let find = periode.find(o => o.value === index); 
-
-                    //isi pagu
-                    $('#pagu_apbn').html('<b>'+find.pagu_apbn+'</b>');
-                    $('#pagu_apbn_sec').html('<b>'+find.pagu_apbn+'</b>');
-                    $('#pagu_apbn_inp').val(find.pagu_apbn.replace(/[^0-9]/g, ''));
-                    
-                    //isi target pengawasan
-                    pengawasan = find.target_pengawasan;
-                    $('.target_pengawasan').val(pengawasan);
-                    $(".target_pengawasan").prop("disabled", true);
-                    $("#total_pengawasan_target").text(pengawasan);
-                    
-                    //isi target bimtek
-                    bimtek = find.target_bimtek;
-                    $("#total_bimtek_target").text(bimtek);
-
-                    if (bimtek % 2 === 0) {
-                         $(".bimtek_perizinan_target").val(bimtek/2);
-                         $(".bimtek_pengawasan_target").val(bimtek/2);
-                    } else {
-                         $(".bimtek_perizinan_target").val(Math.floor(bimtek / 2) + 1);
-                         $(".bimtek_pengawasan_target").val(Math.floor(bimtek / 2));
-                    }
-                    
-                    //isi target penyelesaian
-                    penyelesaian = find.target_penyelesaian;
-                    $('.target_penyelesaian').val(penyelesaian);
-                    $(".target_penyelesaian").prop("disabled", true);
-                    $("#total_penyelesaian_target").text(penyelesaian);
-               });
-
           }
 
           function updateTotalPaguRencana() {
