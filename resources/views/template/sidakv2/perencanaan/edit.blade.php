@@ -211,7 +211,7 @@
                     "penyelesaian_realisasi_pagu": $("#penyelesaian_realisasi_pagu").val(),
                     "penyelesaian_evaluasi_target": $("#penyelesaian_evaluasi_target").val(),
                     "penyelesaian_evaluasi_pagu": $("#penyelesaian_evaluasi_pagu").val(),
-
+                    
                     "promosi_pengadaan_target": $("#promosi_pengadaan_target").val(),
                     "promosi_pengadaan_satuan": $("#promosi_pengadaan_satuan").val(),
                     "promosi_pengadaan_pagu": $("#promosi_pengadaan_pagu").val(),
@@ -486,15 +486,16 @@
                          row+= '<td>' + label_sub + '</td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
-                                   row+= '<input name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
+                                   row+= '<input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1">';
                               row+= '</div>';
                          row+= '</td>';
                          row+= '<td>';
-                              row+= '<input name="promosi_pengadaan_satuan" type="text" class="form-control" value="' + label_satuan + '" readonly>';
+                              row+= '<input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="text" class="form-control" value="' + label_satuan + '">';
                          row+= '</td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
-                                   row+= '<input name="promosi_pengadaan_pagu" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
+                                   row+= '<input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden" value="'+ data.pagu_promosi.replace(/[^0-9]/g, '') +'">';
+                                   row+= '<input name="promosi_pengadaan_pagu_convert" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
                               row+= '</div>';
                          row+= '</td>';
                     row+= '</tr>';
