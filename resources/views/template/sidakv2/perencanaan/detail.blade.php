@@ -225,7 +225,11 @@
                ];
 
                if (data.pagu_promosi_cek > 0) {
-                    data_label.splice(1, 0, { label: 'Pagu Promosi', id: 'pagu_promosi_header' });
+                    if(data.periode_id > 2023) {
+                         data_label.splice(1, 0, { label: 'Pagu Peta Potensi', id: 'pagu_promosi_header' });
+                    } else {
+                         data_label.splice(1, 0, { label: 'Pagu Promosi', id: 'pagu_promosi_header' });
+                    }
                }
 
                $.each(data_label, function (index, item) {
@@ -404,24 +408,35 @@
                row+= '</tr>';
 
                if (data.pagu_promosi_cek > 0) {
+                    if (data.periode_id > 2023) {
+                         var label_judul = 'Penyusunan Bahan Peta Potensi Penanaman Modal';
+                         var label_satuan = 'File PDF';
+                         var label_sub = 'A. Penyediaan File sebagai Bahan Peta Potensi Penanaman Modal';
+                         var label_total = 'Total Peta Potensi';
+                    } else { 
+                         var label_judul = 'Penyusunan Bahan Promosi Penanaman Modal';
+                         var label_satuan = 'Video';
+                         var label_sub = 'A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal';
+                         var label_total = 'Total Promosi';
+                    }
                     row+= '<tr>';
-                         row+= '<td><strong>4</strong></td>';
-                         row+= '<td class="text-left"><strong>Penyusunan Bahan Promosi Penanaman Modal</strong></td>';
+                         row+= '<td><strong>4</strong></td>';                         
+                         row+= '<td class="text-left"><strong>'+ label_judul + '</strong></td>';
                          row+= '<td class="text-center"><strong>1</strong></td>';
-                         row+= '<td class="text-center"><strong>Video</strong></td>';
-                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
+                         row+= '<td class="text-center"><strong>' + label_satuan + '</strong></td>';
+                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';                         
                     row+= '</tr>';
      
                     row+= '<tr class="border-bottom">';
                          row+= '<td>&nbsp;</td>';
-                         row+= '<td>A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>';
+                         row+= '<td>' + label_sub + '</td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
                                    row+= '<input name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
                               row+= '</div>';
                          row+= '</td>';
                          row+= '<td>';
-                              row+= '<input name="promosi_pengadaan_satuan" type="text" class="form-control" placeholder="Video" value="Video" readonly>';
+                              row+= '<input name="promosi_pengadaan_satuan" type="text" class="form-control" value="' + label_satuan + '" readonly>';
                          row+= '</td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
@@ -432,7 +447,7 @@
                     
                     row+= '<tr>';
                          row+= '<td colspan="3">&nbsp;</td>';
-                         row+= '<td class="text-right"><strong>Total Promosi :</strong></td>';
+                         row+= '<td class="text-right"><strong>' + label_total + ' :</strong></td>';
                          row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
                     row+= '</tr>';
                }
