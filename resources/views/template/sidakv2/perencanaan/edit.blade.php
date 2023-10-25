@@ -6,39 +6,7 @@
 <div class="content">
      <form id="FormSubmit">
           <div class="row" style="margin-bottom: 20px">
-          @if($access == 'province')
-               @php $ids = ['pagu_apbn', 'pagu_promosi_header', 'total_rencana', 'status-view']; @endphp
-               @foreach(['Pagu APBN', 'Pagu Promosi', 'Total Perencanaan', 'Status'] as $index => $label)
-                    <div class="col-lg-3 col-md-6 col-sm-12">
-                         <div class="box-body btn-primary border-radius-13">
-                              <div class="card-body table-responsive p-0">
-                              <div class="media">
-                                   <div class="media-body text-left">
-                                        <span>{{ $label }}</span>
-                                        <h3 class="card-text" id="{{ $ids[$index] }}"></h3>
-                                   </div>
-                              </div>
-                              </div>
-                         </div>
-                    </div>
-               @endforeach
-          @else
-               @php $ids = ['pagu_apbn', 'total_rencana', 'status-view']; @endphp
-               @foreach(['Pagu APBN', 'Total Perencanaan', 'Status'] as $index => $label)
-                    <div class="col-lg-4 col-md-6 col-sm-12">
-                         <div class="box-body btn-primary border-radius-13">
-                              <div class="card-body table-responsive p-0">
-                              <div class="media">
-                                   <div class="media-body text-left">
-                                        <span>{{ $label }}</span>
-                                        <h3 class="card-text" id="{{ $ids[$index] }}"></h3>
-                                   </div>
-                              </div>
-                              </div>
-                         </div>
-                    </div>
-               @endforeach
-          @endif
+               <div id="header-conclusion"></div>     
           </div>
 
           <div class="box box-solid box-primary">
@@ -287,15 +255,7 @@
           });
      
           function getdataid(data)
-          {
-               $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
-               $('#pagu_promosi_header').html('<b>'+data.pagu_promosi+'</b>');
-               $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
-               $('#total_rencana_sec').html('<b>'+data.total_rencana+'</b>');
-               $('#pagu_apbn_inp').val(data.pagu_apbn.replace(/[^0-9]/g, ''));
-               $('#total_target_bimtek_inp').val(data.target_bimtek);               
-               $('#status-view').html('<b>'+data.status+'</b>');               
-
+          {               
                total_pengawasan_pagu = data.total_pagu_pengawasan;
                total_bimtek_pagu = data.total_pagu_bimtek;
                total_penyelesaian_pagu = data.total_pagu_penyelesaian;
@@ -304,10 +264,50 @@
                bimtek = data.target_bimtek;
                penyelesaian = data.target_penyelesaian;     
 
+               var header_row = '';
                var row = '';
                var rows = '';
                var unapprove = '';
                var revisi = '';
+
+               var data_label = [
+                    { label: 'Pagu APBN', id: 'pagu_apbn' },
+                    { label: 'Total Perencanaan', id: 'total_rencana' },
+                    { label: 'Status', id: 'status-view' }
+               ];
+
+               if (data.pagu_promosi_cek > 0) {
+                    if(data.periode_id > 2023) {
+                         data_label.splice(1, 0, { label: 'Pagu Peta Potensi', id: 'pagu_promosi_header' });
+                    } else {
+                         data_label.splice(1, 0, { label: 'Pagu Promosi', id: 'pagu_promosi_header' });
+                    }
+               }
+
+               $.each(data_label, function (index, item) {
+                    header_row += '<div class="col-lg-' + (data.pagu_promosi_cek > 0 ? '3' : '4') + ' col-md-6 col-sm-12">';
+                    header_row += '<div class="box-body btn-primary border-radius-13">';
+                    header_row += '<div class="card-body table-responsive p-0">';
+                    header_row += '<div class="media">';
+                    header_row += '<div class="media-body text-left">';
+                    header_row += '<span>' + item.label + '</span>';
+                    header_row += '<h3 class="card-text" id="' + item.id + '"></h3>';
+                    header_row += '</div>';
+                    header_row += '</div>';
+                    header_row += '</div>';
+                    header_row += '</div>';
+                    header_row += '</div>';
+               });
+
+               $('#header-conclusion').html(header_row);
+
+               $('#pagu_apbn').html('<b>'+data.pagu_apbn+'</b>');
+               $('#pagu_promosi_header').html('<b>'+data.pagu_promosi+'</b>');
+               $('#total_rencana').html('<b>'+data.total_rencana+'</b>');
+               $('#total_rencana_sec').html('<b>'+data.total_rencana+'</b>');
+               $('#pagu_apbn_inp').val(data.pagu_apbn.replace(/[^0-9]/g, ''));
+               $('#total_target_bimtek_inp').val(data.target_bimtek);
+               $('#status-view').html('<b>'+data.status+'</b>');
 
                row+= '<tr>';
                     row+= '<td><strong>1</strong></td>';
@@ -461,36 +461,47 @@
                     row+= '</td>';
                row+= '</tr>';
 
-               if (data.access == 'province') {
+               if (data.pagu_promosi_cek > 0) {
+                    if (data.periode_id > 2023) {
+                         var label_judul = 'Penyusunan Bahan Peta Potensi Penanaman Modal';
+                         var label_satuan = 'File PDF';
+                         var label_sub = 'A. Penyediaan File sebagai Bahan Peta Potensi Penanaman Modal';
+                         var label_total = 'Total Peta Potensi';
+                    } else { 
+                         var label_judul = 'Penyusunan Bahan Promosi Penanaman Modal';
+                         var label_satuan = 'Video';
+                         var label_sub = 'A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal';
+                         var label_total = 'Total Promosi';
+                    }
                     row+= '<tr>';
-                         row+= '<td><strong>4</strong></td>';
-                         row+= '<td class="text-left"><strong>Penyusunan Bahan Promosi Penanaman Modal</strong></td>';
+                         row+= '<td><strong>4</strong></td>';                         
+                         row+= '<td class="text-left"><strong>'+ label_judul + '</strong></td>';
                          row+= '<td class="text-center"><strong>1</strong></td>';
-                         row+= '<td class="text-center"><strong>Video</strong></td>';
-                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
+                         row+= '<td class="text-center"><strong>' + label_satuan + '</strong></td>';
+                         row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';                         
                     row+= '</tr>';
      
                     row+= '<tr class="border-bottom">';
                          row+= '<td>&nbsp;</td>';
-                         row+= '<td>A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>';
+                         row+= '<td>' + label_sub + '</td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
-                                   row+= '<input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
+                                   row+= '<input name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
                               row+= '</div>';
                          row+= '</td>';
                          row+= '<td>';
-                              row+= '<input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="text" class="form-control" placeholder="Video" value="Video" readonly>';
+                              row+= '<input name="promosi_pengadaan_satuan" type="text" class="form-control" value="' + label_satuan + '" readonly>';
                          row+= '</td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
-                                   row+= '<input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
+                                   row+= '<input name="promosi_pengadaan_pagu" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
                               row+= '</div>';
                          row+= '</td>';
                     row+= '</tr>';
                     
                     row+= '<tr>';
                          row+= '<td colspan="3">&nbsp;</td>';
-                         row+= '<td class="text-right"><strong>Total Promosi :</strong></td>';
+                         row+= '<td class="text-right"><strong>' + label_total + ' :</strong></td>';
                          row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
                     row+= '</tr>';
                } else {
