@@ -298,8 +298,12 @@ padding: 0px 12px 0px 0px!important;
     
 }
 
+.btn-padding-action{
+   padding: 0px 6px;
+}
+
 .list-menu-table{
-    width:190px ;
+    width:117px ;
 }
 
 .list-menu-table-periode{

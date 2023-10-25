@@ -27,7 +27,7 @@
 
                                                     <div class="pull-left full pd-top-40">
                                                       <div class="login-center-sidak">  
-                                                        <img src="/template/sidakv2/img/logo_sidak.png" alt="" class="img-fluid"  >
+                                                        <img src="/template/sidakv2/img/login_logo_new.png" alt="" class="img-fluid"  >
                                                       </div>  
                                                     </div>
 
@@ -705,11 +705,11 @@ $(function(){
 
 .login-center-bkpm{
     margin: 0px auto;
-    width: 27%;
+    width: 40%;
 }
 .login-center-sidak {
     margin: 0px auto;
-    width: 45%;
+    width: 40%;
 }
 .pd-top-40 {
     padding: 40px 0px 0px;

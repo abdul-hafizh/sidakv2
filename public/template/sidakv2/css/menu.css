@@ -1,4 +1,4 @@
-
+/*
 
 .icon-dashboard{
     background: url('../img/menu/home.png');
@@ -268,6 +268,87 @@
     background: url('../img/menu/action.png');
     background-repeat: no-repeat;
     
+}*/
+
+
+.fa-icon{
+    width: 26px;
+    height: 26px;
+    display: inline-block;
+}
+
+.icon-detail{
+    background: url('../img/detail_grey.png');
+    background-repeat: no-repeat;
+      
+}
+
+.icon-detail:hover{
+    background: url('../img/detail_blue.png');
+    background-repeat: no-repeat;
+      
+}
+
+.icon-edit{
+    background: url('../img/edit_grey.png');
+    background-repeat: no-repeat;
+      
+}
+
+.icon-edit:hover{
+    background: url('../img/edit_blue.png');
+    background-repeat: no-repeat;
+      
+}
+
+.icon-destroy{
+    background: url('../img/hapus_grey.png');
+    background-repeat: no-repeat;
+      
+}
+
+.icon-destroy:hover{
+    background: url('../img/hapus_red.png');
+    background-repeat: no-repeat;
+      
+}
+
+
+
+.icon-sendmail{
+   
+    background: url('../img/sendmail_grey.png');
+    background-repeat: no-repeat;
+}
+
+.icon-sendmail:hover{
+   
+    background: url('../img/sendmail_blue.png');
+    background-repeat: no-repeat;
+}
+
+.icon-ban{
+   
+    background: url('../img/nonactive_grey.png');
+    background-repeat: no-repeat;
+}
+
+.icon-ban:hover{
+   
+    background: url('../img/nonactive_orange.png');
+    background-repeat: no-repeat;
+}
+
+.icon-active{
+   
+    background: url('../img/active_grey.png');
+    background-repeat: no-repeat;
+}
+
+.icon-active:hover{
+   
+    background: url('../img/active_green.png');
+    background-repeat: no-repeat;
 }
 
 

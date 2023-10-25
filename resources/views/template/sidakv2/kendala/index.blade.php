@@ -336,20 +336,22 @@
 		          
 		          
 	               row +=`<td>`; 
-	               row +=`<div class="btn-group">`;
+	               row +=`<div class="btn-group list-menu-table">`;
 
 	               
-                
-                	row +=`<button id="Detail"  data-param_id="${item.id}"  data-toggle="tooltip" data-placement="top" title="Lihat ${item.category }" type="button" class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;	
+                    row +=`<div id="Detail" data-param_id="`+ item.id +`"  data-toggle="tooltip" data-placement="top" title="Lihat  ${item.category }"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-detail" ></i></div>`;
+	
                 	
 	                 
 	               if(item.access == 'admin' || item.access == 'pusat')
 	               {  
 
-    
-	                   row +=`<button id="Edit"  data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data" type="button" class="btn btn-primary"><i class="fa fa-pencil" ></i></button>`;
 
-	                   row +=`<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>`;
+	                   row +=`<div id="Edit" data-param_id="`+ index +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`;
+
+	                   row +=`<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
+
+	                 
 	                }	
 
 
