@@ -47,15 +47,13 @@
 		</div>
 	</div>
 
-    <div class="row">
+    <div class="row margin-top-bottom-20">
         <div class="col-sm-2" style="margin-bottom: 9px;">
-            <div id="selectPeriode" class="form-group margin-none"></div>
-        </div> 	        
+                 <div id="selectPeriode" class="form-group margin-none"></div>
+            </div> 	        
         @if($access == 'admin' || $access == 'pusat' )
         <div class="col-sm-2" style="margin-bottom: 9px;">
-            <select id="daerah_id" class="selectpicker" data-style="btn-default" name="daerah_id" title="Pilih Daerah" data-live-search="true">
-                
-            </select>
+            <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Daerah"></select>
         </div>
         @endif
         <div class="col-sm-2" style="margin-bottom: 9px;">    
@@ -342,15 +340,14 @@
         var periode = [];
         var list = [];
         var year = new Date().getFullYear();
-        var periode = [];
-
+        var daerah_id = 0;
         
        
 
-        $('#selectPeriode').html('<select  id="periode_id"  class="form-control selectpicker"></select>');
+        $('#selectPeriode').html('<select  id="periode_id"  class="selectpicker"></select>');
         fetchData(page,year);
         getperiode(year);
-        getdaerah();            
+        getdaerah(daerah_id);            
            
 
         $('#row_page').on('change', function() {
@@ -450,6 +447,12 @@
         });
 
         $('#Reset').on('click', function() {
+                localStorage.removeItem('search');
+                
+                $('#periode_id').val();
+                $("#daerah_id").val();
+                $('#search_status').val();
+                $('#search_text').val('');
             location.reload(true); 
         });
 
@@ -458,6 +461,9 @@
             var periode_id = $('#periode_id').val(); 
             var search_status = $('#search_status').val();
             var search_text = $('#search_text').val();
+
+             var form = {'periode_id':periode_id,'daerah_id':daerah_id,'status':search_status,'search':search_text};
+             localStorage.setItem('search', JSON.stringify(form));
 
             const content = $('#content');
             content.empty();
@@ -486,7 +492,7 @@
                 method: 'POST',
                 data: { data: ids },
                 success: function(response) {
-                    fetchData(page);
+                    fetchData(page,year);
                 },
                 error: function(error) {
                     console.error('Error deleting items:', error);
@@ -494,17 +500,42 @@
             });
         }
 
-        function fetchData(page,year) {
+        function fetchData(page,periode_id) {
             const content = $('#content');
             content.empty();
+            var url = '';
+        var method = '';
+        var data = {};
           
             let row = ``;
                 row +=`<tr><td colspan="18" align="center"> <b>Loading ...</b></td></tr>`;
                 content.append(row);
 
+                var tmp = JSON.parse(localStorage.getItem('search'));
+                if(tmp)
+                {
+
+                   url = BASE_URL+ `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}&periode_id=${tmp.periode_id}`;
+                   method = 'POST';
+                   data = {'search':tmp.search,'daerah_id':tmp.daerah_id,'status':tmp.status};
+                   getdaerah(tmp.periode_id);
+                   getdaerah(tmp.daerah_id);
+
+        
+                   $('#search_status').val(tmp.status);
+                   $('#search_text').val(tmp.search);
+                   $('#search_status').selectpicker('refresh');
+
+                }else{
+                   url = BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`;
+                   method = 'GET';
+                  
+        }   
+
             $.ajax({
-                url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}&periode_id=`+ year,
-                method: 'GET',
+                url: url,
+                method: method,
+                data:data,
                 success: function(response) {
                     list = response.data;
                     resultTotal(response.total);
@@ -567,7 +598,7 @@
                 row +=`<td class="text-right">${item.promosi_pengadaan_pagu_convert}</td>`;
 
                 row +=`<td class="text-right">${item.total_pagu}</td>`;
-                row +=`<td>${item.status}</td>`;
+                row +=`<td class="text-center">${item.status}</td>`;
                 // // row +=`<td class="table-padding-second">${item.updated_at}</td>`;
                 row +=`<td>`; 
                     row +=`<div class="btn-action">`;
@@ -827,7 +858,7 @@
                 url:  BASE_URL +`/api/perencanaan/`+ id,
                 method: 'DELETE',
                 success: function(response) {
-                    fetchData(page);
+                    fetchData(page,year);
                 },
                 error: function(error) {
                     console.error('Error deleting items:', error);
@@ -907,7 +938,7 @@
 
             pagination.find('.page-link').on('click', function() {
                 currentPage = parseInt($(this).data('page'));
-                fetchData(currentPage);
+                fetchData(currentPage,year);
             });
         }
 
@@ -946,7 +977,7 @@
             ExportExel();   
         }
 
-        
+
 
         function ExportExel()
         {
@@ -995,6 +1026,36 @@
 
               
           }
+
+          function getdaerah(daerah_id){
+
+        $.ajax({
+        url: BASE_URL +'/api/select-daerah',
+        method: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Populate SelectPicker options using received data
+            $.each(data, function(index, option) {
+                $('#daerah_id').append($('<option>', {
+                  value: option.value,
+                  text: option.text
+                }));
+            });
+
+            if(daerah_id !=0)
+            {
+                 $('#daerah_id').val(daerah_id);
+            }   
+
+            // Refresh the SelectPicker to apply the new options
+            $('#daerah_id').selectpicker('refresh');
+            },
+            error: function(error) {
+                console.error(error);
+            }
+        });
+
+    }
 
        
 
