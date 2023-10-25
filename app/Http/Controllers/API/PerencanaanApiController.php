@@ -43,8 +43,6 @@ class PerencanaanApiController extends Controller
              $query = Perencanaan::orderBy('created_at', 'DESC');
         }
 
-        // $query->where('periode_id', substr($tahunSemester, 0, 4));
-
         if($request->per_page !='all')
         {
            $data = $query->paginate($request->per_page);
@@ -161,8 +159,8 @@ class PerencanaanApiController extends Controller
         return response()->json($result);
     }
        
-    public function store(Request $request){       
-        
+    public function store(Request $request){           
+            
         DB::beginTransaction(); 
     
         try {

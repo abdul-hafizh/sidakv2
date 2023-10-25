@@ -6,58 +6,39 @@
 <div class="content">
      <form id="FormSubmit">
           <div class="row" style="margin-bottom: 20px">
-               <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box-body btn-primary border-radius-13">
-                         <div class="card-body table-responsive p-0">
+          @if($access == 'province')
+               @php $ids = ['pagu_apbn', 'pagu_promosi_header', 'total_rencana', 'status-view']; @endphp
+               @foreach(['Pagu APBN', 'Pagu Promosi', 'Total Perencanaan', 'Status'] as $index => $label)
+                    <div class="col-lg-3 col-md-6 col-sm-12">
+                         <div class="box-body btn-primary border-radius-13">
+                              <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Pagu APBN</span>
-                                        <h3 class="card-text" id="pagu_apbn"></h3>
+                                        <span>{{ $label }}</span>
+                                        <h3 class="card-text" id="{{ $ids[$index] }}"></h3>
                                    </div>
+                              </div>
                               </div>
                          </div>
                     </div>
-               </div>
-
-               @if($access == 'province')
-               <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box-body btn-primary border-radius-13">
-                         <div class="card-body table-responsive p-0">
+               @endforeach
+          @else
+               @php $ids = ['pagu_apbn', 'total_rencana', 'status-view']; @endphp
+               @foreach(['Pagu APBN', 'Total Perencanaan', 'Status'] as $index => $label)
+                    <div class="col-lg-4 col-md-6 col-sm-12">
+                         <div class="box-body btn-primary border-radius-13">
+                              <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Pagu Promosi</span>
-                                        <h3 class="card-text" id="pagu_promosi_header"></h3>
+                                        <span>{{ $label }}</span>
+                                        <h3 class="card-text" id="{{ $ids[$index] }}"></h3>
                                    </div>
+                              </div>
                               </div>
                          </div>
                     </div>
-               </div>
-               @endif
-               
-               <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box-body btn-primary border-radius-13">
-                         <div class="card-body table-responsive p-0">
-                              <div class="media">
-                                   <div class="media-body text-left">
-                                        <span>Total Perencanaan</span>
-                                        <h3 class="card-text" id="total_rencana"></h3>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-               <div class="col-lg-4 col-md-6 col-sm-12">
-                    <div class="box-body btn-primary border-radius-13">		
-                         <div class="card-body table-responsive p-0">
-                              <div class="media">
-                                   <div class="media-body text-left">
-                                        <span>Status </span>
-                                        <h3 class="card-text" id="status-view"></h3>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
+               @endforeach
+          @endif
           </div>
 
           <div class="box box-solid box-primary">
@@ -513,8 +494,8 @@
                          row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
                     row+= '</tr>';
                } else {
-                    row+= '<input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" value="0">';
-                    row+= '<input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="number" value="">';
+                    row+= '<input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="hidden" value="0">';
+                    row+= '<input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="hidden" value="">';
                     row+= '<input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden" value="0">';
                }
 
