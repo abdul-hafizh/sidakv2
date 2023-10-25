@@ -285,8 +285,8 @@
                                         <td class="text-right"><span id="promosi_pagu_sec"></span></td>
                                    </tr>                                   
                                    @else
-                                        <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" value="0">
-                                        <input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="number" value="">
+                                        <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="hidden" value="0">
+                                        <input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="hidden" value="">
                                         <input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden" value="0">
                                    @endif
 
