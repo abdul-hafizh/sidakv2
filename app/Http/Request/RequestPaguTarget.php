@@ -98,11 +98,11 @@ class RequestPaguTarget
         $numberNext = 1;
         //dd($data);
         $result = $data->get();
-        $options = RequestMenuRoles::ActionPage('pagutarget');
+        $options = RequestMenuRoles::ActionPage('paguapbn');
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
-
+            dd($options);
             foreach ($options as $rows => $row) {
                 if ($row->action == 'update') {
                     if ($row->checked == true) {
