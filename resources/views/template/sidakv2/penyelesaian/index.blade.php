@@ -196,7 +196,7 @@
 		});
 
 		$.ajax({
-			url: BASE_URL + '/api/select-periode?type=GET&action=penyelesaian',
+			url: BASE_URL + '/api/select-periode-semester?type=GET&action=penyelesaian',
 			method: 'get',
 			dataType: 'json',
 			success: function(data) {
