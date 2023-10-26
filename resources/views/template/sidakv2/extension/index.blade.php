@@ -1277,14 +1277,14 @@
 
        	  if(item.status.status_db == 'Y')
        	  {
-                row +=`<div disabled  data-toggle="tooltip" title="Edit Data"   class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`; 
+                row +=`<div disabled  data-toggle="tooltip" title="Edit Data"   class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit-disabled" ></i></div>`; 
        	  }else{
        	  	  row +=`<div id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`;
        	  }	
 
         
         }else{
-             row +=`<div disabled  data-toggle="tooltip" title="Edit Data" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`; 
+             row +=`<div disabled  data-toggle="tooltip" title="Edit Data" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit-disabled" ></i></div>`; 
 
 
         } 
@@ -1300,14 +1300,14 @@
        {
        	  if(item.status.status_db == 'Y')
        	  {
-              row +=`<div disabled  data-toggle="tooltip" title="Hapus Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
+              row +=`<div disabled  data-toggle="tooltip" title="Hapus Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy-disabled" ></i></div>`; 
        	  }else{
               
               row +=`<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
        	  }	
             
        }else{
-            row +=`<div disabled  data-toggle="tooltip" title="Hapus Data" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
+            row +=`<div disabled  data-toggle="tooltip" title="Hapus Data" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy-disabled" ></i></div>`; 
        }
 
 

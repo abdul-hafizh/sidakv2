@@ -92,7 +92,7 @@ class RequestBimsos
             $numberNext++;
             $row    = array();
             $row[]  = $val->id;
-            $row[]  = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+            $row[]  = RequestDaerah::GetDaerahWhereID($val->daerah_id);
             $row[]  = $val->nama_kegiatan;
             $row[]  = RequestBimsos::getLabelSubMenu($val->sub_menu_slug);
             $row[]  = GeneralHelpers::formatDate($val->tgl_bimtek);

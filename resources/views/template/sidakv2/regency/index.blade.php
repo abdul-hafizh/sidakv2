@@ -468,7 +468,15 @@
                         {
                            if(opt.checked == true)
                            { 
-                                row +=`<div id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`;
+                              
+                               if(item.deleted == true)
+                               {
+                                   row +=`<div id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`;
+                               }else{
+                                   
+                                     row +=`<div data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit-disabled" ></i></div>`;
+
+                               }    
                               
                             }    
 
@@ -840,7 +848,7 @@
        {
             row +=`<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
        }else{
-            row +=`<div disabled  data-toggle="tooltip" title="Hapus Data" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
+            row +=`<div disabled  data-toggle="tooltip" title="Hapus Data" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy-disabled" ></i></div>`; 
        }
 
 

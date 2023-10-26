@@ -48,7 +48,7 @@ class RequestExtension
          $temp[$key]['number'] = $numberNext++;
          $temp[$key]['id'] = $val->id;
          $temp[$key]['daerah_id'] = $val->daerah_id;
-         $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+         $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereID($val->daerah_id);
          $temp[$key]['semester'] = $val->semester;
          $temp[$key]['year'] = $val->year;
          $temp[$key]['access'] = RequestAuth::Access();

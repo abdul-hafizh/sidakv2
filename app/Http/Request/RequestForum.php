@@ -9,6 +9,7 @@ use App\Models\Topic;
 use App\Models\TopicDetail;
 use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestMenuRoles;
+use App\Http\Request\RequestDaerah;
 
 class RequestForum 
 {
@@ -102,6 +103,7 @@ class RequestForum
             $temp[$key]['id'] = $val->id;
             $temp[$key]['name'] = $val->name;
             $temp[$key]['slug'] = $val->slug;
+            $temp[$key]['author'] = RequestAuth::fullname($val->created_by);
             $temp[$key]['deleted'] = RequestForum::checkValidate($val->id);
             $temp[$key]['category'] = RequestForum::categoryForum($val->forum_id);
             $temp[$key]['access'] = RequestAuth::Access();

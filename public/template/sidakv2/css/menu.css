@@ -277,96 +277,127 @@
     display: inline-block;
 }
 
-.icon-detail{
+/*.icon-detail{
     background: url('../img/detail_grey.png');
     background-repeat: no-repeat;
       
-}
+}*/
 
-.icon-detail:hover{
+.icon-detail{
     background: url('../img/detail_blue.png');
     background-repeat: no-repeat;
 }
 
-.icon-edit{
-    background: url('../img/edit_grey.png');
+.icon-detail:hover{
+    background: url('../img/detail_hover.png');
     background-repeat: no-repeat;
-      
 }
 
-.icon-edit:hover{
+
+.icon-edit-disabled{
+    background: url('../img/edit_grey.png');
+    background-repeat: no-repeat;   
+}
+
+.icon-edit{
     background: url('../img/edit_blue.png');
     background-repeat: no-repeat;
       
 }
 
-.icon-destroy{
+.icon-edit:hover{
+    background: url('../img/edit_hover.png');
+    background-repeat: no-repeat;
+      
+}
+
+.icon-destroy-disabled{
     background: url('../img/hapus_grey.png');
     background-repeat: no-repeat;
       
 }
 
-.icon-destroy:hover{
+.icon-destroy{
     background: url('../img/hapus_red.png');
-    background-repeat: no-repeat;
-      
+    background-repeat: no-repeat; 
 }
 
-.icon-sendmail{
+.icon-destroy:hover{
+    background: url('../img/hapus_hover.png');
+    background-repeat: no-repeat; 
+}
+
+/*.icon-sendmail{
    
     background: url('../img/sendmail_grey.png');
     background-repeat: no-repeat;
-}
+}*/
 
-.icon-sendmail:hover{
+.icon-sendmail{
    
     background: url('../img/sendmail_blue.png');
     background-repeat: no-repeat;
 }
 
-.icon-ban{
+.icon-sendmail:hover{
    
-    background: url('../img/nonactive_grey.png');
+    background: url('../img/sendmail_hover.png');
     background-repeat: no-repeat;
 }
 
-.icon-ban:hover{
+.icon-ban{
    
     background: url('../img/nonactive_orange.png');
     background-repeat: no-repeat;
 }
 
-.icon-active{
+.icon-ban:hover{
    
-    background: url('../img/active_grey.png');
+    background: url('../img/nonactive_hover.png');
     background-repeat: no-repeat;
 }
 
-.icon-active:hover{
+/*.icon-active{
+   
+    background: url('../img/active_grey.png');
+    background-repeat: no-repeat;
+}*/
+
+.icon-active{
    
     background: url('../img/active_green.png');
     background-repeat: no-repeat;
 }
 
-.icon-download{
+.icon-active:hover{
    
-    background: url('../img/download_grey.png');
+    background: url('../img/active_hover.png');
     background-repeat: no-repeat;
 }
 
-.icon-download:hover{
+/*.icon-download{
    
+    background: url('../img/download_grey.png');
+    background-repeat: no-repeat;
+}*/
+
+.icon-download{
     background: url('../img/download_blue.png');
     background-repeat: no-repeat;
 }
 
-.icon-reqedit{
-   
-    background: url('../img/reqedit_grey.png');
+.icon-download:hover{
+    background: url('../img/download_hover.png');
     background-repeat: no-repeat;
 }
 
-.icon-reqedit:hover{
+/*.icon-reqedit{
+   
+    background: url('../img/reqedit_grey.png');
+    background-repeat: no-repeat;
+}*/
+
+.icon-reqedit{
    
     background: url('../img/reqedit_blue.png');
     background-repeat: no-repeat;

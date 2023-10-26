@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Http\Request\RequestNotification;
+use App\Http\Request\RequestAuth;
 use App\Helpers\GeneralPaginate;
 use Auth;
 
@@ -19,7 +20,8 @@ class NotificationApiController extends Controller
 
     public function index(Request $request)
     {
-        if($_COOKIE['access'] !='admin' && $_COOKIE['access'] !='pusat')
+        $access = RequestAuth::Access();
+        if($access !='admin' ||  $access !='pusat')
         {
           $query = Notification::where('from','pusat')->Orwhere('from','admin')->orderBy('created_at', 'DESC');
         }else{
@@ -67,11 +69,12 @@ class NotificationApiController extends Controller
 
     public function show(Request $request)
     {
-        if($_COOKIE['access'] !='admin' && $_COOKIE['access'] !='pusat')
+        $access = RequestAuth::Access();
+        if($access !='admin' ||  $access !='pusat')
         {
-            $data = Notification::whereIn('from',['admin','pusat'])->orderBy('created_at', 'DESC')->limit(8)->get();
+            $data = Notification::where('sender', Auth::User()->username)->orderBy('created_at', 'DESC')->limit(8)->get();
         }else{
-            $data = Notification::whereNotIn('from',['admin','pusat'])->orderBy('created_at', 'DESC')->limit(8)->get(); 
+            $data = Notification::whereIn('from',['admin','pusat'])->orderBy('created_at', 'DESC')->limit(8)->get(); 
         }
         $_res = RequestNotification::GetDataLimit($data);
         return response()->json($_res);

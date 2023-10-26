@@ -179,6 +179,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
     Route::delete('topic/delete-replay/{id}', [ForumApiController::class, 'deletereplay']);
     Route::delete('topic/delete-all/{id}', [ForumApiController::class, 'deleteTopic']);
+    Route::post('topic/selected', [ForumApiController::class, 'deleteSelected']);
 
     Route::get('notification', [NotificationApiController::class, 'index']);
     Route::get('notif', [NotificationApiController::class, 'show']);

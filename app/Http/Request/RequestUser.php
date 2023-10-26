@@ -51,7 +51,7 @@ class RequestUser
             $temp[$key]['id'] = $val->id;
             $temp[$key]['name'] = $val->name;
             $temp[$key]['daerah_id'] = $val->daerah_id;
-            $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+            $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereID($val->daerah_id);
             $temp[$key]['role_id'] = RequestRoles::GetRoleUserWhere($val->id,'name');
             $temp[$key]['deleted'] = RequestUser::checkValidate($val->username);
             
@@ -67,7 +67,7 @@ class RequestUser
             $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val['created_at']);
             //format exel
 
-            $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+           
             $temp[$key]['role'] = RequestRoles::GetRoleUserWhere($val->id,'name');
             $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
 

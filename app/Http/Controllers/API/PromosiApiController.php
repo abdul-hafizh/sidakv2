@@ -121,7 +121,7 @@ class PromosiApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
-                $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id); 
+                $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id); 
            
             
                 $insert = RequestPromosi::fieldsData($request); 
@@ -142,7 +142,8 @@ class PromosiApiController extends Controller
                          $type = 'promosi';
                          $messages = Auth::User()->username.' Menambahkan Menambahkan promosi '.$daerah_name.' periode '.$request->periode_id;
                          $url = url('promosi/show/'.$saveData->id);
-                         $notif = RequestNotification::fieldsData($type,$messages,$url);
+                         $sender = Auth::User()->username;
+                         $notif = RequestNotification::fieldsData($type,$messages,$url,$sender);
                          Notification::create($notif);
                          $datafrom = User::where('username','pusat')->first();
 
@@ -171,7 +172,7 @@ class PromosiApiController extends Controller
 
         $messages['messages'] = false;
         $_res = Promosi::find($id);
-        $daerah_name = RequestDaerah::GetDaerahWhereName($_res->daerah_id);
+         $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
 
         $log = array(
             'category' => 'LOG_DATA_PROMOSI',
@@ -191,10 +192,12 @@ class PromosiApiController extends Controller
          $access = RequestAuth::Access();
         if($access !="admin" || $access !="pusat")
         {
+                // $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
                  $type = 'promosi';
-                 $messages = $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan;
-                 $url = url('promosi/show/'.$saveData->id);
-                 $notif = RequestNotification::fieldsData($type,$messages,$url);
+                 $msg = $daerah_name.' mengajukan permintaan request edit untuk periode tahun <b>' . $_res->periode_id . '</b>  dengan alasan '.$request->alasan;
+                 $url = url('promosi/detail/'.$id);
+                 $sender = User::where(['username'=>'pusat'])->first()->username;
+                 $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
                  Notification::create($notif);
                  $datafrom = User::where('username','pusat')->first();
 
@@ -228,12 +231,14 @@ class PromosiApiController extends Controller
 
         if($type =='approved')
         {
-             $results = $_res->update(['request_edit'=>'false','checklist'=>'approved']);  
+             $results = $_res->update(['status_laporan_id'=>'13','request_edit'=>'false','checklist'=>'approved']);  
 
              $type = 'periode';
-             $pesan = 'pengajuan promosi '.$daerah_name.' di approved';
-             $url = url('promosi/show/'.$id);
-             $notif = RequestNotification::fieldsData($type,$pesan,$url);
+           
+             $url = url('promosi/detail/'.$id);
+             $sender = $_res->created_by;
+             $msg = Auth::User()->username.' pengajuan promosi dibatalkan';
+             $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
              Notification::create($notif);
 
              $status = 'Disetujui';
@@ -245,9 +250,11 @@ class PromosiApiController extends Controller
             $results = $_res->update(['request_edit'=>'false','checklist'=>'not_approved']);
 
             $type = 'periode';
-            $pesan = Auth::User()->username.' pengajuan promosi dibatalkan';
-            $url = url('promosi/show/'.$id);
-            $notif = RequestNotification::fieldsData($type,$pesan,$url);
+           
+            $msg = 'pengajuan promosi '.$daerah_name.' di approved';
+            $sender = $_res->created_by;
+            $url = url('promosi/detail/'.$id);
+            $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
             Notification::create($notif);
 
              $status = 'Ditolak';

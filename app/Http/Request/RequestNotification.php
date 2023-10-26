@@ -126,16 +126,16 @@ class RequestNotification
   
  
 
-   public static function fieldsData($type,$messages,$url)
+   public static function fieldsData($type,$messages,$url,$sender)
    {
         $uuid = Str::uuid()->toString();
-        $pusat = User::where(['username'=>'pusat'])->first();
-        if($pusat)
-        {
-            $sender = $pusat->username;
-        }else{
-            $sender = 'null';
-        }
+        //$pusat = User::where(['username'=>'pusat'])->first();
+      
+
+        // if(Auth::User()->username == $pusat->username)
+        // {
+        //     $sender = $pusat->username;
+        // }  
 
         $fields = [ 
                 'id'=> $uuid,

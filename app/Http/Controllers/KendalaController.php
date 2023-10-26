@@ -40,11 +40,36 @@ class KendalaController extends Controller
          if($query)
         { 
 
-            $title = 'Kriteria '.$query->category; 
+            $title = 'Kendala '.$query->category; 
             $log = array(             
                 'menu'=>$title,
-                'slug'=>'kriteria-topik',
-                'url'=>'kriteria/'.$topic.'',
+                'slug'=>'kendala-topik',
+                'url'=>'kendala/'.$topic.'',
+            );
+            RequestSystemLog::CreateLog($log);
+            $with =  ['title' => $title,'template'=>'template/'.$this->template];
+            return view('template/' . $this->template . '.kendala.masalah')->with($with);
+
+                
+        }else{
+            abort(404);
+        }
+  
+
+    }
+
+     public function detail($topic,$id)
+    {
+        
+        $query = DB::table('kriteria_kendala')->where('slug',$topic)->first(); 
+         if($query)
+        { 
+
+            $title = 'Kendala '.$query->category; 
+            $log = array(             
+                'menu'=>$title,
+                'slug'=>'kendala-topik',
+                'url'=>'kendala/'.$topic.'',
             );
             RequestSystemLog::CreateLog($log);
             $with =  ['title' => $title,'template'=>'template/'.$this->template];

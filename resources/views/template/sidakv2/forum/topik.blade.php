@@ -23,11 +23,18 @@
 				</button>
 			</div> -->
 
-			<div id="ShowChecklist" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
+			<div   class="pull-left padding-9-0 margin-left-button">
                 <button type="button"  id="Back" class="btn bg-navy border-radius-10">
                   <i class="fa fa-undo" aria-hidden="true"></i> Kembali 
                 </button>
             </div>
+
+            <div id="ShowChecklist" style="display:none;"  class="pull-left padding-9-0 margin-left-button">
+				<button type="button" disabled id="delete-selected" class="btn btn-danger border-radius-10">
+					 Hapus
+				</button>
+
+			</div>
 
             <div  class="pull-left padding-9-0 margin-left-button" >
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
@@ -69,6 +76,7 @@
 
 							<th><div class="split-table"></div><span class="span-title">Topik</span></th>
 							<th><div class="split-table"></div><span class="span-title">Total Komentar</span></th>
+							<th><div class="split-table"></div><span class="span-title">Dibuat</span></th>
 						
 							<th ><div class="split-table"></div><span class="span-title"> Aksi </span></th>
 						</tr>
@@ -115,6 +123,51 @@
 
      $('#Back').on('click', function() {
     	  window.location.replace('/forum/'); 
+       
+    });
+
+    $('#select-all').on('change', function() {
+        $('.item-checkbox').prop('checked', $(this).is(':checked'));
+
+         const checkedCount = $('.item-checkbox:checked').length;
+         if(checkedCount >0)
+         {
+         	$('#delete-selected').prop("disabled", false);
+         }else{
+         	$('#delete-selected').prop("disabled", true);
+         } 
+
+    });
+
+    // Delete selected button
+    $('#delete-selected').on('click', function() {
+        const selectedIds = [];
+        $('.item-checkbox:checked').each(function() {
+            selectedIds.push($(this).data('id'));
+        });
+
+
+            Swal.fire({
+		      title: 'Apakah anda yakin hapus?',
+		    
+		      icon: 'warning',
+		      showCancelButton: true,
+		      confirmButtonColor: '#d33',
+		      cancelButtonColor: '#3085d6',
+		      confirmButtonText: 'Ya'
+		    }).then((result) => {
+		      if (result.isConfirmed) {
+		        // Perform the delete action here, e.g., using an AJAX request
+		        // Send selected IDs for deletion (e.g., via AJAX)
+   				 deleteItems(selectedIds);
+		        
+		        Swal.fire(
+		          'Deleted!',
+		          'Data berhasil dihapus.',
+		          'success'
+		        );
+		      }
+		    });
        
     });
 
@@ -232,7 +285,7 @@
 	               row +=`<td>${item.number}</td>`;
 	               row +=`<td>${item.name}</td>`;
 	               row +=`<td>${item.total_messsage}</td>`;
-	               
+	                row +=`<td>${item.author}</td>`;
 	               row +=`<td>`; 
 	                 row +=`<div class="btn-group list-menu-table">`;
 	                row +=`<div id="Replay"  data-param_id="${item.id}" data-toggle="modal" data-target="#modal-edit-${item.id}" data-toggle="tooltip" data-placement="top" title="Lihat Komentar"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-detail" ></i></div>`;
@@ -252,12 +305,12 @@
 
 	                            }else{
 
-	                               row +=`<div disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data"  class="pointer btn-padding-action pull-left"><i class="fa fa-trash" ></i></div>`;	
+	                               row +=`<div disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy-disabled" ></i></div>`;	
 	                            }  
 
 	                        }else{
 
-                               row +=`<div disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`;
+                               row +=`<div disabled data-placement="top"  data-toggle="tooltip" title="Hapus Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy-disabled" ></i></div>`;
 
 	                        }    
 
@@ -366,6 +419,25 @@
 		    }
 		});
 
+    }
+
+    // Function to delete items
+    function deleteItems(ids) {
+        // Send the selected IDs for deletion using AJAX
+       
+        $.ajax({
+            url:  BASE_URL +`/api/topic/selected`,
+            method: 'POST',
+            data: { data: ids },
+            success: function(response) {
+                // Handle success (e.g., remove deleted items from the list)
+                fetchData(page);
+                $('#delete-selected').prop("disabled", true);
+            },
+            error: function(error) {
+                console.error('Error deleting items:', error);
+            }
+        });
     }
 
     function getlistComment(item){
