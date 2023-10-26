@@ -197,8 +197,8 @@
 
 		$.ajax({
 			url: BASE_URL + '/api/select-periode-semester?type=GET&action=penyelesaian',
-			method: 'get',
-			dataType: 'json',
+			method: 'GET',
+			dataType: 'JSON',
 			success: function(data) {
 				periode = '<option value="">Pilih Periode</option>';
 				$.each(data.periode, function(key, val) {
@@ -298,8 +298,8 @@
 		$('.select-periode-mdl').select2(
 			$.ajax({
 				url: BASE_URL + '/api/select-periode-semester',
-				method: 'get',
-				dataType: 'json',
+				method: 'GET',
+				dataType: 'JSON',
 				success: function(data) {
 					periode = '<option value="">Pilih Periode</option>';
 					$.each(data.periode, function(key, val) {
