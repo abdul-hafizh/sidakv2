@@ -210,6 +210,15 @@
 			}
 		})
 
+		$.ajax({
+			url: BASE_URL + '/api/penyelesaian/header',
+			method: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				console.log(data);
+			}
+		})
+
 		var table = $('#datatable').DataTable({
 			processing: true,
 			serverSide: true,

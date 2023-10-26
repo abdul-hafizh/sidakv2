@@ -241,20 +241,6 @@ class RequestPenyelesaian
         return json_decode(json_encode($temp), FALSE);
     }
 
-    public static function GetSumHeader($menu_id, $periode, $daerah)
-    {
-        
-        $getSum = DB::select(
-            'call header_modul(?,?,?)', array($menu_id, $periode, $daerah)
-        );
-
-        $temp = [
-            'result' => $getSum,
-        ];
-
-        return json_decode(json_encode($temp), FALSE);
-    }
-
     public static function fieldsData($request)
     {
         $subMenuMapping = [

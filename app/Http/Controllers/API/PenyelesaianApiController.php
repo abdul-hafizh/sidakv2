@@ -59,6 +59,19 @@ class PenyelesaianApiController extends Controller
         return response()->json($output);
     }
 
+    public function header(Request $request)
+    {                
+        $result = DB::select(
+            'call header_modul(?,?,?)', array('PENYELESAIAN', $request->periode_id, Auth::User()->daerah_id)
+        );
+
+        $output = array(
+            "data" => $result
+        );
+
+        return response()->json($output);
+    }
+
     public function store(Request $request)
     {
         $validation = ValidationPenyelesaian::validation($request);
