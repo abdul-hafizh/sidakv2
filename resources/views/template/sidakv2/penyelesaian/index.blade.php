@@ -76,7 +76,7 @@
 		</div>
 		@if($access =='admin' || $access == 'pusat' )
 		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
-            <select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Daerah" data-live-search="true">
+            <select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Provinsi/Kabupaten" data-live-search="true">
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
@@ -178,22 +178,19 @@
 			url: BASE_URL + '/api/select-daerah',
 			method: 'GET',
 			dataType: 'json',
-			success: function (data) {
-				var select = $('#daerah_id');
-				$.each(data, function (index, option) {
-					var $option = $('<option>', {
+			success: function(data) {
+				$.each(data, function(index, option) {
+					$('#daerah_id').append($('<option>', {
 						value: option.value,
 						text: option.text
-					});
+					}));
 				});
-
-				select.prop('disabled', false);
-				select.selectpicker('refresh');
+				$('#daerah_id').selectpicker('refresh');
 			},
-			error: function (error) {
+			error: function(error) {
 				console.error(error);
 			}
-		});
+		})
 
 		$.ajax({
 			url: BASE_URL + '/api/select-periode-semester',
