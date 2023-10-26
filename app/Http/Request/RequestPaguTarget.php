@@ -104,14 +104,14 @@ class RequestPaguTarget
             $delete_url = "";
 
             foreach ($options as $rows => $row) {
-                if ($row->action == 'update') {
-                    if ($row->checked == true) {
+                if ($row['action'] == 'update') {
+                    if ($row['checked'] == true) {
                         $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
                     }
                 }
 
-                if ($row->action == 'delete') {
-                    if ($row->checked == true) {
+                if ($row['action'] == 'delete') {
+                    if ($row['checked'] == true) {
 
                         $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
                     }
@@ -236,20 +236,6 @@ class RequestPaguTarget
         $temp2['total_promosi'] = $data->sum('pagu_promosi');
 
         return json_decode(json_encode($temp2), FALSE);
-    }
-
-    public static function PaguPromosi($year)
-    {
-       $pagu = PaguTarget::where(['periode_id'=>$year,'daerah_id'=>Auth::User()->daerah_id])->first();
-       if($pagu)
-       {
-        $result = $pagu->pagu_promosi;
-       }else{
-        $result = 0;
-       } 
-
-       return $result; 
- 
     }
 
 
