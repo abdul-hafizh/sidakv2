@@ -93,15 +93,23 @@ class RequestPenyelesaian
         $numberNext = 1;
         $result = $data->get();
 
-        foreach ($result as $key => $val) {            
+        foreach ($result as $key => $val) {
             
             $log_url = "";
+            $edit_url = "";
+            $delete_url = "";
+                        
+            if ($access == 'daerah' || $access == 'province') {
+                if ($val->status_laporan_id != 14)
+                {
+                    $edit_url = '<button id="Edit" data-placement="top" data-toggle="modal" data-toggle="tooltip" data-target="#modal-add" type="button" title="Edit Data" data-param_id=' . $val->id . ' class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+                    $delete_url = '<button id="Destroy" data-placement="top" data-toggle="tooltip" type="button" title="Hapus Data" data-param_id=' . $val->id . ' class="btn btn-primary"><i class="fa fa-trash"></i></button>';
+                }
+            }
 
             if(!empty($val->alasan_edit) || !empty($val->alasan_edit)) {
-                $log_url =  '<button id="Log" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
+                $log_url =  '<button id="Log" data-param_id=' . $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
             }
-            $edit_url = '<button id="Edit" data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data" class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
-            $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
 
             $numberNext++;
             $row   = array();

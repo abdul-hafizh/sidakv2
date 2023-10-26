@@ -773,7 +773,7 @@
           } else {
             $('.file-access').hide();
             $('#FormSubmit input').attr('readonly', 'readonly');
-            $('#FormSubmit select').attr('disabled', 'true');
+            $('#FormSubmit select').attr('disabled', 'true');            
             $('#request_edit-' + id).hide();
             if (data.status_laporan_id == 13) {
               $('#update-' + id).hide();

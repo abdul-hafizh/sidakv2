@@ -22,19 +22,19 @@ class DaerahApiController extends Controller
     public  function listAllDaerah(Request $request)
     {
 
-        // $province = Provinces::select('id as value', 'name as text');
-        // $regency = Regencies::select('id as value', 'name as text')->union($province)->orderBy('value', 'ASC')->get();
+        $province = Provinces::select('id as value', 'name as text');
+        $regency = Regencies::select('id as value', 'name as text')->union($province)->orderBy('value', 'ASC')->get();
 
-        $access = RequestAuth::Access();
+        // $access = RequestAuth::Access();
 
-        $wilayah = DB::table('vw_wilayah_union')->select('id as value', 'name as text')->get();
+        // $wilayah = DB::table('vw_wilayah_union')->select('id as value', 'name as text')->get();
         
-        if($access == 'daerah' ||  $access == 'province') {
-            $wilayah = DB::table('vw_wilayah_union')->select('id as value', 'name as text')->where('id', Auth::User()->daerah_id)->get();
-        }
+        // if($access == 'daerah' ||  $access == 'province') {
+        //     $wilayah = DB::table('vw_wilayah_union')->select('id as value', 'name as text')->where('id', Auth::User()->daerah_id)->get();
+        // }
 
 
-        return response()->json($wilayah);
+        return response()->json($regency);
     }
 
     public  function listAllKabupaten(Request $request)
