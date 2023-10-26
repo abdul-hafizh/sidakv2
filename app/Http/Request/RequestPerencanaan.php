@@ -37,7 +37,7 @@ class RequestPerencanaan
                 $temp[$key]['number'] = $numberNext++;
                 $temp[$key]['id'] = $val->id;
                 $temp[$key]['access'] = RequestAuth::Access();
-                $temp[$key]['nama_daerah'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+                $temp[$key]['nama_daerah'] = RequestDaerah::GetDaerahWhereID($val->daerah_id);
                 $temp[$key]['pengawas_analisa_pagu'] = $val->pengawas_analisa_pagu;
                 $temp[$key]['pengawas_analisa_pagu_convert'] = GeneralHelpers::formatRupiah($val->pengawas_analisa_pagu);
                 $temp[$key]['pengawas_inspeksi_pagu'] = $val->pengawas_inspeksi_pagu;

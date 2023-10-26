@@ -62,6 +62,20 @@
                </div>
           </div>
 
+          <div class="box box-solid box-primary" id="div-edit">
+               <div class="box-body">
+                    <div class="card-body">
+                         <div class="row pd-top-bottom-15">
+                              <div class="col-lg-12">
+                                   <div id="periode-alert" class="form-group">
+                                        <span id="alasan-edit-view"></span>
+                                   </div>
+                              </div>
+                         </div>                          
+                    </div>
+               </div>
+          </div>
+
 
      <div class="col-sm-4 pull-left padding-default full">
 		<div class="width-50 pull-left">
@@ -120,7 +134,7 @@
 							</th>
 							<th  class="text-center font-bold">
 							    <div class="split-table"></div>
-							   <span class="span-title">Periode Akhir</span>
+							   <span class="position-top-10">Periode Akhir</span>
 							</th>
 					    </tr>
 					 	
@@ -255,7 +269,7 @@
        					row +=`</td>`;
        					row +=`<td>`;
                             row +=`<div id="budget-a-pra-alert" class="margin-none form-group">`;
-	       						row +=`<input readonly type="text" name="" value="${item.budget_peluang}" class="form-control">`;
+	       						row +=`<input readonly type="text" name="" value="${item.budget_peluang}" class="form-control text-right">`;
 	                            row +=`<span id="budget-a-pra-messages"></span>`;
                             row +=`</div>`;
        					row +=`</td>`;
@@ -284,7 +298,7 @@
        					row +=`</td>`;
        					row +=`<td>`;
                             row +=`<div id="budget-b-pra-alert" class="margin-none form-group">`;
-	       						row +=`<input readonly type="text" name="" value="${item.budget_storyline}" class="form-control">`;
+	       						row +=`<input readonly type="text" name="" value="${item.budget_storyline}" class="form-control text-right">`;
 	                            row +=`<span id="budget-b-pra-messages"></span>`;
                             row +=`</div>`;
        					row +=`</td>`;
@@ -313,7 +327,7 @@
        					row +=`</td>`;
        					row +=`<td>`;
                             row +=`<div id="budget-c-pra-alert" class="margin-none form-group">`;
-	       						row +=`<input readonly type="text" name="" value="${item.budget_storyboard}"  class="form-control">`;
+	       						row +=`<input readonly type="text" name="" value="${item.budget_storyboard}"  class="form-control text-right">`;
 	                            row +=`<span id="budget-c-pra-messages"></span>`;
                             row +=`</div>`;
        					row +=`</td>`;
@@ -342,7 +356,7 @@
        					row +=`</td>`;
        					row +=`<td>`;
                             row +=`<div id="budget-d-pra-alert" class="margin-none form-group">`;
-	       						row +=`<input readonly type="text" name="" value="${item.budget_lokasi}"  class="form-control">`;
+	       						row +=`<input readonly type="text" name="" value="${item.budget_lokasi}"  class="form-control text-right">`;
 	                            row +=`<span id="budget-d-pra-messages"></span>`;
                             row +=`</div>`;
        					row +=`</td>`;
@@ -371,7 +385,7 @@
        					row +=`</td>`;
        					row +=`<td>`;
                             row +=`<div id="budget-e-pra-alert" class="margin-none form-group">`;
-	       						row +=`<input readonly type="text" name="" value="${item.budget_talent}" class="form-control">`;
+	       						row +=`<input readonly type="text" name="" value="${item.budget_talent}" class="form-control text-right">`;
 	                            row +=`<span id="budget-e-pra-messages"></span>`;
                             row +=`</div>`;
        					row +=`</td>`;
@@ -400,7 +414,7 @@
        					row +=`</td>`;
        					row +=`<td>`;
                             row +=`<div id="budget-f-pra-alert" class="margin-none form-group">`;
-	       						row +=`<input readonly type="text" name="" value="${item.budget_testimoni}" class="form-control">`;
+	       						row +=`<input readonly type="text" name="" value="${item.budget_testimoni}" class="form-control text-right">`;
 	                            row +=`<span id="budget-f-pra-messages"></span>`;
                             row +=`</div>`;
        					row +=`</td>`;
@@ -429,7 +443,7 @@
        					row +=`</td>`;
        					row +=`<td>`;
                             row +=`<div id="budget-g-pra-alert" class="margin-none form-group">`;
-	       						row +=`<input readonly type="text" name="" value="${item.budget_audio}" class="form-control">`;
+	       						row +=`<input readonly type="text" name="" value="${item.budget_audio}" class="form-control text-right">`;
 	                            row +=`<span id="budget-g-pra-messages"></span>`;
                             row +=`</div>`;
        					row +=`</td>`;
@@ -458,7 +472,7 @@
        					row +=`</td>`;
        					row +=`<td>`;
                             row +=`<div id="budget-h-pra-alert" class="margin-none form-group">`;
-	       						row +=`<input readonly type="text" name="" value="${item.budget_editing}" class="form-control">`;
+	       						row +=`<input readonly type="text" name="" value="${item.budget_editing}" class="form-control text-right">`;
 	                            row +=`<span id="budget-h-pra-messages"></span>`;
                             row +=`</div>`;
        					row +=`</td>`;
@@ -495,7 +509,7 @@
        					 row +=`</td>`;
        					 row +=`<td>`;
                              row +=`<div id="budget-a-pro-alert" class="margin-none form-group">`;
-	       						 row +=`<input readonly type="text" name="" value="${item.budget_gambar}" class="form-control">`;
+	       						 row +=`<input readonly type="text" name="" value="${item.budget_gambar}" class="form-control text-right">`;
 	                             row +=`<span id="budget-a-pro-messages"></span>`;
                              row +=`</div>`;
        					 row +=`</td>`;
@@ -524,7 +538,7 @@
        					 row +=`</td>`;
        					 row +=`<td>`;
                              row +=`<div id="budget-b-pro-alert" class="margin-none form-group">`;
-	       						 row +=`<input readonly type="text" name="" value="${item.budget_video}" class="form-control">`;
+	       						 row +=`<input readonly type="text" name="" value="${item.budget_video}" class="form-control text-right">`;
 	                             row +=`<span id="budget-b-pro-messages"></span>`;
                              row +=`</div>`;
        					 row +=`</td>`;
@@ -559,7 +573,7 @@
        					 row +=`</td>`;
        					 row +=`<td>`;
                              row +=`<div id="budget-a-ppro-alert" class="margin-none form-group">`;
-	       						 row +=`<input readonly type="text" name="" value="${item.budget_editvideo}" class="form-control">`;
+	       						 row +=`<input readonly type="text" name="" value="${item.budget_editvideo}" class="form-control text-right">`;
 	                             row +=`<span id="budget-a-ppro-messages"></span>`;
                              row +=`</div>`;
        					 row +=`</td>`;
@@ -588,7 +602,7 @@
        					 row +=`</td>`;
        					 row +=`<td>`;
                              row +=`<div id="budget-b-ppro-alert" class="margin-none form-group">`;
-	       						 row +=`<input readonly type="text" name="" value="${item.budget_grafik}" class="form-control">`;
+	       						 row +=`<input readonly type="text" name="" value="${item.budget_grafik}" class="form-control text-right">`;
 	                             row +=`<span id="budget-b-ppro-messages"></span>`;
                              row +=`</div>`;
        					 row +=`</td>`;
@@ -617,7 +631,7 @@
        					 row +=`</td>`;
        					 row +=`<td>`;
                              row +=`<div id="budget-c-ppro-alert" class="margin-none form-group">`;
-	       						 row +=`<input readonly type="text" name="" value="${item.budget_mixing}" class="form-control">`;
+	       						 row +=`<input readonly type="text" name="" value="${item.budget_mixing}" class="form-control text-right">`;
 	                             row +=`<span id="budget-c-ppro-messages"></span>`;
                              row +=`</div>`;
        					 row +=`</td>`;
@@ -646,7 +660,7 @@
        					 row +=`</td>`;
        					 row +=`<td>`;
                              row +=`<div id="budget-d-ppro-alert" class="margin-none form-group">`;
-	       						 row +=`<input readonly type="text" name="" value="${item.budget_voice}" class="form-control">`;
+	       						 row +=`<input readonly type="text" name="" value="${item.budget_voice}" class="form-control text-right">`;
 	                             row +=`<span id="budget-d-ppro-messages"></span>`;
                              row +=`</div>`;
        					 row +=`</td>`;
@@ -675,7 +689,7 @@
        					 row +=`</td>`;
        					 row +=`<td>`;
                              row +=`<div id="budget-e-ppro-alert" class="margin-none form-group">`;
-	       						 row +=`<input readonly type="text" name="" value="${item.budget_subtitle}" class="form-control">`;
+	       						 row +=`<input readonly type="text" name="" value="${item.budget_subtitle}" class="form-control text-right">`;
 	                             row +=`<span id="budget-e-ppro-messages"></span>`;
                              row +=`</div>`;
        					 row +=`</td>`;
@@ -691,12 +705,17 @@
                        	 BtnAction(item);
                        }	
 					   
-					    if(item.request_edit == 'true')
-					    { 
-                               $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
-					    }else{
-					    	$('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
-					    } 	
+				    if(item.request_edit == 'true')
+				    { 
+                          $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
+                          $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
+				    }else{
+				    	$('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
+                         $('#div-edit').remove();
+				    } 	
+
+                       
+
                        
             content.append(row);
 
@@ -989,7 +1008,7 @@
 
     }
 
-    function getperiode(periode_id){
+      function getperiode(periode_id){
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
@@ -1022,7 +1041,7 @@
                });
 
               
-    }
+           }
  });
 </script>
 @stop

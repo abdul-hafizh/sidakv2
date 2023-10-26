@@ -323,7 +323,7 @@
             	list = response.data;
                 resultTotal(response.total);
 	            listOptions(response.options);
-                 NotifDetail();
+                NotifDetail();
 	            updateContent(response.data,response.options);
 	            updatePagination(response.current_page, response.last_page);
             },

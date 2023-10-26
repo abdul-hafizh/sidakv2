@@ -114,7 +114,7 @@ class RequestPenyelesaian
             $numberNext++;
             $row   = array();
             $row[] = $val->id;
-            $row[] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+            $row[] = RequestDaerah::GetDaerahWhereID($val->daerah_id);
             $row[] = $val->nama_kegiatan;
             $row[] = $val->sub_menu;
             $row[] = GeneralHelpers::formatDate($val->tgl_kegiatan);
