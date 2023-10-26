@@ -70,7 +70,7 @@
 <section class="content-header pd-left-right-15">
 	<div class="row">
 		<div class="col-sm-2" style="margin-bottom: 9px;">
-			<select class="selectpicker" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
+			<select class="form-control height-35 border-radius-13" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
 				<option value="">Pilih Periode</option>
 			</select>
 		</div>
@@ -196,20 +196,20 @@
 		});
 
 		$.ajax({
-			url: BASE_URL + '/api/select-periode-semester?type=GET&action=penyelesaian',
+			url: BASE_URL + '/api/select-periode-semester',
 			method: 'GET',
 			dataType: 'json',
 			success: function(data) {
 				periode = '<option value="">Pilih Periode</option>';
 				$.each(data.periode, function(key, val) {
 					var select = '';
-					if (data.tahunSemester == val.value)
+					if (data.tahunSemester == val.value) {
 						select = 'selected';
+					}
 					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
 
 				});
 				$('#periode_id2').html(periode);
-				$('#periode_id2').selectpicker('refresh');
 			}
 		})
 
@@ -311,7 +311,6 @@
 
 					});
 					$('#periode_id_mdl').html(periode);
-					$('#periode_id2').selectpicker('refresh');
 				}
 			})
 		);
