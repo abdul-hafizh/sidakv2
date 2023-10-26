@@ -223,7 +223,7 @@
 			$.ajax({
 				type: 'GET',
 				dataType: 'json',
-				url: BASE_URL +'/api/select-periode-semester',
+				url: BASE_URL +'/api/select-periode?type=GET&action=penyelesaian',
 				success: function(data) {
 						var select =  $('#periode_id2');
 						select.empty();
