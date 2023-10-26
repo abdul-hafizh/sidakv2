@@ -70,9 +70,10 @@
 <section class="content-header pd-left-right-15">
 	<div class="row">
 		<div class="col-sm-2" style="margin-bottom: 9px;">
-			<select class="selectpicker" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
+			<!-- <select class="selectpicker" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
 				<option value="">Pilih Periode</option>
-			</select>
+			</select> -->
+			<div id="selectPeriode" class="form-group margin-none"></div>
 		</div>
 		@if($access =='admin' || $access == 'pusat' )
 		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
@@ -174,6 +175,12 @@
 <script>
 
 	$(function() {		
+		
+		$('#selectPeriode').html('<select id="periode_id2" class="selectpicker"></select>');
+
+		var year = new Date().getFullYear();
+		getperiode(year+'02');
+
 		$.ajax({
 			url: BASE_URL + '/api/select-daerah',
 			method: 'GET',
@@ -195,22 +202,54 @@
 			}
 		});
 
-		$.ajax({
-			url: BASE_URL + '/api/select-periode-semester?type=GET&action=penyelesaian',
-			method: 'get',
-			dataType: 'json',
-			success: function(data) {
-				periode = '<option value="">Pilih Periode</option>';
-				$.each(data.periode, function(key, val) {
-					var select = '';
-					if (data.tahunSemester == val.value)
-						select = 'selected';
-					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+		// $.ajax({
+		// 	url: BASE_URL + '/api/select-periode-semester?type=GET&action=penyelesaian',
+		// 	method: 'get',
+		// 	dataType: 'json',
+		// 	success: function(data) {
+		// 		periode = '<option value="">Pilih Periode</option>';
+		// 		$.each(data.periode, function(key, val) {
+		// 			var select = '';
+		// 			if (data.tahunSemester == val.value)
+		// 				select = 'selected';
+		// 			periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
 
-				});
-				$('#periode_id2').html(periode);
-			}
-		})
+		// 		});
+		// 		$('#periode_id2').html(periode);
+		// 	}
+		// })
+
+		function getperiode(periode_id){
+			$.ajax({
+				type: 'GET',
+				dataType: 'json',
+				url: BASE_URL +'/api/select-periode?type=GET&action=penyelesaian',
+				success: function(data) {
+						var select =  $('#periode_id2');
+						select.empty();
+						$.each(data.result, function(index, option) {
+							select.append($('<option>', {
+								value: option.value,
+								text: option.text
+							}));
+						});
+
+						if(periode_id ==0)
+						{
+							select.prop('disabled', true);
+						
+						}else{
+						select.val(periode_id);
+						select.prop('disabled', false);
+						}  
+						
+							
+						select.selectpicker('refresh');
+						periode = data.result; 
+				},
+				error: function( error) {}
+			});              
+        }
 
 		var table = $('#datatable').DataTable({
 			processing: true,
