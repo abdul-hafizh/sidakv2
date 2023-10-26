@@ -197,7 +197,7 @@
 
 		$.ajax({
 			url: BASE_URL + '/api/select-periode-semester?type=GET&action=penyelesaian',
-			method: 'get',
+			method: 'GET',
 			dataType: 'json',
 			success: function(data) {
 				periode = '<option value="">Pilih Periode</option>';
@@ -209,6 +209,7 @@
 
 				});
 				$('#periode_id2').html(periode);
+				$('#periode_id2').selectpicker('refresh');
 			}
 		})
 
@@ -298,7 +299,7 @@
 		$('.select-periode-mdl').select2(
 			$.ajax({
 				url: BASE_URL + '/api/select-periode-semester',
-				method: 'get',
+				method: 'GET',
 				dataType: 'json',
 				success: function(data) {
 					periode = '<option value="">Pilih Periode</option>';
@@ -310,6 +311,7 @@
 
 					});
 					$('#periode_id_mdl').html(periode);
+					$('#periode_id2').selectpicker('refresh');
 				}
 			})
 		);
