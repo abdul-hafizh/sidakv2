@@ -69,7 +69,7 @@
 <section class="content-header pd-left-right-15">
 	<div class="form-group row margin-top-bottom-20">
 		<div class="col-sm-2">
-			<select id="periode_id2" name="periode_id2" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
+			<select id="periode_id2" name="periode_id2" class="form-control height-35 border-radius-13" data-style="btn-default" title="Pilih Periode"></select>
 		</div>
 		@if($access =='admin' || $access == 'pusat' )
 		<div class="col-sm-2">
@@ -217,7 +217,6 @@
 
 				});
 				$('#periode_id2').html(periode);
-				$('#periode_id2').selectpicker('refresh');
 			}
 		})
 
@@ -238,7 +237,6 @@
 
 				});
 				$('#periode_id_mdl').html(periode);
-				$('#periode_id_mdl').selectpicker('refresh');
 			}
 		})
 	}
