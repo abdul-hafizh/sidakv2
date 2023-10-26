@@ -98,11 +98,11 @@ class RequestPenyelesaian
             $log_url = "";
             $edit_url = "";
             $delete_url = "";
+            $edit_url = '<button id="Edit" data-placement="top" data-toggle="modal" data-toggle="tooltip" data-target="#modal-add" type="button" title="Edit Data" data-param_id=' . $val->id . ' class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
                         
             if ($access == 'daerah' || $access == 'province') {
                 if ($val->status_laporan_id != 14)
                 {
-                    $edit_url = '<button id="Edit" data-placement="top" data-toggle="modal" data-toggle="tooltip" data-target="#modal-add" type="button" title="Edit Data" data-param_id=' . $val->id . ' class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
                     $delete_url = '<button id="Destroy" data-placement="top" data-toggle="tooltip" type="button" title="Hapus Data" data-param_id=' . $val->id . ' class="btn btn-primary"><i class="fa fa-trash"></i></button>';
                 }
             }
