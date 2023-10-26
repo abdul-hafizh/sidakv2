@@ -215,8 +215,10 @@
 			method: 'GET',
 			dataType: 'json',
 			success: function(data) {
-				console.log(data);
-				console.log(data.identifikasi_rencana);
+				if (data.length > 0) {
+					console.log(data);
+					console.log(data[0].identifikasi_rencana);
+				}	
 			}
 		})
 
