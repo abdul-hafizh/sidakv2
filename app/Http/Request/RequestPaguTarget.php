@@ -98,7 +98,7 @@ class RequestPaguTarget
         $numberNext = 1;
         //dd($data);
         $result = $data->get();
-        $options = RequestMenuRoles::ActionPage('paguapbn');
+        $options = RequestMenuRoles::ActionPage('pagu-apbn');
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
@@ -238,9 +238,9 @@ class RequestPaguTarget
         return json_decode(json_encode($temp2), FALSE);
     }
 
-    public static function PaguPromosi($year,$daerah_id)
+    public static function PaguPromosi($year)
     {
-       $pagu = PaguTarget::where(['periode_id'=>$year,'daerah_id'=>$daerah_id])->first();
+       $pagu = PaguTarget::where(['periode_id'=>$year,'daerah_id'=>Auth::User()->daerah_id])->first();
        if($pagu)
        {
         $result = $pagu->pagu_promosi;
