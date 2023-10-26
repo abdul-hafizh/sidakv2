@@ -70,13 +70,13 @@
 <section class="content-header pd-left-right-15">
 	<div class="row">
 		<div class="col-sm-2" style="margin-bottom: 9px;">
-			<select class="selectpicker" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
+			<select class="form-control height-35 border-radius-13" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
 				<option value="">Pilih Periode</option>
 			</select>
 		</div>
 		@if($access =='admin' || $access == 'pusat' )
 		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
-            <select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Daerah" data-live-search="true">
+            <select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Provinsi/Kabupaten" data-live-search="true">
                 <option value="">Pilih Daerah</option>
             </select>
         </div>
@@ -123,12 +123,14 @@
 				</select>
 			</div>
 			<div class="pull-left padding-9-0 margin-left-button">
+				@if($access =='daerah' || $access == 'province' )
 				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
 					Hapus
 				</button>
 				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
+				@endif
 				<button type="button" class="btn btn-info border-radius-10" id="exportData"></button>
 			</div>
 		</div>
@@ -176,37 +178,47 @@
 			url: BASE_URL + '/api/select-daerah',
 			method: 'GET',
 			dataType: 'json',
-			success: function (data) {
-				var select = $('#daerah_id');
-				$.each(data, function (index, option) {
-					var $option = $('<option>', {
+			success: function(data) {
+				$.each(data, function(index, option) {
+					$('#daerah_id').append($('<option>', {
 						value: option.value,
 						text: option.text
-					});
+					}));
 				});
-
-				select.prop('disabled', false);
-				select.selectpicker('refresh');
+				$('#daerah_id').selectpicker('refresh');
 			},
-			error: function (error) {
+			error: function(error) {
 				console.error(error);
 			}
-		});
+		})
 
 		$.ajax({
-			url: BASE_URL + '/api/select-periode-semester?type=GET&action=penyelesaian',
-			method: 'get',
+			url: BASE_URL + '/api/select-periode-semester',
+			method: 'GET',
 			dataType: 'json',
 			success: function(data) {
 				periode = '<option value="">Pilih Periode</option>';
 				$.each(data.periode, function(key, val) {
 					var select = '';
-					if (data.tahunSemester == val.value)
+					if (data.tahunSemester == val.value) {
 						select = 'selected';
+					}
 					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
 
 				});
 				$('#periode_id2').html(periode);
+			}
+		})
+
+		$.ajax({
+			url: BASE_URL + '/api/penyelesaian/header',
+			method: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				if (data.length > 0) {
+					console.log(data);
+					console.log(data[0].identifikasi_rencana);
+				}	
 			}
 		})
 
@@ -246,7 +258,11 @@
 					'orderable': false,
 					'className': 'dt-body-center',
 					'render': function(data, type, full, meta) {
-						return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+						if (full[7] == 'Terkirim') {
+							return '<input disabled type="checkbox">'
+						} else {
+							return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+						}						
 					}
 				},
 				{
@@ -292,7 +308,7 @@
 		$('.select-periode-mdl').select2(
 			$.ajax({
 				url: BASE_URL + '/api/select-periode-semester',
-				method: 'get',
+				method: 'GET',
 				dataType: 'json',
 				success: function(data) {
 					periode = '<option value="">Pilih Periode</option>';
@@ -424,7 +440,8 @@
 		});
 
 		$("#checkAll").click(function() {
-			$('input:checkbox').not(this).prop('checked', this.checked);
+			var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
+			nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
 		});
 
 		$('#datatable tbody').on('change', 'input[type="checkbox"]', function() {

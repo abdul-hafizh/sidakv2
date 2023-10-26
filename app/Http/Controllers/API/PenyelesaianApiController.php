@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use DB;
 use Auth;
 use File;
 use Response;
@@ -56,6 +57,15 @@ class PenyelesaianApiController extends Controller
             "recordsFiltered" => $count->total,
             "data" => $result->data,
         );
+        return response()->json($output);
+    }
+
+    public function header(Request $request)
+    {                
+        $output = DB::select(
+            'call header_modul(?,?,?)', array('PENYELESAIAN', '202201', Auth::User()->daerah_id)
+        );
+
         return response()->json($output);
     }
 

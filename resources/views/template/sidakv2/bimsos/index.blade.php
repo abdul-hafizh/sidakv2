@@ -69,7 +69,7 @@
 <section class="content-header pd-left-right-15">
 	<div class="form-group row margin-top-bottom-20">
 		<div class="col-sm-2">
-			<select id="periode_id2" name="periode_id2" class="selectpicker" data-style="btn-default" title="Pilih Periode"></select>
+			<select id="periode_id2" name="periode_id2" class="form-control height-35 border-radius-13" data-style="btn-default" title="Pilih Periode"></select>
 		</div>
 		@if($access =='admin' || $access == 'pusat' )
 		<div class="col-sm-2">
@@ -178,6 +178,8 @@
 <script>
 	var search = '';
 	hasil_sum(search);
+	select_periode();
+	getPeriodeAdd();
 
 	function hasil_sum(search) {
 		if (search !== "")
@@ -198,6 +200,45 @@
 				console.error(error);
 			}
 		});
+	}
+
+	function select_periode() {
+		$.ajax({
+			url: BASE_URL + '/api/select-periode-semester',
+			method: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				periode = '<option value="">- Pilih -</option>';
+				$.each(data.periode, function(key, val) {
+					var select = '';
+					if (data.tahunSemester == val.value)
+						select = 'selected';
+					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+
+				});
+				$('#periode_id2').html(periode);
+			}
+		})
+
+	}
+
+	function getPeriodeAdd() {
+		$.ajax({
+			url: BASE_URL + '/api/select-periode-semester',
+			method: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				periode = '<option value="">- Pilih -</option>';
+				$.each(data.periode, function(key, val) {
+					var select = '';
+					if (data.tahunSemester == val.value)
+						select = 'selected';
+					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+
+				});
+				$('#periode_id_mdl').html(periode);
+			}
+		})
 	}
 
 	$(function() {
@@ -288,25 +329,6 @@
 			};
 		}
 
-		$('.select-periode2').select2(
-			$.ajax({
-				url: BASE_URL + '/api/select-periode-semester',
-				method: 'get',
-				dataType: 'json',
-				success: function(data) {
-					periode = '<option value="">- Pilih -</option>';
-					$.each(data.periode, function(key, val) {
-						var select = '';
-						if (data.tahunSemester == val.value)
-							select = 'selected';
-						periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
-
-					});
-					$('#periode_id2').html(periode);
-				}
-			})
-		);
-
 		$('.select-daerah').select2(
 
 			$.ajax({
@@ -327,25 +349,6 @@
 				},
 				error: function(error) {
 					console.error(error);
-				}
-			})
-		);
-
-		$('.select-periode-mdl').select2(
-			$.ajax({
-				url: BASE_URL + '/api/select-periode-semester',
-				method: 'get',
-				dataType: 'json',
-				success: function(data) {
-					periode = '<option value="">- Pilih -</option>';
-					$.each(data.periode, function(key, val) {
-						var select = '';
-						if (data.tahunSemester == val.value)
-							select = 'selected';
-						periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
-
-					});
-					$('#periode_id_mdl').html(periode);
 				}
 			})
 		);
