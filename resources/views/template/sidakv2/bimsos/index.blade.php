@@ -217,6 +217,7 @@
 
 				});
 				$('#periode_id2').html(periode);
+				$('#periode_id2').selectpicker('refresh');
 			}
 		})
 
@@ -237,6 +238,7 @@
 
 				});
 				$('#periode_id_mdl').html(periode);
+				$('#periode_id_mdl').selectpicker('refresh');
 			}
 		})
 	}
