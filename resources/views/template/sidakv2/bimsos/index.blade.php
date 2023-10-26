@@ -205,7 +205,7 @@
 	function select_periode() {
 		$.ajax({
 			url: BASE_URL + '/api/select-periode-semester',
-			method: 'get',
+			method: 'GET',
 			dataType: 'json',
 			success: function(data) {
 				periode = '<option value="">- Pilih -</option>';
@@ -219,12 +219,13 @@
 				$('#periode_id2').html(periode);
 			}
 		})
+
 	}
 
 	function getPeriodeAdd() {
 		$.ajax({
 			url: BASE_URL + '/api/select-periode-semester',
-			method: 'get',
+			method: 'GET',
 			dataType: 'json',
 			success: function(data) {
 				periode = '<option value="">- Pilih -</option>';
