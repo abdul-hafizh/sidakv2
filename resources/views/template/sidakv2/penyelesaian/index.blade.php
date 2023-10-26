@@ -123,12 +123,14 @@
 				</select>
 			</div>
 			<div class="pull-left padding-9-0 margin-left-button">
+				@if($access =='daerah' || $access == 'province' )
 				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
 					Hapus
 				</button>
 				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
+				@endif
 				<button type="button" class="btn btn-info border-radius-10" id="exportData"></button>
 			</div>
 		</div>
@@ -246,7 +248,11 @@
 					'orderable': false,
 					'className': 'dt-body-center',
 					'render': function(data, type, full, meta) {
-						return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+						if (full[7] == 'Terkirim') {
+							return '<input disabled type="checkbox">'
+						} else {
+							return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+						}						
 					}
 				},
 				{
@@ -424,7 +430,8 @@
 		});
 
 		$("#checkAll").click(function() {
-			$('input:checkbox').not(this).prop('checked', this.checked);
+			var nonDisabledCheckboxes = $('.item-checkbox:not(:disabled)');
+			nonDisabledCheckboxes.prop('checked', $(this).is(':checked'));
 		});
 
 		$('#datatable tbody').on('change', 'input[type="checkbox"]', function() {
