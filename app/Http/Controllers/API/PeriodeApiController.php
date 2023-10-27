@@ -43,97 +43,82 @@ class PeriodeApiController extends Controller
         $query =  DB::table('periode as a');
 
         if ($access == 'daerah' ||  $access == 'province') {
-            $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan');
-            $query->where('c.daerah_id', Auth::User()->daerah_id);
+          
+            
 
-            if ($request->type == 'POST' && $request->action == 'perencanaan') {
-                $query->whereNotIn(
-                    'year',
-                    DB::table('perencanaan')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
-            } else if ($request->type == 'GET' && $request->action == 'perencanaan') {
-                $query->whereIn(
-                    'year',
-                    DB::table('perencanaan')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
-            } else if ($request->type == 'POST' && $request->action == 'pengawasan') {
-                $query->whereNotIn(
-                    'year',
-                    DB::table('pengawasan')
-                        ->select('periode_id')->where('slug', Auth::User()->daerah_id)
-                );
-            } else if ($request->type == 'GET' && $request->action == 'pengawasan') {
-                $query->whereIn(
-                    'year',
-                    DB::table('pengawasan')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
-            } else if ($request->type == 'POST' && $request->action == 'bimsos') {
-                $query->whereNotIn(
-                    'year',
-                    DB::table('bimsos')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
-            } else if ($request->type == 'GET' && $request->action == 'bimsos') {
-                $query->whereIn(
-                    'year',
-                    DB::table('bimsos')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
-            } else if ($request->type == 'POST' && $request->action == 'penyelesaian') {
-                $query->whereNotIn(
-                    'year',
-                    DB::table('penyelesaian')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
-            } else if ($request->type == 'GET' && $request->action == 'penyelesaian') {
+            if ($request->action == 'perencanaan')
+            {
+                 $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan'); 
+                 
+                 $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id');
+                 $query->where('c.daerah_id', Auth::User()->daerah_id);
 
-              if($access !="admin" ||  $access !="pusat")
-              {
+                 if($request->type == 'POST')
+                 {
 
-                $query->whereIn(
-                    'year',
-                    DB::table('penyelesaian')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                ); 
-              }else{
+                         $query->whereNotIn(
+                            'year',
+                            DB::table('perencanaan')
+                                ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                         );
 
-                 $query->whereIn(
-                    'year',
-                    DB::table('penyelesaian')
-                        ->select('periode_id')
-                ); 
+                  }elseif($request->type == 'PUT'){
 
-              }  
+                      $query->whereIn(
+                            'year',
+                            DB::table('pagu_target')
+                                ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                        );
+
+
+                  }elseif($request->type == 'GET'){   
+                     
+                     $query->whereIn(
+                        'year',
+                        DB::table('perencanaan')
+                            ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                     );
+
+                  }
                
 
              //promosi   
-            } else if ($request->type == 'POST' && $request->action == 'promosi') {
+            } else if ($request->action == 'promosi') {
+              
+               $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan','d.promosi_pengadaan_pagu','d.pengawas_analisa_target','d.pengawas_inspeksi_target','d.pengawas_evaluasi_target','d.bimtek_perizinan_target','d.bimtek_pengawasan_target','d.penyelesaian_identifikasi_target','d.penyelesaian_realisasi_target','d.penyelesaian_evaluasi_target'); 
+               $query->where('d.daerah_id', Auth::User()->daerah_id);
+               $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id');
+               $query->join('perencanaan as d', 'c.periode_id', '=', 'd.periode_id');
+
+              if($request->type == 'POST')
+              {
                 $query->whereNotIn(
                     'year',
                     DB::table('promosi')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-            } else if ($request->type == 'PUT' && $request->action == 'promosi') {
-                $query->whereIn(
+
+
+              }else if($request->type == 'PUT'){
+
+                   $query->whereIn(
                     'year',
-                    DB::table('pagu_target')
+                    DB::table('perencanaan')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
-                    
-            } else if ($request->type == 'GET' && $request->action == 'promosi') {
-               
 
-                $query->whereIn(
+              }else if($request->type == 'GET'){
+
+                   $query->whereIn(
                     'year',
-                    DB::table('promosi')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
-            }
+                    DB::table('promosi as e')
+                        ->select('e.periode_id')->where('e.daerah_id', Auth::User()->daerah_id)
+                     );
+              } 
+                
+            } 
 
-            $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id')->groupBy('year');
+             $query->groupBy('year');
         } else {
             $query->select('a.id', 'a.slug', 'a.year');
             $query->groupBy('a.year');
@@ -147,8 +132,10 @@ class PeriodeApiController extends Controller
             $selected = true;
         }
 
-        $periode = RequestPeriode::SelectAll($data, $request->type, $request->action);
-        return response()->json(['selected' => $selected, 'result' => $periode]);
+      
+
+       $periode = RequestPeriode::SelectAll($data, $request->type, $request->action);
+       return response()->json(['selected' => $selected, 'result' => $periode]);
     }
 
     public function listYear(Request $request)

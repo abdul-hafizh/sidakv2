@@ -20,21 +20,17 @@ class PaguTargetController extends Controller
     public function index(Request $request)
     {
         $title = 'Pagu APBN';
-        $total_apbn = 1000000000;
-        $total_promosi = 2000000000;
         $log = array(
             'menu' => $title,
-            'slug' => 'pagutarget',
-            'url' => 'pagutarget'
+            'slug' => 'paguapbn',
+            'url' => 'paguapbn'
         );
         RequestSystemLog::CreateLog($log);
 
-        return view('template/' . $this->template . '.paguTarget.dt_index')
+        return view('template/' . $this->template . '.paguTarget.index')
             ->with(
                 [
                     'title' =>  $title,
-                    'total_apbn' =>  $total_apbn,
-                    'total_promosi' =>  $total_promosi,
                     'template' => 'template/' . $this->template
                 ]
             );

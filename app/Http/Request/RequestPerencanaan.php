@@ -398,4 +398,19 @@ class RequestPerencanaan
         }
         return "Label tidak ditemukan";
     }
+
+    public static function PaguPromosi($periode_id,$daerah_id)
+    {
+        $data = Perencanaan::where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->first();
+        if($data)
+        {
+           $result = $data->promosi_pengadaan_pagu; 
+        }else{
+            $result = 0;
+        }   
+
+        return $result; 
+
+
+    }
 }

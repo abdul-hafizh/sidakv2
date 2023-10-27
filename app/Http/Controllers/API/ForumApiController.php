@@ -151,10 +151,12 @@ class ForumApiController extends Controller
            $last = RequestForum::MessagesLast($saveData->id,$request->topic_id);
 
            //send notif
+                $sender = Topic::find($request->topic_id);
+
                 $type = 'Topic';
                 $url = '';
                 $messages = Auth::User()->username.' mengomentari tautan anda';
-                $notif = RequestNotification::fieldsData($type,$messages,$url);
+                $notif = RequestNotification::fieldsData($type,$messages,$url,$sender->created_by);
                 Notification::create($notif);
          
             //result

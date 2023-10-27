@@ -74,9 +74,6 @@ class RequestPeriode
       foreach ($data as $key => $val) {
 
        
-            // $temp[$key]['value'] = $val->slug;
-            // $temp[$key]['text'] = 'Periode ' . $val->year;
-
 
 
             if($action =="perencanaan" )
@@ -97,12 +94,22 @@ class RequestPeriode
 
               if($access =="province" || $access =="daerah")
                {
+                  if($action =="perencanaan")
+                  {   
                      $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
                      $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
                      $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
                      $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
                      $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan;
-                     $temp[$key]['pagu_promosi'] = $val->pagu_promosi;
+                  }else {
+
+                     // $temp[$key]['target_pengawasan'] = $val->pengawas_analisa_target + $val->pengawas_inspeksi_target + $val->pengawas_evaluasi_target;
+                     // $temp[$key]['target_bimtek'] = $val->bimtek_perizinan_target + $val->bimtek_pengawasan_target;
+                     // $temp[$key]['target_penyelesaian'] = $val->penyelesaian_identifikasi_target + $val->penyelesaian_realisasi_target + $val->penyelesaian_evaluasi_target;
+                     $temp[$key]['pagu_promosi'] = $val->promosi_pengadaan_pagu;
+                  }   
+                    
+
                } 
   
 
