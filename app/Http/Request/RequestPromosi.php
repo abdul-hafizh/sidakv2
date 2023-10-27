@@ -152,7 +152,7 @@ class RequestPromosi
                 $result['pagu_promosi'] = 'Rp 0';
                 $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id));
            }else{
-               $result['pagu_promosi'] = GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($year,Auth::User()->daerah_id));
+               $result['pagu_promosi'] = GeneralHelpers::formatRupiah(RequestPerencanaan::PaguPromosi($year,Auth::User()->daerah_id));
 
                $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id));
            } 
@@ -289,9 +289,9 @@ class RequestPromosi
          $temp['alasan'] = $val->alasan;
          $temp['status'] = array('status_db' => $val->status_laporan_id, 'status_convert' => $status);
 
-         $temp['pagu_promosi_convert'] =  GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($val->periode_id,$val->daerah_id));
+         $temp['pagu_promosi_convert'] =  GeneralHelpers::formatRupiah(RequestPerencanaan::PaguPromosi($val->periode_id,$val->daerah_id));
          $temp['total_promosi_convert'] = GeneralHelpers::formatRupiah($val->budget_peluang + $val->budget_storyline + $val->budget_storyboard + $val->budget_lokasi + $val->budget_talent +  $val->budget_testimoni + $val->budget_audio + $val->budget_editing + $val->budget_gambar + $val->budget_video + $val->budget_editvideo + $val->budget_grafik + $val->budget_mixing + $val->budget_voice + $val->budget_subtitle);
-         $temp['pagu_promosi'] =  RequestPaguTarget::PaguPromosi($val->periode_id,$val->daerah_id);
+         $temp['pagu_promosi'] =  RequestPerencanaan::PaguPromosi($val->periode_id,$val->daerah_id);
          $temp['total_promosi'] = $val->budget_peluang + $val->budget_storyline + $val->budget_storyboard + $val->budget_lokasi + $val->budget_talent +  $val->budget_testimoni + $val->budget_audio + $val->budget_editing + $val->budget_gambar + $val->budget_video + $val->budget_editvideo + $val->budget_grafik + $val->budget_mixing + $val->budget_voice + $val->budget_subtitle;  
          return $temp;
 

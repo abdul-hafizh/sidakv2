@@ -147,10 +147,10 @@ class PromosiApiController extends Controller
                          Notification::create($notif);
                          $datafrom = User::where('username','pusat')->first();
 
-                        // $description = $request->description;
+                        $description = $request->description;
                         
-                         // $pusat = User::where('username','pusat')->first()->email;
-                         // Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
+                         $pusat = User::where('username','pusat')->first()->email;
+                         Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
                       
 
                     }
@@ -260,7 +260,7 @@ class PromosiApiController extends Controller
              $status = 'Ditolak';
              $description = $_res->description;
              
-          //   Mail::to(Auth::User()->email)->send(new PeriodeApproved($daerah_name,$url,$_res->year,$_res->semester,$daerah_name,$status,$description));   
+            Mail::to($_res)->send(new PeriodeApproved($daerah_name,$url,$_res->year,$_res->semester,$daerah_name,$status,$description));   
         }    
 
        

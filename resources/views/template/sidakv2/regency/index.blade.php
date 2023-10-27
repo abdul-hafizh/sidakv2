@@ -457,7 +457,7 @@
                row +=`<td class="padding-text-table">${item.name}</td>`;
                row +=`<td class="padding-text-table">${item.province_name}</td>`;
                row +=`<td>`; 
-                row +=`<div class="btn-group list-menu-table">`;
+                row +=`<div class="btn-group">`;
 
                   row +=`<div id="Detail" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-detail" ></i></div>`;
 

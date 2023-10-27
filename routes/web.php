@@ -67,6 +67,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/auditlog', [AuditLogController::class, 'index']);
     Route::get('/options', [OptionsController::class, 'index']);
     Route::get('/action', [ActionController::class, 'index']);
+    
 });
 
 

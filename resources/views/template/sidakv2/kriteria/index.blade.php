@@ -70,7 +70,7 @@
 							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Keterangan </span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Status </span></th>
-								<th id="ShowAction" style="display:none;"><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+								<th ><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 

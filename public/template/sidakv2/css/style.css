@@ -324,6 +324,11 @@ padding: 0px 12px 0px 0px!important;
     width:190px ;
 }
 
+.list-menu-table-pagu{
+    width:80px ;
+}
+
+
 .list-menu-table-periode{
     width:115px ;
 }
@@ -1315,7 +1320,7 @@ padding: 0px 12px 0px 0px!important;
     position: relative;
     vertical-align: middle;
     float: left;
-    width: 200px;
+    width: 157px;
 }
 
 .btn-action button {
