@@ -328,6 +328,8 @@
       $('.modal-add2').show();
       $('.modal-edit').hide();
       $('#alasan_req').hide();
+      $('.text-profile').hide();
+      $('.file-access').show();
       $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
       $('#FormSubmit select').removeAttr('disabled');
       var form = [

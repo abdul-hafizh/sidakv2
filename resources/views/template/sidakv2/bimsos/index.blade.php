@@ -63,7 +63,6 @@
 
 	}
 </style>
-</script>
 
 
 <section class="content-header pd-left-right-15">
@@ -109,7 +108,7 @@
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
 
-				<select id="row_page" class="selectpicker" data-style="btn-default">
+				<select id="row_page" class="selectpicker" data-style="btn-default bg-navy">
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
 					<option value="50">50</option>
@@ -246,6 +245,7 @@
 		var table = $('#datatable').DataTable({
 			processing: true,
 			serverSide: true,
+			ordering: false,
 			ajax: BASE_URL + '/api/bimsos/datalist',
 			fixedHeader: {
 				header: true,
@@ -289,7 +289,7 @@
 					}
 				},
 				{
-					targets: [5],
+					targets: [6],
 					className: 'dt-body-right'
 				},
 				{

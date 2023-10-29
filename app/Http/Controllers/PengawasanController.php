@@ -4,35 +4,36 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
-use App\Http\Request\RequestPengawasan;
-use App\Helpers\GeneralPaginate;
-use App\Models\Pengawasan;
-use Auth;
+use App\Http\Request\RequestSystemLog;
+use App\Http\Request\RequestAuth;
 
 class PengawasanController extends Controller
 {
 
     public function __construct()
     {
-        $this->title = 'Pengawasan';
+        $this->title = 'Pengawasan Pelaksanaan Penanaman Modal';
         $this->template = RequestSettingApps::AppsTemplate();
-        $this->sidebar = RequestSettingApps::AppsSidebar();
-        $this->perPage = GeneralPaginate::limit();
     }
 
     public function index(Request $request)
     {
-
-        $data = Pengawasan::orderBy('id', 'ASC')->paginate($this->perPage);
-        $result = RequestPengawasan::GetDataAll($data, $this->perPage, $request);
-
-        return view('template/' . $this->template . '.pengawasan.index')->with(
-            [
-                'title' => $this->title,
-                'sidebar' => $this->sidebar,
-                'template' => 'template/' . $this->template
-            ]
+        $log = array(
+            'menu' => $this->title,
+            'slug' => 'pengawasan',
+            'url' => 'pengawasan'
         );
+        RequestSystemLog::CreateLog($log);
+        $access = RequestAuth::Access();
+
+        return view('template/' . $this->template . '.pengawasan.index')
+            ->with(
+                [
+                    'title' => $this->title,
+                    'access' => $access,
+                    'template' => 'template/' . $this->template
+                ]
+            );
     }
 
     public function store(Request $request)
@@ -58,5 +59,4 @@ class PengawasanController extends Controller
     public function delete($id, Request $request)
     {
     }
-
 }
