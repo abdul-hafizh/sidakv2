@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perencanaan/generate_pdf/{id}', [PerencanaanController::class, 'generate_pdf']);
     Route::get('/paguapbn', [PaguTargetController::class, 'index']);
     Route::get('/kendala', [KendalaController::class, 'index']);
+    Route::get('/kendala/{topic}', [KendalaController::class, 'show']);
     Route::get('/kendala/{topic}/{id}', [KendalaController::class, 'show']);
     Route::get('/forum', [ForumController::class, 'index']);
     Route::get('/forum/{topic}', [ForumController::class, 'show']);
@@ -67,6 +68,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/auditlog', [AuditLogController::class, 'index']);
     Route::get('/options', [OptionsController::class, 'index']);
     Route::get('/action', [ActionController::class, 'index']);
+    
 });
 
 

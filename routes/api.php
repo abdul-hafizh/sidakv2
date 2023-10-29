@@ -188,6 +188,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('topic/update-replay/{id}', [ForumApiController::class, 'updatereplay']);
     Route::delete('topic/delete-replay/{id}', [ForumApiController::class, 'deletereplay']);
     Route::delete('topic/delete-all/{id}', [ForumApiController::class, 'deleteTopic']);
+    Route::post('topic/selected', [ForumApiController::class, 'deleteSelected']);
 
     Route::get('notification', [NotificationApiController::class, 'index']);
     Route::get('notif', [NotificationApiController::class, 'show']);
@@ -239,6 +240,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('penyelesaian/update/{id}', [PenyelesaianApiController::class, 'update']);
     Route::post('penyelesaian/kirim/{id}', [PenyelesaianApiController::class, 'update']);
     Route::get('penyelesaian/datalist', [PenyelesaianApiController::class, 'jsonData']);
+    Route::get('penyelesaian/header', [PenyelesaianApiController::class, 'header']);
     Route::get('penyelesaian/edit/{id}', [PenyelesaianApiController::class, 'edit']);
     Route::get('penyelesaian/log/{id}', [PenyelesaianApiController::class, 'log']);
     Route::get('penyelesaian/cekPeriode/{id}', [PenyelesaianApiController::class, 'cekPeriode']);

@@ -126,14 +126,15 @@ class ExtensionApiController extends Controller
                          $type = 'periode';
                          $messages = Auth::User()->username.' Permohonan Persetujuan/Approval sampai tanggal '.$request->extensiondate;
                          $url = url('extension/show/'.$saveData->id);
-                         $notif = RequestNotification::fieldsData($type,$messages,$url);
+                         $pusat = User::where('username','pusat')->first();
+                         $notif = RequestNotification::fieldsData($type,$messages,$url,$pusat->username);
                          Notification::create($notif);
-                         $datafrom = User::where('username','pusat')->first();
+                       
 
                          $description = $request->description;
-                         $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
-                         $pusat = User::where('username','pusat')->first()->email;
-                         Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
+                         $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id);
+                        
+                         Mail::to($pusat->email)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
                       
 
                     }
@@ -174,14 +175,14 @@ class ExtensionApiController extends Controller
                          $type = 'periode';
                          $messages = Auth::User()->username.' meminta pengajuan perpanjangan periode sampai tanggal '.$request->extensiondate;
                          $url = url('extension/show/'.$id);
-                         $notif = RequestNotification::fieldsData($type,$messages,$url);
+                         $notif = RequestNotification::fieldsData($type,$messages,$url,Auth::User()->username);
                          Notification::create($notif);
 
                         
                          $description = $request->description;
-                         $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
-                         $pusat = User::where('username','pusat')->first()->email;
-                         Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
+                         $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id);
+                         $pusat = User::where('username','pusat')->first();
+                         Mail::to($pusat->email)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
 
                     }
                  }
@@ -224,13 +225,13 @@ class ExtensionApiController extends Controller
              $type = 'periode';
              $pesan = 'pengajuan perpanjangan periode sampai tanggal '.$_res->extensiondate.' di approved';
              $url = url('extension/show/'.$id);
-             $notif = RequestNotification::fieldsData($type,$pesan,$url);
+             $notif = RequestNotification::fieldsData($type,$pesan,$url,Auth::User()->username);
              Notification::create($notif);
 
              $status = 'Disetujui';
              $description = $_res->description;
              
-             Mail::to('ryzal.kazama@gmail.com')->send(new PeriodeApproved($daerah_name,$url,$_res->year,$_res->semester,$daerah_name, $status,$description));
+             Mail::to(Auth::User()->email)->send(new PeriodeApproved($daerah_name,$url,$_res->year,$_res->semester,$daerah_name, $status,$description));
 
         }else{
             $results = $_res->update(['checklist'=>'not_approved']);
@@ -238,7 +239,7 @@ class ExtensionApiController extends Controller
             $type = 'periode';
             $pesan = Auth::User()->username.' pengajuan perpanjangan periode sampai tanggal '.$_res->extensiondate.' dibatalkan';
             $url = url('extension/show/'.$id);
-            $notif = RequestNotification::fieldsData($type,$pesan,$url);
+            $notif = RequestNotification::fieldsData($type,$pesan,$url,Auth::User()->username);
             Notification::create($notif);
 
              $status = 'Ditolak';

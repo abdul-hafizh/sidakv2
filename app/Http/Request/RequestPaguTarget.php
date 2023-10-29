@@ -98,22 +98,22 @@ class RequestPaguTarget
         $numberNext = 1;
         //dd($data);
         $result = $data->get();
-        $options = RequestMenuRoles::ActionPage('pagu-apbn');
+        $options = RequestMenuRoles::ActionPage('paguapbn');
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
 
             foreach ($options as $rows => $row) {
-                if ($row['action'] == 'update') {
-                    if ($row['checked'] == true) {
-                        $edit_url =  '<button id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+                if ($row->action == 'update') {
+                    if ($row->checked == true) {
+                        $edit_url =  '<div id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
                     }
                 }
 
-                if ($row['action'] == 'delete') {
-                    if ($row['checked'] == true) {
+                if ($row->action == 'delete') {
+                    if ($row->checked == true) {
 
-                        $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
+                        $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>';
                     }
                 }
             }
@@ -131,7 +131,8 @@ class RequestPaguTarget
             $row[]  = $val->target_penyelesaian_permasalahan;
             $row[]  = $val->target_bimbingan_teknis;
             $row[]  = $val->target_video_promosi;
-            $row[]  = $edit_url . " " . $delete_url;
+
+            $row[]  = '<div class="list-menu-table-pagu">'.$edit_url . " " . $delete_url.'</div>';
 
             $temp[] = $row;
         }

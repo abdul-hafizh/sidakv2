@@ -17,23 +17,9 @@ class RequestDaerah
     //     return $province;
     // }
 
-     public static function GetDaerahID()
+     public static function GetDaerahWhereID($id)
     {
        
-       // if($type =="Province")
-       // {
-       //   $data = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
-       // }else if($type =="Daerah"){
-       //   $data = Regencies::select('id as value','name as text')->orderBy('value','ASC')->get()
-       // }
-        //$province = Provinces::select('id as value','name as text');
-        // $regency = Regencies::select('id as value','name as text')->union($province)->orderBy('value','ASC')->get();
-
-        //return $data;
-    }
-
-     public static function GetDaerahWhereName($id)
-    {
         $result = '';
         $province = DB::table('provinces')->select('name')->where('id',$id)->first();
         if($province){
@@ -41,6 +27,26 @@ class RequestDaerah
 
         }else{
              $regency = DB::table('regencies')->select('name')->where('id',$id)->first();
+             if($regency)
+             {
+                $result = $regency->name;
+
+             }
+        }
+
+   
+        return $result;
+    }
+
+     public static function GetDaerahWhereName($name)
+    {
+        $result = '';
+        $province = DB::table('provinces')->select('name')->where('name',$name)->first();
+        if($province){
+           $result = $province->name;
+
+        }else{
+             $regency = DB::table('regencies')->select('name')->where('id',$name)->first();
              if($regency)
              {
                 $result = $regency->name;

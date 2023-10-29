@@ -114,7 +114,7 @@ class RequestPenyelesaian
             $numberNext++;
             $row   = array();
             $row[] = $val->id;
-            $row[] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+            $row[] = RequestDaerah::GetDaerahWhereID($val->daerah_id);
             $row[] = $val->nama_kegiatan;
             $row[] = $val->sub_menu;
             $row[] = GeneralHelpers::formatDate($val->tgl_kegiatan);
@@ -236,20 +236,6 @@ class RequestPenyelesaian
         $temp = [
             'biaya' => $request->biaya + $biayaTotal,
             'jml_perusahaan' => $request->jml_perusahaan + $jmlPerusahaanTotal,
-        ];
-
-        return json_decode(json_encode($temp), FALSE);
-    }
-
-    public static function GetSumHeader($menu_id, $periode, $daerah)
-    {
-        
-        $getSum = DB::select(
-            'call header_modul(?,?,?)', array($menu_id, $periode, $daerah)
-        );
-
-        $temp = [
-            'result' => $getSum,
         ];
 
         return json_decode(json_encode($temp), FALSE);

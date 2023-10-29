@@ -41,6 +41,10 @@
     text-align: center;
 }
 
+.text-right{
+    text-align: right!important;
+}
+
 .modal-body {
     padding: 15px 15px 0px!important;
 }
@@ -317,8 +321,13 @@ padding: 0px 12px 0px 0px!important;
 }
 
 .list-menu-table{
-    width:117px ;
+    width:190px ;
 }
+
+.list-menu-table-pagu{
+    width:80px ;
+}
+
 
 .list-menu-table-periode{
     width:115px ;
@@ -1275,6 +1284,27 @@ padding: 0px 12px 0px 0px!important;
     
 }
 
+.sidebar-collapse .img-circle {
+    background: #fff;
+    width: 30px!important;
+    height: 30px!important;
+}
+
+.sidebar-collapse .sidebar-menu>li {
+    
+    padding: 4px 0px!important;
+}
+
+.sidebar-collapse .treeview-menu{
+  background: #000;
+
+
+}
+
+.sidebar-collapse .skin-blue .sidebar-menu>li.active>a,.sidebar-collapse .skin-blue .sidebar-menu>li.menu-open>a{
+     border-radius: 0px;
+ }
+
 .pd-img-sidebar{
     padding: 23px 0px;
 }
@@ -1290,7 +1320,7 @@ padding: 0px 12px 0px 0px!important;
     position: relative;
     vertical-align: middle;
     float: left;
-    width: 200px;
+    width: 157px;
 }
 
 .btn-action button {

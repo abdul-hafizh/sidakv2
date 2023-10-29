@@ -70,7 +70,7 @@
 							<th><div class="split-table"></div> <span class="span-title"> Nama </span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Keterangan </span></th>
 							<th><div class="split-table"></div> <span class="span-title"> Status </span></th>
-								<th id="ShowAction" style="display:none;"><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
+								<th ><div class="split-table"></div> <span class="span-title"> Aksi </span> </th>
 						</tr>
 					</thead>
 
@@ -362,7 +362,14 @@
                         {
                            if(opt.checked == true)
                            { 
-                                row +=`<div id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`;
+
+                           	   if(item.deleted == true)
+                               {
+                                   row +=`<div id="Edit" data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit" ></i></div>`;
+                                }else{
+
+                                   row +=`<div  data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-edit-disabled" ></i></div>`;    
+                                } 
                               
                             }    
 
@@ -708,7 +715,7 @@
        {
             row +=`<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left"><i class="fa fa-trash" ></i></div>`; 
        }else{
-            row +=`<div disabled  data-toggle="tooltip" title="Hapus Data"   class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>`; 
+            row +=`<div  data-toggle="tooltip" title="Hapus Data"   class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy-disabled" ></i></div>`; 
        }
 
 

@@ -151,10 +151,12 @@ class ForumApiController extends Controller
            $last = RequestForum::MessagesLast($saveData->id,$request->topic_id);
 
            //send notif
+                $sender = Topic::find($request->topic_id);
+
                 $type = 'Topic';
                 $url = '';
                 $messages = Auth::User()->username.' mengomentari tautan anda';
-                $notif = RequestNotification::fieldsData($type,$messages,$url);
+                $notif = RequestNotification::fieldsData($type,$messages,$url,$sender->created_by);
                 Notification::create($notif);
          
             //result
@@ -333,6 +335,29 @@ class ForumApiController extends Controller
         return response()->json($messages);
 
 
+    }
+
+    public function deleteSelected(Request $request){
+        $messages['messages'] = false;
+
+        foreach($request->data as $key)
+        {
+            $find = Topic::where('id',$key)->first();
+            $log = array(             
+                'category'=> 'LOG_DATA_TOPIK',
+                'group_menu'=>'menghapus_data_topik',
+                'description'=> '<b>'.$find->name.'</b> telah dihapus',
+                );
+            $datalog = RequestAuditLog::fieldsData($log);
+            $results = Topic::where('id',(int)$key)->delete();
+        }
+
+        if($results){
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    
     }
 
 

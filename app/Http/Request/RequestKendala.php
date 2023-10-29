@@ -100,7 +100,7 @@ class RequestKendala
             $temp[$key]['id'] = $val->id;
             $temp[$key]['permasalahan'] = $val->permasalahan;
             $temp[$key]['messages'] = $val->messages;
-            $temp[$key]['from'] = $val->from;
+            $temp[$key]['from'] = RequestAuth::fullname($val->from);
             //$temp[$key]['deleted'] = RequestKendala::checkValidate($val->id);
             $temp[$key]['category'] = RequestKendala::categoryKendala($val->kriteria_id);
             $temp[$key]['total_messsage'] = RequestKendala::TotalMessage($val->id).' Pesan';

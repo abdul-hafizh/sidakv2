@@ -638,8 +638,9 @@
 
                     } else {
                     
-                        row +=`<div disabled type="button" class="pointer btn-padding-action pull-left" title="Edit Data"><i class="fa-icon icon-edit"></i></div>`;
-                        row +=`<div disabled type="button" class="pointer btn-padding-action pull-left" title="Hapus Data"><i class="fa-icon icon-destroy"></i></div>`;
+                        row +=`<div disabled type="button" class="pointer btn-padding-action pull-left" title="Edit Data"><i class="fa-icon icon-edit-disabled"></i></div>`;
+                     
+                        row +=`<div disabled type="button" class="pointer btn-padding-action pull-left" title="Hapus Data"><i class="fa-icon icon-destroy-disabled"></i></div>`;
                     }
 
                     if(item.alasan_edit !== null || item.alasan_revisi !== null || item.alasan_unapprove !== null || item.alasan_unapprove_doc !== null) {

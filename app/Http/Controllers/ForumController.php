@@ -43,8 +43,9 @@ class ForumController extends Controller
             'url'=>'forum/'.$topic.''
         );
         RequestSystemLog::CreateLog($log);
+        $access = RequestAuth::Access();
         $with =  ['title' => $title,'template'=>'template/'.$this->template];
-        if($_COOKIE['access'] =="admin")
+        if($access=="admin" ||  $access =="pusat")
         {
             return view('template/' . $this->template . '.forum.topik')->with($with);
         }else if($_COOKIE['access'] =="daerah" || $_COOKIE['access'] =="province"){

@@ -152,7 +152,7 @@ class RequestPromosi
                 $result['pagu_promosi'] = 'Rp 0';
                 $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id));
            }else{
-               $result['pagu_promosi'] = GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($year,Auth::User()->daerah_id));
+               $result['pagu_promosi'] = GeneralHelpers::formatRupiah(RequestPerencanaan::PaguPromosi($year,Auth::User()->daerah_id));
 
                $result['total_promosi'] = GeneralHelpers::formatRupiah(RequestPromosi::TotalPromosi($year,Auth::User()->daerah_id));
            } 
@@ -204,16 +204,16 @@ class RequestPromosi
 
          $temp = array();
 
-         if ($val->status == 'Y') {
+         if ($val->status_laporan_id == '14') {
             $status = 'Terkirim';
          }else{
            $status = 'Draft';
          
          };
-
+         $temp['id'] = $val->id;
          $temp['periode_id'] = $val->periode_id;
          $temp['daerah_id'] = $val->daerah_id;
-         $temp['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+         $temp['daerah_name'] = RequestDaerah::GetDaerahWhereID($val->daerah_id);
          
          $temp['tgl_awal_peluang'] = $val->tgl_awal_peluang;
          $temp['tgl_ahir_peluang'] = $val->tgl_ahir_peluang;
@@ -284,12 +284,14 @@ class RequestPromosi
          $temp['total_pasca_produksi'] = GeneralHelpers::formatRupiah($val->budget_editvideo + $val->budget_grafik + $val->budget_mixing + $val->budget_voice + $val->budget_subtitle); 
          $temp['created_by'] = $val->created_by;
          $temp['request_edit'] = $val->request_edit;
-         $temp['status_laporan_id'] = $val->status_laporan_id;
-         $temp['status'] = array('status_db' => $val->status, 'status_convert' => $status);
+         $temp['checklist'] = $val->checklist;
+         $temp['access'] = RequestAuth::Access();
+         $temp['alasan'] = $val->alasan;
+         $temp['status'] = array('status_db' => $val->status_laporan_id, 'status_convert' => $status);
 
-         $temp['pagu_promosi_convert'] =  GeneralHelpers::formatRupiah(RequestPaguTarget::PaguPromosi($val->periode_id,$val->daerah_id));
+         $temp['pagu_promosi_convert'] =  GeneralHelpers::formatRupiah(RequestPerencanaan::PaguPromosi($val->periode_id,$val->daerah_id));
          $temp['total_promosi_convert'] = GeneralHelpers::formatRupiah($val->budget_peluang + $val->budget_storyline + $val->budget_storyboard + $val->budget_lokasi + $val->budget_talent +  $val->budget_testimoni + $val->budget_audio + $val->budget_editing + $val->budget_gambar + $val->budget_video + $val->budget_editvideo + $val->budget_grafik + $val->budget_mixing + $val->budget_voice + $val->budget_subtitle);
-         $temp['pagu_promosi'] =  RequestPaguTarget::PaguPromosi($val->periode_id,$val->daerah_id);
+         $temp['pagu_promosi'] =  RequestPerencanaan::PaguPromosi($val->periode_id,$val->daerah_id);
          $temp['total_promosi'] = $val->budget_peluang + $val->budget_storyline + $val->budget_storyboard + $val->budget_lokasi + $val->budget_talent +  $val->budget_testimoni + $val->budget_audio + $val->budget_editing + $val->budget_gambar + $val->budget_video + $val->budget_editvideo + $val->budget_grafik + $val->budget_mixing + $val->budget_voice + $val->budget_subtitle;  
          return $temp;
 

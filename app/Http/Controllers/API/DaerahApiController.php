@@ -25,15 +25,6 @@ class DaerahApiController extends Controller
         $province = Provinces::select('id as value', 'name as text');
         $regency = Regencies::select('id as value', 'name as text')->union($province)->orderBy('value', 'ASC')->get();
 
-        // $access = RequestAuth::Access();
-
-        // $wilayah = DB::table('vw_wilayah_union')->select('id as value', 'name as text')->get();
-        
-        // if($access == 'daerah' ||  $access == 'province') {
-        //     $wilayah = DB::table('vw_wilayah_union')->select('id as value', 'name as text')->where('id', Auth::User()->daerah_id)->get();
-        // }
-
-
         return response()->json($regency);
     }
 

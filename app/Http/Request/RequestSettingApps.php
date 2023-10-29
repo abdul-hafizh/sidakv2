@@ -21,14 +21,14 @@ class RequestSettingApps
              
             if($data->logo_lg)
             {   
-                $logoLg = url(env('URL_FILE', 'images/').$data->logo_lg);
+                $logoLg = url('template/sidakv2/img/'.$data->logo_lg);
             }else{
                 $logoLg = url(env('URL_TEMPLATE').'logo_sidak.png');
             }  
 
             if($data->logo_sm)
             {   
-                $logoSm = url(env('URL_FILE', 'images/').$data->logo_sm);
+                $logoSm = url('template/sidakv2/img/'.$data->logo_sm);
             }else{
                 $logoSm = url(env('URL_TEMPLATE').'logo_icon.png');
             }  

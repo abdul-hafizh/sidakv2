@@ -159,29 +159,30 @@ class KendalaApiController extends Controller
             {
 
                 $type = 'kendala';
-            
+                $kendala = Kendala::find($request->kendala_id);
                 $messages = 'Tanggapan atas kendala '.$request->permasalahan.' sudah dibalas Admin';
-                $notif = RequestNotification::fieldsData($type,$messages,$url);
+                $notif = RequestNotification::fieldsData($type,$messages,$url,$kendala->from);
                 Notification::create($notif);
 
-                 // $text_name = 'Kementerian Investasi';
-                 // $pusat = User::where('username','pusat')->first()->email;
-                 // $name_send = User::where('username',$saveData->sender)->first() ;
-                 // Mail::to($name_send->email)->send(new TanggapanKendala($name_send->name,$url,$request->permasalahan,$request->messages, $text_name));
+                 $text_name = 'Kementerian Investasi';
+                 $pusat = User::where('username','pusat')->first()->email;
+                 $name_send = User::where('username',$saveData->sender)->first() ;
+                 Mail::to($name_send->email)->send(new TanggapanKendala($name_send->name,$url,$request->permasalahan,$request->messages, $text_name));
                
 
             }else{
 
-                  $type = 'kendala';
+                 $type = 'kendala';
+                 $pusat = User::where('username','pusat')->first();
                  $messages = Auth::User()->username.' meminta tanggapan atas kendala '.$request->permasalahan;
                 
-                 $notif = RequestNotification::fieldsData($type,$messages,$url);
+                 $notif = RequestNotification::fieldsData($type,$messages,$url,$pusat->username);
                  Notification::create($notif);
 
-                 // $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
-                 // $pusat = User::where('username','pusat')->first()->email;
-                 // $text_name = 'Kementerian Investasi';
-                 // Mail::to($pusat)->send(new KendalaPermasalahan($text_name,$url,$request->permasalahan,$request->messages, $daerah_name));
+                 $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id);
+                
+                 $text_name = 'Kementerian Investasi';
+                 Mail::to($pusat->email)->send(new KendalaPermasalahan($text_name,$url,$request->permasalahan,$request->messages, $daerah_name));
 
 
 
