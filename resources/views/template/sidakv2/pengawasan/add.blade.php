@@ -1,88 +1,22 @@
-<style>
-  .modal-loading {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 9999;
-  }
-
-  .modal-content2 {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 4px;
-    text-align: center;
-  }
-
-  .close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-  }
-
-  /* Styling untuk progress bar */
-  #progress-container {
-    text-align: center;
-  }
-
-  #progress-bar {
-    width: 100%;
-    background-color: #ccc;
-    border-radius: 4px;
-  }
-
-  #progress {
-    height: 20px;
-    background-color: #4caf50;
-    border-radius: 4px;
-    transition: width 0.3s ease-in-out;
-  }
-
-  #progress-label {
-    margin-top: 10px;
-    font-weight: bold;
-  }
-</style>
-<!-- Modal loading -->
-<div id="progressModal" class="modal-loading" style="display: none;">
-  <div class="modal-content2">
-    <span class="close" id="closeProgressModal">&times;</span>
-    <h2>Upload Progress</h2>
-    <div id="progress-container">
-      <div id="progress-bar">
-        <div id="progress" style="width: 0%"></div>
-      </div>
-      <div id="progress-label">0%</div>
-    </div>
-  </div>
-</div>
-
-
 <!-- Modal -->
-<div id="modal-add" class="modal fade" data-backdrop="static" data-keyboard="false">
+<div id="modal-add" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header bg-primary">
+      <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title" id="judulModalLabel">Tambah Data</h4>
+        <h4 class="modal-title" id="judulModalLabel">Tambah Pengawasan</h4>
       </div>
       <form id="FormSubmit" enctype="multipart/form-data">
+
         <div class="modal-body" style="height: 550px; overflow-y: auto;">
           <div class="row">
             <div id="alasan_req" class="form-group has-feedback col-md-12" style="display: none">
               <label>Alasan Request <div id="alasan_req-messages"></div></label>
             </div>
           </div>
+
           <div class="row">
             <div id="periode_id_mdl-alert" class="form-group has-feedback col-md-12">
               <label>Periode </label>
@@ -91,131 +25,72 @@
               <span id="periode_id_mdl-messages"></span>
             </div>
           </div>
+
           <div class="row">
             <div id="sub_menu_slug-alert" class="form-group has-feedback col-md-12">
-              <label>Jenis </label>
-              <input type="hidden" class="form-control" name="id_bimsos" id="id_bimsos" value="">
+              <label>Jenis Pengawasan</label>
+              <input type="hidden" class="form-control" name="id_pengawasan" id="id_pengawasan" value="">
               <select class="form-control select-jenis" name="sub_menu_slug" id="sub_menu_slug">
                 <option value="">-Pilih Tipe-</option>
-                <option value="is_tenaga_pendamping">Tenaga Pendamping</option>
-                <option value="is_bimtek_ipbbr">Bimtek Implementasi Perizinan Berusaha Berbasis Resiko</option>
-                <option value="is_bimtek_ippbbr">Bimtek Implementasi Pengawasan Perizinan Berusaha Berbasis Resiko</option>
+                <option value="analisa">Analisa dan Verifikasi Data</option>
+                <option value="inspeksi">Inspeksi Lapangan</option>
+                <option value="evaluasi">Evaluasi Penilaian Kepatuhan Pelaksanaan Perizinan Berusaha</option>
               </select>
               <span id="sub_menu_slug-messages"></span>
             </div>
           </div>
-          <div class="row">
-            <div id="nama_kegiatan-alert" class="form-group has-feedback col-md-12">
-              <label>Nama Kegiatan </label>
-              <input type="text" class="form-control" name="nama_kegiatan" id="nama_kegiatan" placeholder="nama kegiatan" value="">
+
+          <div class="is_analisa">
+            <div id="nama_kegiatan-alert" class="form-group has-feedback">
+              <label>Nama Kegiatan</label>
+              <input type="text" class="form-control" name="nama_kegiatan" id="nama_kegiatan" placeholder="Nama Kegiatan" value="">
               <span id="nama_kegiatan-messages"></span>
             </div>
-          </div>
-          <div class="row">
-            <div id="tgl_bimtek-alert" class="form-group has-feedback col-md-12">
-              <label>Tanggal Kegiatan </label>
-              <input type="date" class="form-control" name="tgl_bimtek" id="tgl_bimtek" placeholder="Tanggal Kegiatan" value="">
-              <span id="tgl_bimtek-messages"></span>
+
+            <div id="hasil_analisa-alert" class="form-group has-feedback">
+              <label id="hasilAnalisaLabel">Hasil Analisa</label>
+              <textarea class="form-control" name="hasil_analisa" id="hasil_analisa" rows="4" placeholder="Hasil Analisa"></textarea>
+              <span id="hasil_analisa-messages"></span>
             </div>
-          </div>
-          <div class="row">
-            <div id="lokasi_bimtek-alert" class="form-group has-feedback col-md-12">
-              <label>Lokasi </label>
-              <input type="text" class="form-control" name="lokasi_bimtek" id="lokasi_bimtek" placeholder="Lokasi" value="">
-              <span id="lokasi_bimtek-messages"></span>
+
+            <div id="tanggal_kegiatan-alert" class="form-group has-feedback">
+              <label>Tanggal Kegiatan</label>
+              <input type="date" class="form-control" name="tanggal_kegiatan" id="tanggal_kegiatan" placeholder="Tanggal Kegiatan">
+              <span id="tanggal_kegiatan-messages"></span>
             </div>
-          </div>
-          <div class="row">
-            <div id="biaya_kegiatan-alert" class="form-group has-feedback col-md-12">
-              <label>Biaya </label>
-              <input type="number" class="form-control" name="biaya_kegiatan" id="biaya_kegiatan" placeholder="Biaya " value="">
-              <span id="biaya_kegiatan-messages"></span>
+
+            <div id="biaya-alert" class="form-group has-feedback">
+              <label>Biaya (Rp.)</label>
+              <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
+              <span id="biaya-messages"></span>
             </div>
-          </div>
-          <div class="row">
-            <div id="jml_peserta-alert" class="form-group has-feedback col-md-12" style="display: none">
-              <label>Jumlah Peserta </label>
-              <input type="number" class="form-control" name="jml_peserta" id="jml_peserta" placeholder="Jumlah peserta " value="">
-              <span id="jml_peserta-messages"></span>
+
+            <div id="lokasi-alert" class="form-group has-feedback">
+              <label>Lokasi Kegiatan</label>
+              <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi Kegiatan" value="">
+              <span id="lokasi-messages"></span>
             </div>
-          </div>
-          <div class="row">
-            <div id="ringkasan_kegiatan-alert" class="form-group has-feedback col-md-12">
-              <label>Ringkasan kegiatan </label>
-              <textarea id="ringkasan_kegiatan" name="ringkasan_kegiatan" rows="4" class="form-control"></textarea>
-              <span id="ringkasan_kegiatan-messages"></span>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_hadir-alert" class="form-group has-feedback col-md-12">
-              <label>Daftar hadir</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_hadir" style="display: none" style="margin-left: 5px"><small>(Tampilkan Daftar hadir)</small></a>
-              <input type="hidden" class="form-control" name="lap_hadir_file" id="lap_hadir_file" value="">
-              <input type="file" class="form-control file-access" name="lap_hadir" id="lap_hadir" accept=".pdf">
-              <span id="lap_hadir-messages"></span>
+
+            <div id="lap_kegiatan-alert" class="form-group has-feedback">
+              <label>Laporan</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_kegiatan" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kegiatan)</small></a>
+              <input type="hidden" class="form-control" name="lap_kegiatan_file" id="lap_kegiatan_file" value="">
+              <input type="file" class="form-control file-access" name="lap_kegiatan" id="lap_kegiatan" accept=".pdf">
+              <span id="lap_kegiatan-messages"></span>
               <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
-          <div class="row">
-            <div id="lap_pendamping-alert" class="form-group has-feedback col-md-12">
-              <label>Laporan Tenaga Pendamping</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_pendamping" style="display: none" style="margin-left: 5px"><small>(Tampilkan Tenaga Pendamping)</small></a>
-              <input type="hidden" class="form-control" name="lap_pendamping_file" id="lap_pendamping_file" value="">
-              <input type="file" class="form-control file-access" name="lap_pendamping" id="lap_pendamping" accept=".pdf">
-              <span id="lap_pendamping-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+
+          <div class="is_inspeksi">
+            <div id="perusahaan-alert" class="form-group has-feedback">
+              <label>Nama Perusahaan</label>
+              <input type="text" class="form-control" name="nama_perusahaan" placeholder="Nama Perusahaan" value="">
+              <span id="perusahaan-messages"></span>
             </div>
           </div>
-          <div class="row">
-            <div id="lap_notula-alert" class="form-group has-feedback col-md-12" style="display: none">
-              <label>Notula Kegiatan</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_notula" style="display: none" style="margin-left: 5px"><small>(Tampilkan Notula Kegiatan)</small></a>
-              <input type="hidden" class="form-control" name="lap_notula_file" id="lap_notula_file" value="">
-              <input type="file" class="form-control file-access" name="lap_notula" id="lap_notula" accept=".pdf">
-              <span id="lap_notula-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_survey-alert" class="form-group has-feedback col-md-12" style="display: none">
-              <label>Hasil Survey</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_survey" style="display: none" style="margin-left: 5px"><small>(Tampilkan Hasil Survey)</small></a>
-              <input type="hidden" class="form-control" name="lap_survey_file" id="lap_survey_file" value="">
-              <input type="file" class="form-control file-access" name="lap_survey" id="lap_survey" accept=".pdf">
-              <span id="lap_survey-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12" style="display: none">
-              <label>Daftar Narasumber</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_narasumber" style="display: none" style="margin-left: 5px"><small>(Tampilkan Daftar Narasumber)</small></a>
-              <input type="hidden" class="form-control" name="lap_narasumber_file" id="lap_narasumber_file" value="">
-              <input type="file" class="form-control file-access" name="lap_narasumber" id="lap_narasumber" accept=".pdf">
-              <span id="lap_narasumber-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_materi-alert" class="form-group has-feedback col-md-12" style="display: none">
-              <label>Materi</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_materi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Materi)</small></a>
-              <input type="hidden" class="form-control" name="lap_materi_file" id="lap_materi_file" value="">
-              <input type="file" class="form-control file-access" name="lap_materi" id="lap_materi" accept=".pdf">
-              <span id="lap_materi-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
-          </div>
-          <div class="row">
-            <div id="lap_document-alert" class="form-group has-feedback col-md-12" style="display: none">
-              <label>Laporan Dokumentasi</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_document" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Dokumentasi)</small></a>
-              <input type="hidden" class="form-control" name="lap_document_file" id="lap_document_file" value="">
-              <input type="file" class="form-control file-access" name="lap_document" id="lap_document" accept=".pdf">
-              <span id="lap_document-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
-          </div>
+
+
+
         </div>
         <div class="modal-footer modal-add2">
           <button class="btn btn-default" data-dismiss="modal">Close</button>
@@ -287,68 +162,51 @@
   </div>
 </div>
 
-
 <script type="text/javascript">
-  $(function() {
+  $(document).ready(function() {
 
-    $('#sub_menu_slug').on('change', function() {
-      let sub_menu_slug = $('#sub_menu_slug').val();
-      if (sub_menu_slug == 'is_tenaga_pendamping') {
-        $('#jml_peserta-alert').hide();
-        $('#lap_notula-alert').hide();
-        $('#lap_survei-alert').hide();
-        $('#lap_narasumber-alert').hide();
-        $('#lap_survey-alert').hide();
-        $('#lap_materi-alert').hide();
-        $('#lap_document-alert').hide();
-        $('#lap_pendamping-alert').show();
-      } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
-        $('#jml_peserta-alert').show();
-        $('#lap_notula-alert').show();
-        $('#lap_survei-alert').show();
-        $('#lap_narasumber-alert').show();
-        $('#lap_survey-alert').show();
-        $('#lap_materi-alert').show();
-        $('#lap_document-alert').show();
-        $('#lap_pendamping-alert').hide();
+    $(".is_inspeksi").hide();
+
+    $('#sub_menu_slug').change(function() {
+      var value = $(this).val();
+      if (value == 'analisa') {
+        $(".is_analisa").show();
+        $(".is_inspeksi").hide();
+        $("#hasil_analisa").attr('placeholder', 'Hasil Analisa');
+        $('#hasilAnalisaLabel').text("Hasil Analisa")
+      } else if (value == 'inspeksi') {
+        $(".is_analisa").hide();
+        $(".is_inspeksi").show();
+      } else if (value == 'evaluasi') {
+        $(".is_analisa").show();
+        $(".is_inspeksi").hide();
+        $("#hasil_analisa").attr('placeholder', 'Hasil Evaluasi');
+        $('#hasilAnalisaLabel').text('Hasil Evaluasi');
       } else {
-        $('#jml_peserta-alert').show();
-        $('#lap_notula-alert').show();
-        $('#lap_survei-alert').show();
-        $('#lap_narasumber-alert').show();
-        $('#lap_survey-alert').show();
-        $('#lap_materi-alert').show();
-        $('#lap_document-alert').show();
-        $('#lap_pendamping-alert').hide();
+        $(".is_analisa").hide();
+        $(".is_inspeksi").hide();
       }
-    })
+    });
 
     $('#tambah').on('click', function() {
       $('#judulModalLabel').html('Tambah Data')
       $('.modal-add2').show();
       $('.modal-edit').hide();
-      $('#alasan_req').hide();
       $('.text-profile').hide();
       $('.file-access').show();
+      $('#alasan_req').hide();
       $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
       $('#FormSubmit select').removeAttr('disabled');
       var form = [
-        'id_bimsos',
+        'id_pengawasan',
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
-        'biaya_kegiatan',
-        'jml_peserta',
-        'ringkasan_kegiatan',
-        'lap_hadir',
-        'lap_pendamping',
-        'lap_notula',
-        'lap_survey',
-        'lap_narasumber',
-        'lap_materi',
-        'lap_document'
+        'hasil_analisa',
+        'tanggal_kegiatan',
+        'biaya',
+        'lokasi',
+        'lap_kegiatan'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -358,55 +216,22 @@
       }
     })
 
-    $('#periode_id_mdl').on('change', function() {
-
-      var val_periode = $('#periode_id_mdl').val();
-
-      $.ajax({
-        url: BASE_URL + '/api/penyelesaian/cekPeriode/' + val_periode,
-        method: 'GET',
-        success: function(res) {
-          if (res.status != 'Y') {
-            $('#simpan').hide();
-            Swal.fire({
-              title: 'Periode Input Data Sudah Habis.',
-              text: 'Periksa kembali periode input data.',
-              icon: 'error',
-              confirmButtonText: 'OK'
-            }).then((result) => {});
-          } else {
-            $('#simpan').show();
-          }
-        },
-        error: function() {
-          Swal.fire({
-            title: 'Data tidak ditemukan.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          }).then((result) => {});
-        }
-      });
-    });
-
     $('#simpan').on('click', function() {
       var formData = new FormData($('#FormSubmit')[0]);
-      console.log(formData);
       var form = [
-        'id_bimsos',
+        'id_pengawasan',
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
-        'biaya_kegiatan',
-        'jml_peserta',
-        'ringkasan_kegiatan'
+        'hasil_analisa',
+        'tanggal_kegiatan',
+        'biaya',
+        'lokasi'
       ];
       formData.append("status", 13);
-      $('#progressModal').show();
       $.ajax({
         type: "POST",
-        url: BASE_URL + '/api/bimsos',
+        url: BASE_URL + '/api/pengawasan',
         data: formData,
         processData: false,
         contentType: false,
@@ -424,7 +249,6 @@
           return xhr;
         },
         success: (respons) => {
-          $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
             text: respons.message,
@@ -443,90 +267,6 @@
           //
         },
         error: (respons) => {
-          $('#progressModal').hide();
-
-          errors = respons.responseJSON;
-          for (let i = 0; i < form.length; i++) {
-            const field = form[i];
-            if (errors.messages[field]) {
-              $('#' + field + '-alert').addClass('has-error');
-              $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
-            } else {
-              $('#' + field + '-alert').removeClass('has-error');
-              $('#' + field + '-messages').removeClass('help-block').html('');
-            }
-          }
-          Swal.fire({
-            title: 'Periksa kembali data anda.',
-            icon: 'error',
-            confirmButtonText: 'OK'
-          }).then((result) => {});
-        }
-      });
-    });
-    $('#kirim').on('click', function() {
-      var formData = new FormData($('#FormSubmit')[0]);
-      console.log(formData);
-      var form = [
-        'id_bimsos',
-        'periode_id_mdl',
-        'sub_menu_slug',
-        'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
-        'biaya_kegiatan',
-        'jml_peserta',
-        'ringkasan_kegiatan',
-        'lap_hadir',
-        'lap_pendamping',
-        'lap_notula',
-        'lap_survey',
-        'lap_narasumber',
-        'lap_materi',
-        'lap_document'
-      ];
-      formData.append("status", 14);
-      $('#progressModal').show();
-      $.ajax({
-        type: "POST",
-        url: BASE_URL + '/api/bimsos',
-        data: formData,
-        processData: false,
-        contentType: false,
-        xhr: function() {
-          var xhr = new window.XMLHttpRequest();
-          xhr.upload.addEventListener("progress", function(evt) {
-            if (evt.lengthComputable) {
-              var percentComplete = (evt.loaded / evt.total) * 100;
-              $('#progress').css('width', percentComplete + '%');
-              $('#progress-label').text(percentComplete.toFixed(2) + '%');
-              // Place upload progress bar visibility code here
-            }
-          }, false);
-
-          return xhr;
-        },
-        success: (respons) => {
-          $('#progressModal').hide();
-          Swal.fire({
-            title: 'Sukses!',
-            text: respons.message,
-            icon: 'success',
-            confirmButtonText: 'OK'
-
-          }).then((result) => {
-            if (result.isConfirmed) {
-              // User clicked "Yes, proceed!" button
-              $('#modal-add').hide();
-              $('body').removeClass('modal-open');
-              $('.modal-backdrop').remove();
-              $('#datatable').DataTable().ajax.reload();
-            }
-          });
-          //
-        },
-        error: (respons) => {
-          $('#progressModal').hide();
 
           errors = respons.responseJSON;
           for (let i = 0; i < form.length; i++) {
@@ -549,20 +289,19 @@
     });
 
     $("#datatable").on("click", ".modalUbah", function(e) {
-      $('#judulModalLabel').html('Form Ubah');
+      $('#judulModalLabel').html('Ubah Pengawasan');
       //  $('.modal-footer button[type=button]').html('Ubah Data');
       $('.modal-add2').hide();
       var form = [
-        'id_bimsos',
+        'id_pengawasan',
         'periode_id_mdl',
         'sub_menu_slug',
         'nama_kegiatan',
-        'tgl_bimtek',
-        'lokasi_bimtek',
-        'biaya_kegiatan',
-        'jml_peserta',
-        'ringkasan_kegiatan',
-        'lap_hadir',
+        'hasil_analisa',
+        'tanggal_kegiatan',
+        'biaya',
+        'lokasi',
+        'lap_kegiatan',
         'lap_pendamping',
         'lap_notula',
         'lap_survey',
@@ -580,89 +319,88 @@
       const id = e.currentTarget.dataset.param_id;
       //document.getElementById('FormSubmit').id = 'FormSubmit' + id;
       $.ajax({
-        url: BASE_URL + '/api/bimsos/edit/' + id,
+        url: BASE_URL + '/api/pengawasan/edit/' + id,
         method: 'GET',
         success: function(data) {
-          $('#id_bimsos').val(data.id);
+          $('#id_pengawasan').val(data.id);
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
-          $('#tgl_bimtek').val(data.tgl_bimtek);
-          $('#lokasi_bimtek').val(data.lokasi_bimtek);
-          $('#biaya_kegiatan').val(data.biaya_kegiatan);
-          $('#jml_peserta').val(data.jml_peserta);
-          $('#ringkasan_kegiatan').val(data.ringkasan_kegiatan);
+          $('#tanggal_kegiatan').val(data.tgl_kegiatan);
+          $('#hasil_analisa').val(data.rencana_kegiatan);
+          $('#biaya').val(data.biaya_kegiatan);
+          $('#lokasi').val(data.lokasi_kegiatan);
           $('#is_skpd_sesuai').val(data.is_skpd_sesuai);
           $('.modal-edit').show();
-          if (data.lap_hadir) {
-            $('#modal-lap_hadir').show();
-            $('#lap_hadir_file').val(data.lap_hadir);
-            $('#modal-lap_hadir').click(function() {
-              tampilkanModal(data.lap_hadir);
+          if (data.lap_kegiatan) {
+            $('#modal-lap_kegiatan').show();
+            $('#lap_kegiatan_file').val(data.lap_kegiatan);
+            $('#modal-lap_kegiatan').click(function() {
+              tampilkanModal(data.lap_kegiatan);
             });
           } else {
-            $('#modal-lap_hadir').hide();
-            $('#lap_hadir_file').val('');
+            $('#modal-lap_kegiatan').hide();
+            $('#lap_kegiatan_file').val('');
           }
-          if (data.lap_pendamping) {
-            $('#modal-lap_pendamping').show();
-            $('#lap_pendamping_file').val(data.lap_pendamping);
-            $('#modal-lap_pendamping').click(function() {
-              tampilkanModal(data.lap_pendamping);
-            });
-          } else {
-            $('#modal-lap_pendamping').hide();
-            $('#lap_pendamping_file').val('');
-          }
-          if (data.lap_notula) {
-            $('#modal-lap_notula').show();
-            $('#lap_notula_file').val(data.lap_notula);
-            $('#modal-lap_notula').click(function() {
-              tampilkanModal(data.lap_notula);
-            });
-          } else {
-            $('#modal-lap_notula').hide();
-            $('#lap_notula_file').val('');
-          }
-          if (data.lap_survey) {
-            $('#modal-lap_survey').show();
-            $('#lap_survey_file').val(data.lap_survey);
-            $('#modal-lap_survey').click(function() {
-              tampilkanModal(data.lap_survey);
-            });
-          } else {
-            $('#modal-lap_survey').hide();
-            $('#lap_survey_file').val('');
-          }
-          if (data.lap_narasumber) {
-            $('#modal-lap_narasumber').show();
-            $('#lap_narasumber_file').val(data.lap_narasumber);
-            $('#modal-lap_narasumber').click(function() {
-              tampilkanModal(data.lap_narasumber);
-            });
-          } else {
-            $('#modal-lap_narasumber').hide();
-            $('#lap_narasumber_file').val('');
-          }
-          if (data.lap_materi) {
-            $('#modal-lap_materi').show();
-            $('#lap_materi_file').val(data.lap_materi);
-            $('#modal-lap_materi').click(function() {
-              tampilkanModal(data.lap_materi);
-            });
-          } else {
-            $('#modal-lap_materi').hide();
-            $('#lap_materi_file').val('');
-          }
-          if (data.lap_document) {
-            $('#modal-lap_document').show();
-            $('#lap_document_file').val(data.lap_document);
-            $('#modal-lap_document').click(function() {
-              tampilkanModal(data.lap_document);
-            });
-          } else {
-            $('#modal-lap_document').hide();
-            $('#lap_document_file').val('');
-          }
+          // if (data.lap_pendamping) {
+          //   $('#modal-lap_pendamping').show();
+          //   $('#lap_pendamping_file').val(data.lap_pendamping);
+          //   $('#modal-lap_pendamping').click(function() {
+          //     tampilkanModal(data.lap_pendamping);
+          //   });
+          // } else {
+          //   $('#modal-lap_pendamping').hide();
+          //   $('#lap_pendamping_file').val('');
+          // }
+          // if (data.lap_notula) {
+          //   $('#modal-lap_notula').show();
+          //   $('#lap_notula_file').val(data.lap_notula);
+          //   $('#modal-lap_notula').click(function() {
+          //     tampilkanModal(data.lap_notula);
+          //   });
+          // } else {
+          //   $('#modal-lap_notula').hide();
+          //   $('#lap_notula_file').val('');
+          // }
+          // if (data.lap_survey) {
+          //   $('#modal-lap_survey').show();
+          //   $('#lap_survey_file').val(data.lap_survey);
+          //   $('#modal-lap_survey').click(function() {
+          //     tampilkanModal(data.lap_survey);
+          //   });
+          // } else {
+          //   $('#modal-lap_survey').hide();
+          //   $('#lap_survey_file').val('');
+          // }
+          // if (data.lap_narasumber) {
+          //   $('#modal-lap_narasumber').show();
+          //   $('#lap_narasumber_file').val(data.lap_narasumber);
+          //   $('#modal-lap_narasumber').click(function() {
+          //     tampilkanModal(data.lap_narasumber);
+          //   });
+          // } else {
+          //   $('#modal-lap_narasumber').hide();
+          //   $('#lap_narasumber_file').val('');
+          // }
+          // if (data.lap_materi) {
+          //   $('#modal-lap_materi').show();
+          //   $('#lap_materi_file').val(data.lap_materi);
+          //   $('#modal-lap_materi').click(function() {
+          //     tampilkanModal(data.lap_materi);
+          //   });
+          // } else {
+          //   $('#modal-lap_materi').hide();
+          //   $('#lap_materi_file').val('');
+          // }
+          // if (data.lap_document) {
+          //   $('#modal-lap_document').show();
+          //   $('#lap_document_file').val(data.lap_document);
+          //   $('#modal-lap_document').click(function() {
+          //     tampilkanModal(data.lap_document);
+          //   });
+          // } else {
+          //   $('#modal-lap_document').hide();
+          //   $('#lap_document_file').val('');
+          // }
 
           getPeriode(data.periode_id);
           subMenu(data.sub_menu_slug);
@@ -767,33 +505,22 @@
       }
 
       function subMenu(sub_menu_slug) {
-        if (sub_menu_slug == 'is_tenaga_pendamping') {
-          $('#jml_peserta-alert').hide();
-          $('#lap_notula-alert').hide();
-          $('#lap_survei-alert').hide();
-          $('#lap_narasumber-alert').hide();
-          $('#lap_survey-alert').hide();
-          $('#lap_materi-alert').hide();
-          $('#lap_document-alert').hide();
-          $('#lap_pendamping-alert').show();
-        } else if (sub_menu_slug == 'is_bimtek_ipbbr') {
-          $('#jml_peserta-alert').show();
-          $('#lap_notula-alert').show();
-          $('#lap_survei-alert').show();
-          $('#lap_narasumber-alert').show();
-          $('#lap_survey-alert').show();
-          $('#lap_materi-alert').show();
-          $('#lap_document-alert').show();
-          $('#lap_pendamping-alert').hide();
+        if (sub_menu_slug == 'analisa') {
+          $(".is_analisa").show();
+          $(".is_inspeksi").hide();
+          $("#hasil_analisa").attr('placeholder', 'Hasil Analisa');
+          $('#hasilAnalisaLabel').text("Hasil Analisa")
+        } else if (value == 'inspeksi') {
+          $(".is_analisa").hide();
+          $(".is_inspeksi").show();
+        } else if (value == 'evaluasi') {
+          $(".is_analisa").show();
+          $(".is_inspeksi").hide();
+          $("#hasil_analisa").attr('placeholder', 'Hasil Evaluasi');
+          $('#hasilAnalisaLabel').text('Hasil Evaluasi');
         } else {
-          $('#jml_peserta-alert').show();
-          $('#lap_notula-alert').show();
-          $('#lap_survei-alert').show();
-          $('#lap_narasumber-alert').show();
-          $('#lap_survey-alert').show();
-          $('#lap_materi-alert').show();
-          $('#lap_document-alert').show();
-          $('#lap_pendamping-alert').hide();
+          $(".is_analisa").hide();
+          $(".is_inspeksi").hide();
         }
       }
 
@@ -818,7 +545,7 @@
 
       $("#modal_edit").click(() => {
         Swal.fire({
-          title: 'Apakah Anda Yakin Mengedit Bimsos Ini?',
+          title: 'Apakah Anda Yakin Mengedit Pengawasan  Ini?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#d33',
@@ -828,7 +555,7 @@
           if (result.isConfirmed) {
             var form = {
               "alasan": $("#alasan_edit").val(),
-              "jenis_kegiatan": "Bimsos",
+              "jenis_kegiatan": "Pengawasan ",
               "type": "request_edit"
             };
             if ($("#alasan_edit").val() != '') {
@@ -848,7 +575,7 @@
 
         $.ajax({
           type: "PUT",
-          url: BASE_URL + '/api/bimsos/request_edit/' + id,
+          url: BASE_URL + '/api/pengawasan/request_edit/' + id,
           data: form,
           cache: false,
           dataType: "json",
@@ -873,7 +600,7 @@
 
       $("#modal_revisi").click(() => {
         Swal.fire({
-          title: 'Apakah Anda Yakin Revisi Bimsos Ini?',
+          title: 'Apakah Anda Yakin Revisi Pengawasan  Ini?',
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#d33',
@@ -883,7 +610,7 @@
           if (result.isConfirmed) {
             var form = {
               "alasan": $("#alasan_revisi").val(),
-              "jenis_kegiatan": "Bimsos",
+              "jenis_kegiatan": "Pengawasan ",
               "type": "request_revision"
             };
             if ($("#alasan_revisi").val() != '') {
@@ -903,7 +630,7 @@
 
         $.ajax({
           type: "PUT",
-          url: BASE_URL + '/api/bimsos/request_revisi/' + id,
+          url: BASE_URL + '/api/pengawasan/request_revisi/' + id,
           data: form,
           cache: false,
           dataType: "json",
@@ -941,15 +668,14 @@
         $('#update-' + id_modal).on('click', function() {
           var formData = new FormData($('#FormSubmit')[0]);
           var form = [
-            'id_bimsos',
+            'id_pengawasan',
             'periode_id_mdl',
             'sub_menu_slug',
             'nama_kegiatan',
-            'tgl_bimtek',
-            'lokasi_bimtek',
-            'biaya_kegiatan',
-            'jml_peserta',
-            'ringkasan_kegiatan',
+            'hasil_analisa',
+            'tanggal_kegiatan',
+            'biaya',
+            'lokasi',
             'lap_hadir',
             'lap_pendamping',
             'lap_notula',
@@ -962,7 +688,7 @@
           $('#progressModal').show();
           $.ajax({
             type: "POST",
-            url: BASE_URL + '/api/bimsos/update/' + id_modal,
+            url: BASE_URL + '/api/pengawasan/update/' + id_modal,
             data: formData,
             processData: false,
             contentType: false,
@@ -1022,15 +748,15 @@
           console.log(id_modal);
           var formData = new FormData($('#FormSubmit')[0]);
           var form = [
+            'id_pengawasan',
             'periode_id_mdl',
             'sub_menu_slug',
             'nama_kegiatan',
-            'tgl_bimtek',
-            'lokasi_bimtek',
-            'biaya_kegiatan',
-            'jml_peserta',
-            'ringkasan_kegiatan',
-            'lap_hadir',
+            'hasil_analisa',
+            'tanggal_kegiatan',
+            'biaya',
+            'lokasi',
+            'lap_kegiatan',
             'lap_pendamping',
             'lap_notula',
             'lap_survey',
@@ -1041,7 +767,7 @@
           formData.append("status", 14);
           $.ajax({
             type: "POST",
-            url: BASE_URL + '/api/bimsos/kirim/' + id_modal,
+            url: BASE_URL + '/api/pengawasan/kirim/' + id_modal,
             data: formData,
             processData: false,
             contentType: false,
@@ -1092,7 +818,7 @@
           };
           $.ajax({
             type: "PUT",
-            url: BASE_URL + '/api/bimsos/approve_edit/' + id_modal,
+            url: BASE_URL + '/api/pengawasan/approve_edit/' + id_modal,
             data: data,
             cache: false,
             dataType: "json",
@@ -1121,6 +847,5 @@
 
     });
 
-
-  });
+  })
 </script>

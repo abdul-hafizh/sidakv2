@@ -22,7 +22,7 @@ class RequestBimsos
         $getRequest = $request->all();
         $column_order   = array('', 'nama_kegiatan', 'sub_menu_slug', 'tgl_bimtek', 'lokasi_bimtek', 'biaya_kegiatan', 'status_laporan_id');
         $column_search  = array('nama_kegiatan', 'sub_menu_slug', 'tgl_bimtek', 'lokasi_bimtek', 'biaya_kegiatan', 'status_laporan_id');
-        $order = array('nama_kegiatan' => 'ASC');
+        $order = array('sub_menu_slug' => 'ASC');
 
         $data = DB::table('bimsos');
 

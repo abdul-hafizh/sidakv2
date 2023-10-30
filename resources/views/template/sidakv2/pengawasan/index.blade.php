@@ -80,9 +80,9 @@
 		<div class="col-sm-2">
 			<select class="selectpicker" name="jenis_sub" id="jenis_sub" title="Jenis">
 				<option value="">-Pilih Tipe-</option>
-				<option value="is_tenaga_pendamping">Tenaga Pendamping</option>
-				<option value="is_bimtek_ipbbr">Bimtek Implementasi Perizinan Berusaha Berbasis Resiko</option>
-				<option value="is_bimtek_ippbbr">Bimtek Implementasi Pengawasan Perizinan Berusaha Berbasis Resiko</option>
+				<option value="analisa">Analisa dan Verifikasi Data</option>
+				<option value="inspeksi">Inspeksi Lapangan</option>
+				<option value="evaluasi">Evaluasi Penilaian Kepatuhan Pelaksanaan Perizinan Berusaha</option>
 			</select>
 		</div>
 		<div class="col-sm-2">
@@ -152,13 +152,13 @@
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>
 							<th><span class="border-left-table">Nama Daerah </span> </th>
-							<th><span class="border-left-table">Nama Kegiatan </span> </th>
-							<th><span class="border-left-table">Sub Menu </span> </th>
-							<th><span class="border-left-table">Tanggal Kegiatan </span></th>
-							<th><span class="border-left-table">Lokasi </span></th>
-							<th><span class="border-left-table">Biaya </span></th>
-							<th><span class="border-left-table">Status </span></th>
-							<th><span class="border-left-table"> Aksi </span> </th>
+							<th class=""><span class="border-left-table">Sub Menu </span> </th>
+							<th class=""><span class="border-left-table">Nama Perusahaan </span> </th>
+							<th class=""><span class="border-left-table">Nama Kegiatan </span> </th>
+							<th class=""><span class="border-left-table">Tanggal Kegiatan</span> </th>
+							<th class=""><span class="border-left-table">Biaya</span> </th>
+							<th class=""><span class="border-left-table">Status </span> </th>
+							<th class=""><span class="border-left-table">Aksi </span> </th>
 						</tr>
 					</thead>
 					<tbody>
@@ -168,38 +168,15 @@
 		</div>
 	</div>
 </div>
-@include('template/sidakv2/bimsos.add')
-<!-- Import Excel -->
+
+@include('template/sidakv2/pengawasan.add')
 
 @stop
 
 @push('scripts')
 <script>
-	var search = '';
-	hasil_sum(search);
-	select_periode();
 	getPeriodeAdd();
-
-	function hasil_sum(search) {
-		if (search !== "")
-			var filter = JSON.stringify(search);
-		$.ajax({
-			url: BASE_URL + '/api/pagutarget/total_pagu',
-			method: 'POST',
-			data: {
-				data: filter
-			},
-			dataType: 'json',
-			success: function(result) {
-				$('#total_apbn').html(result.total_apbn);
-				$('#total_promosi').html(result.total_promosi);
-				$('#total_all').html(result.total_all);
-			},
-			error: function(error) {
-				console.error(error);
-			}
-		});
-	}
+	select_periode();
 
 	function select_periode() {
 		$.ajax({
@@ -224,7 +201,7 @@
 	function getPeriodeAdd() {
 		$.ajax({
 			url: BASE_URL + '/api/select-periode-semester',
-			method: 'GET',
+			method: 'get',
 			dataType: 'json',
 			success: function(data) {
 				periode = '<option value="">- Pilih -</option>';
@@ -233,11 +210,12 @@
 					if (data.tahunSemester == val.value)
 						select = 'selected';
 					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
-
 				});
-				$('#periode_id_mdl').html(periode);
+				$('#periode_id_mdl').html(periode)
+				$('.select-periode-mdl').select2();
 			}
 		})
+
 	}
 
 	$(function() {
@@ -246,7 +224,7 @@
 			processing: true,
 			serverSide: true,
 			ordering: false,
-			ajax: BASE_URL + '/api/bimsos/datalist',
+			ajax: BASE_URL + '/api/pengawasan/datalist',
 			fixedHeader: {
 				header: true,
 				footer: true
@@ -291,10 +269,6 @@
 				{
 					targets: [6],
 					className: 'dt-body-right'
-				},
-				{
-					targets: [3],
-					className: 'dt-body-center'
 				}
 			],
 			order: [
@@ -307,7 +281,7 @@
 
 		function reformatNumber(data, row, column, node) {
 			// replace spaces with nothing; replace commas with points.
-			if (column == 4 || column == 5 || column == 6) {
+			if (column == 6) {
 				var newData = data.replace('Rp ', '').replaceAll('.', '');
 				return newData;
 			} else if (column != 0 && column != 11) {
@@ -362,7 +336,6 @@
 				periode_id: $("#periode_id2").val()
 			}, ];
 			table.search(this.value).draw();
-			hasil_sum(filter);
 		}, 1000));
 
 		$("#Search").on("click", function() {
@@ -376,7 +349,6 @@
 
 			//var email = $("#email").val();
 			//filter = filter[0];
-			hasil_sum(filter);
 			table.column(0).search(JSON.stringify(filter), true, true);
 			table.draw();
 		});
@@ -405,7 +377,7 @@
 
 		function deleteItem(id) {
 			$.ajax({
-				url: BASE_URL + `/api/bimsos/` + id,
+				url: BASE_URL + `/api/pengawasan/` + id,
 				method: 'DELETE',
 				success: function(response) {
 					table.search("").columns().search("").draw();
@@ -442,7 +414,7 @@
 
 		function deleteItems(ids) {
 			$.ajax({
-				url: BASE_URL + `/api/bimsos/selected`,
+				url: BASE_URL + `/api/pengawasan/selected`,
 				method: 'POST',
 				data: {
 					data: ids
@@ -464,7 +436,6 @@
 			$("#daerah_id").val("").trigger("change");
 			$("#search-input").val("");
 
-			hasil_sum(filter);
 			table.search("").columns().search("").draw();
 		});
 
@@ -492,6 +463,7 @@
 				}
 			}
 		});
+
 
 	});
 </script>
