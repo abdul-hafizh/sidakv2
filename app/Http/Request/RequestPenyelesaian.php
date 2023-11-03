@@ -92,24 +92,59 @@ class RequestPenyelesaian
 
         $numberNext = 1;
         $result = $data->get();
-
+        $options = RequestMenuRoles::ActionPage('penyelesaian');
         foreach ($result as $key => $val) {
             
             $log_url = "";
             $edit_url = "";
             $delete_url = "";
-            $edit_url = '<button id="Edit" data-placement="top" data-toggle="modal" data-toggle="tooltip" data-target="#modal-add" type="button" title="Edit Data" data-param_id=' . $val->id . ' class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
-                        
-            if ($access == 'daerah' || $access == 'province') {
-                if ($val->status_laporan_id != 14)
-                {
-                    $delete_url = '<button id="Destroy" data-placement="top" data-toggle="tooltip" type="button" title="Hapus Data" data-param_id=' . $val->id . ' class="btn btn-primary"><i class="fa fa-trash"></i></button>';
+
+
+            foreach ($options as $rows => $row) {
+                if ($row->action == 'update') {
+                    if ($row->checked == true) {
+                       
+                        $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
+
+                    }
                 }
+
+                if ($row->action == 'delete')
+                {
+                    if ($row->checked == true)
+                    {
+                        if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province")
+                        {
+                            if ($val->status_laporan_id != 14)
+                            {
+                                $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . '  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy"></i> </div>';
+                           }         
+                       }
+                       
+                    }
+                }
+
+               if(!empty($val->alasan_edit) || !empty($val->alasan_edit))
+               {
+                   $log_url =  '<div id="Log" data-param_id=' . $val->id . ' data-toggle="modal" data-target="#modal-log"  data-toggle="tooltip" data-placement="top" title="Log Data" class="pointer btn-padding-action pull-left modalLog"><i class="fa-icon icon-detail"></i></div>';
+               }
+
+
             }
 
-            if(!empty($val->alasan_edit) || !empty($val->alasan_edit)) {
-                $log_url =  '<button id="Log" data-param_id=' . $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
-            }
+
+            // $edit_url = '<button id="Edit" data-placement="top" data-toggle="modal" data-toggle="tooltip" data-target="#modal-add" type="button" title="Edit Data" data-param_id=' . $val->id . ' class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
+                        
+            // if ($access == 'daerah' || $access == 'province') {
+            //     if ($val->status_laporan_id != 14)
+            //     {
+            //         $delete_url = '<button id="Destroy" data-placement="top" data-toggle="tooltip" type="button" title="Hapus Data" data-param_id=' . $val->id . ' class="btn btn-primary"><i class="fa fa-trash"></i></button>';
+            //     }
+            // }
+
+            // if(!empty($val->alasan_edit) || !empty($val->alasan_edit)) {
+            //     $log_url =  '<button id="Log" data-param_id=' . $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
+            // }
 
             $numberNext++;
             $row   = array();
@@ -121,12 +156,13 @@ class RequestPenyelesaian
             $row[] = $val->lokasi;
             $row[] = GeneralHelpers::formatRupiah($val->biaya);
             $row[] = RequestPenyelesaian::getLabelStatus($val->status_laporan_id, $val->request_edit);
-            $row[] = $edit_url . " " . $delete_url . " " . $log_url;
-
+         
+            $row[]  = '<div class="list-menu-table-penyelesaian">'.$edit_url . ' ' . $delete_url.' '.$log_url.'</div>';
             $temp[] = $row;
         }
 
         $temp2['data'] = $temp;
+        $temp2['options'] = $options;
         $temp2['total'] = $data->count();
         $temp2['total_biaya'] = $data->sum('biaya');
 

@@ -38,7 +38,7 @@ use App\Http\Controllers\API\BimsosApiController;
 use App\Http\Controllers\API\PenyelesaianApiController;
 use App\Http\Controllers\API\ExtensionApiController;
 use App\Http\Controllers\API\PromosiApiController;
-
+use App\Http\Controllers\API\PemetaanApiController;
 
 
 
@@ -252,6 +252,22 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('promosi/selected', [PromosiApiController::class, 'deleteSelected']);
     Route::post('promosi/search', [PromosiApiController::class, 'search']);
     Route::delete('promosi/{id}', [PromosiApiController::class, 'delete']);
+
+
+
+    Route::get('pemetaan', [PemetaanApiController::class, 'index']);
+    Route::post('pemetaan', [PemetaanApiController::class, 'store']);
+    Route::get('pemetaan/{id}', [PemetaanApiController::class, 'show']);
+    Route::put('pemetaan/{id}', [PemetaanApiController::class, 'update']);
+    Route::post('pemetaan/requestedit/{id}', [PemetaanApiController::class, 'reqedit']);
+    Route::put('pemetaan/{type}/{id}', [PemetaanApiController::class, 'approved']);
+    Route::post('pemetaan/selected', [PemetaanApiController::class, 'deleteSelected']);
+    Route::post('pemetaan/search', [PemetaanApiController::class, 'search']);
+    Route::delete('pemetaan/{id}', [PemetaanApiController::class, 'delete']);
+
+
+
+    
     // Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     // Route::post('user/update', [UserApiController::class, 'updateProfile']);
     // Route::post('user/status', [UserApiController::class, 'StatusConfirm']);

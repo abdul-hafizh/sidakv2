@@ -22,6 +22,7 @@ use App\Http\Controllers\BimsosController;
 use App\Http\Controllers\PenyelesaianController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\PromosiController;
+use App\Http\Controllers\PemetaanController;
 
 
 Route::get('/', function () {
@@ -84,6 +85,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/promosi/edit/{id}', [PromosiController::class, 'edit']);
     Route::get('/promosi/detail/{id}', [PromosiController::class, 'show']);
     Route::get('/promosi/download/{id}', [PromosiController::class, 'generate']);
+
+    Route::get('/pemetaan', [PemetaanController::class, 'index']);
+    Route::get('/pemetaan/add', [PemetaanController::class, 'add']);
+    Route::get('/pemetaan/edit/{id}', [PemetaanController::class, 'edit']);
+    Route::get('/pemetaan/detail/{id}', [PemetaanController::class, 'show']);
+    Route::get('/pemetaan/download/{id}', [PemetaanController::class, 'generate']);
+
   });
 
 

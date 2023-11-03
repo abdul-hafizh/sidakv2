@@ -51,6 +51,7 @@ class BimsosApiController extends Controller
             "recordsTotal" => $result->total,
             "recordsFiltered" => $count->total,
             "data" => $result->data,
+            "options" => $result->options,
         );
         return response()->json($output);
     }
