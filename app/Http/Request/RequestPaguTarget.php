@@ -113,7 +113,7 @@ class RequestPaguTarget
                 if ($row->action == 'delete') {
                     if ($row->checked == true) {
 
-                        $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>';
+                        $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>';
                     }
                 }
             }

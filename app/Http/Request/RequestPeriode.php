@@ -80,10 +80,7 @@ class RequestPeriode
             {
                   $temp[$key]['value'] = $val->year;
                   $temp[$key]['text'] = 'Periode ' . $val->year;
-             }else if($action =="pagu" ){
-                  $temp[$key]['value'] = $val->year;
-                  $temp[$key]['text'] = 'Periode ' . $val->year;
-             }else if($action =="promosi" ){
+             }else if($action =="pagu" ||  $action =="promosi" || $action =="pemetaan"){
                   $temp[$key]['value'] = $val->year;
                   $temp[$key]['text'] = 'Periode ' . $val->year; 
              }else{

@@ -6,10 +6,10 @@ use DB;
 use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Promosi;
+use App\Models\Pemetaan;
 use App\Http\Request\RequestAuth;
-use App\Http\Request\RequestPromosi;
-use App\Http\Request\Validation\ValidationPromosi;
+use App\Http\Request\RequestPemetaan;
+use App\Http\Request\Validation\ValidationPemetaan;
 use App\Http\Request\RequestAuditLog;
 use App\Helpers\GeneralHelpers;
 use App\Helpers\GeneralPaginate;
@@ -21,7 +21,7 @@ use App\Mail\PeriodeApproved;
 use App\Mail\PeriodeExtension;
 use App\Models\User;
 
-class PromosiApiController extends Controller
+class PemetaanApiController extends Controller
 {
 
     public function __construct()
@@ -36,9 +36,9 @@ class PromosiApiController extends Controller
 
         if($access == 'province') { 
             
-             $query = Promosi::where(['daerah_id'=>Auth::User()->daerah_id,'periode_id'=>$year])->orderBy('created_at', 'DESC');
+             $query = Pemetaan::where(['daerah_id'=>Auth::User()->daerah_id,'periode_id'=>$year])->orderBy('created_at', 'DESC');
         } else {
-             $query = Promosi::where(['periode_id'=>$year])->orderBy('created_at', 'DESC');
+             $query = Pemetaan::where(['periode_id'=>$year])->orderBy('created_at', 'DESC');
         }
 
        
@@ -48,15 +48,15 @@ class PromosiApiController extends Controller
             $data = $query->get();
         }
 
-        $result = RequestPromosi::GetDataAll($data, $request->per_page, $request);
+        $result = RequestPemetaan::GetDataAll($data, $request->per_page, $request);
         return response()->json($result);
     }
 
 
     public function show($id){
 
-        $data = Promosi::where(['id'=>$id])->first();
-        $result = RequestPromosi::GetDetail($data);
+        $data = Pemetaan::where(['id'=>$id])->first();
+        $result = RequestPemetaan::GetDetail($data);
         return response()->json($result);
     }
 
@@ -71,14 +71,14 @@ class PromosiApiController extends Controller
         $column_search  = array('provinces.name');
 
       
-         $query  = Promosi::join('provinces','promosi.daerah_id','=','provinces.id');
+         $query  = RequestPemetaan::join('provinces','pemetaan.daerah_id','=','provinces.id');
        
 
          if($status =='req_edit')
          {
-            $query->where(['promosi.request_edit'=>'true','checklist'=>'not_approved']); 
+            $query->where(['pemetaan.request_edit'=>'true','checklist'=>'not_approved']); 
          }else if($status =='approved'){
-            $query->where(['promosi.request_edit'=>'false','checklist'=>'approved']); 
+            $query->where(['pemetaan.request_edit'=>'false','checklist'=>'approved']); 
          }   
 
 
@@ -105,12 +105,11 @@ class PromosiApiController extends Controller
                 $i++;
             }
         }     
-         $query->select('promosi.*');
          $query->where('periode_id',$periode_id);      
-         $data = $query->orderBy('promosi.id', 'DESC')->paginate($request->per_page);
+         $data = $query->orderBy('pemetaan.id', 'DESC')->paginate($request->per_page);
          $description = $search;
  
-         $_res = RequestPromosi::GetDataAll($data, $request->per_page, $request, $description);
+         $_res = RequestPemetaan::GetDataAll($data, $request->per_page, $request, $description);
          return response()->json($_res);
     }
 
@@ -118,31 +117,31 @@ class PromosiApiController extends Controller
 
     public function store(Request $request)
     {
-        $validation = ValidationPromosi::validation($request);
+        $validation = ValidationPemetaan::validation($request);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
                 $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id); 
            
             
-                $insert = RequestPromosi::fieldsData($request); 
+                $insert = RequestPemetaan::fieldsData($request); 
                 $log = array(
-                    'category' => 'LOG_DATA_PROMOSI',
-                    'group_menu' => 'upload_data_promosi',
-                    'description' => 'Menambahkan data promosi '.$daerah_name.' periode <b> ' . $request->periode_id . '</b>',
+                    'category' => 'LOG_DATA_PEMETAAN',
+                    'group_menu' => 'upload_data_pemetaan',
+                    'description' => 'Menambahkan data pemetaan '.$daerah_name.' periode <b> ' . $request->periode_id . '</b>',
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
                 //create menu
-                $saveData = Promosi::create($insert);
+                $saveData = Pemetaan::create($insert);
                  if($request->status =='Y')
                  {   
                     $access = RequestAuth::Access();
                       //send notif
                     if($access !="admin" || $access !="pusat")
                     {
-                         $type = 'promosi';
-                         $messages = Auth::User()->username.' Menambahkan promosi '.$daerah_name.' periode '.$request->periode_id;
-                         $url = url('promosi/show/'.$saveData->id);
+                         $type = 'pemetaan';
+                         $messages = Auth::User()->username.' Menambahkan pemetaan '.$daerah_name.' periode '.$request->periode_id;
+                         $url = url('pemetaan/show/'.$saveData->id);
                          $sender = Auth::User()->username;
                          $notif = RequestNotification::fieldsData($type,$messages,$url,$sender);
                          Notification::create($notif);
@@ -166,18 +165,18 @@ class PromosiApiController extends Controller
 
     public function reqedit($id, Request $request)
     {
-        $find = Promosi::find($id);
+        $find = Pemetaan::find($id);
         if (empty($find)) {
             return response()->json(['messages' => false]);
         }  
 
         $messages['messages'] = false;
-        $_res = Promosi::find($id);
+        $_res = Pemetaan::find($id);
          $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
 
         $log = array(
-            'category' => 'LOG_DATA_PROMOSI',
-            'group_menu' => 'requestedit_data_promosi',
+            'category' => 'LOG_DATA_PEMETAAN',
+            'group_menu' => 'requestedit_data_pemetaan',
             'description' => $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan,
         );
         $datalog = RequestAuditLog::fieldsData($log);
@@ -194,9 +193,9 @@ class PromosiApiController extends Controller
         if($access !="admin" || $access !="pusat")
         {
                 // $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
-                 $type = 'promosi';
+                 $type = 'pemetaan';
                  $msg = $daerah_name.' mengajukan permintaan request edit untuk periode tahun <b>' . $_res->periode_id . '</b>  dengan alasan '.$request->alasan;
-                 $url = url('promosi/detail/'.$id);
+                 $url = url('pemetaan/detail/'.$id);
                  $sender = User::where(['username'=>'pusat'])->first()->username;
                  $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
                  Notification::create($notif);
@@ -216,12 +215,12 @@ class PromosiApiController extends Controller
      public function approved($type,$id)
     {
         $messages['messages'] = false;
-        $_res = Promosi::find($id);
+        $_res = Pemetaan::find($id);
        
-        $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
+        $daerah_name = RequestDaerah::GetDaerahWhereName($_res->daerah_id);
         $log = array(
-            'category' => 'LOG_DATA_PROMOSI',
-            'group_menu' => 'approved_pengajuan_promosi',
+            'category' => 'LOG_DATA_PEMETAAN',
+            'group_menu' => 'approved_pengajuan_pemetaan',
             'description' => '<b>' . $daerah_name . '</b> telah approved',
         );
         $datalog = RequestAuditLog::fieldsData($log);
@@ -236,9 +235,9 @@ class PromosiApiController extends Controller
 
              $type = 'periode';
            
-             $url = url('promosi/detail/'.$id);
+             $url = url('pemetaan/detail/'.$id);
              $sender = $_res->created_by;
-             $msg = Auth::User()->username.' pengajuan promosi dibatalkan';
+             $msg = Auth::User()->username.' pengajuan pemetaan dibatalkan';
              $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
              Notification::create($notif);
 
@@ -252,9 +251,9 @@ class PromosiApiController extends Controller
 
             $type = 'periode';
            
-            $msg = 'pengajuan promosi '.$daerah_name.' di approved';
+            $msg = 'pengajuan pemetaan '.$daerah_name.' di approved';
             $sender = $_res->created_by;
-            $url = url('promosi/detail/'.$id);
+            $url = url('pemetaan/detail/'.$id);
             $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
             Notification::create($notif);
 
@@ -274,7 +273,7 @@ class PromosiApiController extends Controller
 
     public function update($id, Request $request)
     {
-        $validation = ValidationPromosi::validation($request);
+        $validation = ValidationPemetaan::validation($request);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
@@ -282,14 +281,14 @@ class PromosiApiController extends Controller
           
 
 
-                $update = RequestPromosi::fieldsData($request);
-                $UpdateData = Promosi::where('id', $id)->update($update);
+                $update = RequestPemetaan::fieldsData($request);
+                $UpdateData = Pemetaan::where('id', $id)->update($update);
 
                  
                   $log = array(
-                    'category' => 'LOG_DATA_PROMOSI',
-                    'group_menu' => 'mengubah_data_promosi',
-                    'description' => 'Mengubah data Promosi <b>' . $request->periode_id . '</b>',
+                    'category' => 'LOG_DATA_PEMETAAN',
+                    'group_menu' => 'mengubah_data_pemetaan',
+                    'description' => 'Mengubah data pemetaan <b>' . $request->periode_id . '</b>',
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
 
@@ -303,13 +302,13 @@ class PromosiApiController extends Controller
     public function delete($id)
     {
         $messages['messages'] = false;
-        $_res = Promosi::find($id);
+        $_res = Pemetaan::find($id);
        
 
         $log = array(
-            'category' => 'LOG_DATA_PROMOSI',
-            'group_menu' => 'menghapus_data_promosi',
-            'description' => '<b>Promosi ' . $_res->periode_id . '</b> telah dihapus',
+            'category' => 'LOG_DATA_PEMETAAN',
+            'group_menu' => 'menghapus_data_pemetaan',
+            'description' => '<b>Pemetaan ' . $_res->periode_id . '</b> telah dihapus',
         );
         $datalog = RequestAuditLog::fieldsData($log);
 
@@ -334,27 +333,27 @@ class PromosiApiController extends Controller
 
         foreach ($request->data as $key) 
         {
-            $find = Promosi::where('id', $key)->first();
+            $find = Pemetaan::where('id', $key)->first();
             $daerah_name = RequestDaerah::GetDaerahWhereName($find->daerah_id);
             if($request->type =='deleted')
             {
                 $log = array(
-                'category' => 'LOG_DATA_PROMOSI',
-                'group_menu' => 'menghapus_data_promosi',
-                'description' => '<b>Promosi ' . $find->periode_id .' '.$daerah_name.'</b> telah dihapus',
+                'category' => 'LOG_DATA_PEMETAAN',
+                'group_menu' => 'menghapus_data_pemetaan',
+                'description' => '<b>Pemetaan ' . $find->periode_id .' '.$daerah_name.'</b> telah dihapus',
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
-                $results = Promosi::where('id', (int)$key)->delete();
+                $results = Pemetaan::where('id', (int)$key)->delete();
 
             }else{
 
                 $log = array(
-                'category' => 'LOG_DATA_PROMOSI',
-                'group_menu' => 'approved_data_promosi',
-                'description' => '<b> Promosi ' . $find->periode_id . ' '.$daerah_name.'</b> telah diapproved',
+                'category' => 'LOG_DATA_PEMETAAN',
+                'group_menu' => 'approved_data_pemetaan',
+                'description' => '<b> pemetaan ' . $find->periode_id . ' '.$daerah_name.'</b> telah diapproved',
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
-                $results = Promosi::where('id', (int)$key)->update(['checklist'=>'approved','request_edit'=>'false']);
+                $results = Pemetaan::where('id', (int)$key)->update(['checklist'=>'approved','request_edit'=>'false']);
 
                 $type = 'periode';
                 $url = '';

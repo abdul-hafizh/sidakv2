@@ -709,7 +709,7 @@ $(function(){
 }
 .login-center-sidak {
     margin: 0px auto;
-    width: 40%;
+    width: 35%;
 }
 .pd-top-40 {
     padding: 40px 0px 0px;

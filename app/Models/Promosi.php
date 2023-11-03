@@ -18,6 +18,7 @@ class Promosi extends Model
             
             "periode_id",
             "daerah_id",
+            "type",
             "tgl_awal_peluang",
             "tgl_ahir_peluang",
             "budget_peluang",
