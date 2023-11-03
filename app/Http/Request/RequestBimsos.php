@@ -71,12 +71,12 @@ class RequestBimsos
             });
         }
 
-        if ($request->order['0']['column'] != 0) {
-            $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
-        } else if (isset($order)) {
+        // if ($request->order['0']['column'] != 0) {
+        //     $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
+      //  } else if (isset($order)) {
             $order = $order;
             $data->orderBy(key($order), $order[key($order)]);
-        }
+        //}
 
         $numberNext = 1;
         //dd($data);
@@ -86,11 +86,21 @@ class RequestBimsos
             $edit_url = "";
             $delete_url = "";
 
+
+
             foreach ($options as $rows => $row) {
                 if ($row->action == 'update') {
                     if ($row->checked == true) {
+
+                      if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province")
+                      {  
                        
                         $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
+                      }else{
+
+                          $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
+
+                      }  
 
                     }
                 }
@@ -182,12 +192,12 @@ class RequestBimsos
             });
         }
 
-        if ($request->order['0']['column'] != 0) {
-            $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
-        } else if (isset($order)) {
+        // if ($request->order['0']['column'] != 0) {
+        //     $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
+        // } else if (isset($order)) {
             $order = $order;
             $data->orderBy(key($order), $order[key($order)]);
-        }
+       // }
 
         $numberNext = 1;
         //dd($data);

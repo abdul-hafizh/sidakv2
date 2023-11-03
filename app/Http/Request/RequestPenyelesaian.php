@@ -102,9 +102,18 @@ class RequestPenyelesaian
 
             foreach ($options as $rows => $row) {
                 if ($row->action == 'update') {
-                    if ($row->checked == true) {
+                    if ($row->checked == true) 
+                    {
+
+                       if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province")
+                        { 
                        
-                        $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
+                           $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
+                        }else{
+                           
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
+
+                        }   
 
                     }
                 }
