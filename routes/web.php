@@ -24,6 +24,8 @@ use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\PromosiController;
 use App\Http\Controllers\PemetaanController;
 
+use App\Http\Controllers\PengawasanController;
+use App\Models\Pengawasan;
 
 Route::get('/', function () {
     return redirect('login');
@@ -54,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penyelesaian', [PenyelesaianController::class, 'index']);
     Route::get('/extension', [ExtensionController::class, 'index']);
     Route::get('/extension/show/{id}', [ExtensionController::class, 'show']);
-    
+    Route::get('/pengawasan', [PengawasanController::class, 'index']);
 });
 
 Route::middleware(['auth', 'admin'])->group(function () {
@@ -72,27 +74,20 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 
-    // Route::middleware(['auth', 'pusat'])->group(function ()
-    // {
+// Route::middleware(['auth', 'pusat'])->group(function ()
+// {
 
-    //      Route::get('/promosi', [PromosiController::class, 'index']);
-    // });
+//      Route::get('/promosi', [PromosiController::class, 'index']);
+// });
 
-  
-  Route::middleware(['auth', 'province','pusat'])->group(function () {
+
+Route::middleware(['auth', 'province', 'pusat'])->group(function () {
     Route::get('/promosi', [PromosiController::class, 'index']);
     Route::get('/promosi/add', [PromosiController::class, 'add']);
     Route::get('/promosi/edit/{id}', [PromosiController::class, 'edit']);
     Route::get('/promosi/detail/{id}', [PromosiController::class, 'show']);
     Route::get('/promosi/download/{id}', [PromosiController::class, 'generate']);
 
-    Route::get('/pemetaan', [PemetaanController::class, 'index']);
-    Route::get('/pemetaan/add', [PemetaanController::class, 'add']);
-    Route::get('/pemetaan/edit/{id}', [PemetaanController::class, 'edit']);
-    Route::get('/pemetaan/detail/{id}', [PemetaanController::class, 'show']);
-    Route::get('/pemetaan/download/{id}', [PemetaanController::class, 'generate']);
-
-  });
 
 
 

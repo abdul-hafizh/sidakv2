@@ -64,7 +64,7 @@ class PenyelesaianApiController extends Controller
     public function header(Request $request)
     {                
         $output = DB::select(
-            'call header_modul(?,?,?)', array('PENYELESAIAN', '202201', Auth::User()->daerah_id)
+            'call header_modul(?,?,?)', array('PENYELESAIAN', $request->periode, Auth::User()->daerah_id)
         );
 
         return response()->json($output);

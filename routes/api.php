@@ -101,6 +101,15 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('pagutarget/selected', [PaguTargetApiController::class, 'deleteSelected']);
 
     Route::get('pengawasan/datalist', [PengawasanApiController::class, 'jsonData']);
+    Route::post('pengawasan', [PengawasanApiController::class, 'store']);
+    Route::get('pengawasan/edit/{id}', [PengawasanApiController::class, 'edit']);
+    Route::post('pengawasan/update/{id}', [PengawasanApiController::class, 'update']);
+    Route::post('pengawasan/kirim/{id}', [PengawasanApiController::class, 'update']);
+    Route::delete('pengawasan/{id}', [PengawasanApiController::class, 'delete']);
+    Route::post('pengawasan/selected', [PengawasanApiController::class, 'deleteSelected']);
+    Route::put('pengawasan/request_edit/{id}', [PengawasanApiController::class, 'request_edit']);
+    Route::put('pengawasan/request_revisi/{id}', [PengawasanApiController::class, 'request_revisi']);
+    Route::put('pengawasan/approve_edit/{id}', [PengawasanApiController::class, 'approve_edit']);
 
     Route::get('province', [ProvinceApiController::class, 'index']);
     Route::post('province', [ProvinceApiController::class, 'store']);
@@ -225,7 +234,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('bimsos/request_edit/{id}', [BimsosApiController::class, 'request_edit']);
     Route::put('bimsos/request_revisi/{id}', [BimsosApiController::class, 'request_revisi']);
     Route::put('bimsos/approve_edit/{id}', [BimsosApiController::class, 'approve_edit']);
-    Route::delete('bimsos/{id}', [BimsosApiController::class, 'delete']);
 
     Route::post('penyelesaian', [PenyelesaianApiController::class, 'store']);
     Route::post('penyelesaian/selected', [PenyelesaianApiController::class, 'deleteSelected']);

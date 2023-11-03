@@ -68,6 +68,68 @@
 </style>
 
 <section class="content-header pd-left-right-15">
+
+	<div class="row">
+		<div class="col-md-12">
+			<table class="table box box-solid box-primary">
+				<thead>
+					<tr>
+						<th rowspan="2">Sub Kegiatan</th>
+						<th colspan="2">Perencanaan</th>
+						<th colspan="2">Realisasi Semester 1</th>
+						<th colspan="2" class="semester2">Realisasi Semester 2</th>
+						<th colspan="2">Total Realisasi</th>
+					</tr>
+					<tr>
+						<th>Target</th>
+						<th>Nilai</th>
+						<th>Target</th>
+						<th>Nilai</th>
+						<th class="semester2">Target</th>
+						<th class="semester2">Nilai</th>
+						<th>Target</th>
+						<th>Nilai</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>Identifikasi Masalah</td>
+						<td><span id="identifikasi_rencana_target_peserta">0</span></td>
+						<td><span id="identifikasi_rencana">0</span></td>
+						<td><span id="identifikasi_realisasi_target_peserta">0</span></td>
+						<td><span id="identifikasi_realisasi">0</span></td>
+						<td class="semester2">0</td>
+						<td class="semester2">0</td>
+						<td><span id="identifikasi_total_target">0</span></td>
+						<td><span id="identifikasi_total_nilai">0</span></td>
+					</tr>
+					<tr>
+						<td>Penyelesaian Masalah</td>
+						<td><span id="penyelesaian_rencana_target_peserta">0</span></td>
+						<td><span id="penyelesaian_realisasi_rencana">0</span></td>
+						<td><span id="penyelesaian_realisasi_target_peserta">0</span></td>
+						<td><span id="realisasi_realisasi">0</span></td>
+						<td class="semester2">0</td>
+						<td class="semester2">0</td>
+						<td><span id="penyelesaian_total_target">0</span></td>
+						<td><span id="penyelesaian_total_nilai">0</span></td>
+					</tr>
+					<tr>
+						<td>Evaluasi Masalah</td>
+						<td><span id="evaluasi_rencanan_target">0</span></td>
+						<td><span id="evaluasi_rencana">0</span></td>
+						<td><span id="evaluasi_realisasi_target">0</span></td>
+						<td><span id="evaluasi_realisasi">0</span></td>
+						<td class="semester2">0</td>
+						<td class="semester2">0</td>
+						<td><span id="evaluasi_total_target">0</span></td>
+						<td><span id="evaluasi_total_nilai">0</span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
 	<div class="row">
 		<div class="col-sm-2" style="margin-bottom: 9px;">
 			<select class="form-control height-35 border-radius-13" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
@@ -174,6 +236,12 @@
 <script>
 
 	$(function() {		
+
+		$('.semester2').hide();
+
+		var year = new Date().getFullYear();
+		var month = new Date().getMonth() + 1;		
+
 		$.ajax({
 			url: BASE_URL + '/api/select-daerah',
 			method: 'GET',
@@ -197,6 +265,9 @@
 			method: 'GET',
 			dataType: 'json',
 			success: function(data) {
+				if(month) {
+					
+				}
 				periode = '<option value="">Pilih Periode</option>';
 				$.each(data.periode, function(key, val) {
 					var select = '';
@@ -211,13 +282,32 @@
 		})
 
 		$.ajax({
-			url: BASE_URL + '/api/penyelesaian/header',
+			url: BASE_URL + '/api/penyelesaian/header?periode=202301',
 			method: 'GET',
 			dataType: 'json',
 			success: function(data) {
 				if (data.length > 0) {
-					console.log(data);
-					console.log(data[0].identifikasi_rencana);
+					$("#identifikasi_rencana_target_peserta").html(data[0].identifikasi_rencana_target_peserta);
+					$("#identifikasi_realisasi").html(data[0].identifikasi_realisasi);
+					$("#identifikasi_realisasi_target_peserta").html(data[0].identifikasi_realisasi_target_peserta);
+					$("#identifikasi_rencana").html(data[0].identifikasi_rencana);
+					
+					$("#penyelesaian_rencana_target_peserta").html(data[0].penyelesaian_rencana_target_peserta);
+					$("#penyelesaian_realisasi_rencana").html(data[0].penyelesaian_realisasi_rencana);
+					$("#penyelesaian_realisasi_target_peserta").html(data[0].penyelesaian_realisasi_target_peserta);					
+					$("#realisasi_realisasi").html(data[0].realisasi_realisasi);
+					
+					$("#evaluasi_realisasi_target").html(data[0].evaluasi_realisasi_target);
+					$("#evaluasi_realisasi").html(data[0].evaluasi_realisasi);
+					$("#evaluasi_rencanan_target").html(data[0].evaluasi_rencanan_target);
+					$("#evaluasi_rencana").html(data[0].evaluasi_rencana);
+
+					$("#identifikasi_total_target").html(data[0].identifikasi_realisasi_target_peserta);
+					$("#identifikasi_total_nilai").html(data[0].identifikasi_rencana);
+					$("#penyelesaian_total_target").html(data[0].penyelesaian_realisasi_target_peserta);
+					$("#penyelesaian_total_nilai").html(data[0].realisasi_realisasi);
+					$("#evaluasi_total_target").html(data[0].evaluasi_rencanan_target);
+					$("#evaluasi_total_nilai").html(data[0].evaluasi_rencana);
 				}	
 			}
 		})
