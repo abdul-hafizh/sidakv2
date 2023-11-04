@@ -8,10 +8,12 @@ use App\Http\Request\RequestAuth;
 use App\Http\Request\RequestPengawasan;
 use App\Http\Request\RequestDaerah;
 use App\Models\Pengawasan;
+use App\Models\Pengawasan_perusahaan;
 use App\Models\AuditLogRequest;
 use App\Helpers\GeneralPaginate;
 use App\Http\Request\RequestNotification;
 use App\Models\Notification;
+use App\Models\User;
 use App\Http\Request\Validation\ValidationPengawasan;
 use Auth;
 use Yajra\DataTables\DataTables;
@@ -69,41 +71,29 @@ class PengawasanApiController extends Controller
                 $file_hadir->move(public_path('laporan/pengawasan'), $lap_kegiatan);
                 $insert['lap_kegiatan'] = 'laporan/pengawasan/' . $lap_kegiatan;
             }
-            if ($request->hasFile('lap_pendamping')) {
-                $file_pendamping = $request->file('lap_pendamping');
-                $lap_pendamping = 'lap_pendamping_' . time() . '_' . $file_pendamping->getClientOriginalName();
-                $file_pendamping->move(public_path('laporan/pengawasan'), $lap_pendamping);
-                $insert['lap_pendamping'] = 'laporan/pengawasan/' . $lap_pendamping;
+            if ($request->hasFile('lap_evaluasi')) {
+                $file_evaluasi = $request->file('lap_evaluasi');
+                $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
+                $file_evaluasi->move(public_path('laporan/pengawasan'), $lap_evaluasi);
+                $insert['lap_evaluasi'] = 'laporan/pengawasan/' . $lap_evaluasi;
             }
-            if ($request->hasFile('lap_notula')) {
-                $file_notula = $request->file('lap_notula');
-                $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/pengawasan'), $lap_notula);
-                $insert['lap_notula'] = 'laporan/pengawasan/' . $lap_notula;
+            if ($request->hasFile('lap_lkpm')) {
+                $file_lkpm = $request->file('lap_lkpm');
+                $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
+                $file_lkpm->move(public_path('laporan/pengawasan'), $lap_lkpm);
+                $insert['lap_lkpm'] = 'laporan/pengawasan/' . $lap_lkpm;
             }
-            if ($request->hasFile('lap_survey')) {
-                $file_survey = $request->file('lap_survey');
-                $lap_survey = 'lap_survey_' . time() . '_' . $file_survey->getClientOriginalName();
-                $file_survey->move(public_path('laporan/pengawasan'), $lap_survey);
-                $insert['lap_survey'] = 'laporan/pengawasan/' . $lap_survey;
+            if ($request->hasFile('lap_bap')) {
+                $file_bap = $request->file('lap_bap');
+                $lap_bap = 'lap_bap_' . time() . '_' . $file_bap->getClientOriginalName();
+                $file_bap->move(public_path('laporan/pengawasan'), $lap_bap);
+                $insert['lap_bap'] = 'laporan/pengawasan/' . $lap_bap;
             }
-            if ($request->hasFile('lap_narasumber')) {
-                $file_narasumber = $request->file('lap_narasumber');
-                $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/pengawasan'), $lap_narasumber);
-                $insert['lap_narasumber'] = 'laporan/pengawasan/' . $lap_narasumber;
-            }
-            if ($request->hasFile('lap_materi')) {
-                $file_materi = $request->file('lap_materi');
-                $lap_materi = 'lap_materi_' . time() . '_' . $file_materi->getClientOriginalName();
-                $file_materi->move(public_path('laporan/pengawasan'), $lap_materi);
-                $insert['lap_materi'] = 'laporan/pengawasan/' . $lap_materi;
-            }
-            if ($request->hasFile('lap_document')) {
-                $file_document = $request->file('lap_document');
-                $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/pengawasan'), $lap_document);
-                $insert['lap_document'] = 'laporan/pengawasan/' . $lap_document;
+            if ($request->hasFile('lap_profile')) {
+                $file_profile = $request->file('lap_profile');
+                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
+                $file_profile->move(public_path('laporan/pengawasan'), $lap_profile);
+                $insert['lap_profile'] = 'laporan/pengawasan/' . $lap_profile;
             }
 
 
@@ -135,6 +125,10 @@ class PengawasanApiController extends Controller
                     return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal kirim data']);
                 }
             } else if ($saveData) {
+                if ($request->sub_menu_slug == 'inspeksi' && isset($request->nib)) {
+                    $data_perusahaan = RequestPengawasan::fieldsDataPerusahaan($request, $saveData->id);
+                    Pengawasan_perusahaan::insert($data_perusahaan);
+                }
                 return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil simpan data']);
             } else {
                 return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal simpan data']);
@@ -147,6 +141,7 @@ class PengawasanApiController extends Controller
         $access = RequestAuth::Access();
         $result = Pengawasan::where(['id' => $id])->first();
         $result['access'] = $access;
+        $result['perusahaan'] = Pengawasan_perusahaan::where(['pengawasan_id' => $id])->get();
         return response()->json($result);
     }
 
@@ -221,7 +216,7 @@ class PengawasanApiController extends Controller
                 $semester = substr($request->periode_id_mdl, 4);
                 $sub_kegiatan = ucwords($request->sub_menu_slug);
 
-                // $pusat = User::where('username', 'pusat')->first()->email;
+                $pusat = User::where('username', 'pusat')->first();
                 // $judul = 'Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ')';
                 // $kepada = 'Kementerian Investasi';
                 // $subject = 'Permohonan Persetujuan/Approval Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
@@ -229,7 +224,7 @@ class PengawasanApiController extends Controller
 
                 $type = 'pengawasan';
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-                $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $pusat->username);
                 $insertNotif = Notification::create($notif);
 
                 if ($insertNotif) {
@@ -303,7 +298,7 @@ class PengawasanApiController extends Controller
             $semester = substr($request->periode_id_mdl, 4);
             $sub_kegiatan = ucwords($request->sub_menu_slug);
 
-            // $pusat = User::where('username', 'pusat')->first()->email;
+            $pusat = User::where('username', 'pusat')->first();
             // $judul = 'Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ')';
             // $kepada = 'Kementerian Investasi';
             // $subject = 'Meminta Request Edit Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
@@ -311,7 +306,7 @@ class PengawasanApiController extends Controller
 
             $type = 'bimsos';
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $pusat->username);
             $insertNotif = Notification::create($notif);
 
             if ($insertNotif) {
@@ -351,7 +346,7 @@ class PengawasanApiController extends Controller
             $semester = substr($request->periode_id_mdl, 4);
             $sub_kegiatan = ucwords($request->sub_menu_slug);
 
-            // $pusat = User::where('username', 'pusat')->first()->email;
+            $pusat = User::where('username', 'pusat')->first();
             // $judul = 'Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ')';
             // $kepada = 'Kementerian Investasi';
             // $subject = 'Meminta Request Edit Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
@@ -359,7 +354,7 @@ class PengawasanApiController extends Controller
 
             $type = 'bimsos';
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request revisi Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $pusat->username);
             $insertNotif = Notification::create($notif);
 
             if ($insertNotif) {

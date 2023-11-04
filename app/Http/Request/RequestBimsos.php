@@ -70,12 +70,8 @@ class RequestBimsos
             });
         }
 
-        if ($request->order['0']['column'] != 0) {
-            $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
-        } else if (isset($order)) {
-            $order = $order;
-            $data->orderBy(key($order), $order[key($order)]);
-        }
+        $order = $order;
+        $data->orderBy(key($order), $order[key($order)]);
 
         $numberNext = 1;
         //dd($data);
@@ -152,12 +148,12 @@ class RequestBimsos
             });
         }
 
-        if ($request->order['0']['column'] != 0) {
-            $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
-        } else if (isset($order)) {
-            $order = $order;
-            $data->orderBy(key($order), $order[key($order)]);
-        }
+        // if ($request->order['0']['column'] != 0) {
+        //     $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
+        // } else if (isset($order)) {
+        $order = $order;
+        $data->orderBy(key($order), $order[key($order)]);
+        // }
 
         $numberNext = 1;
         //dd($data);
