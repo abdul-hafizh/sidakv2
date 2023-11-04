@@ -189,7 +189,7 @@
 				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
 					Hapus
 				</button>
-				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
+				<button id="tambah" style="display:none;" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
 				@endif
@@ -369,8 +369,25 @@
 			],
 			initComplete: (settings, json) => {
 				$('.dataTables_paginate').appendTo('#datatable_paginate');
+				listOptions(json.options);
 			}
 		});
+
+		function listOptions(data) {
+
+			data.forEach(function(item, index) {
+				if (item.action == 'create') {
+					if (item.checked == true) {
+						$('#tambah').show();
+						
+					} else {
+						$('#tambah').hide();
+						
+					}
+				}
+
+			});
+		}
 
 		function reformatNumber(data, row, column, node) {
 			if (column == 4 || column == 5 || column == 6) {

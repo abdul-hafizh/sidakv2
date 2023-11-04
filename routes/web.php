@@ -22,8 +22,9 @@ use App\Http\Controllers\BimsosController;
 use App\Http\Controllers\PenyelesaianController;
 use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\PromosiController;
+use App\Http\Controllers\PemetaanController;
 use App\Http\Controllers\PengawasanController;
-use App\Models\Pengawasan;
+
 
 Route::get('/', function () {
     return redirect('login');
@@ -36,6 +37,8 @@ Route::post('/forgotpasword', [AuthController::class, 'ForgotPassword']);
 Route::post('/checktoken', [AuthController::class, 'CheckToken']);
 Route::post('/forgot/checkexpired', [AuthController::class, 'CheckEncrypt']);
 Route::post('/updatepassword', [AuthController::class, 'UpdatePassword']);
+
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/perencanaan', [PerencanaanController::class, 'index']);
@@ -55,9 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/extension', [ExtensionController::class, 'index']);
     Route::get('/extension/show/{id}', [ExtensionController::class, 'show']);
     Route::get('/pengawasan', [PengawasanController::class, 'index']);
-});
 
-Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/user',  [UserController::class, 'index']);
     Route::get('/role', [RoleController::class, 'index']);
     Route::get('/apps', [SettingWebController::class, 'index']);
@@ -68,8 +69,13 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/auditlog', [AuditLogController::class, 'index']);
     Route::get('/options', [OptionsController::class, 'index']);
     Route::get('/action', [ActionController::class, 'index']);
-    
+
 });
+
+// Route::middleware(['auth', 'admin'])->group(function () {
+   
+    
+// });
 
 
 // Route::middleware(['auth', 'pusat'])->group(function ()
@@ -85,8 +91,8 @@ Route::middleware(['auth', 'province', 'pusat'])->group(function () {
     Route::get('/promosi/edit/{id}', [PromosiController::class, 'edit']);
     Route::get('/promosi/detail/{id}', [PromosiController::class, 'show']);
     Route::get('/promosi/download/{id}', [PromosiController::class, 'generate']);
-});
 
+});
 
 
 

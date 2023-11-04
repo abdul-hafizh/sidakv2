@@ -10,6 +10,7 @@ use App\Models\Bimsos;
 use App\Models\Perencanaan;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestDaerah;
+use App\Http\Request\RequestMenuRoles;
 use DB;
 
 class RequestBimsos
@@ -70,20 +71,53 @@ class RequestBimsos
             });
         }
 
+        // if ($request->order['0']['column'] != 0) {
+        //     $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
+        //  } else if (isset($order)) {
         $order = $order;
         $data->orderBy(key($order), $order[key($order)]);
+        //}
 
         $numberNext = 1;
         //dd($data);
         $result = $data->get();
+        $options = RequestMenuRoles::ActionPage('bimsos');
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
-            $edit_url =  '<a href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></a>';
-            if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
-                if ($val->status_laporan_id != 14)
-                    $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
+
+
+
+            foreach ($options as $rows => $row) {
+                if ($row->action == 'update') {
+                    if ($row->checked == true) {
+
+                        if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
+
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
+                        } else {
+
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
+                        }
+                    }
+                }
+
+                if ($row->action == 'delete') {
+                    if ($row->checked == true) {
+                        if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
+                            if ($val->status_laporan_id != 14) {
+                                $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . '  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy"></i> </div>';
+                            }
+                        }
+                    }
+                }
             }
+
+
+
+
+
+
 
             $numberNext++;
             $row    = array();
@@ -95,13 +129,15 @@ class RequestBimsos
             $row[]  = $val->lokasi_bimtek;
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
             $row[]  = RequestBimsos::getLabelStatus($val->status_laporan_id, $val->request_edit);
-            $row[]  = $edit_url . " " . $delete_url;
-
+            //$row[]  = $edit_url . " " . $delete_url;
+            $row[]  = '<div class="list-menu-table-pagu">' . $edit_url . ' ' . $delete_url . '</div>';
             $temp[] = $row;
         }
         $temp2['data'] = $temp;
+        $temp2['options'] = $options;
         $temp2['total'] = $data->count();
         $temp2['total_biaya'] = $data->sum('biaya_kegiatan');
+
         return json_decode(json_encode($temp2), FALSE);
     }
 

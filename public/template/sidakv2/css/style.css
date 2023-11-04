@@ -75,13 +75,29 @@
     
 }
 
+.table-number{
+        width: 5px!important;
+}
+
+.textarea-table{
+    resize: none;
+    border-style: none!important;
+  border-color: Transparent!important;
+  overflow: auto;
+  outline: none;
+    width: 420px;
+    height: 128px;
+}
+
+
+
 .progress-bar{
         width: 0%;
 }
 
 .progress {
     height: 30px !important;
-     margin-bottom: 0px !important; 
+    margin-bottom: 0px !important; 
     overflow: hidden;
     background-color: #f5f5f5;
     border-radius: 4px;
@@ -322,6 +338,10 @@ padding: 0px 12px 0px 0px!important;
 
 .list-menu-table{
     width:190px ;
+}
+
+.list-menu-table-penyelesaian{
+    width:120px ;
 }
 
 .list-menu-table-pagu{
