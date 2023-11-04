@@ -8,6 +8,7 @@ use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\Pengawasan;
 use App\Http\Request\RequestSettingApps;
+use Illuminate\Support\Str;
 use DB;
 
 class RequestPengawasan
@@ -51,7 +52,7 @@ class RequestPengawasan
         $column_search  = array('sub_menu_slug', 'nama_kegiatan', 'tgl_kegiatan', 'biaya_kegiatan', 'status_laporan_id');
         $order = array('sub_menu_slug' => 'ASC');
 
-        $data = DB::table('pengawasan');
+        $data = DB::table('pengawasan')->select('pengawasan.*', 'pengawasan_perusahaan.nama_perusahaan as nama_prshn')->leftJoin('pengawasan_perusahaan', 'pengawasan.id', '=', 'pengawasan_perusahaan.pengawasan_id')->groupBy('pengawasan.id');
 
         if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
             $data->where('daerah_id', Auth::User()->daerah_id);
@@ -119,7 +120,7 @@ class RequestPengawasan
             $row[]  = $val->id;
             $row[]  = RequestDaerah::GetDaerahWhereName($val->daerah_id);
             $row[]  = RequestPengawasan::getLabelSubMenu($val->sub_menu_slug);
-            $row[]  = $val->nama_perusahaan;
+            $row[]  = $val->nama_prshn;
             $row[]  = $val->nama_kegiatan;
             $row[]  = GeneralHelpers::formatDate($val->tgl_kegiatan);
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
@@ -209,6 +210,38 @@ class RequestPengawasan
             ];
 
         return $fields;
+    }
+
+    public static function fieldsDataPerusahaan($request, $id)
+    {
+        $data_perusahaan = [];
+        foreach ($request->nib as $key => $v) {
+            $data_perusahaan[] = [
+                'id' => Str::uuid()->toString(),
+                'pengawasan_id' => $id,
+                'nama_perusahaan' => $request->nama_perusahaan[$key],
+                'kontak' => $request->kontak[$key],
+                'nib' => $request->nib[$key],
+                'tgl_nib' => $request->tgl_nib[$key],
+                'no_izin_lokasi' => $request->no_izin_lokasi[$key],
+                'tgl_izin_lokasi' => $request->tgl_izin_lokasi[$key],
+                'no_izin_amdal' => $request->no_izin_amdal[$key],
+                'tgl_izin_amdal' => $request->tgl_izin_amdal[$key],
+                'no_izin_lingkungan' => $request->no_izin_lingkungan[$key],
+                'tgl_izin_lingkungan' => $request->tgl_izin_lingkungan[$key],
+                'no_imb' => $request->no_imb[$key],
+                'tgl_imb' => $request->tgl_imb[$key],
+                'total_rencana_inv' => $request->total_rencana_inv[$key],
+                'total_realisasi_inv' => $request->total_realisasi_inv[$key],
+                'rencana_tki' => $request->rencana_tki[$key],
+                'realisasi_tki' => $request->realisasi_tki[$key],
+                'rencana_tka' => $request->rencana_tka[$key],
+                'realisasi_tka' => $request->realisasi_tka[$key],
+                'created_by' => Auth::User()->username,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+        }
+        return $data_perusahaan;
     }
 
     public static function fieldReqEdit($request)

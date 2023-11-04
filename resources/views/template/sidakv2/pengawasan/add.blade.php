@@ -40,37 +40,37 @@
             </div>
           </div>
 
+          <div id="nama_kegiatan-alert" class="form-group has-feedback">
+            <label>Nama Kegiatan</label>
+            <input type="text" class="form-control" name="nama_kegiatan" id="nama_kegiatan" placeholder="Nama Kegiatan" value="">
+            <span id="nama_kegiatan-messages"></span>
+          </div>
+
+          <div id="hasil_analisa-alert" class="form-group has-feedback">
+            <label id="hasilAnalisaLabel">Hasil Analisa</label>
+            <textarea class="form-control" name="hasil_analisa" id="hasil_analisa" rows="4" placeholder="Hasil Analisa"></textarea>
+            <span id="hasil_analisa-messages"></span>
+          </div>
+
+          <div id="tanggal_kegiatan-alert" class="form-group has-feedback">
+            <label>Tanggal Kegiatan</label>
+            <input type="date" class="form-control" name="tanggal_kegiatan" id="tanggal_kegiatan" placeholder="Tanggal Kegiatan">
+            <span id="tanggal_kegiatan-messages"></span>
+          </div>
+
+          <div id="biaya-alert" class="form-group has-feedback">
+            <label>Biaya (Rp.)</label>
+            <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
+            <span id="biaya-messages"></span>
+          </div>
+
+          <div id="lokasi-alert" class="form-group has-feedback">
+            <label>Lokasi Kegiatan</label>
+            <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi Kegiatan" value="">
+            <span id="lokasi-messages"></span>
+          </div>
+
           <div class="is_analisa">
-            <div id="nama_kegiatan-alert" class="form-group has-feedback">
-              <label>Nama Kegiatan</label>
-              <input type="text" class="form-control" name="nama_kegiatan" id="nama_kegiatan" placeholder="Nama Kegiatan" value="">
-              <span id="nama_kegiatan-messages"></span>
-            </div>
-
-            <div id="hasil_analisa-alert" class="form-group has-feedback">
-              <label id="hasilAnalisaLabel">Hasil Analisa</label>
-              <textarea class="form-control" name="hasil_analisa" id="hasil_analisa" rows="4" placeholder="Hasil Analisa"></textarea>
-              <span id="hasil_analisa-messages"></span>
-            </div>
-
-            <div id="tanggal_kegiatan-alert" class="form-group has-feedback">
-              <label>Tanggal Kegiatan</label>
-              <input type="date" class="form-control" name="tanggal_kegiatan" id="tanggal_kegiatan" placeholder="Tanggal Kegiatan">
-              <span id="tanggal_kegiatan-messages"></span>
-            </div>
-
-            <div id="biaya-alert" class="form-group has-feedback">
-              <label>Biaya (Rp.)</label>
-              <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
-              <span id="biaya-messages"></span>
-            </div>
-
-            <div id="lokasi-alert" class="form-group has-feedback">
-              <label>Lokasi Kegiatan</label>
-              <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi Kegiatan" value="">
-              <span id="lokasi-messages"></span>
-            </div>
-
             <div id="lap_kegiatan-alert" class="form-group has-feedback">
               <label>Laporan</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_kegiatan" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kegiatan)</small></a>
@@ -82,10 +82,191 @@
           </div>
 
           <div class="is_inspeksi">
-            <div id="perusahaan-alert" class="form-group has-feedback">
-              <label>Nama Perusahaan</label>
-              <input type="text" class="form-control" name="nama_perusahaan" placeholder="Nama Perusahaan" value="">
-              <span id="perusahaan-messages"></span>
+            <input type="hidden" id="countArray" value="1">
+            <table class="table table-hover text-nowrap" id="tablePerusahaan">
+              <tbody id="tbody-row">
+                <tr>
+                  <td>
+                    <label>Data Perusahaan</label>
+                    <button type="button" class="btn btn-info" style="float: right;" id="btn-add-row"><i class="fa fa-plus"></i></button>
+                    <table class="table table-hover text-nowrap">
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="nib_0-alert" class="has-feedback">
+                            <input type="text" class="form-control" name="nib[0]" placeholder="Nomor Induk Berusaha" value="">
+                            <span id="nib_0-messages"></span>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="tgl_nib_0-alert" class=" has-feedback">
+                            <input type="date" class="form-control" name="tgl_nib[0]" placeholder="Tanggal NIB">
+                            <span id="tgl_nib_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" style="padding: 2px;">
+                          <div id="nama_perusahaan_0-alert" class=" has-feedback">
+                            <input type="text" class="form-control" name="nama_perusahaan[0]" placeholder="Nama Perusahaan" value="">
+                            <span id="nama_perusahaan_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" style="padding: 2px;">
+                          <div id="kontak_0-alert" class=" has-feedback">
+                            <input type="text" class="form-control" name="kontak[0]" placeholder="Kontak" value="">
+                            <span id="kontak_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="2" style="padding: 2px;">
+                          <label>Perizinan</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="no_izin_lokasi_0-alert" class=" has-feedback">
+                            <input type="text" class="form-control" name="no_izin_lokasi[0]" placeholder="Nomor Izin Lokasi" value="">
+                            <span id="no_izin_lokasi_0-messages"></span>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="tgl_izin_lokasi_0-alert" class=" has-feedback">
+                            <input type="date" class="form-control" name="tgl_izin_lokasi[0]" placeholder="Tanggal Izin Lokasi">
+                            <span id="tgl_izin_lokasi_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="no_izin_amdal_0-alert" class=" has-feedback">
+                            <input type="text" class="form-control" name="no_izin_amdal[0]" placeholder="Nomor Izin Amdal" value="">
+                            <span id="no_izin_amdal_0-messages"></span>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="tgl_izin_amdal_0-alert" class=" has-feedback">
+                            <input type="date" class="form-control" name="tgl_izin_amdal[0]" placeholder="Tanggal Izin Amdal">
+                            <span id="tgl_izin_amdal_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="no_izin_lingkungan_0-alert" class=" has-feedback">
+                            <input type="text" class="form-control" name="no_izin_lingkungan[0]" placeholder="Nomor Izin Lingkungan" value="">
+                            <span id="no_izin_lingkungan_0-messages"></span>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="tgl_izin_lingkungan_0-alert" class=" has-feedback">
+                            <input type="date" class="form-control" name="tgl_izin_lingkungan[0]" placeholder="Tanggal Izin Lingkungan">
+                            <span id="tgl_izin_lingkungan_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="no_imb_0-alert" class=" has-feedback">
+                            <input type="text" class="form-control" name="no_imb[0]" placeholder="Nomor IMB" value="">
+                            <span id="no_imb_0-messages"></span>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="tgl_imb_0-alert" class=" has-feedback">
+                            <input type="date" class="form-control" name="tgl_imb[0]" placeholder="Tanggal IMB">
+                            <span id="tgl_imb_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="2" style="padding: 2px;">
+                          <label>Investasi dan Tenaga Kerja</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="total_rencana_inv_0-alert" class=" has-feedback">
+                            <input type="number" class="form-control" name="total_rencana_inv[0]" placeholder="Total Rencana Inventaris" value="">
+                            <span id="total_rencana_inv_0-messages"></span>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="total_realisasi_inv_0-alert" class=" has-feedback">
+                            <input type="number" class="form-control" name="total_realisasi_inv[0]" placeholder="Total Realisasi Inventaris">
+                            <span id="total_realisasi_inv_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="rencana_tki_0-alert" class=" has-feedback">
+                            <input type="number" class="form-control" name="rencana_tki[0]" placeholder="Total Rencana TKI" value="">
+                            <span id="rencana_tki_0-messages"></span>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="realisasi_tki_0-alert" class=" has-feedback">
+                            <input type="number" class="form-control" name="realisasi_tki[0]" placeholder="Total Realisasi TKI">
+                            <span id="realisasi_tki_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="rencana_tka_0-alert" class=" has-feedback">
+                            <input type="number" class="form-control" name="rencana_tka[0]" placeholder="Total Rencana TKA" value="">
+                            <span id="rencana_tka_0-messages"></span>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="realisasi_tka_0-alert" class=" has-feedback">
+                            <input type="number" class="form-control" name="realisasi_tka[0]" placeholder="Total Realisasi TKA">
+                            <span id="realisasi_tka_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div id="lap_bap-alert" class="form-group has-feedback">
+              <label>Laporan BAP Pengawasan</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+              <input type="hidden" class="form-control" name="lap_bap_file" id="lap_bap_file" value="">
+              <input type="file" class="form-control file-access" name="lap_bap" id="lap_bap" accept=".pdf">
+              <span id="lap_bap-messages"></span>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+            </div>
+            <div id="lap_bap-alert" class="form-group has-feedback">
+              <label>Laporan LKPM</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+              <input type="hidden" class="form-control" name="lap_lkpm_file" id="lap_lkpm_file" value="">
+              <input type="file" class="form-control file-access" name="lap_lkpm" id="lap_lkpm" accept=".pdf">
+              <span id="lap_lkpm-messages"></span>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+            </div>
+            <div id="lap_bap-alert" class="form-group has-feedback">
+              <label>Laporan Kepatuhan Pelaku Usaha</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+              <input type="hidden" class="form-control" name="lap_evaluasi_file" id="lap_evaluasi_file" value="">
+              <input type="file" class="form-control file-access" name="lap_evaluasi" id="lap_evaluasi" accept=".pdf">
+              <span id="lap_evaluasi-messages"></span>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
+            </div>
+            <div id="lap_bap-alert" class="form-group has-feedback">
+              <label>Laporan Profile</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+              <input type="hidden" class="form-control" name="lap_profile_file" id="lap_profile_file" value="">
+              <input type="file" class="form-control file-access" name="lap_profile" id="lap_profile" accept=".pdf">
+              <span id="lap_profile-messages"></span>
+              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
             </div>
           </div>
 
@@ -162,6 +343,155 @@
   </div>
 </div>
 
+<script type="template" id="template-row-product">
+  <tr>
+    <td>
+      <label>Data Perusahaan</label>
+      <button class="btn btn-danger btn-sm" type="button" style="float: right;" onclick="if($('#tbody-row tr').length > 1) { $(this).closest('tr').remove() }"><i class="fa fa-trash"></i></button>
+      <table class="table table-hover text-nowrap">
+        <tr>
+          <td style="padding: 2px;">
+            <div id="nib_countArraynyaDigantiNanti-alert" class="has-feedback">
+              <input type="text" class="form-control" name="nib[countArraynyaDigantiNanti]" placeholder="Nomor Induk Berusaha" value="">
+              <span id="nib_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="tgl_nib_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="date" class="form-control" name="tgl_nib[countArraynyaDigantiNanti]" placeholder="Tanggal NIB">
+              <span id="tgl_nib_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding: 2px;">
+            <div id="nama_perusahaan_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="text" class="form-control" name="nama_perusahaan[countArraynyaDigantiNanti]" placeholder="Nama Perusahaan" value="">
+              <span id="nama_perusahaan_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding: 2px;">
+            <div id="kontak_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="text" class="form-control" name="kontak[countArraynyaDigantiNanti]" placeholder="Kontak" value="">
+              <span id="kontak_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding: 2px;">
+            <label>Perizinan</label>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="no_izin_lokasi_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="text" class="form-control" name="no_izin_lokasi[countArraynyaDigantiNanti]" placeholder="Nomor Izin Lokasi" value="">
+              <span id="no_izin_lokasi_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="tgl_izin_lokasi_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="date" class="form-control" name="tgl_izin_lokasi[countArraynyaDigantiNanti]" placeholder="Tanggal Izin Lokasi">
+              <span id="tgl_izin_lokasi_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="no_izin_amdal_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="text" class="form-control" name="no_izin_amdal[countArraynyaDigantiNanti]" placeholder="Nomor Izin Amdal" value="">
+              <span id="no_izin_amdal_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="tgl_izin_amdal_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="date" class="form-control" name="tgl_izin_amdal[countArraynyaDigantiNanti]" placeholder="Tanggal Izin Amdal">
+              <span id="tgl_izin_amdal_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="no_izin_lingkungan_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="text" class="form-control" name="no_izin_lingkungan[countArraynyaDigantiNanti]" placeholder="Nomor Izin Lingkungan" value="">
+              <span id="no_izin_lingkungan_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="tgl_izin_lingkungan_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="date" class="form-control" name="tgl_izin_lingkungan[countArraynyaDigantiNanti]" placeholder="Tanggal Izin Lingkungan">
+              <span id="tgl_izin_lingkungan_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="no_imb_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="text" class="form-control" name="no_imb[countArraynyaDigantiNanti]" placeholder="Nomor IMB" value="">
+              <span id="no_imb_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="tgl_imb_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="date" class="form-control" name="tgl_imb[countArraynyaDigantiNanti]" placeholder="Tanggal IMB">
+              <span id="tgl_imb_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" style="padding: 2px;">
+            <label>Investasi dan Tenaga Kerja</label>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="total_rencana_inv_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="number" class="form-control" name="total_rencana_inv[countArraynyaDigantiNanti]" placeholder="Total Rencana Inventaris" value="">
+              <span id="total_rencana_inv_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="total_realisasi_inv_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="number" class="form-control" name="total_realisasi_inv[countArraynyaDigantiNanti]" placeholder="Total Realisasi Inventaris">
+              <span id="total_realisasi_inv_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="rencana_tki_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="number" class="form-control" name="rencana_tki[countArraynyaDigantiNanti]" placeholder="Total Rencana TKI" value="">
+              <span id="rencana_tki_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="realisasi_tki_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="number" class="form-control" name="realisasi_tki[countArraynyaDigantiNanti]" placeholder="Total Realisasi TKI">
+              <span id="realisasi_tki_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="rencana_tka_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="number" class="form-control" name="rencana_tka[countArraynyaDigantiNanti]" placeholder="Total Rencana TKA" value="">
+              <span id="rencana_tka_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="realisasi_tka_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="number" class="form-control" name="realisasi_tka[countArraynyaDigantiNanti]" placeholder="Total Realisasi TKA">
+              <span id="realisasi_tka_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  </script>
 <script type="text/javascript">
   $(document).ready(function() {
 
@@ -177,6 +507,8 @@
       } else if (value == 'inspeksi') {
         $(".is_analisa").hide();
         $(".is_inspeksi").show();
+        $("#hasil_analisa").attr('placeholder', 'Hasil Inspeksi');
+        $('#hasilAnalisaLabel').text("Hasil Inspeksi")
       } else if (value == 'evaluasi') {
         $(".is_analisa").show();
         $(".is_inspeksi").hide();
@@ -215,6 +547,18 @@
         $('#' + field + '-messages').removeClass('help-block').html('');
       }
     })
+
+    countArray = $("#countArray").val();
+
+    $("#btn-add-row").on("click", function() {
+      var row = $("#template-row-product").html();
+      row = row.replace(/countArraynyaDigantiNanti/g, countArray);
+      $row = $(row);
+      console.log($row);
+
+      countArray++;
+      $("#tbody-row").append($row);
+    });
 
     $('#simpan').on('click', function() {
       var formData = new FormData($('#FormSubmit')[0]);
@@ -302,12 +646,10 @@
         'biaya',
         'lokasi',
         'lap_kegiatan',
-        'lap_pendamping',
-        'lap_notula',
-        'lap_survey',
-        'lap_narasumber',
-        'lap_materi',
-        'lap_document'
+        'lap_evaluasi',
+        'lap_lkpm',
+        'lap_bap',
+        'lap_profile'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -341,69 +683,51 @@
             $('#modal-lap_kegiatan').hide();
             $('#lap_kegiatan_file').val('');
           }
-          // if (data.lap_pendamping) {
-          //   $('#modal-lap_pendamping').show();
-          //   $('#lap_pendamping_file').val(data.lap_pendamping);
-          //   $('#modal-lap_pendamping').click(function() {
-          //     tampilkanModal(data.lap_pendamping);
-          //   });
-          // } else {
-          //   $('#modal-lap_pendamping').hide();
-          //   $('#lap_pendamping_file').val('');
-          // }
-          // if (data.lap_notula) {
-          //   $('#modal-lap_notula').show();
-          //   $('#lap_notula_file').val(data.lap_notula);
-          //   $('#modal-lap_notula').click(function() {
-          //     tampilkanModal(data.lap_notula);
-          //   });
-          // } else {
-          //   $('#modal-lap_notula').hide();
-          //   $('#lap_notula_file').val('');
-          // }
-          // if (data.lap_survey) {
-          //   $('#modal-lap_survey').show();
-          //   $('#lap_survey_file').val(data.lap_survey);
-          //   $('#modal-lap_survey').click(function() {
-          //     tampilkanModal(data.lap_survey);
-          //   });
-          // } else {
-          //   $('#modal-lap_survey').hide();
-          //   $('#lap_survey_file').val('');
-          // }
-          // if (data.lap_narasumber) {
-          //   $('#modal-lap_narasumber').show();
-          //   $('#lap_narasumber_file').val(data.lap_narasumber);
-          //   $('#modal-lap_narasumber').click(function() {
-          //     tampilkanModal(data.lap_narasumber);
-          //   });
-          // } else {
-          //   $('#modal-lap_narasumber').hide();
-          //   $('#lap_narasumber_file').val('');
-          // }
-          // if (data.lap_materi) {
-          //   $('#modal-lap_materi').show();
-          //   $('#lap_materi_file').val(data.lap_materi);
-          //   $('#modal-lap_materi').click(function() {
-          //     tampilkanModal(data.lap_materi);
-          //   });
-          // } else {
-          //   $('#modal-lap_materi').hide();
-          //   $('#lap_materi_file').val('');
-          // }
-          // if (data.lap_document) {
-          //   $('#modal-lap_document').show();
-          //   $('#lap_document_file').val(data.lap_document);
-          //   $('#modal-lap_document').click(function() {
-          //     tampilkanModal(data.lap_document);
-          //   });
-          // } else {
-          //   $('#modal-lap_document').hide();
-          //   $('#lap_document_file').val('');
-          // }
+          if (data.lap_lkpm) {
+            $('#modal-lap_lkpm').show();
+            $('#lap_lkpm_file').val(data.lap_lkpm);
+            $('#modal-lap_lkpm').click(function() {
+              tampilkanModal(data.lap_lkpm);
+            });
+          } else {
+            $('#modal-lap_lkpm').hide();
+            $('#lap_lkpm_file').val('');
+          }
+          if (data.lap_evaluasi) {
+            $('#modal-lap_evaluasi').show();
+            $('#lap_evaluasi_file').val(data.lap_evaluasi);
+            $('#modal-lap_evaluasi').click(function() {
+              tampilkanModal(data.lap_evaluasi);
+            });
+          } else {
+            $('#modal-lap_evaluasi').hide();
+            $('#lap_evaluasi_file').val('');
+          }
+          if (data.lap_bap) {
+            $('#modal-lap_bap').show();
+            $('#lap_bap_file').val(data.lap_bap);
+            $('#modal-lap_bap').click(function() {
+              tampilkanModal(data.lap_bap);
+            });
+          } else {
+            $('#modal-lap_bap').hide();
+            $('#lap_bap_file').val('');
+          }
+          if (data.lap_profile) {
+            $('#modal-lap_profile').show();
+            $('#lap_profile_file').val(data.lap_profile);
+            $('#modal-lap_profile').click(function() {
+              tampilkanModal(data.lap_profile);
+            });
+          } else {
+            $('#modal-lap_profile').hide();
+            $('#lap_profile_file').val('');
+          }
+
 
           getPeriode(data.periode_id);
           subMenu(data.sub_menu_slug);
+          timpa();
           footer_modal(id);
           if (data.access == 'daerah' || data.access == 'province') {
             $('#approve_edit-' + id).hide();
@@ -485,6 +809,11 @@
 
       })
 
+      function timpa() {
+        var test = 'asd'
+        $('#tablePerusahaan').html(test);
+      }
+
       function tampilkanModal(url) {
 
         $.ajax({
@@ -509,11 +838,13 @@
           $(".is_analisa").show();
           $(".is_inspeksi").hide();
           $("#hasil_analisa").attr('placeholder', 'Hasil Analisa');
-          $('#hasilAnalisaLabel').text("Hasil Analisa")
-        } else if (value == 'inspeksi') {
+          $('#hasilAnalisaLabel').text("Hasil Analisa");
+        } else if (sub_menu_slug == 'inspeksi') {
           $(".is_analisa").hide();
           $(".is_inspeksi").show();
-        } else if (value == 'evaluasi') {
+          $("#hasil_analisa").attr('placeholder', 'Hasil Inspeksi');
+          $('#hasilAnalisaLabel').text("Hasil Inspeksi");
+        } else if (sub_menu_slug == 'evaluasi') {
           $(".is_analisa").show();
           $(".is_inspeksi").hide();
           $("#hasil_analisa").attr('placeholder', 'Hasil Evaluasi');
