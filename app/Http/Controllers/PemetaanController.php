@@ -105,7 +105,7 @@ class PemetaanController extends Controller
      public function generate($id)
     {
         $get_data = Pemetaan::where('id', $id)->first();
-        $detail =   RequestPemetaan::GetDetail($get_data);
+        $detail =   RequestPemetaan::GetPrint($get_data);
         $build = json_decode(json_encode($detail), FALSE);
         // dd($build);
         $data = ['title' => 'Pemetaan', 'rows' => $build ];

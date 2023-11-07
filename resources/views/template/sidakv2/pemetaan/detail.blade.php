@@ -210,501 +210,1021 @@
 
           }
 
-          function updateContent(item)
-          {
+        function updateContent(data,options)
+    {
+        const content = $('#content');
+        // Clear previous data
+        content.empty();
 
-            const content = $('#content');
-           // Clear previous data
-            content.empty();
+        if(data.length>0)
+        {      
 
-     
-               let row = ``;
-            
-                             row +=`<tr>`;
-                            row +=`<td colspan="9" class="text-center font-bold">Proses Pengadaan Barang/Jasa</td>`;
-                             row +=`</tr>`;  
-                              row +=`<tr lass="pull-left full">`;
-                            row +=`<td rowspan="9" class="font-bold text-center">1.</td>`;
-                            row +=`<td colspan="4" class="font-bold"> Pra Produksi Meliputi : </td>`;
-                              row +=`<td><strong id="total_pra_produksi">${item.total_pra_produksi }</td>`;
-                             row +=`<td></td>`;
-                            row +=`</tr>`;
-                       row +=`<tr>`;
+        // Populate content with new data
+        data.forEach(function(item, index) {
+                  let row = ``;
+
+
+                    row +=`<tr lass="pull-left full">`;
+                            row +=`<td rowspan="5" class="font-bold text-center">1</td>`;
+                            row +=`<td colspan="6" class="font-bold"> Identifikasi Pemetaan Potensi Investasi : </td>`;
+                            row +=`<td><strong id="total_identifikasi">${item.total_identifikasi }</td>`;
+                            row +=`<td></td>`;
+                    row +=`</tr>`;
+
+
+                         row +=`<tr>`;
                          row +=`<td class="font-bold">A.</td>`;
-                         row +=`<td class="-abjad font-bold">Rapat Teknis Membahas Rencana Kerja Antara Lain Menentukan Proyek/Peluang/Potensi Invenstasi Yang Akan Tampil Dalam Video</td>`;
+                         row +=`<td class="-abjad font-bold" colspan="3">Rapat Teknis Membahas Rencana Kerja</td>`;
                          row +=`<td>`;
                               row +=`<div id="startdate-a-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input readonly type="date" name="" value="${item.tgl_awal_peluang}" class="form-control">`;
+                                   row +=`<input  type="date"  disabled id="startdate_a_pra" name="startdate_a_pra"  value="${item.tgl_awal_rencana_kerja }" class="form-control ">`; 
                                    row +=`<span id="startdate-a-pra-messages"></span>`;
-                            row +=`</div>`;
+                           row +=` </div>`;
                          row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="enddate-a-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input readonly type="date" name="" value="${item.tgl_ahir_peluang}" class="form-control">`;
+                                        row +=`<input type="date"  disabled id="enddate_a_pra" name="enddate_a_pra" value="${item.tgl_ahir_rencana_kerja }" class="form-control">`;
                                  row +=`<span id="enddate-a-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-a-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.budget_peluang}" class="form-control text-right">`;
+                                        row +=`<input type="number" id="budget_a_pra" disabled   min="0" oninput="this.value = Math.abs(this.value)" placeholder="Budget" value="${item.budget_rencana_kerja }" name="budget_a_pra" 
+                                           
+                                        class="form-control pra_produksi">`;
                                  row +=`<span id="budget-a-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-a-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.keterangan_peluang}" class="form-control">`;
-                                 row +=`<span id="desc-a-pra-messages"></span>`;
-                            row +=`</div>`;
+                                   // row +=`<div id="desc-a-pra-alert" class="margin-none form-group">`;
+                                   //      row +=`<input type="text" disabled id="desc_a_pra" name="desc_a_pra"
+                                   //           value="${item.keterangan_rencana_kerja }"
+                                   //          class="form-control">`;
+
+                                   row +=`<div>`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rencana_kerja }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                                   row +=`</div>`;
 
                               row +=`</td>`;
                        row +=`</tr>`;
                        row +=`<tr>`;
                          row +=`<td class="font-bold">B.</td>`;
-                         row +=`<td class="font-bold">Membuat Storyline</td>`;
+                         row +=`<td class="font-bold" colspan="3">Studi literatur</td>`;
                          row +=`<td>`;
                               row +=`<div id="startdate-b-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input readonly type="date" name="" value="${item.tgl_awal_storyline}" class="form-control">`;
+                                   row +=`<input type="date"  disabled name="startdate_b_pra"  value="${item.tgl_awal_studi_literatur }" class="form-control">`;
                                    row +=`<span id="startdate-b-pra-messages"></span>`;
                             row +=`</div>`;
                          row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="enddate-b-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input readonly type="date" name="" value="${item.tgl_ahir_storyline}" class="form-control">`;
+                                        row +=`<input type="date" disabled name="enddate_b_pra"  value="${item.tgl_ahir_studi_literatur }" class="form-control">`;
                                  row +=`<span id="enddate-b-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-b-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.budget_storyline}" class="form-control text-right">`;
+                                        row +=`<input id="budget_b_pra_alert"  placeholder="Budget" value="${item.budget_studi_literatur }"  type="number" min="0" disabled oninput="this.value = Math.abs(this.value)" name="budget_b_pra" class="form-control pra_produksi">`;
                                  row +=`<span id="budget-b-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-b-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.keterangan_storyline}" class="form-control">`;
-                                 row +=`<span id="desc-b-pra-messages"></span>`;
+                            //        row +=`<div id="desc-b-pra-alert" class="margin-none form-group">`;
+                            //             row +=`<input type="text" disabled name="desc_b_pra" value="${item.keterangan_studi_literatur }" class="form-control">`;
+                            //      row +=`<span id="desc-b-pra-messages"></span>`;
+                            // row +=`</div>`;
+
+                             row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_studi_literatur }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+
+
+                                
                             row +=`</div>`;
+
 
                               row +=`</td>`;
                        row +=`</tr>`;
+
+
                        row +=`<tr >`;
                          row +=`<td class="font-bold">C.</td>`;
-                         row +=`<td class="font-bold">Membuat StoryBoard</td>`;
+                         row +=`<td class="font-bold" colspan="3">Rapat Koordinasi dan Korespondensi dengan Instansi Terkait</td>`;
                        row +=`<td>`;
                               row +=`<div id="startdate-c-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input readonly type="date" name="" value="${item.tgl_awal_storyboard}" class="form-control">`;
+                                   row +=`<input type="date" disabled name="startdate_c_pra" value="${item.tgl_awal_rapat_kordinasi }" class="form-control">`;
                                    row +=`<span id="startdate-c-pra-messages"></span>`;
                             row +=`</div>`;
                          row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="enddate-c-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input readonly type="date" name="" value="${item.tgl_ahir_storyboard}" class="form-control">`;
+                                        row +=`<input type="date" disabled name="enddate_c_pra" value="${item.tgl_ahir_rapat_kordinasi }" class="form-control">`;
                                  row +=`<span id="enddate-c-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-c-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.budget_storyboard}"  class="form-control text-right">`;
+                                        row +=`<input type="number" disabled min="0"  placeholder="Budget" value="${item.budget_rapat_kordinasi }" oninput="this.value = Math.abs(this.value)" name="budget_c_pra" class="form-control pra_produksi">`;
                                  row +=`<span id="budget-c-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-c-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.keterangan_storyboard}"  class="form-control">`;
-                                 row +=`<span id="desc-c-pra-messages"></span>`;
-                            row +=`</div>`;
+                            //        row +=`<div id="desc-c-pra-alert" class="margin-none form-group">`;
+                            //             row +=`<input type="text" disabled name="desc_c_pra" value="${item.keterangan_rapat_kordinasi }" class="form-control">`;
+                            //      row +=`<span id="desc-c-pra-messages"></span>`;
+                            // row +=`</div>`;
+
+                               row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rapat_kordinasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+
+
+                                
+                             row +=`</div>`;
 
                               row +=`</td>`;
                        row +=`</tr>`;
                        row +=`<tr >`;
                          row +=`<td class="font-bold">D.</td>`;
-                         row +=`<td class="font-bold">Penentuan Lokasi</td>`;
+                         row +=`<td class="font-bold" colspan="3">Pengumpulan data sekunder</td>`;
                          row +=`<td>`;
                               row +=`<div id="startdate-d-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input readonly type="date" name="" value="${item.tgl_awal_lokasi}"   class="form-control">`;
+                                   row +=`<input type="date" disabled name="startdate_d_pra" value="${item.tgl_awal_data_sekunder }"  class="form-control">`;
                                    row +=`<span id="startdate-d-pra-messages"></span>`;
                             row +=`</div>`;
                          row +=`</td>`;
                               row +=`<td>`;
-                           row +=`<div id="enddate-d-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input readonly type="date" name="" value="${item.tgl_ahir_lokasi}"  class="form-control">`;
+                            row +=`<div id="enddate-d-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input type="date" disabled name="enddate_d_pra" value="${item.tgl_ahir_data_sekunder }"  class="form-control">`;
                                  row +=`<span id="enddate-d-pra-messages"></span>`;
                             row +=`</div>`;
-                              row +=`</td>`;
+                             row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-d-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.budget_lokasi}"  class="form-control text-right">`;
+                                        row +=`<input min="0" disabled type="number"  placeholder="Budget" value="${item.budget_data_sekunder }" oninput="this.value = Math.abs(this.value)" name="budget_d_pra" class="form-control pra_produksi">`;
                                  row +=`<span id="budget-d-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-d-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.keterangan_lokasi}"  class="form-control">`;
-                                 row +=`<span id="desc-d-pra-messages"></span>`;
-                            row +=`</div>`;
+                            //        row +=`<div id="desc-d-pra-alert" class="margin-none form-group">`;
+                            //             row +=`<input type="text" disabled name="desc_d_pra" value="${item.keterangan_data_sekunder }" class="form-control">`;
+                            //      row +=`<span id="desc-d-pra-messages"></span>`;
+                            // row +=`</div>`;
+
+
+
+                               row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_data_sekunder }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+
+
+                              
+                             row +=`</div>`;
 
                               row +=`</td>`;
-                       row +=`</tr>`;
-                        row +=`<tr>`;
-                         row +=`<td class="font-bold">E.</td>`;
-                         row +=`<td class="font-bold">Pemilihan Talent</td>`;
-                         row +=`<td>`;
-                              row +=`<div id="startdate-e-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input readonly type="date" name="" value="${item.tgl_awal_talent}" class="form-control">`;
-                                   row +=`<span id="startdate-e-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
+                         row +=`</tr>`;                        
+
+                         row +=`<tr>`;
+                            row +=`<td rowspan="11" class="font-bold text-center">2</td>`;
+                            row +=`<td colspan="6" class="font-bold"> Perumusan dan Pelaksanaan Pemetaan Potensi Investasi : </td>`;
+                             row +=`<td><strong id="total_pelaksanaan">${item.total_pelaksanaan }</td>`;
+                            row +=`<td></td>`;
+                            row +=`</tr>`;
+                         row +=`<tr>`;
+
+                         row +=`<tr>`;
+                              row +=`<td class="font-bold">A.</td>`;
+                              row +=`<td></td>`;
+                              row +=`<td></td>`;
+                              row +=`<td class="-abjad font-bold" ><textarea readonly class="textarea-table">Melaksanakan Rapat Koordinasi Persiapan antara DPMPTSP Provinsi dengan dinas/stakeholder terkait dalam rangka konfirmasi dan pelengkapan data dalam rangka penetapan sektor dan subsektor unggulan hasil analisis</textarea></td>`;
                               row +=`<td>`;
-                            row +=`<div id="enddate-e-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input readonly type="date" name="" value="${item.tgl_ahir_talent}" class="form-control">`;
-                                 row +=`<span id="enddate-e-pra-messages"></span>`;
+                              row +=`<div id="startdate-a-pro-alert" class="margin-none form-group">`; 
+                                   row +=`<input type="date" disabled name="startdate_a_pro" value="${item.tgl_awal_fgd_persiapan }" class="form-control">`;
+                                   row +=`<span id="startdate-a-pro-messages"></span>`;
+                              row +=`</div>`;
+                             row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-a-pro-alert" class="margin-none form-group">`; 
+                                 row +=`<input type="date" disabled name="enddate_a_pro" value="${item.tgl_ahir_fgd_persiapan }" class="form-control">`;
+                                 row +=`<span id="enddate-a-pro-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                            row +=`<div id="budget-e-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.budget_talent}" class="form-control text-right">`;
-                                 row +=`<span id="budget-e-pra-messages"></span>`;
+                            row +=`<div id="budget-a-pro-alert" class="margin-none form-group">`;
+                                        row +=`<input min="0" disabled type="number" placeholder="Budget" value="${item.budget_fgd_persiapan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_pro" class="form-control produksi">`;
+                                 row +=`<span id="budget-a-pro-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-e-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.keterangan_talent}"   class="form-control">`;
-                                 row +=`<span id="desc-e-pra-messages"></span>`;
-                            row +=`</div>`;
+                            //        row +=`<div id="desc-a-pro-alert" class="margin-none form-group">`;
+                            //             row +=`<input type="text"  disabled name="desc_a_pro"  value="${item.keterangan_fgd_persiapan }"   class="form-control">`;
+                            //      row +=`<span id="desc-a-pro-messages"></span>`;
+                            // row +=`</div>`;
+
+
+                              row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_persiapan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+
+
+                                
+                              row +=`</div>`;
 
                               row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr >`;
-                         row +=`<td class="font-bold">F.</td>`;
-                         row +=`<td class="font-bold">Pemilihan Pelaku Usaha Yang Memberikan Testimoni</td>`; 
-                         row +=`<td>`;
-                              row +=`<div id="startdate-f-pra-alert" class="margin-none form-group">`;
-                                   row +=`<input readonly type="date" name="" value="${item.tgl_awal_testimoni}"  class="form-control">`;
+                         row +=`</tr>`;     
+
+                         row +=`<tr>`;
+                              row +=`<td class="font-bold">B.</td>`;
+                              row +=`<td></td>`;
+                              row +=`<td></td>`;
+                              row +=`<td class="-abjad font-bold"><textarea readonly class="textarea-table">Melaksanakan Focus Group Discussion (FGD) terkait Identifikasi antara DPMPTSP Provinsi dengan dinas/stakeholder terkait dalam rangka konfirmasi dan pelengkapan data dalam rangka penetapan sektor dan subsektor unggulan hasil analisis</textarea></td>`;
+                             row +=`<td>`;
+                              row +=`<div id="startdate-b-pro-alert" class="margin-none form-group">`; 
+                                   row +=`<input type="date" disabled name="startdate_f_pra" value="${item.tgl_awal_fgd_identifikasi }" class="form-control pra-produksi">`;
                                    row +=`<span id="startdate-f-pra-messages"></span>`;
                             row +=`</div>`;
                          row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="enddate-f-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input readonly type="date" name="" value="${item.tgl_ahir_testimoni}" class="form-control">`;
-                                 row +=`<span id="enddate-f-messages"></span>`;
+                                        row +=`<input type="date" disabled name="enddate_f_pra" value="${item.tgl_ahir_fgd_identifikasi }" class="form-control">`;
+                                 row +=`<span id="enddate-f-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
-                              row +=`<td>`;
+                             row +=`<td>`;
                             row +=`<div id="budget-f-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.budget_testimoni}" class="form-control text-right">`;
-                                 row +=`<span id="budget-f-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-f-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.keterangan_testimoni}"   class="form-control">`;
-                                 row +=`<span id="desc-f-pra-messages"></span>`;
-                            row +=`</div>`;
+                                         row +=`<input min="0" disabled type="number"  placeholder="Budget" value="${item.budget_fgd_identifikasi }" oninput="this.value = Math.abs(this.value)" name="budget_f_pra" class="form-control pra_produksi">`;
+                                  row +=`<span id="budget-f-pra-messages"></span>`;
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             //        row +=`<div id="desc-f-pra-alert" class="margin-none form-group">`; 
+                             //             row +=`<input type="text" disabled name="desc_f_pra" value="${item.keterangan_fgd_identifikasi }" class="form-control">`; 
+                             //      row +=`<span id="desc-f-pra-messages"></span>`; 
+                             // row +=`</div>`; 
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr>`;
-                         row +=`<td class="font-bold">G.</td>`;
-                         row +=`<td class="font-bold">Pemilihan Element Audio Visual</td>`;
-                         row +=`<td>`;
-                              row +=`<div id="startdate-g-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input readonly type="date" name="" value="${item.tgl_awal_audio}"  class="form-control">`;
-                                   row +=`<span id="startdate-g-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-g-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input readonly type="date" name="" value="${item.tgl_ahir_audio}" class="form-control">`;
-                                 row +=`<span id="enddate-g-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-g-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.budget_audio}" class="form-control text-right">`;
-                                 row +=`<span id="budget-g-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-g-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.keterangan_audio}"   class="form-control">`;
-                                 row +=`<span id="desc-g-pra-messages"></span>`;
-                            row +=`</div>`;
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr >`;
-                         row +=`<td class="font-bold">H.</td>`;
-                         row +=`<td class="font-bold">Pemilihan Video Editing Tools</td>`;
-                       row +=`<td>`;
-                              row +=`<div id="startdate-h-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input readonly type="date" name="" value="${item.tgl_awal_editing}" class="form-control">`;
-                                   row +=`<span id="startdate-h-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-h-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input readonly type="date" name="" value="${item.tgl_ahir_editing}" class="form-control">`;
-                                 row +=`<span id="enddate-h-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-h-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.budget_editing}" class="form-control text-right">`;
-                                 row +=`<span id="budget-h-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-h-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input readonly type="text" name="" value="${item.keterangan_editing}"   class="form-control">`;
-                                 row +=`<span id="desc-h-pra-messages"></span>`;
-                            row +=`</div>`;
+                                   row +=`<div>`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_identifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                                   row +=`</div>`;
 
-                             row +=`<tr >`;
-                             row +=`<td rowspan="3" class="font-bold text-center">2.</td>`;
-                             row +=`<td colspan="4" class="font-bold"> Produksi : </td>`;
-                             row +=`<td><strong id="total_produksi">${item.total_produksi }</td>`;
-                             row +=`<td></td>`;
+                               row +=`</td>`; 
+                          row +=`</tr>`; 
+                              
 
-                             row +=`</tr>`;
-                              row +=`<tr>`;
-                          row +=`<td class="font-bold">A.</td>`;
-                          row +=`<td class="-abjad font-bold">Pengambilan Gambar Testimoni Pelaku Usaha</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-a-pro-alert" class="margin-none form-group">`; 
-                                    row +=`<input readonly type="date" name="" value="${item.tgl_awal_gambar}"  class="form-control">`;
-                                    row +=`<span id="startdate-a-pro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-a-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input readonly type="date" name="" value="${item.tgl_ahir_gambar}" class="form-control">`;
-                                  row +=`<span id="enddate-a-pro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-a-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.budget_gambar}" class="form-control text-right">`;
-                                  row +=`<span id="budget-a-pro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-a-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.keterangan_gambar}"   class="form-control">`;
-                                  row +=`<span id="desc-a-pro-messages"></span>`;
-                             row +=`</div>`;
 
-                               row +=`</td>`;
-                        row +=`</tr>`;
-                        row +=`<tr>`;
-                          row +=`<td class="font-bold">B.</td>`;
-                          row +=`<td class="-abjad font-bold">Pengambilan Gambar Di Lapangan Dan Pengumpulan Video</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-b-pro-alert" class="margin-none form-group">`; 
-                                    row +=`<input readonly type="date" name="" value="${item.tgl_awal_video}" class="form-control">`;
-                                    row +=`<span id="startdate-b-pro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-b-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input readonly type="date" name="" value="${item.tgl_ahir_video}" class="form-control">`;
-                                  row +=`<span id="enddate-b-pro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-b-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.budget_video}" class="form-control text-right">`;
-                                  row +=`<span id="budget-b-pro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                              row +=`<td>`;
-                                    row +=`<div id="desc-b-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.keterangan_video}"   class="form-control">`;
-                                  row +=`<span id="desc-b-pro-messages"></span>`;
-                             row +=`</div>`;
+                          row +=`<tr>`; 
+                               row +=`<td class="font-bold" rowspan="5">C.</td>`; 
+                               row +=`<td class="-abjad font-bold" colspan="7">`; 
+                                   row +=`Pengolahan dan analisis data untuk menghasilkan potensi sektor dan subsektor unggulan daerah :`;
+                               row +=`</td>`; 
+                             
+                          row +=`</tr>`; 
 
-                               row +=`</td>`;
-                        row +=`</tr>`;
-                            row +=`<tr>`;
-                            row +=`<td rowspan="9" class="font-bold text-center">3.</td>`;
-                            row +=`<td colspan="4" class="font-bold"> Pasca Produksi : </td>`;
-                            row +=`<td><strong id="total_produksi">${item.total_pasca_produksi }</td>`;
-                            row +=`<td></td>`;
-                            row +=`</tr>`;
-                             row +=`<tr>`;
-                          row +=`<td class="font-bold">A.</td>`;
-                          row +=`<td class="-abjad font-bold">Editing Video</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-a-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input readonly type="date" name="" value="${item.tgl_awal_editvideo}" class="form-control">`;
-                                    row +=`<span id="startdate-a-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-a-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input readonly type="date" name=""  value="${item.tgl_ahir_editvideo}" class="form-control">`;
-                                  row +=`<span id="enddate-a-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-a-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.budget_editvideo}" class="form-control text-right">`;
-                                  row +=`<span id="budget-a-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-a-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.keterangan_editvideo}"   class="form-control">`;
-                                  row +=`<span id="desc-a-ppro-messages"></span>`;
-                             row +=`</div>`;
 
-                               row +=`</td>`;
-                        row +=`</tr>`;
-                        row +=`<tr>`;
-                          row +=`<td class="font-bold">B.</td>`;
-                          row +=`<td class="font-bold">Motion Grafik</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-b-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input readonly type="date" name="" value="${item.tgl_awal_grafik}" class="form-control">`;
-                                    row +=`<span id="startdate-b-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-b-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input readonly type="date" name="" value="${item.tgl_ahir_grafik}" class="form-control">`;
-                                  row +=`<span id="enddate-b-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-b-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.budget_grafik}" class="form-control text-right">`;
-                                  row +=`<span id="budget-b-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-b-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.keterangan_grafik}"   class="form-control">`;
-                                  row +=`<span id="desc-b-ppro-messages"></span>`;
-                             row +=`</div>`;
+                         row +=` <tr>`; 
+                            if(item.checklist_lq == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_lq }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_lq }"></td>`;  
+                            } 
+                                
+                               row +=`<td class="font-bold table-number" >`; 
+                                  row +=` 1.`; 
+                               row +=`</td>`; 
 
-                               row +=`</td>`;
-                       row +=` </tr>`;
-                        row +=`<tr >`;
-                          row +=`<td class="font-bold">C.</td>`;
-                          row +=`<td class="font-bold">Music Compose Dan Mixing</td>`;
-                        row +=`<td>`;
-                               row +=`<div id="startdate-c-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input readonly type="date" name="" value="${item.tgl_awal_mixing}"  class="form-control">`;
-                                    row +=`<span id="startdate-c-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-c-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input readonly type="date" name="" value="${item.tgl_ahir_mixing}" class="form-control">`;
-                                  row +=`<span id="enddate-c-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-c-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.budget_mixing}" class="form-control text-right">`;
-                                  row +=`<span id="budget-c-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-c-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.keterangan_mixing}"   class="form-control">`;
-                                  row +=`<span id="desc-c-ppro-messages"></span>`;
-                             row +=`</div>`;
+                               row +=`<td class="-abjad font-bold"> LQ</td>`; 
+                              row +=`<td>`; 
+                              row +=`<div id="startdate-c-1-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" disabled name="startdate_c_1_pro"  value="${item.tgl_awal_lq }"  class="form-control">`; 
+                                    row +=`<span id="startdate-c-1-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-c-1-pro-alert" class="margin-none form-group">`;  
+                                         row +=`<input type="date" disabled name="enddate_c_1_pro"  value="${item.tgl_ahir_lq }"  class="form-control">`; 
+                                  row +=`<span id="enddate-c-1-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="budget-c-1-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" disabled type="number"  placeholder="Budget" value="${item.budget_lq }" oninput="this.value = Math.abs(this.value)" name="budget_c_1_pro" class="form-control pra_produksi">`; 
+                                  row +=`<span id="budget-c-1-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                             //   row +=`<td>`; 
+                             //        row +=`<div id="desc-c-1-pro-alert" class="margin-none form-group">`; 
+                             //             row +=`<input type="text" disabled name="desc_c_1_pro" value="${item.keterangan_lq }" class="form-control">`; 
+                             //      row +=`<span id="desc-c-1-pro-messages"></span>`; 
+                             // row +=`</div>`; 
 
-                               row +=`</td>`;
-                       row +=`</tr>`;
-                        row +=`<tr >`;
-                          row +=`<td class="font-bold">D.</td>`;
-                          row +=`<td class="font-bold">Voice Over Talent</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-d-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input readonly type="date" name="" value="${item.tgl_awal_voice}"  class="form-control">`;
-                                    row +=`<span id="startdate-d-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-d-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input readonly type="date" name="" value="${item.tgl_ahir_voice}" class="form-control">`;
-                                  row +=`<span id="enddate-d-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-d-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.budget_voice}" class="form-control text-right">`;
-                                  row +=`<span id="budget-d-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-d-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.keterangan_voice}"   class="form-control">`;
-                                  row +=`<span id="desc-d-ppro-messages"></span>`;
-                             row +=`</div>`;
+                             //   row +=`</td>`; 
+                             row +=`<td rowspan="4">`; 
+                               
+                                   row +=`<div class="potensi-sektor">`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_identifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
 
-                               row +=`</td>`;
-                        row +=`</tr>`;
-                         row +=`<tr>`;
-                          row +=`<td class="font-bold">E.</td>`;
-                          row +=`<td class="font-bold">Subtitle</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-e-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input readonly type="date" name="" value="${item.tgl_awal_subtitle}" class="form-control">`;
-                                    row +=`<span id="startdate-e-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-e-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input readonly type="date" name="" value="${item.tgl_ahir_subtitle}"  class="form-control">`;
-                                  row +=`<span id="enddate-e-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-e-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.budget_subtitle}" class="form-control text-right">`;
-                                  row +=`<span id="budget-e-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-e-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input readonly type="text" name="" value="${item.keterangan_subtitle}"   class="form-control">`;
-                                  row +=`<span id="desc-e-ppro-messages"></span>`;
-                             row +=`</div>`;
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                                   row +=`</div>`;
 
-                              row +=`</td>`;
-                       row +=`</tr>`;     
-                           //  BtnAction(item.id,item.status_laporan_id);
+                             row +=`</td>`; 
+                          row +=`</tr>`; 
 
-                       content.append(row);
-                       pagu_promosi = item.pagu_promosi;
-                       getperiode(item.periode_id); 
-                       if(item.access =='pusat' || item.access =='admin')
-                       {
-                         BtnAction(item);  
-                       }
+
+                          row +=`<tr>`; 
+                            if(item.checklist_shift_share == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_shift_share }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_shift_share }"></td>`;  
+                            } 
+                            
+                               row +=`<td class="font-bold table-number" >`; 
+                                  row +=` 2.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Shift Share</td>`; 
+                               row +=`<td>`; 
+                               row +=`<div id="startdate-c-2-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" disabled name="startdate_shift_c_2_pro" value="${item.tgl_awal_shift_share }" class="form-control">`; 
+                                   row +=` <span id="startdate-c-2-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-c-2-pro-alert" class="margin-none form-group"> `; 
+                                  row +=`<input type="date" disabled name="enddate_c_2_pro" value="${item.tgl_ahir_shift_share }" class="form-control">`; 
+                                  row +=`<span id="enddate-c-2-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="budget-c-2-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" disabled type="number" placeholder="Budget" value="${item.budget_shift_share }"  oninput="this.value = Math.abs(this.value)" name="budget_c_2_pro" class="form-control produksi">`; 
+                                  row +=`<span id="budget-c-2-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                             //   row +=`<td>`; 
+                             //        row +=`<div id="desc-c-2-pro-alert" class="margin-none form-group">`; 
+                             //             row +=`<input type="text"  disabled name="desc_c_2_pro" value="${item.keterangan_shift_share }"    class="form-control">`; 
+                             //      row +=`<span id="desc-c-2-pro-messages"></span>`; 
+                             // row +=`</div>`; 
+
+                             //   row +=`</td>`; 
+                          row +=`</tr>`; 
+
+                          row +=`<tr>`; 
+                            if(item.checklist_tipologi_sektor == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_tipologi_sektor }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_tipologi_sektor }"></td>`;  
+                            } 
+                                 
+                               row +=`<td class="font-bold table-number" >`; 
+                                   row +=` 3.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Tipologi Sektor</td>`; 
+                                row +=`<td>`; 
+                               row +=`<div id="startdate-c-3-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" disabled name="startdate_c_3_pro" value="${item.tgl_awal_tipologi_sektor }"  class="form-control">`; 
+                                    row +=`<span id="startdate-c-3-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-tipologi-sektor-pro-alert" class="margin-none form-group"> `; 
+                                         row +=`<input type="date" disabled name="enddate_c_3_pro" value="${item.tgl_ahir_tipologi_sektor }"  class="form-control">`; 
+                                 row +=` <span id="enddate-c-3-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="budget-c-3-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" disabled type="number" placeholder="Budget" value="${item.budget_tipologi_sektor }"  oninput="this.value = Math.abs(this.value)" name="budget_c_3_pro" class="form-control produksi">`; 
+                                  row +=`<span id="budget-c-3-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                             //   row +=`<td>`; 
+                             //        row +=`<div id="desc-c-3-pro-alert" class="margin-none form-group">`; 
+                             //             row +=`<input type="text" disabled name="desc_c_3_pro" value="${item.keterangan_tipologi_sektor }"  class="form-control">`; 
+                             //      row +=`<span id="desc-c-3-pro-messages"></span>`; 
+                             // row +=`</div>`; 
+
+                             //   row +=`</td>`; 
+                          row +=`</tr>`; 
+
+                          row +=`<tr>`; 
+                           if(item.checklist_klassen == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_klassen }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_klassen }"></td>`;  
+                            } 
+                              
+                              row +=` <td class="font-bold table-number" >`; 
+                                   row +=` 4.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Klassen</td>`; 
+                               row +=`<td>`; 
+                               row +=`<div id="startdate-c-4-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" disabled name="startdate_c_4_pro" value="${item.tgl_awal_klassen }" class="form-control">`; 
+                                   row +=` <span id="startdate-c-4-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-c-4-pro-alert" class="margin-none form-group"> `; 
+                                         row +=`<input type="date" disabled name="enddate_c_4_pro" value="${item.tgl_ahir_klassen }" class="form-control">`; 
+                                  row +=`<span id="enddate-c-4-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="budget-c-4-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" disabled type="number" placeholder="Budget" value="${item.budget_klassen }" oninput="this.value = Math.abs(this.value)" name="budget_c_4_pro" class="form-control produksi">`; 
+                                  row +=`<span id="budget-c-4-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                            //    row +=`<td>`; 
+                            //        row +=` <div id="desc-c-4-pro-alert" class="margin-none form-group">`; 
+                            //              row +=`<input type="text" disabled name="desc_c_4_pro" value="${item.keterangan_klassen }" class="form-control">`; 
+                            //       row +=`<span id="desc-c-4-pro-messages"></span>`; 
+                            // row +=` </div>`; 
+
+                            //    row +=`</td>`; 
+                          row +=`</tr>`; 
+
+                        
+                          row +=`<tr>`; 
+                          row +=`<td class="font-bold">D.</td>`; 
+                          row +=`<td></td>`;
+                          row +=`<td></td>`;
+                          row +=`<td class="-abjad font-bold"><textarea readonly class="textarea-table">Melaksanakan Focus Group Discussion (FGD) terkait Klarifikasi antara DPMPTSP Provinsi dengan dinas/stakeholder terkait dalam rangka konfirmasi dan pelengkapan data dalam rangka penetapan sektor dan subsektor unggulan hasil analisis</textarea></td>`; 
+                          row +=`<td>`; 
+                              row +=` <div id="startdate-d-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" disabled name="startdate_d_pro" value="${item.tgl_awal_fgd_klarifikasi }" class="form-control">`; 
+                                   row +=` <span id="startdate-d-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="enddate-d-pro-alert" class="margin-none form-group"> `; 
+                                       row +=`  <input type="date" disabled name="enddate_d_pro" value="${item.tgl_ahir_fgd_klarifikasi }" class="form-control">`; 
+                                 row +=` <span id="enddate-d-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="budget-d-pro-alert" class="margin-none form-group">`; 
+                                        row +=` <input min="0" disabled type="number" placeholder="Budget" value="${item.budget_fgd_klarifikasi }" oninput="this.value = Math.abs(this.value)" name="budget_d_pro" class="form-control produksi">`; 
+                                  row +=`<span id="budget-d-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                               row +=`<td>`; 
+                            //         row +=`<div id="desc-d-pro-alert" class="margin-none form-group">`; 
+                            //              row +=`<input type="text" disabled name="desc_d_pro" value="${item.keterangan_fgd_klarifikasi }" class="form-control ">`; 
+                            //       row +=`<span id="desc-d-pro-messages"></span>`; 
+                            // row +=` </div>`; 
+
+                              row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_klarifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+
+
+                                
+                               row +=`</div>`;
+
+                               row +=`</td>`; 
+                         row +=` </tr>`; 
+                         
+
+                          
+
+
+                        
+                        row +=`<tr>`; 
+                          row +=`<td class="font-bold">E.</td>`; 
+                          row +=`<td></td>`;
+                          row +=`<td></td>`;
+                          row +=`<td class="-abjad font-bold"><textarea readonly class="textarea-table">Melaksanakan Rapat Koordinasi Finalisasi antara DPMPTSP Provinsi dengan dinas/stakeholder terkait dalam rangka konfirmasi dan pelengkapan data dalam rangka penetapan sektor dan subsektor unggulan hasil analisis</textarea></td>`; 
+                          row +=`<td>`; 
+                               row +=`<div id="startdate-e-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" disabled name="startdate_c_pro" value="${item.tgl_awal_finalisasi }"  class="form-control">`; 
+                                    row +=`<span id="startdate-e-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                              row +=` <td>`; 
+                            row +=` <div id="enddate-e-pro-alert" class="margin-none form-group"> `; 
+                                       row +=` <input type="date" disabled name="enddate_e_pro" value="${item.tgl_ahir_finalisasi }"  class="form-control">`; 
+                                  row +=`<span id="enddate-e-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="budget-e-pro-alert" class="margin-none form-group">`; 
+                                        row +=` <input min="0" disabled type="number" placeholder="Budget"  oninput="this.value = Math.abs(this.value)" name="budget_e_pro" value="${item.budget_finalisasi }" class="form-control produksi">`; 
+                                  row +=`<span id="budget-e-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             //        row +=`<div id="desc-e-pro-alert" class="margin-none form-group">`; 
+                             //            row +=` <input type="text" disabled name="desc_e_pro" value="${item.keterangan_finalisasi }"  class="form-control">`; 
+                             //      row +=`<span id="desc-e-pro-messages"></span>`; 
+                             // row +=`</div>`; 
+
+                                   row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_klarifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                                   row +=`</div>`;
+
+
+                               row +=`</td>`; 
+                         row +=` </tr>`; 
+                      
+                         row +=`<tr>`; 
+                           row +=` <td rowspan="12" class="font-bold text-center">3</td>`; 
+                            row +=`<td colspan="6" class="font-bold"> Penyusunan Peta Potensi Investasi : </td>`; 
+                             row +=`<td><strong id="total_penyusunan">${item.total_penyusunan } </td>`; 
+                            row +=`<td></td>`; 
+                            row +=`</tr>`; 
+                         row +=`<tr>`; 
+
+
+                         row +=`<tr>`; 
+                             row +=` <td class="font-bold" rowspan="8">A.</td>`; 
+                             row +=` <td class="-abjad font-bold" colspan="7">`; 
+                                   row +=`Menyusun hasil identifikasi, pengolahan, dan analisis data dalam bentuk dokumen`; 
+                              row +=`</td>`; 
+                         row +=`</tr>`; 
+
+
+                         row +=`<tr>`; 
+                            if(item.checklist_summary_sektor_unggulan == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_summary_sektor_unggulan }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_summary_sektor_unggulan }"></td>`;  
+                            }  
+                             row +=` <td class="font-bold table-number" >`; 
+                                  row +=` 1.`; 
+                             row +=` </td>`; 
+                              row +=`<td class="-abjad font-bold"> Deskripsi singkat sektor unggulan</td>`; 
+                              row +=`<td>`; 
+                                   row +=`<div id="startdate-a-1-ppro-alert"  class="margin-none form-group"> `; 
+                                       row +=` <input type="date" disabled name="startdate_a_1_ppro" value="${item.tgl_awal_summary_sektor_unggulan }"   class="form-control">`; 
+                                       row +=` <span id="startdate-a-1-ppro-messages"></span>`; 
+                                row +=` </div>`; 
+                              row +=`</td>`; 
+                              row +=`<td>`; 
+                                 row +=`<div id="enddate-a-1-ppro-alert" class="margin-none form-group"> `; 
+                                             row +=`<input type="date" disabled name="enddate_a_1_pro" value="${item.tgl_ahir_summary_sektor_unggulan }"  class="form-control" >`; 
+                                      row +=`<span id="enddate-a-1-ppro-messages"></span>`; 
+                                row +=` </div>`; 
+                                   row +=`</td>`; 
+                                  row +=` <td>`; 
+                                 row +=`<div id="budget-a-1-ppro-alert" class="margin-none form-group">`; 
+                                            row +=` <input min="0" disabled type="number" placeholder="Budget" value="${item.budget_summary_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_1_ppro" class="form-control pasca_produksi">`; 
+                                     row +=` <span id="budget-a-1-ppro-messages"></span>`; 
+                                 row +=`</div>`; 
+                             row +=` </td>`; 
+                             // row +=` <td>`; 
+                             //        row +=`<div id="desc-a-1-ppro-alert" class="margin-none form-group">`; 
+                             //                 row +=` <input type="text" disabled name="desc_a_1_pro" value="${item.keterangan_summary_sektor_unggulan }" class="form-control">`; 
+                             //          row +=` <span id="desc-a-1-ppro-messages"></span>`; 
+                             //        row +=`</div>`; 
+
+                             //   row +=`</td>`; 
+
+                             row +=` <td rowspan="7">`;
+                                     row +=`<div class="penyusunan-peta">`; 
+                                         row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_penyusunan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`
+
+                                     row +=`</div>`;
+                              row +=`</td>`; 
+                          row +=`</tr>`; 
+
+
+                          row +=`<tr>`; 
+                                 if(item.checklist_sektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_sektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_sektor_unggulan }"></td>`;  
+                                 }
+                              row +=` <td class="font-bold table-number" >`; 
+                                  row +=`2.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Deskripsi sektor unggulan</td>`; 
+                               row +=`<td>`; 
+                                   row +=` <div id="startdate-a-2-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" disabled name="startdate_a_2_ppro" value="${item.tgl_awal_sektor_unggulan }" class="form-control">`; 
+                                         row +=`<span id="startdate-a-2-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                  row +=`<div id="enddate-a-2-ppro-alert" class="margin-none form-group"> `; 
+                                             row +=` <input type="date" disabled name="enddate_a_2_pro" value="${item.tgl_ahir_sektor_unggulan }" class="form-control">`; 
+                                       row +=`<span id="enddate-a-2-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                                   row +=` </td>`; 
+                                   row +=` <td>`; 
+                                  row +=`<div id="budget-a-2-ppro-alert" class="margin-none form-group">`; 
+                                             row +=` <input min="0" disabled type="number" placeholder="Budget" value="${item.budget_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_2_ppro" class="form-control pasca_produksi">`; 
+                                       row +=`<span id="budget-a-2-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                               row +=`</td>`; 
+                              // row +=` <td>`; 
+                              //       row +=`<div id="desc-3-2-ppro-alert" class="margin-none form-group">`; 
+                              //                 row +=`<input type="text" disabled name="desc_3_2_pro" value="${item.keterangan_sektor_unggulan }" class="form-control">`; 
+                              //          row +=`<span id="desc-3-2-ppro-messages"></span>`; 
+                              //       row +=`</div>`; 
+
+                              //  row +=`</td>`; 
+                          row +=`</tr>`; 
+
+                          row +=`<tr>`; 
+                                  if(item.checklist_potensi_pasar == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_potensi_pasar }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_potensi_pasar }"></td>`;  
+                                 }
+                               row +=`<td class="font-bold table-number" >`; 
+                                  row +=`3.`; 
+                              row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold">  Potensi pasar</td>`; 
+                             
+                               row +=`<td>`; 
+                                   row +=` <div id="startdate-a-3-ppro-alert" class="margin-none form-group"> `; 
+                                       row +=`  <input type="date" disabled name="startdate_a_3_ppro" value="${item.tgl_awal_potensi_pasar }"  class="form-control">`; 
+                                        row +=` <span id="startdate-a-3-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                              row +=`</td>`; 
+                               row +=`<td>`; 
+                                  row +=`<div id="enddate-a-3-ppro-alert" class="margin-none form-group"> `; 
+                                             row +=` <input type="date" disabled name="enddate_a_3_pro" value="${item.tgl_ahir_potensi_pasar }" class="form-control">`; 
+                                       row +=`<span id="enddate-a-3-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                                   row +=` </td>`; 
+                                    row +=`<td>`; 
+                                 row +=` <div id="budget-a-3-ppro-alert" class="margin-none form-group">`; 
+                                             row +=` <input min="0" disabled type="number" placeholder="Budget" value="${item.budget_potensi_pasar }"  oninput="this.value = Math.abs(this.value)" name="budget_a_3_ppro" class="form-control pasca_produksi">`; 
+                                       row +=`<span id="budget-a-3-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                              // row +=` <td>`; 
+                              //       row +=`<div id="desc-a-3-ppro-alert" class="margin-none form-group">`; 
+                              //                row +=` <input type="text" disabled name="desc_a_3_pro" value="${item.keterangan_potensi_pasar }"   class="form-control">`; 
+                              //         row +=` <span id="desc-a-3-ppro-messages"></span>`; 
+                              //      row +=` </div>`; 
+
+                              // row +=` </td>`; 
+                          row +=`</tr>`; 
+
+                          row +=`<tr>`; 
+                                 if(item.checklist_parameter_sektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_parameter_sektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_parameter_sektor_unggulan }"></td>`;  
+                                 }
+                               row +=`<td class="font-bold table-number" >`; 
+                                    row +=`4.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Parameter data sektor unggulan</td>`; 
+                               row +=`<td>`; 
+                                    row +=`<div id="startdate-a-4-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" disabled name="startdate_a_4_ppro" value="${item.tgl_awal_parameter_sektor_unggulan }"  class="form-control">`; 
+                                         row +=`<span id="startdate-a-4-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                               row +=`</td>`; 
+                              row +=` <td>`; 
+                                 row +=` <div id="enddate-a-4-ppro-alert" class="margin-none form-group"> `; 
+                                           row +=`   <input type="date" disabled name="enddate_a_4_pro" value="${item.tgl_ahir_parameter_sektor_unggulan }"  class="form-control">`; 
+                                      row +=` <span id="enddate-a-4-ppro-messages"></span>`; 
+                                row +=`  </div>`; 
+                                   row +=` </td>`; 
+                                   row +=` <td>`; 
+                                  row +=`<div id="budget-a-4-ppro-alert" class="margin-none form-group">`; 
+                                              row +=`<input min="0" disabled type="number" placeholder="Budget" value="${item.budget_parameter_sektor_unggulan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_4_ppro" class="form-control pasca_produksi">`; 
+                                       row +=`<span id="budget-a-4-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               // row +=`<td>`; 
+                               //     row +=` <div id="desc-a-4-ppro-alert" class="margin-none form-group">`; 
+                               //               row +=` <input type="text" disabled name="desc_a_4_pro" value="${item.keterangan_parameter_sektor_unggulan }"  class="form-control">`; 
+                               //         row +=`<span id="desc-a-4-ppro-messages"></span>`; 
+                               //      row +=`</div>`; 
+
+                               // row +=`</td>`; 
+                         row +=` </tr>`; 
+
+                          row +=`<tr>`; 
+                                 if(item.checklist_subsektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_subsektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_subsektor_unggulan }"></td>`;  
+                                 }
+                               row +=`<td class="font-bold table-number" >`; 
+                                  row +=`5.`; 
+                              row +=` </td>`; 
+                              
+                               row +=`<td class="-abjad font-bold"> <textarea readonly class="textarea-table">Subsektor unggulan dan komoditas unggulan yang berisi deskripsi dan parameter (mencakup data produksi, luas lahan, pelaku usaha, peluang usaha dan data terkait lainnya)</textarea></td>`; 
+                              row +=` <td>`; 
+                                   row +=` <div id="startdate-a-5-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" disabled name="startdate_a_5_ppro" value="${item.tgl_awal_subsektor_unggulan }"   class="form-control">`; 
+                                        row +=` <span id="startdate-a-5-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                 row +=` <div id="enddate-a-5-ppro-alert" class="margin-none form-group"> `; 
+                                            row +=`  <input type="date" disabled name="enddate_3_5_pro" value="${item.tgl_ahir_subsektor_unggulan }"   class="form-control">`; 
+                                      row +=` <span id="enddate-a-5-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                                    row +=`</td>`; 
+                                    row +=`<td>`; 
+                                 row +=`<div id="budget-a-5-ppro-alert" class="margin-none form-group">`; 
+                                             row +=` <input min="0" disabled type="number" placeholder="Budget" value="${item.budget_subsektor_unggulan }"   oninput="this.value = Math.abs(this.value)" name="budget_a_5_ppro" class="form-control pasca_produksi">`; 
+                                      row +=` <span id="budget-a-5-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               // row +=`<td>`; 
+                               //    row +=`  <div id="desc-a-5-ppro-alert" class="margin-none form-group">`; 
+                               //               row +=` <input type="text" disabled name="desc_a_5_pro" value="${item.keterangan_subsektor_unggulan }"   class="form-control">`; 
+                               //        row +=` <span id="desc-a-5-ppro-messages"></span>`; 
+                               //      row +=`</div>`; 
+
+                               // row +=`</td>`; 
+                          row +=`</tr>`; 
+
+                         row +=` <tr>`; 
+                                 if(item.checklist_intensif_daerah == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_intensif_daerah }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_intensif_daerah }"></td>`;  
+                                 }
+                               row +=`<td class="font-bold table-number" >`; 
+                                   row +=`6.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Insentif daerah</td>`; 
+                               row +=`<td>`; 
+                                    row +=`<div id="startdate-a-6-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" disabled name="startdate_a_6_ppro"  value="${item.tgl_awal_intensif_daerah }"  class="form-control">`; 
+                                        row +=` <span id="startdate-a-6-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                 row +=` <div id="enddate-a-6-ppro-alert" class="margin-none form-group"> `; 
+                                            row +=`  <input type="date" disabled name="enddate_a_6_pro"  value="${item.tgl_ahir_intensif_daerah }"   class="form-control">`; 
+                                      row +=` <span id="enddate-a-6-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                                    row +=`</td>`; 
+                                    row +=`<td>`; 
+                                  row +=`<div id="budget-a-6-ppro-alert" class="margin-none form-group">`; 
+                                              row +=`<input min="0" disabled type="number" placeholder="Budget"  value="${item.budget_intensif_daerah }"  oninput="this.value = Math.abs(this.value)" name="budget_a_6_ppro" class="form-control pasca_produksi">`; 
+                                      row +=` <span id="budget-a-6-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                              //  row +=`<td>`; 
+                              //       row +=`<div id="desc-a-6-ppro-alert" class="margin-none form-group">`; 
+                              //                row +=` <input type="text" disabled name="desc_a_6_pro"  value="${item.keterangan_intensif_daerah }"  class="form-control">`; 
+                              //         row +=` <span id="desc-a-6-ppro-messages"></span>`; 
+                              //       row +=`</div>`; 
+
+                              // row +=` </td>`; 
+                          row +=`</tr>`; 
+
+                           row +=`<tr>`; 
+                                  if(item.checklist_potensi_lanjutan == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_potensi_lanjutan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_potensi_lanjutan }"></td>`;  
+                                 } 
+                               row +=`<td class="font-bold table-number" >`; 
+                                   row +=`7.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Potensi lanjutan komoditas sektor unggulan</td>`; 
+                               row +=`<td>`; 
+                                    row +=`<div id="startdate-a-7-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=`<input type="date" disabled name="startdate_a_7_ppro" value="${item.tgl_awal_potensi_lanjutan }"  class="form-control">`; 
+                                         row +=`<span id="startdate-a-7-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                  row +=`<div id="enddate-a-7-ppro-alert" class="margin-none form-group"> `; 
+                                              row +=`<input type="date" disabled name="enddate_a_7_pro" value="${item.tgl_ahir_potensi_lanjutan }" class="form-control">`; 
+                                       row +=`<span id="enddate-a-7-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                                    row +=`</td>`; 
+                                    row +=`<td>`; 
+                                  row +=`<div id="budget-a-7-ppro-alert" class="margin-none form-group">`; 
+                                             row +=` <input min="0" disabled type="number" placeholder="Budget" value="${item.budget_potensi_lanjutan }" oninput="this.value = Math.abs(this.value)" name="budget_a_7_ppro" class="form-control pasca_produksi">`; 
+                                       row +=`<span id="budget-a-7-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               // row +=`<td>`; 
+                               //      row +=`<div id="desc-a-7-ppro-alert" class="margin-none form-group">`; 
+                               //                row +=`<input type="text" disabled name="desc_a_7_pro"  value="${item.keterangan_potensi_lanjutan }" class="form-control">`; 
+                               //         row +=`<span id="desc-a-7-ppro-messages"></span>`; 
+                               //      row +=`</div>`; 
+
+                               // row +=`</td>`; 
+                         row +=` </tr>`; 
+
+
+
+                         row +=`<tr>`; 
+
+                         row +=`<td class="font-bold">B.</td>`;
+                         row +=`<td></td>`;
+                         row +=`<td></td>`; 
+                          row +=`<td class="-abjad font-bold" ><textarea readonly class="textarea-table">Penyusunan Infografis Peta Potensi Investasi dalam 2 bahasa (bahasa indonesia dan bahasa inggris)</textarea></td>`; 
+                          row +=`<td>`; 
+                               row +=`<div id="startdate-b-ppro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" disabled name="startdate_b_ppro" value="${item.tgl_awal_info_grafis }"  class="form-control">`; 
+                                   row +=` <span id="startdate-b-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                         row +=` </td>`; 
+                              row +=` <td>`; 
+                            row +=` <div id="enddate-b-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" disabled name="enddate_b_ppro" value="${item.tgl_ahir_info_grafis }"  class="form-control">`; 
+                                  row +=`<span id="enddate-b-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="budget-b-ppro-alert" class="margin-none form-group">`; 
+                                        row +=` <input min="0" disabled type="number" placeholder="Budget" value="${item.budget_info_grafis }"  oninput="this.value = Math.abs(this.value)" name="budget_b_ppro" class="form-control pasca_produksi">`; 
+                                  row +=`<span id="budget-b-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             //       row +=` <div id="desc-b-ppro-alert" class="margin-none form-group">`; 
+                             //            row +=` <input type="text" disabled name="desc_b_ppro" value="${item.keterangan_info_grafis }"   class="form-control">`; 
+                             //      row +=`<span id="desc-b-ppro-messages"></span>`; 
+                             // row +=`</div>`; 
+
+                              row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_info_grafis }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                              row +=`</div>`;
+
+
+                               row +=`</td>`; 
+                        row +=`</tr>`; 
+                        row +=`<tr>`; 
+                          row +=`<td class="font-bold">C.</td>`; 
+                          row +=`<td></td>`;
+                          row +=`<td></td>`;
+                          row +=`<td class="font-bold" ><textarea readonly class="textarea-table">Mendokumentasikan peta potensi investasi secara elektronik dalam bentuk infografis yang didigitalisasi dan ditampilkan pada portal PIR</textarea></td>`; 
+                          row +=`<td>`; 
+                              row +=` <div id="startdate-c-ppro-alert" class="margin-none form-group">`;  
+                                    row +=`<input type="date" disabled name="startdate_c_ppro" value="${item.tgl_awal_dokumentasi }"  class="form-control">`; 
+                                    row +=`<span id="startdate-c-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                         row +=` </td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-c-ppro-alert" class="margin-none form-group"> `; 
+                                         row +=`<input type="date" disabled name="enddate_c_ppro" value="${item.tgl_ahir_dokumentasi }"  class="form-control">`; 
+                                  row +=`<span id="enddate-c-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="budget-c-ppro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" disabled type="number" placeholder="Budget"  oninput="this.value = Math.abs(this.value)" name="budget_c_ppro" value="${item.budget_dokumentasi }"  class="form-control pasca_produksi">`; 
+                                  row +=`<span id="budget-c-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=`</td>`; 
+                               row +=`<td>`; 
+                            //        row +=` <div id="desc-c-ppro-alert" class="margin-none form-group">`; 
+                            //             row +=` <input type="text" disabled name="desc_c_ppro" value="${item.keterangan_dokumentasi }"  class="form-control pasca-produksi">`; 
+                            //      row +=` <span id="desc-c-ppro-messages"></span>`; 
+                            // row +=` </div>`; 
+
+                             row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_dokumentasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                              row +=`</div>`;
+
+                               row +=`</td>`; 
+                        row +=`</tr>`; 
+       
                        
+                  if(item.access == 'province'){
+                     BtnAction(item);
+                  } 
                        
-                       $('#pagu_promosi').html('<b>'+item.pagu_promosi_convert+'</b>');
-                       $('#total_promosi').html('<b>'+item.total_promosi_convert+'</b>');
+                   if(item.request_edit == 'true')
+                   { 
+                     $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
+                     $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
+                   }else{
+                    $('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
+                    $('#div-edit').remove();
+                   }     
 
-                       if(item.request_edit == 'true')
-                       {
-                         $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
-                         $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
-                       }else{
-                         $('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
-                         $('#div-edit').remove();
-                       } 
-      
-                   
+
+                   content.on( "click", "#viewPdf", (e) => {
+                        let file = e.currentTarget.dataset.param_file;  
+                        EmbedFile(file,item.id);  
+                   });
+
+
+
+                       
+
+                       
+            content.append(row);
+
+        });
+
+         }else{
+
+           let row = ``;
+             row +=`<tr>`;
+             row +=`<td colspan="9" align="center">Data Kosong</td>`;
+             row +=`</tr>`;
+             content.append(row);
+             $('#btn-action').html('');
+             $('#status-view').html('<b>Kosong</b>');
+         }
+
+
+
 
  
-         }
+    }
+
+     function EmbedFile(file,tmp){
+        // console.log(BASE_URL+'/laporan/pemetaan/'+file)
+
+                    let row = ``;
+                      row +=`<div class="modal-dialog">`;
+                          row +=`<div class="modal-content">`;
+
+                                     row +=`<div class="modal-header">`;
+                                       row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
+                                       row +=`<h4 class="modal-title">Lihat File PDF</h4>`;
+                                     row +=`</div>`;
+
+                                    
+                                     row +=`<div class="modal-body">`;
+                                      row +=`<embed src="`+ BASE_URL+`/laporan/pemetaan/`+file+`#page=1&zoom=65" width="575" height="500">`;
+                                     row +=`</div>`;
+
+
+                                   row +=`<div class="modal-footer">`;
+                                           row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
+                                   row +=`</div>`;
+                         row +=`</div>`;
+                       row +=`</div>`;   
+                    $('#FormView-'+ tmp).html(row);  
+
+          }
+
 
          function BtnAction(item){
 

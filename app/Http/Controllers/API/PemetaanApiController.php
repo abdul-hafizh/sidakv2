@@ -117,14 +117,17 @@ class PemetaanApiController extends Controller
 
     public function store(Request $request)
     {
-        $validation = ValidationPemetaan::validationInsert($request);
+        $validation = ValidationPemetaan::validation($request);
         if ($validation) {
+
+
             return response()->json($validation, 400);
         } else {
+
                 $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id); 
            
                 $id = '';
-                $insert = RequestPemetaan::fieldsData($request,$id); 
+                $insert = RequestPemetaan::fieldsGroup($request,$id); 
                 $log = array(
                     'category' => 'LOG_DATA_PEMETAAN',
                     'group_menu' => 'upload_data_pemetaan',
@@ -273,19 +276,16 @@ class PemetaanApiController extends Controller
 
     public function update($id, Request $request)
     {
-        $validation = ValidationPemetaan::validationUpdate($request,$id);
+        $validation = ValidationPemetaan::validation($request);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
-
-          
-
-
-                $update = RequestPemetaan::fieldsData($request);
+            
+                $update = RequestPemetaan::fieldsGroup($request,$id);
                 $UpdateData = Pemetaan::where('id', $id)->update($update);
 
                  
-                  $log = array(
+                $log = array(
                     'category' => 'LOG_DATA_PEMETAAN',
                     'group_menu' => 'mengubah_data_pemetaan',
                     'description' => 'Mengubah data pemetaan <b>' . $request->periode_id . '</b>',
@@ -304,7 +304,7 @@ class PemetaanApiController extends Controller
         $messages['messages'] = false;
         $_res = Pemetaan::find($id);
        
-
+          
         $log = array(
             'category' => 'LOG_DATA_PEMETAAN',
             'group_menu' => 'menghapus_data_pemetaan',
@@ -315,6 +315,8 @@ class PemetaanApiController extends Controller
         if (empty($_res)) {
             return response()->json(['messages' => false]);
         }
+
+        RequestPemetaan::DeletePDF($_res);
 
         $results = $_res->delete();
         if ($results) {

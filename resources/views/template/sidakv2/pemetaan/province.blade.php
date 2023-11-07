@@ -247,7 +247,7 @@
                     row +=`<tr lass="pull-left full">`;
                             row +=`<td rowspan="5" class="font-bold text-center">1</td>`;
                             row +=`<td colspan="6" class="font-bold"> Identifikasi Pemetaan Potensi Investasi : </td>`;
-                            row +=`<td><strong id="total_identifikasi">${item.total_identifikasi }</td>`;
+                            row +=`<td><strong id="total_identifikasi">${item.total_identifikasi }</strong></td>`;
                             row +=`<td></td>`;
                     row +=`</tr>`;
 
@@ -276,11 +276,9 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   // row +=`<div id="desc-a-pra-alert" class="margin-none form-group">`;
-                                   //      row +=`<input type="text" disabled id="desc_a_pra" name="desc_a_pra"
-                                   //           value="${item.keterangan_rencana_kerja }"
-                                   //          class="form-control">`;
-
+                                  
+                              if(item.keterangan_rencana_kerja)
+                              {     
                                    row +=`<div>`;
                                         row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rencana_kerja }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
                                      row +=`</div>`;
@@ -289,6 +287,9 @@
                                               row +=`<div id="FormView-${item.id }"></div>`;
                                         row +=`</div>`;
                                    row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              }
 
                               row +=`</td>`;
                        row +=`</tr>`;
@@ -314,24 +315,25 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                            //        row +=`<div id="desc-b-pra-alert" class="margin-none form-group">`;
-                            //             row +=`<input type="text" disabled name="desc_b_pra" value="${item.keterangan_studi_literatur }" class="form-control">`;
-                            //      row +=`<span id="desc-b-pra-messages"></span>`;
-                            // row +=`</div>`;
+                            
+                            if(item.keterangan_studi_literatur)
+                            {  
+                
+                                  row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_studi_literatur }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
 
-                             row +=`<div >`;
-                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_studi_literatur }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
-                                     row +=`</div>`;
-
-                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
-                                              row +=`<div id="FormView-${item.id }"></div>`;
-                                        row +=`</div>`;
-
-
-                                
-                            row +=`</div>`;
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
 
 
+                                     
+                                 row +=`</div>`;
+
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              }
                               row +=`</td>`;
                        row +=`</tr>`;
 
@@ -358,11 +360,10 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                            //        row +=`<div id="desc-c-pra-alert" class="margin-none form-group">`;
-                            //             row +=`<input type="text" disabled name="desc_c_pra" value="${item.keterangan_rapat_kordinasi }" class="form-control">`;
-                            //      row +=`<span id="desc-c-pra-messages"></span>`;
-                            // row +=`</div>`;
 
+                              if(item.keterangan_rapat_kordinasi)
+                              {     
+                           
                                row +=`<div >`;
                                         row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rapat_kordinasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
                                      row +=`</div>`;
@@ -373,8 +374,10 @@
 
 
                                 
-                             row +=`</div>`;
-
+                               row +=`</div>`;
+                             }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                             }    
                               row +=`</td>`;
                        row +=`</tr>`;
                        row +=`<tr >`;
@@ -399,25 +402,25 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                            //        row +=`<div id="desc-d-pra-alert" class="margin-none form-group">`;
-                            //             row +=`<input type="text" disabled name="desc_d_pra" value="${item.keterangan_data_sekunder }" class="form-control">`;
-                            //      row +=`<span id="desc-d-pra-messages"></span>`;
-                            // row +=`</div>`;
+                          
+
+                               if(item.keterangan_data_sekunder)
+                               {    
+
+                                    row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_data_sekunder }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
+
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
 
 
-
-                               row +=`<div >`;
-                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rapat_kordinasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
-                                     row +=`</div>`;
-
-                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
-                                              row +=`<div id="FormView-${item.id }"></div>`;
-                                        row +=`</div>`;
-
-
-                              
-                             row +=`</div>`;
-
+                                   
+                                  row +=`</div>`;
+                             }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                             } 
                               row +=`</td>`;
                          row +=`</tr>`;                        
 
@@ -453,24 +456,24 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                            //        row +=`<div id="desc-a-pro-alert" class="margin-none form-group">`;
-                            //             row +=`<input type="text"  disabled name="desc_a_pro"  value="${item.keterangan_fgd_persiapan }"   class="form-control">`;
-                            //      row +=`<span id="desc-a-pro-messages"></span>`;
-                            // row +=`</div>`;
+                              
+                              if(item.keterangan_fgd_persiapan)
+                              {     
+
+                                   row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_persiapan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
+
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
 
 
-                              row +=`<div >`;
-                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_persiapan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
-                                     row +=`</div>`;
-
-                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
-                                              row +=`<div id="FormView-${item.id }"></div>`;
-                                        row +=`</div>`;
-
-
-                                
-                              row +=`</div>`;
-
+                                     
+                                   row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              }    
                               row +=`</td>`;
                          row +=`</tr>`;     
 
@@ -498,12 +501,9 @@
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
-                             //        row +=`<div id="desc-f-pra-alert" class="margin-none form-group">`; 
-                             //             row +=`<input type="text" disabled name="desc_f_pra" value="${item.keterangan_fgd_identifikasi }" class="form-control">`; 
-                             //      row +=`<span id="desc-f-pra-messages"></span>`; 
-                             // row +=`</div>`; 
-
-
+                          
+                               if(item.keterangan_fgd_identifikasi)
+                               {    
                                    row +=`<div>`;
                                         row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_identifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
                                      row +=`</div>`;
@@ -512,7 +512,9 @@
                                               row +=`<div id="FormView-${item.id }"></div>`;
                                         row +=`</div>`;
                                    row +=`</div>`;
-
+                                }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                                }     
                                row +=`</td>`; 
                           row +=`</tr>`; 
                               
@@ -558,24 +560,21 @@
                                   row +=`<span id="budget-c-1-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
-                             //   row +=`<td>`; 
-                             //        row +=`<div id="desc-c-1-pro-alert" class="margin-none form-group">`; 
-                             //             row +=`<input type="text" disabled name="desc_c_1_pro" value="${item.keterangan_lq }" class="form-control">`; 
-                             //      row +=`<span id="desc-c-1-pro-messages"></span>`; 
-                             // row +=`</div>`; 
-
-                             //   row +=`</td>`; 
+                             
                              row +=`<td rowspan="4">`; 
-                               
+                               if(item.keterangan_pengolahan)
+                               {    
                                    row +=`<div class="potensi-sektor">`;
-                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_identifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_pengolahan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
                                      row +=`</div>`;
 
                                        row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                               row +=`<div id="FormView-${item.id }"></div>`;
                                         row +=`</div>`;
                                    row +=`</div>`;
-
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              } 
                              row +=`</td>`; 
                           row +=`</tr>`; 
 
@@ -610,13 +609,7 @@
                                   row +=`<span id="budget-c-2-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
-                             //   row +=`<td>`; 
-                             //        row +=`<div id="desc-c-2-pro-alert" class="margin-none form-group">`; 
-                             //             row +=`<input type="text"  disabled name="desc_c_2_pro" value="${item.keterangan_shift_share }"    class="form-control">`; 
-                             //      row +=`<span id="desc-c-2-pro-messages"></span>`; 
-                             // row +=`</div>`; 
-
-                             //   row +=`</td>`; 
+                          
                           row +=`</tr>`; 
 
                           row +=`<tr>`; 
@@ -649,13 +642,7 @@
                                   row +=`<span id="budget-c-3-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
-                             //   row +=`<td>`; 
-                             //        row +=`<div id="desc-c-3-pro-alert" class="margin-none form-group">`; 
-                             //             row +=`<input type="text" disabled name="desc_c_3_pro" value="${item.keterangan_tipologi_sektor }"  class="form-control">`; 
-                             //      row +=`<span id="desc-c-3-pro-messages"></span>`; 
-                             // row +=`</div>`; 
-
-                             //   row +=`</td>`; 
+                             
                           row +=`</tr>`; 
 
                           row +=`<tr>`; 
@@ -688,13 +675,7 @@
                                   row +=`<span id="budget-c-4-pro-messages"></span>`; 
                              row +=`</div>`; 
                               row +=` </td>`; 
-                            //    row +=`<td>`; 
-                            //        row +=` <div id="desc-c-4-pro-alert" class="margin-none form-group">`; 
-                            //              row +=`<input type="text" disabled name="desc_c_4_pro" value="${item.keterangan_klassen }" class="form-control">`; 
-                            //       row +=`<span id="desc-c-4-pro-messages"></span>`; 
-                            // row +=` </div>`; 
-
-                            //    row +=`</td>`; 
+                           
                           row +=`</tr>`; 
 
                         
@@ -722,12 +703,11 @@
                              row +=`</div>`; 
                               row +=` </td>`; 
                                row +=`<td>`; 
-                            //         row +=`<div id="desc-d-pro-alert" class="margin-none form-group">`; 
-                            //              row +=`<input type="text" disabled name="desc_d_pro" value="${item.keterangan_fgd_klarifikasi }" class="form-control ">`; 
-                            //       row +=`<span id="desc-d-pro-messages"></span>`; 
-                            // row +=` </div>`; 
+                            
+                              if(item.keterangan_fgd_klarifikasi)
+                              {     
 
-                              row +=`<div >`;
+                               row +=`<div >`;
                                         row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_klarifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
                                      row +=`</div>`;
 
@@ -738,7 +718,9 @@
 
                                 
                                row +=`</div>`;
-
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              } 
                                row +=`</td>`; 
                          row +=` </tr>`; 
                          
@@ -771,20 +753,21 @@
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
-                             //        row +=`<div id="desc-e-pro-alert" class="margin-none form-group">`; 
-                             //            row +=` <input type="text" disabled name="desc_e_pro" value="${item.keterangan_finalisasi }"  class="form-control">`; 
-                             //      row +=`<span id="desc-e-pro-messages"></span>`; 
-                             // row +=`</div>`; 
+                                
+                                if(item.keterangan_finalisasi)
+                                {   
 
                                    row +=`<div >`;
-                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_klarifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_finalisasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
                                      row +=`</div>`;
 
                                        row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                               row +=`<div id="FormView-${item.id }"></div>`;
                                         row +=`</div>`;
                                    row +=`</div>`;
-
+                                 }else{  
+                                   row +=`<div class="font-bold text-center"> ... </div>`;
+                                 }      
 
                                row +=`</td>`; 
                          row +=` </tr>`; 
@@ -792,7 +775,7 @@
                          row +=`<tr>`; 
                            row +=` <td rowspan="12" class="font-bold text-center">3</td>`; 
                             row +=`<td colspan="6" class="font-bold"> Penyusunan Peta Potensi Investasi : </td>`; 
-                             row +=`<td><strong id="total_penyusunan">${item.total_penyusunan } </td>`; 
+                             row +=`<td><strong id="total_penyusunan">${item.total_penyusunan } </strong></td>`; 
                             row +=`<td></td>`; 
                             row +=`</tr>`; 
                          row +=`<tr>`; 
@@ -835,15 +818,11 @@
                                      row +=` <span id="budget-a-1-ppro-messages"></span>`; 
                                  row +=`</div>`; 
                              row +=` </td>`; 
-                             // row +=` <td>`; 
-                             //        row +=`<div id="desc-a-1-ppro-alert" class="margin-none form-group">`; 
-                             //                 row +=` <input type="text" disabled name="desc_a_1_pro" value="${item.keterangan_summary_sektor_unggulan }" class="form-control">`; 
-                             //          row +=` <span id="desc-a-1-ppro-messages"></span>`; 
-                             //        row +=`</div>`; 
-
-                             //   row +=`</td>`; 
+                             
 
                              row +=` <td rowspan="7">`;
+                             if(item.keterangan_penyusunan)
+                              { 
                                      row +=`<div class="penyusunan-peta">`; 
                                          row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_penyusunan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
                                      row +=`</div>`;
@@ -853,7 +832,11 @@
                                         row +=`</div>`
 
                                      row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              }         
                               row +=`</td>`; 
+
                           row +=`</tr>`; 
 
 
@@ -886,13 +869,7 @@
                                        row +=`<span id="budget-a-2-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                row +=`</td>`; 
-                              // row +=` <td>`; 
-                              //       row +=`<div id="desc-3-2-ppro-alert" class="margin-none form-group">`; 
-                              //                 row +=`<input type="text" disabled name="desc_3_2_pro" value="${item.keterangan_sektor_unggulan }" class="form-control">`; 
-                              //          row +=`<span id="desc-3-2-ppro-messages"></span>`; 
-                              //       row +=`</div>`; 
-
-                              //  row +=`</td>`; 
+                               
                           row +=`</tr>`; 
 
                           row +=`<tr>`; 
@@ -925,13 +902,7 @@
                                        row +=`<span id="budget-a-3-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                              // row +=` <td>`; 
-                              //       row +=`<div id="desc-a-3-ppro-alert" class="margin-none form-group">`; 
-                              //                row +=` <input type="text" disabled name="desc_a_3_pro" value="${item.keterangan_potensi_pasar }"   class="form-control">`; 
-                              //         row +=` <span id="desc-a-3-ppro-messages"></span>`; 
-                              //      row +=` </div>`; 
-
-                              // row +=` </td>`; 
+                            
                           row +=`</tr>`; 
 
                           row +=`<tr>`; 
@@ -963,13 +934,7 @@
                                        row +=`<span id="budget-a-4-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                               // row +=`<td>`; 
-                               //     row +=` <div id="desc-a-4-ppro-alert" class="margin-none form-group">`; 
-                               //               row +=` <input type="text" disabled name="desc_a_4_pro" value="${item.keterangan_parameter_sektor_unggulan }"  class="form-control">`; 
-                               //         row +=`<span id="desc-a-4-ppro-messages"></span>`; 
-                               //      row +=`</div>`; 
-
-                               // row +=`</td>`; 
+                               
                          row +=` </tr>`; 
 
                           row +=`<tr>`; 
@@ -1002,13 +967,7 @@
                                       row +=` <span id="budget-a-5-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                               // row +=`<td>`; 
-                               //    row +=`  <div id="desc-a-5-ppro-alert" class="margin-none form-group">`; 
-                               //               row +=` <input type="text" disabled name="desc_a_5_pro" value="${item.keterangan_subsektor_unggulan }"   class="form-control">`; 
-                               //        row +=` <span id="desc-a-5-ppro-messages"></span>`; 
-                               //      row +=`</div>`; 
-
-                               // row +=`</td>`; 
+                            
                           row +=`</tr>`; 
 
                          row +=` <tr>`; 
@@ -1040,13 +999,7 @@
                                       row +=` <span id="budget-a-6-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                              //  row +=`<td>`; 
-                              //       row +=`<div id="desc-a-6-ppro-alert" class="margin-none form-group">`; 
-                              //                row +=` <input type="text" disabled name="desc_a_6_pro"  value="${item.keterangan_intensif_daerah }"  class="form-control">`; 
-                              //         row +=` <span id="desc-a-6-ppro-messages"></span>`; 
-                              //       row +=`</div>`; 
-
-                              // row +=` </td>`; 
+                               
                           row +=`</tr>`; 
 
                            row +=`<tr>`; 
@@ -1078,13 +1031,7 @@
                                        row +=`<span id="budget-a-7-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                               // row +=`<td>`; 
-                               //      row +=`<div id="desc-a-7-ppro-alert" class="margin-none form-group">`; 
-                               //                row +=`<input type="text" disabled name="desc_a_7_pro"  value="${item.keterangan_potensi_lanjutan }" class="form-control">`; 
-                               //         row +=`<span id="desc-a-7-ppro-messages"></span>`; 
-                               //      row +=`</div>`; 
-
-                               // row +=`</td>`; 
+                              
                          row +=` </tr>`; 
 
 
@@ -1114,21 +1061,22 @@
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
-                             //       row +=` <div id="desc-b-ppro-alert" class="margin-none form-group">`; 
-                             //            row +=` <input type="text" disabled name="desc_b_ppro" value="${item.keterangan_info_grafis }"   class="form-control">`; 
-                             //      row +=`<span id="desc-b-ppro-messages"></span>`; 
-                             // row +=`</div>`; 
+                               
+                              if(item.keterangan_info_grafis)
+                              {     
 
-                              row +=`<div >`;
-                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_info_grafis }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
-                                     row +=`</div>`;
+                                   row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_info_grafis }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
 
-                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
-                                              row +=`<div id="FormView-${item.id }"></div>`;
-                                        row +=`</div>`;
-                              row +=`</div>`;
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+                                   row +=`</div>`;
 
-
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              } 
                                row +=`</td>`; 
                         row +=`</tr>`; 
                         row +=`<tr>`; 
@@ -1155,20 +1103,20 @@
                              row +=`</div>`; 
                               row +=`</td>`; 
                                row +=`<td>`; 
-                            //        row +=` <div id="desc-c-ppro-alert" class="margin-none form-group">`; 
-                            //             row +=` <input type="text" disabled name="desc_c_ppro" value="${item.keterangan_dokumentasi }"  class="form-control pasca-produksi">`; 
-                            //      row +=` <span id="desc-c-ppro-messages"></span>`; 
-                            // row +=` </div>`; 
+                            
+                              if(item.keterangan_dokumentasi)
+                              {     
+                                  row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_dokumentasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
 
-                             row +=`<div >`;
-                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_dokumentasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
-                                     row +=`</div>`;
-
-                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
-                                              row +=`<div id="FormView-${item.id }"></div>`;
-                                        row +=`</div>`;
-                              row +=`</div>`;
-
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+                                   row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              } 
                                row +=`</td>`; 
                         row +=`</tr>`; 
        

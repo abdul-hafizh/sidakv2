@@ -319,8 +319,9 @@
 
                          <tr>
                               <td class="font-bold" rowspan="5">C.</td>
-                              <td class="-abjad font-bold" colspan="7">
-                                   Pengolahan dan analisis data untuk menghasilkan potensi sektor dan subsektor unggulan daerah :
+                              <td id="pengolahan-alert" class="-abjad font-bold" colspan="7">
+                                  <div > Pengolahan dan analisis data untuk menghasilkan potensi sektor dan subsektor unggulan daerah : </div>
+                                  <span id="pengolahan-messages"></span>
                               </td>
                              
                          </tr>
@@ -560,8 +561,9 @@
 
                           <tr>
                               <td class="font-bold" rowspan="8">A.</td>
-                              <td class="-abjad font-bold" colspan="7">
-                                   Menyusun hasil identifikasi, pengolahan, dan analisis data dalam bentuk dokumen
+                              <td id="penyusunan-alert" class="-abjad font-bold" colspan="7">
+                                  <div > Menyusun hasil identifikasi, pengolahan, dan analisis data dalam bentuk dokumen </div>
+                                  <span id="penyusunan-messages"></span>
                               </td>
                          </tr>
 
@@ -986,33 +988,33 @@
 
                                          
 
-               // if (total_promosi != pagu_promosi) {
-               //      Swal.fire({
-               //           icon: 'info',
-               //           title: 'Peringatan',
-               //           text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-               //           confirmButtonColor: '#000',
-               //           showConfirmButton: true,
-               //           confirmButtonText: 'OK',
-               //      });
-               // } else {
-                    //if(data.length >0)
-                   // {
+               if (total_promosi != pagu_promosi) {
+                    Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                    });
+               } else {
+                    if(data.length >0)
+                   {
                         SendingData(form,data);
-                    // }else{
-                    //     Swal.fire({
-                    //      icon: 'info',
-                    //      title: 'Peringatan',
-                    //      text: 'Maaf, Periode Belum di pilih.',
-                    //      confirmButtonColor: '#000',
-                    //      showConfirmButton: true,
-                    //      confirmButtonText: 'OK',
-                    //      });
-                    // }     
+                    }else{
+                        Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Periode Belum di pilih.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                         });
+                    }     
    
-               //  
+                
                
-               //}
+               }
 
           });
 
@@ -1028,32 +1030,32 @@
 
                                           
 
-               // if (total_promosi != pagu_promosi) {
-               //      Swal.fire({
-               //           icon: 'info',
-               //           title: 'Peringatan',
-               //           text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-               //           confirmButtonColor: '#000',
-               //           showConfirmButton: true,
-               //           confirmButtonText: 'OK',
-               //      });
-               // } else {
+               if (total_promosi != pagu_promosi) {
+                    Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                    });
+               } else {
    
-               //      if(data.length >0)
-               //      {
+                    if(data.length >0)
+                    {
                         SendingData(form,data);
-                    // }else{
-                    //     Swal.fire({
-                    //      icon: 'info',
-                    //      title: 'Peringatan',
-                    //      text: 'Maaf, Periode Belum di pilih.',
-                    //      confirmButtonColor: '#000',
-                    //      showConfirmButton: true,
-                    //      confirmButtonText: 'OK',
-                    //      });
-                    // }   
+                    }else{
+                        Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Periode Belum di pilih.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                         });
+                    }   
                
-             //  }
+              }
 
           });
 
@@ -1120,24 +1122,24 @@
                if(periode_id)
                {    
                    
-                    // if(pagu_promosi < total_promosi) {
-                    //      Swal.fire({
-                    //           icon: 'info',
-                    //           title: 'Peringatan',
-                    //           text:'Total Promosi Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_promosi, 0, ".", "."),
-                    //           confirmButtonColor: '#000',
-                    //           showConfirmButton: true,
-                    //           confirmButtonText: 'OK',
-                    //      });  
+                    if(pagu_promosi < total_promosi) {
+                         Swal.fire({
+                              icon: 'info',
+                              title: 'Peringatan',
+                              text:'Total Promosi Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_promosi, 0, ".", "."),
+                              confirmButtonColor: '#000',
+                              showConfirmButton: true,
+                              confirmButtonText: 'OK',
+                         });  
                          
-                    //      $('#total_promosi').removeClass('text-black').addClass('text-red').addClass('blinking-text');
+                         $('#total_promosi').removeClass('text-black').addClass('text-red').addClass('blinking-text');
                          
 
-                    // } else {
+                    } else {
 
-                    //      $('#total_promosi').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
+                         $('#total_promosi').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                       
-                    // }
+                    }
                }
                
                $('#total_promosi').html('<b>Rp. '+formattedNumber+'</b>');
@@ -1390,6 +1392,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+                 
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1414,7 +1428,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1444,6 +1458,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1468,7 +1494,7 @@
                            });  
                      }   
 
-                       
+               }        
                    })
                    fileReader.readAsDataURL(files[0])
 
@@ -1496,6 +1522,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+             
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1519,7 +1557,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1548,7 +1586,19 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+                
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
 
+
+              }else{ 
+                
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
                          file = fileReader.result;
@@ -1571,7 +1621,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1601,6 +1651,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1624,7 +1686,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1653,6 +1715,17 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1677,7 +1750,7 @@
                            });  
                      }   
 
-                       
+               }        
                    })
                    fileReader.readAsDataURL(files[0])
 
@@ -1705,6 +1778,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1728,7 +1813,7 @@
                            });  
                      }   
 
-                       
+               }        
                    })
                    fileReader.readAsDataURL(files[0])
 
@@ -1757,7 +1842,17 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
 
+
+              }else{  
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
                          file = fileReader.result;
@@ -1779,7 +1874,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1808,7 +1903,17 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
 
+
+              }else{  
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
                          file = fileReader.result;
@@ -1830,7 +1935,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1860,7 +1965,17 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
 
+
+              }else{  
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
                          file = fileReader.result;
@@ -1882,7 +1997,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1911,6 +2026,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+                 
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1933,7 +2060,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1962,6 +2089,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+                 
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1984,7 +2123,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -2267,7 +2406,7 @@
  
                };
                
-               console.log(arr)
+              
               
           
                $.ajax({
@@ -2682,14 +2821,24 @@
                               $('#budget-c-4-pro-messages').removeClass('help-block').html('');
                          }
 
-                         //  if(errors.messages.keterangan_klassen)
-                         // {
-                         //      $('#desc-c-4-pro-alert').addClass('has-error');
-                         //      $('#desc-c-4-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_klassen +'</strong>');
-                         // } else {
-                         //      $('#desc-c-4-pro-alert').removeClass('has-error');
-                         //      $('#desc-c-4-pro-messages').removeClass('help-block').html('');
-                         // }
+                           if(errors.messages.pengolahan)
+                         {
+                              $('#pengolahan-alert').addClass('hash-checkbox-alert');
+                              $('#pengolahan-messages').addClass('help-checkbox-msg').html('<strong>'+ errors.messages.pengolahan +'</strong>');
+                         } else {
+                              $('#pengolahan-alert').removeClass('has-checkbox-alert');
+                              $('#pengolahan-messages').removeClass('help-checkbox-msg').html('');
+                         }
+
+
+                         if(errors.messages.penyusunan)
+                         {
+                              $('#penyusunan-alert').addClass('hash-checkbox-alert');
+                              $('#penyusunan-messages').addClass('help-checkbox-msg').html('<strong>'+ errors.messages.penyusunan +'</strong>');
+                         } else {
+                              $('#penyusunan-alert').removeClass('hash-checkbox-alert');
+                              $('#penyusunan-messages').removeClass('help-checkbox-msg').html('');
+                         }
 
   
                          if(errors.messages.tgl_awal_fgd_klarifikasi)
