@@ -142,6 +142,7 @@ class PengawasanApiController extends Controller
         $result = Pengawasan::where(['id' => $id])->first();
         $result['access'] = $access;
         $result['perusahaan'] = Pengawasan_perusahaan::where(['pengawasan_id' => $id])->get();
+        $result['count_perusahaan'] = Pengawasan_perusahaan::where(['pengawasan_id' => $id])->get()->count();
         return response()->json($result);
     }
 

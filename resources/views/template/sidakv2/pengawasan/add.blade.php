@@ -522,6 +522,7 @@
 
     $('#tambah').on('click', function() {
       $('#judulModalLabel').html('Tambah Data')
+      $('#countArray').val(1);
       $('.modal-add2').show();
       $('.modal-edit').hide();
       $('.text-profile').hide();
@@ -634,6 +635,7 @@
 
     $("#datatable").on("click", ".modalUbah", function(e) {
       $('#judulModalLabel').html('Ubah Pengawasan');
+
       //  $('.modal-footer button[type=button]').html('Ubah Data');
       $('.modal-add2').hide();
       var form = [
@@ -664,6 +666,7 @@
         url: BASE_URL + '/api/pengawasan/edit/' + id,
         method: 'GET',
         success: function(data) {
+          $('#countArray').val(data.count_perusahaan);
           $('#id_pengawasan').val(data.id);
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
@@ -727,7 +730,7 @@
 
           getPeriode(data.periode_id);
           subMenu(data.sub_menu_slug);
-          timpa();
+          timpa(data.perusahaan);
           footer_modal(id);
           if (data.access == 'daerah' || data.access == 'province') {
             $('#approve_edit-' + id).hide();
@@ -809,10 +812,177 @@
 
       })
 
-      function timpa() {
-        var test = 'asd'
-        $('#tablePerusahaan').html(test);
+      function timpa(perusahaan) {
+        let row = `<tbody id="tbody-row">`;
+        $.each(perusahaan, function(index, option) {
+          row += `<tr>`;
+          row += `<td>`;
+          row += `<label>Data Perusahaan</label>`;
+          if (index == 0)
+            row += `<button type="button" class="btn btn-info" style="float: right;" id="btn-edit-row"><i class="fa fa-plus"></i></button>`;
+          else
+            row += `<button class="btn btn-danger btn-sm" type="button" style="float: right;" onclick="if($('#tbody-row tr').length > 1) { $(this).closest('tr').remove() }"><i class="fa fa-trash"></i></button>`;
+          row += `<table class="table table-hover text-nowrap">`;
+          row += `<tr>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="nib_${index}-alert" class="has-feedback">`;
+          row += `<input type="text" class="form-control" name="nib[${index}]" placeholder="Nomor Induk Berusaha" value="` + option.nib + `">`;
+          row += `<span id="nib_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="tgl_nib_${index}-alert" class=" has-feedback">`;
+          row += `<input type="date" class="form-control" name="tgl_nib[${index}]" placeholder="Tanggal NIB" value="` + option.tgl_nib + `">`;
+          row += `<span id="tgl_nib_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td colspan="2" style="padding: 2px;">`;
+          row += `<div id="nama_perusahaan_${index}-alert" class=" has-feedback">`;
+          row += `<input type="text" class="form-control" name="nama_perusahaan[${index}]" placeholder="Nama Perusahaan" value="` + option.nama_perusahaan + `">`;
+          row += `<span id="nama_perusahaan_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td colspan="2" style="padding: 2px;">`;
+          row += `<div id="kontak_${index}-alert" class=" has-feedback">`;
+          row += `<input type="text" class="form-control" name="kontak[${index}]" placeholder="Kontak" value="` + option.kontak + `">`;
+          row += `<span id="kontak_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+
+          row += `<tr>`;
+          row += `<td colspan="2" style="padding: 2px;">`;
+          row += `<label>Perizinan</label>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="no_izin_lokasi_${index}-alert" class=" has-feedback">`;
+          row += `<input type="text" class="form-control" name="no_izin_lokasi[${index}]" placeholder="Nomor Izin Lokasi" value="` + option.no_izin_lokasi + `">`;
+          row += `<span id="no_izin_lokasi_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="tgl_izin_lokasi_${index}-alert" class=" has-feedback">`;
+          row += `<input type="date" class="form-control" name="tgl_izin_lokasi[${index}]" placeholder="Tanggal Izin Lokasi" value="` + option.tgl_izin_lokasi + `">`;
+          row += `<span id="tgl_izin_lokasi_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="no_izin_amdal_${index}-alert" class=" has-feedback">`;
+          row += `<input type="text" class="form-control" name="no_izin_amdal[${index}]" placeholder="Nomor Izin Amdal" value="` + option.no_izin_amdal + `">`;
+          row += `<span id="no_izin_amdal_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="tgl_izin_amdal_${index}-alert" class=" has-feedback">`;
+          row += `<input type="date" class="form-control" name="tgl_izin_amdal[${index}]" placeholder="Tanggal Izin Amdal" value="` + option.tgl_izin_amdal + `">`;
+          row += `<span id="tgl_izin_amdal_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="no_izin_lingkungan_${index}-alert" class=" has-feedback">`;
+          row += `<input type="text" class="form-control" name="no_izin_lingkungan[${index}]" placeholder="Nomor Izin Lingkungan" value="` + option.no_izin_lingkungan + `">`;
+          row += `<span id="no_izin_lingkungan_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="tgl_izin_lingkungan_${index}-alert" class=" has-feedback">`;
+          row += `<input type="date" class="form-control" name="tgl_izin_lingkungan[${index}]" placeholder="Tanggal Izin Lingkungan" value="` + option.tgl_izin_lingkungan + `">`;
+          row += `<span id="tgl_izin_lingkungan_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="no_imb_${index}-alert" class=" has-feedback">`;
+          row += `<input type="text" class="form-control" name="no_imb[${index}]" placeholder="Nomor IMB" value="` + option.no_imb + `">`;
+          row += `<span id="no_imb_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="tgl_imb_${index}-alert" class=" has-feedback">`;
+          row += `<input type="date" class="form-control" name="tgl_imb[${index}]" placeholder="Tanggal IMB" value="` + option.tgl_imb + `">`;
+          row += `<span id="tgl_imb_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+
+          row += `<tr>`;
+          row += `<td colspan="2" style="padding: 2px;">`;
+          row += `<label>Investasi dan Tenaga Kerja</label>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="total_rencana_inv_${index}-alert" class=" has-feedback">`;
+          row += `<input type="number" class="form-control" name="total_rencana_inv[${index}]" placeholder="Total Rencana Inventaris" value="` + option.total_rencana_inv + `">`;
+          row += `<span id="total_rencana_inv_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="total_realisasi_inv_${index}-alert" class=" has-feedback">`;
+          row += `<input type="number" class="form-control" name="total_realisasi_inv[${index}]" placeholder="Total Realisasi Inventaris" value="` + option.total_realisasi_inv + `">`;
+          row += `<span id="total_realisasi_inv_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="rencana_tki_${index}-alert" class=" has-feedback">`;
+          row += `<input type="number" class="form-control" name="rencana_tki[${index}]" placeholder="Total Rencana TKI" value="` + option.rencana_tki + `">`;
+          row += `<span id="rencana_tki_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="realisasi_tki_${index}-alert" class=" has-feedback">`;
+          row += `<input type="number" class="form-control" name="realisasi_tki[${index}]" placeholder="Total Realisasi TKI" value="` + option.realisasi_tki + `">`;
+          row += `<span id="realisasi_tki_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `<tr>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="rencana_tka_${index}-alert" class=" has-feedback">`;
+          row += `<input type="number" class="form-control" name="rencana_tka[${index}]" placeholder="Total Rencana TKA" value="` + option.rencana_tka + `">`;
+          row += `<span id="rencana_tka_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `<td style="padding: 2px;">`;
+          row += `<div id="realisasi_tka_${index}-alert" class=" has-feedback">`;
+          row += `<input type="number" class="form-control" name="realisasi_tka[${index}]" placeholder="Total Realisasi TKA" value="` + option.realisasi_tka + `">`;
+          row += `<span id="realisasi_tka_${index}-messages"></span>`;
+          row += `</div>`;
+          row += `</td>`;
+          row += `</tr>`;
+          row += `</table>`;
+          row += `</td>`;
+          row += `</tr>`;
+        });
+
+        row += `</tbody>`;
+        $('#tablePerusahaan').html(row);
+
+        $("#btn-edit-row").on("click", function() {
+          var row = $("#template-row-product").html();
+          row = row.replace(/countArraynyaDigantiNanti/g, countArray);
+          $row = $(row);
+          console.log($row);
+
+          countArray++;
+          $("#tbody-row").append($row);
+        });
       }
+
 
       function tampilkanModal(url) {
 
@@ -956,6 +1126,8 @@
           }
         });
       });
+
+
 
       function req_revisi(form) {
 

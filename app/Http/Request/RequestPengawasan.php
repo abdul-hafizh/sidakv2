@@ -58,12 +58,12 @@ class RequestPengawasan
             $data->where('daerah_id', Auth::User()->daerah_id);
         }
 
-        if ($request->order['0']['column'] != 0) {
-            $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
-        } else if (isset($order)) {
-            $order = $order;
-            $data->orderBy(key($order), $order[key($order)]);
-        }
+        // if ($request->order['0']['column'] != 0) {
+        //     $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
+        // } else if (isset($order)) {
+        $order = $order;
+        $data->orderBy(key($order), $order[key($order)]);
+        // }
 
         $searchColumn = $request->columns;
         if (!empty($searchColumn[0]['search']['value'])) {
@@ -176,12 +176,12 @@ class RequestPengawasan
             });
         }
 
-        if ($request->order['0']['column'] != 0) {
-            $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
-        } else if (isset($order)) {
-            $order = $order;
-            $data->orderBy(key($order), $order[key($order)]);
-        }
+        // if ($request->order['0']['column'] != 0) {
+        //     $data->orderBy($column_order[$request->order['0']['column']], $request->order['0']['dir']);
+        // } else if (isset($order)) {
+        $order = $order;
+        $data->orderBy(key($order), $order[key($order)]);
+        // }
 
         $numberNext = 1;
         //dd($data);
