@@ -11,7 +11,7 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Pagu Promosi</span>
+                                        <span>Pagu Pemetaan</span>
                                         <h3 class="card-text" id="pagu_promosi"></h3>
                                    </div>
                               </div>
@@ -23,7 +23,7 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Total Promosi</span>
+                                        <span>Total Pemetaan</span>
                                         <h3 class="card-text" id="total_promosi"></h3>
                                    </div>
                               </div>
@@ -53,12 +53,12 @@
           <div class="box box-solid box-primary">
                <div class="box-body">
                     <div class="card-body table-responsive">
-                        <table class="table table-hover text-nowrap">
+                        <table class="table table-hover text-nowrap"  >
                          <thead>
                               <tr>
 
                                    <th rowspan="3"  class=" font-bold">No</th>
-                                   <th rowspan="3" colspan="2" class="text-center font-bold">
+                                   <th rowspan="3" colspan="4" class="text-center font-bold">
                                      <div class="split-table"></div>
                                      <span class="padding-top-bottom-12 ">Proses Kegiatan</span>
                               <div class="split-table-right"></div>
@@ -78,23 +78,22 @@
 
                                    
                               </tr>
-                              <tr>
+                             <tr>
                                    <th  class="text-center font-bold">
                                         
                                         <span class="padding-top-bottom-12">Periode Mulai</span>
                                    </th>
                                    <th  class="text-center font-bold">
                                        <div class="split-table"></div>
-                                      <span class="span-title">Periode Akhir</span>
-
-                                   </th> 
+                                      <span class="position-top-10">Periode Akhir</span>
+                                   </th>
                              </tr>
                               
                          </thead>
                          <tbody id="content">
-                                     
-                         </tbody>
-                         
+                          
+                    
+                        </tbody> 
                     </table>
                     </div>
                </div>
@@ -114,35 +113,48 @@
 <script type="text/javascript">
 
      $(document).ready(function() {
-    
+
           var periode =[];
-          var periode_id = 0;
           var pagu_promosi = 0;
           var total_promosi = 0;
-          var total_pra_produksi = 0;       
-          var total_produksi = 0;
-          var total_pasca_produksi = 0;
-          var temp_total_budget = 0;
-          var temp_total_pra_produksi = 0;
-          var temp_total_produksi = 0;
-          var temp_total_pasca_produksi = 0;
+          var total_identifikasi = 0;       
+          var total_pelaksanaan = 0;
+          var total_penyusunan = 0;
+        
+          var temp_total_identifikasi = 0;
+          var temp_total_pelaksanaan = 0;
+          var temp_total_penyusunan = 0;
 
-          var url = window.location.href; 
-          var segments = url.split('/');  
+          var file_rencana_kerja = '';
+          var file_studi_literatur = '';
+          var file_rapat_kordinasi = '';
+          var file_data_sekunder = '';
+
+
+          var file_fgd_persiapan = '';
+          var file_data_identifikasi = '';
+          var file_data_pengolahan = '';
+          var file_data_klarifikasi = '';
+          var file_data_konfrimasi = '';
+          var file_data_penyusunan = '';
+          var file_penyusunan_infografis = '';
+          var file_doc_info_grafis = '';
 
           $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
      
           $('#pagu_promosi').html('<b>Rp. 0</b>');           
-          $('#total_promosi').html('<b>Rp. 0</b>');           
- 
+          $('#total_promosi').html('<b>Rp. 0</b>');  
+          var url = window.location.href; 
+          var segments = url.split('/');  
+
+        
           
-         
-          getPromosiDetail(); 
+        
+          getPemetaanDetail(); 
 
 
           
-           
-       
+          
 
           $("#update").click( () => {
 
@@ -153,35 +165,35 @@
                     'type': 'draft',
                };
 
-                                   
+                                         
 
-               if (total_promosi != pagu_promosi) {
-                    Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                    });
-               } else {
-                    if(data.length >0)
-                    {
+               // if (total_promosi != pagu_promosi) {
+               //      Swal.fire({
+               //           icon: 'info',
+               //           title: 'Peringatan',
+               //           text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+               //           confirmButtonColor: '#000',
+               //           showConfirmButton: true,
+               //           confirmButtonText: 'OK',
+               //      });
+               // } else {
+                    //if(data.length >0)
+                   // {
                         SendingData(form,data);
-                    }else{
-                        Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Periode Belum di pilih.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                         });
-                    }     
+                    // }else{
+                    //     Swal.fire({
+                    //      icon: 'info',
+                    //      title: 'Peringatan',
+                    //      text: 'Maaf, Periode Belum di pilih.',
+                    //      confirmButtonColor: '#000',
+                    //      showConfirmButton: true,
+                    //      confirmButtonText: 'OK',
+                    //      });
+                    // }     
    
                //  
                
-               }
+               //}
 
           });
 
@@ -194,104 +206,93 @@
                     'status_laporan_id':14,
                     'type': 'kirim',
                };
-               
-                                     
 
-               if (total_promosi != pagu_promosi) {
-                    Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                    });
-               } else {
+                                          
+
+               // if (total_promosi != pagu_promosi) {
+               //      Swal.fire({
+               //           icon: 'info',
+               //           title: 'Peringatan',
+               //           text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+               //           confirmButtonColor: '#000',
+               //           showConfirmButton: true,
+               //           confirmButtonText: 'OK',
+               //      });
+               // } else {
    
-                    if(data.length >0)
-                    {
+               //      if(data.length >0)
+               //      {
                         SendingData(form,data);
-                    }else{
-                        Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Periode Belum di pilih.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                         });
-                    }   
+                    // }else{
+                    //     Swal.fire({
+                    //      icon: 'info',
+                    //      title: 'Peringatan',
+                    //      text: 'Maaf, Periode Belum di pilih.',
+                    //      confirmButtonColor: '#000',
+                    //      showConfirmButton: true,
+                    //      confirmButtonText: 'OK',
+                    //      });
+                    // }   
                
-               }
+             //  }
 
           });
 
-           function updateTotalPromosi() {
-               var total_pagu_inp = 0;
-               $(".promosi_inp").each(function() {
-                    total_pagu_inp += parseInt($(this).val());
-               });
-
-               temp_total_budget = total_pagu_inp;
-               totalRencana();
-          }  
 
 
-
-          function calculatePraProduksi() {
-               var total_pra_produksi = 0;
-               
-               $(".pra_produksi").each(function() {
-                    total_pra_produksi += parseFloat($(this).val());
+          function calculateIdentifikasi() {
+               var total_identifikasi = 0;
+          
+               $(".identifikasi").each(function() {
+                    total_identifikasi += parseFloat($(this).val());
                });
 
               
 
-               var number = total_pra_produksi;
+               var number = total_identifikasi;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
 
-               $("#total_pra_produksi").text('Rp '+ formattedNumber);
+               $("#total_identifikasi").text('Rp '+ formattedNumber);
               
-               temp_total_pra_produksi = number;
+               temp_total_identifikasi = number;
                totalRencana();
           }
 
-          function calculateProduksi() {
-               var total_produksi = 0;
+          function calculatePelaksanaan() {
+               var total_pelaksanaan = 0;
 
-               $(".produksi").each(function() {
-                    total_produksi += parseFloat($(this).val());
+               $(".pelaksanaan").each(function() {
+                    total_pelaksanaan += parseFloat($(this).val());
                });
 
-               var number = total_produksi;
+               var number = total_pelaksanaan;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
 
-               $("#total_produksi").text('Rp '+ formattedNumber);
+               $("#total_pelaksanaan").text('Rp '+ formattedNumber);
      
-               temp_total_produksi = number;
+               temp_total_pelaksanaan = number;
                totalRencana();
           }
 
-          function calculatePascaProduksi() {
-               var total_pasca_produksi = 0;
+          function calculatePenyusunan() {
+               var total_penyusunan = 0;
 
-               $(".pasca_produksi").each(function() {
-                    total_pasca_produksi += parseFloat($(this).val());
+               $(".penyusunan").each(function() {
+                    total_penyusunan += parseFloat($(this).val());
                });
 
-               var number = total_pasca_produksi;
+               var number = total_penyusunan;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
 
-               $("#total_pasca_produksi").text('Rp '+ formattedNumber);
+               $("#total_penyusunan").text('Rp '+ formattedNumber);
      
-               temp_total_pasca_produksi = number;
+               temp_total_penyusunan = number;
                totalRencana();
           }
 
           function totalRencana() {
-
                
-               total_promosi = temp_total_budget;
+               total_promosi = temp_total_identifikasi + temp_total_pelaksanaan + temp_total_penyusunan;
                var number = total_promosi;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
                var periode_id = $('#periode_id').val();
@@ -299,549 +300,923 @@
 
                if(periode_id)
                {    
-                     console.log(pagu_promosi)
-                    if(pagu_promosi < total_promosi) {
-                         Swal.fire({
-                              icon: 'info',
-                              title: 'Peringatan',
-                              text:'Total Promosi Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_promosi, 0, ".", "."),
-                              confirmButtonColor: '#000',
-                              showConfirmButton: true,
-                              confirmButtonText: 'OK',
-                         });  
+                   
+                    // if(pagu_promosi < total_promosi) {
+                    //      Swal.fire({
+                    //           icon: 'info',
+                    //           title: 'Peringatan',
+                    //           text:'Total Promosi Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_promosi, 0, ".", "."),
+                    //           confirmButtonColor: '#000',
+                    //           showConfirmButton: true,
+                    //           confirmButtonText: 'OK',
+                    //      });  
                          
-                         $('#total_promosi').removeClass('text-black').addClass('text-red').addClass('blinking-text');
+                    //      $('#total_promosi').removeClass('text-black').addClass('text-red').addClass('blinking-text');
                          
 
-                    } else {
+                    // } else {
 
-                         $('#total_promosi').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
+                    //      $('#total_promosi').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                       
-                    }
+                    // }
                }
                
                $('#total_promosi').html('<b>Rp. '+formattedNumber+'</b>');
-               
+               // $('#total_rencana_sec').html('<b>Rp. '+formattedNumber+'</b>');
+               // $('#total_rencana_inp').val(number);
           }
 
-          function getPromosiDetail(){
-               $.ajax({
-                    type: 'GET',
-                    dataType: 'json',
-                    url: BASE_URL +'/api/promosi/'+ segments[5],
-                    success: function(data) {
-                         periode_id = data.periode_id;
+          function getChecklistPelaksanaan(){
+
+              
+
+
+               $("#checklist-lq").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-lq").val('true');
+                         $('#startdate-lq').prop("disabled", false);
+                         $('#enddate-lq').prop("disabled", false);
+                         $('#budget-lq').prop("disabled", false);
+                         
+                    }else{
+                        $("#checklist-lq").val('false'); 
+                        $('#startdate-lq').prop("disabled", true).val('');
+                        $('#enddate-lq').prop("disabled", true).val('');
+                        $('#budget-lq').prop("disabled", true).val('0');
+                      
+                        calculatePelaksanaan();
+                    }     
+               }); 
+
+               $("#checklist-shift-share").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-shift-share").val('true');
+                         $('#startdate-shift-share').prop("disabled", false);
+                         $('#enddate-shift-share').prop("disabled", false);
+                         $('#budget-shift-share').prop("disabled", false);
+                        
+                    }else{
+                         $("#checklist-shift-share").val('false');
+                         $('#startdate-shift-share').prop("disabled", true).val('');
+                         $('#enddate-shift-share').prop("disabled", true).val('');
+                         $('#budget-shift-share').prop("disabled", true).val('0');
                        
-                         updateContent(data);
-                       
-                    },
-                    error: function( error) {}
+                         calculatePelaksanaan();
+                    }     
+               });  
+
+               $("#checklist-tipologi-sektor").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-tipologi-sektor").val('true');
+                         $('#startdate-tipologi-sektor').prop("disabled", false);
+                         $('#enddate-tipologi-sektor').prop("disabled", false);
+                         $('#budget-tipologi-sektor').prop("disabled", false);
+                        
+                    }else{
+                         $("#checklist-tipologi-sektor").val('false');
+                         $('#startdate-tipologi-sektor').prop("disabled", true).val('');
+                         $('#enddate-tipologi-sektor').prop("disabled", true).val('');
+                         $('#budget-tipologi-sektor').prop("disabled", true).val('0');
+                        
+                         calculatePelaksanaan();
+                    }     
+               }); 
+
+               $("#checklist-klassen").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-klassen").val('true');
+                         $('#startdate-klassen').prop("disabled", false);
+                         $('#enddate-klassen').prop("disabled", false);
+                         $('#budget-klassen').prop("disabled", false);
+                        
+                    }else{
+                         $("#checklist-klassen").val('false');
+                         $('#startdate-klassen').prop("disabled", true).val('');
+                         $('#enddate-klassen').prop("disabled", true).val('');
+                         $('#budget-klassen').prop("disabled", true).val('0');
+                         
+                         calculatePelaksanaan();
+                    }     
+               }); 
+
+               $('.checkbox-pengolahan').on('click', function() {
+                   const checkedCount = $('.checkbox-pengolahan:checked').length;
+                   if(checkedCount>0)
+                   {
+                      $('#file-pengolahan').prop("disabled", false);
+                   }else{
+                     $('#file-pengolahan').prop("disabled", true); 
+                   }     
                });
 
 
+
           }
 
-          function updateContent(item)
+
+          function getChecklistPetaInvenstasi(){
+
+               $("#checklist-summary-sektor-unggulan").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-summary-sektor-unggulan").val('true');
+                         $("#startdate-summary-sektor-unggulan").prop("disabled", false);
+                         $("#enddate-summary-sektor-unggulan").prop("disabled", false);
+                         $('#budget-summary-sektor-unggulan').prop("disabled", false);
+                         
+                    }else{
+                         $("#checklist-summary-sektor-unggulan").val('false'); 
+                         $("#startdate-summary-sektor-unggulan").prop("disabled", true).val('');
+                         $("#enddate-summary-sektor-unggulan").prop("disabled", true).val('');
+                         $('#budget-summary-sektor-unggulan').prop("disabled", true).val('0');;
+                        
+                         calculatePenyusunan();
+                    }     
+               }); 
+
+               $("#checklist-sektor-unggulan").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-sektor-unggulan").val('true');
+                         $("#startdate-sektor-unggulan").prop("disabled", false);
+                         $("#enddate-sektor-unggulan").prop("disabled", false);
+                         $('#budget-sektor-unggulan').prop("disabled", false);
+                        
+                    }else{
+                         $("#checklist-sektor-unggulan").val('false'); 
+                         $("#startdate-sektor-unggulan").prop("disabled", true).val('');
+                         $("#enddate-sektor-unggulan").prop("disabled", true).val('');
+                         $('#budget-sektor-unggulan').prop("disabled", true).val('0');;
+                         
+                         calculatePenyusunan();
+                    }     
+               });  
+
+               $("#checklist-potensi-pasar").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-potensi-pasar").val('true');
+                         $("#startdate-potensi-pasar").prop("disabled", false);
+                         $("#enddate-potensi-pasar").prop("disabled", false);
+                         $('#budget-potensi-pasar').prop("disabled", false);
+                        
+                    }else{
+                         $("#checklist-potensi-pasar").val('false');
+                         $("#startdate-potensi-pasar").prop("disabled", true).val('');
+                         $("#enddate-potensi-pasar").prop("disabled", true).val('');
+                         $('#budget-potensi-pasar').prop("disabled", true).val('0');;
+                        
+                         calculatePenyusunan(); 
+                    }     
+               }); 
+
+               $("#checklist-parameter-sektor-unggulan").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-parameter-sektor-unggulan").val('true');
+                         $("#startdate-parameter-sektor-unggulan").prop("disabled", false);
+                         $("#enddate-parameter-sektor-unggulan").prop("disabled", false);
+                         $('#budget-parameter-sektor-unggulan').prop("disabled", false);
+                         
+                    }else{
+                         $("#checklist-parameter-sektor-unggulan").val('false');
+                         $("#startdate-parameter-sektor-unggulan").prop("disabled", true).val('');
+                         $("#enddate-parameter-sektor-unggulan").prop("disabled", true).val('');
+                         $('#budget-parameter-sektor-unggulan').prop("disabled", true).val('0');;
+                        
+                         calculatePenyusunan(); 
+                    }     
+               }); 
+
+                $("#checklist-subsektor-unggulan").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-subsektor-unggulan").val('true');
+                         $("#startdate-subsektor-unggulan").prop("disabled", false);
+                         $("#enddate-subsektor-unggulan").prop("disabled", false);
+                         $('#budget-subsektor-unggulan').prop("disabled", false);
+                        
+                    }else{
+                         $("#checklist-subsektor-unggulan").val('false');
+                         $("#startdate-subsektor-unggulan").prop("disabled", true).val('');
+                         $("#enddate-subsektor-unggulan").prop("disabled", true).val('');
+                         $('#budget-subsektor-unggulan').prop("disabled", true).val('0');;
+                        
+                         calculatePenyusunan(); 
+                    }     
+               });  
+
+               $("#checklist-intensif-daerah").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-intensif-daerah").val('true');
+                         $("#startdate-intensif-daerah").prop("disabled", false);
+                         $("#enddate-intensif-daerah").prop("disabled", false);
+                         $('#budget-intensif-daerah').prop("disabled", false);
+                       
+                    }else{
+                         $("#checklist-intensif-daerah").val('false');
+                         $("#startdate-intensif-daerah").prop("disabled", true).val('');
+                         $("#enddate-intensif-daerah").prop("disabled", true).val('');
+                         $('#budget-intensif-daerah').prop("disabled", true).val('0');;
+                       
+                         calculatePenyusunan();  
+                    }     
+               }); 
+
+               $("#checklist-potensi-lanjutan").on("input", function(e) {
+                    if(e.currentTarget.value == 'false')
+                    {
+                         $("#checklist-potensi-lanjutan").val('true');
+                         $("#startdate-potensi-lanjutan").prop("disabled", false);
+                         $("#enddate-potensi-lanjutan").prop("disabled", false);
+                         $('#budget-potensi-lanjutan').prop("disabled", false);
+                        
+                    }else{
+                         $("#checklist-potensi-lanjutan").val('false');
+                         $("#startdate-potensi-lanjutan").prop("disabled", true).val('');
+                         $("#enddate-potensi-lanjutan").prop("disabled", true).val('');
+                         $('#budget-potensi-lanjutan').prop("disabled", true).val('0');;
+                        
+                         calculatePenyusunan();  
+                    }     
+               }); 
+
+                $('.checkbox-penyusunan').on('click', function() {
+                   const checkedCount = $('.checkbox-penyusunan:checked').length;
+                   if(checkedCount>0)
+                   {
+                       $('#file-penyusunan').prop("disabled", false);
+                   }else{
+                        $('#file-penyusunan').prop("disabled", true);
+                   }     
+               });
+          }
+
+           function UploadFileRapatTeknis(id)
           {
 
-            const content = $('#content');
-           // Clear previous data
-            content.empty();
 
-     
-               let row = ``;
-            
-                              row +=`<tr>`;
-                            row +=`<td colspan="9" class="text-center font-bold">Proses Pengadaan Barang/Jasa</td>`;
-                             row +=`</tr>`;  
-                              row +=`<tr lass="pull-left full">`;
-                            row +=`<td rowspan="9" class="font-bold text-center">1.</td>`;
-                            row +=`<td colspan="4" class="font-bold"> Pra Produksi Meliputi : </td>`;
-                              row +=`<td><strong id="total_pra_produksi">${item.total_pra_produksi }</td>`;
-                             row +=`<td></td>`;
-                            row +=`</tr>`;
-                       row +=`<tr>`;
-                         row +=`<td class="font-bold">A.</td>`;
-                         row +=`<td class="-abjad font-bold">Rapat Teknis Membahas Rencana Kerja Antara Lain Menentukan Proyek/Peluang/Potensi Invenstasi Yang Akan Tampil Dalam Video</td>`;
-                         row +=`<td>`;
-                              row +=`<div id="startdate-a-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input  type="date" id="startdate_a_pra" name="startdate_a_pra" value="${item.tgl_awal_peluang}" class="form-control">`;
-                                   row +=`<span id="startdate-a-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-a-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input  type="date" id="enddate_a_pra" name="enddate_a_pra"  value="${item.tgl_ahir_peluang}" class="form-control">`;
-                                 row +=`<span id="enddate-a-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-a-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  id="budget_a_pra" type="number" name="budget_a_pra" value="${item.budget_peluang}" class="form-control promosi_inp pra_produksi">`;
-                                 row +=`<span id="budget-a-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-a-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" id="desc_a_pra" name="desc_a_pra" value="${item.keterangan_peluang}" class="form-control">`;
-                                 row +=`<span id="desc-a-pra-messages"></span>`;
-                            row +=`</div>`;
+               $("#file-rapat-teknis").click(()=> {
+                 $("#desc-a-pra").trigger("click");
+               });
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr>`;
-                         row +=`<td class="font-bold">B.</td>`;
-                         row +=`<td class="font-bold">Membuat Storyline</td>`;
-                         row +=`<td>`;
-                              row +=`<div id="startdate-b-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input  type="date" name="startdate_b_pra" value="${item.tgl_awal_storyline}" class="form-control">`;
-                                   row +=`<span id="startdate-b-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-b-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input  type="date" name="enddate_b_pra" value="${item.tgl_ahir_storyline}" class="form-control">`;
-                                 row +=`<span id="enddate-b-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-b-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_b_pra" value="${item.budget_storyline}" class="form-control pra_produksi promosi_inp">`;
-                                 row +=`<span id="budget-b-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-b-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="desc_b_pra" value="${item.keterangan_storyline}" class="form-control">`;
-                                 row +=`<span id="desc-b-pra-messages"></span>`;
-                            row +=`</div>`;
+               $("#desc-a-pra").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr >`;
-                         row +=`<td class="font-bold">C.</td>`;
-                         row +=`<td class="font-bold">Membuat StoryBoard</td>`;
-                       row +=`<td>`;
-                              row +=`<div id="startdate-c-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input  type="date" name="startdate_c_pra" value="${item.tgl_awal_storyboard}" class="form-control">`;
-                                   row +=`<span id="startdate-c-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-c-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input  type="date" name="enddate_c_pra" value="${item.tgl_ahir_storyboard}" class="form-control">`;
-                                 row +=`<span id="enddate-c-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-c-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_c_pra" value="${item.budget_storyboard}"  class="form-control pra_produksi promosi_inp">`;
-                                 row +=`<span id="budget-c-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-c-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="desc_c_pra" value="${item.keterangan_storyboard}"  class="form-control">`;
-                                 row +=`<span id="desc-c-pra-messages"></span>`;
-                            row +=`</div>`;
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr >`;
-                         row +=`<td class="font-bold">D.</td>`;
-                         row +=`<td class="font-bold">Penentuan Lokasi</td>`;
-                         row +=`<td>`;
-                              row +=`<div id="startdate-d-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input  type="date" name="startdate_d_pra" value="${item.tgl_awal_lokasi}"   class="form-control">`;
-                                   row +=`<span id="startdate-d-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                           row +=`<div id="enddate-d-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input  type="date" name="enddate_d_pra" value="${item.tgl_ahir_lokasi}"  class="form-control">`;
-                                 row +=`<span id="enddate-d-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-d-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_d_pra" value="${item.budget_lokasi}"  class="form-control pra_produksi promosi_inp">`;
-                                 row +=`<span id="budget-d-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-d-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="desc_d_pra" value="${item.keterangan_lokasi}"  class="form-control">`;
-                                 row +=`<span id="desc-d-pra-messages"></span>`;
-                            row +=`</div>`;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                        row +=`<tr>`;
-                         row +=`<td class="font-bold">E.</td>`;
-                         row +=`<td class="font-bold">Pemilihan Talent</td>`;
-                         row +=`<td>`;
-                              row +=`<div id="startdate-e-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input  type="date" name="startdate_e_pra" value="${item.tgl_awal_talent}" class="form-control">`;
-                                   row +=`<span id="startdate-e-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-e-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input  type="date" name="enddate_e_pra" value="${item.tgl_ahir_talent}" class="form-control">`;
-                                 row +=`<span id="enddate-e-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-e-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_e_pra" value="${item.budget_talent}" class="form-control pra_produksi promosi_inp">`;
-                                 row +=`<span id="budget-e-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-e-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="desc_e_pra" value="${item.keterangan_talent}"   class="form-control">`;
-                                 row +=`<span id="desc-e-pra-messages"></span>`;
-                            row +=`</div>`;
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-rapat-teknis').html(row);
+                         file_rencana_kerja = file;
+                    
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr >`;
-                         row +=`<td class="font-bold">F.</td>`;
-                         row +=`<td class="font-bold">Pemilihan Pelaku Usaha Yang Memberikan Testimoni</td>`; 
-                         row +=`<td>`;
-                              row +=`<div id="startdate-f-pra-alert" class="margin-none form-group">`;
-                                   row +=`<input  type="date" name="startdate_f_pra" value="${item.tgl_awal_testimoni}"  class="form-control">`;
-                                   row +=`<span id="startdate-f-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-f-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input  type="date" name="enddate_f_pra" value="${item.tgl_ahir_testimoni}" class="form-control">`;
-                                 row +=`<span id="enddate-f-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-f-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_f_pra" value="${item.budget_testimoni}" class="form-control pra_produksi promosi_inp">`;
-                                 row +=`<span id="budget-f-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-f-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="desc_f_pra" value="${item.keterangan_testimoni}"   class="form-control">`;
-                                 row +=`<span id="desc-f-pra-messages"></span>`;
-                            row +=`</div>`;
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr>`;
-                         row +=`<td class="font-bold">G.</td>`;
-                         row +=`<td class="font-bold">Pemilihan Element Audio Visual</td>`;
-                         row +=`<td>`;
-                              row +=`<div id="startdate-g-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input  type="date" name="startdate_g_pra_alert" value="${item.tgl_awal_audio}"  class="form-control">`;
-                                   row +=`<span id="startdate-g-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-g-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input  type="date" name="enddate_g_pra" value="${item.tgl_ahir_audio}" class="form-control">`;
-                                 row +=`<span id="enddate-g-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-g-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="number" name="budget_g_pra" value="${item.budget_audio}" class="form-control pra_produksi promosi_inp">`;
-                                 row +=`<span id="budget-g-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-g-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="desc_g_pra" value="${item.keterangan_audio}"   class="form-control">`;
-                                 row +=`<span id="desc-g-pra-messages"></span>`;
-                            row +=`</div>`;
+              });
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
-                       row +=`<tr >`;
-                         row +=`<td class="font-bold">H.</td>`;
-                         row +=`<td class="font-bold">Pemilihan Video Editing Tools</td>`;
-                       row +=`<td>`;
-                              row +=`<div id="startdate-h-pra-alert" class="margin-none form-group">`; 
-                                   row +=`<input  type="date" name="startdate_h_pra" value="${item.tgl_awal_editing}" class="form-control">`;
-                                   row +=`<span id="startdate-h-pra-messages"></span>`;
-                            row +=`</div>`;
-                         row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="enddate-h-pra-alert" class="margin-none form-group">`; 
-                                        row +=`<input  type="date" name="enddate_h_pra" value="${item.tgl_ahir_editing}" class="form-control">`;
-                                 row +=`<span id="enddate-h-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                            row +=`<div id="budget-h-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="budget_h_pra" value="${item.budget_editing}" class="form-control pra_produksi promosi_inp">`;
-                                 row +=`<span id="budget-h-pra-messages"></span>`;
-                            row +=`</div>`;
-                              row +=`</td>`;
-                              row +=`<td>`;
-                                   row +=`<div id="desc-h-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input  type="text" name="desc_h_pra" value="${item.keterangan_editing}"   class="form-control">`;
-                                 row +=`<span id="desc-h-pra-messages"></span>`;
-                            row +=`</div>`;
 
-                              row +=`</td>`;
-                       row +=`</tr>`;
+              $( "#img-file-rapat-teknis" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file; 
+               //    let id = e.currentTarget.dataset.param_id;
+                  
+                   EmbedFile(file,id);  
+              });  
 
-                             row +=`<tr >`;
-                             row +=`<td rowspan="3" class="font-bold text-center">2.</td>`;
-                             row +=`<td colspan="4" class="font-bold"> Produksi : </td>`;
-                             row +=`<td><strong id="total_produksi">${item.total_produksi }</td>`;
-                             row +=`<td></td>`;
+          }
 
-                             row +=`</tr>`;
-                              row +=`<tr>`;
-                          row +=`<td class="font-bold">A.</td>`;
-                          row +=`<td class="-abjad font-bold">Pengambilan Gambar Testimoni Pelaku Usaha</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-a-pro-alert" class="margin-none form-group">`; 
-                                    row +=`<input  type="date" name="startdate_a_pro" value="${item.tgl_awal_gambar}"  class="form-control">`;
-                                    row +=`<span id="startdate-a-pro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-a-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input  type="date" name="enddate_a_pro" value="${item.tgl_ahir_gambar}" class="form-control">`;
-                                  row +=`<span id="enddate-a-pro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-a-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_a_pro" value="${item.budget_gambar}" class="form-control produksi promosi_inp">`;
-                                  row +=`<span id="budget-a-pro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-a-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="text" name="desc_a_pro" value="${item.keterangan_gambar}"   class="form-control">`;
-                                  row +=`<span id="desc-a-pro-messages"></span>`;
-                             row +=`</div>`;
 
-                               row +=`</td>`;
-                        row +=`</tr>`;
-                        row +=`<tr>`;
-                          row +=`<td class="font-bold">B.</td>`;
-                          row +=`<td class="-abjad font-bold">Pengambilan Gambar Di Lapangan Dan Pengumpulan Video</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-b-pro-alert" class="margin-none form-group">`; 
-                                    row +=`<input  type="date" name="startdate_b_pro" value="${item.tgl_awal_video}" class="form-control">`;
-                                    row +=`<span id="startdate-b-pro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-b-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input  type="date" name="enddate_b_pro" value="${item.tgl_ahir_video}" class="form-control">`;
-                                  row +=`<span id="enddate-b-pro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-b-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_b_pro " value="${item.budget_video}" class="form-control produksi promosi_inp">`;
-                                  row +=`<span id="budget-b-pro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                              row +=`<td>`;
-                                    row +=`<div id="desc-b-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="text" name="desc_b_pro" value="${item.keterangan_video}"   class="form-control">`;
-                                  row +=`<span id="desc-b-pro-messages"></span>`;
-                             row +=`</div>`;
+           function UploadFileStudiLiteratur(id)
+          {
 
-                               row +=`</td>`;
-                        row +=`</tr>`;
-                            row +=`<tr>`;
-                            row +=`<td rowspan="9" class="font-bold text-center">3.</td>`;
-                            row +=`<td colspan="4" class="font-bold"> Pasca Produksi : </td>`;
-                            row +=`<td><strong id="total_produksi">${item.total_pasca_produksi }</td>`;
-                            row +=`<td></td>`;
-                            row +=`</tr>`;
-                             row +=`<tr>`;
-                          row +=`<td class="font-bold">A.</td>`;
-                          row +=`<td class="-abjad font-bold">Editing Video</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-a-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input  type="date" name="startdate_a_ppro" value="${item.tgl_awal_editvideo}" class="form-control">`;
-                                    row +=`<span id="startdate-a-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-a-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input  type="date" name="enddate_a_ppro"  value="${item.tgl_ahir_editvideo}" class="form-control">`;
-                                  row +=`<span id="enddate-a-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-a-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_a_ppro" value="${item.budget_editvideo}" class="form-control pasca_produksi promosi_inp">`;
-                                  row +=`<span id="budget-a-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-a-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="text" name="desc_a_ppro" value="${item.keterangan_editvideo}"   class="form-control">`;
-                                  row +=`<span id="desc-a-ppro-messages"></span>`;
-                             row +=`</div>`;
 
-                               row +=`</td>`;
-                        row +=`</tr>`;
-                        row +=`<tr>`;
-                          row +=`<td class="font-bold">B.</td>`;
-                          row +=`<td class="font-bold">Motion Grafik</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-b-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input  type="date" name="startdate_b_ppro" value="${item.tgl_awal_grafik}" class="form-control">`;
-                                    row +=`<span id="startdate-b-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-b-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input  type="date" name="enddate_b_ppro" value="${item.tgl_ahir_grafik}" class="form-control">`;
-                                  row +=`<span id="enddate-b-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-b-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_b_ppro" value="${item.budget_grafik}" class="form-control pasca_produksi promosi_inp">`;
-                                  row +=`<span id="budget-b-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-b-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="text" name="desc_b_ppro" value="${item.keterangan_grafik}"   class="form-control">`;
-                                  row +=`<span id="desc-b-ppro-messages"></span>`;
-                             row +=`</div>`;
+               $("#file-studi-literatur").click(()=> {
+                 $("#desc-b-pra").trigger("click");
+               });
 
-                               row +=`</td>`;
-                       row +=` </tr>`;
-                        row +=`<tr >`;
-                          row +=`<td class="font-bold">C.</td>`;
-                          row +=`<td class="font-bold">Music Compose Dan Mixing</td>`;
-                        row +=`<td>`;
-                               row +=`<div id="startdate-c-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input  type="date" name="startdate_c_ppro" value="${item.tgl_awal_mixing}"  class="form-control">`;
-                                    row +=`<span id="startdate-c-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-c-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input  type="date" name="enddate_c_ppro" value="${item.tgl_ahir_mixing}" class="form-control">`;
-                                  row +=`<span id="enddate-c-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-c-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_c_ppro" value="${item.budget_mixing}" class="form-control pasca_produksi promosi_inp">`;
-                                  row +=`<span id="budget-c-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-c-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="text" name="desc_c_ppro" value="${item.keterangan_mixing}"   class="form-control">`;
-                                  row +=`<span id="desc-c-ppro-messages"></span>`;
-                             row +=`</div>`;
+               $("#desc-b-pra").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
 
-                               row +=`</td>`;
-                       row +=`</tr>`;
-                        row +=`<tr >`;
-                          row +=`<td class="font-bold">D.</td>`;
-                          row +=`<td class="font-bold">Voice Over Talent</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-d-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input  type="date" name="startdate_d_ppro" value="${item.tgl_awal_voice}"  class="form-control">`;
-                                    row +=`<span id="startdate-d-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-d-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input  type="date" name="enddate_d_ppro" value="${item.tgl_ahir_voice}" class="form-control">`;
-                                  row +=`<span id="enddate-d-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-d-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_d_ppro" value="${item.budget_voice}" class="form-control pasca_produksi promosi_inp">`;
-                                  row +=`<span id="budget-d-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-d-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="text" name="desc_d_ppro" value="${item.keterangan_voice}"   class="form-control">`;
-                                  row +=`<span id="desc-d-ppro-messages"></span>`;
-                             row +=`</div>`;
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
 
-                               row +=`</td>`;
-                        row +=`</tr>`;
-                         row +=`<tr>`;
-                          row +=`<td class="font-bold">E.</td>`;
-                          row +=`<td class="font-bold">Subtitle</td>`;
-                          row +=`<td>`;
-                               row +=`<div id="startdate-e-ppro-alert" class="margin-none form-group">`; 
-                                    row +=`<input  type="date" name="startdate_e_ppro" value="${item.tgl_awal_subtitle}" class="form-control">`;
-                                    row +=`<span id="startdate-e-ppro-messages"></span>`;
-                             row +=`</div>`;
-                          row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="enddate-e-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input  type="date" name="enddate_d_ppro" value="${item.tgl_ahir_subtitle}"  class="form-control  ">`;
-                                  row +=`<span id="enddate-e-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                             row +=`<div id="budget-e-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="number" name="budget_e_ppro" value="${item.budget_subtitle}" class="form-control pasca_produksi promosi_inp">`;
-                                  row +=`<span id="budget-e-ppro-messages"></span>`;
-                             row +=`</div>`;
-                               row +=`</td>`;
-                               row +=`<td>`;
-                                    row +=`<div id="desc-e-ppro-alert" class="margin-none form-group">`;
-                                         row +=`<input  type="text" name="desc_e_ppro" value="${item.keterangan_subtitle}"   class="form-control">`;
-                                  row +=`<span id="desc-e-ppro-messages"></span>`;
-                             row +=`</div>`;
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                         file_studi_literatur = file;
+                     
+                         $('#img-file-studi-literatur').html(row);
+                    
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
 
-                              row +=`</td>`;
-                       row +=`</tr>`;        
-                           //  BtnAction(item.id,item.status_laporan_id);
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
 
-                       content.append(row);
-                       pagu_promosi = item.pagu_promosi;
-                       getperiode(item.periode_id); 
-                       $(".promosi_inp").on("input", updateTotalPromosi);
+              });
 
-                       $('#pagu_promosi').html('<b>'+item.pagu_promosi_convert+'</b>');
-                       $('#total_promosi').html('<b>'+item.total_promosi_convert+'</b>');
-      
-                   $(".pra_produksi").on("input", function() {
-                         calculatePraProduksi();
-                        
-                    });          
 
-                    $(".produksi").on("input", function() {
-                         calculateProduksi();
-                    });
+              $( "#img-file-studi-literatur" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);  
+              });  
 
-                    $(".pasca_produksi").on("input", function() {
-                         calculatePascaProduksi();
-                    });
+          }
 
- 
-         }
+           function UploadFileKordinasi(id)
+          {
+
+
+               $("#file-rapat-kordinasi").click(()=> {
+                 $("#desc-c-pra").trigger("click");
+               });
+
+               $("#desc-c-pra").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-rapat-kordinasi').html(row);
+                         file_rapat_kordinasi = file;
+                    
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-rapat-kordinasi" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);  
+              });  
+
+          }
+
+           function UploadFileDataSekunder(id)
+          {
+
+
+               $("#file-sekunder").click(()=> {
+                 $("#desc-d-pra").trigger("click");
+               });
+
+               $("#desc-d-pra").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-sekunder').html(row);4
+                         file_data_sekunder = file;
+                    
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-sekunder" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);  
+              });  
+
+          }
+
+
+           function UploadFilePersiapan(id)
+          {
+
+
+               $("#file-persiapan").click(()=> {
+                 $("#desc-a-pro").trigger("click");
+               });
+
+               $("#desc-a-pro").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-persiapan').html(row);
+                         file_fgd_persiapan = file;
+                    
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-persiapan" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);  
+              });  
+
+          }
+
+           function UploadFileFGDIndentifikasi(id)
+          {
+
+
+               $("#file-fgd-identifikasi").click(()=> {
+                 $("#desc-b-pro").trigger("click");
+               });
+
+               $("#desc-b-pro").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-fgd-identifikasi').html(row);
+                         file_data_identifikasi= file;
+                    
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-fgd-identifikasi" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);  
+              });  
+
+          }
+
+          function UploadFilePengolahan(id)
+          {
+
+
+               $("#file-pengolahan").click(()=> {
+                 $("#keterangan-pengolahan").trigger("click");
+               });
+
+               $("#keterangan-pengolahan").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Pengolahan">';
+                         row +='<div id="viewPdf" class="viewpdf group-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-pengolahan').html(row);
+                         file_data_pengolahan = file
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-pengolahan" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);  
+              });  
+
+          }
+
+
+           function UploadFileFGDKlarifikasi(id)
+          {
+
+
+               $("#file-fgd-klarifikasi").click(()=> {
+                 $("#desc-d-pro").trigger("click");
+               });
+
+               $("#desc-d-pro").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-fgd-klarifikasi').html(row);
+                        file_data_klarifikasi = file;
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-fgd-klarifikasi" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);  
+              });  
+
+          }
+
+           function UploadFileFGDKonfirmasi(id)
+          {
+
+
+               $("#file-fgd-konfirmasi").click(()=> {
+                 $("#desc-e-pro").trigger("click");
+               });
+
+               $("#desc-e-pro").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-fgd-konfirmasi').html(row);
+                         file_data_konfrimasi = file
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-fgd-konfirmasi" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);  
+              });  
+
+          }
+
+
+          function UploadFilePenyusunan(id)
+          {
+
+
+               $("#file-penyusunan").click(()=> {
+                 $("#keterangan-penyusunan").trigger("click");
+               });
+
+               $("#keterangan-penyusunan").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Penyusunan">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-penyusunan').html(row);
+                         file_data_penyusunan = file;
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-penyusunan" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);   
+              });  
+
+          }
+
+          function UploadFilePenyusunanInfoGrafis(id)
+          {
+
+
+               $("#file-info-grafis").click(()=> {
+                 $("#desc-b-ppro").trigger("click");
+               });
+
+               $("#desc-b-ppro").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Penyusunan">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-info-grafis').html(row);
+                         file_penyusunan_infografis = file;
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-info-grafis" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);   
+              });  
+
+          }
+
+          function UploadFileDokumentasiInfoGrafis(id)
+          {
+
+
+               $("#file-doc-info-grafis").click(()=> {
+                 $("#desc-c-ppro").trigger("click");
+               });
+
+               $("#desc-c-ppro").change((event)=> {     
+                  
+                   const files = event.target.files
+                   let filename = files[0].name
+                   const fileReader = new FileReader()
+                   fileReader.addEventListener('load', () => {
+
+                    if(files[0].name.toUpperCase().includes(".PDF"))
+                    {
+                         file = fileReader.result;
+                         var row = '';
+                         // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Penyusunan">';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+
+                         row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
+                               row +=`<div id="FormView-`+ id +`"></div>`;
+                         row +=`</div>`;
+                     
+                         $('#img-file-doc-info-grafis').html(row);
+                         file_doc_info_grafis = file;
+                     }else{
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'Tipe file tidak diizinkan!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+                     }   
+
+                       
+                   })
+                   fileReader.readAsDataURL(files[0])
+
+              });
+
+
+              $( "#img-file-doc-info-grafis" ).on( "click", "#viewPdf", (e) => {
+                   let file = e.currentTarget.dataset.param_file;  
+                   EmbedFile(file,id);   
+              });  
+
+          }
+
+          function EmbedFile(file,tmp){
+                 console.log(file)
+
+                let row = ``;
+                      row +=`<div class="modal-dialog">`;
+                          row +=`<div class="modal-content">`;
+
+                                     row +=`<div class="modal-header">`;
+                                       row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
+                                       row +=`<h4 class="modal-title">Lihat File PDF</h4>`;
+                                     row +=`</div>`;
+
+                                    
+                                     row +=`<div class="modal-body">`;
+                                      row +=`<embed src="`+file+`#page=1&zoom=65" width="575" height="500">`;
+                                     row +=`</div>`;
+
+
+                                   row +=`<div class="modal-footer">`;
+                                           row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
+                                   row +=`</div>`;
+                         row +=`</div>`;
+                       row +=`</div>`;   
+                    $('#FormView-'+ tmp).html(row);  
+
+          }
 
           function getperiode(periode_id){
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
-                    url: BASE_URL +'/api/select-periode?type=PUT&action=promosi',
+                    url: BASE_URL +'/api/select-periode?type=PUT&action=pemetaan',
                     success: function(data) {
                          var select =  $('#periode_id');
+                           select.empty();
                          $.each(data.result, function(index, option) {
                               select.append($('<option>', {
                                    value: option.value,
@@ -851,7 +1226,7 @@
                          
                            
                         
-                         select.val(periode_id);
+                         select.val('2024');
                          select.selectpicker('refresh');
                          periode = data.result; 
                     },
@@ -875,94 +1250,1139 @@
           }
 
 
+          function getPemetaanDetail(){
+
+               $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: BASE_URL +'/api/pemetaan/'+ segments[5],
+                    success: function(data) {
+                       
+                         updateContent(data);
+                       
+                    },
+                    error: function( error) {}
+               });
+
+
+          }
+
+          function updateContent(item)
+         {
+                const content = $('#content');
+      
+                  let row = ``;
+                    row +=`<tr>`;
+                            row +=`<td rowspan="5" class="font-bold text-center">1</td>`;
+                            row +=`<td colspan="6" class="font-bold"> Identifikasi Pemetaan Potensi Investasi : </td>`;
+                            row +=`<td><strong id="total_identifikasi">${item.total_identifikasi }</td>`;
+                            row +=`<td></td>`;
+                    row +=`</tr>`;
+
+
+                    row +=`<tr>`;
+                         row +=`<td class="font-bold">A.</td>`;
+                         row +=`<td class="-abjad font-bold" colspan="3">Rapat Teknis Membahas Rencana Kerja</td>`;
+                         row +=`<td>`;
+                              row +=`<div id="startdate-a-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input  type="date"   id="startdate-a-pra" name="startdate_a_pra"  value="${item.tgl_awal_rencana_kerja }" class="form-control ">`; 
+                                   row +=`<span id="startdate-a-pra-messages"></span>`;
+                           row +=` </div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-a-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input type="date"   id="enddate-a-pra" name="enddate_a_pra" value="${item.tgl_ahir_rencana_kerja }" class="form-control">`;
+                                 row +=`<span id="enddate-a-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-a-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input type="number" id="budget-a-pra"    min="0" oninput="this.value = Math.abs(this.value)" placeholder="Budget" value="${item.budget_rencana_kerja }" name="budget_a_pra" class="form-control identifikasi">`;
+                                 row +=`<span id="budget-a-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                  
+                                      row +=`<div id="desc-a-pra-alert" class="pdf-btn-center">`;
+                                         row +=`<button id="file-rapat-teknis"  type="button" class="file btn btn-default "> Upload File</button>`;
+                                     
+                                         row +=`<div id="img-file-rapat-teknis">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rencana_kerja }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                         row +=`</div>`;
+                                         row +=`<input type="file" style="display:none;" id="desc-a-pra" name="desc_a_pra" class="form-control" value="">`;
+                                         row +=`<span id="desc-a-pra-messages"></span>`;
+                                   row +=` </div>`;
+
+
+                              row +=`</td>`;
+                    row +=`</tr>`;
+                    row +=`<tr>`;
+                         row +=`<td class="font-bold">B.</td>`;
+                         row +=`<td class="font-bold" colspan="3">Studi literatur</td>`;
+                         row +=`<td>`;
+                              row +=`<div id="startdate-b-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input type="date" id="startdate-b-pra"  name="startdate_b_pra"  value="${item.tgl_awal_studi_literatur }" class="form-control">`;
+                                   row +=`<span id="startdate-b-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-b-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input type="date" id="enddate-b-pra"  name="enddate_b_pra"  value="${item.tgl_ahir_studi_literatur }" class="form-control">`;
+                                 row +=`<span id="enddate-b-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-b-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input id="budget-b-pra"  placeholder="Budget" value="${item.budget_studi_literatur }"  type="number" min="0"  oninput="this.value = Math.abs(this.value)" name="budget_b_pra" class="form-control identifikasi">`;
+                                 row +=`<span id="budget-b-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                              
+
+                              row +=`<div id="desc-b-pra-alert" class="pdf-btn-center">`;
+
+                                      row +=`<button id="file-studi-literatur"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-studi-literatur">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_studi_literatur }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+
+                                        row +=`<input type="file"  style="display:none;"   name="desc_b_pra" id="desc-b-pra" value="" class="form-control">`;
+                                 row +=`<span id="desc-b-pra-messages"></span>`;
+                              row +=`</div>`;
+
+
+
+                              row +=`</td>`;
+                    row +=`</tr>`;
+
+
+                    row +=`<tr >`;
+                         row +=`<td class="font-bold">C.</td>`;
+                         row +=`<td class="font-bold" colspan="3">Rapat Koordinasi dan Korespondensi dengan Instansi Terkait</td>`;
+                       row +=`<td>`;
+                              row +=`<div id="startdate-c-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input type="date" id="startdate-c-pra"  name="startdate_c_pra" value="${item.tgl_awal_rapat_kordinasi }" class="form-control">`;
+                                   row +=`<span id="startdate-c-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-c-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input type="date" id="enddate-c-pra"  name="enddate_c_pra" value="${item.tgl_ahir_rapat_kordinasi }" class="form-control">`;
+                                 row +=`<span id="enddate-c-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-c-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input type="number" id="budget-c-pra"  min="0"  placeholder="Budget" value="${item.budget_rapat_kordinasi }" oninput="this.value = Math.abs(this.value)" name="budget_c_pra" class="form-control identifikasi">`;
+                                 row +=`<span id="budget-c-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-c-pra-alert" class="pdf-btn-center">`;
+                                   row +=`<button id="file-rapat-kordinasi"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-rapat-kordinasi">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rapat_kordinasi }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+                                        row +=`<input type="file" style="display:none;"   id="desc-c-pra" name="desc_c_pra" value="" class="form-control">`;
+                                 row +=`<span id="desc-c-pra-messages"></span>`;
+                            row +=`</div>`;
+
+                         
+
+                              row +=`</td>`;
+                    row +=`</tr>`;
+                    row +=`<tr>`;
+                         row +=`<td class="font-bold">D.</td>`;
+                         row +=`<td class="font-bold" colspan="3">Pengumpulan data sekunder</td>`;
+                         row +=`<td>`;
+                              row +=`<div id="startdate-d-pra-alert" class="margin-none form-group">`; 
+                                   row +=`<input type="date" id="startdate-d-pra"  name="startdate_d_pra" value="${item.tgl_awal_data_sekunder }"  class="form-control">`;
+                                   row +=`<span id="startdate-d-pra-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-d-pra-alert" class="margin-none form-group">`; 
+                                        row +=`<input type="date" id="enddate-d-pra"  name="enddate_d_pra" value="${item.tgl_ahir_data_sekunder }"  class="form-control">`;
+                                 row +=`<span id="enddate-d-pra-messages"></span>`;
+                            row +=`</div>`;
+                             row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-d-pra-alert" class="margin-none form-group">`;
+                                        row +=`<input min="0"  type="number" id="budget-d-pra"  placeholder="Budget" value="${item.budget_data_sekunder }" oninput="this.value = Math.abs(this.value)" name="budget_d_pra" class="form-control identifikasi">`;
+                                 row +=`<span id="budget-d-pra-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-d-pra-alert" class="pdf-btn-center">`;
+                                         
+                                        row +=`<button id="file-sekunder"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-sekunder">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_data_sekunder }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+
+
+                                        row +=`<input type="file" style="display:none;"  name="desc_d_pra" id="desc-d-pra" value="" class="form-control">`;
+                                 row +=`<span id="desc-d-pra-messages"></span>`;
+                            row +=`</div>`;
+  
+
+                              row +=`</td>`;
+                    row +=`</tr>`;                        
+
+                    row +=`<tr>`;
+                            row +=`<td rowspan="11" class="font-bold text-center">2</td>`;
+                            row +=`<td colspan="6" class="font-bold"> Perumusan dan Pelaksanaan Pemetaan Potensi Investasi : </td>`;
+                             row +=`<td><strong id="total_pelaksanaan">${item.total_pelaksanaan }</td>`;
+                            row +=`<td></td>`;
+                            row +=`</tr>`;
+                    row +=`<tr>`;
+
+                    row +=`<tr>`;
+                              row +=`<td class="font-bold">A.</td>`;
+                              row +=`<td></td>`;
+                              row +=`<td></td>`;
+                              row +=`<td class="-abjad font-bold" ><textarea readonly class="textarea-table">Melaksanakan Rapat Koordinasi Persiapan antara DPMPTSP Provinsi dengan dinas/stakeholder terkait dalam rangka konfirmasi dan pelengkapan data dalam rangka penetapan sektor dan subsektor unggulan hasil analisis</textarea></td>`;
+                              row +=`<td>`;
+                              row +=`<div id="startdate-a-pro-alert" class="margin-none form-group">`; 
+                                   row +=`<input type="date" id="startdate-a-pro"  name="startdate_a_pro" value="${item.tgl_awal_fgd_persiapan }" class="form-control">`;
+                                   row +=`<span id="startdate-a-pro-messages"></span>`;
+                              row +=`</div>`;
+                             row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-a-pro-alert" class="margin-none form-group">`; 
+                                 row +=`<input type="date" id="enddate-a-pro" name="enddate_a_pro" value="${item.tgl_ahir_fgd_persiapan }" class="form-control">`;
+                                 row +=`<span id="enddate-a-pro-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="budget-a-pro-alert" class="margin-none form-group">`;
+                                        row +=`<input min="0"  type="number" id="budget-a-pro" placeholder="Budget" value="${item.budget_fgd_persiapan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_pro" class="form-control pelaksanaan">`;
+                                 row +=`<span id="budget-a-pro-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                              row +=`<td>`;
+                                   row +=`<div id="desc-a-pro-alert" class="pdf-btn-center">`;
+
+                                           row +=`<button id="file-persiapan"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-persiapan">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_persiapan }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+
+
+                                        row +=`<input type="file"  style="display:none;"  name="desc_a_pro" id="desc-a-pro" value=""   class="form-control">`;
+                                        row +=`<span id="desc-a-pro-messages"></span>`;
+                                   row +=`</div>`;
+
+
+                              
+
+                              row +=`</td>`;
+                    row +=`</tr>`;     
+
+                    row +=`<tr>`;
+                              row +=`<td class="font-bold">B.</td>`;
+                              row +=`<td></td>`;
+                              row +=`<td></td>`;
+                              row +=`<td class="-abjad font-bold"><textarea readonly class="textarea-table">Melaksanakan Focus Group Discussion (FGD) terkait Identifikasi antara DPMPTSP Provinsi dengan dinas/stakeholder terkait dalam rangka konfirmasi dan pelengkapan data dalam rangka penetapan sektor dan subsektor unggulan hasil analisis</textarea></td>`;
+                             row +=`<td>`;
+                              row +=`<div id="startdate-b-pro-alert" class="margin-none form-group">`; 
+                                   row +=`<input type="date" id="startdate-b-pro" name="startdate-b-pro" value="${item.tgl_awal_fgd_identifikasi }" class="form-control ">`;
+                                   row +=`<span id="startdate-b-pro-messages"></span>`;
+                            row +=`</div>`;
+                         row +=`</td>`;
+                              row +=`<td>`;
+                            row +=`<div id="enddate-b-pro-alert" class="margin-none form-group">`; 
+                                        row +=`<input type="date" id="enddate-b-pro"  name="enddate_b_pro" value="${item.tgl_ahir_fgd_identifikasi }" class="form-control">`;
+                                 row +=`<span id="enddate-b-pro-messages"></span>`;
+                            row +=`</div>`;
+                              row +=`</td>`;
+                             row +=`<td>`;
+                            row +=`<div id="budget-b-pro-alert" class="margin-none form-group">`;
+                                         row +=`<input min="0" id="budget-b-pro"  type="number"  placeholder="Budget" value="${item.budget_fgd_identifikasi }" oninput="this.value = Math.abs(this.value)" name="budget_b_pro" class="form-control pelaksanaan">`;
+                                  row +=`<span id="budget-b-pro-messages"></span>`;
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                              
+                                   row +=`<div id="desc-b-pro-alert" class="pdf-btn-center">`; 
+                                             
+                                             
+                                        row +=`<button id="file-fgd-identifikasi"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-fgd-identifikasi">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_identifikasi }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+                                             row +=`<input type="file" style="display:none;" name="desc_b_pra" id="desc-b-pro" value="" class="form-control">`;
+                                             row +=`<span id="desc-b-pro-messages"></span>`; 
+                                  row +=`</div>`; 
+
+
+                                   
+                               row +=`</td>`; 
+                    row +=`</tr>`; 
+                              
+                    row +=`<tr>`; 
+                               row +=`<td class="font-bold" rowspan="5">C.</td>`; 
+                               row +=`<td class="-abjad font-bold" colspan="7">`; 
+                                   row +=`Pengolahan dan analisis data untuk menghasilkan potensi sektor dan subsektor unggulan daerah :`;
+                               row +=`</td>`;    
+                    row +=`</tr>`; 
+
+                    row +=` <tr>`; 
+                            if(item.checklist_lq == 'true')
+                            {
+                                row +=`<td><input id="checklist-lq" class="checkbox-pengolahan"  type="checkbox" checked name="checklist_lq" value="${item.checklist_lq }"></td>`;   
+                            } else{
+                                row +=`<td><input id="checklist-lq" class="checkbox-pengolahan"  type="checkbox" name="checklist_lq" value="${item.checklist_lq }"></td>`;  
+                            } 
+                                
+                               row +=`<td class="font-bold table-number" >`; 
+                                  row +=` 1.`; 
+                               row +=`</td>`; 
+
+                               row +=`<td class="-abjad font-bold"> LQ</td>`; 
+                              row +=`<td>`; 
+                              row +=`<div id="startdate-c-1-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" id="startdate-lq"  name="startdate_c_1_pro"  value="${item.tgl_awal_lq }"  class="form-control">`; 
+                                    row +=`<span id="startdate-c-1-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-c-1-pro-alert"  class="margin-none form-group">`;  
+                                         row +=`<input type="date" id="enddate-lq"   name="enddate_c_1_pro"  value="${item.tgl_ahir_lq }"  class="form-control">`; 
+                                  row +=`<span id="enddate-c-1-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="budget-c-1-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" id="budget-lq"   type="number"  placeholder="Budget" value="${item.budget_lq }" oninput="this.value = Math.abs(this.value)" name="budget_c_1_pro" class="form-control pelaksanaan">`; 
+                                  row +=`<span id="budget-c-1-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td rowspan="4">`; 
+                                   row +=`<div id="desc-c-1-pro-alert" class="pdf-btn-center">`;
+
+                                        row +=`<button id="file-pengolahan"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-pengolahan">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_pengolahan }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+                                        row +=`<input type="file" style="display:none" id="keterangan-pengolahan" value="" name="keterangan_pengolahan">`; 
+                                   row +=`<span id="desc-c-1-pro-messages"></span>`; 
+                                   row +=`</div>`; 
+
+                               row +=`</td>`; 
+
+                    row +=`</tr>`; 
+
+
+                          row +=`<tr>`; 
+                            if(item.checklist_shift_share == 'true')
+                            {
+                                row +=`<td><input id="checklist-shift-share" class="checkbox-pengolahan" type="checkbox" checked name="checklist_lq" value="${item.checklist_shift_share }"></td>`;   
+                            } else{
+                                row +=`<td><input id="checklist-shift-share" class="checkbox-pengolahan"  type="checkbox" name="checklist_lq" value="${item.checklist_shift_share }"></td>`;  
+                            } 
+                            
+                               row +=`<td class="font-bold table-number" >`; 
+                                  row +=` 2.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Shift Share</td>`; 
+                               row +=`<td>`; 
+                               row +=`<div id="startdate-c-2-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input id="startdate-shift-share" type="date"  name="startdate_shift_c_2_pro" value="${item.tgl_awal_shift_share }" class="form-control">`; 
+                                   row +=` <span id="startdate-c-2-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-c-2-pro-alert" class="margin-none form-group"> `; 
+                                  row +=`<input type="date" id="enddate-shift-share"  name="enddate_c_2_pro" value="${item.tgl_ahir_shift_share }" class="form-control">`; 
+                                  row +=`<span id="enddate-c-2-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="budget-c-2-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" id="budget-shift-share"  type="number" placeholder="Budget" value="${item.budget_shift_share }"  oninput="this.value = Math.abs(this.value)" name="budget_c_2_pro" class="form-control pelaksanaan">`; 
+                                  row +=`<span id="budget-c-2-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                           
+                          row +=`</tr>`; 
+
+                          row +=`<tr>`; 
+                            if(item.checklist_tipologi_sektor == 'true')
+                            {
+                                row +=`<td><input id="checklist-tipologi-sektor" class="checkbox-pengolahan"  type="checkbox" checked name="checklist_lq" value="${item.checklist_tipologi_sektor }"></td>`;   
+                            } else{
+                                row +=`<td><input id="checklist-tipologi-sektor" class="checkbox-pengolahan"  type="checkbox" name="checklist_lq" value="${item.checklist_tipologi_sektor }"></td>`;  
+                            } 
+                                 
+                               row +=`<td class="font-bold table-number" >`; 
+                                   row +=` 3.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Tipologi Sektor</td>`; 
+                                row +=`<td>`; 
+                               row +=`<div id="startdate-c-3-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" id="startdate-tipologi-sektor"  name="startdate_c_3_pro" value="${item.tgl_awal_tipologi_sektor }"  class="form-control">`; 
+                                    row +=`<span id="startdate-c-3-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-tipologi-sektor-pro-alert" class="margin-none form-group"> `; 
+                                         row +=`<input type="date" id="enddate-tipologi-sektor"  name="enddate_c_3_pro" value="${item.tgl_ahir_tipologi_sektor }"  class="form-control">`; 
+                                 row +=` <span id="enddate-c-3-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="budget-c-3-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" id="budget-tipologi-sektor"   type="number" placeholder="Budget" value="${item.budget_tipologi_sektor }"  oninput="this.value = Math.abs(this.value)" name="budget_c_3_pro" class="form-control pelaksanaan">`; 
+                                  row +=`<span id="budget-c-3-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                            
+                          row +=`</tr>`; 
+
+                          row +=`<tr>`; 
+                           if(item.checklist_klassen == 'true')
+                            {
+                                row +=`<td><input id="checklist-klassen" class="checkbox-pengolahan"  type="checkbox" checked name="checklist_lq" value="${item.checklist_klassen }"></td>`;   
+                            } else{
+                                row +=`<td><input id="checklist-klassen" class="checkbox-pengolahan"  type="checkbox" name="checklist_lq" value="${item.checklist_klassen }"></td>`;  
+                            } 
+                              
+                              row +=` <td class="font-bold table-number" >`; 
+                                   row +=` 4.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Klassen</td>`; 
+                               row +=`<td>`; 
+                               row +=`<div id="startdate-c-4-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" id="startdate-klassen"  name="startdate_c_4_pro" value="${item.tgl_awal_klassen }" class="form-control">`; 
+                                   row +=` <span id="startdate-c-4-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-c-4-pro-alert"   class="margin-none form-group"> `; 
+                                row +=`<input type="date"  name="enddate-c-4-pro" value="${item.tgl_ahir_klassen }" id="enddate-klassen" class="form-control">`; 
+                                  row +=`<span id="enddate-c-4-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="budget-c-4-pro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0" id="budget-klassen" type="number" placeholder="Budget" value="${item.budget_klassen }" oninput="this.value = Math.abs(this.value)" name="budget_c_4_pro" class="form-control pelaksanaan">`; 
+                                  row +=`<span id="budget-c-4-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                           
+                          row +=`</tr>`; 
+
+                        
+                          row +=`<tr>`; 
+                          row +=`<td class="font-bold">D.</td>`; 
+                          row +=`<td></td>`;
+                          row +=`<td></td>`;
+                          row +=`<td class="-abjad font-bold"><textarea readonly class="textarea-table">Melaksanakan Focus Group Discussion (FGD) terkait Klarifikasi antara DPMPTSP Provinsi dengan dinas/stakeholder terkait dalam rangka konfirmasi dan pelengkapan data dalam rangka penetapan sektor dan subsektor unggulan hasil analisis</textarea></td>`; 
+                          row +=`<td>`; 
+                              row +=` <div id="startdate-d-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" id="startdate-d-pro"  name="startdate_d_pro" value="${item.tgl_awal_fgd_klarifikasi }" class="form-control">`; 
+                                   row +=` <span id="startdate-d-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="enddate-d-pro-alert" class="margin-none form-group"> `; 
+                                       row +=`  <input type="date" id="enddate-d-pro"  name="enddate_d_pro" value="${item.tgl_ahir_fgd_klarifikasi }" class="form-control">`; 
+                                 row +=` <span id="enddate-d-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="budget-d-pro-alert" class="margin-none form-group">`; 
+                                        row +=` <input min="0"  id="budget-d-pro" type="number" placeholder="Budget" value="${item.budget_fgd_klarifikasi }" oninput="this.value = Math.abs(this.value)" name="budget_d_pro" class="form-control produksi">`; 
+                                  row +=`<span id="budget-d-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                               row +=`<td>`; 
+                                    row +=`<div id="desc-d-pro-alert" class="pdf-btn-center">`;
+                                        
+
+                                        row +=`<button id="file-fgd-klarifikasi"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-fgd-klarifikasi">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_klarifikasi }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+
+                                        row +=`<input type="file" style="display:none;" id="desc-d-pro" name="desc_d_pro" value="${item.keterangan_fgd_klarifikasi }" class="form-control ">`; 
+                                  row +=`<span id="desc-d-pro-messages"></span>`; 
+                            row +=` </div>`; 
+
+                               row +=`</td>`; 
+                         row +=` </tr>`; 
+                         
+
+                          
+
+
+                        
+                        row +=`<tr>`; 
+                          row +=`<td class="font-bold">E.</td>`; 
+                          row +=`<td></td>`;
+                          row +=`<td></td>`;
+                          row +=`<td class="-abjad font-bold"><textarea readonly class="textarea-table">Melaksanakan Rapat Koordinasi Finalisasi antara DPMPTSP Provinsi dengan dinas/stakeholder terkait dalam rangka konfirmasi dan pelengkapan data dalam rangka penetapan sektor dan subsektor unggulan hasil analisis</textarea></td>`; 
+                          row +=`<td>`; 
+                               row +=`<div id="startdate-e-pro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" id="startdate-e-pro"  name="startdate_e_pro" value="${item.tgl_awal_finalisasi }"  class="form-control">`; 
+                                    row +=`<span id="startdate-e-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                          row +=`</td>`; 
+                              row +=` <td>`; 
+                            row +=` <div id="enddate-e-pro-alert" class="margin-none form-group"> `; 
+                                       row +=` <input type="date" id="enddate-e-pro"  name="enddate_e_pro" value="${item.tgl_ahir_finalisasi }"  class="form-control">`; 
+                                  row +=`<span id="enddate-e-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="budget-e-pro-alert" class="margin-none form-group">`; 
+                                        row +=` <input min="0" id="budget-e-pro"  type="number" placeholder="Budget"  oninput="this.value = Math.abs(this.value)" name="budget_e_pro" value="${item.budget_finalisasi }" class="form-control produksi">`; 
+                                  row +=`<span id="budget-e-pro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                    row +=`<div id="desc-e-pro-alert" class="pdf-btn-center">`;
+
+                                         row +=`<button id="file-fgd-konfirmasi"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-fgd-konfirmasi">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_finalisasi }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+
+                                        row +=` <input type="file" style="display:none;"  id="desc-e-pro" name="desc_e_pro" value=""  class="form-control">`; 
+                                  row +=`<span id="desc-e-pro-messages"></span>`; 
+                             row +=`</div>`; 
+
+                               row +=`</td>`; 
+                         row +=` </tr>`; 
+                      
+                         row +=`<tr>`; 
+                           row +=` <td rowspan="12" class="font-bold text-center">3</td>`; 
+                            row +=`<td colspan="6" class="font-bold"> Penyusunan Peta Potensi Investasi : </td>`; 
+                             row +=`<td><strong id="total_penyusunan">${item.total_penyusunan } </td>`; 
+                            row +=`<td></td>`; 
+                            row +=`</tr>`; 
+                         row +=`<tr>`; 
+
+
+                         row +=`<tr>`; 
+                             row +=` <td class="font-bold" rowspan="8">A.</td>`; 
+                             row +=` <td class="-abjad font-bold" colspan="7">`; 
+                                   row +=`Menyusun hasil identifikasi, pengolahan, dan analisis data dalam bentuk dokumen`; 
+                              row +=`</td>`; 
+                         row +=`</tr>`; 
+
+
+                         row +=`<tr>`; 
+                            if(item.checklist_summary_sektor_unggulan == 'true')
+                            {
+                                row +=`<td><input id="checklist-summary-sektor-unggulan"  type="checkbox" class="checkbox-penyusunan" checked name="checklist_summary_sektor_unggulan" value="${item.checklist_summary_sektor_unggulan }"></td>`;   
+                            } else{
+                                row +=`<td><input id="checklist-summary-sektor-unggulan" class="checkbox-penyusunan"  type="checkbox" name="checklist_summary_sektor_unggulan" value="${item.checklist_summary_sektor_unggulan }"></td>`;  
+                            }  
+                             row +=` <td class="font-bold table-number" >`; 
+                                  row +=` 1.`; 
+                             row +=` </td>`; 
+                              row +=`<td class="-abjad font-bold"> Deskripsi singkat sektor unggulan</td>`; 
+                              row +=`<td>`; 
+                                   row +=`<div id="startdate-a-1-ppro-alert"  class="margin-none form-group"> `; 
+                                       row +=` <input type="date" id="startdate-summary-sektor-unggulan"  name="startdate_a_1_ppro" value="${item.tgl_awal_summary_sektor_unggulan }"   class="form-control">`; 
+                                       row +=` <span id="startdate-a-1-ppro-messages"></span>`; 
+                                row +=` </div>`; 
+                              row +=`</td>`; 
+                              row +=`<td>`; 
+                                 row +=`<div id="enddate-a-1-ppro-alert" class="margin-none form-group"> `; 
+                                             row +=`<input id="enddate-summary-sektor-unggulan"  type="date"  name="enddate_a_1_pro" value="${item.tgl_ahir_summary_sektor_unggulan }"  class="form-control" >`; 
+                                      row +=`<span id="enddate-a-1-ppro-messages"></span>`; 
+                                row +=` </div>`; 
+                                   row +=`</td>`; 
+                                  row +=` <td>`; 
+                                 row +=`<div id="budget-a-1-ppro-alert" class="margin-none form-group">`; 
+                                            row +=` <input min="0" id="budget-summary-sektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_summary_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_1_ppro" class="form-control penyusunan">`; 
+                                     row +=` <span id="budget-a-1-ppro-messages"></span>`; 
+                                 row +=`</div>`; 
+                             row +=` </td>`; 
+                             row +=` <td rowspan="7">`; 
+                                    row +=`<div id="desc-a-1-ppro-alert" class="penyusunan-peta">`; 
+
+                                      row +=`<button id="file-penyusunan"  type="button" class="file btn btn-default"> Upload File</button>`;
+
+                                        row +=`<div id="img-file-penyusunan">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_penyusunan }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+
+ 
+                                             row +=` <input type="file" style="display:none" id="keterangan-penyusunan" name="keterangan_penyusunan" value="${item.keterangan_penyusunan }" class="form-control">`; 
+                                      row +=` <span id="desc-a-1-ppro-messages"></span>`; 
+                                    row +=`</div>`; 
+
+                               row +=`</td>`; 
+
+                         
+                    row +=`</tr>`; 
+
+                    row +=`<tr>`; 
+                                 if(item.checklist_sektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input id="checklist-sektor-unggulan" class="checkbox-penyusunan"  type="checkbox" checked name="checklist_sektor_unggulan" value="${item.checklist_sektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input id="checklist-sektor-unggulan" class="checkbox-penyusunan"  type="checkbox" name="checklist_sektor_unggulan" value="${item.checklist_sektor_unggulan }"></td>`;  
+                                 }
+                              row +=` <td class="font-bold table-number" >`; 
+                                  row +=`2.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Deskripsi sektor unggulan</td>`; 
+                               row +=`<td>`; 
+                                   row +=` <div id="startdate-a-2-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" id="startdate-sektor-unggulan"  name="startdate_a_2_ppro" value="${item.tgl_awal_sektor_unggulan }" class="form-control">`; 
+                                         row +=`<span id="startdate-a-2-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                  row +=`<div id="enddate-a-2-ppro-alert" class="margin-none form-group"> `; 
+                                             row +=` <input type="date" id="enddate-sektor-unggulan"  name="enddate_a_2_pro" value="${item.tgl_ahir_sektor_unggulan }" class="form-control">`; 
+                                       row +=`<span id="enddate-a-2-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                                   row +=` </td>`; 
+                                   row +=` <td>`; 
+                                  row +=`<div id="budget-a-2-ppro-alert" class="margin-none form-group">`; 
+                                             row +=` <input min="0" id="budget-sektor-unggulan" type="number" placeholder="Budget" value="${item.budget_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_2_ppro" class="form-control penyusunan">`; 
+                                       row +=`<span id="budget-a-2-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                               row +=`</td>`; 
+                            
+                    row +=`</tr>`; 
+
+                    row +=`<tr>`; 
+                                  if(item.checklist_potensi_pasar == 'true')
+                                 {
+                                     row +=`<td><input id="checklist-potensi-pasar" class="checkbox-penyusunan"  type="checkbox" checked name="checklist_potensi_pasar" value="${item.checklist_potensi_pasar }"></td>`;   
+                                 } else{
+                                     row +=`<td><input id="checklist-potensi-pasar" class="checkbox-penyusunan" type="checkbox" name="checklist_potensi_pasar" value="${item.checklist_potensi_pasar }"></td>`;  
+                                 }
+                               row +=`<td class="font-bold table-number" >`; 
+                                  row +=`3.`; 
+                              row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold">  Potensi pasar</td>`; 
+                             
+                               row +=`<td>`; 
+                                   row +=` <div id="startdate-a-3-ppro-alert" class="margin-none form-group"> `; 
+                                       row +=`  <input type="date" id="startdate-potensi-pasar"  name="startdate_a_3_ppro" value="${item.tgl_awal_potensi_pasar }"  class="form-control">`; 
+                                        row +=` <span id="startdate-a-3-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                              row +=`</td>`; 
+                               row +=`<td>`; 
+                                  row +=`<div id="enddate-a-3-ppro-alert" class="margin-none form-group"> `; 
+                                             row +=` <input type="date" id="enddate-potensi-pasar"  name="enddate_a_3_pro" value="${item.tgl_ahir_potensi_pasar }" class="form-control">`; 
+                                       row +=`<span id="enddate-a-3-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                                   row +=` </td>`; 
+                                    row +=`<td>`; 
+                                 row +=` <div id="budget-a-3-ppro-alert" class="margin-none form-group">`; 
+                                             row +=` <input min="0" id="budget-potensi-pasar" type="number" placeholder="Budget" value="${item.budget_potensi_pasar }"  oninput="this.value = Math.abs(this.value)" name="budget_a_3_ppro" class="form-control penyusunan">`; 
+                                       row +=`<span id="budget-a-3-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                           
+                          row +=`</tr>`; 
+
+                          row +=`<tr>`; 
+                                 if(item.checklist_parameter_sektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input id="checklist-parameter-sektor-unggulan" type="checkbox" class="checkbox-penyusunan" checked name="checklist_parameter_sektor_unggulan" value="${item.checklist_parameter_sektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input id="checklist-parameter-sektor-unggulan"  type="checkbox" class="checkbox-penyusunan" name="checklist_parameter_sektor_unggulan" value="${item.checklist_parameter_sektor_unggulan }"></td>`;  
+                                 }
+                               row +=`<td class="font-bold table-number" >`; 
+                                    row +=`4.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Parameter data sektor unggulan</td>`; 
+                               row +=`<td>`; 
+                                    row +=`<div id="startdate-a-4-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" id="startdate-parameter-sektor-unggulan" name="startdate_a_4_ppro" value="${item.tgl_awal_parameter_sektor_unggulan }"  class="form-control">`; 
+                                         row +=`<span id="startdate-a-4-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                               row +=`</td>`; 
+                              row +=` <td>`; 
+                                 row +=` <div id="enddate-a-4-ppro-alert" class="margin-none form-group"> `; 
+                                           row +=`   <input type="date" id="enddate-parameter-sektor-unggulan"  name="enddate_a_4_pro" value="${item.tgl_ahir_parameter_sektor_unggulan }"  class="form-control">`; 
+                                      row +=` <span id="enddate-a-4-ppro-messages"></span>`; 
+                                row +=`  </div>`; 
+                                   row +=` </td>`; 
+                                   row +=` <td>`; 
+                                  row +=`<div id="budget-a-4-ppro-alert" class="margin-none form-group">`; 
+                                              row +=`<input min="0" id="budget-parameter-sektor-unggulan" type="number" placeholder="Budget" value="${item.budget_parameter_sektor_unggulan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_4_ppro" class="form-control penyusunan">`; 
+                                       row +=`<span id="budget-a-4-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                             
+                         row +=` </tr>`; 
+
+                          row +=`<tr>`; 
+                                 if(item.checklist_subsektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input id="checklist-subsektor-unggulan" class="checkbox-penyusunan"  type="checkbox" checked name="checklist_subsektor_unggulan" value="${item.checklist_subsektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input id="checklist-subsektor-unggulan"   class="checkbox-penyusunan" type="checkbox" name="checklist_subsektor_unggulan" value="${item.checklist_subsektor_unggulan }"></td>`;  
+                                 }
+                               row +=`<td class="font-bold table-number" >`; 
+                                  row +=`5.`; 
+                              row +=` </td>`; 
+                              
+                               row +=`<td class="-abjad font-bold"> <textarea readonly class="textarea-table">Subsektor unggulan dan komoditas unggulan yang berisi deskripsi dan parameter (mencakup data produksi, luas lahan, pelaku usaha, peluang usaha dan data terkait lainnya)</textarea></td>`; 
+                              row +=` <td>`; 
+                                   row +=` <div id="startdate-a-5-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" id="startdate-subsektor-unggulan" name="startdate_a_5_ppro" value="${item.tgl_awal_subsektor_unggulan }"   class="form-control">`; 
+                                        row +=` <span id="startdate-a-5-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                 row +=` <div id="enddate-a-5-ppro-alert" class="margin-none form-group"> `; 
+                                            row +=`  <input type="date" id="enddate-subsektor-unggulan"  name="enddate_3_5_pro" value="${item.tgl_ahir_subsektor_unggulan }"   class="form-control">`; 
+                                      row +=` <span id="enddate-a-5-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                                    row +=`</td>`; 
+                                    row +=`<td>`; 
+                                 row +=`<div id="budget-a-5-ppro-alert" class="margin-none form-group">`; 
+                                             row +=` <input min="0" id="budget-subsektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_subsektor_unggulan }"   oninput="this.value = Math.abs(this.value)" name="budget_a_5_ppro" class="form-control penyusunan">`; 
+                                      row +=` <span id="budget-a-5-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                              
+                          row +=`</tr>`; 
+
+                         row +=` <tr>`; 
+                                 if(item.checklist_intensif_daerah == 'true')
+                                 {
+                                     row +=`<td><input id="checklist-intensif-daerah" class="checkbox-penyusunan"  type="checkbox" checked name="checklist_intensif_daerah" value="${item.checklist_intensif_daerah }"></td>`;   
+                                 } else{
+                                     row +=`<td><input id="checklist-intensif-daerah" class="checkbox-penyusunan"  type="checkbox" name="checklist_intensif_daerah" value="${item.checklist_intensif_daerah }"></td>`;  
+                                 }
+                               row +=`<td class="font-bold table-number" >`; 
+                                   row +=`6.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Insentif daerah</td>`; 
+                               row +=`<td>`; 
+                                    row +=`<div id="startdate-a-6-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" id="startdate-intensif-daerah"  name="startdate_a_6_ppro"  value="${item.tgl_awal_intensif_daerah }"  class="form-control">`; 
+                                        row +=` <span id="startdate-a-6-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                 row +=` <div id="enddate-a-6-ppro-alert" class="margin-none form-group"> `; 
+                                            row +=`  <input type="date" id="enddate-intensif-daerah" name="enddate_a_6_pro"  value="${item.tgl_ahir_intensif_daerah }"   class="form-control">`; 
+                                      row +=` <span id="enddate-a-6-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                                    row +=`</td>`; 
+                                    row +=`<td>`; 
+                                  row +=`<div id="budget-a-6-ppro-alert" class="margin-none form-group">`; 
+                                              row +=`<input min="0" id="budget-intensif-daerah"  type="number" placeholder="Budget"  value="${item.budget_intensif_daerah }"  oninput="this.value = Math.abs(this.value)" name="budget_a_6_ppro" class="form-control penyusunan">`; 
+                                      row +=` <span id="budget-a-6-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                          
+                          row +=`</tr>`; 
+
+                           row +=`<tr>`; 
+                                  if(item.checklist_potensi_lanjutan == 'true')
+                                 {
+                                     row +=`<td><input id="checklist-potensi-lanjutan" class="checkbox-penyusunan" type="checkbox" checked name="checklist_potensi_lanjutan" value="${item.checklist_potensi_lanjutan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input id="checklist-potensi-lanjutan" class="checkbox-penyusunan"  type="checkbox" name="checklist_potensi_lanjutan" value="${item.checklist_potensi_lanjutan }"></td>`;  
+                                 } 
+                               row +=`<td class="font-bold table-number" >`; 
+                                   row +=`7.`; 
+                               row +=`</td>`; 
+                               row +=`<td class="-abjad font-bold"> Potensi lanjutan komoditas sektor unggulan</td>`; 
+                               row +=`<td>`; 
+                                    row +=`<div id="startdate-a-7-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=`<input type="date" id="startdate-potensi-lanjutan" name="startdate_a_7_ppro" value="${item.tgl_awal_potensi_lanjutan }"  class="form-control">`; 
+                                         row +=`<span id="startdate-a-7-ppro-messages"></span>`; 
+                                 row +=` </div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                  row +=`<div id="enddate-a-7-ppro-alert" class="margin-none form-group"> `; 
+                                              row +=`<input type="date" id="enddate-potensi-lanjutan"  name="enddate_a_7_pro" value="${item.tgl_ahir_potensi_lanjutan }" class="form-control">`; 
+                                       row +=`<span id="enddate-a-7-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                                    row +=`</td>`; 
+                                    row +=`<td>`; 
+                                  row +=`<div id="budget-a-7-ppro-alert" class="margin-none form-group">`; 
+                                             row +=` <input min="0" id="budget-potensi-lanjutan"  type="number" placeholder="Budget" value="${item.budget_potensi_lanjutan }" oninput="this.value = Math.abs(this.value)" name="budget_a_7_ppro" class="form-control penyusunan">`; 
+                                       row +=`<span id="budget-a-7-ppro-messages"></span>`; 
+                                  row +=`</div>`; 
+                               row +=`</td>`; 
+                            
+               row +=` </tr>`; 
+               row +=`<tr>`; 
+
+                         row +=`<td class="font-bold">B.</td>`;
+                         row +=`<td></td>`;
+                         row +=`<td></td>`; 
+                          row +=`<td class="-abjad font-bold" ><textarea readonly class="textarea-table">Penyusunan Infografis Peta Potensi Investasi dalam 2 bahasa (bahasa indonesia dan bahasa inggris)</textarea></td>`; 
+                          row +=`<td>`; 
+                               row +=`<div id="startdate-b-ppro-alert" class="margin-none form-group"> `; 
+                                    row +=`<input type="date" id="startdate-b-ppro"  name="startdate_b_ppro" value="${item.tgl_awal_info_grafis }"  class="form-control">`; 
+                                   row +=` <span id="startdate-b-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                         row +=` </td>`; 
+                              row +=` <td>`; 
+                            row +=` <div id="enddate-b-ppro-alert" class="margin-none form-group"> `; 
+                                        row +=` <input type="date" id="enddate-b-ppro"  name="enddate_b_ppro" value="${item.tgl_ahir_info_grafis }"  class="form-control">`; 
+                                  row +=`<span id="enddate-b-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=` </td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="budget-b-ppro-alert" class="margin-none form-group">`; 
+                                        row +=` <input min="0"  type="number" id="budget-b-ppro" placeholder="Budget" value="${item.budget_info_grafis }"  oninput="this.value = Math.abs(this.value)" name="budget_b_ppro" class="form-control penyusunan">`; 
+                                  row +=`<span id="budget-b-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                               row +=`<td>`; 
+                                   row +=` <div id="desc-b-ppro-alert" class="pdf-btn-center">`; 
+
+                                       row +=`<button id="file-info-grafis"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-info-grafis">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_info_grafis }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+                                   
+
+                                        row +=` <input type="file" style="display:none;" id="desc-b-ppro" name="desc_b_ppro" value="${item.keterangan_info_grafis }"   class="form-control">`; 
+                                        row +=`<span id="desc-b-ppro-messages"></span>`; 
+                                   row +=`</div>`; 
+
+                               row +=`</td>`; 
+                        row +=`</tr>`; 
+                        row +=`<tr>`; 
+                          row +=`<td class="font-bold">C.</td>`; 
+                          row +=`<td></td>`;
+                          row +=`<td></td>`;
+                          row +=`<td class="font-bold" ><textarea readonly class="textarea-table">Mendokumentasikan peta potensi investasi secara elektronik dalam bentuk infografis yang didigitalisasi dan ditampilkan pada portal PIR</textarea></td>`; 
+                          row +=`<td>`; 
+                              row +=` <div id="startdate-c-ppro-alert" class="margin-none form-group">`;  
+                                    row +=`<input type="date" id="startdate-c-ppro" name="startdate_c_ppro" value="${item.tgl_awal_dokumentasi }"  class="form-control">`; 
+                                    row +=`<span id="startdate-c-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                         row +=` </td>`; 
+                               row +=`<td>`; 
+                             row +=`<div id="enddate-c-ppro-alert" class="margin-none form-group"> `; 
+                                         row +=`<input type="date" id="enddate-c-ppro"  name="enddate_c_ppro" value="${item.tgl_ahir_dokumentasi }"  class="form-control">`; 
+                                  row +=`<span id="enddate-c-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                               row +=`</td>`; 
+                              row +=` <td>`; 
+                             row +=`<div id="budget-c-ppro-alert" class="margin-none form-group">`; 
+                                         row +=`<input min="0"  type="number" id="budget-c-ppro" placeholder="Budget"  oninput="this.value = Math.abs(this.value)" name="budget_c_ppro" value="${item.budget_dokumentasi }"  class="form-control penyusunan">`; 
+                                  row +=`<span id="budget-c-ppro-messages"></span>`; 
+                             row +=`</div>`; 
+                              row +=`</td>`; 
+                               row +=`<td>`; 
+                                   row +=` <div id="desc-c-ppro-alert" class="pdf-btn-center">`; 
+                                         
+                                        row +=`<button id="file-doc-info-grafis"  type="button" class="file btn btn-default "> Upload File</button>`;
+
+                                        row +=`<div id="img-file-doc-info-grafis">`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_dokumentasi }" 
+                                             data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+
+                                              row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+                                        row +=`</div>`;
+                                    
+
+
+                                        row +=` <input type="file" style="display:none;" id="desc-c-ppro" name="desc_c_ppro" value="${item.keterangan_dokumentasi }"  class="form-control pasca-produksi">`; 
+                                        row +=` <span id="desc-c-ppro-messages"></span>`; 
+                            row +=` </div>`; 
+
+                            
+
+                               row +=`</td>`; 
+                    row +=`</tr>`; 
+       
+                   
+                    content.append(row);
+                    getperiode(item.periode_id);  
+                    $('#pagu_promosi').html('<b>'+item.pagu_promosi_convert+'</b>');
+                    $('#total_promosi').html('<b>'+item.total_promosi_convert+'</b>');
+
+                    getChecklistPelaksanaan();      
+                    getChecklistPetaInvenstasi();
+
+                    $(".identifikasi").on("input", function() {
+                         calculateIdentifikasi();
+                        
+                    });          
+
+                    $(".pelaksanaan").on("input", function() {
+                         calculatePelaksanaan();
+                    });
+
+                    $(".penyusunan").on("input", function() {
+                         calculatePenyusunan();
+                    });
+                    
+
+                    UploadFileRapatTeknis(item.id);
+                    UploadFileStudiLiteratur(item.id);
+                    UploadFileKordinasi(item.id);
+                    UploadFileDataSekunder(item.id);
+
+                    UploadFilePersiapan(item.id);
+                    UploadFileFGDKlarifikasi(item.id);
+                    UploadFilePengolahan(item.id);
+                    UploadFileFGDKonfirmasi(item.id);
+                    UploadFileFGDIndentifikasi(item.id); 
+          
+                    UploadFilePenyusunan(item.id);
+                    UploadFilePenyusunanInfoGrafis(item.id); 
+                    UploadFileDokumentasiInfoGrafis(item.id);  
+ 
+    }
+
+
 
           function SendingData(form,data) {
-
-               var pesan = (form.type === 'kirim') ? 'Terkirim ke Pusat.' : 'Berhasil Diupdate.';
+             
+             
+               var pesan = (form.type === 'kirim') ? 'Terkirim ke Pusat.' : 'Berhasil Simpan.';
                var periode_id = $('#periode_id').val(); 
+
+
+               var checklist_lq = $('#checklist-lq').val();
+               var checklist_shift_share = $('#checklist-shift-share').val();
+               var checklist_tipologi_sektor = $('#checklist-tipologi-sektor').val();
+               var checklist_klassen = $('#checklist-klassen').val();
+
+               var checklist_summary_sektor_unggulan = $('#checklist-summary-sektor-unggulan').val();
+               var checklist_sektor_unggulan = $('#checklist-sektor-unggulan').val();
+               var checklist_potensi_pasar = $('#checklist-potensi-pasar').val();
+               var checklist_parameter_sektor_unggulan = $('#checklist-parameter-sektor-unggulan').val();
+               var checklist_subsektor_unggulan = $('#checklist-subsektor-unggulan').val();
+               var checklist_intensif_daerah = $('#checklist-intensif-daerah').val();
+               var checklist_potensi_lanjutan = $('#checklist-potensi-lanjutan').val();
+              
+
+
+
                var arr = {
                     'periode_id':periode_id,
                     'status_laporan_id':form.status_laporan_id,
-                    'tgl_awal_peluang':data[0].value,
-                    'tgl_ahir_peluang':data[1].value,
-                    'budget_peluang':data[2].value,
-                    'keterangan_peluang':data[3].value,
 
-                    'tgl_awal_storyline':data[4].value,
-                    'tgl_ahir_storyline':data[5].value,
-                    'budget_storyline':data[6].value,
-                    'keterangan_storyline':data[7].value,
 
-                    'tgl_awal_storyboard':data[8].value,
-                    'tgl_ahir_storyboard':data[9].value,
-                    'budget_storyboard':data[10].value,
-                    'keterangan_storyboard':data[11].value,
+                    'tgl_awal_rencana_kerja':$('#startdate-a-pra').val(),
+                    'tgl_ahir_rencana_kerja':$('#enddate-a-pra').val(),
+                    'budget_rencana_kerja':$('#budget-a-pra').val(),
+                    'keterangan_rencana_kerja':file_rencana_kerja,
 
-                    'tgl_awal_lokasi':data[12].value,
-                    'tgl_ahir_lokasi':data[13].value,
-                    'budget_lokasi':data[14].value,
-                    'keterangan_lokasi':data[15].value,
+                    'tgl_awal_studi_literatur':$('#startdate-b-pra').val(),
+                    'tgl_ahir_studi_literatur':$('#enddate-b-pra').val(),
+                    'budget_studi_literatur':$('#budget-b-pra').val(),
+                    'keterangan_studi_literatur':file_studi_literatur,
 
-                    'tgl_awal_talent':data[16].value,
-                    'tgl_ahir_talent':data[17].value,
-                    'budget_talent':data[18].value,
-                    'keterangan_talent':data[19].value,
+                    'tgl_awal_rapat_kordinasi':$('#startdate-c-pra').val(),
+                    'tgl_ahir_rapat_kordinasi':$('#enddate-c-pra').val(),
+                    'budget_rapat_kordinasi':$('#budget-c-pra').val(),
+                    'keterangan_rapat_kordinasi':file_rapat_kordinasi,
 
-                    'tgl_awal_testimoni':data[20].value,
-                    'tgl_ahir_testimoni':data[21].value,
-                    'budget_testimoni':data[22].value,
-                    'keterangan_testimoni':data[23].value,
+                    'tgl_awal_data_sekunder':$('#startdate-d-pra').val(),
+                    'tgl_ahir_data_sekunder':$('#enddate-d-pra').val(),
+                    'budget_data_sekunder':$('#budget-d-pra').val(),
+                    'keterangan_data_sekunder':file_data_sekunder,
 
-                    'tgl_awal_audio':data[24].value,
-                    'tgl_ahir_audio':data[25].value,
-                    'budget_audio':data[26].value,
-                    'keterangan_audio':data[27].value,
+                    'tgl_awal_fgd_persiapan':$('#startdate-a-pro').val(),
+                    'tgl_ahir_fgd_persiapan':$('#enddate-a-pro').val(),
+                    'budget_fgd_persiapan':$('#budget-a-pro').val(),
+                    'keterangan_fgd_persiapan':file_fgd_persiapan,
 
-                    'tgl_awal_editing':data[28].value,
-                    'tgl_ahir_editing':data[29].value,
-                    'budget_editing':data[30].value,
-                    'keterangan_editing':data[31].value,
+                    'tgl_awal_fgd_identifikasi':$('#startdate-b-pro').val(),
+                    'tgl_ahir_fgd_identifikasi':$('#enddate-b-pro').val(),
+                    'budget_fgd_identifikasi':$('#budget-b-pro').val(),
+                    'keterangan_fgd_identifikasi':file_data_identifikasi,
+                    
+                    'checklist_lq':checklist_lq,
+                    'tgl_awal_lq':$('#startdate-lq').val(),
+                    'tgl_ahir_lq':$('#enddate-lq').val(),
+                    'budget_lq':$('#budget-lq').val(),
+                    // 'keterangan_lq':$('#desc-lq').val(),
+               
+                    'checklist_shift_share':checklist_shift_share,
+                    'tgl_awal_shift_share':$('#startdate-shift-share').val(),
+                    'tgl_ahir_shift_share':$('#enddate-shift-share').val(),
+                    'budget_shift_share':$('#budget-shift-share').val(),
+                    // 'keterangan_shift_share':$('#desc-shift-share').val(),
+                     
+                    'checklist_tipologi_sektor':checklist_tipologi_sektor, 
+                    'tgl_awal_tipologi_sektor':$('#startdate-tipologi-sektor').val(),
+                    'tgl_ahir_tipologi_sektor':$('#enddate-tipologi-sektor').val(),
+                    'budget_tipologi_sektor':$('#budget-tipologi-sektor').val(),
+                    // 'keterangan_tipologi_sektor':$('#desc-tipologi-sektor').val(),
 
-                    'tgl_awal_gambar':data[32].value,
-                    'tgl_ahir_gambar':data[33].value,
-                    'budget_gambar':data[34].value,
-                    'keterangan_gambar':data[35].value,
+                    'checklist_klassen':checklist_klassen, 
+                    'tgl_awal_klassen':$('#startdate-klassen').val(),
+                    'tgl_ahir_klassen':$('#enddate-klassen').val(),
+                    'budget_klassen':$('#budget-klassen').val(),
+                    // 'keterangan_klassen':$('#desc-klassen').val(),
 
-                    'tgl_awal_video':data[36].value,
-                    'tgl_ahir_video':data[37].value,
-                    'budget_video':data[38].value,
-                    'keterangan_video':data[39].value,
+                    'keterangan_pengolahan':file_data_pengolahan,
 
-                    'tgl_awal_editvideo':data[40].value,
-                    'tgl_ahir_editvideo':data[41].value,
-                    'budget_editvideo':data[42].value,
-                    'keterangan_editvideo':data[43].value,
+                    'tgl_awal_fgd_klarifikasi':$('#startdate-d-pro').val(),
+                    'tgl_ahir_fgd_klarifikasi':$('#enddate-d-pro').val(),
+                    'budget_fgd_klarifikasi':$('#budget-d-pro').val(),
+                    'keterangan_fgd_klarifikasi':file_data_klarifikasi,
 
-                    'tgl_awal_grafik':data[44].value,
-                    'tgl_ahir_grafik':data[45].value,
-                    'budget_grafik':data[46].value,
-                    'keterangan_grafik':data[47].value,
+                    'tgl_awal_finalisasi':$('#startdate-e-pro').val(),
+                    'tgl_ahir_finalisasi':$('#enddate-e-pro').val(),
+                    'budget_finalisasi':$('#budget-e-pro').val(),
+                    'keterangan_finalisasi':file_data_konfrimasi,
+                    
+                    'checklist_summary_sektor_unggulan':checklist_summary_sektor_unggulan,     
+                    'tgl_awal_summary_sektor_unggulan':$('#startdate-summary-sektor-unggulan').val(),
+                    'tgl_ahir_summary_sektor_unggulan':$('#enddate-summary-sektor-unggulan').val(),
+                    'budget_summary_sektor_unggulan':$('#budget-summary-sektor-unggulan').val(),
+                    // 'keterangan_summary_sektor_unggulan':$('#desc-summary-sektor-unggulan').val(),
+                   
+                    'checklist_sektor_unggulan':checklist_sektor_unggulan,
+                    'tgl_awal_sektor_unggulan':$('#startdate-sektor-unggulan').val(),
+                    'tgl_ahir_sektor_unggulan':$('#enddate-sektor-unggulan').val(),
+                    'budget_sektor_unggulan':$('#budget-sektor-unggulan').val(),
+                    // 'keterangan_sektor_unggulan':$('#desc-sektor-unggulan').val(),
+                
+                    'checklist_potensi_pasar':checklist_potensi_pasar,
+                    'tgl_awal_potensi_pasar':$('#startdate-potensi-pasar').val(),
+                    'tgl_ahir_potensi_pasar':$('#enddate-potensi-pasar').val(),
+                    'budget_potensi_pasar':$('#budget-potensi-pasar').val(),
+                    // 'keterangan_potensi_pasar':$('#desc-potensi-pasar').val(),
+                    
+                    'checklist_parameter_sektor_unggulan':checklist_parameter_sektor_unggulan,
+                    'tgl_awal_parameter_sektor_unggulan':$('#startdate-parameter-sektor-unggulan').val(),
+                    'tgl_ahir_parameter_sektor_unggulan':$('#enddate-parameter-sektor-unggulan').val(),
+                    'budget_parameter_sektor_unggulan':$('#budget-parameter-sektor-unggulan').val(),
+                    // 'keterangan_parameter_sektor_unggulan':$('#desc-parameter-sektor-unggulan').val(),
+                    
+                    'checklist_subsektor_unggulan':checklist_subsektor_unggulan,
+                    'tgl_awal_subsektor_unggulan':$('#startdate-subsektor-unggulan').val(),
+                    'tgl_ahir_subsektor_unggulan':$('#enddate-subsektor-unggulan').val(),
+                    'budget_subsektor_unggulan':$('#budget-subsektor-unggulan').val(),
+                    // 'keterangan_subsektor_unggulan':$('#desc-subsektor-unggulan').val(),
+                    
+                    'checklist_intensif_daerah':checklist_intensif_daerah,
+                    'tgl_awal_intensif_daerah':$('#startdate-intensif-daerah').val(),
+                    'tgl_ahir_intensif_daerah':$('#enddate-intensif-daerah').val(),
+                    'budget_intensif_daerah':$('#budget-intensif-daerah').val(),
+                    // 'keterangan_intensif_daerah':$('#desc-intensif-daerah').val(),
+                   
+                    'checklist_potensi_lanjutan':checklist_potensi_lanjutan,
+                    'tgl_awal_potensi_lanjutan':$('#startdate-potensi-lanjutan').val(),
+                    'tgl_ahir_potensi_lanjutan':$('#enddate-potensi-lanjutan').val(),
+                    'budget_potensi_lanjutan':$('#budget-potensi-lanjutan').val(),
+                    // 'keterangan_potensi_lanjutan':$('#desc-potensi-lanjutan').val(),
+                    'keterangan_penyusunan':file_data_penyusunan,
 
-                    'tgl_awal_mixing':data[48].value,
-                    'tgl_ahir_mixing':data[49].value,
-                    'budget_mixing':data[50].value,
-                    'keterangan_mixing':data[51].value,
+                    'tgl_awal_info_grafis':$('#startdate-b-ppro').val(),
+                    'tgl_ahir_info_grafis':$('#enddate-b-ppro').val(),
+                    'budget_info_grafis':$('#budget-b-ppro').val(),
+                    'keterangan_info_grafis':file_penyusunan_infografis,
 
-                    'tgl_awal_voice':data[52].value,
-                    'tgl_ahir_voice':data[53].value,
-                    'budget_voice':data[54].value,
-                    'keterangan_voice':data[55].value,
-
-                    'tgl_awal_subtitle':data[56].value,
-                    'tgl_ahir_subtitle':data[57].value,
-                    'budget_subtitle':data[58].value,
-                    'keterangan_subtitle':data[59].value,
+                    'tgl_awal_dokumentasi':$('#startdate-c-ppro').val(),
+                    'tgl_ahir_dokumentasi':$('#enddate-c-ppro').val(),
+                    'budget_dokumentasi':$('#budget-c-ppro').val(),
+                    'keterangan_dokumentasi':file_doc_info_grafis,
+ 
                };
+               
+              console.log(arr)
               
           
                $.ajax({
                     type:"PUT",
-                    url: BASE_URL+'/api/promosi/'+ segments[5],
+                    url: BASE_URL+'/api/pemetaan/'+ segments[5],
                     data:arr,
                     cache: false,
                     dataType: "json",
@@ -974,7 +2394,7 @@
                               confirmButtonText: 'OK'                        
                          }).then((result) => {
                               if (result.isConfirmed) {
-                                   window.location.replace('/promosi');
+                                   window.location.replace('/pemetaan');
                               }
                          });
                     },
@@ -983,599 +2403,851 @@
 
                          errors = respons.responseJSON;
                          
-                         if(errors.messages.tgl_awal_peluang)
+                         if(errors.messages.tgl_awal_rencana_kerja)
                          {
                               $('#startdate-a-pra-alert').addClass('has-error');
-                              $('#startdate-a-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_peluang +'</strong>');
+                              $('#startdate-a-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_rencana_kerja +'</strong>');
                          } else {
                               $('#startdate-a-pra-alert').removeClass('has-error');
                               $('#startdate-a-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_peluang)
+                          if(errors.messages.tgl_ahir_rencana_kerja)
                          {
                               $('#enddate-a-pra-alert').addClass('has-error');
-                              $('#enddate-a-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_peluang +'</strong>');
+                              $('#enddate-a-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_rencana_kerja +'</strong>');
                          } else {
                               $('#enddate-a-pra-alert').removeClass('has-error');
                               $('#enddate-a-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_peluang)
+                          if(errors.messages.budget_rencana_kerja)
                          {
                               $('#budget-a-pra-alert').addClass('has-error');
-                              $('#budget-a-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_peluang +'</strong>');
+                              $('#budget-a-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_rencana_kerja +'</strong>');
                          } else {
                               $('#budget-a-pra-alert').removeClass('has-error');
                               $('#budget-a-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_peluang)
+                          if(errors.messages.keterangan_rencana_kerja)
                          {
                               $('#desc-a-pra-alert').addClass('has-error');
-                              $('#desc-a-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_peluang +'</strong>');
+                              $('#desc-a-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_rencana_kerja +'</strong>');
                          } else {
                               $('#desc-a-pra-alert').removeClass('has-error');
                               $('#desc-a-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_awal_storyline)
+                          if(errors.messages.tgl_awal_studi_literatur)
                          {
                               $('#startdate-b-pra-alert').addClass('has-error');
-                              $('#startdate-b-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_storyline +'</strong>');
+                              $('#startdate-b-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_studi_literatur +'</strong>');
                          } else {
                               $('#startdate-b-pra-alert').removeClass('has-error');
                               $('#startdate-b-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_storyline)
+                          if(errors.messages.tgl_ahir_studi_literatur)
                          {
                               $('#enddate-b-pra-alert').addClass('has-error');
-                              $('#enddate-b-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_storyline +'</strong>');
+                              $('#enddate-b-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_studi_literatur +'</strong>');
                          } else {
                               $('#enddate-b-pra-alert').removeClass('has-error');
                               $('#enddate-b-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_storyline)
+                          if(errors.messages.budget_studi_literatur)
                          {
                               $('#budget-b-pra-alert').addClass('has-error');
-                              $('#budget-b-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_storyline +'</strong>');
+                              $('#budget-b-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_studi_literatur +'</strong>');
                          } else {
                               $('#budget-b-pra-alert').removeClass('has-error');
                               $('#budget-b-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_storyline)
+                          if(errors.messages.keterangan_studi_literatur)
                          {
                               $('#desc-b-pra-alert').addClass('has-error');
-                              $('#desc-b-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_storyline +'</strong>');
+                              $('#desc-b-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_studi_literatur +'</strong>');
                          } else {
                               $('#desc-b-pra-alert').removeClass('has-error');
                               $('#desc-b-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_awal_storyboard)
+                          if(errors.messages.tgl_awal_rapat_kordinasi)
                          {
                               $('#startdate-c-pra-alert').addClass('has-error');
-                              $('#startdate-c-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_storyboard +'</strong>');
+                              $('#startdate-c-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_rapat_kordinasi +'</strong>');
                          } else {
                               $('#startdate-c-pra-alert').removeClass('has-error');
                               $('#startdate-c-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_storyboard)
+                          if(errors.messages.tgl_ahir_rapat_kordinasi)
                          {
                               $('#enddate-c-pra-alert').addClass('has-error');
-                              $('#enddate-c-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_storyboard +'</strong>');
+                              $('#enddate-c-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_rapat_kordinasi +'</strong>');
                          } else {
                               $('#enddate-c-pra-alert').removeClass('has-error');
                               $('#enddate-c-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_storyboard)
+                          if(errors.messages.budget_rapat_kordinasi)
                          {
                               $('#budget-c-pra-alert').addClass('has-error');
-                              $('#budget-c-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_storyboard +'</strong>');
+                              $('#budget-c-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_rapat_kordinasi +'</strong>');
                          } else {
                               $('#budget-c-pra-alert').removeClass('has-error');
                               $('#budget-c-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_storyboard)
+                          if(errors.messages.keterangan_rapat_kordinasi)
                          {
                               $('#desc-c-pra-alert').addClass('has-error');
-                              $('#desc-c-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_storyboard +'</strong>');
+                              $('#desc-c-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_rapat_kordinasi +'</strong>');
                          } else {
                               $('#desc-c-pra-alert').removeClass('has-error');
                               $('#desc-c-pra-messages').removeClass('help-block').html('');
                          }
 
-                          if(errors.messages.tgl_awal_lokasi)
+                          if(errors.messages.tgl_awal_data_sekunder)
                          {
                               $('#startdate-d-pra-alert').addClass('has-error');
-                              $('#startdate-d-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_lokasi +'</strong>');
+                              $('#startdate-d-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_data_sekunder +'</strong>');
                          } else {
                               $('#startdate-d-pra-alert').removeClass('has-error');
                               $('#startdate-d-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_lokasi)
+                          if(errors.messages.tgl_ahir_data_sekunder)
                          {
                               $('#enddate-d-pra-alert').addClass('has-error');
-                              $('#enddate-d-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_lokasi +'</strong>');
+                              $('#enddate-d-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_data_sekunder +'</strong>');
                          } else {
                               $('#enddate-d-pra-alert').removeClass('has-error');
                               $('#enddate-d-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_lokasi)
+                          if(errors.messages.budget_data_sekunder)
                          {
                               $('#budget-d-pra-alert').addClass('has-error');
-                              $('#budget-d-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_lokasi +'</strong>');
+                              $('#budget-d-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_data_sekunder +'</strong>');
                          } else {
                               $('#budget-d-pra-alert').removeClass('has-error');
                               $('#budget-d-pra-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_lokasi)
+                          if(errors.messages.keterangan_data_sekunder)
                          {
                               $('#desc-d-pra-alert').addClass('has-error');
-                              $('#desc-d-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_lokasi +'</strong>');
+                              $('#desc-d-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_data_sekunder +'</strong>');
                          } else {
                               $('#desc-d-pra-alert').removeClass('has-error');
                               $('#desc-d-pra-messages').removeClass('help-block').html('');
                          }
 
-                          if(errors.messages.tgl_awal_talent)
-                         {
-                              $('#startdate-e-pra-alert').addClass('has-error');
-                              $('#startdate-e-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_talent +'</strong>');
-                         } else {
-                              $('#startdate-e-pra-alert').removeClass('has-error');
-                              $('#startdate-e-pra-messages').removeClass('help-block').html('');
-                         }
+                         
 
 
-                          if(errors.messages.tgl_ahir_talent)
-                         {
-                              $('#enddate-e-pra-alert').addClass('has-error');
-                              $('#enddate-e-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_talent +'</strong>');
-                         } else {
-                              $('#enddate-e-pra-alert').removeClass('has-error');
-                              $('#enddate-e-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.budget_talent)
-                         {
-                              $('#budget-e-pra-alert').addClass('has-error');
-                              $('#budget-e-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_talent +'</strong>');
-                         } else {
-                              $('#budget-e-pra-alert').removeClass('has-error');
-                              $('#budget-e-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.keterangan_talent)
-                         {
-                              $('#desc-e-pra-alert').addClass('has-error');
-                              $('#desc-e-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_talent +'</strong>');
-                         } else {
-                              $('#desc-e-pra-alert').removeClass('has-error');
-                              $('#desc-e-pra-messages').removeClass('help-block').html('');
-                         }
-
-                          if(errors.messages.tgl_awal_testimoni)
-                         {
-                              $('#startdate-f-pra-alert').addClass('has-error');
-                              $('#startdate-f-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_testimoni +'</strong>');
-                         } else {
-                              $('#startdate-f-pra-alert').removeClass('has-error');
-                              $('#startdate-f-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.tgl_ahir_testimoni)
-                         {
-                              $('#enddate-f-pra-alert').addClass('has-error');
-                              $('#enddate-f-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_testimoni +'</strong>');
-                         } else {
-                              $('#enddate-f-pra-alert').removeClass('has-error');
-                              $('#enddate-f-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.budget_testimoni)
-                         {
-                              $('#budget-f-pra-alert').addClass('has-error');
-                              $('#budget-f-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_testimoni +'</strong>');
-                         } else {
-                              $('#budget-f-pra-alert').removeClass('has-error');
-                              $('#budget-f-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.keterangan_testimoni)
-                         {
-                              $('#desc-f-pra-alert').addClass('has-error');
-                              $('#desc-f-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_testimoni +'</strong>');
-                         } else {
-                              $('#desc-f-pra-alert').removeClass('has-error');
-                              $('#desc-f-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                           if(errors.messages.tgl_awal_audio)
-                         {
-                              $('#startdate-g-pra-alert').addClass('has-error');
-                              $('#startdate-g-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_audio +'</strong>');
-                         } else {
-                              $('#startdate-g-pra-alert').removeClass('has-error');
-                              $('#startdate-g-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.tgl_ahir_audio)
-                         {
-                              $('#enddate-g-pra-alert').addClass('has-error');
-                              $('#enddate-g-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_audio +'</strong>');
-                         } else {
-                              $('#enddate-g-pra-alert').removeClass('has-error');
-                              $('#enddate-g-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.budget_audio)
-                         {
-                              $('#budget-g-pra-alert').addClass('has-error');
-                              $('#budget-g-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_audio +'</strong>');
-                         } else {
-                              $('#budget-g-pra-alert').removeClass('has-error');
-                              $('#budget-g-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.keterangan_audio)
-                         {
-                              $('#desc-g-pra-alert').addClass('has-error');
-                              $('#desc-g-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_audio +'</strong>');
-                         } else {
-                              $('#desc-g-pra-alert').removeClass('has-error');
-                              $('#desc-g-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                           if(errors.messages.tgl_awal_editing)
-                         {
-                              $('#startdate-h-pra-alert').addClass('has-error');
-                              $('#startdate-h-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_editing +'</strong>');
-                         } else {
-                              $('#startdate-h-pra-alert').removeClass('has-error');
-                              $('#startdate-h-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.tgl_ahir_editing)
-                         {
-                              $('#enddate-h-pra-alert').addClass('has-error');
-                              $('#enddate-h-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_editing +'</strong>');
-                         } else {
-                              $('#enddate-h-pra-alert').removeClass('has-error');
-                              $('#enddate-h-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.budget_editing)
-                         {
-                              $('#budget-h-pra-alert').addClass('has-error');
-                              $('#budget-h-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_editing +'</strong>');
-                         } else {
-                              $('#budget-h-pra-alert').removeClass('has-error');
-                              $('#budget-h-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.keterangan_editing)
-                         {
-                              $('#desc-h-pra-alert').addClass('has-error');
-                              $('#desc-h-pra-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_editing +'</strong>');
-                         } else {
-                              $('#desc-h-pra-alert').removeClass('has-error');
-                              $('#desc-h-pra-messages').removeClass('help-block').html('');
-                         }
-
-
-                         if(errors.messages.tgl_awal_gambar)
+                         if(errors.messages.tgl_awal_fgd_persiapan)
                          {
                               $('#startdate-a-pro-alert').addClass('has-error');
-                              $('#startdate-a-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_gambar +'</strong>');
+                              $('#startdate-a-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_fgd_persiapan +'</strong>');
                          } else {
                               $('#startdate-a-pro-alert').removeClass('has-error');
                               $('#startdate-a-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_gambar)
+                          if(errors.messages.tgl_ahir_fgd_persiapan)
                          {
                               $('#enddate-a-pro-alert').addClass('has-error');
-                              $('#enddate-a-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_gambar +'</strong>');
+                              $('#enddate-a-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_fgd_persiapan +'</strong>');
                          } else {
                               $('#enddate-a-pro-alert').removeClass('has-error');
                               $('#enddate-a-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_gambar)
+                          if(errors.messages.budget_fgd_persiapan)
                          {
                               $('#budget-a-pro-alert').addClass('has-error');
-                              $('#budget-a-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_gambar +'</strong>');
+                              $('#budget-a-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_fgd_persiapan +'</strong>');
                          } else {
                               $('#budget-a-pro-alert').removeClass('has-error');
                               $('#budget-a-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_gambar)
+                          if(errors.messages.keterangan_fgd_persiapan)
                          {
                               $('#desc-a-pro-alert').addClass('has-error');
-                              $('#desc-a-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_gambar +'</strong>');
+                              $('#desc-a-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_fgd_persiapan +'</strong>');
                          } else {
                               $('#desc-a-pro-alert').removeClass('has-error');
                               $('#desc-a-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                         if(errors.messages.tgl_awal_video)
+                         if(errors.messages.tgl_awal_fgd_identifikasi)
                          {
                               $('#startdate-b-pro-alert').addClass('has-error');
-                              $('#startdate-b-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_video +'</strong>');
+                              $('#startdate-b-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_fgd_identifikasi +'</strong>');
                          } else {
                               $('#startdate-b-pro-alert').removeClass('has-error');
                               $('#startdate-b-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_video)
+                          if(errors.messages.tgl_ahir_fgd_identifikasi)
                          {
                               $('#enddate-b-pro-alert').addClass('has-error');
-                              $('#enddate-b-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_video +'</strong>');
+                              $('#enddate-b-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_fgd_identifikasi +'</strong>');
                          } else {
                               $('#enddate-b-pro-alert').removeClass('has-error');
                               $('#enddate-b-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_video)
+                          if(errors.messages.budget_fgd_identifikasi)
                          {
                               $('#budget-b-pro-alert').addClass('has-error');
-                              $('#budget-b-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_video +'</strong>');
+                              $('#budget-b-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_fgd_identifikasi +'</strong>');
                          } else {
                               $('#budget-b-pro-alert').removeClass('has-error');
                               $('#budget-b-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_video)
+                         if(errors.messages.keterangan_fgd_identifikasi)
                          {
                               $('#desc-b-pro-alert').addClass('has-error');
-                              $('#desc-b-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_video +'</strong>');
+                              $('#desc-b-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_fgd_identifikasi +'</strong>');
                          } else {
                               $('#desc-b-pro-alert').removeClass('has-error');
                               $('#desc-b-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_awal_editvideo)
+                         if(errors.messages.tgl_awal_lq)
                          {
-                              $('#startdate-a-ppro-alert').addClass('has-error');
-                              $('#startdate-a-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_editvideo +'</strong>');
+                              $('#startdate-c-1-pro-alert').addClass('has-error');
+                              $('#startdate-c-1-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_lq +'</strong>');
                          } else {
-                              $('#startdate-a-ppro-alert').removeClass('has-error');
-                              $('#startdate-a-ppro-messages').removeClass('help-block').html('');
+                              $('#startdate-c-1-pro-alert').removeClass('has-error');
+                              $('#startdate-c-1-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.tgl_ahir_lq)
+                         {
+                              $('#enddate-c-1-pro-alert').addClass('has-error');
+                              $('#enddate-c-1-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_lq +'</strong>');
+                         } else {
+                              $('#enddate-c-1-pro-alert').removeClass('has-error');
+                              $('#enddate-c-1-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.budget_lq)
+                         {
+                              $('#budget-c-1-pro-alert').addClass('has-error');
+                              $('#budget-c-1-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_lq +'</strong>');
+                         } else {
+                              $('#budget-c-1-pro-alert').removeClass('has-error');
+                              $('#budget-c-1-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         //  if(errors.messages.keterangan_lq)
+                         // {
+                         //      $('#desc-c-1-pro-alert').addClass('has-error');
+                         //      $('#desc-c-1-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_lq +'</strong>');
+                         // } else {
+                         //      $('#desc-c-1-pro-alert').removeClass('has-error');
+                         //      $('#desc-c-1-pro-messages').removeClass('help-block').html('');
+                         // }
+
+                          if(errors.messages.keterangan_pengolahan)
+                         {
+                              $('#desc-c-1-pro-alert').addClass('has-error');
+                              $('#desc-c-1-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_pengolahan +'</strong>');
+                         } else {
+                              $('#desc-c-1-pro-alert').removeClass('has-error');
+                              $('#desc-c-1-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_editvideo)
+                          if(errors.messages.tgl_awal_shift_share)
                          {
-                              $('#enddate-a-ppro-alert').addClass('has-error');
-                              $('#enddate-a-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_editvideo +'</strong>');
+                              $('#startdate-c-2-pro-alert').addClass('has-error');
+                              $('#startdate-c-2-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_shift_share +'</strong>');
                          } else {
-                              $('#enddate-a-ppro-alert').removeClass('has-error');
-                              $('#enddate-a-ppro-messages').removeClass('help-block').html('');
+                              $('#startdate-c-2-pro-alert').removeClass('has-error');
+                              $('#startdate-c-2-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.tgl_ahir_shift_share)
+                         {
+                              $('#enddate-c-2-pro-alert').addClass('has-error');
+                              $('#enddate-c-2-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_shift_share +'</strong>');
+                         } else {
+                              $('#enddate-c-2-pro-alert').removeClass('has-error');
+                              $('#enddate-c-2-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.budget_shift_share)
+                         {
+                              $('#budget-c-2-pro-alert').addClass('has-error');
+                              $('#budget-c-2-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_shift_share +'</strong>');
+                         } else {
+                              $('#budget-c-2-pro-alert').removeClass('has-error');
+                              $('#budget-c-2-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         //  if(errors.messages.keterangan_shift_share)
+                         // {
+                         //      $('#desc-c-2-pro-alert').addClass('has-error');
+                         //      $('#desc-c-2-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_shift_share +'</strong>');
+                         // } else {
+                         //      $('#desc-c-2-pro-alert').removeClass('has-error');
+                         //      $('#desc-c-2-pro-messages').removeClass('help-block').html('');
+                         // }
+
+
+
+
+                         if(errors.messages.tgl_awal_tipologi_sektor)
+                         {
+                              $('#startdate-c-3-pro-alert').addClass('has-error');
+                              $('#startdate-c-3-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_tipologi_sektor +'</strong>');
+                         } else {
+                              $('#startdate-c-3-pro-alert').removeClass('has-error');
+                              $('#startdate-c-3-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.tgl_ahir_tipologi_sektor)
+                         {
+                              $('#enddate-c-3-pro-alert').addClass('has-error');
+                              $('#enddate-c-3-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_tipologi_sektor +'</strong>');
+                         } else {
+                              $('#enddate-c-3-pro-alert').removeClass('has-error');
+                              $('#enddate-c-3-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.budget_tipologi_sektor)
+                         {
+                              $('#budget-c-3-pro-alert').addClass('has-error');
+                              $('#budget-c-3-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_tipologi_sektor +'</strong>');
+                         } else {
+                              $('#budget-c-3-pro-alert').removeClass('has-error');
+                              $('#budget-c-3-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         //  if(errors.messages.keterangan_tipologi_sektor)
+                         // {
+                         //      $('#desc-c-3-pro-alert').addClass('has-error');
+                         //      $('#desc-c-3-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_tipologi_sektor +'</strong>');
+                         // } else {
+                         //      $('#desc-c-3-pro-alert').removeClass('has-error');
+                         //      $('#desc-c-3-pro-messages').removeClass('help-block').html('');
+                         // }
+
+                         if(errors.messages.tgl_awal_klassen)
+                         {
+                              $('#startdate-c-4-pro-alert').addClass('has-error');
+                              $('#startdate-c-4-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_klassen +'</strong>');
+                         } else {
+                              $('#startdate-c-4-pro-alert').removeClass('has-error');
+                              $('#startdate-c-4-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.tgl_ahir_klassen)
+                         {
+                              $('#enddate-c-4-pro-alert').addClass('has-error');
+                              $('#enddate-c-4-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_klassen +'</strong>');
+                         } else {
+                              $('#enddate-c-4-pro-alert').removeClass('has-error');
+                              $('#enddate-c-4-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.budget_klassen)
+                         {
+                              $('#budget-c-4-pro-alert').addClass('has-error');
+                              $('#budget-c-4-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_klassen +'</strong>');
+                         } else {
+                              $('#budget-c-4-pro-alert').removeClass('has-error');
+                              $('#budget-c-4-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         //  if(errors.messages.keterangan_klassen)
+                         // {
+                         //      $('#desc-c-4-pro-alert').addClass('has-error');
+                         //      $('#desc-c-4-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_klassen +'</strong>');
+                         // } else {
+                         //      $('#desc-c-4-pro-alert').removeClass('has-error');
+                         //      $('#desc-c-4-pro-messages').removeClass('help-block').html('');
+                         // }
+
+  
+                         if(errors.messages.tgl_awal_fgd_klarifikasi)
+                         {
+                              $('#startdate-d-pro-alert').addClass('has-error');
+                              $('#startdate-d-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_fgd_klarifikasi +'</strong>');
+                         } else {
+                              $('#startdate-d-pro-alert').removeClass('has-error');
+                              $('#startdate-d-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.tgl_ahir_fgd_klarifikasi)
+                         {
+                              $('#enddate-d-pro-alert').addClass('has-error');
+                              $('#enddate-d-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_fgd_klarifikasi +'</strong>');
+                         } else {
+                              $('#enddate-d-pro-alert').removeClass('has-error');
+                              $('#enddate-d-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.budget_fgd_klarifikasi)
+                         {
+                              $('#budget-d-pro-alert').addClass('has-error');
+                              $('#budget-d-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_fgd_klarifikasi +'</strong>');
+                         } else {
+                              $('#budget-d-pro-alert').removeClass('has-error');
+                              $('#budget-d-pro-messages').removeClass('help-block').html('');
+                         }
+
+                          if(errors.messages.keterangan_fgd_klarifikasi)
+                         {
+                              $('#desc-d-pro-alert').addClass('has-error');
+                              $('#desc-d-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_fgd_klarifikasi +'</strong>');
+                         } else {
+                              $('#desc-d-pro-alert').removeClass('has-error');
+                              $('#desc-d-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_editvideo)
+
+                          if(errors.messages.tgl_awal_finalisasi)
                          {
-                              $('#budget-a-ppro-alert').addClass('has-error');
-                              $('#budget-a-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_editvideo +'</strong>');
+                              $('#startdate-e-pro-alert').addClass('has-error');
+                              $('#startdate-e-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_finalisasi +'</strong>');
                          } else {
-                              $('#budget-a-ppro-alert').removeClass('has-error');
-                              $('#budget-a-ppro-messages').removeClass('help-block').html('');
+                              $('#startdate-e-pro-alert').removeClass('has-error');
+                              $('#startdate-e-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.tgl_ahir_finalisasi)
+                         {
+                              $('#enddate-e-pro-alert').addClass('has-error');
+                              $('#enddate-e-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_finalisasi +'</strong>');
+                         } else {
+                              $('#enddate-e-pro-alert').removeClass('has-error');
+                              $('#enddate-e-pro-messages').removeClass('help-block').html('');
+                         }
+
+                         if(errors.messages.budget_finalisasi)
+                         {
+                              $('#budget-e-pro-alert').addClass('has-error');
+                              $('#budget-e-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_finalisasi +'</strong>');
+                         } else {
+                              $('#budget-e-pro-alert').removeClass('has-error');
+                              $('#budget-e-pro-messages').removeClass('help-block').html('');
+                         }
+
+                          if(errors.messages.keterangan_finalisasi)
+                         {
+                              $('#desc-e-pro-alert').addClass('has-error');
+                              $('#desc-e-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_finalisasi +'</strong>');
+                         } else {
+                              $('#desc-e-pro-alert').removeClass('has-error');
+                              $('#desc-e-pro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_editvideo)
+
+
+
+
+                          if(errors.messages.tgl_awal_summary_sektor_unggulan)
                          {
-                              $('#desc-a-ppro-alert').addClass('has-error');
-                              $('#desc-a-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_editvideo +'</strong>');
+                              $('#startdate-a-1-ppro-alert').addClass('has-error');
+                              $('#startdate-a-1-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_summary_sektor_unggulan +'</strong>');
                          } else {
-                              $('#desc-a-ppro-alert').removeClass('has-error');
-                              $('#desc-a-ppro-messages').removeClass('help-block').html('');
+                              $('#startdate-a-1-ppro-alert').removeClass('has-error');
+                              $('#startdate-a-1-ppro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_awal_grafik)
+                          if(errors.messages.tgl_ahir_summary_sektor_unggulan)
+                         {
+                              $('#enddate-a-1-ppro-alert').addClass('has-error');
+                              $('#enddate-a-1-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_summary_sektor_unggulan +'</strong>');
+                         } else {
+                              $('#enddate-a-1-ppro-alert').removeClass('has-error');
+                              $('#enddate-a-1-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.budget_summary_sektor_unggulan)
+                         {
+                              $('#budget-a-1-ppro-alert').addClass('has-error');
+                              $('#budget-a-1-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_summary_sektor_unggulan +'</strong>');
+                         } else {
+                              $('#budget-a-1-ppro-alert').removeClass('has-error');
+                              $('#budget-a-1-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                         //  if(errors.messages.keterangan_summary_sektor_unggulan)
+                         // {
+                         //      $('#desc-a-1-ppro-alert').addClass('has-error');
+                         //      $('#desc-a-1-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_summary_sektor_unggulan +'</strong>');
+                         // } else {
+                         //      $('#desc-a-1-ppro-alert').removeClass('has-error');
+                         //      $('#desc-a-1-ppro-messages').removeClass('help-block').html('');
+                         // }
+
+                          if(errors.messages.keterangan_penyusunan)
+                         {
+                              $('#desc-a-1-ppro-alert').addClass('has-error');
+                              $('#desc-a-1-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_penyusunan +'</strong>');
+                         } else {
+                              $('#desc-a-1-ppro-alert').removeClass('has-error');
+                              $('#desc-a-1-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.tgl_awal_sektor_unggulan)
+                         {
+                              $('#startdate-a-2-ppro-alert').addClass('has-error');
+                              $('#startdate-a-2-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_sektor_unggulan +'</strong>');
+                         } else {
+                              $('#startdate-a-2-ppro-alert').removeClass('has-error');
+                              $('#startdate-a-2-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.tgl_ahir_sektor_unggulan)
+                         {
+                              $('#enddate-a-2-ppro-alert').addClass('has-error');
+                              $('#enddate-a-2-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_sektor_unggulan +'</strong>');
+                         } else {
+                              $('#enddate-a-2-ppro-alert').removeClass('has-error');
+                              $('#enddate-a-2-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.budget_sektor_unggulan)
+                         {
+                              $('#budget-a-2-ppro-alert').addClass('has-error');
+                              $('#budget-a-2-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_sektor_unggulan +'</strong>');
+                         } else {
+                              $('#budget-a-2-ppro-alert').removeClass('has-error');
+                              $('#budget-a-2-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                         //  if(errors.messages.keterangan_sektor_unggulan)
+                         // {
+                         //      $('#desc-a-2-ppro-alert').addClass('has-error');
+                         //      $('#desc-a-2-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_sektor_unggulan +'</strong>');
+                         // } else {
+                         //      $('#desc-a-2-ppro-alert').removeClass('has-error');
+                         //      $('#desc-a-2-ppro-messages').removeClass('help-block').html('');
+                         // }
+
+                           if(errors.messages.tgl_awal_potensi_pasar)
+                         {
+                              $('#startdate-a-3-ppro-alert').addClass('has-error');
+                              $('#startdate-a-3-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_potensi_pasar +'</strong>');
+                         } else {
+                              $('#startdate-a-3-ppro-alert').removeClass('has-error');
+                              $('#startdate-a-3-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.tgl_ahir_potensi_pasar)
+                         {
+                              $('#enddate-a-3-ppro-alert').addClass('has-error');
+                              $('#enddate-a-3-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_potensi_pasar +'</strong>');
+                         } else {
+                              $('#enddate-a-3-ppro-alert').removeClass('has-error');
+                              $('#enddate-a-3-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.budget_potensi_pasar)
+                         {
+                              $('#budget-a-3-ppro-alert').addClass('has-error');
+                              $('#budget-a-3-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_potensi_pasar +'</strong>');
+                         } else {
+                              $('#budget-a-3-ppro-alert').removeClass('has-error');
+                              $('#budget-a-3-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                         //  if(errors.messages.keterangan_potensi_pasar)
+                         // {
+                         //      $('#desc-a-3-ppro-alert').addClass('has-error');
+                         //      $('#desc-a-3-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_potensi_pasar +'</strong>');
+                         // } else {
+                         //      $('#desc-a-3-ppro-alert').removeClass('has-error');
+                         //      $('#desc-a-3-ppro-messages').removeClass('help-block').html('');
+                         // }
+
+
+                           if(errors.messages.tgl_awal_parameter_sektor_unggulan)
+                         {
+                              $('#startdate-a-4-ppro-alert').addClass('has-error');
+                              $('#startdate-a-4-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_parameter_sektor_unggulan +'</strong>');
+                         } else {
+                              $('#startdate-a-4-ppro-alert').removeClass('has-error');
+                              $('#startdate-a-4-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.tgl_ahir_parameter_sektor_unggulan)
+                         {
+                              $('#enddate-a-4-ppro-alert').addClass('has-error');
+                              $('#enddate-a-4-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_parameter_sektor_unggulan +'</strong>');
+                         } else {
+                              $('#enddate-a-4-ppro-alert').removeClass('has-error');
+                              $('#enddate-a-4-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.budget_parameter_sektor_unggulan)
+                         {
+                              $('#budget-a-4-ppro-alert').addClass('has-error');
+                              $('#budget-a-4-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_parameter_sektor_unggulan +'</strong>');
+                         } else {
+                              $('#budget-a-4-ppro-alert').removeClass('has-error');
+                              $('#budget-a-4-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                         //  if(errors.messages.keterangan_parameter_sektor_unggulan)
+                         // {
+                         //      $('#desc-a-4-ppro-alert').addClass('has-error');
+                         //      $('#desc-a-4-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_parameter_sektor_unggulan +'</strong>');
+                         // } else {
+                         //      $('#desc-a-4-ppro-alert').removeClass('has-error');
+                         //      $('#desc-a-4-ppro-messages').removeClass('help-block').html('');
+                         // }
+
+
+                           if(errors.messages.tgl_awal_subsektor_unggulan)
+                         {
+                              $('#startdate-a-5-ppro-alert').addClass('has-error');
+                              $('#startdate-a-5-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_subsektor_unggulan +'</strong>');
+                         } else {
+                              $('#startdate-a-5-ppro-alert').removeClass('has-error');
+                              $('#startdate-a-5-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.tgl_ahir_subsektor_unggulan)
+                         {
+                              $('#enddate-a-5-ppro-alert').addClass('has-error');
+                              $('#enddate-a-5-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_subsektor_unggulan +'</strong>');
+                         } else {
+                              $('#enddate-a-5-ppro-alert').removeClass('has-error');
+                              $('#enddate-a-5-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.budget_subsektor_unggulan)
+                         {
+                              $('#budget-a-5-ppro-alert').addClass('has-error');
+                              $('#budget-a-5-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_subsektor_unggulan +'</strong>');
+                         } else {
+                              $('#budget-a-5-ppro-alert').removeClass('has-error');
+                              $('#budget-a-5-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                         //  if(errors.messages.keterangan_subsektor_unggulan)
+                         // {
+                         //      $('#desc-a-5-ppro-alert').addClass('has-error');
+                         //      $('#desc-a-5-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_subsektor_unggulan +'</strong>');
+                         // } else {
+                         //      $('#desc-a-5-ppro-alert').removeClass('has-error');
+                         //      $('#desc-a-5-ppro-messages').removeClass('help-block').html('');
+                         // }
+
+
+
+                           if(errors.messages.tgl_awal_intensif_daerah)
+                         {
+                              $('#startdate-a-6-ppro-alert').addClass('has-error');
+                              $('#startdate-a-6-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_intensif_daerah +'</strong>');
+                         } else {
+                              $('#startdate-a-6-ppro-alert').removeClass('has-error');
+                              $('#startdate-a-6-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.tgl_ahir_intensif_daerah)
+                         {
+                              $('#enddate-a-6-ppro-alert').addClass('has-error');
+                              $('#enddate-a-6-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_intensif_daerah +'</strong>');
+                         } else {
+                              $('#enddate-a-6-ppro-alert').removeClass('has-error');
+                              $('#enddate-a-6-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.budget_intensif_daerah)
+                         {
+                              $('#budget-a-6-ppro-alert').addClass('has-error');
+                              $('#budget-a-6-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_intensif_daerah +'</strong>');
+                         } else {
+                              $('#budget-a-6-ppro-alert').removeClass('has-error');
+                              $('#budget-a-6-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                         //  if(errors.messages.keterangan_intensif_daerah)
+                         // {
+                         //      $('#desc-a-6-ppro-alert').addClass('has-error');
+                         //      $('#desc-a-6-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_intensif_daerah +'</strong>');
+                         // } else {
+                         //      $('#desc-a-6-ppro-alert').removeClass('has-error');
+                         //      $('#desc-a-6-ppro-messages').removeClass('help-block').html('');
+                         // }
+
+
+
+                            if(errors.messages.tgl_awal_potensi_lanjutan)
+                         {
+                              $('#startdate-a-7-ppro-alert').addClass('has-error');
+                              $('#startdate-a-7-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_potensi_lanjutan +'</strong>');
+                         } else {
+                              $('#startdate-a-7-ppro-alert').removeClass('has-error');
+                              $('#startdate-a-7-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.tgl_ahir_potensi_lanjutan)
+                         {
+                              $('#enddate-a-7-ppro-alert').addClass('has-error');
+                              $('#enddate-a-7-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_potensi_lanjutan +'</strong>');
+                         } else {
+                              $('#enddate-a-7-ppro-alert').removeClass('has-error');
+                              $('#enddate-a-7-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                          if(errors.messages.budget_potensi_lanjutan)
+                         {
+                              $('#budget-a-7-ppro-alert').addClass('has-error');
+                              $('#budget-a-7-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_potensi_lanjutan +'</strong>');
+                         } else {
+                              $('#budget-a-7-ppro-alert').removeClass('has-error');
+                              $('#budget-a-7-ppro-messages').removeClass('help-block').html('');
+                         }
+
+
+                         //  if(errors.messages.keterangan_potensi_lanjutan)
+                         // {
+                         //      $('#desc-a-7-ppro-alert').addClass('has-error');
+                         //      $('#desc-a-7-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_potensi_lanjutan +'</strong>');
+                         // } else {
+                         //      $('#desc-a-7-ppro-alert').removeClass('has-error');
+                         //      $('#desc-a-7-ppro-messages').removeClass('help-block').html('');
+                         // }
+
+
+                         if(errors.messages.tgl_awal_info_grafis)
                          {
                               $('#startdate-b-ppro-alert').addClass('has-error');
-                              $('#startdate-b-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_grafik +'</strong>');
+                              $('#startdate-b-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_info_grafis +'</strong>');
                          } else {
                               $('#startdate-b-ppro-alert').removeClass('has-error');
                               $('#startdate-b-ppro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_grafik)
+                          if(errors.messages.tgl_ahir_info_grafis)
                          {
                               $('#enddate-b-ppro-alert').addClass('has-error');
-                              $('#enddate-b-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_grafik +'</strong>');
+                              $('#enddate-b-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_info_grafis +'</strong>');
                          } else {
                               $('#enddate-b-ppro-alert').removeClass('has-error');
                               $('#enddate-b-ppro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_grafik)
+                          if(errors.messages.budget_info_grafis)
                          {
                               $('#budget-b-ppro-alert').addClass('has-error');
-                              $('#budget-b-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_grafik +'</strong>');
+                              $('#budget-b-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_info_grafis +'</strong>');
                          } else {
                               $('#budget-b-ppro-alert').removeClass('has-error');
                               $('#budget-b-ppro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_grafik)
+                          if(errors.messages.keterangan_info_grafis)
                          {
                               $('#desc-b-ppro-alert').addClass('has-error');
-                              $('#desc-b-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_grafik +'</strong>');
+                              $('#desc-b-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_info_grafis +'</strong>');
                          } else {
                               $('#desc-b-ppro-alert').removeClass('has-error');
                               $('#desc-b-ppro-messages').removeClass('help-block').html('');
                          }
 
-                           if(errors.messages.tgl_awal_mixing)
+
+                         if(errors.messages.tgl_awal_dokumentasi)
                          {
                               $('#startdate-c-ppro-alert').addClass('has-error');
-                              $('#startdate-c-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_mixing +'</strong>');
+                              $('#startdate-c-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_dokumentasi +'</strong>');
                          } else {
                               $('#startdate-c-ppro-alert').removeClass('has-error');
                               $('#startdate-c-ppro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.tgl_ahir_mixing)
+                          if(errors.messages.tgl_ahir_dokumentasi)
                          {
                               $('#enddate-c-ppro-alert').addClass('has-error');
-                              $('#enddate-c-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_mixing +'</strong>');
+                              $('#enddate-c-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_dokumentasi +'</strong>');
                          } else {
                               $('#enddate-c-ppro-alert').removeClass('has-error');
                               $('#enddate-c-ppro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.budget_mixing)
+                          if(errors.messages.budget_dokumentasi)
                          {
                               $('#budget-c-ppro-alert').addClass('has-error');
-                              $('#budget-c-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_mixing +'</strong>');
+                              $('#budget-c-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_dokumentasi +'</strong>');
                          } else {
                               $('#budget-c-ppro-alert').removeClass('has-error');
                               $('#budget-c-ppro-messages').removeClass('help-block').html('');
                          }
 
 
-                          if(errors.messages.keterangan_mixing)
+                          if(errors.messages.keterangan_dokumentasi)
                          {
                               $('#desc-c-ppro-alert').addClass('has-error');
-                              $('#desc-c-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_mixing +'</strong>');
+                              $('#desc-c-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_dokumentasi +'</strong>');
                          } else {
                               $('#desc-c-ppro-alert').removeClass('has-error');
                               $('#desc-c-ppro-messages').removeClass('help-block').html('');
-                         }
-
-
-                           if(errors.messages.tgl_awal_voice)
-                         {
-                              $('#startdate-d-ppro-alert').addClass('has-error');
-                              $('#startdate-d-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_voice +'</strong>');
-                         } else {
-                              $('#startdate-d-ppro-alert').removeClass('has-error');
-                              $('#startdate-d-ppro-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.tgl_ahir_voice)
-                         {
-                              $('#enddate-d-ppro-alert').addClass('has-error');
-                              $('#enddate-d-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_voice +'</strong>');
-                         } else {
-                              $('#enddate-d-ppro-alert').removeClass('has-error');
-                              $('#enddate-d-ppro-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.budget_voice)
-                         {
-                              $('#budget-d-ppro-alert').addClass('has-error');
-                              $('#budget-d-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_voice +'</strong>');
-                         } else {
-                              $('#budget-d-ppro-alert').removeClass('has-error');
-                              $('#budget-d-ppro-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.keterangan_voice)
-                         {
-                              $('#desc-d-ppro-alert').addClass('has-error');
-                              $('#desc-d-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_voice +'</strong>');
-                         } else {
-                              $('#desc-d-ppro-alert').removeClass('has-error');
-                              $('#desc-d-ppro-messages').removeClass('help-block').html('');
-                         }
-
-
-                           if(errors.messages.tgl_awal_subtitle)
-                         {
-                              $('#startdate-e-ppro-alert').addClass('has-error');
-                              $('#startdate-e-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_awal_subtitle +'</strong>');
-                         } else {
-                              $('#startdate-e-ppro-alert').removeClass('has-error');
-                              $('#startdate-e-ppro-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.tgl_ahir_subtitle)
-                         {
-                              $('#enddate-e-ppro-alert').addClass('has-error');
-                              $('#enddate-e-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.tgl_ahir_subtitle +'</strong>');
-                         } else {
-                              $('#enddate-e-ppro-alert').removeClass('has-error');
-                              $('#enddate-e-ppro-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.budget_subtitle)
-                         {
-                              $('#budget-e-ppro-alert').addClass('has-error');
-                              $('#budget-e-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.budget_subtitle +'</strong>');
-                         } else {
-                              $('#budget-e-ppro-alert').removeClass('has-error');
-                              $('#budget-e-ppro-messages').removeClass('help-block').html('');
-                         }
-
-
-                          if(errors.messages.keterangan_subtitle)
-                         {
-                              $('#desc-e-ppro-alert').addClass('has-error');
-                              $('#desc-e-ppro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_subtitle +'</strong>');
-                         } else {
-                              $('#desc-e-ppro-alert').removeClass('has-error');
-                              $('#desc-e-ppro-messages').removeClass('help-block').html('');
                          }
 
                           
