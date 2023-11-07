@@ -117,14 +117,14 @@ class PemetaanApiController extends Controller
 
     public function store(Request $request)
     {
-        $validation = ValidationPemetaan::validation($request);
+        $validation = ValidationPemetaan::validationInsert($request);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
                 $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id); 
            
-            
-                $insert = RequestPemetaan::fieldsData($request); 
+                $id = '';
+                $insert = RequestPemetaan::fieldsData($request,$id); 
                 $log = array(
                     'category' => 'LOG_DATA_PEMETAAN',
                     'group_menu' => 'upload_data_pemetaan',
@@ -273,7 +273,7 @@ class PemetaanApiController extends Controller
 
     public function update($id, Request $request)
     {
-        $validation = ValidationPemetaan::validation($request);
+        $validation = ValidationPemetaan::validationUpdate($request,$id);
         if ($validation) {
             return response()->json($validation, 400);
         } else {
