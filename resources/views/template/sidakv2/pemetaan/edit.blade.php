@@ -135,7 +135,7 @@
           var file_data_identifikasi = '';
           var file_data_pengolahan = '';
           var file_data_klarifikasi = '';
-          var file_data_konfrimasi = '';
+          var file_data_finalisasi = '';
           var file_data_penyusunan = '';
           var file_penyusunan_infografis = '';
           var file_doc_info_grafis = '';
@@ -165,35 +165,34 @@
                     'type': 'draft',
                };
 
-                                         
-
-               // if (total_promosi != pagu_promosi) {
-               //      Swal.fire({
-               //           icon: 'info',
-               //           title: 'Peringatan',
-               //           text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-               //           confirmButtonColor: '#000',
-               //           showConfirmButton: true,
-               //           confirmButtonText: 'OK',
-               //      });
-               // } else {
-                    //if(data.length >0)
-                   // {
+                                        
+               if (total_promosi != pagu_promosi) {
+                    Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                    });
+               } else {
+                    if(data.length >0)
+                   {
                         SendingData(form,data);
-                    // }else{
-                    //     Swal.fire({
-                    //      icon: 'info',
-                    //      title: 'Peringatan',
-                    //      text: 'Maaf, Periode Belum di pilih.',
-                    //      confirmButtonColor: '#000',
-                    //      showConfirmButton: true,
-                    //      confirmButtonText: 'OK',
-                    //      });
-                    // }     
+                    }else{
+                        Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Periode Belum di pilih.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                         });
+                    }     
    
-               //  
+                
                
-               //}
+               }
 
           });
 
@@ -209,32 +208,32 @@
 
                                           
 
-               // if (total_promosi != pagu_promosi) {
-               //      Swal.fire({
-               //           icon: 'info',
-               //           title: 'Peringatan',
-               //           text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-               //           confirmButtonColor: '#000',
-               //           showConfirmButton: true,
-               //           confirmButtonText: 'OK',
-               //      });
-               // } else {
+               if (total_promosi != pagu_promosi) {
+                    Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                    });
+               } else {
    
-               //      if(data.length >0)
-               //      {
+                    if(data.length >0)
+                    {
                         SendingData(form,data);
-                    // }else{
-                    //     Swal.fire({
-                    //      icon: 'info',
-                    //      title: 'Peringatan',
-                    //      text: 'Maaf, Periode Belum di pilih.',
-                    //      confirmButtonColor: '#000',
-                    //      showConfirmButton: true,
-                    //      confirmButtonText: 'OK',
-                    //      });
-                    // }   
+                    }else{
+                        Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Periode Belum di pilih.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                         });
+                    }   
                
-             //  }
+              }
 
           });
 
@@ -301,24 +300,24 @@
                if(periode_id)
                {    
                    
-                    // if(pagu_promosi < total_promosi) {
-                    //      Swal.fire({
-                    //           icon: 'info',
-                    //           title: 'Peringatan',
-                    //           text:'Total Promosi Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_promosi, 0, ".", "."),
-                    //           confirmButtonColor: '#000',
-                    //           showConfirmButton: true,
-                    //           confirmButtonText: 'OK',
-                    //      });  
+                    if(pagu_promosi < total_promosi) {
+                         Swal.fire({
+                              icon: 'info',
+                              title: 'Peringatan',
+                              text:'Total Promosi Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_promosi, 0, ".", "."),
+                              confirmButtonColor: '#000',
+                              showConfirmButton: true,
+                              confirmButtonText: 'OK',
+                         });  
                          
-                    //      $('#total_promosi').removeClass('text-black').addClass('text-red').addClass('blinking-text');
+                         $('#total_promosi').removeClass('text-black').addClass('text-red').addClass('blinking-text');
                          
 
-                    // } else {
+                    } else {
 
-                    //      $('#total_promosi').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
+                         $('#total_promosi').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                       
-                    // }
+                    }
                }
                
                $('#total_promosi').html('<b>Rp. '+formattedNumber+'</b>');
@@ -572,6 +571,18 @@
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
 
+              if (files[0].size > 1363149) 
+              {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
+
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
                          file = fileReader.result;
@@ -586,6 +597,7 @@
                      
                          $('#img-file-rapat-teknis').html(row);
                          file_rencana_kerja = file;
+                        
                     
                      }else{
                          Swal.fire({
@@ -596,10 +608,10 @@
                            });  
                      }   
 
-                       
+               }     
                    })
                    fileReader.readAsDataURL(files[0])
-
+              
               });
 
 
@@ -627,7 +639,19 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+                 
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
 
+
+              }else{  
+                
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
                          file = fileReader.result;
@@ -650,7 +674,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -679,6 +703,19 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -702,7 +739,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -731,6 +768,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -754,7 +803,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -784,6 +833,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+              
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -807,7 +868,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -836,6 +897,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -859,7 +932,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -888,13 +961,25 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
                          file = fileReader.result;
                          var row = '';
                          // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Pengolahan">';
-                         row +='<div id="viewPdf" class="viewpdf group-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-'+ id +'"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
 
                          row +=`<div id="modal-view-`+ id +`" class="modal fade" role="dialog">`;
                                row +=`<div id="FormView-`+ id +`"></div>`;
@@ -910,7 +995,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -940,6 +1025,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -962,7 +1059,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -991,6 +1088,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1004,7 +1113,7 @@
                          row +=`</div>`;
                      
                          $('#img-file-fgd-konfirmasi').html(row);
-                         file_data_konfrimasi = file
+                         file_data_finalisasi = file
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1013,7 +1122,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1043,6 +1152,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1065,7 +1186,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+                 }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1094,6 +1215,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+                
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1116,7 +1249,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1145,6 +1278,18 @@
                    let filename = files[0].name
                    const fileReader = new FileReader()
                    fileReader.addEventListener('load', () => {
+               
+               if (files[0].size > 1363149) 
+               {
+                         Swal.fire({
+                               icon: 'info',
+                               title: 'file PDF Maksimal 2MB!',
+                               confirmButtonColor: '#000',
+                               confirmButtonText: 'OK'
+                           });  
+
+
+              }else{  
 
                     if(files[0].name.toUpperCase().includes(".PDF"))
                     {
@@ -1167,7 +1312,7 @@
                                confirmButtonText: 'OK'
                            });  
                      }   
-
+               }
                        
                    })
                    fileReader.readAsDataURL(files[0])
@@ -1183,7 +1328,7 @@
           }
 
           function EmbedFile(file,tmp){
-                 console.log(file)
+                
 
                 let row = ``;
                       row +=`<div class="modal-dialog">`;
@@ -1259,6 +1404,7 @@
                     success: function(data) {
                        
                          updateContent(data);
+                    
                        
                     },
                     error: function( error) {}
@@ -1275,7 +1421,7 @@
                     row +=`<tr>`;
                             row +=`<td rowspan="5" class="font-bold text-center">1</td>`;
                             row +=`<td colspan="6" class="font-bold"> Identifikasi Pemetaan Potensi Investasi : </td>`;
-                            row +=`<td><strong id="total_identifikasi">${item.total_identifikasi }</td>`;
+                            row +=`<td><strong id="total_identifikasi">${item.total_identifikasi }</strong></td>`;
                             row +=`<td></td>`;
                     row +=`</tr>`;
 
@@ -1305,16 +1451,19 @@
                                   
                                       row +=`<div id="desc-a-pra-alert" class="pdf-btn-center">`;
                                          row +=`<button id="file-rapat-teknis"  type="button" class="file btn btn-default "> Upload File</button>`;
-                                     
+                                       
                                          row +=`<div id="img-file-rapat-teknis">`;
+                                         if(item.keterangan_rencana_kerja)
+                                         { 
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rencana_kerja }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                         }
                                          row +=`</div>`;
+                                       
                                          row +=`<input type="file" style="display:none;" id="desc-a-pra" name="desc_a_pra" class="form-control" value="">`;
                                          row +=`<span id="desc-a-pra-messages"></span>`;
                                    row +=` </div>`;
@@ -1349,17 +1498,20 @@
                               row +=`<div id="desc-b-pra-alert" class="pdf-btn-center">`;
 
                                       row +=`<button id="file-studi-literatur"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                    
+                                       
                                         row +=`<div id="img-file-studi-literatur">`;
+                                         if(item.keterangan_studi_literatur)
+                                         {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_studi_literatur }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                          }
                                         row +=`</div>`;
-
+                                    
 
                                         row +=`<input type="file"  style="display:none;"   name="desc_b_pra" id="desc-b-pra" value="" class="form-control">`;
                                  row +=`<span id="desc-b-pra-messages"></span>`;
@@ -1395,17 +1547,20 @@
                               row +=`<td>`;
                                    row +=`<div id="desc-c-pra-alert" class="pdf-btn-center">`;
                                    row +=`<button id="file-rapat-kordinasi"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                   
+                                        
                                         row +=`<div id="img-file-rapat-kordinasi">`;
+                                          if(item.keterangan_rapat_kordinasi)
+                                          {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rapat_kordinasi }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                          }
                                         row +=`</div>`;
-
+                                   
                                         row +=`<input type="file" style="display:none;"   id="desc-c-pra" name="desc_c_pra" value="" class="form-control">`;
                                  row +=`<span id="desc-c-pra-messages"></span>`;
                             row +=`</div>`;
@@ -1439,18 +1594,21 @@
                                    row +=`<div id="desc-d-pra-alert" class="pdf-btn-center">`;
                                          
                                         row +=`<button id="file-sekunder"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                     
+                                       
                                         row +=`<div id="img-file-sekunder">`;
+                                          if(item.keterangan_data_sekunder)
+                                          { 
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_data_sekunder }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                          }
                                         row +=`</div>`;
 
-
+                                     
 
                                         row +=`<input type="file" style="display:none;"  name="desc_d_pra" id="desc-d-pra" value="" class="form-control">`;
                                  row +=`<span id="desc-d-pra-messages"></span>`;
@@ -1463,7 +1621,7 @@
                     row +=`<tr>`;
                             row +=`<td rowspan="11" class="font-bold text-center">2</td>`;
                             row +=`<td colspan="6" class="font-bold"> Perumusan dan Pelaksanaan Pemetaan Potensi Investasi : </td>`;
-                             row +=`<td><strong id="total_pelaksanaan">${item.total_pelaksanaan }</td>`;
+                             row +=`<td><strong id="total_pelaksanaan">${item.total_pelaksanaan }</strong></td>`;
                             row +=`<td></td>`;
                             row +=`</tr>`;
                     row +=`<tr>`;
@@ -1495,17 +1653,19 @@
                                    row +=`<div id="desc-a-pro-alert" class="pdf-btn-center">`;
 
                                            row +=`<button id="file-persiapan"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                        
                                         row +=`<div id="img-file-persiapan">`;
+                                          if(item.keterangan_fgd_persiapan)
+                                          {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_persiapan }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                          }
                                         row +=`</div>`;
-
+                                   
 
 
                                         row +=`<input type="file"  style="display:none;"  name="desc_a_pro" id="desc-a-pro" value=""   class="form-control">`;
@@ -1547,17 +1707,19 @@
                                              
                                              
                                         row +=`<button id="file-fgd-identifikasi"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                        
                                         row +=`<div id="img-file-fgd-identifikasi">`;
+                                           if(item.keterangan_fgd_identifikasi)
+                                           {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_identifikasi }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                           }
                                         row +=`</div>`;
-
+                                    
                                              row +=`<input type="file" style="display:none;" name="desc_b_pra" id="desc-b-pro" value="" class="form-control">`;
                                              row +=`<span id="desc-b-pro-messages"></span>`; 
                                   row +=`</div>`; 
@@ -1569,8 +1731,9 @@
                               
                     row +=`<tr>`; 
                                row +=`<td class="font-bold" rowspan="5">C.</td>`; 
-                               row +=`<td class="-abjad font-bold" colspan="7">`; 
-                                   row +=`Pengolahan dan analisis data untuk menghasilkan potensi sektor dan subsektor unggulan daerah :`;
+                               row +=`<td id="pengolahan-alert" class="-abjad font-bold" colspan="7">`; 
+                                   row +=`<div >Pengolahan dan analisis data untuk menghasilkan potensi sektor dan subsektor unggulan daerah :</div>`;
+                                  row +=`<span id="pengolahan-messages"></span>`;    
                                row +=`</td>`;    
                     row +=`</tr>`; 
 
@@ -1589,37 +1752,40 @@
                                row +=`<td class="-abjad font-bold"> LQ</td>`; 
                               row +=`<td>`; 
                               row +=`<div id="startdate-c-1-pro-alert" class="margin-none form-group"> `; 
-                                    row +=`<input type="date" id="startdate-lq"  name="startdate_c_1_pro"  value="${item.tgl_awal_lq }"  class="form-control">`; 
+                                    row +=`<input disabled type="date" id="startdate-lq"  name="startdate_c_1_pro"  value="${item.tgl_awal_lq }"  class="form-control">`; 
                                     row +=`<span id="startdate-c-1-pro-messages"></span>`; 
                              row +=`</div>`; 
                           row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="enddate-c-1-pro-alert"  class="margin-none form-group">`;  
-                                         row +=`<input type="date" id="enddate-lq"   name="enddate_c_1_pro"  value="${item.tgl_ahir_lq }"  class="form-control">`; 
+                                         row +=`<input disabled type="date" id="enddate-lq"   name="enddate_c_1_pro"  value="${item.tgl_ahir_lq }"  class="form-control">`; 
                                   row +=`<span id="enddate-c-1-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="budget-c-1-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input min="0" id="budget-lq"   type="number"  placeholder="Budget" value="${item.budget_lq }" oninput="this.value = Math.abs(this.value)" name="budget_c_1_pro" class="form-control pelaksanaan">`; 
+                                         row +=`<input disabled min="0" id="budget-lq"   type="number"  placeholder="Budget" value="${item.budget_lq }" oninput="this.value = Math.abs(this.value)" name="budget_c_1_pro" class="form-control pelaksanaan">`; 
                                   row +=`<span id="budget-c-1-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td rowspan="4">`; 
-                                   row +=`<div id="desc-c-1-pro-alert" class="pdf-btn-center">`;
+                                   row +=`<div id="desc-c-1-pro-alert" class="potensi-sektor">`;
 
                                         row +=`<button id="file-pengolahan"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                     
+                                       
                                         row +=`<div id="img-file-pengolahan">`;
+                                          if(item.keterangan_pengolahan)
+                                          {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_pengolahan }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                          }
                                         row +=`</div>`;
-
+                                    
                                         row +=`<input type="file" style="display:none" id="keterangan-pengolahan" value="" name="keterangan_pengolahan">`; 
                                    row +=`<span id="desc-c-1-pro-messages"></span>`; 
                                    row +=`</div>`; 
@@ -1632,9 +1798,9 @@
                           row +=`<tr>`; 
                             if(item.checklist_shift_share == 'true')
                             {
-                                row +=`<td><input id="checklist-shift-share" class="checkbox-pengolahan" type="checkbox" checked name="checklist_lq" value="${item.checklist_shift_share }"></td>`;   
+                                row +=`<td><input id="checklist-shift-share" class="checkbox-pengolahan" type="checkbox" checked name="checklist_shift_share" value="${item.checklist_shift_share }"></td>`;   
                             } else{
-                                row +=`<td><input id="checklist-shift-share" class="checkbox-pengolahan"  type="checkbox" name="checklist_lq" value="${item.checklist_shift_share }"></td>`;  
+                                row +=`<td><input id="checklist-shift-share" class="checkbox-pengolahan"  type="checkbox" name="checklist_shift_share" value="${item.checklist_shift_share }"></td>`;  
                             } 
                             
                                row +=`<td class="font-bold table-number" >`; 
@@ -1643,19 +1809,19 @@
                                row +=`<td class="-abjad font-bold"> Shift Share</td>`; 
                                row +=`<td>`; 
                                row +=`<div id="startdate-c-2-pro-alert" class="margin-none form-group"> `; 
-                                    row +=`<input id="startdate-shift-share" type="date"  name="startdate_shift_c_2_pro" value="${item.tgl_awal_shift_share }" class="form-control">`; 
+                                    row +=`<input disabled id="startdate-shift-share" type="date"  name="startdate_shift_c_2_pro" value="${item.tgl_awal_shift_share }" class="form-control">`; 
                                    row +=` <span id="startdate-c-2-pro-messages"></span>`; 
                              row +=`</div>`; 
                           row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="enddate-c-2-pro-alert" class="margin-none form-group"> `; 
-                                  row +=`<input type="date" id="enddate-shift-share"  name="enddate_c_2_pro" value="${item.tgl_ahir_shift_share }" class="form-control">`; 
+                                  row +=`<input disabled type="date" id="enddate-shift-share"  name="enddate_c_2_pro" value="${item.tgl_ahir_shift_share }" class="form-control">`; 
                                   row +=`<span id="enddate-c-2-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="budget-c-2-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input min="0" id="budget-shift-share"  type="number" placeholder="Budget" value="${item.budget_shift_share }"  oninput="this.value = Math.abs(this.value)" name="budget_c_2_pro" class="form-control pelaksanaan">`; 
+                                         row +=`<input disabled min="0" id="budget-shift-share"  type="number" placeholder="Budget" value="${item.budget_shift_share }"  oninput="this.value = Math.abs(this.value)" name="budget_c_2_pro" class="form-control pelaksanaan">`; 
                                   row +=`<span id="budget-c-2-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
@@ -1665,9 +1831,9 @@
                           row +=`<tr>`; 
                             if(item.checklist_tipologi_sektor == 'true')
                             {
-                                row +=`<td><input id="checklist-tipologi-sektor" class="checkbox-pengolahan"  type="checkbox" checked name="checklist_lq" value="${item.checklist_tipologi_sektor }"></td>`;   
+                                row +=`<td><input id="checklist-tipologi-sektor" class="checkbox-pengolahan"  type="checkbox" checked name="checklist_tipologi_sektor" value="${item.checklist_tipologi_sektor }"></td>`;   
                             } else{
-                                row +=`<td><input id="checklist-tipologi-sektor" class="checkbox-pengolahan"  type="checkbox" name="checklist_lq" value="${item.checklist_tipologi_sektor }"></td>`;  
+                                row +=`<td><input  id="checklist-tipologi-sektor" class="checkbox-pengolahan"  type="checkbox" name="checklist_tipologi_sektor" value="${item.checklist_tipologi_sektor }"></td>`;  
                             } 
                                  
                                row +=`<td class="font-bold table-number" >`; 
@@ -1676,19 +1842,19 @@
                                row +=`<td class="-abjad font-bold"> Tipologi Sektor</td>`; 
                                 row +=`<td>`; 
                                row +=`<div id="startdate-c-3-pro-alert" class="margin-none form-group"> `; 
-                                    row +=`<input type="date" id="startdate-tipologi-sektor"  name="startdate_c_3_pro" value="${item.tgl_awal_tipologi_sektor }"  class="form-control">`; 
+                                    row +=`<input disabled type="date" id="startdate-tipologi-sektor"  name="startdate_c_3_pro" value="${item.tgl_awal_tipologi_sektor }"  class="form-control">`; 
                                     row +=`<span id="startdate-c-3-pro-messages"></span>`; 
                              row +=`</div>`; 
                           row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="enddate-tipologi-sektor-pro-alert" class="margin-none form-group"> `; 
-                                         row +=`<input type="date" id="enddate-tipologi-sektor"  name="enddate_c_3_pro" value="${item.tgl_ahir_tipologi_sektor }"  class="form-control">`; 
+                                         row +=`<input disabled type="date" id="enddate-tipologi-sektor"  name="enddate_c_3_pro" value="${item.tgl_ahir_tipologi_sektor }"  class="form-control">`; 
                                  row +=` <span id="enddate-c-3-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="budget-c-3-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input min="0" id="budget-tipologi-sektor"   type="number" placeholder="Budget" value="${item.budget_tipologi_sektor }"  oninput="this.value = Math.abs(this.value)" name="budget_c_3_pro" class="form-control pelaksanaan">`; 
+                                         row +=`<input min="0" id="budget-tipologi-sektor"   type="number" disabled placeholder="Budget" value="${item.budget_tipologi_sektor }"  oninput="this.value = Math.abs(this.value)" name="budget_c_3_pro" class="form-control pelaksanaan">`; 
                                   row +=`<span id="budget-c-3-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
@@ -1698,9 +1864,9 @@
                           row +=`<tr>`; 
                            if(item.checklist_klassen == 'true')
                             {
-                                row +=`<td><input id="checklist-klassen" class="checkbox-pengolahan"  type="checkbox" checked name="checklist_lq" value="${item.checklist_klassen }"></td>`;   
+                                row +=`<td><input id="checklist-klassen" class="checkbox-pengolahan"  type="checkbox" checked name="checklist_klassen" value="${item.checklist_klassen }"></td>`;   
                             } else{
-                                row +=`<td><input id="checklist-klassen" class="checkbox-pengolahan"  type="checkbox" name="checklist_lq" value="${item.checklist_klassen }"></td>`;  
+                                row +=`<td><input id="checklist-klassen" class="checkbox-pengolahan"  type="checkbox" name="checklist_klassen" value="${item.checklist_klassen }"></td>`;  
                             } 
                               
                               row +=` <td class="font-bold table-number" >`; 
@@ -1709,19 +1875,19 @@
                                row +=`<td class="-abjad font-bold"> Klassen</td>`; 
                                row +=`<td>`; 
                                row +=`<div id="startdate-c-4-pro-alert" class="margin-none form-group"> `; 
-                                    row +=`<input type="date" id="startdate-klassen"  name="startdate_c_4_pro" value="${item.tgl_awal_klassen }" class="form-control">`; 
+                                    row +=`<input disabled type="date" id="startdate-klassen"  name="startdate_c_4_pro" value="${item.tgl_awal_klassen }" class="form-control">`; 
                                    row +=` <span id="startdate-c-4-pro-messages"></span>`; 
                              row +=`</div>`; 
                           row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="enddate-c-4-pro-alert"   class="margin-none form-group"> `; 
-                                row +=`<input type="date"  name="enddate-c-4-pro" value="${item.tgl_ahir_klassen }" id="enddate-klassen" class="form-control">`; 
+                                row +=`<input type="date" disabled  name="enddate-c-4-pro" value="${item.tgl_ahir_klassen }" id="enddate-klassen" class="form-control">`; 
                                   row +=`<span id="enddate-c-4-pro-messages"></span>`; 
                              row +=`</div>`; 
                               row +=` </td>`; 
                                row +=`<td>`; 
                              row +=`<div id="budget-c-4-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input min="0" id="budget-klassen" type="number" placeholder="Budget" value="${item.budget_klassen }" oninput="this.value = Math.abs(this.value)" name="budget_c_4_pro" class="form-control pelaksanaan">`; 
+                                         row +=`<input disabled min="0" id="budget-klassen" type="number" placeholder="Budget" value="${item.budget_klassen }" oninput="this.value = Math.abs(this.value)" name="budget_c_4_pro" class="form-control pelaksanaan">`; 
                                   row +=`<span id="budget-c-4-pro-messages"></span>`; 
                              row +=`</div>`; 
                               row +=` </td>`; 
@@ -1757,18 +1923,20 @@
                                         
 
                                         row +=`<button id="file-fgd-klarifikasi"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                        
                                         row +=`<div id="img-file-fgd-klarifikasi">`;
+                                          if(item.keterangan_fgd_klarifikasi)
+                                          {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_klarifikasi }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                          }
                                         row +=`</div>`;
 
-
+                                     
                                         row +=`<input type="file" style="display:none;" id="desc-d-pro" name="desc_d_pro" value="${item.keterangan_fgd_klarifikasi }" class="form-control ">`; 
                                   row +=`<span id="desc-d-pro-messages"></span>`; 
                             row +=` </div>`; 
@@ -1808,17 +1976,19 @@
                                     row +=`<div id="desc-e-pro-alert" class="pdf-btn-center">`;
 
                                          row +=`<button id="file-fgd-konfirmasi"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                        
                                         row +=`<div id="img-file-fgd-konfirmasi">`;
+                                          if(item.keterangan_finalisasi)
+                                          {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_finalisasi }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                          }
                                         row +=`</div>`;
-
+                                   
 
                                         row +=` <input type="file" style="display:none;"  id="desc-e-pro" name="desc_e_pro" value=""  class="form-control">`; 
                                   row +=`<span id="desc-e-pro-messages"></span>`; 
@@ -1838,10 +2008,13 @@
 
                          row +=`<tr>`; 
                              row +=` <td class="font-bold" rowspan="8">A.</td>`; 
-                             row +=` <td class="-abjad font-bold" colspan="7">`; 
-                                   row +=`Menyusun hasil identifikasi, pengolahan, dan analisis data dalam bentuk dokumen`; 
+                             row +=` <td id="penyusunan-alert" class="-abjad font-bold" colspan="7">`; 
+                                   row +=`<div >Menyusun hasil identifikasi, pengolahan, dan analisis data dalam bentuk dokumen</div>`;
+                                   row +=`<span id="penyusunan-messages"></span>`;  
                               row +=`</td>`; 
                          row +=`</tr>`; 
+
+                      
 
 
                          row +=`<tr>`; 
@@ -1857,19 +2030,19 @@
                               row +=`<td class="-abjad font-bold"> Deskripsi singkat sektor unggulan</td>`; 
                               row +=`<td>`; 
                                    row +=`<div id="startdate-a-1-ppro-alert"  class="margin-none form-group"> `; 
-                                       row +=` <input type="date" id="startdate-summary-sektor-unggulan"  name="startdate_a_1_ppro" value="${item.tgl_awal_summary_sektor_unggulan }"   class="form-control">`; 
+                                       row +=` <input disabled type="date" id="startdate-summary-sektor-unggulan"  name="startdate_a_1_ppro" value="${item.tgl_awal_summary_sektor_unggulan }"   class="form-control">`; 
                                        row +=` <span id="startdate-a-1-ppro-messages"></span>`; 
                                 row +=` </div>`; 
                               row +=`</td>`; 
                               row +=`<td>`; 
                                  row +=`<div id="enddate-a-1-ppro-alert" class="margin-none form-group"> `; 
-                                             row +=`<input id="enddate-summary-sektor-unggulan"  type="date"  name="enddate_a_1_pro" value="${item.tgl_ahir_summary_sektor_unggulan }"  class="form-control" >`; 
+                                             row +=`<input disabled id="enddate-summary-sektor-unggulan"  type="date"  name="enddate_a_1_pro" value="${item.tgl_ahir_summary_sektor_unggulan }"  class="form-control" >`; 
                                       row +=`<span id="enddate-a-1-ppro-messages"></span>`; 
                                 row +=` </div>`; 
                                    row +=`</td>`; 
                                   row +=` <td>`; 
                                  row +=`<div id="budget-a-1-ppro-alert" class="margin-none form-group">`; 
-                                            row +=` <input min="0" id="budget-summary-sektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_summary_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_1_ppro" class="form-control penyusunan">`; 
+                                            row +=` <input disabled min="0" id="budget-summary-sektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_summary_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_1_ppro" class="form-control penyusunan">`; 
                                      row +=` <span id="budget-a-1-ppro-messages"></span>`; 
                                  row +=`</div>`; 
                              row +=` </td>`; 
@@ -1877,18 +2050,20 @@
                                     row +=`<div id="desc-a-1-ppro-alert" class="penyusunan-peta">`; 
 
                                       row +=`<button id="file-penyusunan"  type="button" class="file btn btn-default"> Upload File</button>`;
-
+                                        
                                         row +=`<div id="img-file-penyusunan">`;
+                                          if(item.keterangan_penyusunan)
+                                          {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_penyusunan }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                           }
                                         row +=`</div>`;
 
- 
+                                    
                                              row +=` <input type="file" style="display:none" id="keterangan-penyusunan" name="keterangan_penyusunan" value="${item.keterangan_penyusunan }" class="form-control">`; 
                                       row +=` <span id="desc-a-1-ppro-messages"></span>`; 
                                     row +=`</div>`; 
@@ -1911,19 +2086,19 @@
                                row +=`<td class="-abjad font-bold"> Deskripsi sektor unggulan</td>`; 
                                row +=`<td>`; 
                                    row +=` <div id="startdate-a-2-ppro-alert" class="margin-none form-group"> `; 
-                                        row +=` <input type="date" id="startdate-sektor-unggulan"  name="startdate_a_2_ppro" value="${item.tgl_awal_sektor_unggulan }" class="form-control">`; 
+                                        row +=` <input disabled type="date" id="startdate-sektor-unggulan"  name="startdate_a_2_ppro" value="${item.tgl_awal_sektor_unggulan }" class="form-control">`; 
                                          row +=`<span id="startdate-a-2-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
                                   row +=`<div id="enddate-a-2-ppro-alert" class="margin-none form-group"> `; 
-                                             row +=` <input type="date" id="enddate-sektor-unggulan"  name="enddate_a_2_pro" value="${item.tgl_ahir_sektor_unggulan }" class="form-control">`; 
+                                             row +=` <input disabled type="date" id="enddate-sektor-unggulan"  name="enddate_a_2_pro" value="${item.tgl_ahir_sektor_unggulan }" class="form-control">`; 
                                        row +=`<span id="enddate-a-2-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                    row +=` </td>`; 
                                    row +=` <td>`; 
                                   row +=`<div id="budget-a-2-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input min="0" id="budget-sektor-unggulan" type="number" placeholder="Budget" value="${item.budget_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_2_ppro" class="form-control penyusunan">`; 
+                                             row +=` <input min="0" id="budget-sektor-unggulan" type="number" disabled placeholder="Budget" value="${item.budget_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_2_ppro" class="form-control penyusunan">`; 
                                        row +=`<span id="budget-a-2-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                row +=`</td>`; 
@@ -1944,19 +2119,19 @@
                              
                                row +=`<td>`; 
                                    row +=` <div id="startdate-a-3-ppro-alert" class="margin-none form-group"> `; 
-                                       row +=`  <input type="date" id="startdate-potensi-pasar"  name="startdate_a_3_ppro" value="${item.tgl_awal_potensi_pasar }"  class="form-control">`; 
+                                       row +=`  <input disabled type="date" id="startdate-potensi-pasar"  name="startdate_a_3_ppro" value="${item.tgl_awal_potensi_pasar }"  class="form-control">`; 
                                         row +=` <span id="startdate-a-3-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                               row +=`</td>`; 
                                row +=`<td>`; 
                                   row +=`<div id="enddate-a-3-ppro-alert" class="margin-none form-group"> `; 
-                                             row +=` <input type="date" id="enddate-potensi-pasar"  name="enddate_a_3_pro" value="${item.tgl_ahir_potensi_pasar }" class="form-control">`; 
+                                             row +=` <input disabled type="date" id="enddate-potensi-pasar"  name="enddate_a_3_pro" value="${item.tgl_ahir_potensi_pasar }" class="form-control">`; 
                                        row +=`<span id="enddate-a-3-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                    row +=` </td>`; 
                                     row +=`<td>`; 
                                  row +=` <div id="budget-a-3-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input min="0" id="budget-potensi-pasar" type="number" placeholder="Budget" value="${item.budget_potensi_pasar }"  oninput="this.value = Math.abs(this.value)" name="budget_a_3_ppro" class="form-control penyusunan">`; 
+                                             row +=` <input min="0" id="budget-potensi-pasar" type="number" disabled placeholder="Budget" value="${item.budget_potensi_pasar }"  oninput="this.value = Math.abs(this.value)" name="budget_a_3_ppro" class="form-control penyusunan">`; 
                                        row +=`<span id="budget-a-3-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -1976,19 +2151,19 @@
                                row +=`<td class="-abjad font-bold"> Parameter data sektor unggulan</td>`; 
                                row +=`<td>`; 
                                     row +=`<div id="startdate-a-4-ppro-alert" class="margin-none form-group"> `; 
-                                        row +=` <input type="date" id="startdate-parameter-sektor-unggulan" name="startdate_a_4_ppro" value="${item.tgl_awal_parameter_sektor_unggulan }"  class="form-control">`; 
+                                        row +=` <input disabled type="date" id="startdate-parameter-sektor-unggulan" name="startdate_a_4_ppro" value="${item.tgl_awal_parameter_sektor_unggulan }"  class="form-control">`; 
                                          row +=`<span id="startdate-a-4-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                row +=`</td>`; 
                               row +=` <td>`; 
                                  row +=` <div id="enddate-a-4-ppro-alert" class="margin-none form-group"> `; 
-                                           row +=`   <input type="date" id="enddate-parameter-sektor-unggulan"  name="enddate_a_4_pro" value="${item.tgl_ahir_parameter_sektor_unggulan }"  class="form-control">`; 
+                                           row +=`   <input disabled type="date" id="enddate-parameter-sektor-unggulan"  name="enddate_a_4_pro" value="${item.tgl_ahir_parameter_sektor_unggulan }"  class="form-control">`; 
                                       row +=` <span id="enddate-a-4-ppro-messages"></span>`; 
                                 row +=`  </div>`; 
                                    row +=` </td>`; 
                                    row +=` <td>`; 
                                   row +=`<div id="budget-a-4-ppro-alert" class="margin-none form-group">`; 
-                                              row +=`<input min="0" id="budget-parameter-sektor-unggulan" type="number" placeholder="Budget" value="${item.budget_parameter_sektor_unggulan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_4_ppro" class="form-control penyusunan">`; 
+                                              row +=`<input disabled min="0" id="budget-parameter-sektor-unggulan" type="number" placeholder="Budget" value="${item.budget_parameter_sektor_unggulan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_4_ppro" class="form-control penyusunan">`; 
                                        row +=`<span id="budget-a-4-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2009,19 +2184,19 @@
                                row +=`<td class="-abjad font-bold"> <textarea readonly class="textarea-table">Subsektor unggulan dan komoditas unggulan yang berisi deskripsi dan parameter (mencakup data produksi, luas lahan, pelaku usaha, peluang usaha dan data terkait lainnya)</textarea></td>`; 
                               row +=` <td>`; 
                                    row +=` <div id="startdate-a-5-ppro-alert" class="margin-none form-group"> `; 
-                                        row +=` <input type="date" id="startdate-subsektor-unggulan" name="startdate_a_5_ppro" value="${item.tgl_awal_subsektor_unggulan }"   class="form-control">`; 
+                                        row +=` <input disabled type="date" id="startdate-subsektor-unggulan" name="startdate_a_5_ppro" value="${item.tgl_awal_subsektor_unggulan }"   class="form-control">`; 
                                         row +=` <span id="startdate-a-5-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
                                  row +=` <div id="enddate-a-5-ppro-alert" class="margin-none form-group"> `; 
-                                            row +=`  <input type="date" id="enddate-subsektor-unggulan"  name="enddate_3_5_pro" value="${item.tgl_ahir_subsektor_unggulan }"   class="form-control">`; 
+                                            row +=`  <input disabled type="date" id="enddate-subsektor-unggulan"  name="enddate_3_5_pro" value="${item.tgl_ahir_subsektor_unggulan }"   class="form-control">`; 
                                       row +=` <span id="enddate-a-5-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                     row +=`</td>`; 
                                     row +=`<td>`; 
                                  row +=`<div id="budget-a-5-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input min="0" id="budget-subsektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_subsektor_unggulan }"   oninput="this.value = Math.abs(this.value)" name="budget_a_5_ppro" class="form-control penyusunan">`; 
+                                             row +=` <input disabled min="0" id="budget-subsektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_subsektor_unggulan }"   oninput="this.value = Math.abs(this.value)" name="budget_a_5_ppro" class="form-control penyusunan">`; 
                                       row +=` <span id="budget-a-5-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2041,19 +2216,19 @@
                                row +=`<td class="-abjad font-bold"> Insentif daerah</td>`; 
                                row +=`<td>`; 
                                     row +=`<div id="startdate-a-6-ppro-alert" class="margin-none form-group"> `; 
-                                        row +=` <input type="date" id="startdate-intensif-daerah"  name="startdate_a_6_ppro"  value="${item.tgl_awal_intensif_daerah }"  class="form-control">`; 
+                                        row +=` <input disabled type="date" id="startdate-intensif-daerah"  name="startdate_a_6_ppro"  value="${item.tgl_awal_intensif_daerah }"  class="form-control">`; 
                                         row +=` <span id="startdate-a-6-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
                                  row +=` <div id="enddate-a-6-ppro-alert" class="margin-none form-group"> `; 
-                                            row +=`  <input type="date" id="enddate-intensif-daerah" name="enddate_a_6_pro"  value="${item.tgl_ahir_intensif_daerah }"   class="form-control">`; 
+                                            row +=`  <input disabled type="date" id="enddate-intensif-daerah" name="enddate_a_6_pro"  value="${item.tgl_ahir_intensif_daerah }"   class="form-control">`; 
                                       row +=` <span id="enddate-a-6-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                     row +=`</td>`; 
                                     row +=`<td>`; 
                                   row +=`<div id="budget-a-6-ppro-alert" class="margin-none form-group">`; 
-                                              row +=`<input min="0" id="budget-intensif-daerah"  type="number" placeholder="Budget"  value="${item.budget_intensif_daerah }"  oninput="this.value = Math.abs(this.value)" name="budget_a_6_ppro" class="form-control penyusunan">`; 
+                                              row +=`<input disabled min="0" id="budget-intensif-daerah"  type="number" placeholder="Budget"  value="${item.budget_intensif_daerah }"  oninput="this.value = Math.abs(this.value)" name="budget_a_6_ppro" class="form-control penyusunan">`; 
                                       row +=` <span id="budget-a-6-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2073,19 +2248,19 @@
                                row +=`<td class="-abjad font-bold"> Potensi lanjutan komoditas sektor unggulan</td>`; 
                                row +=`<td>`; 
                                     row +=`<div id="startdate-a-7-ppro-alert" class="margin-none form-group"> `; 
-                                        row +=`<input type="date" id="startdate-potensi-lanjutan" name="startdate_a_7_ppro" value="${item.tgl_awal_potensi_lanjutan }"  class="form-control">`; 
+                                        row +=`<input disabled type="date" id="startdate-potensi-lanjutan" name="startdate_a_7_ppro" value="${item.tgl_awal_potensi_lanjutan }"  class="form-control">`; 
                                          row +=`<span id="startdate-a-7-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
                                   row +=`<div id="enddate-a-7-ppro-alert" class="margin-none form-group"> `; 
-                                              row +=`<input type="date" id="enddate-potensi-lanjutan"  name="enddate_a_7_pro" value="${item.tgl_ahir_potensi_lanjutan }" class="form-control">`; 
+                                              row +=`<input disabled type="date" id="enddate-potensi-lanjutan"  name="enddate_a_7_pro" value="${item.tgl_ahir_potensi_lanjutan }" class="form-control">`; 
                                        row +=`<span id="enddate-a-7-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                     row +=`</td>`; 
                                     row +=`<td>`; 
                                   row +=`<div id="budget-a-7-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input min="0" id="budget-potensi-lanjutan"  type="number" placeholder="Budget" value="${item.budget_potensi_lanjutan }" oninput="this.value = Math.abs(this.value)" name="budget_a_7_ppro" class="form-control penyusunan">`; 
+                                             row +=` <input disabled min="0" id="budget-potensi-lanjutan"  type="number" placeholder="Budget" value="${item.budget_potensi_lanjutan }" oninput="this.value = Math.abs(this.value)" name="budget_a_7_ppro" class="form-control penyusunan">`; 
                                        row +=`<span id="budget-a-7-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2119,18 +2294,20 @@
                                    row +=` <div id="desc-b-ppro-alert" class="pdf-btn-center">`; 
 
                                        row +=`<button id="file-info-grafis"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                        
                                         row +=`<div id="img-file-info-grafis">`;
+                                          if(item.keterangan_info_grafis)
+                                          {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_info_grafis }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                          }
                                         row +=`</div>`;
                                    
-
+                                     
                                         row +=` <input type="file" style="display:none;" id="desc-b-ppro" name="desc_b_ppro" value="${item.keterangan_info_grafis }"   class="form-control">`; 
                                         row +=`<span id="desc-b-ppro-messages"></span>`; 
                                    row +=`</div>`; 
@@ -2164,18 +2341,20 @@
                                    row +=` <div id="desc-c-ppro-alert" class="pdf-btn-center">`; 
                                          
                                         row +=`<button id="file-doc-info-grafis"  type="button" class="file btn btn-default "> Upload File</button>`;
-
+                                        
                                         row +=`<div id="img-file-doc-info-grafis">`;
+                                          if(item.keterangan_dokumentasi)
+                                          {
                                              row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_dokumentasi }" 
                                              data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
 
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-
+                                           } 
                                         row +=`</div>`;
                                     
-
+                                  
 
                                         row +=` <input type="file" style="display:none;" id="desc-c-ppro" name="desc_c_ppro" value="${item.keterangan_dokumentasi }"  class="form-control pasca-produksi">`; 
                                         row +=` <span id="desc-c-ppro-messages"></span>`; 
@@ -2222,7 +2401,96 @@
           
                     UploadFilePenyusunan(item.id);
                     UploadFilePenyusunanInfoGrafis(item.id); 
-                    UploadFileDokumentasiInfoGrafis(item.id);  
+                    UploadFileDokumentasiInfoGrafis(item.id); 
+
+
+                    if(item.checklist_lq =='true')
+                    {
+                         $('#startdate-lq').prop('disabled',false);
+                         $('#enddate-lq').prop('disabled',false);
+                         $('#budget-lq').prop('disabled',false);
+                    }
+
+                    if(item.checklist_shift_share =='true')
+                    {
+                         $('#startdate-shift-share').prop('disabled',false);
+                         $('#enddate-shift-share').prop('disabled',false);
+                         $('#budget-shift-share').prop('disabled',false);
+                    } 
+
+                     if(item.checklist_tipologi_sektor =='true')
+                    {
+                         $('#startdate-tipologi-sektor').prop('disabled',false);
+                         $('#enddate-tipologi-sektor').prop('disabled',false);
+                         $('#budget-tipologi-sektor').prop('disabled',false);
+                    } 
+
+                     if(item.checklist_klassen =='true')
+                    {
+                         $('#startdate-klassen').prop('disabled',false);
+                         $('#enddate-klassen').prop('disabled',false);
+                         $('#budget-klassen').prop('disabled',false);
+                    } 
+
+
+
+
+
+
+                     if(item.checklist_summary_sektor_unggulan =='true')
+                    {
+                         $('#startdate-summary-sektor-unggulan').prop('disabled',false);
+                         $('#enddate-summary-sektor-unggulan').prop('disabled',false);
+                         $('#budget-summary-sektor-unggulan').prop('disabled',false);
+                    } 
+
+
+                     if(item.checklist_sektor_unggulan =='true')
+                    {
+                         $('#startdate-sektor-unggulan').prop('disabled',false);
+                         $('#enddate-sektor-unggulan').prop('disabled',false);
+                         $('#budget-sektor-unggulan').prop('disabled',false);
+                    } 
+
+
+                     if(item.checklist_potensi_pasar =='true')
+                    {
+                         $('#startdate-potensi-pasar').prop('disabled',false);
+                         $('#enddate-potensi-pasar').prop('disabled',false);
+                         $('#budget-potensi-pasar').prop('disabled',false);
+                    } 
+
+
+                     if(item.checklist_parameter_sektor_unggulan =='true')
+                    {
+                         $('#startdate-parameter-sektor-unggulan').prop('disabled',false);
+                         $('#enddate-parameter-sektor-unggulan').prop('disabled',false);
+                         $('#budget-parameter-sektor-unggulan').prop('disabled',false);
+                    } 
+
+
+                     if(item.checklist_subsektor_unggulan =='true')
+                    {
+                         $('#startdate-subsektor-unggulan').prop('disabled',false);
+                         $('#enddate-subsektor-unggulan').prop('disabled',false);
+                         $('#budget-subsektor-unggulan').prop('disabled',false);
+                    } 
+
+
+                     if(item.checklist_intensif_daerah =='true')
+                    {
+                         $('#startdate-intensif-daerah').prop('disabled',false);
+                         $('#enddate-intensif-daerah').prop('disabled',false);
+                         $('#budget-intensif-daerah').prop('disabled',false);
+                    } 
+
+
+                     if(item.checklist_potensi_lanjutan =='true')
+                    {
+                         $('#startdate-potensi-lanjutan').prop('disabled',false);
+                         $('#enddate-potensi-lanjutan').prop('disabled',false);
+                         $('#budget-potensi-lanjutan').prop('disabled',false);
+                    } 
  
     }
 
@@ -2320,7 +2588,7 @@
                     'tgl_awal_finalisasi':$('#startdate-e-pro').val(),
                     'tgl_ahir_finalisasi':$('#enddate-e-pro').val(),
                     'budget_finalisasi':$('#budget-e-pro').val(),
-                    'keterangan_finalisasi':file_data_konfrimasi,
+                    'keterangan_finalisasi':file_data_finalisasi,
                     
                     'checklist_summary_sektor_unggulan':checklist_summary_sektor_unggulan,     
                     'tgl_awal_summary_sektor_unggulan':$('#startdate-summary-sektor-unggulan').val(),
@@ -2377,7 +2645,7 @@
  
                };
                
-              console.log(arr)
+             // console.log(arr)
               
           
                $.ajax({
@@ -2671,14 +2939,25 @@
                               $('#budget-c-1-pro-messages').removeClass('help-block').html('');
                          }
 
-                         //  if(errors.messages.keterangan_lq)
-                         // {
-                         //      $('#desc-c-1-pro-alert').addClass('has-error');
-                         //      $('#desc-c-1-pro-messages').addClass('help-block').html('<strong>'+ errors.messages.keterangan_lq +'</strong>');
-                         // } else {
-                         //      $('#desc-c-1-pro-alert').removeClass('has-error');
-                         //      $('#desc-c-1-pro-messages').removeClass('help-block').html('');
-                         // }
+                          if(errors.messages.pengolahan)
+                         {
+                              $('#pengolahan-alert').addClass('hash-checkbox-alert');
+                              $('#pengolahan-messages').addClass('help-checkbox-msg').html('<strong>'+ errors.messages.pengolahan +'</strong>');
+                         } else {
+                              $('#pengolahan-alert').removeClass('has-checkbox-alert');
+                              $('#pengolahan-messages').removeClass('help-checkbox-msg').html('');
+                         }
+
+
+                         if(errors.messages.penyusunan)
+                         {
+                              $('#penyusunan-alert').addClass('hash-checkbox-alert');
+                              $('#penyusunan-messages').addClass('help-checkbox-msg').html('<strong>'+ errors.messages.penyusunan +'</strong>');
+                         } else {
+                              $('#penyusunan-alert').removeClass('hash-checkbox-alert');
+                              $('#penyusunan-messages').removeClass('help-checkbox-msg').html('');
+                         }
+
 
                           if(errors.messages.keterangan_pengolahan)
                          {
