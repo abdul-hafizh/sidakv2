@@ -292,7 +292,7 @@ class PemetaanApiController extends Controller
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
 
-                return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+                return response()->json(['status' => true, 'id' => $update, 'message' => 'Update data sucessfully']);
              
         }
     }

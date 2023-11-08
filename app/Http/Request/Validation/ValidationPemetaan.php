@@ -142,32 +142,32 @@ class ValidationPemetaan
          'tgl_awal_rencana_kerja' => 'required',
          'tgl_ahir_rencana_kerja' => 'required',
          'budget_rencana_kerja' =>   'required',
-         'keterangan_rencana_kerja' => 'required_if:status_laporan_id,14',
+         // 'keterangan_rencana_kerja' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_studi_literatur' => 'required',
          'tgl_ahir_studi_literatur' => 'required',
          'budget_studi_literatur' => 'required',
-         'keterangan_studi_literatur' =>'required_if:status_laporan_id,14',
+         // 'keterangan_studi_literatur' =>'required_if:status_laporan_id,14',
 
          'tgl_awal_rapat_kordinasi' => 'required',
          'tgl_ahir_rapat_kordinasi' => 'required',
          'budget_rapat_kordinasi' => 'required',
-         'keterangan_rapat_kordinasi' => 'required_if:status_laporan_id,14',
+         // 'keterangan_rapat_kordinasi' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_data_sekunder' => 'required',
          'tgl_ahir_data_sekunder' => 'required',
          'budget_data_sekunder' => 'required',
-         'keterangan_data_sekunder' => 'required_if:status_laporan_id,14',
+         // 'keterangan_data_sekunder' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_fgd_persiapan' => 'required',
          'tgl_ahir_fgd_persiapan' => 'required',
          'budget_fgd_persiapan' => 'required',
-         'keterangan_fgd_persiapan' => 'required_if:status_laporan_id,14',
+         // 'keterangan_fgd_persiapan' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_fgd_identifikasi' =>'required',
          'tgl_ahir_fgd_identifikasi' => 'required',
          'budget_fgd_identifikasi' => 'required',
-         'keterangan_fgd_identifikasi' => 'required_if:status_laporan_id,14',
+         // 'keterangan_fgd_identifikasi' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_lq' => 'required_if:checklist_lq,true',
          'tgl_ahir_lq' => 'required_if:checklist_lq,true',
@@ -188,19 +188,19 @@ class ValidationPemetaan
          'tgl_ahir_klassen' => 'required_if:checklist_klassen,true',
          'budget_klassen' => 'required_if:checklist_klassen,true',
          // 'keterangan_klassen' => 'required',
-         'keterangan_pengolahan' => 'required_if:status_laporan_id,14',
+         // 'keterangan_pengolahan' => 'required_if:status_laporan_id,14',
          'pengolahan' => 'required_if:checklist_lq,false|required_if:checklist_shift_share,false|required_if:checklist_tipologi_sektor,false|required_if:checklist_klassen,false',
 
 
          'tgl_awal_fgd_klarifikasi' => 'required',
          'tgl_ahir_fgd_klarifikasi' =>'required',
          'budget_fgd_klarifikasi' => 'required',
-         'keterangan_fgd_klarifikasi' => 'required_if:status_laporan_id,14',
+         // 'keterangan_fgd_klarifikasi' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_finalisasi' => 'required',
          'tgl_ahir_finalisasi' => 'required',
          'budget_finalisasi' => 'required',
-         'keterangan_finalisasi' => 'required_if:status_laporan_id,14',
+         // 'keterangan_finalisasi' => 'required_if:status_laporan_id,14',
 
 
          'tgl_awal_summary_sektor_unggulan' => 'required_if:checklist_summary_sektor_unggulan,true',
@@ -237,18 +237,18 @@ class ValidationPemetaan
          'tgl_ahir_potensi_lanjutan' => 'required_if:checklist_potensi_lanjutan,true',
          'budget_potensi_lanjutan' => 'required_if:checklist_potensi_lanjutan,true',
          // 'keterangan_potensi_lanjutan' => 'required',
-         'keterangan_penyusunan' => 'required_if:status_laporan_id,14',
+         // 'keterangan_penyusunan' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_info_grafis' => 'required',
          'tgl_ahir_info_grafis' => 'required',
          'budget_info_grafis' => 'required',
-         'keterangan_info_grafis' => 'required_if:status_laporan_id,14',
+         // 'keterangan_info_grafis' => 'required_if:status_laporan_id,14',
 
 
          'tgl_awal_dokumentasi' => 'required',
          'tgl_ahir_dokumentasi' => 'required',
          'budget_dokumentasi' => 'required',
-         'keterangan_dokumentasi' => 'required_if:status_laporan_id,14',
+         // 'keterangan_dokumentasi' => 'required_if:status_laporan_id,14',
 
          
         ]);

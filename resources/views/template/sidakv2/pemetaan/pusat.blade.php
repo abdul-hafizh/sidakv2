@@ -139,9 +139,9 @@
 							<th><div id="ShowChecklistAll" style="display:none;"  class="split-table"></div><span class="span-title">No</span>  </th>
 							<th><div class="split-table"></div><span class="span-title"> Nama Daerah </span></th>
 							
-							<th><div class="split-table"></div><span class="span-title"> Pra Produksi </span></th>
-							<th><div class="split-table"></div><span class="span-title"> Produksi </span></th>
-							<th><div class="split-table"></div><span class="span-title"> Pasca Produksi </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Identifikasi </span></th>
+							<th><div class="split-table"></div><span class="span-title"> Pelaksanaan </span></th>
+							<th><div class="split-table"></div><span class="span-title">Penyusunan </span></th>
 							<th><div class="split-table"></div><span class="span-title"> Total Budget </span></th>
 
 							<th><div class="split-table"></div><span class="span-title"> Status </span></th>

@@ -102,9 +102,8 @@
           
 
           <div class="box-footer">
-               <div class="btn-group just-center">
-                    <button id="update"  type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> Update</button>
-                    <button id="kirim"  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>
+               <div id="btn-submit" class="btn-group just-center">
+                   
                </div> 
           </div> 
      </form>
@@ -124,6 +123,7 @@
           var temp_total_identifikasi = 0;
           var temp_total_pelaksanaan = 0;
           var temp_total_penyusunan = 0;
+          var temp_total_budget = 0;
 
           var file_rencana_kerja = '';
           var file_studi_literatur = '';
@@ -140,6 +140,23 @@
           var file_penyusunan_infografis = '';
           var file_doc_info_grafis = '';
 
+
+          var btn_rencana_kerja = '';
+          var btn_studi_literatur = '';
+          var btn_rapat_kordinasi = '';
+          var btn_data_sekunder = '';
+
+
+          var btn_fgd_persiapan = '';
+          var btn_data_identifikasi = '';
+          var btn_data_pengolahan = '';
+          var btn_data_klarifikasi = '';
+          var btn_data_finalisasi = '';
+
+          var btn_data_penyusunan = '';
+          var btn_penyusunan_infografis = '';
+          var btn_doc_info_grafis = '';
+
           $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
      
           $('#pagu_promosi').html('<b>Rp. 0</b>');           
@@ -153,92 +170,7 @@
           getPemetaanDetail(); 
 
 
-          
-          
-
-          $("#update").click( () => {
-
-              
-               var data = $("#FormSubmit").serializeArray();  
-               var form = {
-                    'status_laporan_id':13,
-                    'type': 'draft',
-               };
-
-                                        
-               if (total_promosi != pagu_promosi) {
-                    Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                    });
-               } else {
-                    if(data.length >0)
-                   {
-                        SendingData(form,data);
-                    }else{
-                        Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Periode Belum di pilih.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                         });
-                    }     
-   
-                
-               
-               }
-
-          });
-
-           $("#kirim").click( () => {
-
-               
-               var data = $("#FormSubmit").serializeArray();  
-                
-               var form = {
-                    'status_laporan_id':14,
-                    'type': 'kirim',
-               };
-
-                                          
-
-               if (total_promosi != pagu_promosi) {
-                    Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                    });
-               } else {
-   
-                    if(data.length >0)
-                    {
-                        SendingData(form,data);
-                    }else{
-                        Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Periode Belum di pilih.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                         });
-                    }   
-               
-              }
-
-          });
-
-
-
+       
           function calculateIdentifikasi() {
                var total_identifikasi = 0;
           
@@ -289,9 +221,19 @@
                totalRencana();
           }
 
+           function updateTotalPemetaan() {
+               var total_pagu_inp = 0;
+               $(".pemetaan_inp").each(function() {
+                    total_pagu_inp += parseInt($(this).val());
+               });
+
+               temp_total_budget = total_pagu_inp;
+               totalRencana();
+          }  
+
           function totalRencana() {
                
-               total_promosi = temp_total_identifikasi + temp_total_pelaksanaan + temp_total_penyusunan;
+               total_promosi = temp_total_budget;
                var number = total_promosi;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
                var periode_id = $('#periode_id').val();
@@ -597,7 +539,8 @@
                      
                          $('#img-file-rapat-teknis').html(row);
                          file_rencana_kerja = file;
-                        
+                         btn_rencana_kerja = 'true';
+                         getbutton();
                     
                      }else{
                          Swal.fire({
@@ -663,7 +606,8 @@
                                row +=`<div id="FormView-`+ id +`"></div>`;
                          row +=`</div>`;
                          file_studi_literatur = file;
-                     
+                         btn_studi_literatur = 'true';
+                         getbutton();
                          $('#img-file-studi-literatur').html(row);
                     
                      }else{
@@ -730,7 +674,8 @@
                      
                          $('#img-file-rapat-kordinasi').html(row);
                          file_rapat_kordinasi = file;
-                    
+                         btn_rapat_kordinasi = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -794,7 +739,8 @@
                      
                          $('#img-file-sekunder').html(row);4
                          file_data_sekunder = file;
-                    
+                         btn_data_sekunder = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -859,7 +805,8 @@
                      
                          $('#img-file-persiapan').html(row);
                          file_fgd_persiapan = file;
-                    
+                         btn_fgd_persiapan = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -923,7 +870,8 @@
                      
                          $('#img-file-fgd-identifikasi').html(row);
                          file_data_identifikasi= file;
-                    
+                         btn_data_identifikasi = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -986,7 +934,9 @@
                          row +=`</div>`;
                      
                          $('#img-file-pengolahan').html(row);
-                         file_data_pengolahan = file
+                         file_data_pengolahan = file;
+                         btn_data_pengolahan = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1051,6 +1001,8 @@
                      
                          $('#img-file-fgd-klarifikasi').html(row);
                         file_data_klarifikasi = file;
+                        btn_data_klarifikasi = 'true';
+                        getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1113,7 +1065,9 @@
                          row +=`</div>`;
                      
                          $('#img-file-fgd-konfirmasi').html(row);
-                         file_data_finalisasi = file
+                         file_data_finalisasi = file;
+                         btn_data_finalisasi = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1178,6 +1132,8 @@
                      
                          $('#img-file-penyusunan').html(row);
                          file_data_penyusunan = file;
+                         btn_data_penyusunan = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1241,6 +1197,8 @@
                      
                          $('#img-file-info-grafis').html(row);
                          file_penyusunan_infografis = file;
+                         btn_penyusunan_infografis = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1304,6 +1262,8 @@
                      
                          $('#img-file-doc-info-grafis').html(row);
                          file_doc_info_grafis = file;
+                         btn_doc_info_grafis = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1404,7 +1364,27 @@
                     success: function(data) {
                        
                          updateContent(data);
-                    
+                         pagu_promosi = data.pagu_promosi;
+                         total_promosi = data.total_promosi;
+                         
+                          btn_rencana_kerja = data.btn_rencana_kerja;
+                          btn_studi_literatur = data.btn_studi_literatur;
+                          btn_rapat_kordinasi = data.btn_rapat_kordinasi;
+                          btn_data_sekunder = data.btn_data_sekunder;
+
+
+                          btn_fgd_persiapan = data.btn_fgd_persiapan;
+                          btn_data_identifikasi = data.btn_fgd_identifikasi;
+                          btn_data_pengolahan = data.btn_pengolahan;
+                          btn_data_klarifikasi = data.btn_fgd_klarifikasi;
+                          btn_data_finalisasi = data.btn_finalisasi;
+
+                          btn_data_penyusunan = data.btn_penyusunan;
+                          btn_penyusunan_infografis = data.btn_info_grafis;
+                          btn_doc_info_grafis = data.btn_dokumentasi;
+
+                         
+                         getbutton();
                        
                     },
                     error: function( error) {}
@@ -1414,7 +1394,7 @@
           }
 
           function updateContent(item)
-         {
+          {
                 const content = $('#content');
       
                   let row = ``;
@@ -1443,7 +1423,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-a-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input type="number" id="budget-a-pra"    min="0" oninput="this.value = Math.abs(this.value)" placeholder="Budget" value="${item.budget_rencana_kerja }" name="budget_a_pra" class="form-control identifikasi">`;
+                                        row +=`<input type="number" id="budget-a-pra"    min="0" oninput="this.value = Math.abs(this.value)" placeholder="Budget" value="${item.budget_rencana_kerja }" name="budget_a_pra" class="form-control identifikasi pemetaan_inp">`;
                                  row +=`<span id="budget-a-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -1488,7 +1468,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-b-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input id="budget-b-pra"  placeholder="Budget" value="${item.budget_studi_literatur }"  type="number" min="0"  oninput="this.value = Math.abs(this.value)" name="budget_b_pra" class="form-control identifikasi">`;
+                                        row +=`<input id="budget-b-pra"  placeholder="Budget" value="${item.budget_studi_literatur }"  type="number" min="0"  oninput="this.value = Math.abs(this.value)" name="budget_b_pra" class="form-control identifikasi pemetaan_inp">`;
                                  row +=`<span id="budget-b-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -1540,7 +1520,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-c-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input type="number" id="budget-c-pra"  min="0"  placeholder="Budget" value="${item.budget_rapat_kordinasi }" oninput="this.value = Math.abs(this.value)" name="budget_c_pra" class="form-control identifikasi">`;
+                                        row +=`<input type="number" id="budget-c-pra"  min="0"  placeholder="Budget" value="${item.budget_rapat_kordinasi }" oninput="this.value = Math.abs(this.value)" name="budget_c_pra" class="form-control identifikasi pemetaan_inp">`;
                                  row +=`<span id="budget-c-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -1586,7 +1566,7 @@
                              row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-d-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input min="0"  type="number" id="budget-d-pra"  placeholder="Budget" value="${item.budget_data_sekunder }" oninput="this.value = Math.abs(this.value)" name="budget_d_pra" class="form-control identifikasi">`;
+                                        row +=`<input min="0"  type="number" id="budget-d-pra"  placeholder="Budget" value="${item.budget_data_sekunder }" oninput="this.value = Math.abs(this.value)" name="budget_d_pra" class="form-control identifikasi pemetaan_inp">`;
                                  row +=`<span id="budget-d-pra-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -1645,7 +1625,7 @@
                               row +=`</td>`;
                               row +=`<td>`;
                             row +=`<div id="budget-a-pro-alert" class="margin-none form-group">`;
-                                        row +=`<input min="0"  type="number" id="budget-a-pro" placeholder="Budget" value="${item.budget_fgd_persiapan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_pro" class="form-control pelaksanaan">`;
+                                        row +=`<input min="0"  type="number" id="budget-a-pro" placeholder="Budget" value="${item.budget_fgd_persiapan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_pro" class="form-control pelaksanaan pemetaan_inp">`;
                                  row +=`<span id="budget-a-pro-messages"></span>`;
                             row +=`</div>`;
                               row +=`</td>`;
@@ -1697,7 +1677,7 @@
                               row +=`</td>`;
                              row +=`<td>`;
                             row +=`<div id="budget-b-pro-alert" class="margin-none form-group">`;
-                                         row +=`<input min="0" id="budget-b-pro"  type="number"  placeholder="Budget" value="${item.budget_fgd_identifikasi }" oninput="this.value = Math.abs(this.value)" name="budget_b_pro" class="form-control pelaksanaan">`;
+                                         row +=`<input min="0" id="budget-b-pro"  type="number"  placeholder="Budget" value="${item.budget_fgd_identifikasi }" oninput="this.value = Math.abs(this.value)" name="budget_b_pro" class="form-control pelaksanaan pemetaan_inp">`;
                                   row +=`<span id="budget-b-pro-messages"></span>`;
                              row +=`</div>`; 
                                row +=`</td>`; 
@@ -1764,7 +1744,7 @@
                                row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="budget-c-1-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input disabled min="0" id="budget-lq"   type="number"  placeholder="Budget" value="${item.budget_lq }" oninput="this.value = Math.abs(this.value)" name="budget_c_1_pro" class="form-control pelaksanaan">`; 
+                                         row +=`<input disabled min="0" id="budget-lq"   type="number"  placeholder="Budget" value="${item.budget_lq }" oninput="this.value = Math.abs(this.value)" name="budget_c_1_pro" class="form-control pelaksanaan pemetaan_inp">`; 
                                   row +=`<span id="budget-c-1-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
@@ -1821,7 +1801,7 @@
                                row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="budget-c-2-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input disabled min="0" id="budget-shift-share"  type="number" placeholder="Budget" value="${item.budget_shift_share }"  oninput="this.value = Math.abs(this.value)" name="budget_c_2_pro" class="form-control pelaksanaan">`; 
+                                         row +=`<input disabled min="0" id="budget-shift-share"  type="number" placeholder="Budget" value="${item.budget_shift_share }"  oninput="this.value = Math.abs(this.value)" name="budget_c_2_pro" class="form-control pelaksanaan pemetaan_inp">`; 
                                   row +=`<span id="budget-c-2-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
@@ -1854,7 +1834,7 @@
                                row +=`</td>`; 
                                row +=`<td>`; 
                              row +=`<div id="budget-c-3-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input min="0" id="budget-tipologi-sektor"   type="number" disabled placeholder="Budget" value="${item.budget_tipologi_sektor }"  oninput="this.value = Math.abs(this.value)" name="budget_c_3_pro" class="form-control pelaksanaan">`; 
+                                         row +=`<input min="0" id="budget-tipologi-sektor"   type="number" disabled placeholder="Budget" value="${item.budget_tipologi_sektor }"  oninput="this.value = Math.abs(this.value)" name="budget_c_3_pro" class="form-control pelaksanaan pemetaan_inp">`; 
                                   row +=`<span id="budget-c-3-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
@@ -1887,7 +1867,7 @@
                               row +=` </td>`; 
                                row +=`<td>`; 
                              row +=`<div id="budget-c-4-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input disabled min="0" id="budget-klassen" type="number" placeholder="Budget" value="${item.budget_klassen }" oninput="this.value = Math.abs(this.value)" name="budget_c_4_pro" class="form-control pelaksanaan">`; 
+                                         row +=`<input disabled min="0" id="budget-klassen" type="number" placeholder="Budget" value="${item.budget_klassen }" oninput="this.value = Math.abs(this.value)" name="budget_c_4_pro" class="form-control pelaksanaan pemetaan_inp">`; 
                                   row +=`<span id="budget-c-4-pro-messages"></span>`; 
                              row +=`</div>`; 
                               row +=` </td>`; 
@@ -1914,7 +1894,7 @@
                                row +=`</td>`; 
                               row +=` <td>`; 
                              row +=`<div id="budget-d-pro-alert" class="margin-none form-group">`; 
-                                        row +=` <input min="0"  id="budget-d-pro" type="number" placeholder="Budget" value="${item.budget_fgd_klarifikasi }" oninput="this.value = Math.abs(this.value)" name="budget_d_pro" class="form-control produksi">`; 
+                                        row +=` <input min="0"  id="budget-d-pro" type="number" placeholder="Budget" value="${item.budget_fgd_klarifikasi }" oninput="this.value = Math.abs(this.value)" name="budget_d_pro" class="form-control pelaksanaan pemetaan_inp">`; 
                                   row +=`<span id="budget-d-pro-messages"></span>`; 
                              row +=`</div>`; 
                               row +=` </td>`; 
@@ -1968,7 +1948,7 @@
                               row +=` </td>`; 
                               row +=` <td>`; 
                              row +=`<div id="budget-e-pro-alert" class="margin-none form-group">`; 
-                                        row +=` <input min="0" id="budget-e-pro"  type="number" placeholder="Budget"  oninput="this.value = Math.abs(this.value)" name="budget_e_pro" value="${item.budget_finalisasi }" class="form-control produksi">`; 
+                                        row +=` <input min="0" id="budget-e-pro"  type="number" placeholder="Budget"  oninput="this.value = Math.abs(this.value)" name="budget_e_pro" value="${item.budget_finalisasi }" class="form-control pelaksanaan pemetaan_inp">`; 
                                   row +=`<span id="budget-e-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
@@ -2042,7 +2022,7 @@
                                    row +=`</td>`; 
                                   row +=` <td>`; 
                                  row +=`<div id="budget-a-1-ppro-alert" class="margin-none form-group">`; 
-                                            row +=` <input disabled min="0" id="budget-summary-sektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_summary_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_1_ppro" class="form-control penyusunan">`; 
+                                            row +=` <input disabled min="0" id="budget-summary-sektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_summary_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_1_ppro" class="form-control penyusunan pemetaan_inp">`; 
                                      row +=` <span id="budget-a-1-ppro-messages"></span>`; 
                                  row +=`</div>`; 
                              row +=` </td>`; 
@@ -2098,7 +2078,7 @@
                                    row +=` </td>`; 
                                    row +=` <td>`; 
                                   row +=`<div id="budget-a-2-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input min="0" id="budget-sektor-unggulan" type="number" disabled placeholder="Budget" value="${item.budget_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_2_ppro" class="form-control penyusunan">`; 
+                                             row +=` <input min="0" id="budget-sektor-unggulan" type="number" disabled placeholder="Budget" value="${item.budget_sektor_unggulan }" oninput="this.value = Math.abs(this.value)" name="budget_a_2_ppro" class="form-control penyusunan pemetaan_inp">`; 
                                        row +=`<span id="budget-a-2-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                row +=`</td>`; 
@@ -2131,7 +2111,7 @@
                                    row +=` </td>`; 
                                     row +=`<td>`; 
                                  row +=` <div id="budget-a-3-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input min="0" id="budget-potensi-pasar" type="number" disabled placeholder="Budget" value="${item.budget_potensi_pasar }"  oninput="this.value = Math.abs(this.value)" name="budget_a_3_ppro" class="form-control penyusunan">`; 
+                                             row +=` <input min="0" id="budget-potensi-pasar" type="number" disabled placeholder="Budget" value="${item.budget_potensi_pasar }"  oninput="this.value = Math.abs(this.value)" name="budget_a_3_ppro" class="form-control penyusunan pemetaan_inp">`; 
                                        row +=`<span id="budget-a-3-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2163,7 +2143,7 @@
                                    row +=` </td>`; 
                                    row +=` <td>`; 
                                   row +=`<div id="budget-a-4-ppro-alert" class="margin-none form-group">`; 
-                                              row +=`<input disabled min="0" id="budget-parameter-sektor-unggulan" type="number" placeholder="Budget" value="${item.budget_parameter_sektor_unggulan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_4_ppro" class="form-control penyusunan">`; 
+                                              row +=`<input disabled min="0" id="budget-parameter-sektor-unggulan" type="number" placeholder="Budget" value="${item.budget_parameter_sektor_unggulan }"  oninput="this.value = Math.abs(this.value)" name="budget_a_4_ppro" class="form-control penyusunan pemetaan_inp">`; 
                                        row +=`<span id="budget-a-4-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2196,7 +2176,7 @@
                                     row +=`</td>`; 
                                     row +=`<td>`; 
                                  row +=`<div id="budget-a-5-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input disabled min="0" id="budget-subsektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_subsektor_unggulan }"   oninput="this.value = Math.abs(this.value)" name="budget_a_5_ppro" class="form-control penyusunan">`; 
+                                             row +=` <input disabled min="0" id="budget-subsektor-unggulan"  type="number" placeholder="Budget" value="${item.budget_subsektor_unggulan }"   oninput="this.value = Math.abs(this.value)" name="budget_a_5_ppro" class="form-control penyusunan pemetaan_inp">`; 
                                       row +=` <span id="budget-a-5-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2228,7 +2208,7 @@
                                     row +=`</td>`; 
                                     row +=`<td>`; 
                                   row +=`<div id="budget-a-6-ppro-alert" class="margin-none form-group">`; 
-                                              row +=`<input disabled min="0" id="budget-intensif-daerah"  type="number" placeholder="Budget"  value="${item.budget_intensif_daerah }"  oninput="this.value = Math.abs(this.value)" name="budget_a_6_ppro" class="form-control penyusunan">`; 
+                                              row +=`<input disabled min="0" id="budget-intensif-daerah"  type="number" placeholder="Budget"  value="${item.budget_intensif_daerah }"  oninput="this.value = Math.abs(this.value)" name="budget_a_6_ppro" class="form-control penyusunan pemetaan_inp">`; 
                                       row +=` <span id="budget-a-6-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2260,7 +2240,7 @@
                                     row +=`</td>`; 
                                     row +=`<td>`; 
                                   row +=`<div id="budget-a-7-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input disabled min="0" id="budget-potensi-lanjutan"  type="number" placeholder="Budget" value="${item.budget_potensi_lanjutan }" oninput="this.value = Math.abs(this.value)" name="budget_a_7_ppro" class="form-control penyusunan">`; 
+                                             row +=` <input disabled min="0" id="budget-potensi-lanjutan"  type="number" placeholder="Budget" value="${item.budget_potensi_lanjutan }" oninput="this.value = Math.abs(this.value)" name="budget_a_7_ppro" class="form-control penyusunan pemetaan_inp">`; 
                                        row +=`<span id="budget-a-7-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
@@ -2286,7 +2266,7 @@
                               row +=` </td>`; 
                               row +=` <td>`; 
                              row +=`<div id="budget-b-ppro-alert" class="margin-none form-group">`; 
-                                        row +=` <input min="0"  type="number" id="budget-b-ppro" placeholder="Budget" value="${item.budget_info_grafis }"  oninput="this.value = Math.abs(this.value)" name="budget_b_ppro" class="form-control penyusunan">`; 
+                                        row +=` <input min="0"  type="number" id="budget-b-ppro" placeholder="Budget" value="${item.budget_info_grafis }"  oninput="this.value = Math.abs(this.value)" name="budget_b_ppro" class="form-control penyusunan pemetaan_inp">`; 
                                   row +=`<span id="budget-b-ppro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
@@ -2333,7 +2313,7 @@
                                row +=`</td>`; 
                               row +=` <td>`; 
                              row +=`<div id="budget-c-ppro-alert" class="margin-none form-group">`; 
-                                         row +=`<input min="0"  type="number" id="budget-c-ppro" placeholder="Budget"  oninput="this.value = Math.abs(this.value)" name="budget_c_ppro" value="${item.budget_dokumentasi }"  class="form-control penyusunan">`; 
+                                         row +=`<input min="0"  type="number" id="budget-c-ppro" placeholder="Budget"  oninput="this.value = Math.abs(this.value)" name="budget_c_ppro" value="${item.budget_dokumentasi }"  class="form-control penyusunan pemetaan_inp">`; 
                                   row +=`<span id="budget-c-ppro-messages"></span>`; 
                              row +=`</div>`; 
                               row +=`</td>`; 
@@ -2370,7 +2350,7 @@
                     getperiode(item.periode_id);  
                     $('#pagu_promosi').html('<b>'+item.pagu_promosi_convert+'</b>');
                     $('#total_promosi').html('<b>'+item.total_promosi_convert+'</b>');
-
+                    $(".pemetaan_inp").on("input", updateTotalPemetaan);
                     getChecklistPelaksanaan();      
                     getChecklistPetaInvenstasi();
 
@@ -2491,10 +2471,115 @@
                          $('#enddate-potensi-lanjutan').prop('disabled',false);
                          $('#budget-potensi-lanjutan').prop('disabled',false);
                     } 
+
+                 
+                   
  
-    }
+          }
 
 
+          function getbutton(){
+
+
+          
+                 var btn = '';
+                    btn+='<button id="update"  type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> Update</button>';
+
+                    
+
+                  if(btn_rencana_kerja == 'true' &&  btn_studi_literatur == 'true' && btn_rapat_kordinasi == 'true' && btn_data_sekunder == 'true' && btn_fgd_persiapan == 'true' && btn_data_identifikasi == 'true' && btn_data_pengolahan == 'true' && btn_data_klarifikasi == 'true' && btn_data_finalisasi == 'true' && btn_data_penyusunan == 'true' && btn_penyusunan_infografis == 'true' && btn_doc_info_grafis == 'true')
+                  {  
+                    btn+='<button id="kirim"  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>';
+                  }else{
+                    btn+='<button disabled  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>';  
+                  }  
+                    $('#btn-submit').html(btn);
+
+
+          $("#update").click( () => {
+
+              
+               var data = $("#FormSubmit").serializeArray();  
+               var form = {
+                    'status_laporan_id':13,
+                    'type': 'draft',
+               };
+
+                                        
+               if (total_promosi != pagu_promosi) {
+                    Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                    });
+               } else {
+                    if(data.length >0)
+                   {
+                        SendingData(form,data);
+                    }else{
+                        Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Periode Belum di pilih.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                         });
+                    }     
+   
+                
+               
+               }
+
+          });
+
+          $("#kirim").click( () => {
+
+               
+               var data = $("#FormSubmit").serializeArray();  
+                
+               var form = {
+                    'status_laporan_id':14,
+                    'type': 'kirim',
+               };
+               
+               console.log(total_promosi)
+               console.log(pagu_promosi)                           
+
+               if (total_promosi != pagu_promosi) {
+                    Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Total Promosi Tidak Sama Dengan Pagu Promosi.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                    });
+               } else {
+   
+                    if(data.length >0)
+                    {
+                        SendingData(form,data);
+                    }else{
+                        Swal.fire({
+                         icon: 'info',
+                         title: 'Peringatan',
+                         text: 'Maaf, Periode Belum di pilih.',
+                         confirmButtonColor: '#000',
+                         showConfirmButton: true,
+                         confirmButtonText: 'OK',
+                         });
+                    }   
+               
+              }
+
+          });
+          }
+
+         
 
           function SendingData(form,data) {
              
