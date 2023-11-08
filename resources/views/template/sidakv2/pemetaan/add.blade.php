@@ -1225,6 +1225,7 @@
                         $('#budget-lq').prop("disabled", true).val('0');
                       
                         calculatePelaksanaan();
+                        updateTotalPemetaan();
                     }     
                }); 
 
@@ -1243,6 +1244,7 @@
                          $('#budget-shift-share').prop("disabled", true).val('0');
                        
                          calculatePelaksanaan();
+                          updateTotalPemetaan();
                     }     
                });  
 
@@ -1261,6 +1263,7 @@
                          $('#budget-tipologi-sektor').prop("disabled", true).val('0');
                           
                          calculatePelaksanaan();
+                          updateTotalPemetaan();
                     }     
                }); 
 
@@ -1279,6 +1282,7 @@
                          $('#budget-klassen').prop("disabled", true).val('0');
                          
                          calculatePelaksanaan();
+                          updateTotalPemetaan();
                     }     
                }); 
 
@@ -1312,6 +1316,7 @@
                          $('#budget-summary-sektor-unggulan').prop("disabled", true).val('0');;
                          
                          calculatePenyusunan();
+                          updateTotalPemetaan();
                     }     
                }); 
 
@@ -1330,6 +1335,7 @@
                          $('#budget-sektor-unggulan').prop("disabled", true).val('0');;
                          
                          calculatePenyusunan();
+                          updateTotalPemetaan();
                     }     
                });  
 
@@ -1348,6 +1354,7 @@
                          $('#budget-potensi-pasar').prop("disabled", true).val('0');;
                         
                          calculatePenyusunan(); 
+                          updateTotalPemetaan();
                     }     
                }); 
 
@@ -1366,6 +1373,7 @@
                          $('#budget-parameter-sektor-unggulan').prop("disabled", true).val('0');;
                          
                          calculatePenyusunan(); 
+                          updateTotalPemetaan();
                     }     
                }); 
 
@@ -1384,6 +1392,7 @@
                          $('#budget-subsektor-unggulan').prop("disabled", true).val('0');;
                          
                          calculatePenyusunan(); 
+                          updateTotalPemetaan();
                     }     
                });  
 
@@ -1401,7 +1410,8 @@
                          $("#enddate-intensif-daerah").prop("disabled", true).val('');
                          $('#budget-intensif-daerah').prop("disabled", true).val('0');;
                         
-                         calculatePenyusunan();  
+                         calculatePenyusunan();
+                          updateTotalPemetaan();
                     }     
                }); 
 
@@ -1419,7 +1429,8 @@
                          $("#enddate-potensi-lanjutan").prop("disabled", true).val('');
                          $('#budget-potensi-lanjutan').prop("disabled", true).val('0');;
                       
-                         calculatePenyusunan();  
+                         calculatePenyusunan(); 
+                          updateTotalPemetaan();
                     }     
                }); 
 
