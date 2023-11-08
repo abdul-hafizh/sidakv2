@@ -118,7 +118,7 @@
                               </td>
                               <td>
                             <div id="budget-a-pra-alert" class="margin-none form-group">
-                                        <input type="number" id="budget-a-pra" disabled   min="0" oninput="this.value = Math.abs(this.value)" placeholder="Budget" value="0" name="budget_a_pra" class="form-control identifikasi">
+                                        <input type="number" id="budget-a-pra" disabled   min="0" oninput="this.value = Math.abs(this.value)" placeholder="Budget" value="0" name="budget_a_pra" class="form-control identifikasi pemetaan_inp">
                                  <span id="budget-a-pra-messages"></span>
                             </div>
                               </td>
@@ -151,7 +151,7 @@
                               </td>
                               <td>
                             <div id="budget-b-pra-alert" class="margin-none form-group">
-                                        <input id="budget-b-pra"  placeholder="Budget" value="0"  type="number" min="0" disabled oninput="this.value = Math.abs(this.value)" name="budget_b_pra" class="form-control identifikasi">
+                                        <input id="budget-b-pra"  placeholder="Budget" value="0"  type="number" min="0" disabled oninput="this.value = Math.abs(this.value)" name="budget_b_pra" class="form-control identifikasi pemetaan_inp">
                                  <span id="budget-b-pra-messages"></span>
                             </div>
                               </td>
@@ -189,7 +189,7 @@
                               </td>
                               <td>
                             <div id="budget-c-pra-alert" class="margin-none form-group">
-                                        <input type="number" disabled min="0"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-c-pra" name="budget_c_pra" class="form-control identifikasi">
+                                        <input type="number" disabled min="0"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-c-pra" name="budget_c_pra" class="form-control identifikasi pemetaan_inp">
                                  <span id="budget-c-pra-messages"></span>
                             </div>
                               </td>
@@ -223,7 +223,7 @@
                               </td>
                               <td>
                             <div id="budget-d-pra-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number"  placeholder="Budget" value="0" id="budget-d-pra" oninput="this.value = Math.abs(this.value)" name="budget_d_pra" class="form-control identifikasi">
+                                        <input min="0" disabled type="number"  placeholder="Budget" value="0" id="budget-d-pra" oninput="this.value = Math.abs(this.value)" name="budget_d_pra" class="form-control identifikasi pemetaan_inp">
                                  <span id="budget-d-pra-messages"></span>
                             </div>
                               </td>
@@ -265,7 +265,7 @@
                               </td>
                               <td>
                             <div id="budget-a-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0"  oninput="this.value = Math.abs(this.value)" id="budget-a-pro" name="budget_a_pro" class="form-control pelaksanaan">
+                                        <input min="0" disabled type="number" placeholder="Budget" value="0"  oninput="this.value = Math.abs(this.value)" id="budget-a-pro" name="budget_a_pro" class="form-control pelaksanaan pemetaan_inp">
                                  <span id="budget-a-pro-messages"></span>
                             </div>
                               </td>
@@ -299,7 +299,7 @@
                               </td>
                               <td>
                             <div id="budget-b-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-b-pro" name="budget_b_pro" class="form-control pelaksanaan">
+                                        <input min="0" disabled type="number"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-b-pro" name="budget_b_pro" class="form-control pelaksanaan pemetaan_inp">
                                  <span id="budget-f-pro-messages"></span>
                             </div>
                               </td>
@@ -347,7 +347,7 @@
                               </td>
                               <td >
                             <div id="budget-c-1-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" id="budget-lq"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_lq" class="form-control pelaksanaan">
+                                        <input min="0" disabled type="number" id="budget-lq"  placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_lq" class="form-control pelaksanaan pemetaan_inp">
                                  <span id="budget-c-1-pro-messages"></span>
                             </div>
                               </td>
@@ -394,7 +394,7 @@
                               </td>
                               <td>
                             <div id="budget-c-2-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0"  oninput="this.value = Math.abs(this.value)" name="budget_shift_share" id="budget-shift-share" class="form-control pelaksanaan">
+                                        <input min="0" disabled type="number" placeholder="Budget" value="0"  oninput="this.value = Math.abs(this.value)" name="budget_shift_share" id="budget-shift-share" class="form-control pelaksanaan pemetaan_inp">
                                  <span id="budget-c-2-pro-messages"></span>
                             </div>
                               </td>
@@ -427,7 +427,7 @@
                               </td>
                               <td>
                             <div id="budget-c-3-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_tipologi_sektor" id="budget-tipologi-sektor" class="form-control pelaksanaan">
+                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_tipologi_sektor" id="budget-tipologi-sektor" class="form-control pelaksanaan pemetaan_inp">
                                  <span id="budget-c-3-pro-messages"></span>
                             </div>
                               </td>
@@ -460,7 +460,7 @@
                               </td>
                               <td>
                             <div id="budget-c-4-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_klassen" id="budget-klassen" class="form-control pelaksanaan">
+                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_klassen" id="budget-klassen" class="form-control pelaksanaan pemetaan_inp">
                                  <span id="budget-c-4-pro-messages"></span>
                             </div>
                               </td>
@@ -495,7 +495,7 @@
                               </td>
                               <td>
                             <div id="budget-d-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-d-pro" name="budget_d_pro" class="form-control pelaksanaan">
+                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-d-pro" name="budget_d_pro" class="form-control pelaksanaan pemetaan_inp">
                                  <span id="budget-d-pro-messages"></span>
                             </div>
                               </td>
@@ -534,7 +534,7 @@
                               </td>
                               <td>
                             <div id="budget-e-pro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-e-pro" name="budget_e_pro" class="form-control pelaksanaan">
+                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-e-pro" name="budget_e_pro" class="form-control pelaksanaan pemetaan_inp">
                                  <span id="budget-e-pro-messages"></span>
                             </div>
                               </td>
@@ -588,7 +588,7 @@
                                    </td>
                                    <td>
                                  <div id="budget-a-1-ppro-alert" class="margin-none form-group">
-                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-summary-sektor-unggulan" name="budget_summary_sektor_unggulan" class="form-control penyusunan">
+                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-summary-sektor-unggulan" name="budget_summary_sektor_unggulan" class="form-control penyusunan pemetaan_inp">
                                       <span id="budget-a-1-ppro-messages"></span>
                                  </div>
                               </td>
@@ -638,7 +638,7 @@
                                    </td>
                                    <td>
                                  <div id="budget-a-2-ppro-alert" class="margin-none form-group">
-                                             <input min="0" id="budget-sektor-unggulan" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_sektor_unggulan" class="form-control penyusunan">
+                                             <input min="0" id="budget-sektor-unggulan" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" name="budget_sektor_unggulan" class="form-control penyusunan pemetaan_inp">
                                       <span id="budget-a-2-ppro-messages"></span>
                                  </div>
                               </td>
@@ -672,7 +672,7 @@
                                    </td>
                                    <td>
                                  <div id="budget-a-3-ppro-alert" class="margin-none form-group">
-                                             <input min="0" disabled type="number" placeholder="Budget" value="0" id="budget-potensi-pasar" oninput="this.value = Math.abs(this.value)" name="budget_potensi_pasar" class="form-control penyusunan">
+                                             <input min="0" disabled type="number" placeholder="Budget" value="0" id="budget-potensi-pasar" oninput="this.value = Math.abs(this.value)" name="budget_potensi_pasar" class="form-control penyusunan pemetaan_inp">
                                       <span id="budget-a-3-ppro-messages"></span>
                                  </div>
                               </td>
@@ -705,7 +705,7 @@
                                    </td>
                                    <td>
                                  <div id="budget-a-4-ppro-alert" class="margin-none form-group">
-                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-parameter-sektor-unggulan" name="budget_parameter_sektor_unggulan" class="form-control penyusunan">
+                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-parameter-sektor-unggulan" name="budget_parameter_sektor_unggulan" class="form-control penyusunan pemetaan_inp">
                                       <span id="budget-a-4-ppro-messages"></span>
                                  </div>
                               </td>
@@ -738,7 +738,7 @@
                                    </td>
                                    <td>
                                  <div id="budget-a-5-ppro-alert" class="margin-none form-group">
-                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-subsektor-unggulan" name="budget_subsektor_unggulan" class="form-control penyusunan">
+                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-subsektor-unggulan" name="budget_subsektor_unggulan" class="form-control penyusunan pemetaan_inp">
                                       <span id="budget-a-5-ppro-messages"></span>
                                  </div>
                               </td>
@@ -771,7 +771,7 @@
                                    </td>
                                    <td>
                                  <div id="budget-a-6-ppro-alert" class="margin-none form-group">
-                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-intensif-daerah" name="budget_intensif_daerah" class="form-control penyusunan">
+                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-intensif-daerah" name="budget_intensif_daerah" class="form-control penyusunan pemetaan_inp">
                                       <span id="budget-a-6-ppro-messages"></span>
                                  </div>
                               </td>
@@ -804,7 +804,7 @@
                                    </td>
                                    <td>
                                  <div id="budget-a-7-ppro-alert" class="margin-none form-group">
-                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-potensi-lanjutan" name="budget_potensi_lanjutan" class="form-control penyusunan">
+                                             <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-potensi-lanjutan" name="budget_potensi_lanjutan" class="form-control penyusunan pemetaan_inp">
                                       <span id="budget-a-7-ppro-messages"></span>
                                  </div>
                               </td>
@@ -837,7 +837,7 @@
                               </td>
                               <td>
                             <div id="budget-b-ppro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-b-ppro" name="budget_b_ppro" class="form-control penyusunan">
+                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-b-ppro" name="budget_b_ppro" class="form-control penyusunan pemetaan_inp">
                                  <span id="budget-b-ppro-messages"></span>
                             </div>
                               </td>
@@ -869,7 +869,7 @@
                               </td>
                               <td>
                             <div id="budget-c-ppro-alert" class="margin-none form-group">
-                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-c-ppro" name="budget_c_ppro" class="form-control penyusunan">
+                                        <input min="0" disabled type="number" placeholder="Budget" value="0" oninput="this.value = Math.abs(this.value)" id="budget-c-ppro" name="budget_c_ppro" class="form-control penyusunan pemetaan_inp">
                                  <span id="budget-c-ppro-messages"></span>
                             </div>
                               </td>
@@ -896,9 +896,8 @@
           
 
           <div class="box-footer">
-               <div class="btn-group just-center">
-                    <button id="simpan" disabled type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> SIMPAN</button>
-                    <button id="kirim" disabled type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>
+               <div id="btn-submit" class="btn-group just-center">
+                   
                </div> 
           </div> 
      </form>
@@ -918,6 +917,7 @@
           var temp_total_identifikasi = 0;
           var temp_total_pelaksanaan = 0;
           var temp_total_penyusunan = 0;
+          var temp_total_budget = 0;
 
           var file_rencana_kerja = '';
           var file_studi_literatur = '';
@@ -929,16 +929,32 @@
           var file_data_identifikasi = '';
           var file_data_pengolahan = '';
           var file_data_klarifikasi = '';
-          var file_data_konfrimasi = '';
+          var file_data_finalisasi = '';
           var file_data_penyusunan = '';
           var file_penyusunan_infografis = '';
           var file_doc_info_grafis = '';
+
+          var btn_rencana_kerja = 'false';
+          var btn_studi_literatur = 'false';
+          var btn_rapat_kordinasi = 'false';
+          var btn_data_sekunder = 'false';
+
+
+          var btn_fgd_persiapan = 'false';
+          var btn_data_identifikasi = 'false';
+          var btn_data_pengolahan = 'false';
+          var btn_data_klarifikasi = 'false';
+          var btn_data_finalisasi = 'false';
+
+          var btn_data_penyusunan = 'false';
+          var btn_penyusunan_infografis = 'false';
+          var btn_doc_info_grafis = 'false';
 
           $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
      
           $('#pagu_promosi').html('<b>Rp. 0</b>');           
           $('#total_promosi').html('<b>Rp. 0</b>'); 
-
+          $(".pemetaan_inp").on("input", updateTotalPemetaan);
            
 
           getChecklistPelaksanaan();      
@@ -977,7 +993,38 @@
           UploadFilePenyusunanInfoGrafis(); 
           UploadFileDokumentasiInfoGrafis(); 
 
-          $("#simpan").click( () => {
+         
+          getbutton();
+
+          function getbutton(){
+              
+               var btn = '';
+                    btn+='<button id="simpan"  type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> SIMPAN</button>';
+
+                    console.log(btn_rencana_kerja)
+                    console.log(btn_studi_literatur)
+                    console.log(btn_rapat_kordinasi)
+                     console.log(btn_data_sekunder)
+                    console.log(btn_fgd_persiapan)
+                    console.log(btn_data_identifikasi)
+                    console.log(btn_data_pengolahan)
+                    console.log(btn_data_klarifikasi)
+                    console.log(btn_data_finalisasi)
+                    console.log(btn_data_penyusunan)
+                    console.log(btn_penyusunan_infografis)
+                    console.log(btn_doc_info_grafis)
+
+                    
+
+                  if(btn_rencana_kerja == 'true' &&  btn_studi_literatur == 'true' && btn_rapat_kordinasi == 'true' && btn_data_sekunder == 'true' && btn_fgd_persiapan == 'true' && btn_data_identifikasi == 'true' && btn_data_pengolahan == 'true' && btn_data_klarifikasi == 'true' && btn_data_finalisasi == 'true' && btn_data_penyusunan == 'true' && btn_penyusunan_infografis == 'true' && btn_doc_info_grafis == 'true')
+                  {  
+                    btn+='<button id="kirim"  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>';
+                  }else{
+                    btn+='<button disabled  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>';  
+                  }  
+                    $('#btn-submit').html(btn);
+
+              $("#simpan").click( () => {
 
               
                var data = $("#FormSubmit").serializeArray();  
@@ -1018,7 +1065,7 @@
 
           });
 
-           $("#kirim").click( () => {
+          $("#kirim").click( () => {
 
                
                var data = $("#FormSubmit").serializeArray();  
@@ -1059,6 +1106,7 @@
 
           });
 
+          }
 
 
           function calculateIdentifikasi() {
@@ -1111,9 +1159,19 @@
                totalRencana();
           }
 
+          function updateTotalPemetaan() {
+               var total_pagu_inp = 0;
+               $(".pemetaan_inp").each(function() {
+                    total_pagu_inp += parseInt($(this).val());
+               });
+
+               temp_total_budget = total_pagu_inp;
+               totalRencana();
+          }  
+
           function totalRencana() {
                
-               total_promosi = temp_total_identifikasi + temp_total_pelaksanaan + temp_total_penyusunan;
+               total_promosi = temp_total_budget;
                var number = total_promosi;
                var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
                var periode_id = $('#periode_id').val();
@@ -1233,8 +1291,6 @@
                      $('#file-pengolahan').prop("disabled", true); 
                    }     
                });
-
-             
 
           }
 
@@ -1378,7 +1434,7 @@
                });
           }
 
-           function UploadFileRapatTeknis()
+          function UploadFileRapatTeknis()
           {
 
 
@@ -1419,7 +1475,8 @@
                      
                          $('#img-file-rapat-teknis').html(row);
                          file_rencana_kerja = file;
-                    
+                         btn_rencana_kerja = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1482,7 +1539,8 @@
                                row +=`<div id="FormView-1b"></div>`;
                          row +=`</div>`;
                          file_studi_literatur = file;
-                     
+                         btn_studi_literatur = 'true';
+                         getbutton();
                          $('#img-file-studi-literatur').html(row);
                     
                      }else{
@@ -1548,7 +1606,8 @@
                      
                          $('#img-file-rapat-kordinasi').html(row);
                          file_rapat_kordinasi = file;
-                    
+                         btn_rapat_kordinasi = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1612,7 +1671,8 @@
                      
                          $('#img-file-sekunder').html(row);4
                          file_data_sekunder = file;
-                    
+                         btn_data_sekunder = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1677,7 +1737,8 @@
                      
                          $('#img-file-persiapan').html(row);
                          file_fgd_persiapan = file;
-                    
+                         btn_fgd_persiapan = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1740,7 +1801,8 @@
                      
                          $('#img-file-fgd-identifikasi').html(row);
                          file_data_identifikasi= file;
-                    
+                         btn_data_identifikasi = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1803,7 +1865,9 @@
                          row +=`</div>`;
                      
                          $('#img-file-pengolahan').html(row);
-                         file_data_pengolahan = file
+                         file_data_pengolahan = file;
+                         btn_data_pengolahan = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1866,6 +1930,8 @@
                      
                          $('#img-file-fgd-klarifikasi').html(row);
                         file_data_klarifikasi = file;
+                        btn_data_klarifikasi = 'true';
+                        getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1919,14 +1985,16 @@
                          file = fileReader.result;
                          var row = '';
                          // row +='<img class="file-c" src="'+ BASE_URL +'/template/sidakv2/img/pdf-icon.png" alt="file Rencana Kerja">';
-                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-2e"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>';
+                         row +='<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="'+ file +'" data-toggle="modal" data-target="#modal-view-2e"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDFi</div>';
 
                          row +=`<div id="modal-view-2e" class="modal fade" role="dialog">`;
                                row +=`<div id="FormView-2e"></div>`;
                          row +=`</div>`;
                      
                          $('#img-file-fgd-konfirmasi').html(row);
-                         file_data_konfrimasi = file
+                         file_data_finalisasi = file;
+                         btn_data_finalisasi = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -1989,6 +2057,8 @@
                      
                          $('#img-file-penyusunan').html(row);
                          file_data_penyusunan = file;
+                         btn_data_penyusunan = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -2052,6 +2122,8 @@
                      
                          $('#img-file-info-grafis').html(row);
                          file_penyusunan_infografis = file;
+                         btn_penyusunan_infografis = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -2115,6 +2187,8 @@
                      
                          $('#img-file-doc-info-grafis').html(row);
                          file_doc_info_grafis = file;
+                         btn_doc_info_grafis = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -2349,7 +2423,7 @@
                     'tgl_awal_finalisasi':$('#startdate-e-pro').val(),
                     'tgl_ahir_finalisasi':$('#enddate-e-pro').val(),
                     'budget_finalisasi':$('#budget-e-pro').val(),
-                    'keterangan_finalisasi':file_data_konfrimasi,
+                    'keterangan_finalisasi':file_data_finalisasi,
                     
                     'checklist_summary_sektor_unggulan':checklist_summary_sektor_unggulan,     
                     'tgl_awal_summary_sektor_unggulan':$('#startdate-summary-sektor-unggulan').val(),

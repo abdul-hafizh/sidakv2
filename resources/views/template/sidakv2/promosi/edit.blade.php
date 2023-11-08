@@ -299,7 +299,7 @@
 
                if(periode_id)
                {    
-                     console.log(pagu_promosi)
+                     
                     if(pagu_promosi < total_promosi) {
                          Swal.fire({
                               icon: 'info',

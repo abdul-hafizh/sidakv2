@@ -292,101 +292,116 @@ class RequestPemetaan
          if($val->keterangan_rencana_kerja)
          {
              $rencana_kerja = url('laporan/pemetaan/'.$val->keterangan_rencana_kerja);
+             $temp['btn_rencana_kerja'] = 'true';
          }else{
             $rencana_kerja  = $default;
+            $temp['btn_rencana_kerja'] =  'false'; 
          }  
 
          if($val->keterangan_studi_literatur)
          {
              $studi_literatur = url('laporan/pemetaan/'.$val->keterangan_studi_literatur);
+             $temp['btn_studi_literatur'] = 'true';
          }else{
              $studi_literatur  = $default;
+             $temp['btn_studi_literatur'] =  'false';  
          } 
 
 
           if($val->keterangan_rapat_kordinasi)
          {
              $rapat_kordinasi = url('laporan/pemetaan/'.$val->keterangan_rapat_kordinasi);
-
+             $temp['btn_rapat_kordinasi'] = 'true';
          }else{
              $rapat_kordinasi  = $default;
+             $temp['btn_rapat_kordinasi'] =  'false';  
          } 
 
          if($val->keterangan_data_sekunder)
          {
              $data_sekunder = url('laporan/pemetaan/'.$val->keterangan_data_sekunder);
-
+             $temp['btn_data_sekunder'] = 'true';
          }else{
              $data_sekunder  = $default;
+             $temp['btn_data_sekunder'] =  'false';  
          }   
 
 
          if($val->keterangan_fgd_persiapan)
          {
              $fgd_persiapan = url('laporan/pemetaan/'.$val->keterangan_fgd_persiapan);
-
+             $temp['btn_fgd_persiapan'] = 'true';
          }else{
              $fgd_persiapan  = $default;
+             $temp['btn_fgd_persiapan'] =  'false';  
          }    
 
          if($val->keterangan_fgd_identifikasi)
          {
              $fgd_identifikasi = url('laporan/pemetaan/'.$val->keterangan_fgd_identifikasi);
-
+             $temp['btn_fgd_identifikasi'] = 'true';
          }else{
              $fgd_identifikasi  = $default;
+             $temp['btn_fgd_identifikasi'] =  'false';  
          }
 
          if($val->keterangan_pengolahan)
          {
              $pengolahan = url('laporan/pemetaan/'.$val->keterangan_pengolahan);
-
+             $temp['btn_pengolahan'] = 'true';
          }else{
              $pengolahan  = $default;
+             $temp['btn_pengolahan'] =  'false'; 
          }        
 
          if($val->keterangan_fgd_klarifikasi)
          {
              $fgd_klarifikasi = url('laporan/pemetaan/'.$val->keterangan_fgd_klarifikasi);
-
+             $temp['btn_fgd_klarifikasi'] = 'true';
          }else{
              $fgd_klarifikasi  = $default;
+             $temp['btn_fgd_klarifikasi'] =  'false'; 
          }  
         
          if($val->keterangan_finalisasi)
          {
              $finalisasi = url('laporan/pemetaan/'.$val->keterangan_finalisasi);
-
+             $temp['btn_finalisasi'] = 'true';
          }else{
              $finalisasi  = $default;
+             $temp['btn_finalisasi'] =  'false';
          }  
          
          if($val->keterangan_penyusunan)
          {
              $penyusunan = url('laporan/pemetaan/'.$val->keterangan_penyusunan);
-
+             $temp['btn_penyusunan'] = 'true';
          }else{
              $penyusunan  = $default;
+             $temp['btn_penyusunan'] =  'false';
          }
 
          if($val->keterangan_info_grafis)
          {
              $info_grafis =  url('laporan/pemetaan/'.$val->keterangan_info_grafis);
-
+             $temp['btn_info_grafis'] = 'true';
          }else{
              $info_grafis  = $default;
+             $temp['btn_info_grafis'] =  'false';
          }
          
          if($val->keterangan_dokumentasi)
          {
              $dokumentasi =  url('laporan/pemetaan/'.$val->keterangan_dokumentasi);
+             $temp['btn_dokumentasi'] = 'true';
 
          }else{
              $dokumentasi  = $default;
+             $temp['btn_dokumentasi'] =  'false';
          }
          
         
-          
+      
 
          $temp['id'] = $val->id;
          $temp['periode_id'] = $val->periode_id;
@@ -535,7 +550,7 @@ class RequestPemetaan
          $temp['pagu_promosi_convert'] =  GeneralHelpers::formatRupiah(RequestPerencanaan::PaguPromosi($val->periode_id,$val->daerah_id));
          $temp['total_promosi_convert'] = GeneralHelpers::formatRupiah($val->budget_rencana_kerja + $val->budget_studi_literatur + $val->budget_rapat_kordinasi + $val->budget_data_sekunder + $val->budget_fgd_persiapan + $val->budget_fgd_identifikasi + $val->budget_lq + $val->budget_shift_share + $val->budget_tipologi_sektor + $val->budget_klassen + $val->budget_fgd_klarifikasi + $val->budget_finalisasi + $val->budget_summary_sektor_unggulan + $val->budget_sektor_unggulan + $val->budget_potensi_pasar + $val->budget_parameter_sektor_unggulan + $val->budget_subsektor_unggulan + $val->budget_intensif_daerah + $val->budget_potensi_lanjutan + $val->budget_info_grafis + $val->budget_dokumentasi);
          $temp['pagu_promosi'] =  RequestPerencanaan::PaguPromosi($val->periode_id,$val->daerah_id);
-         // $temp['total_promosi'] = $val->budget_peluang + $val->budget_storyline + $val->budget_storyboard + $val->budget_lokasi + $val->budget_talent +  $val->budget_testimoni + $val->budget_audio + $val->budget_editing + $val->budget_gambar + $val->budget_video + $val->budget_editvideo + $val->budget_grafik + $val->budget_mixing + $val->budget_voice + $val->budget_subtitle;  
+         $temp['total_promosi'] = $val->budget_rencana_kerja + $val->budget_studi_literatur + $val->budget_rapat_kordinasi + $val->budget_data_sekunder + $val->budget_fgd_persiapan + $val->budget_fgd_identifikasi + $val->budget_lq + $val->budget_shift_share + $val->budget_tipologi_sektor + $val->budget_klassen + $val->budget_fgd_klarifikasi + $val->budget_finalisasi + $val->budget_summary_sektor_unggulan + $val->budget_sektor_unggulan + $val->budget_potensi_pasar + $val->budget_parameter_sektor_unggulan + $val->budget_subsektor_unggulan + $val->budget_intensif_daerah + $val->budget_potensi_lanjutan + $val->budget_info_grafis + $val->budget_dokumentasi;  
          return $temp;
 
    }
@@ -807,7 +822,7 @@ class RequestPemetaan
          if($request->keterangan_data_sekunder)
          {    
 
-             if(count($data) > 0)
+             if($data)
              {
                 if($data->keterangan_data_sekunder)
                 { 
@@ -944,7 +959,7 @@ class RequestPemetaan
              }
 
              $info_grafis = RequestPemetaan::UploadFile($request->keterangan_info_grafis,'info-grafis');
-             $fields_info_grafis = [ "keterangan_penyusunan" => $info_grafis];
+             $fields_info_grafis = [ "keterangan_info_grafis" => $info_grafis];
              $merge11 = array_merge($merge10,$fields_info_grafis);
          }else{
              $merge11 = $merge10;

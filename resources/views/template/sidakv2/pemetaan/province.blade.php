@@ -1127,6 +1127,7 @@
 				   
 			    if(item.request_edit == 'true')
 			    { 
+                    $('#div-edit').show();
                      $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
                      $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
 			    }else{
@@ -1375,7 +1376,7 @@
 		          row +=`<div class="modal-content">`;
 		               row +=`<div class="modal-header">`;
 		                    row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-		                    row +=`<h4 class="modal-title">Request Edit Promosi</h4>`;
+		                    row +=`<h4 class="modal-title">Request Edit Peta Potensi</h4>`;
 		               row +=`</div>`;
 		               row +=`<div class="modal-body">`;
 		                    row +=`<div class="form-group">`;
