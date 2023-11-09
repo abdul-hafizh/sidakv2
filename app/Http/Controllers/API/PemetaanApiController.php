@@ -16,10 +16,13 @@ use App\Helpers\GeneralPaginate;
 use App\Models\Notification;
 use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestNotification;
+
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PeriodeApproved;
 use App\Mail\PeriodeExtension;
 use App\Models\User;
+
+
 
 class PemetaanApiController extends Controller
 {
@@ -71,7 +74,7 @@ class PemetaanApiController extends Controller
         $column_search  = array('provinces.name');
 
       
-         $query  = RequestPemetaan::join('provinces','pemetaan.daerah_id','=','provinces.id');
+         $query  = Pemetaan::join('provinces','pemetaan.daerah_id','=','provinces.id');
        
 
          if($status =='req_edit')

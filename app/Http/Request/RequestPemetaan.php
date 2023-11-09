@@ -58,7 +58,7 @@ class RequestPemetaan
          $temp[$key]['number'] = $numberNext++;
          $temp[$key]['id'] = $val->id;
        
-         $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+         $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereID($val->daerah_id);
          $temp[$key]['access'] = $access;
          $temp[$key]['checklist'] = $checklist;
          $temp[$key]['periode_id'] = $val->periode_id;
@@ -236,7 +236,7 @@ class RequestPemetaan
            } 
          
       }else{
-          $result['periode_id'] = '';
+          $result['periode_id'] = $year;
           $result['pagu_pemetaan'] = 'Rp 0';
           $result['total_pemetaan'] =  'Rp 0'; 
       }

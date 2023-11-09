@@ -157,8 +157,18 @@ class PeriodeApiController extends Controller
 
              $query->groupBy('year');
         } else {
-            $query->select('a.id', 'a.slug', 'a.year');
-            $query->groupBy('a.year');
+            // $query->select('a.id', 'a.slug', 'a.year');
+            // $query->groupBy('a.year');
+
+            if ($request->action == 'pemetaan') 
+            { 
+
+                 $query->select('a.id', 'a.slug', 'a.year');
+                 $query->where('a.year','>=','2024');
+                 $query->groupBy('a.year');
+               
+
+            }  
         }
 
         $query->where('a.status', 'Y');
