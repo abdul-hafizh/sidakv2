@@ -168,6 +168,11 @@ class PeriodeApiController extends Controller
                  $query->groupBy('a.year');
                
 
+            }else if($request->action == 'promosi'){
+
+                 $query->select('a.id', 'a.slug', 'a.year');
+                 $query->where('a.year','<=','2023');
+                 $query->groupBy('a.year');
             }  
         }
 

@@ -38,10 +38,10 @@ class RequestPemetaan
          
          };
 
-         $description =  $val->alasan;
-         if (strlen($description) > 30) {
-             $description = substr($description, 0, 30) . "...";
-         }
+         // $description =  $val->alasan;
+         // if (strlen($description) > 30) {
+         //     $description = substr($description, 0, 30) . "...";
+         // }
 
          if($val->checklist =='not_approved')
          {
@@ -213,7 +213,7 @@ class RequestPemetaan
          $temp[$key]['created_by'] = $val->created_by;
          $temp[$key]['request_edit'] = $val->request_edit;
          $temp[$key]['status_laporan_id'] = $val->status_laporan_id;
-         $temp[$key]['alasan'] = $description;
+         $temp[$key]['alasan'] = $val->alasan;
 
       
          $temp[$key]['status'] = array('status_db' => $val->status_laporan_id, 'status_convert' => $status);
@@ -241,8 +241,10 @@ class RequestPemetaan
           $result['total_pemetaan'] =  'Rp 0'; 
       }
 
-      $result['total_daerah'] = Pemetaan::groupBy('daerah_id')->count();
-      $result['total_requestedit'] = Pemetaan::where(['request_edit'=>'true'])->count();
+      $result['total_daerah'] = Pemetaan::where('periode_id',$year)->groupBy('daerah_id')->count();
+      $result['total_requestedit'] = Pemetaan::where(['request_edit'=>'true','periode_id'=>$year])->count();
+      $result['total_draft'] = Pemetaan::where(['status_laporan_id'=>'13','periode_id'=>$year])->count();
+      $result['total_terkirim'] = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$year])->count();
       $result['options'] = RequestMenuRoles::ActionPage('promosi');
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();

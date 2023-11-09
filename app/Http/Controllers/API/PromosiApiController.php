@@ -79,7 +79,11 @@ class PromosiApiController extends Controller
             $query->where(['promosi.request_edit'=>'true','checklist'=>'not_approved']); 
          }else if($status =='approved'){
             $query->where(['promosi.request_edit'=>'false','checklist'=>'approved']); 
-         }   
+         }else if($status =='draft'){  
+            $query->where(['promosi.status_laporan_id'=>'13']);
+         }else if($status =='terkirim'){ 
+            $query->where(['promosi.status_laporan_id'=>'14']);     
+         }  
 
 
         if($search == '')

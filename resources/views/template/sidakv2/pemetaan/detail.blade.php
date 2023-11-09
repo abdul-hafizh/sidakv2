@@ -1452,6 +1452,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                         }else{  
+                                           row +=`<div class="font-bold text-center"> ... </div>`;
                                          }
                                          row +=`</div>`;
                                        
@@ -1500,6 +1502,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                          }else{  
+                                           row +=`<div class="font-bold text-center"> ... </div>`;
                                           }
                                         row +=`</div>`;
                                     
@@ -1549,6 +1553,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                          }else{  
+                                           row +=`<div class="font-bold text-center"> ... </div>`;
                                           }
                                         row +=`</div>`;
                                    
@@ -1595,6 +1601,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                          }else{  
+                                           row +=`<div class="font-bold text-center"> ... </div>`;
                                           }
                                         row +=`</div>`;
 
@@ -1653,6 +1661,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                          }else{  
+                                           row +=`<div class="font-bold text-center"> ... </div>`;
                                           }
                                         row +=`</div>`;
                                    
@@ -1707,6 +1717,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                           }else{  
+                                            row +=`<div class="font-bold text-center"> ... </div>`;
                                            }
                                         row +=`</div>`;
                                     
@@ -1773,6 +1785,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                          }else{  
+                                           row +=`<div class="font-bold text-center"> ... </div>`;
                                           }
                                         row +=`</div>`;
                                     
@@ -1923,6 +1937,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                          }else{  
+                                           row +=`<div class="font-bold text-center"> ... </div>`;
                                           }
                                         row +=`</div>`;
 
@@ -1976,7 +1992,9 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
-                                          }
+                                         }else{  
+                                           row +=`<div class="font-bold text-center"> ... </div>`;
+                                         }
                                         row +=`</div>`;
                                    
 
@@ -2050,6 +2068,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                           }else{  
+                                             row +=`<div class="font-bold text-center"> ... </div>`;
                                            }
                                         row +=`</div>`;
 
@@ -2294,6 +2314,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                          }else{  
+                                            row +=`<div class="font-bold text-center"> ... </div>`;
                                           }
                                         row +=`</div>`;
                                    
@@ -2340,6 +2362,8 @@
                                               row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
                                                    row +=`<div id="FormView-${item.id }"></div>`;
                                              row +=`</div>`;
+                                           }else{  
+                                             row +=`<div class="font-bold text-center"> ... </div>`;
                                            } 
                                         row +=`</div>`;
                                     

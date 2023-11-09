@@ -82,9 +82,12 @@ class PemetaanApiController extends Controller
             $query->where(['pemetaan.request_edit'=>'true','checklist'=>'not_approved']); 
          }else if($status =='approved'){
             $query->where(['pemetaan.request_edit'=>'false','checklist'=>'approved']); 
-         }   
-
-
+         }else if($status =='draft'){  
+            $query->where(['pemetaan.status_laporan_id'=>'13']);
+         }else if($status =='terkirim'){ 
+            $query->where(['pemetaan.status_laporan_id'=>'14']);     
+         }
+         
         if($search == '')
         {
             if($daerah_id !='')
