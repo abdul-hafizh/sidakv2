@@ -57,6 +57,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('user/photo', [AuthApiController::class, 'updatePhoto']);
     Route::get('periode/check', [PeriodeApiController::class, 'check']);
 
+    Route::get('sidebar-active', [AuthApiController::class, 'menuSlug']);
+
     Route::get('perencanaan', [PerencanaanApiController::class, 'index']);
     Route::get('perencanaan/export', [PerencanaanApiController::class, 'export']);
     Route::post('perencanaan', [PerencanaanApiController::class, 'store']);
