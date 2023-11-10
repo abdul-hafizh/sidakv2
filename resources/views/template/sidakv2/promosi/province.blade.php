@@ -62,7 +62,7 @@
                </div>
           </div>
 
-          <div class="box box-solid box-primary" id="div-edit">
+          <div class="box box-solid box-primary" id="div-edit" style="display:none;">
                <div class="box-body">
                     <div class="card-body">
                          <div class="row pd-top-bottom-15">
@@ -708,6 +708,7 @@
 					   
 				    if(item.request_edit == 'true')
 				    { 
+                          $('#div-edit').show();
                           $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
                           $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
 				    }else{

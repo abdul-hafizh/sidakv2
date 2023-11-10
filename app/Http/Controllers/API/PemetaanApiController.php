@@ -16,10 +16,13 @@ use App\Helpers\GeneralPaginate;
 use App\Models\Notification;
 use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestNotification;
+
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PeriodeApproved;
 use App\Mail\PeriodeExtension;
 use App\Models\User;
+
+
 
 class PemetaanApiController extends Controller
 {
@@ -71,7 +74,7 @@ class PemetaanApiController extends Controller
         $column_search  = array('provinces.name');
 
       
-         $query  = RequestPemetaan::join('provinces','pemetaan.daerah_id','=','provinces.id');
+         $query  = Pemetaan::join('provinces','pemetaan.daerah_id','=','provinces.id');
        
 
          if($status =='req_edit')
@@ -79,9 +82,12 @@ class PemetaanApiController extends Controller
             $query->where(['pemetaan.request_edit'=>'true','checklist'=>'not_approved']); 
          }else if($status =='approved'){
             $query->where(['pemetaan.request_edit'=>'false','checklist'=>'approved']); 
-         }   
-
-
+         }else if($status =='draft'){  
+            $query->where(['pemetaan.status_laporan_id'=>'13']);
+         }else if($status =='terkirim'){ 
+            $query->where(['pemetaan.status_laporan_id'=>'14']);     
+         }
+         
         if($search == '')
         {
             if($daerah_id !='')

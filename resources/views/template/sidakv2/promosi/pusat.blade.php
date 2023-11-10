@@ -4,7 +4,7 @@
 
 	<div class="row padding-default" style="margin-bottom: 20px">
                
-               <div class="col-lg-4 col-md-6 col-sm-12">
+               <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="box-body btn-primary border-radius-13">     
                          <div class="card-body table-responsive p-0">
                               <div class="media">
@@ -17,7 +17,7 @@
                     </div>
                </div>
 
-               <div class="col-lg-4 col-md-6 col-sm-12">
+               <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="box-body btn-primary border-radius-13">     
                          <div class="card-body table-responsive p-0">
                               <div class="media">
@@ -30,7 +30,7 @@
                     </div>
                </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="box-body btn-primary border-radius-13">     
                          <div class="card-body table-responsive p-0">
                               <div class="media">
@@ -42,6 +42,24 @@
                          </div>
                     </div>
                </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">     
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Total Draft & Terkirim</span>
+                                        <h3 class="card-text" id="total_draft"></h3>
+                                        <h3 class="card-text" id="total_terkirim"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+             
+
+
 
               
           </div>
@@ -58,7 +76,9 @@
              <div class="col-sm-2 " style="margin-bottom: 9px;">
                 <select id="status"  class="selectpicker" data-style="btn-default" title="Pilih Status">
                 	<option value="req_edit">Request Edit</option>
-                	<option value="approved">Approved</option>
+                	<option value="approved">Request Approved</option>
+                    <option value="draft">Draft</option>
+                    <option value="terkirim">Terkirim</option>
                 </select>
             </div>    
 
@@ -169,7 +189,7 @@
 
  $(document).ready(function() {
 
- 	
+ 	localStorage.removeItem('search');
     const itemsPerPage = 10; // Number of items to display per page
     let currentPage = 1; // Current page number
     let previousPage = 1; // Previous page number
@@ -184,8 +204,10 @@
     var total_daerah = 0;
     var total_requestedit = 0;
     var daerah_id = 0;
+    var draft = 0;
+    var terkirim = 0;
 
-      $('#total_promosi').html('<b>Rp. 0</b>');
+    $('#total_promosi').html('<b>Rp. 0</b>');
 	$('#periode_id').on('change', function() {
 		var index = $(this).val();
 		let find = periode.find(o => o.value === index);
@@ -237,6 +259,11 @@
                         listOptions(response.options);
                         updateContent(response.data,response.options);
                         updatePagination(response.current_page, response.last_page);
+                        
+                        $('#total_promosi').html('<b>'+response.total_promosi+'</b>');
+                        $('#total_daerah').html('<b>'+response.total_daerah+'</b>');
+                        $('#total_requestedit').html('<b>'+response.total_requestedit+'</b>');
+                         $('#total_draft').html('<b> '+response.total_draft+'</b> | <b>  '+response.total_terkirim+'</b>');
                     },
                     error: function(error) {
                         console.error('Error fetching data:', error);
@@ -268,6 +295,7 @@
      // Refresh selected button
     $('#refresh').on('click', function() {
     	localStorage.removeItem('search');
+        getperiode(year);
         fetchData(page,year);
   
         $('#search-input').val('');
@@ -442,6 +470,11 @@
 	                listOptions(response.options);
                     updateContent(response.data,response.options);
 	                updatePagination(response.current_page, response.last_page);
+
+                    $('#total_promosi').html('<b>'+response.total_promosi+'</b>');
+                    $('#total_daerah').html('<b>'+response.total_daerah+'</b>');
+                    $('#total_requestedit').html('<b>'+response.total_requestedit+'</b>');
+                     $('#total_draft').html('<b> '+response.total_draft+'</b> | <b> '+response.total_terkirim+'</b>');
 	            },
 	            error: function(error) {
 	                console.error('Error fetching data:', error);
@@ -517,7 +550,14 @@
                  	 select.prop('disabled', true);
                  	
                 }else{
-                 	select.val(periode_id);
+                  var tmp = JSON.parse(localStorage.getItem('search'));
+                  if(tmp)
+                  {
+                       
+                    select.val(tmp.periode_id);
+                  }else{
+                    select.val(periode_id);
+                  }  
                  	select.prop('disabled', false);
                 } 	
 		       select.selectpicker('refresh');
@@ -575,6 +615,8 @@
                 $('#total_promosi').html('<b>'+response.total_promosi+'</b>');
             	$('#total_daerah').html('<b>'+response.total_daerah+'</b>');
             	$('#total_requestedit').html('<b>'+response.total_requestedit+'</b>');
+                $('#total_draft').html('<b> '+response.total_draft+'</b> | <b>  '+response.total_terkirim+'</b>');
+              
             },
             error: function(error) {
                 console.error('Error fetching data:', error);
@@ -623,30 +665,32 @@
                row +=`<td align="right">${item.total_pasca_produksi}</td>`;
                row +=`<td align="right">${item.total_budget}</td>`;
                
-               	  row +=`<td>${item.status.status_convert}  </td>`;
+               	  row +=`<td> ${item.status.status_convert}  </td>`;
                	
              
 
                
 	               	if(item.request_edit == 'true')
 	                {
-	                    row +=`<td>Permintaan Request Edit </td>`;
+	                    row +=`<td><div class="pull-left">Permintaan Request Edit </div><a id="Alasan" data-param_id="`+ item.id +`"  data-param_alasan="`+ item.alasan +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top"   title="Alasan Request Edit" class="pull-right pointer font-bold">Alasan</a></td>`;
 	                }else{
 	                	if(item.checklist =='not_approved')
 	                    {
-                              row +=`<td>${item.alasan} <small class="label pull-right  bg-green">Proses </small></td>`;
+                              row +=`<td><a id="Alasan" data-param_id="`+ item.id +`"  data-param_alasan="`+ item.alasan +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top"   title="Alasan Request Edit" class="pull-left pointer font-bold">Alasan</a> <small class="label pull-right  bg-green">Proses </small></td>`;
 	                    }else if(item.checklist =='approved'){
 	                      if(item.alasan == '')
 	                      {
                               row +=`<td></td>`;
 	                      }else{
-	                      	  row +=`<td>${item.alasan} <small class="label pull-right  bg-green">Approved</small> </td>`;
+	                      	  row +=`<td><a id="Alasan" data-param_id="`+ item.id +`" data-param_alasan="`+ item.alasan +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top"   title="Alasan Request Edit" class="pull-left pointer font-bold">Alasan</a> <small class="label pull-right  bg-green">Approved</small> </td>`;
 	                      }	
                             
 
                          }else{
                              row +=`<td> </td>`
-                         }     
+                         } 
+
+
 	                    		
 	                }		
                	 
@@ -726,7 +770,7 @@
 
     	  let row = ``;
          row +=`<tr>`;
-         row +=`<td colspan="7" align="center">Data Kosong</td>`;
+         row +=`<td colspan="10" align="center">Data Kosong</td>`;
          row +=`</tr>`;
          content.html(row);
     }    
@@ -751,6 +795,47 @@
             window.location.replace('/promosi/detail/'+ id); 
            
        });
+
+       $( "#content" ).on( "click", "#Alasan", (e) => {
+            let id = e.currentTarget.dataset.param_id; 
+            let alasan = e.currentTarget.dataset.param_alasan;
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+                       row +=`<div class="modal-header">`;
+                         row +=`<button data-dismiss="modal" type="button" class="clear-input close">&times;</button>`;
+                         row +=`<h4 class="modal-title">Alasan Request Edit</h4>`;
+                       row +=`</div>`;
+
+                   
+                            row +=`<div class="modal-body">`;
+
+
+                                row +=`<div id="kode-alert-`+ id +`" class="form-group has-feedback" >`;
+                                
+                                row +=`<textarea readonly  class="form-control textarea-fixed-replay">`+ alasan +`</textarea>`;
+                                row +=`</div>`;
+                               
+                                 
+                               
+
+
+                            row +=`<div class="modal-footer">`;
+                                row +=`<button type="button" class="clear-input btn btn-default"  data-dismiss="modal">Tutup</button>`;
+
+                                 
+                            row +=`</div>`;
+                            row +=`</div>`;
+
+
+                       
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ id).html(row); 
+           
+       });  
 
 
         // Approve selected button

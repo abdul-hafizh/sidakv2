@@ -183,7 +183,7 @@
 	$('#periode_id').on('change', function() {
 		var index = $(this).val();
 		let find = periode.find(o => o.value === index);
-          console.log(find.pagu_promosi)
+         
 		var promosi = accounting.formatNumber(find.pagu_promosi, 0, ".", "."); 
 		// $('#pagu_promosi').html('<b>Rp '+ promosi +'</b>');
 	 //     $('#periode_selected').html('<b>'+ find.value +'</b>'); 
@@ -1127,7 +1127,7 @@
 				   
 			    if(item.request_edit == 'true')
 			    { 
-                    $('#div-edit').show();
+                     $('#div-edit').show();
                      $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
                      $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
 			    }else{

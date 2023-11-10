@@ -4,12 +4,12 @@
 
 	<div class="row padding-default" style="margin-bottom: 20px">
                
-               <div class="col-lg-4 col-md-6 col-sm-12">
+               <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="box-body btn-primary border-radius-13">     
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Total Budget Promosi</span>
+                                        <span>Total Budget Pemetaan</span>
                                         <h3 class="card-text" id="total_promosi"></h3>
                                    </div>
                               </div>
@@ -17,7 +17,7 @@
                     </div>
                </div>
 
-               <div class="col-lg-4 col-md-6 col-sm-12">
+               <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="box-body btn-primary border-radius-13">     
                          <div class="card-body table-responsive p-0">
                               <div class="media">
@@ -30,13 +30,27 @@
                     </div>
                </div>
 
-                <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="col-lg-3 col-md-6 col-sm-12">
                     <div class="box-body btn-primary border-radius-13">     
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
                                         <span>Total Request Edit</span>
                                         <h3 class="card-text" id="total_requestedit"></h3>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="box-body btn-primary border-radius-13">     
+                         <div class="card-body table-responsive p-0">
+                              <div class="media">
+                                   <div class="media-body text-left">
+                                        <span>Total Draft & Terkirim</span>
+                                        <h3 class="card-text" id="total_draft"></h3>
+                                        <h3 class="card-text" id="total_terkirim"></h3>
                                    </div>
                               </div>
                          </div>
@@ -59,6 +73,8 @@
                 <select id="status"  class="selectpicker" data-style="btn-default" title="Pilih Status">
                 	<option value="req_edit">Request Edit</option>
                 	<option value="approved">Approved</option>
+                    <option value="draft">Draft</option>
+                    <option value="terkirim">Terkirim</option>
                 </select>
             </div>    
 
@@ -164,12 +180,12 @@
 	    </div>
 	</div>
    
-     @include('template/sidakv2/promosi.export')
+     @include('template/sidakv2/pemetaan.export')
 <script type="text/javascript">
 
  $(document).ready(function() {
 
- 	
+ 	localStorage.removeItem('search');
     const itemsPerPage = 10; // Number of items to display per page
     let currentPage = 1; // Current page number
     let previousPage = 1; // Previous page number
@@ -177,13 +193,15 @@
     let page = 1;
     var list = [];
     const total = 0;
-    var year = new Date().getFullYear();
+    // var year = new Date().getFullYear();
+    var year = '2024';
     var search = '';
     var status = '';
     var total_promosi = 0;
     var total_daerah = 0;
     var total_requestedit = 0;
     var daerah_id = 0;
+
 
       $('#total_promosi').html('<b>Rp. 0</b>');
 	$('#periode_id').on('change', function() {
@@ -196,7 +214,7 @@
 
      $("#ExportButton").click(function() {
 	     $.ajax({
-            url: BASE_URL+ `/api/promosi?page=${page}&per_page=all&periode_id=${year}`,
+            url: BASE_URL+ `/api/pemetaan?page=${page}&per_page=all&periode_id=${year}`,
             method: 'GET',
             success: function(response) {
             	
@@ -220,10 +238,10 @@
                   search = $('#search-input').val();
                   if(search !='')
                   {
-                  	var url = BASE_URL + `/api/promosi/search?page=${page}&per_page=${value}&periode_id=${periode_id}`;
+                  	var url = BASE_URL + `/api/pemetaan/search?page=${page}&per_page=${value}&periode_id=${periode_id}`;
                   	var method = 'POST';
                   }else{
-                    var url = BASE_URL + `/api/promosi?page=${page}&per_page=${value}&periode_id=${year}`;
+                    var url = BASE_URL + `/api/pemetaan?page=${page}&per_page=${value}&periode_id=${year}`;
                     var method = 'GET';
                   } 	
 
@@ -237,6 +255,12 @@
                         listOptions(response.options);
                         updateContent(response.data,response.options);
                         updatePagination(response.current_page, response.last_page);
+
+                        $('#total_promosi').html('<b>'+response.total_pemetaan+'</b>');
+                        $('#total_daerah').html('<b>'+response.total_daerah+'</b>');
+                        $('#total_requestedit').html('<b>'+response.total_requestedit+'</b>');
+                        $('#total_draft').html('<b> '+response.total_draft+'</b> | <b>  '+response.total_terkirim+'</b>');
+
                     },
                     error: function(error) {
                         console.error('Error fetching data:', error);
@@ -268,6 +292,7 @@
      // Refresh selected button
     $('#refresh').on('click', function() {
     	localStorage.removeItem('search');
+        getperiode(year);
         fetchData(page,year);
   
         $('#search-input').val('');
@@ -433,7 +458,7 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 	         $.ajax({
-	            url: BASE_URL + `/api/promosi/search?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`,
+	            url: BASE_URL + `/api/pemetaan/search?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`,
 	            data:{'search':search,'daerah_id':daerah_id,'status':status},
 	            method: 'POST',
 	            success: function(response) {
@@ -442,6 +467,11 @@
 	                listOptions(response.options);
                     updateContent(response.data,response.options);
 	                updatePagination(response.current_page, response.last_page);
+
+                    $('#total_promosi').html('<b>'+response.total_pemetaan+'</b>');
+                    $('#total_daerah').html('<b>'+response.total_daerah+'</b>');
+                    $('#total_requestedit').html('<b>'+response.total_requestedit+'</b>');
+                    $('#total_draft').html('<b> '+response.total_draft+'</b> | <b>  '+response.total_terkirim+'</b>'); 
 	            },
 	            error: function(error) {
 	                console.error('Error fetching data:', error);
@@ -456,7 +486,7 @@
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
-                    url: BASE_URL +'/api/select-periode?type=GET&action=promosi',
+                    url: BASE_URL +'/api/select-periode?type=GET&action=pemetaan',
                     success: function(data) {
                          selectedPeriode(data.result,periode_id)
                          year = periode_id;
@@ -517,7 +547,16 @@
                  	 select.prop('disabled', true);
                  	
                 }else{
-                 	select.val(periode_id);
+                  var tmp = JSON.parse(localStorage.getItem('search'));
+                  if(tmp)
+                  {
+                       
+                    select.val(tmp.periode_id);
+                  }else{
+                    select.val(periode_id);
+                  }  
+  
+                 	
                  	select.prop('disabled', false);
                 } 	
 		       select.selectpicker('refresh');
@@ -545,7 +584,7 @@
 		if(tmp)
 	    {
 
-	       url = BASE_URL+ `/api/promosi/search?page=${page}&per_page=${itemsPerPage}&periode_id=${tmp.periode_id}`;
+	       url = BASE_URL+ `/api/pemetaan/search?page=${page}&per_page=${itemsPerPage}&periode_id=${tmp.periode_id}`;
            method = 'POST';
            data = {'search':tmp.search,'daerah_id':tmp.daerah_id,'status':tmp.status};
 
@@ -555,7 +594,7 @@
            $('#status').selectpicker('refresh')
 
 	    }else{
-           url = BASE_URL+ `/api/promosi?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`;
+           url = BASE_URL+ `/api/pemetaan?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`;
            method = 'GET';
           
 	    }		
@@ -572,9 +611,10 @@
                 updateContent(response.data,response.options);
                 updatePagination(response.current_page, response.last_page);
 
-                $('#total_promosi').html('<b>'+response.total_promosi+'</b>');
+                $('#total_promosi').html('<b>'+response.total_pemetaan+'</b>');
             	$('#total_daerah').html('<b>'+response.total_daerah+'</b>');
             	$('#total_requestedit').html('<b>'+response.total_requestedit+'</b>');
+                $('#total_draft').html('<b> '+response.total_draft+'</b> | <b>  '+response.total_terkirim+'</b>');
             },
             error: function(error) {
                 console.error('Error fetching data:', error);
@@ -618,9 +658,9 @@
                row +=`<td>${item.number}</td>`;
                row +=`<td>${item.daerah_name}</td>`;
               
-               row +=`<td align="right">${item.total_pra_produksi}</td>`;
-               row +=`<td align="right">${item.total_produksi}</td>`;
-               row +=`<td align="right">${item.total_pasca_produksi}</td>`;
+               row +=`<td align="right">${item.total_identifikasi}</td>`;
+               row +=`<td align="right">${item.total_analisis}</td>`;
+               row +=`<td align="right">${item.total_pelaksanaan}</td>`;
                row +=`<td align="right">${item.total_budget}</td>`;
                
                	  row +=`<td>${item.status.status_convert}  </td>`;
@@ -630,23 +670,23 @@
                
 	               	if(item.request_edit == 'true')
 	                {
-	                    row +=`<td>Permintaan Request Edit </td>`;
+	                   row +=`<td><div class="pull-left">Permintaan Request Edit </div><a id="Alasan" data-param_id="`+ item.id +`"  data-param_alasan="`+ item.alasan +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top"   title="Alasan Request Edit" class="pull-right pointer font-bold">Alasan</a></td>`;
 	                }else{
 	                	if(item.checklist =='not_approved')
-	                    {
-                              row +=`<td>${item.alasan} <small class="label pull-right  bg-green">Proses </small></td>`;
-	                    }else if(item.checklist =='approved'){
-	                      if(item.alasan == '')
-	                      {
+                        {
+                              row +=`<td><a id="Alasan" data-param_id="`+ item.id +`"  data-param_alasan="`+ item.alasan +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top"   title="Alasan Request Edit" class="pull-left pointer font-bold">Alasan</a> <small class="label pull-right  bg-green">Proses </small></td>`;
+                        }else if(item.checklist =='approved'){
+                          if(item.alasan == '')
+                          {
                               row +=`<td></td>`;
-	                      }else{
-	                      	  row +=`<td>${item.alasan} <small class="label pull-right  bg-green">Approved</small> </td>`;
-	                      }	
+                          }else{
+                              row +=`<td><a id="Alasan" data-param_id="`+ item.id +`" data-param_alasan="`+ item.alasan +`" data-toggle="modal" data-target="#modal-edit-${item.id}"  data-toggle="tooltip" data-placement="top"   title="Alasan Request Edit" class="pull-left pointer font-bold">Alasan</a> <small class="label pull-right  bg-green">Approved</small> </td>`;
+                          } 
                             
 
                          }else{
                              row +=`<td> </td>`
-                         }     
+                         }  
 	                    		
 	                }		
                	 
@@ -654,7 +694,7 @@
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
 
-                  row +=`<button id="Detail" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Detail Data"  class="btn btn-primary"><i class="fa fa-eye" ></i></button>`;
+                  row +=`<div id="Detail" data-param_id="`+ item.id +`"  data-toggle="tooltip" data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-detail" ></i></div>`;
 
 
                if(item.access =='admin' || item.access =='pusat')
@@ -664,19 +704,19 @@
                 {
                
 	                if(item.checklist == 'proses')
-	                {
-	                   row +=`<button id="Approved" data-param_type="approved" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Approved Data"  class="btn btn-primary"><i class="fa fa-check"></i></button>`;
-	                }else if(item.checklist == 'approved'){
+                    {
+                       row +=`<div id="Approved" data-param_type="approved" data-param_id="`+ item.id +`" data-toggle="tooltip" data-placement="top" title="Approved Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-active"></i></div>`;
+                    }else if(item.checklist == 'approved'){
 
-	                   
-	                   row +=`<button id="Approved" data-param_type="not_approved" data-param_id="`+ item.id +`"  type="button" data-toggle="tooltip" data-placement="top" title="Batalkan Approved Data"  class="btn btn-primary"><i class="fa fa-ban"></i></button>`;
+                       
+                       row +=`<div id="Approved" data-param_type="not_approved" data-param_id="`+ item.id +`"   data-toggle="tooltip" data-placement="top" title="Batalkan Approved Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-ban"></i></div>`;
 
-	                }else{
+                    }else{
                         
 
-                        row +=`<button disabled  type="button" data-toggle="tooltip" data-placement="top" title="Batalkan Approved Data"  class="btn btn-primary"><i class="fa fa-ban"></i></button>`;
+                        row +=`<div disabled data-toggle="tooltip" data-placement="top" title="Batalkan Approved Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-ban"></i></div>`;
 
-	                }
+                    }
 
 	             }   
 	            }    
@@ -748,12 +788,51 @@
              
             let id = e.currentTarget.dataset.param_id;
           //  const item = list.find(o => o.id == id); 
-            window.location.replace('/promosi/detail/'+ id); 
+            window.location.replace('/pemetaan/detail/'+ id); 
            
        });
 
 
-        // Approve selected button
+        $( "#content" ).on( "click", "#Alasan", (e) => {
+            let id = e.currentTarget.dataset.param_id; 
+            let alasan = e.currentTarget.dataset.param_alasan;
+            let row = ``;
+            row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+
+                       row +=`<div class="modal-header">`;
+                         row +=`<button data-dismiss="modal" type="button" class="clear-input close">&times;</button>`;
+                         row +=`<h4 class="modal-title">Alasan Request Edit</h4>`;
+                       row +=`</div>`;
+
+                   
+                            row +=`<div class="modal-body">`;
+
+
+                                row +=`<div id="kode-alert-`+ id +`" class="form-group has-feedback" >`;
+                                
+                                row +=`<textarea readonly  class="form-control textarea-fixed-replay">`+ alasan +`</textarea>`;
+                                row +=`</div>`;
+                               
+                                 
+                               
+
+
+                            row +=`<div class="modal-footer">`;
+                                row +=`<button type="button" class="clear-input btn btn-default"  data-dismiss="modal">Tutup</button>`;
+
+                                 
+                            row +=`</div>`;
+                            row +=`</div>`;
+
+
+                       
+                row +=`</div>`;
+            row +=`</div>`   
+
+            $('#FormEdit-'+ id).html(row); 
+           
+       }); 
     
  
     
@@ -840,7 +919,7 @@
         // Send the selected IDs for deletion using AJAX
        
         $.ajax({
-            url:  BASE_URL +`/api/promosi/selected`,
+            url:  BASE_URL +`/api/pemetaan/selected`,
             method: 'POST',
             data: { data: ids },
             success: function(response) {
@@ -879,7 +958,7 @@
      function approvedItem(id,type){
       
        $.ajax({
-		    url:  BASE_URL +`/api/promosi/`+ type +`/`+ id,
+		    url:  BASE_URL +`/api/pemetaan/`+ type +`/`+ id,
 		    method: 'PUT',
 		    success: function(response) {
 		        // Handle success (e.g., remove deleted items from the list)
@@ -898,7 +977,7 @@
         // Send the selected IDs for deletion using AJAX
        
         $.ajax({
-            url:  BASE_URL +`/api/promosi/selected?type=approved`,
+            url:  BASE_URL +`/api/pemetaan/selected?type=approved`,
             method: 'POST',
             data: { data: ids },
             success: function(response) {
@@ -1048,7 +1127,7 @@
 	  var ws = XLSX.utils.table_to_sheet(table);
 	  var wb = XLSX.utils.book_new();
 	  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
-	  XLSX.writeFile(wb, "Repot-data-promosi-"+ time +".xlsx");
+	  XLSX.writeFile(wb, "Repot-data-pemetaan-"+ time +".xlsx");
 
     }
 
