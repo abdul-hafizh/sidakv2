@@ -56,7 +56,7 @@
          var segments = url.split('/');  
          //MenuLead(segments[3])
           
-         RelatedUrl(segments[3])
+         //RelatedUrl(segments[3])
        
  
         
@@ -242,18 +242,18 @@
                 
                 if(findlast)
                 {
-                	
-                	findlast.active = false;
-                	findlast.icon_menu = findlast.icon;
-                    findlast.class = findlast.slug +' treeview';
+                     	
+	                	findlast.active = false;
+	                	findlast.icon_menu = findlast.icon;
+	                    findlast.class = findlast.slug +' treeview';
 
-                    let linklast = findlast.tasks.find(o => o.active === true);
-                    if(linklast)
-                    {
-                    
-                        linklast.active = false;
-                        linklast.class = linklast.slug; 	
-                    }
+	                    let linklast = findlast.tasks.find(o => o.active === true);
+	                    if(linklast)
+	                    {
+	                    
+	                        linklast.active = false;
+	                        linklast.class = linklast.slug; 	
+	                    }
                     
                    
                 } 	
@@ -369,8 +369,6 @@
                 {
                    findlasttaks.active = false; 
                    findlasttaks.class = findlasttaks.slug; 
-
-                  
                 } 	 
 
    
@@ -412,8 +410,8 @@
             method: 'GET',
             success: function(response) {
             	  //console.log(response.menu_utama)
-                  MenuLead(response.menu_utama)
-                  if(response.type =='sub')
+                  // MenuLead(response.menu_utama,slug)
+                  if(response.type =='sub' && segments[3] !="dashboard")
                   {
                      MenuSub(response.menu_utama,response.menu_sub)	
                   }	
