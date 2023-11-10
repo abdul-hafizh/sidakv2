@@ -189,7 +189,7 @@
 
  $(document).ready(function() {
 
- 	localStorage.removeItem('search');
+ 	//localStorage.removeItem('search');
     const itemsPerPage = 10; // Number of items to display per page
     let currentPage = 1; // Current page number
     let previousPage = 1; // Previous page number

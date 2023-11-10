@@ -712,7 +712,7 @@ $(function(){
     width: 15%;
 }
 .pd-top-40 {
-    padding: 40px 0px 0px;
+    padding: 35px 0px 0px;
 }
 .pd-bottom-10 {
     padding: 0px 0px 10px;

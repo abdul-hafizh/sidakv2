@@ -51,7 +51,12 @@
         var data = [];
         var menulast = '';
         getMenuSidebar(action);
-        
+
+         var url = window.location.href; 
+         var segments = url.split('/');  
+         //MenuLead(segments[3])
+          
+         RelatedUrl(segments[3])
        
  
         
@@ -221,7 +226,16 @@
         //menu
         $( "#menu-sidebar" ).on( "click", "#class-menu" , (e) => {
 		        let slug = e.currentTarget.dataset.param_id;
-                data = action;
+                MenuLead(slug)
+               
+		        
+		});
+
+
+		function MenuLead(slug){
+
+
+			data = action;
                 
                 //active sebelummnya
                 findlast = data.find(o => o.active === true && o.slug != slug);
@@ -274,13 +288,8 @@
     
                 getMenuSidebar(data);
                
-                // if(findtrue.count ==0)
-                // {
-                //   window.location.replace(findtrue.url);  
-                // }
-               
-		        
-		});
+
+		}
 
      function MenuHover(){
             
@@ -377,6 +386,44 @@
               // window.location.replace(findtasks.url);  
 
           });
+
+     }
+
+     function MenuSub(menu,slug){
+
+               
+                findmenu = action.find(o => o.slug === menu);
+                findlasttaks = findmenu.tasks.find(o => o.active === true);
+           
+                findtasks = findmenu.tasks.find(o => o.slug === slug);
+                findtasks.active = true;
+                findtasks.class = findtasks.slug + ' active'; 
+
+                localStorage.setItem('menu_sidebar', JSON.stringify(action));
+                getMenuSidebar(action);
+                data = [];
+
+     }
+
+     function RelatedUrl(slug)
+     {
+        $.ajax({
+            url: BASE_URL+ `/api/sidebar-active?slug=`+ slug,
+            method: 'GET',
+            success: function(response) {
+            	  //console.log(response.menu_utama)
+                  MenuLead(response.menu_utama)
+                  if(response.type =='sub')
+                  {
+                     MenuSub(response.menu_utama,response.menu_sub)	
+                  }	
+                  
+            	
+            },
+            error: function(error) {
+                console.error('Error fetching data:', error);
+            }
+        });
 
      }
 
