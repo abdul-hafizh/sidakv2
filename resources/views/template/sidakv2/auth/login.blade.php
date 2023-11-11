@@ -95,7 +95,7 @@ $(function(){
             row +='<label  id="password-alert"  class="text-capitalize color-dark-blue font-label-login font-12">Kata Sandi </label>'; 
             row +='<div class="input-group">';
             row +='<input name="password" type="password"  id="password" value="D4lak2021" class="form-control radius-password-left font-12" placeholder="Kata Sandi">';
-            row +='<span class="input-group-addon"><i id="eye" class="fa fa-eye-slash"></i></span>';
+            row +='<span class="input-group-addon"><i id="eye" class="fa fa-eye-slash pointer"></i></span>';
             row +='</div>';
              row +='<span id="password-messages"></span>';
         row +='</div>';
