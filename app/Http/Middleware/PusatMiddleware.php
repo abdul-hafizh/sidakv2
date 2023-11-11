@@ -21,15 +21,17 @@ class PusatMiddleware
         
         if(isset($_COOKIE['access']))
         {
-            if($_COOKIE['access'] != 'pusat')
-            {
-                if( $_COOKIE['access'] != 'province')
-                {
-                    dd('tes');
-                }    
-               // abort(404); 
-                
-            }
+            
+            // if($_COOKIE['access'] != 'province')
+            // {
+
+            //     if($_COOKIE['access'] != 'pusat')
+            //     {
+            //        abort(404); 
+            //     }    
+            //    // 
+               
+            // }
 
         }else{
 

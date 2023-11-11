@@ -291,9 +291,13 @@ class RequestMenuRoles
            {
               foreach($result as $key =>$val)
               {
-                if($val->slug == $slug)
+                $path_web = $val->path_web;
+
+                if($val->path_web == '/'.$slug)
                 {
                    $res['menu_utama'] = $val->slug;
+                   $res['menu_sub'] = '';
+                   $res['count'] = count($val->tasks);
                    $res['type'] = 'main';
                 }else{
                     foreach($val->tasks as $keys =>$vals)
@@ -303,6 +307,7 @@ class RequestMenuRoles
                       {  
                            $res['menu_utama'] = $val->slug;
                            $res['menu_sub'] = $vals->slug;
+                           $res['count'] = count($val->tasks);
                            $res['type'] = 'sub';
                       }  
 
