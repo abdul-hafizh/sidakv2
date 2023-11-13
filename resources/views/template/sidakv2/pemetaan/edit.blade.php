@@ -157,7 +157,7 @@
           var btn_penyusunan_infografis = '';
           var btn_doc_info_grafis = '';
 
-          $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
+         
      
           $('#pagu_promosi').html('<b>Rp. 0</b>');           
           $('#total_promosi').html('<b>Rp. 0</b>');  
@@ -1326,13 +1326,14 @@
           }
 
           function getperiode(periode_id){
+               $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
                     url: BASE_URL +'/api/select-periode?type=PUT&action=pemetaan',
                     success: function(data) {
                          var select =  $('#periode_id');
-                           select.empty();
+                         //  select.empty();
                          $.each(data.result, function(index, option) {
                               select.append($('<option>', {
                                    value: option.value,
@@ -1342,7 +1343,7 @@
                          
                            
                         
-                         select.val('2024');
+                         select.val(periode_id);
                          select.selectpicker('refresh');
                          periode = data.result; 
                     },
@@ -1375,6 +1376,7 @@
                     success: function(data) {
                        
                          updateContent(data);
+
                          pagu_promosi = data.pagu_promosi;
                          total_promosi = data.total_promosi;
                          
@@ -1395,6 +1397,7 @@
                           btn_doc_info_grafis = data.btn_dokumentasi;
 
                          
+                         getperiode(data.periode_id); 
                          getbutton();
                        
                     },
@@ -2358,7 +2361,7 @@
        
                    
                     content.append(row);
-                    getperiode(item.periode_id);  
+                    
                     $('#pagu_promosi').html('<b>'+item.pagu_promosi_convert+'</b>');
                     $('#total_promosi').html('<b>'+item.total_promosi_convert+'</b>');
                     $(".pemetaan_inp").on("input", updateTotalPemetaan);
