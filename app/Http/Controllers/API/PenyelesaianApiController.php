@@ -319,7 +319,7 @@ class PenyelesaianApiController extends Controller
             }
 
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);
-            $sumPenyelesaian = RequestPenyelesaian::GetSumPenyelesaian($request);
+            $sumPenyelesaian = RequestPenyelesaian::GetSumPenyelesaian($request, $id);
 
             if(
                 ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_pagu < $sumPenyelesaian->biaya) ||

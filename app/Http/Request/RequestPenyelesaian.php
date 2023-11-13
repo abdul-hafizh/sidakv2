@@ -261,29 +261,29 @@ class RequestPenyelesaian
         return json_decode(json_encode($temp), FALSE);
     }
 
-    public static function GetSumPenyelesaian($request)
+    public static function GetSumPenyelesaian($request, $id = null)
     {
         $year = substr((string)$request->periode_id_mdl, 0, 4);
         $daerah_id = Auth::user()->daerah_id;
         $sub_kegiatan = $request->sub_menu_slug;
 
-        $biayaTotal = Penyelesaian::where('daerah_id', $daerah_id)
+        $query = Penyelesaian::where('daerah_id', $daerah_id)
             ->where('sub_menu_slug', $sub_kegiatan)
-            ->where('periode_id', 'LIKE', $year . '%')
-            ->sum('biaya');
+            ->where('periode_id', 'LIKE', $year . '%');
 
-        $jmlPerusahaanTotal = Penyelesaian::where('sub_menu_slug', 'penyelesaian')
-            ->where('daerah_id', $daerah_id)
-            ->where('sub_menu_slug', $sub_kegiatan)
-            ->where('periode_id', 'LIKE', $year . '%')
-            ->sum('jml_perusahaan');
+        if (isset($id)) {
+            $query->where('id', '!=', $id);
+        }
 
-        $temp = [
+        $biayaTotal = $query->sum('biaya');
+        $jmlPerusahaanTotal = $query->sum('jml_perusahaan');
+
+        $result = [
             'biaya' => $request->biaya + $biayaTotal,
             'jml_perusahaan' => $request->jml_perusahaan + $jmlPerusahaanTotal,
         ];
 
-        return json_decode(json_encode($temp), FALSE);
+        return json_decode(json_encode($result), FALSE);
     }
 
     public static function fieldsData($request)
