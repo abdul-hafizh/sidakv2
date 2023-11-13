@@ -176,7 +176,7 @@
     
 
   
-    $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');
+    
    
     fetchData(page,year);
     getperiode(year);
@@ -1011,6 +1011,7 @@
     }
 
       function getperiode(periode_id){
+              $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
