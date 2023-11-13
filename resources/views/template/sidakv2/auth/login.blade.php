@@ -80,14 +80,23 @@ $(function(){
      row +='<form id="ActionLogin">';
         row +='<div  id="username-alert" class="pull-left full form-group has-feedback">';    
             row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Nama Pengguna </label>'; 
-            row +='<input value="admin"  name="username" type="text" class="form-control mb-3 border-radius-10 font-12"  placeholder="Username">'; 
+
+            row +='<input value="admin"  name="username" type="text" class="form-control  border-radius-10 font-12"  placeholder="Username">'; 
+             
             row +='<span id="username-messages"></span>'; 
         row +='</div>'; 
 
 
+
+
+
+
         row +='<div id="password-alert" class="pull-left full form-group has-feedback">';
             row +='<label  id="password-alert"  class="text-capitalize color-dark-blue font-label-login font-12">Kata Sandi </label>'; 
-            row +='<input name="password" type="password"  v-model="password" value="D4lak2021" class="form-control mb-2 border-radius-10 font-12" placeholder="Kata Sandi">';
+            row +='<div class="input-group">';
+            row +='<input name="password" type="password"  id="password" value="D4lak2021" class="form-control radius-password-left font-12" placeholder="Kata Sandi">';
+            row +='<span class="input-group-addon"><i id="eye" class="fa fa-eye-slash pointer"></i></span>';
+            row +='</div>';
              row +='<span id="password-messages"></span>';
         row +='</div>';
 
@@ -103,9 +112,21 @@ $(function(){
 
      row +='</form> ';     
 
-
+   
 
     $('#FormLogin').html(row);
+    $("#eye").click( () => {
+        var type = $('#password').attr("type");
+        if(type =="password")
+        {
+            $('#eye').removeClass('fa-eye-slash').addClass('fa-eye');
+            $('#password').attr('type','text');
+        }else{
+            $('#eye').removeClass('fa-eye').addClass('fa-eye-slash');
+            $('#password').attr('type','password');
+        }    
+       
+    });
     $("#Submitlogin").click( () => {
       ActionLogin()
     });
@@ -577,6 +598,14 @@ $(function(){
     min-height: calc(100vh - 3.98rem);
 }
 
+.radius-password-left{
+    border-radius: 10px 0px 0px 10px;
+}
+.input-group .input-group-addon {
+    border-radius: 0px 10px 10px 0px!important;
+    border-color: #d2d6de;
+    background-color: #f2f2f2!important;
+}
 .wrapper .main-panel {
     margin: 0;
     padding: 0;

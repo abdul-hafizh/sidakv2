@@ -21,10 +21,17 @@ class DaerahMiddleware
         
       if(isset($_COOKIE['access']))
         {
-            if($_COOKIE['access'] != 'daerah')
-            {
-               abort(404); 
-            }
+            
+            // if($_COOKIE['access'] != 'province')
+            // {
+
+            //     if($_COOKIE['access'] != 'pusat')
+            //     {
+            //        abort(404); 
+            //     }    
+            //    // 
+               
+            // }
         }else{
 
             Auth::logout();
