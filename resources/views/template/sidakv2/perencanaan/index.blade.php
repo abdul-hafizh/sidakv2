@@ -1001,7 +1001,7 @@
                     url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
                     success: function(data) {
                          var select =  $('#periode_id');
-                          select.empty();
+                        // select.empty();
                          $.each(data.result, function(index, option) {
                               select.append($('<option>', {
                                    value: option.value,
