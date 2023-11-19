@@ -49,23 +49,25 @@ class ValidationPemetaan
          'tgl_awal_lq' => 'Tanggal Awal LQ',
          'tgl_ahir_lq' => 'Tanggal Ahir LQ',
          'budget_lq' => 'Budget LQ',
-         'keterangan_lq' => 'Keterangan LQ',
+         // 'keterangan_lq' => 'Keterangan LQ',
 
          'tgl_awal_shift_share' => 'Tanggal Awal Shift Share',
          'tgl_ahir_shift_share' => 'Tanggal Ahir Shift Share',
          'budget_shift_share' => 'Budget Shift Share',
-         'keterangan_shift_share' => 'Keterangan Shift Share',
+         // 'keterangan_shift_share' => 'Keterangan Shift Share',
 
 
          'tgl_awal_tipologi_sektor' => 'Tanggal Awal Tipologi Sektor',
          'tgl_ahir_tipologi_sektor' =>'Tanggal Ahir Tipologi Sektor',
          'budget_tipologi_sektor' => 'Budget Tipologi Sektor',
-         'keterangan_tipologi_sektor' => 'Keterangan Tipologi Sektor',
+         // 'keterangan_tipologi_sektor' => 'Keterangan Tipologi Sektor',
 
          'tgl_awal_klassen' => 'Tanggal Awal Klassen',
          'tgl_ahir_klassen' => 'Tanggal Ahir Klassen',
          'budget_klassen' => 'Budget Klassen',
-         'keterangan_klassen' => 'Keterangan Klassen',
+         // 'keterangan_klassen' => 'Keterangan Klassen',
+
+         'keterangan_pengolahan' => 'File Pengolahan',
 
          'tgl_awal_fgd_klarifikasi' => 'Tanggal Awal FGD Klarifikasi',
          'tgl_ahir_fgd_klarifikasi' => 'Tanggal Ahir FGD Klarifikasi',
@@ -81,41 +83,42 @@ class ValidationPemetaan
          'tgl_awal_summary_sektor_unggulan' => 'Tanggal Awal Summary Sektor Unggulan',
          'tgl_ahir_summary_sektor_unggulan' => 'Tanggal Ahir Summary Sektor Unggulan',
          'budget_summary_sektor_unggulan' => 'Budget Summary Sektor Unggulan',
-         'keterangan_summary_sektor_unggulan' => 'Keterangan Summary Sektor Unggulan',
+         // 'keterangan_summary_sektor_unggulan' => 'Keterangan Summary Sektor Unggulan',
 
 
          'tgl_awal_sektor_unggulan' => 'Tanggal Awal Sektor Unggulan',
          'tgl_ahir_sektor_unggulan' => 'Tanggal Ahir Sektor Unggulan',
          'budget_sektor_unggulan' => 'Budget Sektor Unggulan',
-         'keterangan_sektor_unggulan' => 'Keterangan Sektor Unggulan',
+         // 'keterangan_sektor_unggulan' => 'Keterangan Sektor Unggulan',
 
          'tgl_awal_potensi_pasar' => 'Tanggal Awal Potensi Pasar',
          'tgl_ahir_potensi_pasar' => 'Tanggal Ahir Potensi Pasar',
          'budget_potensi_pasar' => 'Budget Potensi Pasar',
-         'keterangan_potensi_pasar' => 'Keterangan Potensi Pasar',
+         // 'keterangan_potensi_pasar' => 'Keterangan Potensi Pasar',
 
          'tgl_awal_parameter_sektor_unggulan' => 'Tanggal Awal Parameter Sektor Unggulan',
          'tgl_ahir_parameter_sektor_unggulan' => 'Tanggal Ahir Parameter Sektor Unggulan',
          'budget_parameter_sektor_unggulan' => 'Budget Parameter Sektor Unggulan',
-         'keterangan_parameter_sektor_unggulan' => 'Keterangan Parameter Sektor Unggulan',
+         // 'keterangan_parameter_sektor_unggulan' => 'Keterangan Parameter Sektor Unggulan',
 
 
          'tgl_awal_subsektor_unggulan' => 'Tanggal Awal Subsektor Unggulan',
          'tgl_ahir_subsektor_unggulan' => 'Tanggal Ahir Subsektor Unggulan',
          'budget_subsektor_unggulan' => 'Budget Subsektor Unggulan',
-         'keterangan_subsektor_unggulan' => 'Keterangan Subsektor Unggulan',
+         // 'keterangan_subsektor_unggulan' => 'Keterangan Subsektor Unggulan',
 
 
          'tgl_awal_intensif_daerah' => 'Tanggal Awal Intensif Daerah',
          'tgl_ahir_intensif_daerah' => 'Tanggal Ahir Intensif Daerah',
          'budget_intensif_daerah' => 'Budget Intensif Daerah',
-         'keterangan_intensif_daerah' => 'Keterangan Intensif Daerah',
+         // 'keterangan_intensif_daerah' => 'Keterangan Intensif Daerah',
 
 
          'tgl_awal_potensi_lanjutan' => 'Tanggal Awal Potensi Lanjutan',
          'tgl_ahir_potensi_lanjutan' => 'Tanggal Ahir Potensi Lanjutan',
          'budget_potensi_lanjutan' => 'Budget Potensi Lanjutan',
-         'keterangan_potensi_lanjutan' => 'Keterangan Potensi Lanjutan',
+         // 'keterangan_potensi_lanjutan' => 'Keterangan Potensi Lanjutan',
+         'keterangan_penyusunan' => 'File Penyusunan',
 
          'tgl_awal_info_grafis' => 'Tanggal Awal Info Grafis',
          'tgl_ahir_info_grafis' => 'Tanggal Ahir Info Grafis',
@@ -128,6 +131,7 @@ class ValidationPemetaan
          'budget_dokumentasi' => 'Budget Dokumentasi',
          'keterangan_dokumentasi' => 'Keterangan Dokumentasi',
             
+         'pengolahan' =>'Maksimal 1 pilihan analisis!',  
            
         ];
 
@@ -138,104 +142,113 @@ class ValidationPemetaan
          'tgl_awal_rencana_kerja' => 'required',
          'tgl_ahir_rencana_kerja' => 'required',
          'budget_rencana_kerja' =>   'required',
-         'keterangan_rencana_kerja' => 'required',
+         // 'keterangan_rencana_kerja' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_studi_literatur' => 'required',
          'tgl_ahir_studi_literatur' => 'required',
          'budget_studi_literatur' => 'required',
-         'keterangan_studi_literatur' =>'required',
+         // 'keterangan_studi_literatur' =>'required_if:status_laporan_id,14',
 
          'tgl_awal_rapat_kordinasi' => 'required',
          'tgl_ahir_rapat_kordinasi' => 'required',
          'budget_rapat_kordinasi' => 'required',
-         'keterangan_rapat_kordinasi' => 'required',
+         // 'keterangan_rapat_kordinasi' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_data_sekunder' => 'required',
          'tgl_ahir_data_sekunder' => 'required',
          'budget_data_sekunder' => 'required',
-         'keterangan_data_sekunder' => 'required',
+         // 'keterangan_data_sekunder' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_fgd_persiapan' => 'required',
          'tgl_ahir_fgd_persiapan' => 'required',
          'budget_fgd_persiapan' => 'required',
-         'keterangan_fgd_persiapan' => 'required',
+         // 'keterangan_fgd_persiapan' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_fgd_identifikasi' =>'required',
          'tgl_ahir_fgd_identifikasi' => 'required',
          'budget_fgd_identifikasi' => 'required',
-         'keterangan_fgd_identifikasi' => 'required',
+         // 'keterangan_fgd_identifikasi' => 'required_if:status_laporan_id,14',
 
-         'tgl_awal_lq' => 'required',
-         'tgl_ahir_lq' => 'required',
-         'budget_lq' => 'required',
-         'keterangan_lq' => 'required',
+         'tgl_awal_lq' => 'required_if:checklist_lq,true',
+         'tgl_ahir_lq' => 'required_if:checklist_lq,true',
+         'budget_lq' => 'required_if:checklist_lq,true',
+         // 'keterangan_lq' => 'required',
 
-         'tgl_awal_shift_share' => 'required',
-         'tgl_ahir_shift_share' => 'required',
-         'budget_shift_share' => 'required',
-         'keterangan_shift_share' => 'required',
+         'tgl_awal_shift_share' => 'required_if:checklist_shift_share,true',
+         'tgl_ahir_shift_share' => 'required_if:checklist_shift_share,true',
+         'budget_shift_share' => 'required_if:checklist_shift_share,true',
+         // 'keterangan_shift_share' => 'required',
 
-         'tgl_awal_tipologi_sektor' => 'required',
-         'tgl_ahir_tipologi_sektor' => 'required',
-         'budget_tipologi_sektor' => 'required',
-         'keterangan_tipologi_sektor' => 'required',
+         'tgl_awal_tipologi_sektor' => 'required_if:checklist_tipologi_sektor,true',
+         'tgl_ahir_tipologi_sektor' => 'required_if:checklist_tipologi_sektor,true',
+         'budget_tipologi_sektor' => 'required_if:checklist_tipologi_sektor,true',
+         // 'keterangan_tipologi_sektor' => 'required',
 
-         'tgl_awal_klassen' => 'required',
-         'tgl_ahir_klassen' => 'required',
-         'budget_klassen' => 'required',
-         'keterangan_klassen' => 'required',
+         'tgl_awal_klassen' => 'required_if:checklist_klassen,true',
+         'tgl_ahir_klassen' => 'required_if:checklist_klassen,true',
+         'budget_klassen' => 'required_if:checklist_klassen,true',
+         // 'keterangan_klassen' => 'required',
+         // 'keterangan_pengolahan' => 'required_if:status_laporan_id,14',
+         'pengolahan' => 'required_if:checklist_lq,false|required_if:checklist_shift_share,false|required_if:checklist_tipologi_sektor,false|required_if:checklist_klassen,false',
+
 
          'tgl_awal_fgd_klarifikasi' => 'required',
          'tgl_ahir_fgd_klarifikasi' =>'required',
          'budget_fgd_klarifikasi' => 'required',
-         'keterangan_fgd_klarifikasi' => 'required',
+         // 'keterangan_fgd_klarifikasi' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_finalisasi' => 'required',
          'tgl_ahir_finalisasi' => 'required',
          'budget_finalisasi' => 'required',
-         'keterangan_finalisasi' => 'required',
+         // 'keterangan_finalisasi' => 'required_if:status_laporan_id,14',
 
 
-         'tgl_awal_summary_sektor_unggulan' => 'required',
-         'tgl_ahir_summary_sektor_unggulan' => 'required',
-         'budget_summary_sektor_unggulan' => 'required',
-         'keterangan_summary_sektor_unggulan' => 'required',
+         'tgl_awal_summary_sektor_unggulan' => 'required_if:checklist_summary_sektor_unggulan,true',
+         'tgl_ahir_summary_sektor_unggulan' => 'required_if:checklist_summary_sektor_unggulan,true',
+         'budget_summary_sektor_unggulan' => 'required_if:checklist_summary_sektor_unggulan,true',
+         // 'keterangan_summary_sektor_unggulan' => 'required',
 
-         'tgl_awal_sektor_unggulan' => 'required',
-         'tgl_ahir_sektor_unggulan' => 'required',
-         'budget_budget_sektor_unggulan' => 'required',
-         'keterangan_sektor_unggulan' => 'required',
+         'tgl_awal_sektor_unggulan' => 'required_if:checklist_sektor_unggulan,true',
+         'tgl_ahir_sektor_unggulan' => 'required_if:checklist_sektor_unggulan,true',
+         'budget_budget_sektor_unggulan' => 'required_if:checklist_sektor_unggulan,true',
+         // 'keterangan_sektor_unggulan' => 'required',
 
-         'tgl_awal_parameter_sektor_unggulan' => 'required',
-         'tgl_ahir_parameter_sektor_unggulan' => 'required',
-         'budget_parameter_sektor_unggulan' => 'required',
-         'keterangan_parameter_sektor_unggulan' => 'required',
+         'tgl_awal_potensi_pasar' => 'required_if:checklist_potensi_pasar,true',
+         'tgl_ahir_potensi_pasar' => 'required_if:checklist_potensi_pasar,true',
+         'budget_potensi_pasar' => 'required_if:checklist_potensi_pasar,true',
+         // 'keterangan_potensi_pasar' => 'required',
 
-         'tgl_awal_subsektor_unggulan' => 'required',
-         'tgl_ahir_subsektor_unggulan' => 'required',
-         'budget_subsektor_unggulan' => 'required',
-         'keterangan_subsektor_unggulan' => 'required',
+         'tgl_awal_parameter_sektor_unggulan' => 'required_if:checklist_parameter_sektor_unggulan,true',
+         'tgl_ahir_parameter_sektor_unggulan' => 'required_if:checklist_parameter_sektor_unggulan,true',
+         'budget_parameter_sektor_unggulan' => 'required_if:checklist_parameter_sektor_unggulan,true',
+         // 'keterangan_parameter_sektor_unggulan' => 'required',
 
-         'tgl_awal_intensif_daerah' => 'required',
-         'tgl_ahir_intensif_daerah' => 'required',
-         'budget_intensif_daerah' => 'required',
-         'keterangan_intensif_daerah' => 'required',
+         'tgl_awal_subsektor_unggulan' => 'required_if:checklist_subsektor_unggulan,true',
+         'tgl_ahir_subsektor_unggulan' => 'required_if:checklist_subsektor_unggulan,true',
+         'budget_subsektor_unggulan' => 'required_if:checklist_subsektor_unggulan,true',
+         // 'keterangan_subsektor_unggulan' => 'required',
 
-         'tgl_awal_potensi_lanjutan' => 'required',
-         'tgl_ahir_potensi_lanjutan' => 'required',
-         'budget_potensi_lanjutan' => 'required',
-         'keterangan_potensi_lanjutan' => 'required',
+         'tgl_awal_intensif_daerah' => 'required_if:checklist_intensif_daerah,true',
+         'tgl_ahir_intensif_daerah' => 'required_if:checklist_intensif_daerah,true',
+         'budget_intensif_daerah' => 'required_if:checklist_intensif_daerah,true',
+         // 'keterangan_intensif_daerah' => 'required',
+
+         'tgl_awal_potensi_lanjutan' => 'required_if:checklist_potensi_lanjutan,true',
+         'tgl_ahir_potensi_lanjutan' => 'required_if:checklist_potensi_lanjutan,true',
+         'budget_potensi_lanjutan' => 'required_if:checklist_potensi_lanjutan,true',
+         // 'keterangan_potensi_lanjutan' => 'required',
+         // 'keterangan_penyusunan' => 'required_if:status_laporan_id,14',
 
          'tgl_awal_info_grafis' => 'required',
          'tgl_ahir_info_grafis' => 'required',
          'budget_info_grafis' => 'required',
-         'keterangan_info_grafis' => 'required',
+         // 'keterangan_info_grafis' => 'required_if:status_laporan_id,14',
 
 
          'tgl_awal_dokumentasi' => 'required',
          'tgl_ahir_dokumentasi' => 'required',
          'budget_dokumentasi' => 'required',
-         'keterangan_dokumentasi' => 'required',
+         // 'keterangan_dokumentasi' => 'required_if:status_laporan_id,14',
 
          
         ]);
@@ -352,6 +365,11 @@ class ValidationPemetaan
                 $err['messages']['keterangan_fgd_identifikasi'] = $errors->first('keterangan_fgd_identifikasi');
             }
 
+            //  if($errors->has('pengolahan')){
+            //     $err['messages']['pengolahan'] = $errors->first('pengolahan');
+            // }
+
+
 
             if($errors->has('tgl_awal_lq')){
                 $err['messages']['tgl_awal_lq'] = $errors->first('tgl_awal_lq');
@@ -365,10 +383,7 @@ class ValidationPemetaan
                 $err['messages']['budget_lq'] = $errors->first('budget_lq');
             }
 
-            if($errors->has('keterangan_lq')){
-                $err['messages']['keterangan_lq'] = $errors->first('keterangan_lq');
-            }
-
+           
             if($errors->has('tgl_awal_shift_share')){
                 $err['messages']['tgl_awal_shift_share'] = $errors->first('tgl_awal_shift_share');
             }
@@ -381,9 +396,9 @@ class ValidationPemetaan
                 $err['messages']['budget_shift_share'] = $errors->first('budget_shift_share');
             }
 
-            if($errors->has('keterangan_shift_share')){
-                $err['messages']['keterangan_shift_share'] = $errors->first('keterangan_shift_share');
-            }
+            // if($errors->has('keterangan_shift_share')){
+            //     $err['messages']['keterangan_shift_share'] = $errors->first('keterangan_shift_share');
+            // }
 
 
             if($errors->has('tgl_awal_tipologi_sektor')){
@@ -398,9 +413,9 @@ class ValidationPemetaan
                 $err['messages']['budget_tipologi_sektor'] = $errors->first('budget_tipologi_sektor');
             }
 
-            if($errors->has('keterangan_tipologi_sektor')){
-                $err['messages']['keterangan_tipologi_sektor'] = $errors->first('keterangan_tipologi_sektor');
-            }
+            // if($errors->has('keterangan_tipologi_sektor')){
+            //     $err['messages']['keterangan_tipologi_sektor'] = $errors->first('keterangan_tipologi_sektor');
+            // }
 
 
             if($errors->has('tgl_awal_klassen')){
@@ -415,9 +430,14 @@ class ValidationPemetaan
                 $err['messages']['budget_klassen'] = $errors->first('budget_klassen');
             }
 
-            if($errors->has('keterangan_klassen')){
-                $err['messages']['keterangan_klassen'] = $errors->first('keterangan_klassen');
-            }
+            // if($errors->has('keterangan_klassen')){
+            //     $err['messages']['keterangan_klassen'] = $errors->first('keterangan_klassen');
+            // }
+            // if($errors->has('keterangan_pengolahan')){
+            //     $err['messages']['keterangan_pengolahan'] = $errors->first('keterangan_pengolahan');
+            // }
+
+           
 
 
             if($errors->has('tgl_awal_fgd_klarifikasi')){
@@ -467,9 +487,9 @@ class ValidationPemetaan
                 $err['messages']['budget_summary_sektor_unggulan'] = $errors->first('budget_summary_sektor_unggulan');
             }
 
-            if($errors->has('keterangan_summary_sektor_unggulan')){
-                $err['messages']['keterangan_summary_sektor_unggulan'] = $errors->first('keterangan_summary_sektor_unggulan');
-            }
+            // if($errors->has('keterangan_summary_sektor_unggulan')){
+            //     $err['messages']['keterangan_summary_sektor_unggulan'] = $errors->first('keterangan_summary_sektor_unggulan');
+            // }
 
 
             if($errors->has('tgl_awal_sektor_unggulan')){
@@ -484,9 +504,9 @@ class ValidationPemetaan
                 $err['messages']['budget_sektor_unggulan'] = $errors->first('budget_sektor_unggulan');
             }
 
-            if($errors->has('keterangan_sektor_unggulan')){
-                $err['messages']['keterangan_sektor_unggulan'] = $errors->first('keterangan_sektor_unggulan');
-            }
+            // if($errors->has('keterangan_sektor_unggulan')){
+            //     $err['messages']['keterangan_sektor_unggulan'] = $errors->first('keterangan_sektor_unggulan');
+            // }
 
 
             if($errors->has('tgl_awal_potensi_pasar')){
@@ -501,9 +521,9 @@ class ValidationPemetaan
                 $err['messages']['budget_potensi_pasar'] = $errors->first('budget_potensi_pasar');
             }
 
-            if($errors->has('keterangan_potensi_pasar')){
-                $err['messages']['keterangan_potensi_pasar'] = $errors->first('keterangan_potensi_pasar');
-            }
+            // if($errors->has('keterangan_potensi_pasar')){
+            //     $err['messages']['keterangan_potensi_pasar'] = $errors->first('keterangan_potensi_pasar');
+            // }
 
             if($errors->has('tgl_awal_parameter_sektor_unggulan')){
                 $err['messages']['tgl_awal_parameter_sektor_unggulan'] = $errors->first('tgl_awal_parameter_sektor_unggulan');
@@ -517,9 +537,9 @@ class ValidationPemetaan
                 $err['messages']['budget_parameter_sektor_unggulan'] = $errors->first('budget_parameter_sektor_unggulan');
             }
 
-            if($errors->has('keterangan_parameter_sektor_unggulan')){
-                $err['messages']['keterangan_parameter_sektor_unggulan'] = $errors->first('keterangan_parameter_sektor_unggulan');
-            }
+            // if($errors->has('keterangan_parameter_sektor_unggulan')){
+            //     $err['messages']['keterangan_parameter_sektor_unggulan'] = $errors->first('keterangan_parameter_sektor_unggulan');
+            // }
 
 
              if($errors->has('tgl_awal_subsektor_unggulan')){
@@ -534,9 +554,9 @@ class ValidationPemetaan
                 $err['messages']['budget_subsektor_unggulan'] = $errors->first('budget_subsektor_unggulan');
             }
 
-            if($errors->has('keterangan_subsektor_unggulan')){
-                $err['messages']['keterangan_subsektor_unggulan'] = $errors->first('keterangan_subsektor_unggulan');
-            }
+            // if($errors->has('keterangan_subsektor_unggulan')){
+            //     $err['messages']['keterangan_subsektor_unggulan'] = $errors->first('keterangan_subsektor_unggulan');
+            // }
 
             if($errors->has('tgl_awal_intensif_daerah')){
                 $err['messages']['tgl_awal_intensif_daerah'] = $errors->first('tgl_awal_intensif_daerah');
@@ -550,9 +570,9 @@ class ValidationPemetaan
                 $err['messages']['budget_intensif_daerah'] = $errors->first('budget_intensif_daerah');
             }
 
-            if($errors->has('keterangan_intensif_daerah')){
-                $err['messages']['keterangan_intensif_daerah'] = $errors->first('keterangan_intensif_daerah');
-            }
+            // if($errors->has('keterangan_intensif_daerah')){
+            //     $err['messages']['keterangan_intensif_daerah'] = $errors->first('keterangan_intensif_daerah');
+            // }
 
             if($errors->has('tgl_awal_potensi_lanjutan')){
                 $err['messages']['tgl_awal_potensi_lanjutan'] = $errors->first('tgl_awal_potensi_lanjutan');
@@ -566,8 +586,12 @@ class ValidationPemetaan
                 $err['messages']['budget_potensi_lanjutan'] = $errors->first('budget_potensi_lanjutan');
             }
 
-            if($errors->has('keterangan_potensi_lanjutan')){
-                $err['messages']['keterangan_potensi_lanjutan'] = $errors->first('keterangan_potensi_lanjutan');
+            // if($errors->has('keterangan_potensi_lanjutan')){
+            //     $err['messages']['keterangan_potensi_lanjutan'] = $errors->first('keterangan_potensi_lanjutan');
+            // }
+
+             if($errors->has('keterangan_penyusunan')){
+                $err['messages']['keterangan_penyusunan'] = $errors->first('keterangan_penyusunan');
             }
 
 
@@ -603,6 +627,19 @@ class ValidationPemetaan
             if($errors->has('keterangan_dokumentasi')){
                 $err['messages']['keterangan_dokumentasi'] = $errors->first('keterangan_dokumentasi');
             }
+
+            if($request->checklist_lq == 'false' && $request->checklist_shift_share =='false' &&  $request->checklist_tipologi_sektor =='false' && $request->checklist_klassen =='false'){
+
+                $err['messages']['pengolahan'] = 'Maksimal 1 pilihan analisis!';
+                
+            }
+
+            if($request->checklist_summary_sektor_unggulan == 'false' && $request->checklist_sektor_unggulan =='false' &&  $request->checklist_potensi_pasar =='false' && $request->checklist_parameter_sektor_unggulan =='false' && $request->checklist_subsektor_unggulan =='false' &&  $request->checklist_intensif_daerah =='false' && $request->checklist_potensi_lanjutan =='false')
+            {
+
+                $err['messages']['penyusunan'] = 'Maksimal 1 pilihan hasil identifikasi!';
+               
+            }
            
 
 
@@ -610,9 +647,5 @@ class ValidationPemetaan
        }
   }
 
-
-  
-
  
-
 }

@@ -344,7 +344,7 @@
         
        
 
-        $('#selectPeriode').html('<select  id="periode_id"  class="selectpicker"></select>');
+      
         fetchData(page,year);
         getperiode(year);
         getdaerah(daerah_id);            
@@ -994,13 +994,14 @@
         }
 
          function getperiode(periode_id){
+              $('#selectPeriode').html('<select  id="periode_id" title="Pilih Daerah"  class="selectpicker"></select>');
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
                     url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
                     success: function(data) {
                          var select =  $('#periode_id');
-                          select.empty();
+                        // select.empty();
                          $.each(data.result, function(index, option) {
                               select.append($('<option>', {
                                    value: option.value,

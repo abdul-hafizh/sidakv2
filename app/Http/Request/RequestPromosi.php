@@ -38,10 +38,10 @@ class RequestPromosi
          
          };
 
-         $description =  $val->alasan;
-         if (strlen($description) > 30) {
-             $description = substr($description, 0, 30) . "...";
-         }
+         // $description =  $val->alasan;
+         // if (strlen($description) > 30) {
+         //     $description = substr($description, 0, 30) . "...";
+         // }
 
          if($val->checklist =='not_approved')
          {
@@ -135,7 +135,7 @@ class RequestPromosi
          $temp[$key]['created_by'] = $val->created_by;
          $temp[$key]['request_edit'] = $val->request_edit;
          $temp[$key]['status_laporan_id'] = $val->status_laporan_id;
-         $temp[$key]['alasan'] = $description;
+         $temp[$key]['alasan'] =  $val->alasan;
 
       
          $temp[$key]['status'] = array('status_db' => $val->status_laporan_id, 'status_convert' => $status);
@@ -163,8 +163,11 @@ class RequestPromosi
           $result['total_promosi'] =  'Rp 0'; 
       }
 
-      $result['total_daerah'] = Promosi::groupBy('daerah_id')->count();
-      $result['total_requestedit'] = Promosi::where(['request_edit'=>'true'])->count();
+      $result['total_daerah'] = Promosi::where('periode_id',$year)->groupBy('daerah_id')->count();
+      $result['total_requestedit'] = Promosi::where(['request_edit'=>'true','periode_id'=>$year])->count();
+      $result['total_draft'] = Promosi::where(['status_laporan_id'=>'13','periode_id'=>$year])->count();
+      $result['total_terkirim'] = Promosi::where(['status_laporan_id'=>'14','periode_id'=>$year])->count();
+
       $result['options'] = RequestMenuRoles::ActionPage('promosi');
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();

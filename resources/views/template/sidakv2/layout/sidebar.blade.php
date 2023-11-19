@@ -45,13 +45,17 @@
         const apps  = JSON.parse(localStorage.getItem('apps')); 
         const user_sidebar  = JSON.parse(localStorage.getItem('user_sidebar'));
 
-        let sidebar = localStorage.getItem('menu_sidebar');
-        var action =  JSON.parse(sidebar);
+        var action =  JSON.parse(localStorage.getItem('menu_sidebar'));
 
         var data = [];
         var menulast = '';
         getMenuSidebar(action);
-        
+
+         var url = window.location.href; 
+         var segments = url.split('/');  
+         RelatedUrl(segments[3])
+          
+       
        
  
         
@@ -221,8 +225,14 @@
         //menu
         $( "#menu-sidebar" ).on( "click", "#class-menu" , (e) => {
 		        let slug = e.currentTarget.dataset.param_id;
-                data = action;
-                
+               
+                MenuLead(slug)
+		        
+		});
+
+     function MenuLead(slug){
+
+     	 data = action;
                 //active sebelummnya
                 findlast = data.find(o => o.active === true && o.slug != slug);
                 
@@ -231,56 +241,77 @@
                 	
                 	findlast.active = false;
                 	findlast.icon_menu = findlast.icon;
-                    findlast.class = findlast.slug +' treeview';
 
-                    let linklast = findlast.tasks.find(o => o.active === true);
-                    if(linklast)
+                    if(findlast.path_web =="#")
                     {
-                    
-                        linklast.active = false;
-                        linklast.class = linklast.slug; 	
+	                    findlast.class = findlast.slug +' treeview';
+	                    let linklast = findlast.tasks.find(o => o.active === true);
+	                    if(linklast)
+	                    {
+	                        linklast.active = false;
+	                        linklast.class = linklast.slug; 	
+	                    }
+                    }else{
+
+                        findlast.class = findlast.slug;
                     }
-                    
                    
                 } 	
                
-             
-               
-                
-
                 var findtrue = data.find(o => o.slug === slug);
                 if(findtrue.active == true)
                 {
                      
                     findtrue.active = false;
                     findtrue.icon_menu = findtrue.icon;
-                    findtrue.class = findtrue.slug +' treeview';
-
-             
+                    findtrue.class = findtrue.slug;
 
                 }else{
 
-                   
-                
                     findtrue.active = true;
                     findtrue.icon_menu = findtrue.icon_hover;
-               
-                    findtrue.class = findtrue.slug +' treeview menu-open active';
+                    if(findtrue.path_web =="#")
+                    {
+                       findtrue.class = findtrue.slug +' treeview menu-open active';	
+                    }else{
+                       findtrue.class = findtrue.slug;
+                    }  	
+                   
 
 
                 }	
 
                 localStorage.setItem('menu_sidebar', JSON.stringify(data));
-    
-                getMenuSidebar(data);
-               
-                // if(findtrue.count ==0)
-                // {
-                //   window.location.replace(findtrue.url);  
-                // }
-               
-		        
-		});
+                getMenuSidebar(data); 
+     }
+
+     function MenuSecondary(menu,slug){
+
+
+	    menulast = menu;
+        findmenu = data.find(o => o.active === true);
+        findlasttaks = findmenu.tasks.find(o => o.active === true);
+
+        if(findlasttaks)
+        {
+           findlasttaks.active = false; 
+           findlasttaks.class = findlasttaks.slug; 
+
+          
+        } 	 
+
+
+        findtasks = findmenu.tasks.find(o => o.slug === slug);
+        findtasks.active = true;
+        findtasks.class = findtasks.slug + ' active'; 
+
+        
+        localStorage.setItem('menu_sidebar', JSON.stringify(data));
+        getMenuSidebar(data);
+        data = [];
+
+     }
+		
 
      function MenuHover(){
             
@@ -352,33 +383,45 @@
      	 $(".treeview-menu").on( "click", ".li-sub", (e) => {
                 let menu = e.currentTarget.dataset.param_id;
                 let slug = e.currentTarget.dataset.param_sub; 
-                menulast = menu;
-                findmenu = data.find(o => o.active === true);
-                findlasttaks = findmenu.tasks.find(o => o.active === true);
-
-                if(findlasttaks)
-                {
-                   findlasttaks.active = false; 
-                   findlasttaks.class = findlasttaks.slug; 
-
-                  
-                } 	 
-
-   
-                findtasks = findmenu.tasks.find(o => o.slug === slug);
-                findtasks.active = true;
-                findtasks.class = findtasks.slug + ' active'; 
-
                 
-                localStorage.setItem('menu_sidebar', JSON.stringify(data));
-                getMenuSidebar(data);
-                data = [];
-            
+                MenuSecondary(menu,slug);
               // window.location.replace(findtasks.url);  
 
           });
 
      }
+
+     function RelatedUrl(slug)
+     {
+        $.ajax({
+            url: BASE_URL+ `/api/sidebar-active?slug=`+ slug,
+            method: 'GET',
+            success: function(response) {
+            	  // console.log(response.menu_utama)
+
+            	 var checkmenu = action.find(o => o.slug === response.menu_utama);
+
+            	 if(checkmenu.active == false)
+            	 {
+            	 	MenuLead(response.menu_utama)
+            	 	if(response.type =="sub"){
+            	 		MenuSecondary(response.menu_utama,response.menu_sub)
+            	 	}
+            	 	
+            	 } 	
+        
+                  
+                  
+            	
+            },
+            error: function(error) {
+                console.error('Error fetching data:', error);
+            }
+        });
+
+     }
+
+    
 
 
 	 }); 	

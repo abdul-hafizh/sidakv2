@@ -16,10 +16,13 @@ use App\Helpers\GeneralPaginate;
 use App\Models\Notification;
 use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestNotification;
+
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PeriodeApproved;
 use App\Mail\PeriodeExtension;
 use App\Models\User;
+
+
 
 class PemetaanApiController extends Controller
 {
@@ -71,7 +74,7 @@ class PemetaanApiController extends Controller
         $column_search  = array('provinces.name');
 
       
-         $query  = RequestPemetaan::join('provinces','pemetaan.daerah_id','=','provinces.id');
+         $query  = Pemetaan::join('provinces','pemetaan.daerah_id','=','provinces.id');
        
 
          if($status =='req_edit')
@@ -79,9 +82,12 @@ class PemetaanApiController extends Controller
             $query->where(['pemetaan.request_edit'=>'true','checklist'=>'not_approved']); 
          }else if($status =='approved'){
             $query->where(['pemetaan.request_edit'=>'false','checklist'=>'approved']); 
-         }   
-
-
+         }else if($status =='draft'){  
+            $query->where(['pemetaan.status_laporan_id'=>'13']);
+         }else if($status =='terkirim'){ 
+            $query->where(['pemetaan.status_laporan_id'=>'14']);     
+         }
+         
         if($search == '')
         {
             if($daerah_id !='')
@@ -119,12 +125,15 @@ class PemetaanApiController extends Controller
     {
         $validation = ValidationPemetaan::validation($request);
         if ($validation) {
+
+
             return response()->json($validation, 400);
         } else {
+
                 $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id); 
            
-            
-                $insert = RequestPemetaan::fieldsData($request); 
+                $id = '';
+                $insert = RequestPemetaan::fieldsGroup($request,$id); 
                 $log = array(
                     'category' => 'LOG_DATA_PEMETAAN',
                     'group_menu' => 'upload_data_pemetaan',
@@ -277,22 +286,19 @@ class PemetaanApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
-
-          
-
-
-                $update = RequestPemetaan::fieldsData($request);
+            
+                $update = RequestPemetaan::fieldsGroup($request,$id);
                 $UpdateData = Pemetaan::where('id', $id)->update($update);
 
                  
-                  $log = array(
+                $log = array(
                     'category' => 'LOG_DATA_PEMETAAN',
                     'group_menu' => 'mengubah_data_pemetaan',
                     'description' => 'Mengubah data pemetaan <b>' . $request->periode_id . '</b>',
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
 
-                return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+                return response()->json(['status' => true, 'id' => $update, 'message' => 'Update data sucessfully']);
              
         }
     }
@@ -304,7 +310,7 @@ class PemetaanApiController extends Controller
         $messages['messages'] = false;
         $_res = Pemetaan::find($id);
        
-
+          
         $log = array(
             'category' => 'LOG_DATA_PEMETAAN',
             'group_menu' => 'menghapus_data_pemetaan',
@@ -315,6 +321,8 @@ class PemetaanApiController extends Controller
         if (empty($_res)) {
             return response()->json(['messages' => false]);
         }
+
+        RequestPemetaan::DeletePDF($_res);
 
         $results = $_res->delete();
         if ($results) {

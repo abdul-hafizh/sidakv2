@@ -278,6 +278,54 @@ class RequestMenuRoles
       return $result; 
    }
 
+
+    public static function SlugPage($slug)
+   {
+     $access = RequestAuth::AccessID();
+     $res = array();
+     $roleMenu = RoleMenu::where('role_id',$access)->first();
+     if($roleMenu)
+     {
+           $result = json_decode($roleMenu->menu_json);
+           if($result)
+           {
+              foreach($result as $key =>$val)
+              {
+                $path_web = $val->path_web;
+
+                if($val->path_web == '/'.$slug)
+                {
+                   $res['menu_utama'] = $val->slug;
+                   $res['menu_sub'] = '';
+                   $res['count'] = count($val->tasks);
+                   $res['type'] = 'main';
+                }else{
+                    foreach($val->tasks as $keys =>$vals)
+                    {
+
+                      if($vals->slug == $slug)
+                      {  
+                           $res['menu_utama'] = $val->slug;
+                           $res['menu_sub'] = $vals->slug;
+                           $res['count'] = count($val->tasks);
+                           $res['type'] = 'sub';
+                      }  
+
+                    }    
+                }  
+
+              }
+           } 
+           
+     }
+
+     
+ 
+       
+     return $res;
+
+   }
+
    public static function CreatePages($slug)
    {
         $pages = Pages::where('slug',$slug)->first();

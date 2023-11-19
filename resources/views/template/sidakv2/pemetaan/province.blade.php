@@ -9,8 +9,8 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Pagu Promosi</span>
-                                        <h3 class="card-text" id="pagu_promosi"></h3>
+                                        <span>Pagu Pemetaan Potensi</span>
+                                        <h3 class="card-text" id="pagu_pemetaan"></h3>
                                    </div>
                               </div>
                          </div>
@@ -21,8 +21,8 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span>Total Promosi</span>
-                                        <h3 class="card-text" id="total_promosi"></h3>
+                                        <span>Total Potensi</span>
+                                        <h3 class="card-text" id="total_pemetaan"></h3>
                                    </div>
                               </div>
                          </div>
@@ -62,7 +62,7 @@
                </div>
           </div>
 
-          <div class="box box-solid box-primary" id="div-edit">
+          <div class="box box-solid box-primary" id="div-edit" style="display:none;">
                <div class="box-body">
                     <div class="card-body">
                          <div class="row pd-top-bottom-15">
@@ -169,13 +169,13 @@
     
 
 
-    $('#pagu_promosi').html('<b>Rp 0</b>');           
-    $('#total_promosi').html('<b>Rp 0</b>'); 
+    $('#pagu_pemetaan').html('<b>Rp 0</b>');           
+    $('#total_pemetaan').html('<b>Rp 0</b>'); 
     $('#periode_selected').html('<b>'+ year +'</b>'); 
     
 
   
-    $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');
+    
    
     fetchData(page,year);
     getperiode(year);
@@ -183,11 +183,11 @@
 	$('#periode_id').on('change', function() {
 		var index = $(this).val();
 		let find = periode.find(o => o.value === index);
-          // console.log(find.pagu_promosi)
+         
 		var promosi = accounting.formatNumber(find.pagu_promosi, 0, ".", "."); 
-		$('#pagu_promosi').html('<b>Rp '+ promosi +'</b>');
-	    $('#periode_selected').html('<b>'+ find.value +'</b>'); 
-        fetchData(page,find.value);
+		// $('#pagu_promosi').html('<b>Rp '+ promosi +'</b>');
+	 //     $('#periode_selected').html('<b>'+ find.value +'</b>'); 
+         fetchData(page,find.value);
       
 	});
 
@@ -218,8 +218,8 @@
             	
                 listOptions(response.options);
                 updateContent(response.data,response.options);
-                $('#pagu_promosi').html('<b>'+response.pagu_promosi+'</b>');
-                $('#total_promosi').html('<b>'+response.total_promosi+'</b>');
+                $('#pagu_pemetaan').html('<b>'+response.pagu_pemetaan+'</b>');
+                $('#total_pemetaan').html('<b>'+response.total_pemetaan+'</b>');
                 
             },
             error: function(error) {
@@ -247,7 +247,7 @@
                     row +=`<tr lass="pull-left full">`;
                             row +=`<td rowspan="5" class="font-bold text-center">1</td>`;
                             row +=`<td colspan="6" class="font-bold"> Identifikasi Pemetaan Potensi Investasi : </td>`;
-                            row +=`<td><strong id="total_pra_produksi">Rp 0</td>`;
+                            row +=`<td><strong id="total_identifikasi">${item.total_identifikasi }</strong></td>`;
                             row +=`<td></td>`;
                     row +=`</tr>`;
 
@@ -276,12 +276,20 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-a-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input type="text" disabled id="desc_a_pra" name="desc_a_pra"
-                                             value="${item.keterangan_rencana_kerja }"
-                                            class="form-control">`;
-                                 row +=`<span id="desc-a-pra-messages"></span>`;
-                            row +=`</div>`;
+                                  
+                              if(item.keterangan_rencana_kerja)
+                              {     
+                                   row +=`<div>`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rencana_kerja }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                                   row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              }
 
                               row +=`</td>`;
                        row +=`</tr>`;
@@ -307,11 +315,25 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-b-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input type="text" disabled name="desc_b_pra" value="${item.keterangan_studi_literatur }" class="form-control">`;
-                                 row +=`<span id="desc-b-pra-messages"></span>`;
-                            row +=`</div>`;
+                            
+                            if(item.keterangan_studi_literatur)
+                            {  
+                
+                                  row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_studi_literatur }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
 
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+
+                                     
+                                 row +=`</div>`;
+
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              }
                               row +=`</td>`;
                        row +=`</tr>`;
 
@@ -338,11 +360,24 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-c-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input type="text" disabled name="desc_c_pra" value="${item.keterangan_rapat_kordinasi }" class="form-control">`;
-                                 row +=`<span id="desc-c-pra-messages"></span>`;
-                            row +=`</div>`;
 
+                              if(item.keterangan_rapat_kordinasi)
+                              {     
+                           
+                               row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_rapat_kordinasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+
+
+                                
+                               row +=`</div>`;
+                             }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                             }    
                               row +=`</td>`;
                        row +=`</tr>`;
                        row +=`<tr >`;
@@ -367,18 +402,32 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-d-pra-alert" class="margin-none form-group">`;
-                                        row +=`<input type="text" disabled name="desc_d_pra" value="${item.keterangan_data_sekunder }" class="form-control">`;
-                                 row +=`<span id="desc-d-pra-messages"></span>`;
-                            row +=`</div>`;
+                          
 
+                               if(item.keterangan_data_sekunder)
+                               {    
+
+                                    row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_data_sekunder }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
+
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+
+                                   
+                                  row +=`</div>`;
+                             }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                             } 
                               row +=`</td>`;
                          row +=`</tr>`;                        
 
                          row +=`<tr>`;
                             row +=`<td rowspan="11" class="font-bold text-center">2</td>`;
                             row +=`<td colspan="6" class="font-bold"> Perumusan dan Pelaksanaan Pemetaan Potensi Investasi : </td>`;
-                             row +=`<td><strong id="total_pasca_produksi">Rp 0</td>`;
+                             row +=`<td><strong id="total_pelaksanaan">${item.total_pelaksanaan }</td>`;
                             row +=`<td></td>`;
                             row +=`</tr>`;
                          row +=`<tr>`;
@@ -407,11 +456,24 @@
                             row +=`</div>`;
                               row +=`</td>`;
                               row +=`<td>`;
-                                   row +=`<div id="desc-a-pro-alert" class="margin-none form-group">`;
-                                        row +=`<input type="text"  disabled name="desc_a_pro"  value="${item.keterangan_fgd_persiapan }"   class="form-control">`;
-                                 row +=`<span id="desc-a-pro-messages"></span>`;
-                            row +=`</div>`;
+                              
+                              if(item.keterangan_fgd_persiapan)
+                              {     
 
+                                   row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_persiapan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
+
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+
+
+                                     
+                                   row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              }    
                               row +=`</td>`;
                          row +=`</tr>`;     
 
@@ -439,11 +501,20 @@
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
-                                    row +=`<div id="desc-f-pra-alert" class="margin-none form-group">`; 
-                                         row +=`<input type="text" disabled name="desc_f_pra" value="${item.keterangan_fgd_identifikasi }" class="form-control">`; 
-                                  row +=`<span id="desc-f-pra-messages"></span>`; 
-                             row +=`</div>`; 
+                          
+                               if(item.keterangan_fgd_identifikasi)
+                               {    
+                                   row +=`<div>`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_identifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
 
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                                   row +=`</div>`;
+                                }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                                }     
                                row +=`</td>`; 
                           row +=`</tr>`; 
                               
@@ -459,7 +530,13 @@
 
 
                          row +=` <tr>`; 
-                                row +=`<td><input type="checkbox" ></td>`; 
+                            if(item.checklist_lq == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_lq }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_lq }"></td>`;  
+                            } 
+                                
                                row +=`<td class="font-bold table-number" >`; 
                                   row +=` 1.`; 
                                row +=`</td>`; 
@@ -483,18 +560,33 @@
                                   row +=`<span id="budget-c-1-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
-                               row +=`<td>`; 
-                                    row +=`<div id="desc-c-1-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input type="text" disabled name="desc_c_1_pro" value="${item.keterangan_lq }" class="form-control">`; 
-                                  row +=`<span id="desc-c-1-pro-messages"></span>`; 
-                             row +=`</div>`; 
+                             
+                             row +=`<td rowspan="4">`; 
+                               if(item.keterangan_pengolahan)
+                               {    
+                                   row +=`<div class="potensi-sektor">`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_pengolahan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
 
-                               row +=`</td>`; 
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                                   row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              } 
+                             row +=`</td>`; 
                           row +=`</tr>`; 
 
 
                           row +=`<tr>`; 
-                               row +=`<td><input type="checkbox" ></td>`; 
+                            if(item.checklist_shift_share == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_shift_share }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_shift_share }"></td>`;  
+                            } 
+                            
                                row +=`<td class="font-bold table-number" >`; 
                                   row +=` 2.`; 
                                row +=`</td>`; 
@@ -517,17 +609,17 @@
                                   row +=`<span id="budget-c-2-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
-                               row +=`<td>`; 
-                                    row +=`<div id="desc-c-2-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input type="text"  disabled name="desc_c_2_pro" value="${item.keterangan_shift_share }"    class="form-control">`; 
-                                  row +=`<span id="desc-c-2-pro-messages"></span>`; 
-                             row +=`</div>`; 
-
-                               row +=`</td>`; 
+                          
                           row +=`</tr>`; 
 
                           row +=`<tr>`; 
-                                 row +=`<td><input type="checkbox" ></td>`; 
+                            if(item.checklist_tipologi_sektor == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_tipologi_sektor }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_tipologi_sektor }"></td>`;  
+                            } 
+                                 
                                row +=`<td class="font-bold table-number" >`; 
                                    row +=` 3.`; 
                                row +=`</td>`; 
@@ -550,17 +642,17 @@
                                   row +=`<span id="budget-c-3-pro-messages"></span>`; 
                              row +=`</div>`; 
                                row +=`</td>`; 
-                               row +=`<td>`; 
-                                    row +=`<div id="desc-c-3-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input type="text" disabled name="desc_c_3_pro" value="${item.keterangan_tipologi_sektor }"  class="form-control">`; 
-                                  row +=`<span id="desc-c-3-pro-messages"></span>`; 
-                             row +=`</div>`; 
-
-                               row +=`</td>`; 
+                             
                           row +=`</tr>`; 
 
                           row +=`<tr>`; 
-                               row +=`<td><input type="checkbox" ></td>`; 
+                           if(item.checklist_klassen == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_klassen }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_klassen }"></td>`;  
+                            } 
+                              
                               row +=` <td class="font-bold table-number" >`; 
                                    row +=` 4.`; 
                                row +=`</td>`; 
@@ -583,13 +675,7 @@
                                   row +=`<span id="budget-c-4-pro-messages"></span>`; 
                              row +=`</div>`; 
                               row +=` </td>`; 
-                               row +=`<td>`; 
-                                   row +=` <div id="desc-c-4-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input type="text" disabled name="desc_c_4_pro" value="${item.keterangan_klassen }" class="form-control">`; 
-                                  row +=`<span id="desc-c-4-pro-messages"></span>`; 
-                            row +=` </div>`; 
-
-                               row +=`</td>`; 
+                           
                           row +=`</tr>`; 
 
                         
@@ -617,11 +703,24 @@
                              row +=`</div>`; 
                               row +=` </td>`; 
                                row +=`<td>`; 
-                                    row +=`<div id="desc-d-pro-alert" class="margin-none form-group">`; 
-                                         row +=`<input type="text" disabled name="desc_d_pro" value="${item.keterangan_fgd_klarifikasi }" class="form-control ">`; 
-                                  row +=`<span id="desc-d-pro-messages"></span>`; 
-                            row +=` </div>`; 
+                            
+                              if(item.keterangan_fgd_klarifikasi)
+                              {     
 
+                               row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_fgd_klarifikasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+
+
+                                
+                               row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              } 
                                row +=`</td>`; 
                          row +=` </tr>`; 
                          
@@ -654,10 +753,21 @@
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
-                                    row +=`<div id="desc-e-pro-alert" class="margin-none form-group">`; 
-                                        row +=` <input type="text" disabled name="desc_e_pro" value="${item.keterangan_finalisasi }"  class="form-control">`; 
-                                  row +=`<span id="desc-e-pro-messages"></span>`; 
-                             row +=`</div>`; 
+                                
+                                if(item.keterangan_finalisasi)
+                                {   
+
+                                   row +=`<div >`;
+                                        row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_finalisasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`;
+                                   row +=`</div>`;
+                                 }else{  
+                                   row +=`<div class="font-bold text-center"> ... </div>`;
+                                 }      
 
                                row +=`</td>`; 
                          row +=` </tr>`; 
@@ -665,7 +775,7 @@
                          row +=`<tr>`; 
                            row +=` <td rowspan="12" class="font-bold text-center">3</td>`; 
                             row +=`<td colspan="6" class="font-bold"> Penyusunan Peta Potensi Investasi : </td>`; 
-                             row +=`<td><strong id="total_pasca_produksi">Rp 0</td>`; 
+                             row +=`<td><strong id="total_penyusunan">${item.total_penyusunan } </strong></td>`; 
                             row +=`<td></td>`; 
                             row +=`</tr>`; 
                          row +=`<tr>`; 
@@ -673,14 +783,19 @@
 
                          row +=`<tr>`; 
                              row +=` <td class="font-bold" rowspan="8">A.</td>`; 
-                             row +=` <td class="-abjad font-bold" colspan="6">`; 
+                             row +=` <td class="-abjad font-bold" colspan="7">`; 
                                    row +=`Menyusun hasil identifikasi, pengolahan, dan analisis data dalam bentuk dokumen`; 
                               row +=`</td>`; 
                          row +=`</tr>`; 
 
 
                          row +=`<tr>`; 
-                                 row +=`<td><input type="checkbox" ></td>`; 
+                            if(item.checklist_summary_sektor_unggulan == 'true')
+                            {
+                                row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_summary_sektor_unggulan }"></td>`;   
+                            } else{
+                                row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_summary_sektor_unggulan }"></td>`;  
+                            }  
                              row +=` <td class="font-bold table-number" >`; 
                                   row +=` 1.`; 
                              row +=` </td>`; 
@@ -703,18 +818,35 @@
                                      row +=` <span id="budget-a-1-ppro-messages"></span>`; 
                                  row +=`</div>`; 
                              row +=` </td>`; 
-                             row +=` <td>`; 
-                                    row +=`<div id="desc-a-1-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input type="text" disabled name="desc_a_1_pro" value="${item.keterangan_summary_sektor_unggulan }" class="form-control">`; 
-                                      row +=` <span id="desc-a-1-ppro-messages"></span>`; 
-                                    row +=`</div>`; 
+                             
 
-                               row +=`</td>`; 
+                             row +=` <td rowspan="7">`;
+                             if(item.keterangan_penyusunan)
+                              { 
+                                     row +=`<div class="penyusunan-peta">`; 
+                                         row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_penyusunan }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                     row +=`</div>`;
+
+                                       row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                              row +=`<div id="FormView-${item.id }"></div>`;
+                                        row +=`</div>`
+
+                                     row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              }         
+                              row +=`</td>`; 
+
                           row +=`</tr>`; 
 
 
                           row +=`<tr>`; 
-                                 row +=`<td><input type="checkbox" ></td>`; 
+                                 if(item.checklist_sektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_sektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_sektor_unggulan }"></td>`;  
+                                 }
                               row +=` <td class="font-bold table-number" >`; 
                                   row +=`2.`; 
                                row +=`</td>`; 
@@ -737,17 +869,16 @@
                                        row +=`<span id="budget-a-2-ppro-messages"></span>`; 
                                  row +=` </div>`; 
                                row +=`</td>`; 
-                              row +=` <td>`; 
-                                    row +=`<div id="desc-3-2-ppro-alert" class="margin-none form-group">`; 
-                                              row +=`<input type="text" disabled name="desc_3_2_pro" value="${item.keterangan_sektor_unggulan }" class="form-control">`; 
-                                       row +=`<span id="desc-3-2-ppro-messages"></span>`; 
-                                    row +=`</div>`; 
-
-                               row +=`</td>`; 
+                               
                           row +=`</tr>`; 
 
                           row +=`<tr>`; 
-                                   row +=`<td><input type="checkbox" ></td>`; 
+                                  if(item.checklist_potensi_pasar == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_potensi_pasar }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_potensi_pasar }"></td>`;  
+                                 }
                                row +=`<td class="font-bold table-number" >`; 
                                   row +=`3.`; 
                               row +=`</td>`; 
@@ -771,17 +902,16 @@
                                        row +=`<span id="budget-a-3-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                              row +=` <td>`; 
-                                    row +=`<div id="desc-a-3-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input type="text" disabled name="desc_a_3_pro" value="${item.keterangan_potensi_pasar }"   class="form-control">`; 
-                                      row +=` <span id="desc-a-3-ppro-messages"></span>`; 
-                                   row +=` </div>`; 
-
-                              row +=` </td>`; 
+                            
                           row +=`</tr>`; 
 
                           row +=`<tr>`; 
-                                  row +=`<td><input type="checkbox" ></td>`; 
+                                 if(item.checklist_parameter_sektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_parameter_sektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_parameter_sektor_unggulan }"></td>`;  
+                                 }
                                row +=`<td class="font-bold table-number" >`; 
                                     row +=`4.`; 
                                row +=`</td>`; 
@@ -804,17 +934,16 @@
                                        row +=`<span id="budget-a-4-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                               row +=`<td>`; 
-                                   row +=` <div id="desc-a-4-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input type="text" disabled name="desc_a_4_pro" value="${item.keterangan_parameter_sektor_unggulan }"  class="form-control">`; 
-                                       row +=`<span id="desc-a-4-ppro-messages"></span>`; 
-                                    row +=`</div>`; 
-
-                               row +=`</td>`; 
+                               
                          row +=` </tr>`; 
 
                           row +=`<tr>`; 
-                                  row +=`<td><input type="checkbox" ></td>`; 
+                                 if(item.checklist_subsektor_unggulan == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_subsektor_unggulan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_subsektor_unggulan }"></td>`;  
+                                 }
                                row +=`<td class="font-bold table-number" >`; 
                                   row +=`5.`; 
                               row +=` </td>`; 
@@ -838,17 +967,16 @@
                                       row +=` <span id="budget-a-5-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                               row +=`<td>`; 
-                                  row +=`  <div id="desc-a-5-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input type="text" disabled name="desc_a_5_pro" value="${item.keterangan_subsektor_unggulan }"   class="form-control">`; 
-                                      row +=` <span id="desc-a-5-ppro-messages"></span>`; 
-                                    row +=`</div>`; 
-
-                               row +=`</td>`; 
+                            
                           row +=`</tr>`; 
 
                          row +=` <tr>`; 
-                                  row +=`<td><input type="checkbox" ></td>`; 
+                                 if(item.checklist_intensif_daerah == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_intensif_daerah }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_intensif_daerah }"></td>`;  
+                                 }
                                row +=`<td class="font-bold table-number" >`; 
                                    row +=`6.`; 
                                row +=`</td>`; 
@@ -871,17 +999,16 @@
                                       row +=` <span id="budget-a-6-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                               row +=`<td>`; 
-                                    row +=`<div id="desc-a-6-ppro-alert" class="margin-none form-group">`; 
-                                             row +=` <input type="text" disabled name="desc_a_6_pro"  value="${item.keterangan_intensif_daerah }"  class="form-control">`; 
-                                      row +=` <span id="desc-a-6-ppro-messages"></span>`; 
-                                    row +=`</div>`; 
-
-                              row +=` </td>`; 
+                               
                           row +=`</tr>`; 
 
                            row +=`<tr>`; 
-                                  row +=`<td><input type="checkbox" ></td>`; 
+                                  if(item.checklist_potensi_lanjutan == 'true')
+                                 {
+                                     row +=`<td><input disabled type="checkbox" checked name="checklist_lq" value="${item.checklist_potensi_lanjutan }"></td>`;   
+                                 } else{
+                                     row +=`<td><input disabled type="checkbox" name="checklist_lq" value="${item.checklist_potensi_lanjutan }"></td>`;  
+                                 } 
                                row +=`<td class="font-bold table-number" >`; 
                                    row +=`7.`; 
                                row +=`</td>`; 
@@ -904,13 +1031,7 @@
                                        row +=`<span id="budget-a-7-ppro-messages"></span>`; 
                                   row +=`</div>`; 
                                row +=`</td>`; 
-                               row +=`<td>`; 
-                                    row +=`<div id="desc-a-7-ppro-alert" class="margin-none form-group">`; 
-                                              row +=`<input type="text" disabled name="desc_a_7_pro"  value="${item.keterangan_potensi_lanjutan }" class="form-control">`; 
-                                       row +=`<span id="desc-a-7-ppro-messages"></span>`; 
-                                    row +=`</div>`; 
-
-                               row +=`</td>`; 
+                              
                          row +=` </tr>`; 
 
 
@@ -940,11 +1061,22 @@
                              row +=`</div>`; 
                                row +=`</td>`; 
                                row +=`<td>`; 
-                                   row +=` <div id="desc-b-ppro-alert" class="margin-none form-group">`; 
-                                        row +=` <input type="text" disabled name="desc_b_ppro" value="${item.keterangan_info_grafis }"   class="form-control">`; 
-                                  row +=`<span id="desc-b-ppro-messages"></span>`; 
-                             row +=`</div>`; 
+                               
+                              if(item.keterangan_info_grafis)
+                              {     
 
+                                   row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_info_grafis }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
+
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+                                   row +=`</div>`;
+
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              } 
                                row +=`</td>`; 
                         row +=`</tr>`; 
                         row +=`<tr>`; 
@@ -971,11 +1103,20 @@
                              row +=`</div>`; 
                               row +=`</td>`; 
                                row +=`<td>`; 
-                                   row +=` <div id="desc-c-ppro-alert" class="margin-none form-group">`; 
-                                        row +=` <input type="text" disabled name="desc_c_ppro" value="${item.keterangan_dokumentasi }"  class="form-control pasca-produksi">`; 
-                                 row +=` <span id="desc-c-ppro-messages"></span>`; 
-                            row +=` </div>`; 
+                            
+                              if(item.keterangan_dokumentasi)
+                              {     
+                                  row +=`<div >`;
+                                             row +=`<div id="viewPdf" class="viewpdf normal-pdf" data-param_file="${item.keterangan_dokumentasi }" data-toggle="modal" data-target="#modal-view-${item.id }"  data-toggle="tooltip" data-placement="top" title="View Data">Lihat PDF</div>`;
+                                          row +=`</div>`;
 
+                                            row +=`<div id="modal-view-${item.id }" class="modal fade" role="dialog">`;
+                                                   row +=`<div id="FormView-${item.id }"></div>`;
+                                             row +=`</div>`;
+                                   row +=`</div>`;
+                              }else{  
+                                 row +=`<div class="font-bold text-center"> ... </div>`;
+                              } 
                                row +=`</td>`; 
                         row +=`</tr>`; 
        
@@ -986,12 +1127,21 @@
 				   
 			    if(item.request_edit == 'true')
 			    { 
+                     $('#div-edit').show();
                      $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
                      $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
 			    }else{
 			    	$('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
                     $('#div-edit').remove();
 			    } 	
+
+
+                   content.on( "click", "#viewPdf", (e) => {
+                        let file = e.currentTarget.dataset.param_file;  
+                        EmbedFile(file,item.id);  
+                   });
+
+
 
                        
 
@@ -1062,6 +1212,33 @@
         }); 
  
     }
+
+    function EmbedFile(file,tmp){
+        // console.log(BASE_URL+'/laporan/pemetaan/'+file)
+
+                let row = ``;
+                      row +=`<div class="modal-dialog">`;
+                          row +=`<div class="modal-content">`;
+
+                                     row +=`<div class="modal-header">`;
+                                       row +=`<button type="button" class="clear-input close" data-dismiss="modal">&times;</button>`;
+                                       row +=`<h4 class="modal-title">Lihat File PDF</h4>`;
+                                     row +=`</div>`;
+
+                                    
+                                     row +=`<div class="modal-body">`;
+                                      row +=`<embed src="`+ BASE_URL+`/laporan/pemetaan/`+file+`#page=1&zoom=65" width="575" height="500">`;
+                                     row +=`</div>`;
+
+
+                                   row +=`<div class="modal-footer">`;
+                                           row +=`<button type="button" class="clear-input btn btn-default" data-dismiss="modal">Tutup</button>`;
+                                   row +=`</div>`;
+                         row +=`</div>`;
+                       row +=`</div>`;   
+                    $('#FormView-'+ tmp).html(row);  
+
+          }
 
 
     function BtnAction(item){
@@ -1199,7 +1376,7 @@
 		          row +=`<div class="modal-content">`;
 		               row +=`<div class="modal-header">`;
 		                    row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-		                    row +=`<h4 class="modal-title">Request Edit Promosi</h4>`;
+		                    row +=`<h4 class="modal-title">Request Edit Peta Potensi</h4>`;
 		               row +=`</div>`;
 		               row +=`<div class="modal-body">`;
 		                    row +=`<div class="form-group">`;
@@ -1288,6 +1465,9 @@
     }
 
       function getperiode(periode_id){
+
+              $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');
+              
                $.ajax({
                     type: 'GET',
                     dataType: 'json',

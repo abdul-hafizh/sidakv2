@@ -150,6 +150,22 @@ class AuthApiController extends Controller
 
     }
 
+     public function menuSlug(Request $request)
+    {
+        
+        if($request->slug)
+        {
+              $role = RequestMenuRoles::SlugPage($request->slug);
+              return response()->json($role,200);
+
+        }else{
+             return response()->json('error',400);
+        }    
+    
+      
+
+    }
+
   
 
 

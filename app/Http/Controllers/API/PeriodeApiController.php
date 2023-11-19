@@ -89,6 +89,7 @@ class PeriodeApiController extends Controller
                $query->where('d.daerah_id', Auth::User()->daerah_id);
                $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id');
                $query->join('perencanaan as d', 'c.periode_id', '=', 'd.periode_id');
+               $query->where('d.periode_id','<=','2024');
 
               if($request->type == 'POST')
               {
@@ -122,24 +123,26 @@ class PeriodeApiController extends Controller
                $query->where('d.daerah_id', Auth::User()->daerah_id);
                $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id');
                $query->join('perencanaan as d', 'c.periode_id', '=', 'd.periode_id');
-
+               $query->where('d.periode_id','>=','2023');
 
                if($request->type == 'POST')
                {
                 $query->whereNotIn(
                     'year',
                     DB::table('pemetaan')
-                        ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
+                        ->select('periode_id')
+                        ->where('daerah_id', Auth::User()->daerah_id)
                 );
 
 
                 }else if($request->type == 'PUT'){
-
+                 
                    $query->whereIn(
                     'year',
                     DB::table('perencanaan')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
-                );
+                   );
+                  
 
                 }else if($request->type == 'GET'){
 
@@ -154,8 +157,23 @@ class PeriodeApiController extends Controller
 
              $query->groupBy('year');
         } else {
-            $query->select('a.id', 'a.slug', 'a.year');
-            $query->groupBy('a.year');
+            // $query->select('a.id', 'a.slug', 'a.year');
+            // $query->groupBy('a.year');
+
+            if ($request->action == 'pemetaan') 
+            { 
+
+                 $query->select('a.id', 'a.slug', 'a.year');
+                 $query->where('a.year','>=','2024');
+                 $query->groupBy('a.year');
+               
+
+            }else if($request->action == 'promosi'){
+
+                 $query->select('a.id', 'a.slug', 'a.year');
+                 $query->where('a.year','<=','2023');
+                 $query->groupBy('a.year');
+            }  
         }
 
         $query->where('a.status', 'Y');

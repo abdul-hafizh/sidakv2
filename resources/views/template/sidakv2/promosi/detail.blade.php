@@ -175,7 +175,7 @@
           var url = window.location.href; 
           var segments = url.split('/');  
 
-          $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
+          
      
           $('#pagu_promosi').html('<b>Rp. 0</b>');           
           $('#total_promosi').html('<b>Rp. 0</b>');           
@@ -202,7 +202,7 @@
                          periode_id = data.periode_id;
                        
                          updateContent(data);
-                       
+                          getperiode(data.periode_id); 
                     },
                     error: function( error) {}
                });
@@ -682,7 +682,7 @@
 
                        content.append(row);
                        pagu_promosi = item.pagu_promosi;
-                       getperiode(item.periode_id); 
+                      
                        if(item.access =='pusat' || item.access =='admin')
                        {
                          BtnAction(item);  
@@ -804,12 +804,14 @@
 
 
           function getperiode(periode_id){
+               $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
                     url: BASE_URL +'/api/select-periode?type=Get&action=promosi',
                     success: function(data) {
                          var select =  $('#periode_id');
+                          select.empty();
                          $.each(data.result, function(index, option) {
                               select.append($('<option>', {
                                    value: option.value,
