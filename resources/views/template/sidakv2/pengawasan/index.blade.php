@@ -66,6 +66,10 @@
 
 
 <section class="content-header pd-left-right-15">
+	<div class="row">
+		<div class="col-md-12" id="header">
+		</div>
+	</div>
 	<div class="form-group row margin-top-bottom-20">
 		<div class="col-sm-2">
 			<select id="periode_id2" name="periode_id2" class="form-control height-35 border-radius-13" data-style="btn-default" title="Pilih Periode"></select>
@@ -175,8 +179,10 @@
 
 @push('scripts')
 <script>
+	var search = '';
 	getPeriodeAdd();
 	select_periode();
+	hasil_header(search);
 
 	function select_periode() {
 		$.ajax({
@@ -195,6 +201,149 @@
 				$('#periode_id2').html(periode);
 			}
 		})
+
+	}
+
+	function hasil_header(search) {
+		if (search !== "")
+			var filter = JSON.stringify(search);
+		$.ajax({
+			url: BASE_URL + '/api/pengawasan/header',
+			method: 'POST',
+			data: {
+				data: filter
+			},
+			dataType: 'json',
+			success: function(result) {
+				if (result.user == 'daerah' || result.user == 'province') {
+					if (result.semester == '01') {
+						var table_header = `<table class="table box box-solid box-primary">
+						<thead>
+							<tr>
+								<th rowspan="2">Sub Kegiatan</th>
+								<th colspan="2" style="text-align: center">Perencanaan Tahun ${result.tahun}</th>
+								<th colspan="2" style="text-align: center">Realisasi Semester 1</th>
+							</tr>
+							<tr>
+								<th style="text-align: center">Target</th>
+								<th style="text-align: center">Nilai</th>
+								<th style="text-align: center">Target</th>
+								<th style="text-align: center">Nilai</th>
+							</tr>
+						</thead>
+						<tbody>
+						<tr>
+								<td>Analisa</td>
+								<td style="text-align: center"><span >${result.data[0].analisa_rencana_target}</span></td>
+								<td style="text-align: right"><span >${formatRupiah(result.data[0].analisa_rencana)}</span></td>
+								<td style="text-align: center"><span >${result.data[0].analisa_realisasi_target}</span></td>
+								<td style="text-align: right"><span >${formatRupiah(result.data[0].analisa_realisasi)}</span></td>
+							</tr>
+							<tr>
+								<td>Inspeksi</td>
+								<td style="text-align: center"><span>${result.data[0].inspeksi_target}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].inspeksi_rencana)}</span></td>
+								<td style="text-align: center"><span>${result.data[0].inspeksi_realisasi_target}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].inspeksi_realisasi)}</span></td>
+							</tr>
+							<tr>
+								<td>Evaluasi</td>
+								<td style="text-align: center"><span>${result.data[0].evaluasi_target}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_rencana)}</span></td>
+								<td style="text-align: center"><span>${result.data[0].evaluasi_realisasi_target}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_realisasi)}</span></td>
+							</tr>
+							<tr>
+								<th>Total</th>
+								<th style="text-align: center"><span>${result.data[0].analisa_rencana_target+result.data[0].inspeksi_target+result.data[0].evaluasi_target}</span></th>
+								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_rencana+result.data[0].inspeksi_rencana+result.data[0].evaluasi_rencana)}</span></th>
+								<th style="text-align: center"><span>${result.data[0].analisa_realisasi_target+result.data[0].inspeksi_realisasi_target+result.data[0].evaluasi_realisasi_target}</span></th>
+								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_realisasi+result.data[0].inspeksi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
+							</tr>
+						</tbody>
+					</table>`;
+					} else {
+						var table_header = `<table class="table box box-solid box-primary">
+						<thead>
+							<tr>
+								<th rowspan="2">Sub Kegiatan</th>
+								<th colspan="2" style="text-align: center">Perencanaan Tahun ${result.tahun}</th>
+								<th colspan="2" style="text-align: center">Realisasi Semester 1</th>
+								<th colspan="2" style="text-align: center">Realisasi Semester 2</th>
+								<th colspan="2" style="text-align: center">Total Realisasi</th>
+							</tr>
+							<tr>
+								<th style="text-align: center">Target</th>
+								<th style="text-align: center">Nilai</th>
+								<th style="text-align: center">Target</th>
+								<th style="text-align: center">Nilai</th>
+								<th style="text-align: center">Target</th>
+								<th style="text-align: center">Nilai</th>
+								<th style="text-align: center">Target</th>
+								<th style="text-align: center">Nilai</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Analisa</td>
+								<td style="text-align: center"><span >${result.data[0].analisa_rencana_target}</span></td>
+								<td style="text-align: right"><span >${formatRupiah(result.data[0].analisa_rencana)}</span></td>
+								<td style="text-align: center"><span >${result.data[0].analisa_realisasi_target}</span></td>
+								<td style="text-align: right"><span >${formatRupiah(result.data[0].analisa_realisasi)}</span></td>
+								<td style="text-align: center">${result.data[0].analisa_realisasi_target_2}</td>
+								<td style="text-align: right">${formatRupiah(result.data[0].analisa_realisasi_2)}</td>
+								<td style="text-align: center"><span >${result.data[0].analisa_realisasi_target_total}</span></td>
+								<td style="text-align: right"><span >${formatRupiah(result.data[0].analisa_realisasi_total)}</span></td>
+							</tr>
+							<tr>
+								<td>Inspeksi</td>
+								<td style="text-align: center"><span>${result.data[0].inspeksi_target}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].inspeksi_rencana)}</span></td>
+								<td style="text-align: center"><span>${result.data[0].inspeksi_realisasi_target}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].inspeksi_realisasi)}</span></td>
+								<td style="text-align: center">${result.data[0].inspeksi_realisasi_target_2}</td>
+								<td style="text-align: right">${formatRupiah(result.data[0].inspeksi_realisasi_2)}</td>
+								<td style="text-align: center"><span>${result.data[0].inspeksi_realisasi_target_total}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].inspeksi_realisasi_total)}</span></td>
+							</tr>
+							<tr>
+								<td>Evaluasi</td>
+								<td style="text-align: center"><span>${result.data[0].evaluasi_target}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_rencana)}</span></td>
+								<td style="text-align: center"><span>${result.data[0].evaluasi_realisasi_target}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_realisasi)}</span></td>
+								<td style="text-align: center">${result.data[0].evaluasi_realisasi_target_2}</td>
+								<td style="text-align: right">${formatRupiah(result.data[0].evaluasi_realisasi_2)}</td>
+								<td style="text-align: center"><span>${result.data[0].evaluasi_realisasi_target_total}</span></td>
+								<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_realisasi_total)}</span></td>
+							</tr>
+							<tr>
+								<th>Total</th>
+								<th style="text-align: center"><span>${result.data[0].analisa_rencana_target+result.data[0].inspeksi_target+result.data[0].evaluasi_target}</span></th>
+								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_rencana+result.data[0].inspeksi_rencana+result.data[0].evaluasi_rencana)}</span></th>
+								<th style="text-align: center"><span>${result.data[0].analisa_realisasi_target+result.data[0].inspeksi_realisasi_target+result.data[0].evaluasi_realisasi_target}</span></th>
+								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_realisasi+result.data[0].inspeksi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
+								<th style="text-align: center">${result.data[0].analisa_realisasi_target_2+result.data[0].inspeksi_realisasi_target_2+result.data[0].evaluasi_realisasi_target_2}</th>
+								<th style="text-align: right">${formatRupiah(result.data[0].analisa_realisasi_2+result.data[0].inspeksi_realisasi_2+result.data[0].evaluasi_realisasi_2)}</th>
+								<th style="text-align: center"><span>${result.data[0].analisa_realisasi_target_total+result.data[0].inspeksi_realisasi_target_total+result.data[0].evaluasi_realisasi_target_total}</span></th>
+								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_realisasi_total+result.data[0].inspeksi_realisasi_total+result.data[0].evaluasi_realisasi_total)}</span></th>
+							</tr>
+						</tbody>
+					</table>`;
+					}
+
+					$('#header').html(table_header);
+				}
+			},
+			error: function(error) {
+				console.error(error);
+			}
+		});
+	}
+
+	function formatRupiah(data) {
+		var new_data = accounting.formatNumber(data, 0, ".", ".");
+		return 'Rp ' + new_data;
 
 	}
 
@@ -349,6 +498,7 @@
 
 			//var email = $("#email").val();
 			//filter = filter[0];
+			hasil_header(filter);
 			table.column(0).search(JSON.stringify(filter), true, true);
 			table.draw();
 		});
@@ -435,7 +585,7 @@
 			$("#periode_id2").val("").trigger("change");
 			$("#daerah_id").val("").trigger("change");
 			$("#search-input").val("");
-
+			hasil_header(filter);
 			table.search("").columns().search("").draw();
 		});
 
