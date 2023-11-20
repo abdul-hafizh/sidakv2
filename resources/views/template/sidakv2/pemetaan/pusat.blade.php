@@ -488,7 +488,7 @@
                     dataType: 'json',
                     url: BASE_URL +'/api/select-periode?type=GET&action=pemetaan',
                     success: function(data) {
-                         selectedPeriode(data.result,periode_id)
+                         selectedPeriode(data,periode_id)
                          year = periode_id;
                          periode = data.result; 
                     },
@@ -528,42 +528,42 @@
 
     }
 
-    function selectedPeriode(data,periode_id){
+      function selectedPeriode(data,periode_id){
+        
+                getperiodeList(data);
 
-
-            
-                $('#selectPeriode').html('<select id="periode_id"  class="selectpicker"  ></select>');
-		        var select =  $('#periode_id');
-		        $.each(data, function(index, option) {
-		            select.append($('<option>', {
-		              value: option.value,
-		              text: option.text
-		            }));
-		        });
-
-
-		        if(periode_id ==0)
+                if(periode_id ==0)
                 {
-                 	 select.prop('disabled', true);
-                 	
+                    $('#periode_id').prop('disabled', true);
                 }else{
                   var tmp = JSON.parse(localStorage.getItem('search'));
                   if(tmp)
                   {
-                       
-                    select.val(tmp.periode_id);
+                     $('#periode_id').prop('disabled', false).val(tmp.periode_id).selectpicker('refresh');   
                   }else{
-                    select.val(periode_id);
+                     $('#periode_id').prop('disabled', false).val(periode_id).selectpicker('refresh'); 
+                   
                   }  
-  
-                 	
-                 	select.prop('disabled', false);
-                } 	
-		       select.selectpicker('refresh');
-                
-                
+                   
+                 
+                }            
 
     }
+
+
+      function getperiodeList(data){
+
+                var select =  $('#periode_id');
+                 select.empty();
+                 $.each(data.result, function(index, option) {
+                      select.append($('<option>', {
+                           value: option.value,
+                           text: option.text
+                      }));
+                 });
+                  select.selectpicker('refresh'); 
+                  periode = data.result;          
+        }
 
 
 
