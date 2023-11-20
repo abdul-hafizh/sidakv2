@@ -82,7 +82,7 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	    </div>
 	</div>
-     @include('template/sidakv2/role.add')
+     @include('template/sidakv2/wilayah.add')
 
 <script type="text/javascript">
 
@@ -109,10 +109,10 @@
 
                   if(search !='')
                   {
-                  	var url = BASE_URL + `/api/role/search?page=${page}&per_page=${value}`;
+                  	var url = BASE_URL + `/api/wilayah/search?page=${page}&per_page=${value}`;
                   	var method = 'POST';
                   }else{
-                    var url = BASE_URL + `/api/role?page=${page}&per_page=${value}`;
+                    var url = BASE_URL + `/api/wilayah?page=${page}&per_page=${value}`;
                     var method = 'GET';
                   } 	
 
@@ -206,7 +206,7 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
 	         $.ajax({
-	            url: BASE_URL + `/api/role/search?page=${page}&per_page=${itemsPerPage}`,
+	            url: BASE_URL + `/api/wilayah/search?page=${page}&per_page=${itemsPerPage}`,
 	            data:{'search':search},
 	            method: 'POST',
 	            success: function(response) {
@@ -230,7 +230,7 @@
         // Send the selected IDs for deletion using AJAX
        
         $.ajax({
-            url:  BASE_URL +`/api/role/selected`,
+            url:  BASE_URL +`/api/wilayah/selected`,
             method: 'POST',
             data: { data: ids },
             success: function(response) {
@@ -256,7 +256,7 @@
              row +=`<tr><td colspan="8" align="center"> <b>Loading ...</b></td></tr>`;
               content.append(row);
         $.ajax({
-            url: BASE_URL+ `/api/role?page=${page}&per_page=${itemsPerPage}`,
+            url: BASE_URL+ `/api/wilayah?page=${page}&per_page=${itemsPerPage}`,
             method: 'GET',
             success: function(response) {
             	list = response.data;
@@ -362,7 +362,7 @@
 
 				       row +=`<div class="modal-header">`;
 				         row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
-				         row +=`<h4 class="modal-title">Edit Role</h4>`;
+				         row +=`<h4 class="modal-title">Edit Wilayah</h4>`;
 				       row +=`</div>`;
 
 				       row +=`<form   id="FormSubmit-`+ item.id +`">`;
@@ -436,7 +436,7 @@
 
 					$.ajax({
 			            type:"PUT",
-			            url: BASE_URL+'/api/role/'+ id,
+			            url: BASE_URL+'/api/wilayah/'+ id,
 			            data:form,
 			            cache: false,
 			            dataType: "json",
@@ -450,7 +450,7 @@
 			                    }).then((result) => {
 			                        if (result.isConfirmed) {
 			                            // User clicked "Yes, proceed!" button
-			                            window.location.replace('/role');
+			                            window.location.replace('/wilayah');
 			                        }
 			                    });
 
@@ -526,7 +526,7 @@
     function deleteItem(id){
 
 		$.ajax({
-		    url:  BASE_URL +`/api/role/`+ id,
+		    url:  BASE_URL +`/api/wilayah/`+ id,
 		    method: 'DELETE',
 		    success: function(response) {
 		        // Handle success (e.g., remove deleted items from the list)

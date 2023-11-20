@@ -24,7 +24,7 @@ use App\Http\Controllers\ExtensionController;
 use App\Http\Controllers\PromosiController;
 use App\Http\Controllers\PemetaanController;
 use App\Http\Controllers\PengawasanController;
-
+use App\Http\Controllers\WilayahController;
 
 Route::get('/', function () {
     return redirect('login');
@@ -69,7 +69,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/auditlog', [AuditLogController::class, 'index']);
     Route::get('/options', [OptionsController::class, 'index']);
     Route::get('/action', [ActionController::class, 'index']);
-    
+     Route::get('/wilayah', [WilayahController::class, 'index']);
 });
 
 

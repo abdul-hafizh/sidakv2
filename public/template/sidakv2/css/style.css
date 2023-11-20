@@ -1131,6 +1131,23 @@ padding: 0px 12px 0px 0px!important;
     margin: 0px 6px 0px;
 } 
 
+.split-table-white{
+    background: #fff;
+    height: 44px;
+    border: 2px solid #fff;
+    border-radius: 3px;
+    float: left;
+    margin: 0px 6px 0px;
+} 
+
+.bg-table{
+    background: #0e298f!important;
+    color: #fff!important;
+  
+    border-radius: 15px;
+    width: 100%;
+}
+
 .span-title{
     float: left;
     padding: 12px 0px!important;

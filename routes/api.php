@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+use App\Http\Controllers\API\DashboardApiController;
 use App\Http\Controllers\API\AuthApiController;
 use App\Http\Controllers\API\PeriodeApiController;
 use App\Http\Controllers\API\MenusApiController;
@@ -39,7 +39,7 @@ use App\Http\Controllers\API\PenyelesaianApiController;
 use App\Http\Controllers\API\ExtensionApiController;
 use App\Http\Controllers\API\PromosiApiController;
 use App\Http\Controllers\API\PemetaanApiController;
-
+use App\Http\Controllers\API\WilayahApiController;
 
 
 Route::middleware(['jwt.auth'])->group(function () {
@@ -126,6 +126,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('regency/search', [RegencyApiController::class, 'search']);
     Route::post('regency/selected', [RegencyApiController::class, 'deleteSelected']);
     Route::delete('regency/{id}', [RegencyApiController::class, 'delete']);
+    
     Route::get('dashboard', [DashboardApiController::class, 'index']);
 
     Route::get('role', [RolesApiController::class, 'index']);
@@ -277,7 +278,14 @@ Route::middleware(['jwt.auth'])->group(function () {
 
 
 
-    
+    Route::get('wilayah', [WilayahApiController::class, 'index']);
+    Route::get('wilayah/edit/{id}', [WilayahApiController::class, 'edit']);
+    Route::post('wilayah', [WilayahApiController::class, 'store']);
+    Route::post('wilayah/search', [WilayahApiController::class, 'search']);
+    Route::put('wilayah/{id}', [WilayahApiController::class, 'update']);
+    Route::delete('wilayah/{id}', [WilayahApiController::class, 'delete']);
+    Route::post('wilayah/selected', [WilayahApiController::class, 'deleteSelected']);
+
     // Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     // Route::post('user/update', [UserApiController::class, 'updateProfile']);
     // Route::post('user/status', [UserApiController::class, 'StatusConfirm']);

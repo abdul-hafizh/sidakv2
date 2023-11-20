@@ -76,20 +76,17 @@ class RequestPeriode
        
 
 
-            if($action =="perencanaan" )
-            {
+             if($action =="perencanaan" || $action =="pagu" ||  $action =="promosi" || $action =="pemetaan" || $action =="dashboard"){
                   $temp[$key]['value'] = $val->year;
                   $temp[$key]['text'] = 'Periode ' . $val->year;
-             }else if($action =="pagu" ||  $action =="promosi" || $action =="pemetaan"){
-                  $temp[$key]['value'] = $val->year;
-                  $temp[$key]['text'] = 'Periode ' . $val->year; 
+
              }else{
                 $temp[$key]['value'] = $val->slug;
                 $temp[$key]['text'] = 'Periode ' . $val->year;
              }
 
 
-              if($access =="province" || $access =="daerah")
+               if($access =="daerah" || $access =="province")
                {
                   if($action =="perencanaan")
                   {   
@@ -103,11 +100,17 @@ class RequestPeriode
                      // $temp[$key]['target_pengawasan'] = $val->pengawas_analisa_target + $val->pengawas_inspeksi_target + $val->pengawas_evaluasi_target;
                      // $temp[$key]['target_bimtek'] = $val->bimtek_perizinan_target + $val->bimtek_pengawasan_target;
                      // $temp[$key]['target_penyelesaian'] = $val->penyelesaian_identifikasi_target + $val->penyelesaian_realisasi_target + $val->penyelesaian_evaluasi_target;
-                     $temp[$key]['pagu_promosi'] = $val->promosi_pengadaan_pagu;
+                   
                   }   
                     
 
                } 
+
+
+               if($access =="province")
+               {
+                    $temp[$key]['pagu_promosi'] = $val->promosi_pengadaan_pagu;
+               }   
   
 
          

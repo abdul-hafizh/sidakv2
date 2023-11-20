@@ -994,7 +994,7 @@
         }
 
          function getperiode(periode_id){
-              $('#selectPeriode').html('<select  id="periode_id" title="Pilih Daerah"  class="selectpicker"></select>');
+               $('#selectPeriode').html('<select  id="periode_id" title="Pilih Daerah"  class="selectpicker"></select>');
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
