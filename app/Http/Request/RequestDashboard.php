@@ -786,16 +786,16 @@ class RequestDashboard
      $access = RequestAuth::Access();
      if($access == 'province' || $access =='daerah')
      {
-       $data = Bimsos::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id,'sub_menu_slug'=>$type])->count();
+       $data = Bimsos::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id,'sub_menu_slug'=>$type])->sum('jml_peserta');
      }else{
         
         if($daerah_id =="")
         {
 
-           $data = Bimsos::where(['status_laporan_id'=>'14','periode_id'=>$periode,'sub_menu_slug'=>$type])->count();
+           $data = Bimsos::where(['status_laporan_id'=>'14','periode_id'=>$periode,'sub_menu_slug'=>$type])->sum('jml_peserta');
         }else{
 
-           $data = Bimsos::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id,'sub_menu_slug'=>$type])->count();
+           $data = Bimsos::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id,'sub_menu_slug'=>$type])->sum('jml_peserta');
         }    
 
      }  
