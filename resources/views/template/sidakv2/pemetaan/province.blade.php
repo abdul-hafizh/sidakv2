@@ -83,9 +83,9 @@
             
                                  
             <div  id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
-                <button type="button" id="add" class="btn btn-primary border-radius-10">
+                <a href="{{ url('pemetaan/add') }}" class="btn btn-primary border-radius-10">
                     Tambah Data
-                </button> 
+                </a> 
             </div>
 		</div>
 		
@@ -193,9 +193,9 @@
 
 
 
-    $("#add").click( () => {
-         window.location.replace('/pemetaan/add/'); 
-    });
+    // $("#add").click( () => {
+    //      window.location.replace('/pemetaan/add/'); 
+    // });
 
        // Function to fetch data from the API
     function fetchData(page,periode_id) {
@@ -1473,7 +1473,13 @@
                success: function(data) {
 
                    getperiodeList(data);
-                   $('#periode_id').val(periode_id).selectpicker('refresh');
+                   if(periode_id > '2023')
+                   {
+                      $('#periode_id').prop('disabled', false).val(periode_id).selectpicker('refresh');
+                   }else{
+                      $('#periode_id').prop('disabled', true).val(periode_id).selectpicker('refresh');
+                   } 
+                   
                    
                    
                },
