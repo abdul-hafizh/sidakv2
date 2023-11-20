@@ -40,6 +40,11 @@ class Pengawasan_perusahaan extends Model
         'rencana_tka',
         'realisasi_tka',
 
+        'lap_evaluasi',
+        'lap_lkpm',
+        'lap_bap',
+        'lap_profile',
+
         'created_by',
         'created_date',
         'modified_date',

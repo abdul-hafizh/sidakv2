@@ -109,20 +109,15 @@ class ValidationPengawasan
 
         $fields = [
             'lap_kegiatan'  => 'Laporan kegiatan',
-            'lap_pendamping'  => 'Laporan tenaga pendamping',
-            'lap_notula' => 'Notula Kegiatan',
-            'lap_survey' => 'Hasil Survey',
-            'lap_narasumber' => 'Daftar Narasumber',
-            'lap_materi' => 'Materi',
-            'lap_document' => 'Laporan Dokumentasi',
+            'nib.*'  => 'NIB',
+
         ];
 
         if ($request->sub_menu_slug == 'inspeksi') {
             $validator =  Validator::make(
                 $request->all(),
                 [
-                    'lap_hadir'  =>  ['required_without:lap_hadir_file', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_pendamping'  => ['required_without:lap_pendamping_file', 'file', 'mimes:pdf',  'max:2056']
+                    "nib.*"  => "required",
                 ]
             );
         } else if ($request->sub_menu_slug == 'analisa' || $request->sub_menu_slug == 'evaluasi') {
@@ -161,6 +156,7 @@ class ValidationPengawasan
             'tanggal_kegiatan' => 'Tanggal Kegiatan',
             'biaya' => 'Biaya',
             'lokasi' => 'Lokasi',
+            'nib.*' => 'NIB',
 
 
         ];
@@ -175,9 +171,13 @@ class ValidationPengawasan
                 'tanggal_kegiatan'  => 'required',
                 //    'jml_peserta'  => 'required_if:sub_menu_slug,is_bimtek_ipbbr|nullable|integer',
                 'biaya'  => 'required|integer',
-                'lokasi'  => 'required'
+                'lokasi'  => 'required',
+                //  "nib"    => "required|array|min:1",
+                "nib.*"  => "required",
             ]
         );
+
+
 
         $validator->setAttributeNames($fields);
         if ($validator->fails()) {
