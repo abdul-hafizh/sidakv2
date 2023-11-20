@@ -111,33 +111,28 @@
 		</div>
 	</div>
 	<div class="form-group row">
+		<div class="col-sm-2">
+			<select id="periode_id2" class="form-control height-35 border-radius-13" name="periode_id2"></select>
+		</div>
 		<div class="col-sm-3">
-			<label>Tipe</label>
-			<select class="form-control" name="type_daerah2" id="type_daerah2">
+			<select class="form-control height-35 border-radius-13" name="type_daerah2" id="type_daerah2">
 				<option value="">-Pilih Tipe-</option>
 				<option value="Provinsi">Provinsi</option>
 				<option value="Kabupaten">Kabupaten</option>
 			</select>
 		</div>
 		<div class="col-sm-3">
-			<label>Daerah </label>
-			<select id="daerah_id2" class="select-daerah2 form-control" name="daerah_id2" disabled>
+			<select id="daerah_id2" class=" form-control height-35 border-radius-13" name="daerah_id2" disabled>
 				<option value="">Pilih</option>
 			</select>
 		</div>
-		<div class="col-sm-3">
-			<label>Periode </label>
-			<select id="periode_id2" class="select-periode2 form-control" name="periode_id2"></select>
+		<div class="col-sm-2" style="margin-bottom: 9px;">
+			<input type="text" id="search-input" class="form-control border-radius-13" placeholder="Pencarian">
 		</div>
-		<div class="col-sm-3">
-			<label>Search</label>
-			<div class="input-group input-group-sm border-radius-20">
-				<input type="text" id="search-input" placeholder="Cari" class="form-control height-35 border-radius-left">
-				<span class="input-group-btn">
-					<button id="Search" type="button" class="btn btn-search btn-flat height-35"><i class="fa fa-search"></i></button>
-					<button id="Clear" type="button" class="btn btn-search btn-flat height-35 border-radius-right"><i class="fa fa-times-circle"></i></button>
-				</span>
-
+		<div class="col-lg-2">
+			<div class="btn-group">
+				<button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
+				<button id="Clear" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
 			</div>
 		</div>
 	</div>
@@ -428,7 +423,7 @@
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {
-					jenis = '<option value="">- Pilih -</option>';
+					jenis = '<option value="">- Pilih Daerah-</option>';
 					$.each(data, function(key, val) {
 						jenis += '<option value="' + val.value + '">' + val.text + '</option>';
 					});
@@ -444,7 +439,7 @@
 				method: 'get',
 				dataType: 'json',
 				success: function(data) {
-					periode = '<option value="">- Pilih -</option>';
+					periode = '<option value="">- Pilih Periode -</option>';
 					$.each(data.result, function(key, val) {
 						periode += '<option value="' + val.value + '" >' + val.text + '</option>';
 
