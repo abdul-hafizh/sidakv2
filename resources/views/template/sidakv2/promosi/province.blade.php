@@ -83,9 +83,9 @@
             
                                  
             <div  id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
-                <button type="button" id="add" class="btn btn-primary border-radius-10">
+                <a href="{{ url('promosi/add') }}" class="btn btn-primary border-radius-10">
                     Tambah Data
-                </button> 
+                </a> 
             </div>
 		</div>
 		
@@ -194,9 +194,9 @@
 
 
 
-    $("#add").click( () => {
-         window.location.replace('/promosi/add/'); 
-    });
+    // $("#add").click( () => {
+    //      window.location.replace('/promosi/add/'); 
+    // });
 
        // Function to fetch data from the API
     function fetchData(page,periode_id) {
