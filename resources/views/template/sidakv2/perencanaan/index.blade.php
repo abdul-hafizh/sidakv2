@@ -994,40 +994,36 @@
         }
 
          function getperiode(periode_id){
-               $('#selectPeriode').html('<select  id="periode_id" title="Pilih Daerah"  class="selectpicker"></select>');
+               $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode"  class="selectpicker"></select>');
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
                     url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
                     success: function(data) {
-                         var select =  $('#periode_id');
-                        // select.empty();
-                         $.each(data.result, function(index, option) {
-                              select.append($('<option>', {
-                                   value: option.value,
-                                   text: option.text
-                              }));
-                         });
 
-                         if(periode_id ==0)
-                         {
-                             select.prop('disabled', true);
-                            
-                         }else{
-                            select.val(periode_id);
-                            select.prop('disabled', false);
-                         }  
-                         
+                          getperiodeList(data);
+                          $('#periode_id').val(periode_id).selectpicker('refresh');
                         
-                        
-                         select.selectpicker('refresh');
-                         periode = data.result; 
                     },
                     error: function( error) {}
                });
 
               
-          }
+        }
+
+        function getperiodeList(data){
+
+                var select =  $('#periode_id');
+                 select.empty();
+                 $.each(data.result, function(index, option) {
+                      select.append($('<option>', {
+                           value: option.value,
+                           text: option.text
+                      }));
+                 });
+                  select.selectpicker('refresh'); 
+                  periode = data.result;          
+        }
 
           function getdaerah(daerah_id){
 
