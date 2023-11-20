@@ -62,11 +62,31 @@ class PenyelesaianApiController extends Controller
     }
 
     public function header(Request $request)
-    {                
-        $output = DB::select(
-            'call header_modul(?,?,?)', array('PENYELESAIAN', $request->periode, Auth::User()->daerah_id)
+    {
+        $searchColumn = $request->data;
+        $tahunSemester = GeneralHelpers::semesterToday();
+        if (!empty($request->data)) {
+            $filterjs = json_decode($searchColumn);
+            $data = DB::select(
+                'call header_modul(?,?,?)',
+                array('PENYELESAIAN', $filterjs[0]->periode_id, Auth::User()->daerah_id)
+            );
+            $semester = substr($filterjs[0]->periode_id, 4);
+            $tahun = substr($filterjs[0]->periode_id, 0, 4);
+        } else {
+            $data = DB::select(
+                'call header_modul(?,?,?)',
+                array('PENYELESAIAN', $tahunSemester, Auth::User()->daerah_id)
+            );
+            $semester = substr($tahunSemester, 4);
+            $tahun = substr($tahunSemester, 0, 4);
+        }
+        $output = array(
+            "data" => $data,
+            "semester" => $semester,
+            "tahun" => $tahun,
+            "user" => $_COOKIE['access']
         );
-
         return response()->json($output);
     }
 
@@ -75,7 +95,7 @@ class PenyelesaianApiController extends Controller
         $validation = ValidationPenyelesaian::validation($request);
         if ($validation) {
             return response()->json($validation, 400);
-        } else {            
+        } else {
 
             $insert = RequestPenyelesaian::fieldsData($request);
 
@@ -100,7 +120,7 @@ class PenyelesaianApiController extends Controller
                     return response()->json(['status' => false, 'message' => 'File Daftar Hadir Wajib Diisi.']);
                 }
             }
-            
+
             if ($request->hasFile('lap_profile2')) {
                 $file_profile2 = $request->file('lap_profile2');
                 $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
@@ -110,8 +130,8 @@ class PenyelesaianApiController extends Controller
                 if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian') {
                     return response()->json(['status' => false, 'message' => 'File Profile Wajib Diisi.']);
                 }
-            }            
-            
+            }
+
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
                 $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
@@ -185,14 +205,18 @@ class PenyelesaianApiController extends Controller
                 ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_pagu < $sumPenyelesaian->biaya) ||
                 ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_pagu < $sumPenyelesaian->biaya) ||
                 ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_pagu < $sumPenyelesaian->biaya)
-            ) { $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.'; }
-            
+            ) {
+                $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.';
+            }
+
             if (
                 ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
                 ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
                 ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
-            ) { $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.'; }
-            
+            ) {
+                $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
+            }
+
             if (!empty($err)) {
                 return response()->json($err, 400);
             }
@@ -240,7 +264,7 @@ class PenyelesaianApiController extends Controller
                     return response()->json(['status' => false, 'message' => 'File Daftar Hadir Wajib Diisi.']);
                 }
             }
-            
+
             if ($request->hasFile('lap_profile2')) {
                 $file_profile2 = $request->file('lap_profile2');
                 $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
@@ -262,7 +286,7 @@ class PenyelesaianApiController extends Controller
                     return response()->json(['status' => false, 'message' => 'File Notula Wajib Diisi.']);
                 }
             }
-            
+
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
                 $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
@@ -321,18 +345,22 @@ class PenyelesaianApiController extends Controller
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);
             $sumPenyelesaian = RequestPenyelesaian::GetSumPenyelesaian($request, $id);
 
-            if(
+            if (
                 ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_pagu < $sumPenyelesaian->biaya) ||
                 ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_pagu < $sumPenyelesaian->biaya) ||
                 ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_pagu < $sumPenyelesaian->biaya)
-            ) { $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.'; }
-            
-            if(
+            ) {
+                $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.';
+            }
+
+            if (
                 ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
                 ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
                 ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
-            ) { $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.'; }
-            
+            ) {
+                $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
+            }
+
             if (!empty($err)) {
                 return response()->json($err, 400);
             }

@@ -230,44 +230,67 @@
                           </div>
                         </td>
                       </tr>
+
+
+                      <tr>
+                        <td colspan="2" style="padding: 2px;">
+                          <label>File Laporan Perusahaan</label>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="lap_bap_0-alert" class="form-group has-feedback">
+                            <label>Laporan BAP Pengawasan</label>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+                            <input type="hidden" class="form-control" name="lap_bap_file" id="lap_bap_file" value="">
+                            <input type="file" class="form-control file-access" name="lap_bap[0]" id="lap_bap" accept=".pdf">
+                            <span id="lap_bap_0-messages"></span>
+                            <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="lap_lkpm_0-alert" class="form-group has-feedback">
+                            <label>Laporan LKPM</label>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+                            <input type="hidden" class="form-control" name="lap_lkpm_file" id="lap_lkpm_file" value="">
+                            <input type="file" class="form-control file-access" name="lap_lkpm[0]" id="lap_lkpm" accept=".pdf">
+                            <span id="lap_lkpm_0-messages"></span>
+                            <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 2px;">
+                          <div id="lap_evaluasi_0-alert" class="form-group has-feedback">
+                            <label>Laporan Kepatuhan Pelaku Usaha</label>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+                            <input type="hidden" class="form-control" name="lap_evaluasi_file" id="lap_evaluasi_file" value="">
+                            <input type="file" class="form-control file-access" name="lap_evaluasi[0]" id="lap_evaluasi" accept=".pdf">
+                            <span id="lap_evaluasi_0-messages"></span>
+                            <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+                          </div>
+                        </td>
+                        <td style="padding: 2px;">
+                          <div id="lap_profile_0-alert" class="form-group has-feedback">
+                            <label>Laporan Profile</label>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+                            <input type="hidden" class="form-control" name="lap_profile_file" id="lap_profile_file" value="">
+                            <input type="file" class="form-control file-access" name="lap_profile[0]" id="lap_profile" accept=".pdf">
+                            <span id="lap_profile_0-messages"></span>
+                            <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+                          </div>
+                        </td>
+                      </tr>
                     </table>
                   </td>
                 </tr>
               </tbody>
             </table>
 
-            <div id="lap_bap-alert" class="form-group has-feedback">
-              <label>Laporan BAP Pengawasan</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
-              <input type="hidden" class="form-control" name="lap_bap_file" id="lap_bap_file" value="">
-              <input type="file" class="form-control file-access" name="lap_bap" id="lap_bap" accept=".pdf">
-              <span id="lap_bap-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
-            <div id="lap_bap-alert" class="form-group has-feedback">
-              <label>Laporan LKPM</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
-              <input type="hidden" class="form-control" name="lap_lkpm_file" id="lap_lkpm_file" value="">
-              <input type="file" class="form-control file-access" name="lap_lkpm" id="lap_lkpm" accept=".pdf">
-              <span id="lap_lkpm-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
-            <div id="lap_bap-alert" class="form-group has-feedback">
-              <label>Laporan Kepatuhan Pelaku Usaha</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
-              <input type="hidden" class="form-control" name="lap_evaluasi_file" id="lap_evaluasi_file" value="">
-              <input type="file" class="form-control file-access" name="lap_evaluasi" id="lap_evaluasi" accept=".pdf">
-              <span id="lap_evaluasi-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
-            <div id="lap_bap-alert" class="form-group has-feedback">
-              <label>Laporan Profile</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
-              <input type="hidden" class="form-control" name="lap_profile_file" id="lap_profile_file" value="">
-              <input type="file" class="form-control file-access" name="lap_profile" id="lap_profile" accept=".pdf">
-              <span id="lap_profile-messages"></span>
-              <small class="text-red file-access">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
-            </div>
+
+
+
+
           </div>
 
 
@@ -352,13 +375,13 @@
         <tr>
           <td style="padding: 2px;">
             <div id="nib_countArraynyaDigantiNanti-alert" class="has-feedback">
-              <input type="text" class="form-control" name="nib[countArraynyaDigantiNanti]" placeholder="Nomor Induk Berusaha" value="">
+              <input type="text" class="form-control" name="nib[countArraynyaDigantiNanti]" placeholder="Nomor Induk Berusaha" value="" >
               <span id="nib_countArraynyaDigantiNanti-messages"></span>
             </div>
           </td>
           <td style="padding: 2px;">
             <div id="tgl_nib_countArraynyaDigantiNanti-alert" class=" has-feedback">
-              <input type="date" class="form-control" name="tgl_nib[countArraynyaDigantiNanti]" placeholder="Tanggal NIB">
+              <input type="date" class="form-control" name="tgl_nib[countArraynyaDigantiNanti]" placeholder="Tanggal NIB" >
               <span id="tgl_nib_countArraynyaDigantiNanti-messages"></span>
             </div>
           </td>
@@ -366,7 +389,7 @@
         <tr>
           <td colspan="2" style="padding: 2px;">
             <div id="nama_perusahaan_countArraynyaDigantiNanti-alert" class=" has-feedback">
-              <input type="text" class="form-control" name="nama_perusahaan[countArraynyaDigantiNanti]" placeholder="Nama Perusahaan" value="">
+              <input type="text" class="form-control" name="nama_perusahaan[countArraynyaDigantiNanti]" placeholder="Nama Perusahaan" value="" >
               <span id="nama_perusahaan_countArraynyaDigantiNanti-messages"></span>
             </div>
           </td>
@@ -488,6 +511,57 @@
             </div>
           </td>
         </tr>
+
+        
+        <tr>
+          <td colspan="2" style="padding: 2px;">
+            <label>File Laporan Perusahaan</label>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="lap_bap_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
+              <label>Laporan BAP Pengawasan</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+              <input type="hidden" class="form-control" name="lap_bap_file[countArraynyaDigantiNanti]" id="lap_bap_file" value="">
+              <input type="file" class="form-control file-access" name="lap_bap[countArraynyaDigantiNanti]" id="lap_bap" accept=".pdf">
+              <span id="lap_bap_countArraynyaDigantiNanti-messages"></span>
+              <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="lap_lkpm_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
+              <label>Laporan LKPM</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+              <input type="hidden" class="form-control" name="lap_lkpm_file[countArraynyaDigantiNanti]" id="lap_lkpm_file" value="">
+              <input type="file" class="form-control file-access" name="lap_lkpm[countArraynyaDigantiNanti]" id="lap_lkpm" accept=".pdf">
+              <span id="lap_lkpm_countArraynyaDigantiNanti-messages"></span>
+              <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="lap_evaluasi_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
+              <label>Laporan Kepatuhan Pelaku Usaha</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+              <input type="hidden" class="form-control" name="lap_evaluasi_file[countArraynyaDigantiNanti]" id="lap_evaluasi_file" value="">
+              <input type="file" class="form-control file-access" name="lap_evaluasi[countArraynyaDigantiNanti]" id="lap_evaluasi" accept=".pdf">
+              <span id="lap_evaluasi_countArraynyaDigantiNanti-messages"></span>
+              <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="lap_profile_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
+              <label>Laporan Profile</label>
+              <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+              <input type="hidden" class="form-control" name="lap_profile_file[countArraynyaDigantiNanti]" id="lap_profile_file" value="">
+              <input type="file" class="form-control file-access" name="lap_profile[countArraynyaDigantiNanti]" id="lap_profile" accept=".pdf">
+              <span id="lap_profile_countArraynyaDigantiNanti-messages"></span>
+              <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+            </div>
+          </td>
+        </tr>
       </table>
     </td>
   </tr>
@@ -528,8 +602,14 @@
       $('.text-profile').hide();
       $('.file-access').show();
       $('#alasan_req').hide();
+      $(".is_inspeksi").hide();
       $('#FormSubmit input,#FormSubmit textarea').removeAttr('readonly');
       $('#FormSubmit select').removeAttr('disabled');
+      $(".hapus_row").remove();
+      $('#tablePerusahaan').find('input').each(function() {
+        var defaultVal = $(this).data('default');
+        $(this).val('');
+      });
       var form = [
         'id_pengawasan',
         'periode_id_mdl',
@@ -686,46 +766,7 @@
             $('#modal-lap_kegiatan').hide();
             $('#lap_kegiatan_file').val('');
           }
-          if (data.lap_lkpm) {
-            $('#modal-lap_lkpm').show();
-            $('#lap_lkpm_file').val(data.lap_lkpm);
-            $('#modal-lap_lkpm').click(function() {
-              tampilkanModal(data.lap_lkpm);
-            });
-          } else {
-            $('#modal-lap_lkpm').hide();
-            $('#lap_lkpm_file').val('');
-          }
-          if (data.lap_evaluasi) {
-            $('#modal-lap_evaluasi').show();
-            $('#lap_evaluasi_file').val(data.lap_evaluasi);
-            $('#modal-lap_evaluasi').click(function() {
-              tampilkanModal(data.lap_evaluasi);
-            });
-          } else {
-            $('#modal-lap_evaluasi').hide();
-            $('#lap_evaluasi_file').val('');
-          }
-          if (data.lap_bap) {
-            $('#modal-lap_bap').show();
-            $('#lap_bap_file').val(data.lap_bap);
-            $('#modal-lap_bap').click(function() {
-              tampilkanModal(data.lap_bap);
-            });
-          } else {
-            $('#modal-lap_bap').hide();
-            $('#lap_bap_file').val('');
-          }
-          if (data.lap_profile) {
-            $('#modal-lap_profile').show();
-            $('#lap_profile_file').val(data.lap_profile);
-            $('#modal-lap_profile').click(function() {
-              tampilkanModal(data.lap_profile);
-            });
-          } else {
-            $('#modal-lap_profile').hide();
-            $('#lap_profile_file').val('');
-          }
+
 
 
           getPeriode(data.periode_id);
@@ -815,7 +856,10 @@
       function timpa(perusahaan) {
         let row = `<tbody id="tbody-row">`;
         $.each(perusahaan, function(index, option) {
-          row += `<tr>`;
+          if (index == 0)
+            row += `<tr>`;
+          else
+            row += `<tr class="hapus_row">`;
           row += `<td>`;
           row += `<label>Data Perusahaan</label>`;
           if (index == 0)
@@ -826,14 +870,14 @@
           row += `<tr>`;
           row += `<td style="padding: 2px;">`;
           row += `<div id="nib_${index}-alert" class="has-feedback">`;
-          row += `<input type="text" class="form-control" name="nib[${index}]" placeholder="Nomor Induk Berusaha" value="` + option.nib + `">`;
+          row += `<input type="text" class="form-control" name="nib[${index}]" placeholder="Nomor Induk Berusaha" value="` + option.nib + `" >`;
           row += `<span id="nib_${index}-messages"></span>`;
           row += `</div>`;
           row += `</td>`;
 
           row += `<td style="padding: 2px;">`;
           row += `<div id="tgl_nib_${index}-alert" class=" has-feedback">`;
-          row += `<input type="date" class="form-control" name="tgl_nib[${index}]" placeholder="Tanggal NIB" value="` + option.tgl_nib + `">`;
+          row += `<input type="date" class="form-control" name="tgl_nib[${index}]" placeholder="Tanggal NIB" value="` + option.tgl_nib + `" >`;
           row += `<span id="tgl_nib_${index}-messages"></span>`;
           row += `</div>`;
           row += `</td>`;
@@ -841,7 +885,7 @@
           row += `<tr>`;
           row += `<td colspan="2" style="padding: 2px;">`;
           row += `<div id="nama_perusahaan_${index}-alert" class=" has-feedback">`;
-          row += `<input type="text" class="form-control" name="nama_perusahaan[${index}]" placeholder="Nama Perusahaan" value="` + option.nama_perusahaan + `">`;
+          row += `<input type="text" class="form-control" name="nama_perusahaan[${index}]" placeholder="Nama Perusahaan" value="` + option.nama_perusahaan + `" >`;
           row += `<span id="nama_perusahaan_${index}-messages"></span>`;
           row += `</div>`;
           row += `</td>`;
@@ -964,21 +1008,119 @@
           row += `</div>`;
           row += `</td>`;
           row += `</tr>`;
+
+          row += `<tr>
+          <td colspan="2" style="padding: 2px;">
+            <label>File Laporan Perusahaan</label>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="lap_bap_${index}-alert" class="form-group has-feedback">
+              <label>Laporan BAP Pengawasan</label></br>
+              <a href="#" class="text-bold text-profile" id="modal-lap_bap${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+              <input type="hidden" class="form-control" name="lap_bap_file[${index}]" id="lap_bap_file${index}" value="">
+              <input type="file" class="form-control file-access" name="lap_bap[${index}]" id="lap_bap" accept=".pdf">
+              <span id="lap_bap_${index}-messages"></span>
+              <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="lap_lkpm_${index}-alert" class="form-group has-feedback">
+              <label>Laporan LKPM</label></br>
+              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+              <input type="hidden" class="form-control" name="lap_lkpm_file[${index}]" id="lap_lkpm_file${index}" value="">
+              <input type="file" class="form-control file-access" name="lap_lkpm[${index}]" id="lap_lkpm" accept=".pdf">
+              <span id="lap_lkpm_${index}-messages"></span>
+              <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 2px;">
+            <div id="lap_evaluasi_${index}-alert" class="form-group has-feedback">
+              <label>Laporan Kepatuhan Pelaku Usaha</label></br>
+              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+              <input type="hidden" class="form-control" name="lap_evaluasi_file[${index}]" id="lap_evaluasi_file${index}" value="">
+              <input type="file" class="form-control file-access" name="lap_evaluasi[${index}]" id="lap_evaluasi" accept=".pdf">
+              <span id="lap_evaluasi_${index}-messages"></span>
+              <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+            </div>
+          </td>
+          <td style="padding: 2px;">
+            <div id="lap_profile_${index}-alert" class="form-group has-feedback">
+              <label>Laporan Profile</label></br>
+              <a href="#" class="text-bold text-profile" id="modal-lap_profile${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+              <input type="hidden" class="form-control" name="lap_profile_file[${index}]" id="lap_profile_file${index}" value="">
+              <input type="file" class="form-control file-access" name="lap_profile[${index}]" id="lap_profile" accept=".pdf">
+              <span id="lap_profile_${index}-messages"></span>
+              <small class="text-red file-access">*file harus pdf dan Maksimal 2 MB</small>
+            </div>
+          </td>
+        </tr>`;
           row += `</table>`;
           row += `</td>`;
           row += `</tr>`;
+
         });
 
         row += `</tbody>`;
         $('#tablePerusahaan').html(row);
 
+        $.each(perusahaan, function(index, option) {
+          if (option.lap_profile) {
+            $('#modal-lap_profile' + index).show();
+            $('#lap_profile_file' + index).val(option.lap_profile);
+            $('#modal-lap_profile' + index).click(function() {
+              tampilkanModal(option.lap_profile);
+            });
+          } else {
+            $('#modal-lap_profile' + index).hide();
+            $('#lap_profile_file' + index).val('');
+          }
+
+          if (option.lap_lkpm) {
+            $('#modal-lap_lkpm' + index).show();
+            $('#lap_lkpm_file' + index).val(option.lap_lkpm);
+            $('#modal-lap_lkpm' + index).click(function() {
+              tampilkanModal(option.lap_lkpm);
+            });
+          } else {
+            $('#modal-lap_lkpm' + index).hide();
+            $('#lap_lkpm_file' + index).val('');
+          }
+          if (option.lap_evaluasi) {
+            $('#modal-lap_evaluasi' + index).show();
+            $('#lap_evaluasi_file' + index).val(option.lap_evaluasi);
+            $('#modal-lap_evaluasi' + index).click(function() {
+              tampilkanModal(option.lap_evaluasi);
+            });
+          } else {
+            $('#modal-lap_evaluasi' + index).hide();
+            $('#lap_evaluasi_file' + index).val('');
+          }
+          if (option.lap_bap) {
+            $('#modal-lap_bap' + index).show();
+            $('#lap_bap_file' + index).val(option.lap_bap);
+            $('#modal-lap_bap' + index).click(function() {
+              tampilkanModal(option.lap_bap);
+            });
+          } else {
+            $('#modal-lap_bap' + index).hide();
+            $('#lap_bap_file' + index).val('');
+          }
+
+        });
+
+        countArray2 = $("#countArray").val();
+
         $("#btn-edit-row").on("click", function() {
           var row = $("#template-row-product").html();
-          row = row.replace(/countArraynyaDigantiNanti/g, countArray);
+          row = row.replace(/countArraynyaDigantiNanti/g, countArray2);
           $row = $(row);
           console.log($row);
 
-          countArray++;
+          countArray2++;
           $("#tbody-row").append($row);
         });
       }

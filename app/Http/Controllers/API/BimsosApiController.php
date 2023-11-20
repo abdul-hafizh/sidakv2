@@ -16,6 +16,7 @@ use App\Http\Request\RequestDaerah;
 use App\Http\Request\Validation\ValidationBimsos;
 use App\Imports\BimsosImport;
 use Maatwebsite\Excel\Facades\Excel;
+use DB;
 use Auth;
 use File;
 use Response;
@@ -436,5 +437,34 @@ class BimsosApiController extends Controller
         //     $messages['messages'] = true;
         // }
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
+    }
+
+    public function header(Request $request)
+    {
+        $searchColumn = $request->data;
+        $tahunSemester = GeneralHelpers::semesterToday();
+        if (!empty($request->data)) {
+            $filterjs = json_decode($searchColumn);
+            $data = DB::select(
+                'call header_modul(?,?,?)',
+                array('BIMSOS', $filterjs[0]->periode_id, Auth::User()->daerah_id)
+            );
+            $semester = substr($filterjs[0]->periode_id, 4);
+            $tahun = substr($filterjs[0]->periode_id, 0, 4);
+        } else {
+            $data = DB::select(
+                'call header_modul(?,?,?)',
+                array('BIMSOS', $tahunSemester, Auth::User()->daerah_id)
+            );
+            $semester = substr($tahunSemester, 4);
+            $tahun = substr($tahunSemester, 0, 4);
+        }
+        $output = array(
+            "data" => $data,
+            "semester" => $semester,
+            "tahun" => $tahun,
+            "user" => $_COOKIE['access']
+        );
+        return response()->json($output);
     }
 }

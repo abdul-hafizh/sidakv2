@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="{{ config('app.url').$template.'/css/menu.css'}}">
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
     <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
-   
+
 
 </head>
 
@@ -50,7 +50,7 @@
             </a>
 
             <nav role="navigation" class="navbar navbar-static-top">
-                <a  class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <a class="sidebar-toggle" data-toggle="push-menu" role="button">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -121,7 +121,7 @@
     <script src="{{ config('app.url').$template.'/js/sortable.js' }}"></script>
 
     <!--Start of Tawk.to Script-->
-<!-- <script type="text/javascript">
+    <!-- <script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
@@ -132,53 +132,51 @@ s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script> -->
-<!--End of Tawk.to Script-->
-    
+    <!--End of Tawk.to Script-->
+
 
     <script type="text/javascript">
-      $(function() {
-        var url = window.location.href; 
-          var currentDomain = window.location.hostname;
-          var segments = url.split('/');
-        const apps = localStorage.getItem('apps');
-        const template = JSON.parse(apps);
-        if(template){
-            $('.logo-mini').html('<img src="' + template.logo_sm + '" class="full">');
-            $('.logo-lg').html('<img src="' + template.logo_lg + '" class="full">');
+        $(function() {
+            var url = window.location.href;
+            var currentDomain = window.location.hostname;
+            var segments = url.split('/');
+            const apps = localStorage.getItem('apps');
+            const template = JSON.parse(apps);
+            if (template) {
+                $('.logo-mini').html('<img src="' + template.logo_sm + '" class="full">');
+                $('.logo-lg').html('<img src="' + template.logo_lg + '" class="full">');
 
 
-            $('[data-toggle="tooltip"]').tooltip();
+                $('[data-toggle="tooltip"]').tooltip();
 
 
 
-            
-          
-        if(segments[3] !='login')
-        {
-            getNotif();
 
 
-           $("#menu-notif" ).on( "click", "#updateNotif", (e) => {
-             
-              let id = e.currentTarget.dataset.param_id;
-            
-                UpdateData(id);
+                if (segments[3] != 'login') {
+                    getNotif();
+
+
+                    $("#menu-notif").on("click", "#updateNotif", (e) => {
+
+                        let id = e.currentTarget.dataset.param_id;
+
+                        UpdateData(id);
+                    });
+                }
+
+            }
+
+
+
+
+            $(".clear-input").click(() => {
+                DefaultNull();
             });
-        }
 
-        }
-
-
-       
-
-        $(".clear-input").click(()=> {   
-          DefaultNull();
         });
 
-      });   
-        
-        function DefaultNull()
-        {
+        function DefaultNull() {
             $("input").val(null);
             $("textarea").val(null);
             $('#daerah-alert-add').hide();
@@ -194,75 +192,74 @@ s0.parentNode.insertBefore(s1,s0);
             $('.selectpicker').selectpicker('refresh');
         }
 
-            function UpdateData(id) {
-                $.ajax({
-                    url: BASE_URL + `/api/notif-update/`+ id,
-                    method: 'PUT',
-                    success: function(response) {
-                        $('#total-notif').html('');
-                    },
-                    error: function(error) {
-                        //console.error('Error fetching data:', error);
-                    }
-                });
-            }
+        function UpdateData(id) {
+            $.ajax({
+                url: BASE_URL + `/api/notif-update/` + id,
+                method: 'PUT',
+                success: function(response) {
+                    $('#total-notif').html('');
+                },
+                error: function(error) {
+                    //console.error('Error fetching data:', error);
+                }
+            });
+        }
 
-            function getNotif() {
-                $.ajax({
-                    url: BASE_URL + "/api/notif", // Perbaikan tanda kutip
-                    method: "GET",
-                    success: function (response) {
-                        // Bersihkan konten notifikasi sebelum menambahkan elemen baru
-                        $("#total-notif").empty();
-                        $("#total-notif-all").empty();
-                        $("#menu-notif").empty();
+        function getNotif() {
+            $.ajax({
+                url: BASE_URL + "/api/notif", // Perbaikan tanda kutip
+                method: "GET",
+                success: function(response) {
+                    // Bersihkan konten notifikasi sebelum menambahkan elemen baru
+                    $("#total-notif").empty();
+                    $("#total-notif-all").empty();
+                    $("#menu-notif").empty();
 
-                        if (response.data.length > 0) {
-                            response.data.forEach(function (item, index) {
-                                var row = "";
-                                row += `<li id="updateNotif" data-param_id="`+ item.id +`">`;
-                                if(item.url !='')
-                                {
-                                  row += `<a href="`+ item.url +`" >`;  
-                                }else{
-                                  row += `<a >`;  
-                                }    
-                                
-                                row += `<div class="pull-left">`;
-                                row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
-                                row += `</div>`;
-                                row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
-                                row += `<p>${item.messages}</p>`;
-                                row += `</a>`;
-                                row += `</li>`;
+                    if (response.data.length > 0) {
+                        response.data.forEach(function(item, index) {
+                            var row = "";
+                            row += `<li id="updateNotif" data-param_id="` + item.id + `">`;
+                            if (item.url != '') {
+                                row += `<a href="` + item.url + `" >`;
+                            } else {
+                                row += `<a >`;
+                            }
 
-                                // Tambahkan elemen ke menu-notif
-                                $("#menu-notif").append(row);
-                            });
+                            row += `<div class="pull-left">`;
+                            row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
+                            row += `</div>`;
+                            row += `<h4>${item.name}<small><i class="fa fa-clock-o"></i> ${item.created_at}</small></h4>`;
+                            row += `<p>${item.messages}</p>`;
+                            row += `</a>`;
+                            row += `</li>`;
 
-                            // Tambahkan total-notif dan total-notif-all
-                            $("#total-notif").append(response.total_not_show);
-                            $("#total-notif-all").append("You have " + response.total_all + " messages");
-
-  
-
-                        } else {
-                            var row = `<li><a>Data Kosong</a></li>`;
+                            // Tambahkan elemen ke menu-notif
                             $("#menu-notif").append(row);
-                        }
+                        });
+
+                        // Tambahkan total-notif dan total-notif-all
+                        $("#total-notif").append(response.total_not_show);
+                        $("#total-notif-all").append("You have " + response.total_all + " messages");
 
 
 
-                    },
-                    error: function (error) {
-                       // console.error("Error fetching data:", error);
-                    },
-                });
-            }
+                    } else {
+                        var row = `<li><a>Data Kosong</a></li>`;
+                        $("#menu-notif").append(row);
+                    }
 
+
+
+                },
+                error: function(error) {
+                    // console.error("Error fetching data:", error);
+                },
+            });
+        }
     </script>
     @stack('scripts')
 
 </body>
 @include('template/sidakv2/layout.profile')
+
 </html>

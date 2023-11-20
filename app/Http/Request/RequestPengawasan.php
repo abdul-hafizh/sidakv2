@@ -216,7 +216,10 @@ class RequestPengawasan
     {
         $data_perusahaan = [];
         foreach ($request->nib as $key => $v) {
-            $data_perusahaan[] = [
+
+
+
+            $data_perusahaan[$key] = [
                 'id' => Str::uuid()->toString(),
                 'pengawasan_id' => $id,
                 'nama_perusahaan' => $request->nama_perusahaan[$key],
@@ -240,6 +243,42 @@ class RequestPengawasan
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
+
+            if ($request->hasFile('lap_evaluasi.' . $key)) {
+                $file_evaluasi = $request->file('lap_evaluasi')[$key];
+                $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
+                $file_evaluasi->move(public_path('laporan/pengawasan'), $lap_evaluasi);
+                $data_perusahaan[$key]['lap_evaluasi'] = 'laporan/pengawasan/' . $lap_evaluasi;
+            } else {
+                $data_perusahaan[$key]['lap_evaluasi'] = $request->lap_evaluasi_file[$key];
+            }
+            if ($request->hasFile('lap_lkpm.' . $key)) {
+                $file_lkpm = $request->file('lap_lkpm')[$key];
+                $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
+                $file_lkpm->move(public_path('laporan/pengawasan'), $lap_lkpm);
+
+                $data_perusahaan[$key]['lap_lkpm'] = 'laporan/pengawasan/' . $lap_lkpm;
+            } else {
+                $data_perusahaan[$key]['lap_lkpm'] = $request->lap_lkpm_file[$key];
+            }
+            if ($request->hasFile('lap_bap.' . $key)) {
+                $file_bap = $request->file('lap_bap')[$key];
+                $lap_bap = 'lap_bap_' . time() . '_' . $file_bap->getClientOriginalName();
+                $file_bap->move(public_path('laporan/pengawasan'), $lap_bap);
+
+                $data_perusahaan[$key]['lap_bap'] = 'laporan/pengawasan/' . $lap_bap;
+            } else {
+                $data_perusahaan[$key]['lap_bap'] = $request->lap_bap_file[$key];
+            }
+            if ($request->hasFile('lap_profile.' . $key)) {
+                $file_profile = $request->file('lap_profile')[$key];
+                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
+                $file_profile->move(public_path('laporan/pengawasan'), $lap_profile);
+
+                $data_perusahaan[$key]['lap_profile'] = 'laporan/pengawasan/' . $lap_profile;
+            } else {
+                $data_perusahaan[$key]['lap_profile'] = $request->lap_profile_file[$key];
+            }
         }
         return $data_perusahaan;
     }
