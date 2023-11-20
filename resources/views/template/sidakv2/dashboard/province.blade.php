@@ -293,30 +293,18 @@
   
 
         function getperiode(periode_id){
-               $('#selectPeriode').html('<select id="periode_id" name="periode_id"   class="selectpicker"></select>');
+               $('#selectPeriode').html('<select id="periode_id"  name="periode_id" title="Pilih Periode"   class="selectpicker"></select>');
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
                     url: BASE_URL +'/api/select-periode?type=GET&action=dashboard',
                     success: function(data) {
-                         var select =  $('#periode_id');
-                         select.empty();
-                         $.each(data.result, function(index, option) {
-                              select.append($('<option>', {
-                                   value: option.value,
-                                   text: option.text
-                              }));
-                         });
+                         getperiodeList(data);
 
                         
-                             select.val(periode_id);
-                           
-                          
-                         
-                        
-                        
-                             select.selectpicker('refresh');
-                             periode = data.result; 
+                         $('#periode_id').val(periode_id).selectpicker('refresh');
+                       
+                              
                             
                     },
                     error: function( error) {}
@@ -324,6 +312,19 @@
 
               
         }  
+
+        function getperiodeList(data){
+
+                var select =  $('#periode_id');
+                 select.empty();
+                 $.each(data.result, function(index, option) {
+                      select.append($('<option>', {
+                           value: option.value,
+                           text: option.text
+                      }));
+                 });
+                  select.selectpicker('refresh');         
+        }
 
 
         function  getsemester(semester_val)
