@@ -240,6 +240,20 @@
 .text-bold-600{
     font-weight: 600;
 }
+#countdown{
+    text-align: center;
+    padding: 0px 0px 9px;
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+}
+
+.padding-box
+{
+  padding: 14px 55px;
+}
+
+
   </style>
 </head>
 
@@ -262,7 +276,7 @@
                                         <div class="card-body auth-img">
                                             <div class="row">
                                               
-                                               
+                                               <div class="padding-box">
                                                     
                                                     <div class="pull-left full pd-top-40">
                                                       <div class="login-center-bkpm">  
@@ -292,7 +306,7 @@
                                                                     <p class="text-center color-grey  font-sm-0 text-bold-600">Version 2.0</p>
                                                     </div>
                                                     
-
+                                                </div>  
                                                  
                                                
                                             </div>
