@@ -108,7 +108,7 @@
     <script src="{{ config('app.url').$template.'/js/icheck.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/icheck.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script>
-    <script src="{{ config('app.url').$template.'/js/dynemicbody.js' }}"></script>
+   
     <script src="{{ config('app.url').$template.'/js/slimscroll.min.js' }}"></script>
     <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js"></script>
