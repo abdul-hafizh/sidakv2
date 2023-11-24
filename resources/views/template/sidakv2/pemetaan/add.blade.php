@@ -2259,11 +2259,16 @@
                          var select =  $('#periode_id');
                            select.empty();
                          $.each(data.result, function(index, option) {
-                              select.append($('<option>', {
-                                   value: option.value,
-                                   text: option.text
-                              }));
+
+                             if(option.value > '2023')
+                             {   
+                                   select.append($('<option>', {
+                                        value: option.value,
+                                        text: option.text
+                                   }));
+                             }  
                          });
+                        
 
                          
                          $('#periode_id').prop('disabled', data.selected);
