@@ -108,8 +108,14 @@ class RequestPeriode
 
 
                if($access =="province")
-               {
-                    $temp[$key]['pagu_promosi'] = $val->promosi_pengadaan_pagu;
+               { 
+
+                   if($action =="promosi" | $action =="pemetaan")
+                   {
+                     $temp[$key]['pagu_promosi'] = $val->promosi_pengadaan_pagu;
+                   }  
+
+                   
                }   
   
 
