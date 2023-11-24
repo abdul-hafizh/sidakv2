@@ -48,7 +48,7 @@ class PeriodeApiController extends Controller
 
             if ($request->action == 'perencanaan')
             {
-                 $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan','c.promosi_pengadaan_pagu'); 
+                 $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan'); 
                  
                  $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id');
                  $query->where('c.daerah_id', Auth::User()->daerah_id);
