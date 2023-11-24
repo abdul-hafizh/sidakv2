@@ -1469,7 +1469,7 @@
           $.ajax({
                type: 'GET',
                dataType: 'json',
-               url: BASE_URL +'/api/select-periode?type=GET&action=promosi',
+               url: BASE_URL +'/api/select-periode?type=GET&action=pemetaan',
                success: function(data) {
 
                    getperiodeList(data);
