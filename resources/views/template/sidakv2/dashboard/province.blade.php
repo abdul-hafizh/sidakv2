@@ -104,120 +104,286 @@
    
 </section>
 
-<div class="col-sm-12">
-     <h4>Pengawasan</h4>
-</div>
+<div class="col-sm-12"><h4>Pengawasan</h4></div>
 <div class="content">
     <div class="clearfix"></div>
     <div class="clearfix"></div> 
 
-   
+
     <div class="box box-solid box-primary">
-        <div class="box-body">
+        <div class="box-body padding-default">
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
+                <table class="table table-hover">
                     <thead class="bg-table">
-                        <tr >
-                        
+                        <tr>
+                          
+                            <th rowspan="2"  class="text-center  font-bold bg-table-radius-left"> <div class="split-table"></div>
+                              <span class="pd-top-12 ">Sub Menu</span></th>
+                            <th rowspan="2" colspan="2" class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12 ">Target Output</span>
+                            
+                            </th>
+                            <th rowspan="2"  class="text-center  text-center font-bold">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12">Pagu APBN</span>
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th colspan="3" class="text-center font-bold border-bottom-th">  
+                              <span class="pd-top-12">Semester I</span> 
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table-white "></div>
+                            </th>
+                            <th colspan="3" class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <span class="pd-top-12">Semester II</span>
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <div class="split-table-white"></div>
+                            </th>
+                          
+                           
+                           
+                            <th rowspan="2"  class="text-center font-bold ">
+                                <div class="split-table"></div>
+                              <span class="pd-top-12">Total Target</span>
+                            </th>
+                            <th rowspan="2" class="text-center font-bold bg-table-radius-right">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12">Total Pagu</span>
+                            </th>
                        
-                            <th>Sub Menu</th>
-                            <th>Target Output</th>
-                            <th>Pagu APBN</th>
-                            <th>Realisasi Target Sem I</th>
-                            <th>Realisasi Pagu Sem I</th>
-                            <th class="semesterParamTarget" style="display:none;">Realisasi Target Sem II</th>
-                            <th class="semesterParamPagu" style="display:none;">Realisasi Pagu Sem II</th>
-                            <th class="semesterParamTarget" style="display:none;">Realisasi Target Sem I + II</th>
-                            <th class="semesterParamPagu" style="display:none;">Realisasi Pagu Sem I + II</th>
+
+
+                            
                         </tr>
+                        <tr>
+                            <th  class="text-center font-bold">   
+                                <span class="pd-top-12">Realisasi Target</span>
+                            </th>
+                             <th   class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th  class="text-center font-bold">
+                               
+                               <span class="span-title">Realisasi Pagu</span>
+                            </th>
+
+                             <th  class="text-center font-bold semesterParamTarget" style="display:none;">   
+                                <span class="pd-top-12">Realisasi Target</span>
+                            </th>
+                             <th   class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th  class="text-center font-bold semesterParamTarget" style="display:none;">
+                               
+                               <span class="span-title">Realisasi Pagu</span>
+                            </th>
+
+                        </tr> 
+                        
                     </thead>
 
                      <tbody id="conpengawasan" >
                         
                     
                      </tbody>
-                    </table>
-                </div>
+                </table>
+                
             </div>
         </div>
+    </div>
 </div> 
-
-
-<div class="col-sm-12">
-     <h4>Bimsos</h4>
-</div>
+<div class="col-sm-12"><h4>Bimsos</h4></div>
 <div class="content">
     <div class="clearfix"></div>
     <div class="clearfix"></div> 
 
-   
+
     <div class="box box-solid box-primary">
-        <div class="box-body">
+        <div class="box-body padding-default">
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
+                <table class="table table-hover">
                     <thead class="bg-table">
-                        <tr >
-                        
+                        <tr>
+                          
+                            <th rowspan="2"  class="text-center  font-bold bg-table-radius-left"> <div class="split-table"></div>
+                              <span class="pd-top-12 ">Sub Menu</span></th>
+                            <th rowspan="2" colspan="2" class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12 ">Target Output</span>
+                            
+                            </th>
+                            <th rowspan="2"  class="text-center  text-center font-bold">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12">Pagu APBN</span>
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th colspan="3" class="text-center font-bold border-bottom-th">  
+                              <span class="pd-top-12">Semester I</span> 
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table-white "></div>
+                            </th>
+                            <th colspan="3" class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <span class="pd-top-12">Semester II</span>
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <div class="split-table-white"></div>
+                            </th>
+                          
+                           
+                           
+                            <th rowspan="2"  class="text-center font-bold ">
+                                <div class="split-table"></div>
+                              <span class="pd-top-12">Total Target</span>
+                            </th>
+                            <th rowspan="2" class="text-center font-bold bg-table-radius-right">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12">Total Pagu</span>
+                            </th>
                        
-                            <th>Sub Menu</th>
-                            <th>Target Output</th>
-                            <th>Pagu APBN</th>
-                            <th>Realisasi Target Sem I</th>
-                            <th>Realisasi Pagu Sem I</th>
-                            <th class="semesterParamTarget" style="display:none;">Realisasi Target Sem II</th>
-                            <th class="semesterParamPagu" style="display:none;">Realisasi Pagu Sem II</th>
-                            <th class="semesterParamTarget" style="display:none;">Realisasi Target Sem I + II</th>
-                            <th class="semesterParamPagu" style="display:none;">Realisasi Pagu Sem I + II</th>
+
+
+                            
                         </tr>
+                        <tr>
+                            <th  class="text-center font-bold">   
+                                <span class="pd-top-12">Realisasi Target</span>
+                            </th>
+                             <th   class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th  class="text-center font-bold">
+                               
+                               <span class="span-title">Realisasi Pagu</span>
+                            </th>
+
+                             <th  class="text-center font-bold semesterParamTarget" style="display:none;">   
+                                <span class="pd-top-12">Realisasi Target</span>
+                            </th>
+                             <th   class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th  class="text-center font-bold semesterParamTarget" style="display:none;">
+                               
+                               <span class="span-title">Realisasi Pagu</span>
+                            </th>
+
+                        </tr> 
+                        
                     </thead>
 
                      <tbody id="conbimsos" >
                         
                     
                      </tbody>
-                    </table>
-                </div>
+                </table>
+                
             </div>
         </div>
-</div> 
-
-<div class="col-sm-12">
-     <h4>Penyelesaian</h4>
-</div>
+    </div>
+</div>    
+  
+<div class="col-sm-12"><h4>Penyelesaian</h4></div>
 <div class="content">
     <div class="clearfix"></div>
     <div class="clearfix"></div> 
 
-   
+
     <div class="box box-solid box-primary">
-        <div class="box-body">
+        <div class="box-body padding-default">
             <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
+                <table class="table table-hover">
                     <thead class="bg-table">
-                        <tr >
-                        
+                        <tr>
+                          
+                            <th rowspan="2"  class="text-center  font-bold bg-table-radius-left"> <div class="split-table"></div>
+                              <span class="pd-top-12 ">Sub Menu</span></th>
+                            <th rowspan="2" colspan="2" class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12 ">Target Output</span>
+                            
+                            </th>
+                            <th rowspan="2"  class="text-center  text-center font-bold">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12">Pagu APBN</span>
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th colspan="3" class="text-center font-bold border-bottom-th">  
+                              <span class="pd-top-12">Semester I</span> 
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold">
+                              <div class="split-table-white "></div>
+                            </th>
+                            <th colspan="3" class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <span class="pd-top-12">Semester II</span>
+                            </th>
+                            <th rowspan="2"  class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <div class="split-table-white"></div>
+                            </th>
+                          
+                           
+                           
+                            <th rowspan="2"  class="text-center font-bold ">
+                                <div class="split-table"></div>
+                              <span class="pd-top-12">Total Target</span>
+                            </th>
+                            <th rowspan="2" class="text-center font-bold bg-table-radius-right">
+                              <div class="split-table-white"></div>
+                              <span class="pd-top-12">Total Pagu</span>
+                            </th>
                        
-                            <th>Sub Menu</th>
-                            <th>Target Output</th>
-                            <th>Pagu APBN</th>
-                            <th>Realisasi Target Sem I</th>
-                            <th>Realisasi Pagu Sem I</th>
-                            <th class="semesterParamTarget" style="display:none;">Realisasi Target Sem II</th>
-                            <th class="semesterParamPagu" style="display:none;">Realisasi Pagu Sem II</th>
-                            <th class="semesterParamTarget" style="display:none;">Realisasi Target Sem I + II</th>
-                            <th class="semesterParamPagu" style="display:none;">Realisasi Pagu Sem I + II</th>
+
+
+                            
                         </tr>
+                        <tr>
+                            <th  class="text-center font-bold">   
+                                <span class="pd-top-12">Realisasi Target</span>
+                            </th>
+                             <th   class="text-center font-bold">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th  class="text-center font-bold">
+                               
+                               <span class="span-title">Realisasi Pagu</span>
+                            </th>
+
+                             <th  class="text-center font-bold semesterParamTarget" style="display:none;">   
+                                <span class="pd-top-12">Realisasi Target</span>
+                            </th>
+                             <th   class="text-center font-bold semesterParamTarget" style="display:none;">
+                              <div class="split-table-white"></div>
+                            </th>
+                            <th  class="text-center font-bold semesterParamTarget" style="display:none;">
+                               
+                               <span class="span-title">Realisasi Pagu</span>
+                            </th>
+
+                        </tr> 
+                        
                     </thead>
 
                      <tbody id="conpenyelesaian" >
                         
                     
                      </tbody>
-                    </table>
-                </div>
+                </table>
+                
             </div>
         </div>
-</div>       
+    </div>
+</div>  
+
+
+      
 
 <script type="text/javascript">
     $(document).ready(function() { 
@@ -257,19 +423,19 @@
                 const content1 = $('#conpengawasan');
                 content1.empty();
                 let row1 = ``;
-                row1 +=`<tr><td colspan="9" align="center"> <b>Loading ...</b></td></tr>`;
+                row1 +=`<tr><td colspan="16" align="center"> <b>Loading ...</b></td></tr>`;
                 content1.append(row1);
 
                 const content2 = $('#conbimsos');
                 content2.empty();
                 let row2 = ``;
-                row2 +=`<tr><td colspan="9" align="center"> <b>Loading ...</b></td></tr>`;
+                row2 +=`<tr><td colspan="16" align="center"> <b>Loading ...</b></td></tr>`;
                 content2.append(row2);
 
                 const content3 = $('#conpenyelesaian');
                 content3.empty();
                 let row3 = ``;
-                row3 +=`<tr><td colspan="9" align="center"> <b>Loading ...</b></td></tr>`;
+                row3 +=`<tr><td colspan="16" align="center"> <b>Loading ...</b></td></tr>`;
                 content3.append(row3);
 
 
@@ -341,19 +507,19 @@
                 const content1 = $('#conpengawasan');
                 content1.empty();
                 let row1 = ``;
-                row1 +=`<tr><td colspan="9" align="center"> <b>Loading ...</b></td></tr>`;
+                row1 +=`<tr><td colspan="16" align="center"> <b>Loading ...</b></td></tr>`;
                 content1.append(row1);
 
                 const content2 = $('#conbimsos');
                 content2.empty();
                 let row2 = ``;
-                row2 +=`<tr><td colspan="9" align="center"> <b>Loading ...</b></td></tr>`;
+                row2 +=`<tr><td colspan="16" align="center"> <b>Loading ...</b></td></tr>`;
                 content2.append(row2);
 
                 const content3 = $('#conpenyelesaian');
                 content3.empty();
                 let row3 = ``;
-                row3 +=`<tr><td colspan="9" align="center"> <b>Loading ...</b></td></tr>`;
+                row3 +=`<tr><td colspan="16" align="center"> <b>Loading ...</b></td></tr>`;
                 content3.append(row3);
  
 
@@ -426,18 +592,25 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                 row +=`<td ><b>${item.sub_menu}</td></b>`;
-                 row +=`<td align="center">${item.target}</td>`;
-                 row +=`<td align="right"><b>${item.pagu}</b></td>`;
-                 row +=`<td align="center">${item.realisasi_target_sem_1}</td>`;
-                 row +=`<td  align="right"><b>${item.realisasi_apbn_sem_1}</b></td>`;
-                 if(semester =="02")
+                 row +=`<td width="220">${item.sub_menu}</td>`;
+                 row +=`<td colspan="2" align="center">${item.target}</td>`;
+                 row +=`<td colspan="2" align="right">${item.pagu}</td>`;
+                
+                 row +=`<td  align="center">${item.realisasi_target_sem_1}</td>`;
+                  row +=`<td></td>`;
+                 row +=`<td align="right">${item.realisasi_apbn_sem_1}</td>`; 
+                 row +=`<td></td>`;
+                  if(semester =="02")
                  {
-                     row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
-                     row +=`<td  align="right"><b>${item.realisasi_apbn_sem_2}</b></td>`;
-                     row +=`<td align="center">${item.realisasi_target}</td>`;
-                     row +=`<td align="right"><b>${item.realisasi_apbn}</b></td>`;
-                 }   
+                    row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
+                    row +=`<td></td>`;
+                    row +=`<td align="right">${item.realisasi_apbn_sem_2}</td>`;
+                    row +=`<td></td>`;
+                }
+                row +=`<td align="center">${item.realisasi_target}</td>`;
+                row +=`<td align="right">${item.realisasi_apbn}</td>`;  
+
+               
                
                 row +=`</tr>`;
                 content.append(row);
@@ -472,18 +645,25 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                 row +=`<td ><b>${item.sub_menu}</td></b>`;
-                 row +=`<td align="center">${item.target}</td>`;
-                 row +=`<td align="right"><b>${item.pagu}</b></td>`;
-                 row +=`<td align="center">${item.realisasi_target_sem_1}</td>`;
-                 row +=`<td  align="right"><b>${item.realisasi_apbn_sem_1}</b></td>`;
-                 if(semester =="02")
+               
+
+                 row +=`<td>${item.sub_menu}</td>`;
+                 row +=`<td colspan="2" align="center">${item.target}</td>`;
+                 row +=`<td colspan="2" align="right">${item.pagu}</td>`;
+                
+                 row +=`<td  align="center">${item.realisasi_target_sem_1}</td>`;
+                  row +=`<td></td>`;
+                 row +=`<td align="right">${item.realisasi_apbn_sem_1}</td>`; 
+                 row +=`<td></td>`;
+                  if(semester =="02")
                  {
-                     row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
-                     row +=`<td  align="right"><b>${item.realisasi_apbn_sem_2}</b></td>`;
-                     row +=`<td align="center">${item.realisasi_target}</td>`;
-                     row +=`<td align="right"><b>${item.realisasi_apbn}</b></td>`;
-                 }   
+                    row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
+                    row +=`<td></td>`;
+                    row +=`<td align="right">${item.realisasi_apbn_sem_2}</td>`;
+                    row +=`<td></td>`;
+                }
+                row +=`<td align="center">${item.realisasi_target}</td>`;
+                row +=`<td align="right">${item.realisasi_apbn}</td>`;  
                
                 row +=`</tr>`;
                 content.append(row);
@@ -515,18 +695,25 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                 row +=`<td ><b>${item.sub_menu}</td></b>`;
-                 row +=`<td align="center">${item.target}</td>`;
-                 row +=`<td align="right"><b>${item.pagu}</b></td>`;
-                 row +=`<td align="center">${item.realisasi_target_sem_1}</td>`;
-                 row +=`<td  align="right"><b>${item.realisasi_apbn_sem_1}</b></td>`;
-                 if(semester =="02")
+                 row +=`<td width="220">${item.sub_menu}</td>`;
+                 row +=`<td colspan="2" align="center">${item.target}</td>`;
+                 row +=`<td colspan="2" align="right">${item.pagu}</td>`;
+                
+                 row +=`<td  align="center">${item.realisasi_target_sem_1}</td>`;
+                  row +=`<td></td>`;
+                 row +=`<td align="right">${item.realisasi_apbn_sem_1}</td>`; 
+                 row +=`<td></td>`;
+                  if(semester =="02")
                  {
-                     row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
-                     row +=`<td  align="right"><b>${item.realisasi_apbn_sem_2}</b></td>`;
-                     row +=`<td align="center">${item.realisasi_target}</td>`;
-                     row +=`<td align="right"><b>${item.realisasi_apbn}</b></td>`;
-                 }   
+                    row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
+                    row +=`<td></td>`;
+                    row +=`<td align="right">${item.realisasi_apbn_sem_2}</td>`;
+                    row +=`<td></td>`;
+                }
+                row +=`<td align="center">${item.realisasi_target}</td>`;
+                row +=`<td align="right">${item.realisasi_apbn}</td>`;  
+
+               
                
                 row +=`</tr>`;
                 content.append(row);
