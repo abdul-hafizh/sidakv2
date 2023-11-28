@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+use App\Http\Controllers\API\DashboardApiController;
 use App\Http\Controllers\API\AuthApiController;
 use App\Http\Controllers\API\PeriodeApiController;
 use App\Http\Controllers\API\MenusApiController;
@@ -39,7 +39,7 @@ use App\Http\Controllers\API\PenyelesaianApiController;
 use App\Http\Controllers\API\ExtensionApiController;
 use App\Http\Controllers\API\PromosiApiController;
 use App\Http\Controllers\API\PemetaanApiController;
-
+use App\Http\Controllers\API\WilayahApiController;
 
 
 Route::middleware(['jwt.auth'])->group(function () {
@@ -128,6 +128,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('regency/search', [RegencyApiController::class, 'search']);
     Route::post('regency/selected', [RegencyApiController::class, 'deleteSelected']);
     Route::delete('regency/{id}', [RegencyApiController::class, 'delete']);
+    
     Route::get('dashboard', [DashboardApiController::class, 'index']);
 
     Route::get('role', [RolesApiController::class, 'index']);
@@ -256,7 +257,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('penyelesaian/approve_edit/{id}', [PenyelesaianApiController::class, 'approve_edit']);
     Route::delete('penyelesaian/{id}', [PenyelesaianApiController::class, 'delete']);
 
-
     Route::get('promosi', [PromosiApiController::class, 'index']);
     Route::post('promosi', [PromosiApiController::class, 'store']);
     Route::get('promosi/{id}', [PromosiApiController::class, 'show']);
@@ -266,7 +266,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('promosi/selected', [PromosiApiController::class, 'deleteSelected']);
     Route::post('promosi/search', [PromosiApiController::class, 'search']);
     Route::delete('promosi/{id}', [PromosiApiController::class, 'delete']);
-
 
 
     Route::get('pemetaan', [PemetaanApiController::class, 'index']);
@@ -279,8 +278,13 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('pemetaan/search', [PemetaanApiController::class, 'search']);
     Route::delete('pemetaan/{id}', [PemetaanApiController::class, 'delete']);
 
-
-
+    Route::get('wilayah', [WilayahApiController::class, 'index']);
+    Route::get('wilayah/edit/{id}', [WilayahApiController::class, 'edit']);
+    Route::post('wilayah', [WilayahApiController::class, 'store']);
+    Route::post('wilayah/search', [WilayahApiController::class, 'search']);
+    Route::put('wilayah/{id}', [WilayahApiController::class, 'update']);
+    Route::delete('wilayah/{id}', [WilayahApiController::class, 'delete']);
+    Route::post('wilayah/selected', [WilayahApiController::class, 'deleteSelected']);
 
     // Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     // Route::post('user/update', [UserApiController::class, 'updateProfile']);

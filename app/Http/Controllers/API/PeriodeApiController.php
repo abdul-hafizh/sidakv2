@@ -80,8 +80,16 @@ class PeriodeApiController extends Controller
                      );
 
                   }
-               
 
+            } else if ($request->action == 'dashboard') {
+              
+               $query->select('a.id', 'a.slug', 'a.year', 'c.pagu_apbn', 'c.pagu_promosi', 'c.target_pengawasan', 'c.target_bimbingan_teknis', 'c.target_penyelesaian_permasalahan','d.promosi_pengadaan_pagu','d.pengawas_analisa_target','d.pengawas_inspeksi_target','d.pengawas_evaluasi_target','d.bimtek_perizinan_target','d.bimtek_pengawasan_target','d.penyelesaian_identifikasi_target','d.penyelesaian_realisasi_target','d.penyelesaian_evaluasi_target'); 
+               $query->where('d.daerah_id', Auth::User()->daerah_id);
+               $query->join('pagu_target as c', 'a.year', '=', 'c.periode_id');
+               $query->join('perencanaan as d', 'c.periode_id', '=', 'd.periode_id');
+               $query->where('d.periode_id','<=','2024');
+
+              
              //promosi   
             } else if ($request->action == 'promosi') {
               
@@ -173,6 +181,11 @@ class PeriodeApiController extends Controller
                  $query->select('a.id', 'a.slug', 'a.year');
                  $query->where('a.year','<=','2023');
                  $query->groupBy('a.year');
+            }else{
+
+                 $query->select('a.id', 'a.slug', 'a.year');
+                 $query->groupBy('a.year');
+
             }  
         }
 

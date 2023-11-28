@@ -1086,7 +1086,9 @@ padding: 0px 12px 0px 0px!important;
     padding: 0px!important;
 }
 
-
+.pd-top-12 {
+    padding: 12px 0px!important;
+}
 .border-radius-10{
     border-radius: 10px!important;
 }
@@ -1130,6 +1132,31 @@ padding: 0px 12px 0px 0px!important;
     float: left;
     margin: 0px 6px 0px;
 } 
+
+.split-table-white{
+    background: #fff;
+    height: 44px;
+    border: 2px solid #fff;
+    border-radius: 3px;
+    float: left;
+    margin: 0px 6px 0px;
+} 
+
+.bg-table{
+    background: #0e298f!important;
+    color: #fff!important;
+   
+    
+}
+
+.bg-table-radius-left{
+       border-radius: 15px 0px 0px 15px;
+}
+
+.bg-table-radius-right{
+       border-radius: 0px 15px 15px 0px;
+}
+
 
 .span-title{
     float: left;
@@ -1262,7 +1289,7 @@ padding: 0px 12px 0px 0px!important;
 }
 
 .logo a .img-logo {
-    width: 50%;
+    width: 100%;
    
 }
 

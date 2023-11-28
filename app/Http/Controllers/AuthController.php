@@ -39,9 +39,9 @@ class AuthController extends Controller
         if($log)
         {
           return redirect($log->url);  
-      }else{
+        }else{
           return redirect('dashboard');  
-      }
+        }
         
 
     }else{
@@ -120,7 +120,7 @@ class AuthController extends Controller
 
                        $role = RequestMenuRoles::Roles($RoleUser->role->id);
                        $dataMenu = json_decode($role);
-                      $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
+                       $sidebar = RequestMenuRoles::MenuSidebar($dataMenu);
 
 
                        $token = compact('token');

@@ -339,11 +339,7 @@
 	                $('.img-'+ menu).attr('src',findtrue.icon_hover);
                   
                }
-
-                
-     
-               
-              
+ 
 		    }, function (e) {
 		    	let menu = e.currentTarget.dataset.param_id;
 		        var findlast = data.find(o => o.active === true); 

@@ -8,7 +8,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Tambah Role</h4>
+        <h4 class="modal-title">Tambah Wilayah</h4>
       </div>
       <form  id="FormSubmit" >
       <div class="modal-body">
@@ -78,7 +78,7 @@
 
           $.ajax({
             type:"POST",
-            url: BASE_URL+'/api/role',
+            url: BASE_URL+'/api/wilayah',
             data:form,
             cache: false,
             dataType: "json",
@@ -92,7 +92,7 @@
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // User clicked "Yes, proceed!" button
-                            window.location.replace('/role');
+                            window.location.replace('/wilayah');
                         }
                     });
 

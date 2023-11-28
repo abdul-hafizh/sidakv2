@@ -83,9 +83,9 @@
             
                                  
             <div  id="ShowAdd" style="display:none;" class="pull-left padding-9-0">
-                <button type="button" id="add" class="btn btn-primary border-radius-10">
+                <a href="{{ url('pemetaan/add') }}" class="btn btn-primary border-radius-10">
                     Tambah Data
-                </button> 
+                </a> 
             </div>
 		</div>
 		
@@ -193,9 +193,9 @@
 
 
 
-    $("#add").click( () => {
-         window.location.replace('/pemetaan/add/'); 
-    });
+    // $("#add").click( () => {
+    //      window.location.replace('/pemetaan/add/'); 
+    // });
 
        // Function to fetch data from the API
     function fetchData(page,periode_id) {
@@ -1464,43 +1464,45 @@
 
     }
 
-      function getperiode(periode_id){
+    function getperiode(periode_id){
+         $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');
+          $.ajax({
+               type: 'GET',
+               dataType: 'json',
+               url: BASE_URL +'/api/select-periode?type=GET&action=pemetaan',
+               success: function(data) {
 
-              $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>');
-              
-               $.ajax({
-                    type: 'GET',
-                    dataType: 'json',
-                    url: BASE_URL +'/api/select-periode?type=GET&action=pemetaan',
-                    success: function(data) {
-                         var select =  $('#periode_id');
-                          select.empty();
-                         $.each(data.result, function(index, option) {
-                              select.append($('<option>', {
-                                   value: option.value,
-                                   text: option.text
-                              }));
-                         });
+                   getperiodeList(data);
+                   if(periode_id > '2023')
+                   {
+                      $('#periode_id').prop('disabled', false).val(periode_id).selectpicker('refresh');
+                   }else{
+                      $('#periode_id').prop('disabled', true).val(periode_id).selectpicker('refresh');
+                   } 
+                   
+                   
+                   
+               },
+               error: function( error) {}
+          });
 
-                         if(periode_id ==0)
-                         {
-                         	 select.prop('disabled', true);
-                         	
-                         }else{
-                         	select.val(periode_id);
-                         	select.prop('disabled', false);
-                         } 	
-                         
-                        
-                        
-                         select.selectpicker('refresh');
-                         periode = data.result; 
-                    },
-                    error: function( error) {}
-               });
+         
+      }
 
-              
-           }
+
+      function getperiodeList(data){
+
+                var select =  $('#periode_id');
+                 select.empty();
+                 $.each(data.result, function(index, option) {
+                      select.append($('<option>', {
+                           value: option.value,
+                           text: option.text
+                      }));
+                 });
+                  select.selectpicker('refresh'); 
+                  periode = data.result;          
+        }
  });
 </script>
 @stop

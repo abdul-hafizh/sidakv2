@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestSystemLog;
-
+use App\Http\Request\RequestAuth;
 
 class DashboardController extends Controller
 {
@@ -26,13 +26,24 @@ class DashboardController extends Controller
             'url'=>'dashboard'
         );
         RequestSystemLog::CreateLog($log);
+
+        $access = RequestAuth::Access();
+        if($access =='pusat' || $access =='admin')
+        {
+             $view = 'template/' . $this->template . '.dashboard.pusat'; 
+        }else{
+             $view = 'template/' . $this->template . '.dashboard.province';
+        }    
+
+        return view($view)
+            ->with(
+                [
+                    'title' =>  $title,
+                    'template' => 'template/' . $this->template
+                ]
+            );
       
-        return view('template/' . $this->template . '.dashboard.index')
-        ->with(
-            [
-              'title' => $title,
-              'template'=>'template/'.$this->template
-            ]);
+        
     }
 
     

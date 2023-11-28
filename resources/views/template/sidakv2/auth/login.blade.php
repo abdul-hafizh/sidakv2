@@ -1,6 +1,267 @@
-@extends('template/sidakv2/layout.app')
-@section('content')
-   <div class="wrapper">
+<!DOCTYPE html>
+<!-- saved from url=(0030)https://escm.wikagedung.co.id/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="csrf-token" content="{{ Session::token() }}">
+    <title> {{ config('app.name') }} | {{ $title  }}</title>
+    <script type="text/javascript">
+        const BASE_URL = window.location.origin;
+    </script>
+    <link rel="icon" type="image/x-icon" href="{{ config('app.url').$template.'/img/faveicon.png' }}">
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900%7CMontserrat:300,400,500,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/bootstrap.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/font-awesome.min.css' }}">
+
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/ionicons.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/AdminLTE.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/_all-skins.min.css' }}">
+    <link rel="stylesheet" href="{{ config('app.url').$template.'/css/_all.css' }}">
+
+  <link href="{{ config('app.url').$template.'/css/animate.css' }}" rel="stylesheet">
+  <link href="{{ config('app.url').$template.'/css/login.css' }}" rel="stylesheet">
+   <link rel="stylesheet" type="text/css" href="{{ config('app.url').$template.'/css/iproc_scm.css' }} ">
+   <script src="{{ config('app.url').$template.'/js/jquery.min.js' }}"></script>
+ 
+  <style type="text/css">
+ 
+
+    .btn:hover {
+            box-shadow: 0 14px 18px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+            /*color:white;*/
+            /*background-color:#31708f;*/
+            }
+      .loginLogin {
+            position: absolute;
+            right: 0!important; 
+            min-height: 100%; 
+            border-left: 0px;
+            padding: 0px;
+           
+      }
+
+.border-radius-20{
+    border-radius: 20px!important;
+}
+.wrapper {
+   
+    top: 0;
+    height: 100%;
+    overflow: hidden;
+    margin:inherit!important;
+    min-height: calc(100vh - 3.98rem);
+}
+
+.full{
+    width: 100%;
+}
+
+.radius-password-left{
+    border-radius: 10px 0px 0px 10px;
+}
+.input-group .input-group-addon {
+    border-radius: 0px 10px 10px 0px!important;
+    border-color: #d2d6de;
+    background-color: #f2f2f2!important;
+}
+.wrapper .main-panel {
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper .main-panel .main-content {
+    padding: 0 !important;
+    margin: 0;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+.wrapper .content-overlay {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: calc(100% + 54px);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+    transition: all 0.7s;
+    z-index: -1;
+    visibility: visible;
+}
+.wrapper .main-panel .main-content .content-wrapper {
+    padding: 0;
+    margin-left: inherit!important;
+    z-index:inherit!important;
+    background-color: inherit!important;
+}
+
+.auth-height {
+    overflow: auto;
+}
+
+.full-height-vh {
+    height: 100vh !important;
+    height: calc(var(--vh, 1vh) * 100) !important;
+}
+.m-0 {
+    margin: 0 !important;
+}
+.align-items-center {
+    align-items: center !important;
+}
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+.justify-content-center {
+    justify-content: center !important;
+}
+
+.width-732{
+    width: 732px!important;
+}
+
+.width-365{
+    width: 365px!important;
+}
+
+.card {
+    
+    box-shadow: -8px 8px 14px 0 rgba(25, 42, 70, 0.11);
+}
+.overflow-hidden {
+    overflow: hidden !important;
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+   
+    background-clip: border-box;
+    border: 0 solid rgba(0, 0, 0, 0.125);
+    border-radius:0px;
+}
+.auth-page .auth-img {
+    padding: 0;
+}
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+   
+}
+
+
+.auth-page .auth-img .auth-img-bg {
+    background-color: #f5f5f5;
+}
+.p-3 {
+    padding: 1.5rem !important;
+}
+.img-fluid {
+    width: 100%;
+    height: 100%;
+}
+
+.pl-4, .px-4 {
+    padding-left: 2.25rem !important;
+}
+.pr-4, .px-4 {
+    padding-right: 2.25rem !important;
+}
+.pb-3, .py-3 {
+    padding-bottom: 1.5rem !important;
+}
+.pt-3, .py-3 {
+    padding-top: 1.5rem !important;
+}
+
+
+.mb-2, .my-2 {
+    margin-bottom: 0.75rem !important;
+}
+
+.mb-3, .my-3 {
+    margin-bottom: 1.5rem !important;
+}
+
+
+.login-center-bkpm{
+    margin: 0px auto;
+    width: 25%;
+}
+.login-center-sidak {
+    margin: 0px auto;
+    width: 15%;
+}
+.pd-top-40 {
+    padding: 35px 0px 0px;
+}
+.pd-bottom-10 {
+    padding: 0px 0px 10px;
+}
+.pd-top-bottom-20 {
+    padding: 20px 0px;
+}
+
+.form-group{
+    margin: 0px 0px 10px!important;
+    padding: 0px 30px;
+}
+.mgn-top-bottom-10{
+  margin: 10px 0px!important;
+}
+
+.pd-copyright{
+    padding: 125px 0px 0px;
+}
+.color-grey-light{
+    color: #616060;
+}
+.color-white{
+    color: #000;
+}
+.font-sm-0 {
+    font-size: 0.9rem ;
+}
+.font-sm-1 {
+    font-size: 1rem ;
+}
+.text-bold-600{
+    font-weight: 600;
+}
+#countdown{
+    text-align: center;
+    padding: 0px 0px 9px;
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+}
+
+.padding-box
+{
+  padding: 14px 55px;
+}
+
+
+  </style>
+</head>
+
+<body class="gray-bg login-bg">
+
+  <div class="animated slideInRight ibox-content wrapper loginLogin loginColumns-d">
+
+       
         <div class="main-panel">
             <!-- BEGIN : Main Content-->
             <div class="main-content">
@@ -8,16 +269,14 @@
                 <div class="content-wrapper">
                     <!--Login Page Starts-->
                     <section id="login" class="auth-height">
-                        <div class="row full-height-vh m-0">
-                            <div class="col-sm-12 d-flex align-items-center justify-content-center">
+                        <div class="row  m-0">
+                            <div class="d-flex align-items-center justify-content-center">
                                 <div class="card overflow-hidden">
                                     <div class="card-content">
                                         <div class="card-body auth-img">
-                                            <div class="row m-0">
-                                                <div class="col-lg-8 d-none d-lg-flex auth-img-bg width-732 pd-none">
-                                                    <img src="/template/sidakv2/img/gedung_bkpm.png" alt="" class="img-fluid"  >
-                                                </div>
-                                                <div class="col-lg-4 col-12 px-4 py-3 width-365">
+                                            <div class="row">
+                                              
+                                               <div class="padding-box">
                                                     
                                                     <div class="pull-left full pd-top-40">
                                                       <div class="login-center-bkpm">  
@@ -32,7 +291,7 @@
                                                     </div>
 
                                                     <div class="pull-left full pd-bottom-10">
-                                                       <h3 class="text-capitalize text-center text-bold">Selamat Datang</h3>
+                                                       <h3 class="text-capitalize color-white text-center text-bold">Selamat Datang</h3>
                                                     </div> 
 
                                                     <div  id="confirmation">
@@ -42,14 +301,14 @@
                                                      </div>
 
                                                     <div class="pull-left full pd-copyright">
-                                                                    <p class="text-center  color-grey-light  font-sm-1 text-bold-600">Copyright by BKPM</p>
+                                                                    <p class="text-center  color-white  font-sm-1 text-bold-600">Copyright by BKPM</p>
 
                                                                     <p class="text-center color-grey  font-sm-0 text-bold-600">Version 2.0</p>
                                                     </div>
                                                     
-
+                                                </div>  
                                                  
-                                                </div>
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -62,12 +321,39 @@
             </div>
             <!-- END : End Main Content-->
         </div>
-    </div>
-
-
    
 
+  </div>
 
+
+</body>
+    <script src="{{ config('app.url').$template.'/js/bootstrap.min.js' }}"></script>
+<script>
+  $(function () {
+  
+
+    function sesuaikan(){
+      var width = parseInt($(window).width());
+      console.log(width);
+      if(width > 480){
+        $( ".slideInRight" ).removeClass("loginColumns");
+        $(".slideInRight").addClass("loginColumns-d");
+        $('#crPhone').hide();
+        $('#crPC').show();
+      } else {
+        $( ".slideInRight" ).removeClass("loginColumns-d");
+        $(".slideInRight").addClass("loginColumns");
+        $('#crPhone').show();
+        $('#crPC').hide();
+      }
+    }
+    sesuaikan();
+    $(window).on('resize', function(){
+
+      sesuaikan();
+    });
+  });
+</script>
 <script type="text/javascript">
 $(function(){
 
@@ -79,9 +365,9 @@ $(function(){
      var row = '';
      row +='<form id="ActionLogin">';
         row +='<div  id="username-alert" class="pull-left full form-group has-feedback">';    
-            row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Nama Pengguna </label>'; 
+            row +='<label class="text-capitalize color-white font-label-login font-12">Nama Pengguna </label>'; 
 
-            row +='<input value="admin"  name="username" type="text" class="form-control  border-radius-10 font-12"  placeholder="Username">'; 
+            row +='<input value=""  name="username" type="text" class="form-control  border-radius-10 font-12"  placeholder="Username">'; 
              
             row +='<span id="username-messages"></span>'; 
         row +='</div>'; 
@@ -92,16 +378,16 @@ $(function(){
 
 
         row +='<div id="password-alert" class="pull-left full form-group has-feedback">';
-            row +='<label  id="password-alert"  class="text-capitalize color-dark-blue font-label-login font-12">Kata Sandi </label>'; 
+            row +='<label  id="password-alert"  class="text-capitalize color-white font-label-login font-12">Kata Sandi </label>'; 
             row +='<div class="input-group">';
-            row +='<input name="password" type="password"  id="password" value="D4lak2021" class="form-control radius-password-left font-12" placeholder="Kata Sandi">';
+            row +='<input name="password" type="password"  id="password" value="" class="form-control radius-password-left font-12" placeholder="Kata Sandi">';
             row +='<span class="input-group-addon"><i id="eye" class="fa fa-eye-slash pointer"></i></span>';
             row +='</div>';
              row +='<span id="password-messages"></span>';
         row +='</div>';
 
         row +='<div class="pull-left full form-group">';
-            row +='<a id="Forgot" class="pointer pull-right font-10-link">Lupa Kata Sandi?</a>';
+            row +='<a id="Forgot" class="color-white pointer pull-right font-10-link">Lupa Kata Sandi?</a>';
         row +='</div>'; 
 
      row +='<div id="loginLoad" class="pull-left full form-group mgn-top-bottom-10">'; 
@@ -199,7 +485,7 @@ $(function(){
        
            row +='<div   class="pull-left full form-group has-feedback">';                                                
                 row +='<div  id="token-alert" class="pull-left full  has-feedback">  '; 
-                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">PIN Authenticator</label>';
+                    row +='<label class="text-capitalize color-white font-label-login font-12">PIN Authenticator</label>';
                       row +=`<input id="token-forgot" type="text" maxlength="4" class="form-control form-control mb-3 border-radius-10 font-12" name="token" placeholder="PIN Authenticator" oninput="this.value = this.value.replace(/[^0-9.]/g, '')"  value="">`;
                    
                      row +='<span id="token-messages"></span>';
@@ -268,13 +554,13 @@ $(function(){
           
                                                           
                 row +='<div id="password-alert" class="pull-left full form-group has-feedback">';    
-                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Password </label>';
+                    row +='<label class="text-capitalize color-white font-label-login font-12">Password </label>';
                     row +='<input id="password" name="password" type="password" class="form-control mb-3 border-radius-10 font-12" placeholder="Password">';
                     row +='<span id="password-messages"></span>';
                 row +='</div>';
 
                 row +='<div id="password-confirmation-alert" class="pull-left full form-group has-feedback">';    
-                    row +='<label class="text-capitalize color-dark-blue font-label-login font-12">Konfirmasi Password </label>';
+                    row +='<label class="text-capitalize color-white font-label-login font-12">Konfirmasi Password </label>';
                     row +='<input id="password-confirmation" name="password-confirmation" type="password" class="form-control mb-3 border-radius-10 font-12" placeholder="Konfirmasi Password">';
                     row +='<span id="password-confirmation-messages"></span>';
                 row +='</div>';
@@ -588,190 +874,7 @@ $(function(){
 
 
 </script>
-<style>
-.wrapper {
-    position: relative;
-    top: 0;
-    height: 100%;
-    overflow: hidden;
-    margin:inherit!important;
-    min-height: calc(100vh - 3.98rem);
-}
-
-.radius-password-left{
-    border-radius: 10px 0px 0px 10px;
-}
-.input-group .input-group-addon {
-    border-radius: 0px 10px 10px 0px!important;
-    border-color: #d2d6de;
-    background-color: #f2f2f2!important;
-}
-.wrapper .main-panel {
-    margin: 0;
-    padding: 0;
-}
-
-.wrapper .main-panel .main-content {
-    padding: 0 !important;
-    margin: 0;
-}
-
-.wrapper .content-overlay {
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: calc(100% + 54px);
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    cursor: pointer;
-    transition: all 0.7s;
-    z-index: -1;
-    visibility: visible;
-}
-.wrapper .main-panel .main-content .content-wrapper {
-    padding: 0;
-    margin-left: inherit!important;
-    z-index:inherit!important;
-    background-color: inherit!important;
-}
-
-.auth-height {
-    overflow: auto;
-}
-
-.full-height-vh {
-    height: 100vh !important;
-    height: calc(var(--vh, 1vh) * 100) !important;
-}
-.m-0 {
-    margin: 0 !important;
-}
-.align-items-center {
-    align-items: center !important;
-}
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px;
-}
-.justify-content-center {
-    justify-content: center !important;
-}
-
-.width-732{
-    width: 732px!important;
-}
-
-.width-365{
-    width: 365px!important;
-}
-
-.card {
-    margin: 15px 0;
-    box-shadow: -8px 8px 14px 0 rgba(25, 42, 70, 0.11);
-}
-.overflow-hidden {
-    overflow: hidden !important;
-}
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid rgba(0, 0, 0, 0.125);
-    border-radius:0px;
-}
-.auth-page .auth-img {
-    padding: 0;
-}
-.card-body {
-    flex: 1 1 auto;
-    min-height: 1px;
-   
-}
 
 
-.auth-page .auth-img .auth-img-bg {
-    background-color: #f5f5f5;
-}
-.p-3 {
-    padding: 1.5rem !important;
-}
-.img-fluid {
-    width: 100%;
-    height: 100%;
-}
 
-.pl-4, .px-4 {
-    padding-left: 2.25rem !important;
-}
-.pr-4, .px-4 {
-    padding-right: 2.25rem !important;
-}
-.pb-3, .py-3 {
-    padding-bottom: 1.5rem !important;
-}
-.pt-3, .py-3 {
-    padding-top: 1.5rem !important;
-}
-
-
-.mb-2, .my-2 {
-    margin-bottom: 0.75rem !important;
-}
-
-.mb-3, .my-3 {
-    margin-bottom: 1.5rem !important;
-}
-
-
-.login-center-bkpm{
-    margin: 0px auto;
-    width: 40%;
-}
-.login-center-sidak {
-    margin: 0px auto;
-    width: 15%;
-}
-.pd-top-40 {
-    padding: 35px 0px 0px;
-}
-.pd-bottom-10 {
-    padding: 0px 0px 10px;
-}
-.pd-top-bottom-20 {
-    padding: 20px 0px;
-}
-
-.form-group{
-    margin: 0px!important;
-    padding: 0px 30px;
-}
-.mgn-top-bottom-10{
-  margin: 10px 0px!important;
-}
-
-.pd-copyright{
-    padding: 125px 0px 0px;
-}
-.color-grey-light{
-    color: #616060;
-}
-.font-sm-0 {
-    font-size: 0.9rem ;
-}
-.font-sm-1 {
-    font-size: 1rem ;
-}
-.text-bold-600{
-    font-weight: 600;
-}
-</style>
-@stop
+</html>
