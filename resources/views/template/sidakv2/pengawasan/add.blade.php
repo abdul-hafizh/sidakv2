@@ -569,7 +569,7 @@
 <script type="text/javascript">
   $(document).ready(function() {
 
-    $(".is_inspeksi").hide();
+    //$(".is_inspeksi").hide();
 
     $('#sub_menu_slug').change(function() {
       var value = $(this).val();
@@ -693,6 +693,72 @@
         },
         error: (respons) => {
 
+          errors = respons.responseJSON;
+          for (let i = 0; i < form.length; i++) {
+            const field = form[i];
+            if (errors.messages[field]) {
+              $('#' + field + '-alert').addClass('has-error');
+              $('#' + field + '-messages').addClass('help-block').html('<strong>' + errors.messages[field] + '</strong>');
+            } else {
+              $('#' + field + '-alert').removeClass('has-error');
+              $('#' + field + '-messages').removeClass('help-block').html('');
+            }
+          }
+          Swal.fire({
+            title: 'Periksa kembali data anda.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          }).then((result) => {});
+        }
+      });
+    });
+
+    $('#kirim').on('click', function() {
+      var formData = new FormData($('#FormSubmit')[0]);
+      var form = [
+        'id_pengawasan',
+        'periode_id_mdl',
+        'sub_menu_slug',
+        'nama_kegiatan',
+        'hasil_analisa',
+        'tanggal_kegiatan',
+        'biaya',
+        'lokasi',
+        'lap_kegiatan',
+        'lap_pendamping',
+        'lap_notula',
+        'lap_survey',
+        'lap_narasumber',
+        'lap_materi',
+        'lap_document'
+      ];
+      formData.append("status", 14);
+      $.ajax({
+        type: "POST",
+        url: BASE_URL + '/api/pengawasan',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: (respons) => {
+          Swal.fire({
+            title: 'Sukses!',
+            text: respons.message,
+            icon: 'success',
+            confirmButtonText: 'OK'
+
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // User clicked "Yes, proceed!" button
+              $('#modal-add').hide();
+              $('body').removeClass('modal-open');
+              $('.modal-backdrop').remove();
+              $('#datatable').DataTable().ajax.reload();
+            }
+          });
+
+          //
+        },
+        error: (respons) => {
           errors = respons.responseJSON;
           for (let i = 0; i < form.length; i++) {
             const field = form[i];
@@ -854,6 +920,7 @@
       })
 
       function timpa(perusahaan) {
+
         let row = `<tbody id="tbody-row">`;
         $.each(perusahaan, function(index, option) {
           if (index == 0)
@@ -1065,64 +1132,66 @@
         });
 
         row += `</tbody>`;
-        $('#tablePerusahaan').html(row);
+        if (perusahaan != '') {
+          $('#tablePerusahaan').html(row);
 
-        $.each(perusahaan, function(index, option) {
-          if (option.lap_profile) {
-            $('#modal-lap_profile' + index).show();
-            $('#lap_profile_file' + index).val(option.lap_profile);
-            $('#modal-lap_profile' + index).click(function() {
-              tampilkanModal(option.lap_profile);
-            });
-          } else {
-            $('#modal-lap_profile' + index).hide();
-            $('#lap_profile_file' + index).val('');
-          }
+          $.each(perusahaan, function(index, option) {
+            if (option.lap_profile) {
+              $('#modal-lap_profile' + index).show();
+              $('#lap_profile_file' + index).val(option.lap_profile);
+              $('#modal-lap_profile' + index).click(function() {
+                tampilkanModal(option.lap_profile);
+              });
+            } else {
+              $('#modal-lap_profile' + index).hide();
+              $('#lap_profile_file' + index).val('');
+            }
 
-          if (option.lap_lkpm) {
-            $('#modal-lap_lkpm' + index).show();
-            $('#lap_lkpm_file' + index).val(option.lap_lkpm);
-            $('#modal-lap_lkpm' + index).click(function() {
-              tampilkanModal(option.lap_lkpm);
-            });
-          } else {
-            $('#modal-lap_lkpm' + index).hide();
-            $('#lap_lkpm_file' + index).val('');
-          }
-          if (option.lap_evaluasi) {
-            $('#modal-lap_evaluasi' + index).show();
-            $('#lap_evaluasi_file' + index).val(option.lap_evaluasi);
-            $('#modal-lap_evaluasi' + index).click(function() {
-              tampilkanModal(option.lap_evaluasi);
-            });
-          } else {
-            $('#modal-lap_evaluasi' + index).hide();
-            $('#lap_evaluasi_file' + index).val('');
-          }
-          if (option.lap_bap) {
-            $('#modal-lap_bap' + index).show();
-            $('#lap_bap_file' + index).val(option.lap_bap);
-            $('#modal-lap_bap' + index).click(function() {
-              tampilkanModal(option.lap_bap);
-            });
-          } else {
-            $('#modal-lap_bap' + index).hide();
-            $('#lap_bap_file' + index).val('');
-          }
+            if (option.lap_lkpm) {
+              $('#modal-lap_lkpm' + index).show();
+              $('#lap_lkpm_file' + index).val(option.lap_lkpm);
+              $('#modal-lap_lkpm' + index).click(function() {
+                tampilkanModal(option.lap_lkpm);
+              });
+            } else {
+              $('#modal-lap_lkpm' + index).hide();
+              $('#lap_lkpm_file' + index).val('');
+            }
+            if (option.lap_evaluasi) {
+              $('#modal-lap_evaluasi' + index).show();
+              $('#lap_evaluasi_file' + index).val(option.lap_evaluasi);
+              $('#modal-lap_evaluasi' + index).click(function() {
+                tampilkanModal(option.lap_evaluasi);
+              });
+            } else {
+              $('#modal-lap_evaluasi' + index).hide();
+              $('#lap_evaluasi_file' + index).val('');
+            }
+            if (option.lap_bap) {
+              $('#modal-lap_bap' + index).show();
+              $('#lap_bap_file' + index).val(option.lap_bap);
+              $('#modal-lap_bap' + index).click(function() {
+                tampilkanModal(option.lap_bap);
+              });
+            } else {
+              $('#modal-lap_bap' + index).hide();
+              $('#lap_bap_file' + index).val('');
+            }
 
-        });
+          });
 
-        countArray2 = $("#countArray").val();
+          countArray2 = $("#countArray").val();
 
-        $("#btn-edit-row").on("click", function() {
-          var row = $("#template-row-product").html();
-          row = row.replace(/countArraynyaDigantiNanti/g, countArray2);
-          $row = $(row);
-          console.log($row);
+          $("#btn-edit-row").on("click", function() {
+            var row = $("#template-row-product").html();
+            row = row.replace(/countArraynyaDigantiNanti/g, countArray2);
+            $row = $(row);
+            console.log($row);
 
-          countArray2++;
-          $("#tbody-row").append($row);
-        });
+            countArray2++;
+            $("#tbody-row").append($row);
+          });
+        }
       }
 
 

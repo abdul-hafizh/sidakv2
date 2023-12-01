@@ -21,7 +21,6 @@ class ValidationPengawasan
             'biaya' => 'Biaya',
             'lokasi' => 'Lokasi',
 
-
         ];
 
         $validator =  Validator::make(
@@ -34,9 +33,10 @@ class ValidationPengawasan
                 'tanggal_kegiatan'  => 'required',
                 //    'jml_peserta'  => 'required_if:sub_menu_slug,is_bimtek_ipbbr|nullable|integer',
                 'biaya'  => 'required|integer',
-                'lokasi'  => 'required'
+                'lokasi'  => 'required',
             ]
         );
+
 
         $validator->setAttributeNames($fields);
         if ($validator->fails()) {
@@ -50,6 +50,41 @@ class ValidationPengawasan
             }
             return $err;
         }
+    }
+
+    public static function validationPerusahaan($request)
+    {
+        $err = array();
+
+        $request->validate([
+            "nib"    => "required|array|min:1",
+            "nib.*"  => "required|string|distinct|min:3",
+        ]);
+
+
+        // $fields = [
+        //     'nib.*'  => 'NIB',
+
+        // ];
+
+        // $validator =  Validator::make(
+        //     $request->validate([
+        //         "nib"    => "required|array|min:1",
+        //         "nib.*"  => "required|string|distinct|min:3",
+        //     ])
+        // );
+        // $validator->setAttributeNames($fields);
+        // if ($validator->fails()) {
+
+        //     $errors = $validator->errors();
+
+        //     // foreach ($fields as $x => $val) {
+        //     //     if ($errors->has($x)) {
+        //     //         $err['messages'][$x] = $errors->first($x);
+        //     //     }
+        //     // }
+        //     return $errors;
+        // }
     }
 
     public static function validationFile($request)
@@ -156,7 +191,7 @@ class ValidationPengawasan
             'tanggal_kegiatan' => 'Tanggal Kegiatan',
             'biaya' => 'Biaya',
             'lokasi' => 'Lokasi',
-            'nib.*' => 'NIB',
+            // 'nib.*' => 'NIB',
 
 
         ];
@@ -173,7 +208,7 @@ class ValidationPengawasan
                 'biaya'  => 'required|integer',
                 'lokasi'  => 'required',
                 //  "nib"    => "required|array|min:1",
-                "nib.*"  => "required",
+                // "nib.*"  => "required",
             ]
         );
 
