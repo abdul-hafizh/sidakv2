@@ -168,7 +168,7 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table class="table table-hover text-nowrap" border="0">
+				<table class="table table-hover" border="0" style="height: auto">
                     <thead>
                         <tr>
                            <th rowspan="2" id="ShowChecklistAll" style="display:none;" >
@@ -697,7 +697,7 @@
                     }
 
                     if(item.alasan_edit !== null || item.alasan_revisi !== null || item.alasan_unapprove !== null || item.alasan_unapprove_doc !== null) {
-                        row += `<div id="Log" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa-icon icon-detail" ></i></div>`;
+                        row += `<div id="Log" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="pointer btn-padding-action pull-left modalLog"><i class="fa-icon icon-detail" ></i></div>`;
                     }
 
                     row +=`</div>`;
