@@ -554,9 +554,6 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('body').removeClass('modal-open');                
-                $('#datatable').DataTable().ajax.reload();
                 window.location.replace('/penyelesaian');
               }
             });
@@ -618,9 +615,6 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('body').removeClass('modal-open');                
-                $('#datatable').DataTable().ajax.reload();
                 window.location.replace('/penyelesaian');
               }
             });
@@ -979,9 +973,6 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('#modal-req-edit').hide();
-                $('body').removeClass('modal-open');
                 $('#datatable').DataTable().ajax.reload();
               }
             });
@@ -1032,9 +1023,9 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('#modal-req-revision').hide();
-                $('#datatable').DataTable().ajax.reload();                
+                // $('#modal-add').hide();
+                // $('#modal-req-revision').hide();
+                // $('#datatable').DataTable().ajax.reload();                
                 window.location.replace('/penyelesaian');
               }
             });
