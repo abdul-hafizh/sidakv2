@@ -166,7 +166,7 @@ class RequestRekapitulasi
 
       $pengawasan = Pengawasan::select(
               DB::raw('COUNT(id) as realisasi_target'),
-              DB::raw('SUM(biaya_kegiatan) as realisasi_pagu'),
+              DB::raw('SUM(biaya_kegiatan) as realisasi_pagu')
         )->where(['status_laporan_id'=>'14','periode_id'=>$periode])->get();
 
             if($pengawasan[0]->realisasi_target ==NULL){ 
@@ -199,7 +199,7 @@ class RequestRekapitulasi
            
            $bimsos = Bimsos::select(
               DB::raw('SUM(jml_peserta) as realisasi_target'),
-              DB::raw('SUM(biaya_kegiatan) as realisasi_pagu'),
+              DB::raw('SUM(biaya_kegiatan) as realisasi_pagu')
         )->where(['status_laporan_id'=>'14','periode_id'=>$periode])->get();
             if($bimsos[0]->realisasi_target ==NULL){ 
                $bimsos_target = 0;
@@ -236,7 +236,7 @@ class RequestRekapitulasi
            
            $penyelesaian = Penyelesaian::select(
               DB::raw('SUM(jml_perusahaan) as realisasi_target'),
-              DB::raw('SUM(biaya) as realisasi_pagu'),
+              DB::raw('SUM(biaya) as realisasi_pagu')
         )->where(['status_laporan_id'=>'14','periode_id'=>$periode])->get();
             if($penyelesaian[0]->realisasi_target ==NULL){ 
                $penyelesaian_target = 0;
@@ -315,7 +315,7 @@ class RequestRekapitulasi
            $pemetaan = Pemetaan::select(
               DB::raw('COUNT(id) as realisasi_target'),
               DB::raw('SUM(budget_rencana_kerja + budget_studi_literatur + budget_rapat_kordinasi + budget_data_sekunder + budget_fgd_persiapan + budget_fgd_identifikasi + budget_lq + budget_shift_share + budget_tipologi_sektor + budget_klassen + budget_fgd_klarifikasi + budget_finalisasi + budget_summary_sektor_unggulan + budget_sektor_unggulan + budget_potensi_pasar + budget_parameter_sektor_unggulan + budget_subsektor_unggulan + budget_intensif_daerah + budget_potensi_lanjutan + budget_info_grafis + budget_dokumentasi) as realisasi_pagu')
-        )->where(['status_laporan_id'=>'14','periode_id'=>$periode])->get();
+        )->where(['status_laporan_id'=>'16','periode_id'=>$periode])->get();
             if($pemetaan[0]->realisasi_target ==NULL){ 
                $pemetaan_target = 0;
              }else{ 
