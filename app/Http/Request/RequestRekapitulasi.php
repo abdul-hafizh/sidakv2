@@ -252,9 +252,16 @@ class RequestRekapitulasi
                  $penyelesaian_pagu = $penyelesaian[0]->realisasi_pagu;
              } 
 
+             if($perencanaan[0]->penyelesaian_target ==Null)
+             {
+                $penyelesaian_target = 0;
+             }else{
+                 $penyelesaian_target = (int)$perencanaan[0]->penyelesaian_target;
+             }   
+
             $data = [
                "sub_menu" =>"Penyelesaian",
-               "target"=> $perencanaan[0]->penyelesaian_target,
+               "target"=>  $penyelesaian_target ,
                "pagu"=> ['original'=>$perencanaan[0]->penyelesaian_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan[0]->penyelesaian_pagu)] ,
                "realisasi_target"=> $penyelesaian_target,
                "realisasi_apbn"=> ['original'=>$penyelesaian_pagu,'convert'=>GeneralHelpers::formatRupiah($penyelesaian[0]->realisasi_pagu)], 
@@ -282,11 +289,18 @@ class RequestRekapitulasi
                  $promosi_pagu = 0;
              }else{
                  $promosi_pagu = $promosi[0]->realisasi_pagu;
+             }
+
+             if($perencanaan[0]->promosi_target ==Null)
+             {
+                $promosi_target = 0;
+             }else{
+                $promosi_target = $perencanaan[0]->promosi_target;
              } 
 
              $data = [
                "sub_menu" =>"Promosi",
-               "target"=> $perencanaan[0]->promosi_target,
+               "target"=> $promosi_target,
                "pagu"=> ['original'=>$perencanaan[0]->promosi_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan[0]->promosi_pagu)] ,
                "realisasi_target"=> $promosi_target,
                "realisasi_apbn"=> ['original'=>$promosi_pagu,'convert'=>GeneralHelpers::formatRupiah($promosi[0]->realisasi_pagu)], 
