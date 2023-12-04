@@ -154,8 +154,7 @@ class RequestRekapitulasi
              DB::raw('SUM(penyelesaian_identifikasi_pagu + penyelesaian_realisasi_pagu + penyelesaian_evaluasi_pagu) as penyelesaian_pagu'),
 
             DB::raw('SUM(promosi_pengadaan_target ) as promosi_target'),
-             DB::raw('SUM(promosi_pengadaan_pagu) as promosi_pagu'),
-
+             DB::raw('SUM(promosi_pengadaan_pagu) as promosi_pagu')
         )->where(['status'=>'14','periode_id'=>$periode_id])->get();
 
       return $perencanaan;
