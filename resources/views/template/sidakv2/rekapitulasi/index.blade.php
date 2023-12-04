@@ -362,6 +362,13 @@
             var value = $(this).val();         
             if(value)
             {   
+
+                const content2 = $('#conheaderrekapitulasi');
+                content2.empty();
+                let row2 = ``;
+                row2 +=`<tr><td colspan="10" align="center"> <b>Loading ...</b></td></tr>`;
+                content2.append(row2);
+
                  const content = $('#conrekapitulasi');
                 
                  let row = ``;
@@ -383,8 +390,10 @@
                     method: method,
                     data:{'search':search},
                     success: function(response) {
-                        list = response.data;
-                        ShowData(response.data)
+                        list = response.rekapitulasi.data;
+                        ShowHeader(response.header)
+                        ShowData(response.rekapitulasi.data)
+                        updatePagination(response.rekapitulasi.current_page, response.rekapitulasi.last_page);
 
                     },
                     error: function(error) {
@@ -407,6 +416,12 @@
                 row1 +=`<tr><td colspan="17" align="center"> <b>Loading ...</b></td></tr>`;
                 content1.append(row1);
 
+                const content2 = $('#conheaderrekapitulasi');
+                content2.empty();
+                let row2 = ``;
+                row2 +=`<tr><td colspan="10" align="center"> <b>Loading ...</b></td></tr>`;
+                content2.append(row2);
+
               
 
                 if(periode_id > '2023')
@@ -423,9 +438,10 @@
                 method: 'GET',
                 success: function(response) {
                    
-                     list = response.data;
-                       ShowData(response.data)
-                        updatePagination(response.current_page, response.last_page);
+                        list = response.rekapitulasi.data;
+                        ShowHeader(response.header)
+                        ShowData(response.rekapitulasi.data)
+                        updatePagination(response.rekapitulasi.current_page, response.rekapitulasi.last_page);
 
                 },
                 error: function(error) {
@@ -520,7 +536,7 @@
                 content2.empty();
                 let row2 = ``;
                 row2 +=`<tr><td colspan="10" align="center"> <b>Loading ...</b></td></tr>`;
-                content2.append(row1);
+                content2.append(row2);
 
                 
 
@@ -534,7 +550,7 @@
                        list = response.rekapitulasi.data;
                        ShowHeader(response.header)
                        ShowData(response.rekapitulasi.data)
-                       updatePagination(response.rekapitulasi.current_page, response.last_page);
+                       updatePagination(response.rekapitulasi.current_page, response.rekapitulasi.last_page);
                     },
                     error: function( error) {}
                });

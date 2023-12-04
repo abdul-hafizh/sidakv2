@@ -40,14 +40,18 @@
      <div class="box box-solid box-primary">
           <div class="box-body">
                <div class="card-body table-responsive">
-                    <table class="table table-hover text-nowrap">
+                    <table class="table table-hover text-nowrap" >
                          <thead>
                               <tr>
-                                   <th><div></div><span class="span-title">No</span></th>
-                                   <th><div class="split-table"></div><span class="span-title">Kegiatan/Sub Kegiatan</span></th>
-                                   <th><div class="split-table"></div><span class="span-title">Target</span></th>
-                                   <th><div class="split-table"></div><span class="span-title">Satuan</span></th>
-                                   <th><div class="split-table"></div><span class="span-title">Pagu APBN (Rp)</span></th>
+                                   <th><span class="span-title">No</span></th>
+                                   <th class="padding-none"><div class="split-table"></div></th>
+                                   <th><span class="span-title">Kegiatan/Sub Kegiatan</span></th>
+                                   <th class="padding-none"><div class="split-table"></div></th>
+                                   <th><span class="span-title">Target</span></th>
+                                   <th class="padding-none"><div class="split-table"></div></th>
+                                   <th><span class="span-title">Satuan</span></th>
+                                   <th class="padding-none"><div class="split-table"></div></th>
+                                   <th><span class="span-title">Pagu APBN (Rp)</span></th>
                               </tr>
                          </thead>
                          <tbody id="showDetail"></tbody>
@@ -257,22 +261,29 @@
 
                row+= '<tr>';
                     row+= '<td><strong>1</strong></td>';
+                    row+= '<td rowspan="4"></td>';
                     row+= '<td class="text-left"><strong>Pengawasan Penanaman Modal</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-center"><strong id="total_pengawasan_target">' + data.target_pengawasan +'</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-center"><strong>Kegiatan Usaha</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-right"><strong id="total_pengawasan_pagu">' + data.total_pagu_pengawasan_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target">';
                          row+= '<span id="pengawas-analisa-target-messages"></span>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_analisa_pagu_convert +'">';
                          row+= '<span id="pengawas-analisa-pagu-messages"></span>';
@@ -282,13 +293,16 @@
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Inspeksi Lapangan</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'">';
                          row+= '<span id="pengawas-inspeksi-target-messages"></span>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu_convert +'">';                       
                          row+= '<span id="pengawas-inspeksi-pagu-messages"></span>';
@@ -298,13 +312,16 @@
                row+= '<tr class="border-bottom">';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target">';
                          row+= '<span id="pengawas-evaluasi-target-messages"></span>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_evaluasi_pagu_convert +'">';
                          row+= '<span id="pengawas-evaluasi-pagu-messages"></span>';
@@ -313,22 +330,29 @@
 
                row+= '<tr>';
                     row+= '<td><strong>2</strong></td>';
+                     row+= '<td rowspan="3"></td>';
                     row+= '<td class="text-left"><strong>Bimbingan Teknis Kepada Pelaku Usaha</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-center"><strong id="total_bimtek_target">'+data.target_bimtek +'</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-center"><strong>Pelaku Usaha</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-right"><strong id="total_bimtek_pagu">'+ data.total_pagu_bimtek_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target">';
                          row+= '<span id="bimtek-perizinan-target-messages"></span>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Pelaku Usaha" value="Pelaku Usaha" disabled>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="text" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_perizinan_pagu_convert +'">';
                          row+= '<span id="bimtek-perizinan-pagu-messages"></span>';
@@ -339,12 +363,15 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>';
                     row+= '<td>';
+                    row+= '<td ></td>';
                          row+= '<input disabled id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target">';
                          row+= '<span id="bimtek-pengawasan-target-messages"></span> ';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Pelaku Usaha" value="Pelaku Usaha" disabled>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="text" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_pengawasan_pagu_convert +'">';
                          row+= '<span id="bimtek-pengawasan-pagu-messages"></span>';
@@ -353,22 +380,29 @@
 
                row+= '<tr>';
                     row+= '<td><strong>3</strong></td>';
+                     row+= '<td rowspan="4"></td>';
                     row+= '<td class="text-left"><strong>Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-center"><strong id="total_penyelesaian_target">'+ data.target_penyelesaian +'</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-center"><strong>Kegiatan Usaha</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-right"><strong id="total_penyelesaian_pagu">'+ data.total_pagu_penyelesaian_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" value="'+ data.penyelesaian_identifikasi_target+'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-identifikasi-target-messages"></span>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_identifikasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-identifikasi-pagu-messages"></span>';
@@ -379,12 +413,15 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>';
                     row+= '<td>';
+                    row+= '<td ></td>';
                          row+= '<input disabled id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" value="'+ data.penyelesaian_realisasi_target +'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-realisasi-target-messages"></span>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_realisasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-realisasi-pagu-messages"></span>';
@@ -395,12 +432,15 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>';
                     row+= '<td>';
+                    row+= '<td ></td>';
                          row+= '<input disabled id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" value="'+ data.penyelesaian_evaluasi_target +'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-evaluasi-target-messages"></span>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
+                    row+= '<td ></td>';
                     row+= '<td>';
                          row+= '<input disabled id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_evaluasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-evaluasi-pagu-messages"></span>';
@@ -420,24 +460,33 @@
                          var label_total = 'Total Promosi';
                     }
                     row+= '<tr>';
-                         row+= '<td><strong>4</strong></td>';                         
+                         row+= '<td><strong>4</strong></td>';
+
+                          row+= '<td rowspan="2"></td>';                     
                          row+= '<td class="text-left"><strong>'+ label_judul + '</strong></td>';
+                         row+= '<td ></td>';
                          row+= '<td class="text-center"><strong>1</strong></td>';
+                         row+= '<td ></td>';
                          row+= '<td class="text-center"><strong>' + label_satuan + '</strong></td>';
+                         row+= '<td ></td>';
                          row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';                         
                     row+= '</tr>';
      
                     row+= '<tr class="border-bottom">';
+
                          row+= '<td>&nbsp;</td>';
                          row+= '<td>' + label_sub + '</td>';
+                         row+= '<td ></td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
                                    row+= '<input name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
                               row+= '</div>';
                          row+= '</td>';
+                         row+= '<td ></td>';
                          row+= '<td>';
                               row+= '<input name="promosi_pengadaan_satuan" type="text" class="form-control" value="' + label_satuan + '" readonly>';
                          row+= '</td>';
+                         row+= '<td ></td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
                                    row+= '<input name="promosi_pengadaan_pagu" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
@@ -447,19 +496,31 @@
                     
                     row+= '<tr>';
                          row+= '<td colspan="3">&nbsp;</td>';
+                         row+= '<td ></td>';
+                         row+= '<td class="text-right"></td>';
+                         row+= '<td ></td>';
                          row+= '<td class="text-right"><strong>' + label_total + ' :</strong></td>';
+                         row+= '<td ></td>';
                          row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
                     row+= '</tr>';
                }
 
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
+                    row+= '<td ></td>';
+                    row+= '<td class="text-right"></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-right"><strong>Total PAGU :</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-right"><strong>' + data.pagu_apbn + '</strong></td>';
                row+= '</tr>';
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
+                    row+= '<td ></td>';
+                    row+= '<td class="text-right"></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-right"><strong>Total Perencanaan :</strong></td>';
+                    row+= '<td ></td>';
                     row+= '<td class="text-right"><strong>' + data.total_rencana + '</strong></td>';
                row+= '</tr>';
 
