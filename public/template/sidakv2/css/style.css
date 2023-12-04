@@ -1158,6 +1158,14 @@ padding: 0px 12px 0px 0px!important;
 }
 
 
+.bg-table-radius-right-top{
+       border-radius: 0px 15px 0px 0px;
+}
+
+.bg-table-radius-right-bottom{
+       border-radius: 0px 0px 15px 0px;
+}
+
 .span-title{
     float: left;
     padding: 12px 0px!important;
@@ -1190,7 +1198,14 @@ padding: 0px 12px 0px 0px!important;
       outline: none!important;
 }
 
+.width-pagu{
+   width: 138px;
+}
 
+.width-daerah{
+    float: left;
+    width: 162px;
+}
 /*
 
 .nested-sortable:not(#nested_sortable_group) {
