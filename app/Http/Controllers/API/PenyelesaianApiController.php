@@ -383,7 +383,7 @@ class PenyelesaianApiController extends Controller
 
                 $type = 'penyelesaian';
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-                $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url, Auth::User()->username);
                 $insertNotif = Notification::create($notif);
 
                 if ($insertNotif) {
@@ -524,7 +524,7 @@ class PenyelesaianApiController extends Controller
             $url = url('penyelesaian/' . $id);
             $type = 'penyelesaian';
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit Penyelesaian Masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, Auth::User()->username);
             $insertNotif = Notification::create($notif);
 
             $pusat = User::where('username', 'pusat')->first()->email;
@@ -572,7 +572,7 @@ class PenyelesaianApiController extends Controller
             $type = 'penyelesaian';
             $url = url('penyelesaian');
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Revisi Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, Auth::User()->username);
             $insertNotif = Notification::create($notif);
 
             $email_daerah = User::where('username', $_res->created_by)->first()->email;
@@ -609,7 +609,7 @@ class PenyelesaianApiController extends Controller
             $type = 'penyelesaian';
             $url = 'penyelesaian';
             $messages_desc = strtoupper(Auth::User()->username) . ' Request Edit Telah Diapprove';
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, Auth::User()->username);            
             Notification::create($notif);
         }
 
