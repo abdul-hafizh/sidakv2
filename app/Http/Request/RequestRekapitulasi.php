@@ -155,7 +155,7 @@ class RequestRekapitulasi
 
             DB::raw('SUM(promosi_pengadaan_target ) as promosi_target'),
              DB::raw('SUM(promosi_pengadaan_pagu) as promosi_pagu')
-        )->where(['status'=>'14','periode_id'=>$periode_id])->get();
+        )->where(['status'=>16,'periode_id'=>$periode_id])->get();
 
       return $perencanaan;
 
@@ -315,7 +315,7 @@ class RequestRekapitulasi
            $pemetaan = Pemetaan::select(
               DB::raw('COUNT(id) as realisasi_target'),
               DB::raw('SUM(budget_rencana_kerja + budget_studi_literatur + budget_rapat_kordinasi + budget_data_sekunder + budget_fgd_persiapan + budget_fgd_identifikasi + budget_lq + budget_shift_share + budget_tipologi_sektor + budget_klassen + budget_fgd_klarifikasi + budget_finalisasi + budget_summary_sektor_unggulan + budget_sektor_unggulan + budget_potensi_pasar + budget_parameter_sektor_unggulan + budget_subsektor_unggulan + budget_intensif_daerah + budget_potensi_lanjutan + budget_info_grafis + budget_dokumentasi) as realisasi_pagu')
-        )->where(['status_laporan_id'=>'16','periode_id'=>$periode])->get();
+        )->where(['status_laporan_id'=>'14','periode_id'=>$periode])->get();
             if($pemetaan[0]->realisasi_target ==NULL){ 
                $pemetaan_target = 0;
              }else{ 
