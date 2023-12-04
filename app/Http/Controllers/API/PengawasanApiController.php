@@ -159,6 +159,18 @@ class PengawasanApiController extends Controller
                 $update['lap_kegiatan'] = 'laporan/pengawasan/' . $lap_kegiatan;
             }
 
+            $result = RequestPengawasan::GetNilaiPerencanaan($request);
+            $sumPengawasan = RequestPengawasan::GetSumPengawasan($request);
+
+            if ($result->total_pagu < $sumPengawasan->biaya_kegiatan && $request->status == 14) {
+                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
+                return response()->json($err, 400);
+            }
+            if ($result->total_target < $sumPengawasan->jml_target && $request->status == 14) {
+                $err['messages']['jml_target'] = 'Jumlah Target melebihi perencanaan.';
+                return response()->json($err, 400);
+            }
+
             $id_pengawasan = $request->id_pengawasan;
             $UpdateData = Pengawasan::where('id', $id_pengawasan)->update($update);
 
@@ -362,19 +374,28 @@ class PengawasanApiController extends Controller
     {
         $searchColumn = $request->data;
         $tahunSemester = GeneralHelpers::semesterToday();
-        if (!empty($request->data)) {
-            $filterjs = json_decode($searchColumn);
-            $data = DB::select(
-                'call header_modul(?,?,?)',
-                array('PENGAWASAN', $filterjs[0]->periode_id, Auth::User()->daerah_id)
-            );
-            $semester = substr($filterjs[0]->periode_id, 4);
-            $tahun = substr($filterjs[0]->periode_id, 0, 4);
+        if ($_COOKIE['access'] == 'daerah' || $_COOKIE['access'] == 'province') {
+            if (!empty($request->data)) {
+                $filterjs = json_decode($searchColumn);
+                $data = DB::select(
+                    'call header_modul(?,?,?)',
+                    array('PENGAWASAN', $filterjs[0]->periode_id, Auth::User()->daerah_id)
+                );
+                $semester = substr($filterjs[0]->periode_id, 4);
+                $tahun = substr($filterjs[0]->periode_id, 0, 4);
+            } else {
+                $data = DB::select(
+                    'call header_modul(?,?,?)',
+                    array('PENGAWASAN', $tahunSemester, Auth::User()->daerah_id)
+                );
+                $semester = substr($tahunSemester, 4);
+                $tahun = substr($tahunSemester, 0, 4);
+            }
         } else {
-            $data = DB::select(
-                'call header_modul(?,?,?)',
-                array('PENGAWASAN', $tahunSemester, Auth::User()->daerah_id)
-            );
+            $result = RequestPengawasan::GetTotalPagu($request);
+            $data['total_perencanaan'] = GeneralHelpers::formatRupiah($result->total_perencanaan);
+            $data['total_pengawasan'] = GeneralHelpers::formatRupiah($result->total_pengawasan);
+            $data['total_pengawasan_draft'] = GeneralHelpers::formatRupiah($result->total_pengawasan_draft);
             $semester = substr($tahunSemester, 4);
             $tahun = substr($tahunSemester, 0, 4);
         }

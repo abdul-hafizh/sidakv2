@@ -7,6 +7,7 @@ use Auth;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\Pengawasan;
+use App\Models\Perencanaan;
 use App\Http\Request\RequestSettingApps;
 use Illuminate\Support\Str;
 use DB;
@@ -110,10 +111,10 @@ class RequestPengawasan
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
-            $edit_url =  '<a href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-placement="top" title="Edit Data"  class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></a>';
+            $edit_url =  '<div id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
             if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
                 if ($val->status_laporan_id != 14)
-                    $delete_url = '<button id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' type="button" class="btn btn-primary"><i class="fa fa-trash" ></i></button>';
+                    $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>';
             }
 
             $row    = array();
@@ -125,7 +126,7 @@ class RequestPengawasan
             $row[]  = GeneralHelpers::formatDate($val->tgl_kegiatan);
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
             $row[]  = RequestPengawasan::getLabelStatus($val->status_laporan_id, $val->request_edit);
-            $row[]  = $edit_url . " " . $delete_url;
+            $row[]  = '<div class="list-menu-table-pagu">' . $edit_url . " " . $delete_url . '</div>';
 
             $temp[] = $row;
         }
@@ -154,10 +155,16 @@ class RequestPengawasan
             if ($filterjs[0]->jenis_sub) {
                 $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
+            if ($filterjs[0]->search_status) {
+                $data->where('status_laporan_id', $filterjs[0]->search_status);
+            }
             if ($filterjs[0]->periode_id) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
             } else {
                 $data->where('periode_id', $tahunSemester);
+            }
+            if ($filterjs[0]->daerah_id) {
+                $data->where('daerah_id', $filterjs[0]->daerah_id);
             }
         } else {
             $data->where('periode_id', $tahunSemester);
@@ -189,6 +196,36 @@ class RequestPengawasan
 
         $temp2['total'] = $result;
         return json_decode(json_encode($temp2), FALSE);
+    }
+
+    public static function GetNilaiPerencanaan($request)
+    {
+        $temp = array();
+        $year = substr((string)$request->periode_id_mdl, 0, 4);
+
+        $periode = Perencanaan::where(['periode_id' => $year, 'daerah_id' => Auth::User()->daerah_id])->first();
+
+        $temp['pengawas_analisa_pagu'] = $periode->pengawas_analisa_pagu;
+        $temp['pengawas_inspeksi_pagu'] = $periode->pengawas_inspeksi_pagu;
+        $temp['pengawas_evaluasi_pagu'] = $periode->pengawas_evaluasi_pagu;
+        $temp['pengawas_analisa_target'] = $periode->pengawas_analisa_target;
+        $temp['pengawas_inspeksi_target'] = $periode->pengawas_inspeksi_target;
+        $temp['pengawas_evaluasi_target'] = $periode->pengawas_evaluasi_target;
+        $temp['total_pagu'] = $periode->pengawas_analisa_pagu + $periode->pengawas_inspeksi_pagu + $periode->pengawas_evaluasi_pagu;
+        $temp['total_target'] = $periode->pengawas_analisa_target + $periode->pengawas_inspeksi_target + $periode->pengawas_evaluasi_target;
+        return json_decode(json_encode($temp), FALSE);
+    }
+
+    public static function GetSumPengawasan($request)
+    {
+        $temp = array();
+        $year = substr((string)$request->periode_id_mdl, 0, 4);
+        $slug = $request->sub_menu_slug;
+        $periode = Pengawasan::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14, 'sub_menu_slug' => $slug])->where('periode_id', 'LIKE', $year . '%');
+
+        $temp['biaya_kegiatan'] = $request->biaya + $periode->sum('biaya_kegiatan');
+        $temp['jml_target'] = 1 + $periode->count();
+        return json_decode(json_encode($temp), FALSE);
     }
 
     public static function fieldsData($request)
@@ -362,5 +399,46 @@ class RequestPengawasan
             }
         }
         return "Label tidak ditemukan";
+    }
+
+    public static function GetTotalPagu($request)
+    {
+
+        $tahunSemester = GeneralHelpers::semesterToday();
+
+        $perencanaan = DB::table('perencanaan');
+        $pengawasan_terkirim = DB::table('pengawasan');
+        $pengawasan_draft = DB::table('pengawasan');
+        $searchColumn = $request->data;
+        if (!empty($request->data)) {
+            $value = $searchColumn;
+            $filterjs = json_decode($value);
+            if ($filterjs[0]->periode_id) {
+                $perencanaan->where('periode_id', substr($filterjs[0]->periode_id, 0, 4));
+                $pengawasan_terkirim->where('periode_id', $filterjs[0]->periode_id);
+                $pengawasan_draft->where('periode_id', $filterjs[0]->periode_id);
+            } else {
+                $perencanaan->where('periode_id', substr($tahunSemester, 0, 4));
+                $pengawasan_terkirim->where('periode_id', $tahunSemester);
+                $pengawasan_draft->where('periode_id', $tahunSemester);
+            }
+            if ($filterjs[0]->daerah_id) {
+                $perencanaan->where('daerah_id', $filterjs[0]->daerah_id);
+                $pengawasan_terkirim->where('daerah_id', $filterjs[0]->daerah_id);
+                $pengawasan_draft->where('daerah_id', $filterjs[0]->daerah_id);
+            }
+        } else {
+            $perencanaan->where('periode_id', substr($tahunSemester, 0, 4));
+            $pengawasan_terkirim->where('periode_id', $tahunSemester);
+            $pengawasan_draft->where('periode_id', $tahunSemester);
+        }
+        $pengawasan_terkirim->where('status_laporan_id', 14);
+        $pengawasan_draft->whereNotIn('status_laporan_id', [14]);
+
+        $temp2['total_perencanaan'] = $perencanaan->sum('pengawas_analisa_pagu') + $perencanaan->sum('pengawas_inspeksi_pagu') + $perencanaan->sum('pengawas_evaluasi_pagu');
+        $temp2['total_pengawasan'] = $pengawasan_terkirim->sum('biaya_kegiatan');
+        $temp2['total_pengawasan_draft'] = $pengawasan_draft->sum('biaya_kegiatan');
+
+        return json_decode(json_encode($temp2), FALSE);
     }
 }
