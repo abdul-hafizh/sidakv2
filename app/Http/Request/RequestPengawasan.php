@@ -216,9 +216,6 @@ class RequestPengawasan
     {
         $data_perusahaan = [];
         foreach ($request->nib as $key => $v) {
-
-
-
             $data_perusahaan[$key] = [
                 'id' => Str::uuid()->toString(),
                 'pengawasan_id' => $id,

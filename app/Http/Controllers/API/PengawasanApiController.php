@@ -58,6 +58,16 @@ class PengawasanApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
+
+            if ($request->status == 14) {
+                if ($request->sub_menu_slug == 'inspeksi') {
+                    $validationPerusahaan = ValidationPengawasan::validationPerusahaan($request);
+                    if ($validationPerusahaan) {
+                        return response()->json($validationPerusahaan, 400);
+                    }
+                }
+            }
+
             $insert = RequestPengawasan::fieldsData($request);
 
             if ($request->status == 14) {
@@ -146,7 +156,7 @@ class PengawasanApiController extends Controller
                 $file_hadir = $request->file('lap_kegiatan');
                 $lap_kegiatan = 'lap_kegiatan_' . time() . '_' . $file_hadir->getClientOriginalName();
                 $file_hadir->move(public_path('laporan/pengawasan'), $lap_kegiatan);
-                $insert['lap_kegiatan'] = 'laporan/pengawasan/' . $lap_kegiatan;
+                $update['lap_kegiatan'] = 'laporan/pengawasan/' . $lap_kegiatan;
             }
 
             $id_pengawasan = $request->id_pengawasan;

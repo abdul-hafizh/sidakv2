@@ -71,7 +71,7 @@
 		</div>
 	</div>
 	<div class="form-group row margin-top-bottom-20">
-		<div class="col-sm-2">
+		<div class="col-sm-3">
 			<select id="periode_id2" name="periode_id2" class="form-control height-35 border-radius-13" data-style="btn-default" title="Pilih Periode"></select>
 		</div>
 		@if($access =='admin' || $access == 'pusat' )

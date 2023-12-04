@@ -9,6 +9,7 @@
 
 <section class="content-header pd-left-right-15">    
     <div class="row padding-default" style="margin-bottom: 20px">
+        @if($access == 'daerah' )
 		<div class="col-lg-4 col-sm-12">
             <div class="box-body btn-primary border-radius-13">
                 <div class="card-body table-responsive p-0">
@@ -45,6 +46,56 @@
 			    </div>
 			</div>
 		</div>
+        @else
+        <div class="col-lg-3 col-sm-12">
+            <div class="box-body btn-primary border-radius-13">
+                <div class="card-body table-responsive p-0">
+                        <div class="media">
+                            <div class="media-body text-left">
+                                <span>Total Rencana Pengawasan</span>
+                                <h3 class="card-text" id="total-rencana-pengawasan"></h3>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+		<div class="col-lg-3 col-sm-12">
+            <div class="box-body btn-primary border-radius-13">
+                <div class="card-body table-responsive p-0">
+                    <div class="media">
+                        <div class="media-body text-left">
+                            <span>Total Rencana Bimsos</span>
+                            <h3 class="card-text" id="total-rencana-bimsos"></h3>
+                        </div>
+                    </div>
+			    </div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-12">
+            <div class="box-body btn-primary border-radius-13">
+                <div class="card-body table-responsive p-0">
+                    <div class="media">
+                        <div class="media-body text-left">
+                            <span>Total Penyelesaian Masalah</span>
+                            <h3 class="card-text" id="total-rencana-masalah"></h3>
+                        </div>
+                    </div>
+			    </div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-sm-12">
+            <div class="box-body btn-primary border-radius-13">
+                <div class="card-body table-responsive p-0">
+                    <div class="media">
+                        <div class="media-body text-left">
+                            <span>Total Promosi</span>
+                            <h3 class="card-text" id="total-rencana-promosi"></h3>
+                        </div>
+                    </div>
+			    </div>
+			</div>
+		</div>
+        @endif
 	</div>
 
     <div class="row margin-top-bottom-20">
@@ -555,6 +606,7 @@
             var total_pengawasan = 0;
             var total_bimsos = 0;
             var total_masalah = 0;
+            var total_promosi = 0;
             
             content.empty();
 
@@ -577,6 +629,7 @@
                 total_pengawasan += item.total_rencana_pengawasan;
                 total_bimsos += item.total_rencana_bimsos;
                 total_masalah += item.total_rencana_masalah;
+                total_promosi += item.promosi_pengadaan_pagu;
 
                 var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + item.lap_rencana + '" class="pointer btn-padding-action pull-left" title="Download PDF" target="_blank" style="margin-right: 4px"><i class="fa-icon icon-download"></i></a>';
 
@@ -657,6 +710,7 @@
             $('#total-rencana-pengawasan').html('<b> Rp. '+accounting.formatNumber(total_pengawasan, 0, ".", ".")+'</b>');
             $('#total-rencana-bimsos').html('<b> Rp. '+accounting.formatNumber(total_bimsos, 0, ".", ".")+'</b>');
             $('#total-rencana-masalah').html('<b> Rp. '+accounting.formatNumber(total_masalah, 0, ".", ".")+'</b>');
+            $('#total-rencana-promosi').html('<b> Rp. '+accounting.formatNumber(total_promosi, 0, ".", ".")+'</b>');
 
             $('.item-checkbox').on('click', function() {
                 const checkedCount = $('.item-checkbox:checked').length;

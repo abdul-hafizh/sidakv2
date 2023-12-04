@@ -120,7 +120,7 @@
 	<div class="col-sm-4 pull-left padding-default full dataTables_wrapper">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-				<select id="row_page" class="selectpicker" data-style="btn-default">
+				<select id="row_page" class="selectpicker" data-style="btn-default bg-navy">
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
 					<option value="50">50</option>
