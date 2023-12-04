@@ -565,7 +565,11 @@
               text: respons.message,
               icon: 'error',
               confirmButtonText: 'OK'
-            }).then((result) => {});
+            }).then((result) => {
+              if (result.isConfirmed) {
+                  window.location.replace('/penyelesaian');
+              }
+            });
           }
         },
         error: (respons) => {
@@ -624,7 +628,11 @@
               text: respons.message,
               icon: 'error',
               confirmButtonText: 'OK'
-            }).then((result) => {});
+            }).then((result) => {
+              if (result.isConfirmed) {
+                  window.location.replace('/penyelesaian');
+              }
+            });
           }
         },
         error: (respons) => {
@@ -1024,7 +1032,8 @@
               if (result.isConfirmed) {
                 $('#modal-add').hide();
                 $('#modal-req-revision').hide();
-                $('#datatable').DataTable().ajax.reload();
+                $('#datatable').DataTable().ajax.reload();                
+                window.location.replace('/penyelesaian');
               }
             });
           },
@@ -1127,7 +1136,11 @@
                   text: respons.message,
                   icon: 'error',
                   confirmButtonText: 'OK'
-                }).then((result) => {});
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.replace('/penyelesaian');
+                  }
+                });
               }
             },
             error: (respons) => {
