@@ -25,15 +25,16 @@ class RequestPenyelesaian
         $access = RequestAuth::Access();
         $column_order = ['', 'daerah_id', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
         $column_search = ['daerah_id', 'nama_kegiatan', 'sub_menu_slug', 'tgl_kegiatan', 'lokasi', 'biaya', 'status_laporan_id'];
-        $order = ['created_at' => 'desc'];
+        $order = array('created_at' => 'ASC');
 
         $data = DB::table('penyelesaian');       
 
         if ($access == 'daerah' || $access == 'province') {
             $data->where('daerah_id', Auth()->User()->daerah_id);
         }
-        if ($request->filled('length')) {
-            $data->offset($request->input('start'))->limit($request->input('length'));
+        
+        if ($request->length > 0) {
+            $data->offset($request->start)->limit($request->length);
         }
 
         $searchColumn = $request->input('columns');

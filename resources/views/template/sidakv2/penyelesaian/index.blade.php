@@ -120,7 +120,7 @@
 	<div class="col-sm-4 pull-left padding-default full dataTables_wrapper">
 		<div class="width-50 pull-left">
 			<div class="pull-left padding-9-0 margin-left-button">
-				<select id="row_page" class="selectpicker" data-style="btn-default">
+				<select id="row_page" class="selectpicker" data-style="btn-default bg-navy">
 					<option value="10" selected>10</option>
 					<option value="25">25</option>
 					<option value="50">50</option>
@@ -153,7 +153,7 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table id="datatable" class="table-hover text-nowrap">
+				<table id="datatable" class="table-hover" style="height: auto">
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>

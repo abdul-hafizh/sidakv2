@@ -40,7 +40,7 @@ use App\Http\Controllers\API\ExtensionApiController;
 use App\Http\Controllers\API\PromosiApiController;
 use App\Http\Controllers\API\PemetaanApiController;
 use App\Http\Controllers\API\WilayahApiController;
-
+use App\Http\Controllers\API\RekapitulasiApiController;
 
 Route::middleware(['jwt.auth'])->group(function () {
 
@@ -285,6 +285,10 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('wilayah/{id}', [WilayahApiController::class, 'update']);
     Route::delete('wilayah/{id}', [WilayahApiController::class, 'delete']);
     Route::post('wilayah/selected', [WilayahApiController::class, 'deleteSelected']);
+
+
+    Route::get('rekapitulasi', [RekapitulasiApiController::class, 'index']);
+    
 
     // Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     // Route::post('user/update', [UserApiController::class, 'updateProfile']);

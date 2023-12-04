@@ -106,6 +106,7 @@
                   <label>Profile Pelaku Usaha </label>
                   <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
                   <input type="file" class="form-control file-access" name="lap_profile" id="AddFilesProfile" accept=".pdf">
+                  <input type="hidden" name="lap_profile_file" id="lap_profile_file" value="">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
                   <span id="file-profile-alert-messages"></span>
                   <small class="text-red">*file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -132,6 +133,7 @@
                 <label>Daftar Hadir </label>
                 <a href="#" class="text-bold text-peserta" id="modal-peserta" data-target="Peserta" style="margin-left: 5px"><small>(Tampilkan Daftar Hadir)</small></a>
                 <input type="file" class="form-control file-access" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
+                <input type="hidden" name="lap_peserta_file" id="lap_peserta_file" value="">
                 <div id="ShowPdfPeserta" style="margin-top:8px"></div>
                 <span id="file-peserta-alert-messages"></span>                
                 <div class="modal fade" id="pdfPeserta" role="dialog" aria-hidden="true">
@@ -154,6 +156,7 @@
                 <label>Profile Pelaku Usaha </label>
                 <a href="#" class="text-bold text-profile2" id="modal-profile2" data-target="Profile2" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
                 <input type="file" class="form-control file-access" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
+                <input type="hidden" name="lap_profile2_file" id="lap_profile2_file" value="">
                 <div id="ShowPdfProfile2" style="margin-top:8px"></div>
                 <span id="file-profile2-alert-messages"></span>
                 <div class="modal fade" id="pdfProfile2" role="dialog" aria-hidden="true">
@@ -176,6 +179,7 @@
                 <label>Daftar Narasumber </label>
                 <a href="#" class="text-bold text-narasumber" id="modal-narasumber" data-target="Narasumber" style="margin-left: 5px"><small>(Tampilkan Narasumber)</small></a>
                 <input type="file" class="form-control file-access" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
+                <input type="hidden" name="lap_narasumber_file" id="lap_narasumber_file" value="">
                 <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
                 <span id="file-narasumber-alert-messages"></span>
                 <div class="modal fade" id="pdfNarasumber" role="dialog" aria-hidden="true">
@@ -198,6 +202,7 @@
                 <label>Notula Kegiatan </label>
                 <a href="#" class="text-bold text-notula2" id="modal-notula2" data-target="Notula2" style="margin-left: 5px"><small>(Tampilkan Notula)</small></a>
                 <input type="file" class="form-control file-access" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
+                <input type="hidden" name="lap_notula2_file" id="lap_notula2_file" value="">
                 <div id="ShowPdfNotula2" style="margin-top:8px"></div>
                 <span id="file-notula2-alert-messages"></span>
                 <div class="modal fade" id="pdfNotula2" role="dialog" aria-hidden="true">
@@ -220,6 +225,7 @@
                 <label>Laporan LKPM </label>
                 <a href="#" class="text-bold text-lkpm" id="modal-lkpm" data-target="Lkpm" style="margin-left: 5px"><small>(Tampilkan LKPM)</small></a>
                 <input type="file" class="form-control file-access" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
+                <input type="hidden" name="lap_lkpm_file" id="lap_lkpm_file" value="">
                 <div id="ShowPdfLkpm" style="margin-top:8px"></div>
                 <span id="file-lkpm-alert-messages"></span>
                 <div class="modal fade" id="pdfLkpm" role="dialog" aria-hidden="true">
@@ -242,6 +248,7 @@
                 <label>Laporan Dokumentasi </label>
                 <a href="#" class="text-bold text-doc" id="modal-doc" data-target="Doc" style="margin-left: 5px"><small>(Tampilkan Dokumentasi)</small></a>
                 <input type="file" class="form-control file-access" name="lap_document" id="AddFilesDoc" accept=".pdf">
+                <input type="hidden" name="lap_document_file" id="lap_document_file" value="">
                 <div id="ShowPdfDoc" style="margin-top:8px"></div>
                 <span id="file-doc-alert-messages"></span>
                 <small class="text-red">*semua file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -268,6 +275,7 @@
                   <label>Notula Rapat </label>
                   <a href="#" class="text-bold text-notula" id="modal-notula" data-target="Notula" style="margin-left: 5px"><small>(Tampilkan File Notula)</small></a>
                   <input type="file" class="form-control file-access" name="lap_notula" id="AddFilesNotula" accept=".pdf">
+                  <input type="hidden" name="lap_notula_file" id="lap_notula_file" value="">
                   <div id="ShowPdfNotula" style="margin-top:8px"></div>
                   <span id="file-notula-alert-messages"></span>                  
                   <div class="modal fade" id="pdfNotula" role="dialog" aria-hidden="true">
@@ -290,6 +298,7 @@
                   <label>Laporan Hasil Evaluasi </label>
                   <a href="#" class="text-bold text-eval" id="modal-eval" data-target="Evaluasi" style="margin-left: 5px"><small>(Tampilkan File Evaluasi)</small></a>
                   <input type="file" class="form-control file-access" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
+                  <input type="hidden" name="lap_evaluasi_file" id="lap_evaluasi_file" value="">
                   <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
                   <span id="file-evaluasi-alert-messages"></span>
                   <small class="text-red">*semua file yang diupload harus pdf dan ukuran dibawah 2 MB</small>
@@ -545,9 +554,7 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('body').removeClass('modal-open');                
-                $('#datatable').DataTable().ajax.reload();
+                window.location.replace('/penyelesaian');
               }
             });
           } else {
@@ -556,7 +563,11 @@
               text: respons.message,
               icon: 'error',
               confirmButtonText: 'OK'
-            }).then((result) => {});
+            }).then((result) => {
+              if (result.isConfirmed) {
+                  window.location.replace('/penyelesaian');
+              }
+            });
           }
         },
         error: (respons) => {
@@ -604,9 +615,7 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('body').removeClass('modal-open');                
-                $('#datatable').DataTable().ajax.reload();
+                window.location.replace('/penyelesaian');
               }
             });
           } else {
@@ -615,7 +624,11 @@
               text: respons.message,
               icon: 'error',
               confirmButtonText: 'OK'
-            }).then((result) => {});
+            }).then((result) => {
+              if (result.isConfirmed) {
+                  window.location.replace('/penyelesaian');
+              }
+            });
           }
         },
         error: (respons) => {
@@ -683,42 +696,105 @@
               $('.text-' + key).show();
             }
           });
+          
+          if (data.lap_peserta) {
+            $('#modal-peserta').show();
+            $('#lap_peserta_file').val(data.lap_peserta);
+            $('#modal-peserta').click(function() {
+              tampilkanModalPdf(data.lap_peserta, 'Peserta');
+            });
+          } else {
+            $('#modal-peserta').hide();
+            $('#lap_peserta_file').val('');
+          }
 
-          $('#modal-peserta').click(function() {
-            tampilkanModalPdf(data.lap_peserta, 'Peserta');
-          });
+          if (data.lap_profile) {
+            $('#modal-profile').show();
+            $('#lap_profile_file').val(data.lap_profile);
+            $('#modal-profile').click(function() {
+              tampilkanModalPdf(data.lap_profile, 'Profile');
+            });
+          } else {
+            $('#modal-profile').hide();
+            $('#lap_profile_file').val('');
+          }
 
-          $('#modal-profile').click(function() {
-            tampilkanModalPdf(data.lap_profile, 'Profile');
-          });
+          if (data.lap_profile2) {
+            $('#modal-profile2').show();
+            $('#lap_profile2_file').val(data.lap_profile2);
+            $('#modal-profile2').click(function() {
+              tampilkanModalPdf(data.lap_profile, 'Profile2');
+            });
+          } else {
+            $('#modal-profile2').hide();
+            $('#lap_profile2_file').val('');
+          }
 
-          $('#modal-profile2').click(function() {
-            tampilkanModalPdf(data.lap_profile, 'Profile2');
-          });
+          if (data.lap_narasumber) {
+            $('#modal-narasumber').show();
+            $('#lap_narasumber_file').val(data.lap_narasumber);
+            $('#modal-narasumber').click(function() {
+              tampilkanModalPdf(data.lap_narasumber, 'Narasumber');
+            });
+          } else {
+            $('#modal-narasumber').hide();
+            $('#lap_narasumber_file').val('');
+          }
 
-          $('#modal-narasumber').click(function() {
-            tampilkanModalPdf(data.lap_narasumber, 'Narasumber');
-          });
+          if (data.lap_notula) {
+            $('#modal-notula').show();
+            $('#lap_notula_file').val(data.lap_notula);
+            $('#modal-notula').click(function() {
+              tampilkanModalPdf(data.lap_notula, 'Notula');
+            });
+          } else {
+            $('#modal-notula').hide();
+            $('#lap_notula_file').val('');
+          }
+          
+          if (data.lap_notula2) {
+            $('#modal-notula2').show();
+            $('#lap_notula2_file').val(data.lap_notula2);
+            $('#modal-notula2').click(function() {
+              tampilkanModalPdf(data.lap_notula2, 'Notula2');
+            });
+          } else {
+            $('#modal-notula2').hide();
+            $('#lap_notula2_file').val('');
+          }
 
-          $('#modal-notula').click(function() {
-            tampilkanModalPdf(data.lap_notula, 'Notula');
-          });
+          if (data.lap_lkpm) {
+            $('#modal-lkpm').show();
+            $('#lap_lkpm_file').val(data.lap_lkpm);
+            $('#modal-lkpm').click(function() {
+              tampilkanModalPdf(data.lap_lkpm, 'Lkpm');
+            });
+          } else {
+            $('#modal-lkpm').hide();
+            $('#lap_lkpm_file').val('');
+          }
 
-          $('#modal-notula2').click(function() {
-            tampilkanModalPdf(data.lap_notula, 'Notula2');
-          });
+          if (data.lap_document) {
+            $('#modal-doc').show();
+            $('#lap_doc_file').val(data.lap_document);
+            $('#modal-doc').click(function() {
+              tampilkanModalPdf(data.lap_document, 'Doc');
+            });
+          } else {
+            $('#modal-doc').hide();
+            $('#lap_doc_file').val('');
+          }
 
-          $('#modal-lkpm').click(function() {
-            tampilkanModalPdf(data.lap_lkpm, 'Lkpm');
-          });
-
-          $('#modal-doc').click(function() {
-            tampilkanModalPdf(data.lap_document, 'Doc');
-          });
-
-          $('#modal-eval').click(function() {
-            tampilkanModalPdf(data.lap_evaluasi, 'Evaluasi');
-          });
+          if (data.lap_evaluasi) {
+            $('#modal-eval').show();
+            $('#lap_eval_file').val(data.lap_evaluasi);
+            $('#modal-eval').click(function() {
+              tampilkanModalPdf(data.lap_evaluasi, 'Evaluasi');
+            });
+          } else {
+            $('#modal-eval').hide();
+            $('#lap_eval_file').val('');
+          }
           
           $('#sub_menu_slug').val(data.sub_menu_slug);
           $('#nama_kegiatan').val(data.nama_kegiatan);
@@ -897,9 +973,6 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('#modal-req-edit').hide();
-                $('body').removeClass('modal-open');
                 $('#datatable').DataTable().ajax.reload();
               }
             });
@@ -950,9 +1023,10 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('#modal-req-revision').hide();
-                $('#datatable').DataTable().ajax.reload();
+                // $('#modal-add').hide();
+                // $('#modal-req-revision').hide();
+                // $('#datatable').DataTable().ajax.reload();                
+                window.location.replace('/penyelesaian');
               }
             });
           },
@@ -1055,7 +1129,11 @@
                   text: respons.message,
                   icon: 'error',
                   confirmButtonText: 'OK'
-                }).then((result) => {});
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    window.location.replace('/penyelesaian');
+                  }
+                });
               }
             },
             error: (respons) => {

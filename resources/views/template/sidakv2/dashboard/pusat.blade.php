@@ -80,7 +80,7 @@
 
     <div class="row margin-top-bottom-20">
         <div class="col-sm-2" style="margin-bottom: 9px;">
-                 <div id="selectPeriode" class="form-group margin-none"></div>
+            <div id="selectPeriode" class="form-group margin-none"></div>
         </div>
 
         <div class="col-sm-2" style="margin-bottom: 9px;">
@@ -416,8 +416,8 @@
           $('#total-convert').html('<span>Total Promosi </span><h3 class="card-text" id="total-promosi"></h3>');
        } 
   
-    
-
+      $('#selectPeriode').html('<select id="periode_id"  name="periode_id" title="Pilih Periode"   class="selectpicker"></select>');
+     
        getperiode(year);
        getsemester(semester_val);
        getdaerah();
@@ -473,7 +473,9 @@
 
         
         function getperiode(periode_id){
-               $('#selectPeriode').html('<select id="periode_id"  name="periode_id" title="Pilih Periode"   class="selectpicker"></select>');
+               
+               
+               
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
@@ -495,7 +497,7 @@
 
         function getperiodeList(data){
 
-                var select =  $('#periode_id');
+                 var select =  $('#periode_id');
                  select.empty();
                  $.each(data.result, function(index, option) {
                       select.append($('<option>', {
@@ -503,7 +505,7 @@
                            text: option.text
                       }));
                  });
-                  select.selectpicker('refresh');         
+                 select.selectpicker('refresh');         
         }
 
 
@@ -629,23 +631,23 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                 row +=`<td width="220">${item.sub_menu}</td>`;
+                 row +=`<td width="220"><b>${item.sub_menu}</b></td>`;
                  row +=`<td colspan="2" align="center">${item.target}</td>`;
-                 row +=`<td colspan="2" align="right">${item.pagu}</td>`;
+                 row +=`<td colspan="2" align="right"><b>${item.pagu}</b></td>`;
                 
                  row +=`<td  align="center">${item.realisasi_target_sem_1}</td>`;
                   row +=`<td></td>`;
-                 row +=`<td align="right">${item.realisasi_apbn_sem_1}</td>`; 
+                 row +=`<td align="right"><b>${item.realisasi_apbn_sem_1}</b></td>`; 
                  row +=`<td></td>`;
                   if(semester =="02")
                  {
                     row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
                     row +=`<td></td>`;
-                    row +=`<td align="right">${item.realisasi_apbn_sem_2}</td>`;
+                    row +=`<td align="right"><b>${item.realisasi_apbn_sem_2}</b></td>`;
                     row +=`<td></td>`;
                 }
                 row +=`<td align="center">${item.realisasi_target}</td>`;
-                row +=`<td align="right">${item.realisasi_apbn}</td>`; 
+                row +=`<td align="right"><b>${item.realisasi_apbn}</b></td>`; 
                
                 row +=`</tr>`;
                 content.append(row);
@@ -685,23 +687,23 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                  row +=`<td width="220">${item.sub_menu}</td>`;
+                  row +=`<td width="220"><b>${item.sub_menu}</b></td>`;
                  row +=`<td colspan="2" align="center">${item.target}</td>`;
-                 row +=`<td colspan="2" align="right">${item.pagu}</td>`;
+                 row +=`<td colspan="2" align="right"><b>${item.pagu}</b></td>`;
                 
                  row +=`<td  align="center">${item.realisasi_target_sem_1}</td>`;
                   row +=`<td></td>`;
-                 row +=`<td align="right">${item.realisasi_apbn_sem_1}</td>`; 
+                 row +=`<td align="right"><b>${item.realisasi_apbn_sem_1}</b></td>`; 
                  row +=`<td></td>`;
                   if(semester =="02")
                  {
                     row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
                     row +=`<td></td>`;
-                    row +=`<td align="right">${item.realisasi_apbn_sem_2}</td>`;
+                    row +=`<td align="right"><b>${item.realisasi_apbn_sem_2}</b></td>`;
                     row +=`<td></td>`;
                 }
                 row +=`<td align="center">${item.realisasi_target}</td>`;
-                row +=`<td align="right">${item.realisasi_apbn}</td>`;   
+                row +=`<td align="right"><b>${item.realisasi_apbn}</b></td>`;   
                
                 row +=`</tr>`;
                 content.append(row);
@@ -741,23 +743,23 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                 row +=`<td width="220">${item.sub_menu}</td>`;
+                 row +=`<td width="220"><b>${item.sub_menu}</b></td>`;
                  row +=`<td colspan="2" align="center">${item.target}</td>`;
-                 row +=`<td colspan="2" align="right">${item.pagu}</td>`;
+                 row +=`<td colspan="2" align="right"><b>${item.pagu}</b></td>`;
                 
                  row +=`<td  align="center">${item.realisasi_target_sem_1}</td>`;
                   row +=`<td></td>`;
-                 row +=`<td align="right">${item.realisasi_apbn_sem_1}</td>`; 
+                 row +=`<td align="right"><b>${item.realisasi_apbn_sem_1}</b></td>`; 
                  row +=`<td></td>`;
                   if(semester =="02")
                  {
                     row +=`<td align="center">${item.realisasi_target_sem_2}</td>`;
                     row +=`<td></td>`;
-                    row +=`<td align="right">${item.realisasi_apbn_sem_2}</td>`;
+                    row +=`<td align="right"><b>${item.realisasi_apbn_sem_2}</b></td>`;
                     row +=`<td></td>`;
                 }
                 row +=`<td align="center">${item.realisasi_target}</td>`;
-                row +=`<td align="right">${item.realisasi_apbn}</td>`; 
+                row +=`<td align="right"><b>${item.realisasi_apbn}</b></td>`; 
                
                 row +=`</tr>`;
                 content.append(row);
