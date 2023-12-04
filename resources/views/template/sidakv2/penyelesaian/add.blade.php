@@ -557,6 +557,7 @@
                 $('#modal-add').hide();
                 $('body').removeClass('modal-open');                
                 $('#datatable').DataTable().ajax.reload();
+                window.location.replace('/penyelesaian');
               }
             });
           } else {
@@ -620,6 +621,7 @@
                 $('#modal-add').hide();
                 $('body').removeClass('modal-open');                
                 $('#datatable').DataTable().ajax.reload();
+                window.location.replace('/penyelesaian');
               }
             });
           } else {
