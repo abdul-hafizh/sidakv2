@@ -22,7 +22,7 @@ class RequestDashboard
      if($access == 'province' || $access =='daerah')
      {
            $PaguApbn = PaguTarget::where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->sum('pagu_apbn');
-           $Perencanaan = Perencanaan::where(['status'=>'14','periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
+           $Perencanaan = Perencanaan::where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
             ->sum(\DB::raw('pengawas_analisa_pagu + pengawas_inspeksi_pagu + pengawas_evaluasi_pagu + bimtek_perizinan_pagu + bimtek_pengawasan_pagu + penyelesaian_identifikasi_pagu + penyelesaian_realisasi_pagu + penyelesaian_evaluasi_pagu'));
 
            
@@ -125,10 +125,10 @@ class RequestDashboard
      $access = RequestAuth::Access();
      if($access == 'province' || $access =='daerah')
      {
-          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['status'=>16,'periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->first();
+          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->first();
      }else{
 
-          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['status'=>16,'periode_id'=>$periode_id])->first();
+          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['periode_id'=>$periode_id])->first();
 
      }   
         return $perencanaan;
