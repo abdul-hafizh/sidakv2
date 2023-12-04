@@ -125,10 +125,10 @@ class RequestDashboard
      $access = RequestAuth::Access();
      if($access == 'province' || $access =='daerah')
      {
-        $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu')->where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->first();
+          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->first();
      }else{
 
-          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu')->where(['periode_id'=>$periode_id])->first();
+          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['periode_id'=>$periode_id])->first();
 
      }   
         return $perencanaan;
@@ -928,6 +928,77 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
         }    
 
      }  
+       return $data;
+
+   }
+
+
+   public static function PromosiRealisasiTarget($periode,$daerah_id){
+
+     $access = RequestAuth::Access();
+
+    if($periode < '2024')
+    { 
+         if($access == 'province' || $access =='daerah')
+         {
+            $data = Promosi::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id])->count();
+         }else{
+
+            if($daerah_id =="")
+            {
+                $data = Promosi::where(['status_laporan_id'=>'14','periode_id'=>$periode])->count();
+            }else{
+
+                 $data = Promosi::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id])->count();
+            }    
+         } 
+    }else{
+
+         if($access == 'province' || $access =='daerah')
+         {
+            $data = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id])->count();
+         }else{
+
+            if($daerah_id =="")
+            {
+                $data = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$periode])->count();
+            }else{
+
+                 $data = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id])->count();
+            }    
+         }  
+
+    }  
+
+      return $data;
+       
+
+   }
+
+
+
+
+
+   public static function PromosiRealisasiAPBN($periode_id,$daerah_id)
+   {
+     
+
+        if($periode_id < '2024')
+        {
+             $data = Promosi::where(['status_laporan_id'=>'14','periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
+                     ->sum(\DB::raw('budget_peluang + budget_storyline + budget_storyboard + budget_lokasi + budget_talent + budget_testimoni + budget_audio + budget_editing + budget_gambar + budget_video + budget_editvideo + budget_grafik + budget_mixing + budget_voice + budget_subtitle'));
+
+        }else{
+            
+            $data = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
+                     ->sum(\DB::raw('budget_rencana_kerja + budget_studi_literatur + budget_rapat_kordinasi + budget_data_sekunder + budget_fgd_persiapan + budget_fgd_identifikasi + budget_lq + budget_shift_share + budget_tipologi_sektor + budget_klassen + budget_fgd_klarifikasi + budget_finalisasi + budget_summary_sektor_unggulan + budget_sektor_unggulan + budget_potensi_pasar + budget_parameter_sektor_unggulan + budget_subsektor_unggulan + budget_intensif_daerah + budget_potensi_lanjutan + budget_info_grafis + budget_dokumentasi'));  
+
+        }    
+       
+       
+     
+
+      
        return $data;
 
    }

@@ -25,6 +25,8 @@ use App\Http\Controllers\PromosiController;
 use App\Http\Controllers\PemetaanController;
 use App\Http\Controllers\PengawasanController;
 use App\Http\Controllers\WilayahController;
+use App\Http\Controllers\RekapitulasiController;
+
 
 Route::get('/', function () {
     return redirect('login');
@@ -73,11 +75,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
 });
 
 
-// Route::middleware(['auth', 'pusat'])->group(function ()
-// {
+Route::middleware(['auth', 'pusat'])->group(function ()
+{
 
-//      Route::get('/promosi', [PromosiController::class, 'index']);
-// });
+     Route::get('/rekapitulasi', [RekapitulasiController::class, 'index']);
+});
 
 
 Route::middleware(['auth', 'province', 'pusat'])->group(function () {
