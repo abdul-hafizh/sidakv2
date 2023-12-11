@@ -95,9 +95,6 @@ class RequestBimsos
                         if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
 
                             $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
-                        } else {
-
-                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
                         }
                     }
                 }
@@ -108,6 +105,14 @@ class RequestBimsos
                             if ($val->status_laporan_id != 14) {
                                 $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . '  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy"></i> </div>';
                             }
+                        }
+                    }
+                }
+
+                if ($row->action == 'approval') {
+                    if ($row->checked == true) {
+                        if ($_COOKIE['access'] != "daerah" || $_COOKIE['access'] != "province") {
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
                         }
                     }
                 }
