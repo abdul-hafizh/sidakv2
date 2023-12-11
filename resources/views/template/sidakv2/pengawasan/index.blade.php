@@ -333,6 +333,50 @@
 					}
 
 					$('#header').html(table_header);
+				} else {
+					var table_header = `<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary ">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Perencanaan</span>
+																<h3 class="card-text" >${result.data.total_perencanaan}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Pengawasan Terkirim</span>
+																<h3 class="card-text" >${result.data.total_pengawasan}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Pengawasan Draft</span>
+																<h3 class="card-text">${result.data.total_pengawasan_draft}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>`;
+					$('#header').html(table_header);
 				}
 			},
 			error: function(error) {

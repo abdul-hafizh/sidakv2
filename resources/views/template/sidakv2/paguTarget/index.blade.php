@@ -270,9 +270,9 @@
 			},
 			dataType: 'json',
 			success: function(result) {
-				$('#total_apbn').html(result.total_apbn);
-				$('#total_promosi').html(result.total_promosi);
-				$('#total_all').html(result.total_all);
+				$('#total_apbn').html('<b>' + result.total_apbn + '</b>');
+				$('#total_promosi').html('<b>' + result.total_promosi + '</b>');
+				$('#total_all').html('<b>' + result.total_all + '</b>');
 			},
 			error: function(error) {
 				console.error(error);

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Request;
+
 use Auth;
 use App\Helpers\GeneralHelpers;
 use App\Helpers\GeneralPaginate;
@@ -14,24 +15,22 @@ use App\Models\Pages;
 use App\Http\Request\RequestSettingApps;
 use App\Http\Request\RequestAuth;
 
-class RequestMenuRoles 
+class RequestMenuRoles
 {
-   
-  
 
-   public static function Roles($id)
-   {
 
-       $RoleMenus = RoleMenu::where('role_id',$id)->first();
-       if($RoleMenus !=null)
-       {
-          $data = json_decode(json_encode($RoleMenus->menu_json), FALSE);
-          
-       }else{
-          $data = [];
-       } 
-       return $data;
-   }
+
+    public static function Roles($id)
+    {
+
+        $RoleMenus = RoleMenu::where('role_id', $id)->first();
+        if ($RoleMenus != null) {
+            $data = json_decode(json_encode($RoleMenus->menu_json), FALSE);
+        } else {
+            $data = [];
+        }
+        return $data;
+    }
 
     public static function RoleTasks($array)
     {
@@ -41,333 +40,280 @@ class RequestMenuRoles
 
 
                 if (!$value->tasks) {
-                   if($value->type !='menu')
-                   { 
-                      $result[] = array('name'=>$value->name,'slug'=>$value->slug,'type'=>$value->type,'foldername'=>$value->foldername,'filename'=>$value->filename,'path_web' => $value->path_web,'path_vue'=>$value->path_vue,'path_api'=>$value->path_api);
-                   } 
-
-                } else if($value->path_web && $value->tasks){
-                    $result[] = array('name'=>$value->name,'slug'=>$value->slug,'type'=>$value->type,'foldername'=>$value->foldername,'filename'=>$value->filename,'path_web' => $value->path_web,'path_vue'=>$value->path_vue,'path_api'=>$value->path_api);
+                    if ($value->type != 'menu') {
+                        $result[] = array('name' => $value->name, 'slug' => $value->slug, 'type' => $value->type, 'foldername' => $value->foldername, 'filename' => $value->filename, 'path_web' => $value->path_web, 'path_vue' => $value->path_vue, 'path_api' => $value->path_api);
+                    }
+                } else if ($value->path_web && $value->tasks) {
+                    $result[] = array('name' => $value->name, 'slug' => $value->slug, 'type' => $value->type, 'foldername' => $value->foldername, 'filename' => $value->filename, 'path_web' => $value->path_web, 'path_vue' => $value->path_vue, 'path_api' => $value->path_api);
 
                     $result = array_merge($result, RequestMenuRoles::RoleTasks($value->tasks));
-
-
                 } else {
                     $result = array_merge($result, RequestMenuRoles::RoleTasks($value->tasks));
                 }
-
-
             }
         }
-              
+
         $data = json_decode(json_encode($result), FALSE);
         return $data;
+    }
 
-   }
+    public static function ConvertMenu($data)
+    {
 
-    public static function ConvertMenu($data){
-
-           $objectMenu = json_decode($data);
-           $arr = array();
-            if (isset($objectMenu)) {
-                foreach ($objectMenu as $key => $value) 
-                {
-                   if($key ==0)
-                   {
-                     $active = true; 
-                   }else{
-                     $active = false;
-                   }
-
-                   $arr[$key]['active'] = $active;
-                   $arr[$key]['id'] = $value->id;
-                   $arr[$key]['name'] = $value->name;
-                   $arr[$key]['slug'] = $value->slug;  
-                   $arr[$key]['path_web'] = $value->path_web;
-                   $arr[$key]['class'] = $value->class;
-                   $arr[$key]['icon'] = $value->icon;
-                   $arr[$key]['icon_menu'] = '';
-                   $arr[$key]['icon_hover'] =  $value->icon_hover;
-                   $arr[$key]['option'] = $value->option;
-                   $arr[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ;       
-                       
+        $objectMenu = json_decode($data);
+        $arr = array();
+        if (isset($objectMenu)) {
+            foreach ($objectMenu as $key => $value) {
+                if ($key == 0) {
+                    $active = true;
+                } else {
+                    $active = false;
                 }
-            }     
 
-            $result =  json_encode($arr);
-            return json_decode($result);
+                $arr[$key]['active'] = $active;
+                $arr[$key]['id'] = $value->id;
+                $arr[$key]['name'] = $value->name;
+                $arr[$key]['slug'] = $value->slug;
+                $arr[$key]['path_web'] = $value->path_web;
+                $arr[$key]['class'] = $value->class;
+                $arr[$key]['icon'] = $value->icon;
+                $arr[$key]['icon_menu'] = '';
+                $arr[$key]['icon_hover'] =  $value->icon_hover;
+                $arr[$key]['option'] = $value->option;
+                $arr[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks);
+            }
+        }
 
-   }
+        $result =  json_encode($arr);
+        return json_decode($result);
+    }
 
-   public static function CheckMenuRole($menu)
-   {
-         $res = array(); 
-         $active = ConfigHeader::GetMenuSlug($menu);
-         foreach($menu  as $key =>$value)
-         {
+    public static function CheckMenuRole($menu)
+    {
+        $res = array();
+        $active = ConfigHeader::GetMenuSlug($menu);
+        foreach ($menu  as $key => $value) {
             $res[$key]  = $value->slug;
-         }
+        }
 
-         if(in_array($active, $res))
-         {
+        if (in_array($active, $res)) {
             return true;
-         }else{
+        } else {
             return false;
-         }
+        }
+    }
 
+    public static function MenuSidebar($array)
+    {
 
-   }
-   
-    public static function MenuSidebar($array){
-        
         $template = RequestSettingApps::AppsTemplate();
-        foreach ($array as $key => $value) 
-        {
-            if($key ==0)
-            {
-             $active = true; 
-            }else{
-             $active = false;
+        foreach ($array as $key => $value) {
+            if ($key == 0) {
+                $active = true;
+            } else {
+                $active = false;
             }
 
-            if($value->icon =="")
-            {
-                $icon = url('/template/'.$template.'/img/user.png');
-            }else{
-                $icon = url('/file/menu/'.$value->icon);
-            }  
+            if ($value->icon == "") {
+                $icon = url('/template/' . $template . '/img/user.png');
+            } else {
+                $icon = url('/file/menu/' . $value->icon);
+            }
 
-            if($value->icon_hover =="")
-            {
-                $icon_hover = url('/template/'.$template.'/img/user.png');
-            }else{
-                $icon_hover = url('/file/menu/'.$value->icon_hover);
-            }  
+            if ($value->icon_hover == "") {
+                $icon_hover = url('/template/' . $template . '/img/user.png');
+            } else {
+                $icon_hover = url('/file/menu/' . $value->icon_hover);
+            }
 
-           $arr[$key]['active'] = $active;
-           $arr[$key]['id'] = $value->id;
-           $arr[$key]['name'] = $value->name;
-           $arr[$key]['slug'] = $value->slug;  
-           $arr[$key]['path_web'] = $value->path_web; 
-           $arr[$key]['class'] = $value->class;
-           $arr[$key]['icon'] =  $icon;
-           if($active ==true)
-           {
-              $arr[$key]['icon_menu'] = $icon_hover;
-           }else{
-              $arr[$key]['icon_menu'] =  $icon;
-           } 
-          
-           $arr[$key]['icon_hover'] =  $icon_hover;
-           $arr[$key]['option'] = $value->option;
-           if($value->tasks)
-           {
-              $arr[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ;  
-           }else{
-             $arr[$key]['tasks'] = [];
-           } 
-               
-               
+            $arr[$key]['active'] = $active;
+            $arr[$key]['id'] = $value->id;
+            $arr[$key]['name'] = $value->name;
+            $arr[$key]['slug'] = $value->slug;
+            $arr[$key]['path_web'] = $value->path_web;
+            $arr[$key]['class'] = $value->class;
+            $arr[$key]['icon'] =  $icon;
+            if ($active == true) {
+                $arr[$key]['icon_menu'] = $icon_hover;
+            } else {
+                $arr[$key]['icon_menu'] =  $icon;
+            }
+
+            $arr[$key]['icon_hover'] =  $icon_hover;
+            $arr[$key]['option'] = $value->option;
+            if ($value->tasks) {
+                $arr[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks);
+            } else {
+                $arr[$key]['tasks'] = [];
+            }
         }
- 
-       $result =  json_encode($arr);
-       return json_decode($result);
 
-       
-
-
-   }
-
-   
+        $result =  json_encode($arr);
+        return json_decode($result);
+    }
 
 
-   
 
-   public static function secondaryMenu($array){
+
+
+
+    public static function secondaryMenu($array)
+    {
         $template = RequestSettingApps::AppsTemplate();
         $result = array();
         if (isset($array)) {
             $no = 1;
-            foreach ($array as $key => $value)
-            {
-                   
-                    if($value->icon =="")
-                    {
-                        $icon = url('/template/'.$template.'/img/user.png');
-                    }else{
-                        $icon = url('/file/menu/'.$value->icon);
-                    }  
+            foreach ($array as $key => $value) {
 
-                    if($value->icon_hover =="")
-                    {
-                        $icon_hover = url('/template/'.$template.'/img/user.png');
-                    }else{
-                        $icon_hover = url('/file/menu/'.$value->icon_hover);
-                    }    
-                   $result[$key]['active'] = $value->active;
-                   $result[$key]['id'] = $value->id;
-                   $result[$key]['name'] = $value->name;
-                   $result[$key]['slug'] = $value->slug;  
-                   $result[$key]['path_web'] = $value->path_web;
-                   $result[$key]['class'] = $value->class;
-                   $result[$key]['icon'] =  $icon;
-                   $result[$key]['icon_menu'] = '';
-                   $result[$key]['icon_hover'] =  $icon_hover;
-                   $result[$key]['option'] = $value->option;
-                   $result[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks) ; 
-               
-               $no ++;  
+                if ($value->icon == "") {
+                    $icon = url('/template/' . $template . '/img/user.png');
+                } else {
+                    $icon = url('/file/menu/' . $value->icon);
+                }
+
+                if ($value->icon_hover == "") {
+                    $icon_hover = url('/template/' . $template . '/img/user.png');
+                } else {
+                    $icon_hover = url('/file/menu/' . $value->icon_hover);
+                }
+                $result[$key]['active'] = $value->active;
+                $result[$key]['id'] = $value->id;
+                $result[$key]['name'] = $value->name;
+                $result[$key]['slug'] = $value->slug;
+                $result[$key]['path_web'] = $value->path_web;
+                $result[$key]['class'] = $value->class;
+                $result[$key]['icon'] =  $icon;
+                $result[$key]['icon_menu'] = '';
+                $result[$key]['icon_hover'] =  $icon_hover;
+                $result[$key]['option'] = $value->option;
+                $result[$key]['tasks'] =  RequestMenuRoles::secondaryMenu($value->tasks);
+
+                $no++;
             }
         }
         return $result;
+    }
 
-   }
+    public static function ActionPage($slug)
+    {
+        $access = RequestAuth::AccessID();
+        $res = array();
+        $roleMenu = RoleMenu::where('role_id', $access)->first();
+        if ($roleMenu) {
+            $result = json_decode($roleMenu->menu_json);
+            if ($result) {
+                foreach ($result as $key => $val) {
+                    if ($val->slug == $slug) {
+                        $res = $val->option;
+                    } else {
+                        foreach ($val->tasks as $keys => $vals) {
 
-   public static function ActionPage($slug)
-   {
-     $access = RequestAuth::AccessID();
-     $res = array();
-     $roleMenu = RoleMenu::where('role_id',$access)->first();
-     if($roleMenu)
-     {
-           $result = json_decode($roleMenu->menu_json);
-           if($result)
-           {
-              foreach($result as $key =>$val)
-              {
-                if($val->slug == $slug)
-                {
-                   $res = $val->option;
-                }else{
-                    foreach($val->tasks as $keys =>$vals)
-                    {
+                            if ($vals->slug == $slug) {
+                                $res = $vals->option;
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-                      if($vals->slug == $slug)
-                      {  
-                          $res = $vals->option;
-                      }  
+        if (!$res) {
+            $res = RequestMenuRoles::DefaultChacked();
+        }
 
-                    }    
-                }  
 
-              }
-           } 
-           
-     }
+        return $res;
+    }
 
-     if(!$res)
-     {
-        $res = RequestMenuRoles::DefaultChacked();
-     }   
- 
-       
-     return $res;
+    public static function DefaultChacked()
+    {
+        $result = array();
+        $data = Action::select('name', 'slug')->get();
+        foreach ($data as $key => $val) {
+            $result[$key]['action'] =  $val->slug;
+            $result[$key]['name'] =  $val->name;
+            $result[$key]['checked'] =  false;
+        }
 
-   }
-
-   public static function DefaultChacked(){
-      $result = array();
-      $data = Action::select('name','slug')->get();
-      foreach($data as $key =>$val)
-      {
-        $result[$key]['action'] =  $val->slug;
-        $result[$key]['name'] =  $val->name;
-        $result[$key]['checked'] =  false;
-      } 
-
-      return $result; 
-   }
+        return $result;
+    }
 
 
     public static function SlugPage($slug)
-   {
-     $access = RequestAuth::AccessID();
-     $res = array();
-     $roleMenu = RoleMenu::where('role_id',$access)->first();
-     if($roleMenu)
-     {
-           $result = json_decode($roleMenu->menu_json);
-           if($result)
-           {
-              foreach($result as $key =>$val)
-              {
-                $path_web = $val->path_web;
+    {
+        $access = RequestAuth::AccessID();
+        $res = array();
+        $roleMenu = RoleMenu::where('role_id', $access)->first();
+        if ($roleMenu) {
+            $result = json_decode($roleMenu->menu_json);
+            if ($result) {
+                foreach ($result as $key => $val) {
+                    $path_web = $val->path_web;
 
-                if($val->path_web == '/'.$slug)
-                {
-                   $res['menu_utama'] = $val->slug;
-                   $res['menu_sub'] = '';
-                   $res['count'] = count($val->tasks);
-                   $res['type'] = 'main';
-                }else{
-                    foreach($val->tasks as $keys =>$vals)
-                    {
+                    if ($val->path_web == '/' . $slug) {
+                        $res['menu_utama'] = $val->slug;
+                        $res['menu_sub'] = '';
+                        $res['count'] = count($val->tasks);
+                        $res['type'] = 'main';
+                    } else {
+                        foreach ($val->tasks as $keys => $vals) {
 
-                      if($vals->slug == $slug)
-                      {  
-                           $res['menu_utama'] = $val->slug;
-                           $res['menu_sub'] = $vals->slug;
-                           $res['count'] = count($val->tasks);
-                           $res['type'] = 'sub';
-                      }  
+                            if ($vals->slug == $slug) {
+                                $res['menu_utama'] = $val->slug;
+                                $res['menu_sub'] = $vals->slug;
+                                $res['count'] = count($val->tasks);
+                                $res['type'] = 'sub';
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
-                    }    
-                }  
 
-              }
-           } 
-           
-     }
 
-     
- 
-       
-     return $res;
 
-   }
+        return $res;
+    }
 
-   public static function CreatePages($slug)
-   {
-        $pages = Pages::where('slug',$slug)->first();
-        if($pages)
-        { 
+    public static function CreatePages($slug)
+    {
+        $pages = Pages::where('slug', $slug)->first();
+        if ($pages) {
             $result = true;
-        }else{
+        } else {
             $result = false;
-        } 
-         
+        }
+
 
         return  $result;
-   }
+    }
 
-   public static function Condition($path)
-   {  
+    public static function Condition($path)
+    {
         $path =  json_encode($path);
         $path =  json_decode($path);
         $res = array();
         $result = array();
-        foreach($path as $key =>$value)
-        {
-           $res[$key] = $value->slug;
+        foreach ($path as $key => $value) {
+            $res[$key] = $value->slug;
         }
 
-        if (in_array('menu', $res))
-        {
+        if (in_array('menu', $res)) {
             $result = true;
-        }else{
-           $result = false;
+        } else {
+            $result = false;
         }
 
-        return $result; 
-
-   }
+        return $result;
+    }
 
 
     public static function fieldsData($request)
     {
         $uuid = Str::uuid()->toString();
-        $fields = [  
-            'id'=> $uuid,
+        $fields = [
+            'id' => $uuid,
             'role_id'  => $request->role_id,
             'menu_json'  =>  $request->menu,
             'created_by' => Auth::User()->username,
@@ -376,12 +322,13 @@ class RequestMenuRoles
         return $fields;
     }
 
-    public static function fieldsPages($request){
+    public static function fieldsPages($request)
+    {
 
-       $uuid = Str::uuid()->toString();
+        $uuid = Str::uuid()->toString();
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $request->name)));
-        $fields = [  
-            'id'=> $uuid,
+        $fields = [
+            'id' => $uuid,
             'name' => $request->name,
             'slug' => $slug,
             'role_id'  => $request->role_id,
@@ -390,7 +337,7 @@ class RequestMenuRoles
             'type'  => $request->type,
             'label_list'  =>  json_encode($request->label_list),
             'action_list'  => json_encode($request->action_list),
-            'limit_table' =>$request->limit_table,
+            'limit_table' => $request->limit_table,
             'path_api'  => $request->path_api,
             'search'  => $request->search,
             'paginate'  => $request->paginate,
@@ -398,10 +345,8 @@ class RequestMenuRoles
             'created_at' => date('Y-m-d H:i:s'),
         ];
 
-       $result =  json_encode($fields);
-       return json_decode($result);
-       
-
+        $result =  json_encode($fields);
+        return json_decode($result);
     }
 
 
@@ -409,97 +354,72 @@ class RequestMenuRoles
     {
         $result = RequestMenuRoles::RoleTasks($data);
         return RequestMenuRoles::createDirectory($result);
-       
     }
 
-    
 
-     public static function createDirectory($data) 
-    {   
 
-        
+    public static function createDirectory($data)
+    {
+
+
         $temp = RequestSettingApps::AppsTemplate();
 
-        foreach($data as $key =>$val)
-        {
-            
-            if($val->type =='table')
-            {
-              $sampleTable = RequestMenuRoles::sampleTable();  
-            }else if($val->type =='form'){
-              $sampleTable = RequestMenuRoles::sampleForm();   
-            }else if($val->type =='view'){
-              $sampleView = RequestMenuRoles::sampleView();   
-            }     
-            $path = resource_path() . '/assets/js/template/'.$temp.'/components/' . $val->foldername;
-            if (!file_exists($path)) 
-            {
-                mkdir($path, 0777, true);
-                if(!file_exists($path.'/'.$val->filename.'.vue'))
-                {
-                   $filepath = fopen($path.'/'.$val->filename.'.vue', 'w') or die('Unable to open file!');
-                    
-                    fwrite($filepath, $sampleTable);   
-                }    
-                
-               
-            }else{
+        foreach ($data as $key => $val) {
 
-                if(!file_exists($path.'/'.$val->filename.'.vue'))
-                {
-                    $filepath = fopen($path.'/'.$val->filename.'.vue', 'w') or die('Unable to open file!');
-                    
-                    fwrite($filepath, $sampleTable);   
-                }  
-
+            if ($val->type == 'table') {
+                $sampleTable = RequestMenuRoles::sampleTable();
+            } else if ($val->type == 'form') {
+                $sampleTable = RequestMenuRoles::sampleForm();
+            } else if ($val->type == 'view') {
+                $sampleView = RequestMenuRoles::sampleView();
             }
+            $path = resource_path() . '/assets/js/template/' . $temp . '/components/' . $val->foldername;
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);
+                if (!file_exists($path . '/' . $val->filename . '.vue')) {
+                    $filepath = fopen($path . '/' . $val->filename . '.vue', 'w') or die('Unable to open file!');
 
+                    fwrite($filepath, $sampleTable);
+                }
+            } else {
 
-        }    
+                if (!file_exists($path . '/' . $val->filename . '.vue')) {
+                    $filepath = fopen($path . '/' . $val->filename . '.vue', 'w') or die('Unable to open file!');
 
-       
-        
+                    fwrite($filepath, $sampleTable);
+                }
+            }
+        }
     }
 
-     public static function createDirectorySingle($data) 
-    {  
-            $template = GeneralPaginate::Template();
-            if($data->type =='table')
-            {
-              $sample = RequestMenuRoles::sampleTable();  
-            }    
-            
-            $path = resource_path() . '/assets/js/template/'.$template.'/components/' . $data->foldername;
-            if (!file_exists($path)) 
-            {
-                mkdir($path, 0777, true);
-                if(!file_exists($path.'/'.$data->filename.'.vue'))
-                {
-                   $filepath = fopen($path.'/'.$data->filename.'.vue', 'w') or die('Unable to open file!');
-                    
-                    fwrite($filepath, $sample);   
-                }    
-                
-               
-            }else{
+    public static function createDirectorySingle($data)
+    {
+        $template = GeneralPaginate::Template();
+        if ($data->type == 'table') {
+            $sample = RequestMenuRoles::sampleTable();
+        }
 
-                if(!file_exists($path.'/'.$data->filename.'.vue'))
-                {
-                    $filepath = fopen($path.'/'.$data->filename.'.vue', 'w') or die('Unable to open file!');
-                    
-                    fwrite($filepath, $sample);   
-                }  
+        $path = resource_path() . '/assets/js/template/' . $template . '/components/' . $data->foldername;
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+            if (!file_exists($path . '/' . $data->filename . '.vue')) {
+                $filepath = fopen($path . '/' . $data->filename . '.vue', 'w') or die('Unable to open file!');
 
+                fwrite($filepath, $sample);
             }
+        } else {
 
+            if (!file_exists($path . '/' . $data->filename . '.vue')) {
+                $filepath = fopen($path . '/' . $data->filename . '.vue', 'w') or die('Unable to open file!');
 
-     
-       
-        
+                fwrite($filepath, $sample);
+            }
+        }
     }
 
-    public static function sampleTable(){
-          $sample = '<template>
+    public static function sampleTable()
+    {
+        $sample = '<template>
 <div>
     <section class="content-header pd-left-right-15">
     <div class="col-sm-4 pull-left padding-default full">
@@ -887,17 +807,16 @@ class RequestMenuRoles
 </script>';
 
 
-    
-
-    return  $sample;
 
 
-  }
+        return  $sample;
+    }
 
-    
-  public static function sampleForm(){
-  
-   $sample ='
+
+    public static function sampleForm()
+    {
+
+        $sample = '
     <template>
 
 <div class="content">
@@ -1023,14 +942,13 @@ class RequestMenuRoles
    ';
 
 
-   return $sample;
-   
+        return $sample;
+    }
 
-  } 
+    public static function sampleView()
+    {
 
-  public static function sampleView(){
-
-    $sample ='<template>
+        $sample = '<template>
 <div>
 
 <div class="content">
@@ -1143,7 +1061,6 @@ class RequestMenuRoles
 ';
 
 
-    return $sample;
-  }
-
+        return $sample;
+    }
 }

@@ -101,7 +101,7 @@
 		<div class="col-sm-2" style="margin-bottom: 9px;">
 			<input type="text" id="search-input" class="form-control border-radius-13" placeholder="Pencarian">
 		</div>
-		<div class="col-lg-2">
+		<div class="col-sm-2">
 			<div class="btn-group">
 				<button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
 				<button id="Clear" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
@@ -312,6 +312,50 @@
 					</table>`;
 					}
 
+					$('#header').html(table_header);
+				} else {
+					var table_header = `<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary ">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Perencanaan</span>
+																<h3 class="card-text" >${result.data.total_perencanaan}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Bimsos Terkirim</span>
+																<h3 class="card-text" >${result.data.total_bimsos}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Bimsos Draft</span>
+																<h3 class="card-text">${result.data.total_bimsos_draft}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>`;
 					$('#header').html(table_header);
 				}
 			},
