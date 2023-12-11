@@ -33,7 +33,7 @@ class ValidationPengawasan
                 'tanggal_kegiatan'  => 'required',
                 //    'jml_peserta'  => 'required_if:sub_menu_slug,is_bimtek_ipbbr|nullable|integer',
                 'biaya'  => 'required|integer',
-                'lokasi'  => 'required',
+                'lokasi'  => 'required_if:sub_menu_slug,analisa|required_if:sub_menu_slug,evaluasi'
             ]
         );
 
@@ -206,7 +206,7 @@ class ValidationPengawasan
                 'tanggal_kegiatan'  => 'required',
                 //    'jml_peserta'  => 'required_if:sub_menu_slug,is_bimtek_ipbbr|nullable|integer',
                 'biaya'  => 'required|integer',
-                'lokasi'  => 'required',
+                'lokasi'  => 'required_if:sub_menu_slug,analisa|required_if:sub_menu_slug,evaluasi',
                 //  "nib"    => "required|array|min:1",
                 // "nib.*"  => "required",
             ]

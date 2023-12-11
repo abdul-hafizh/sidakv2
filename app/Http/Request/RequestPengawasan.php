@@ -53,7 +53,7 @@ class RequestPengawasan
         $column_search  = array('sub_menu_slug', 'nama_kegiatan', 'tgl_kegiatan', 'biaya_kegiatan', 'status_laporan_id');
         $order = array('sub_menu_slug' => 'ASC');
 
-        $data = DB::table('pengawasan')->select('pengawasan.*', 'pengawasan_perusahaan.nama_perusahaan as nama_prshn')->leftJoin('pengawasan_perusahaan', 'pengawasan.id', '=', 'pengawasan_perusahaan.pengawasan_id')->groupBy('pengawasan.id');
+        $data = DB::table('pengawasan')->select('pengawasan.*', DB::raw('GROUP_CONCAT(pengawasan_perusahaan.nama_perusahaan) as nama_prshn'))->leftJoin('pengawasan_perusahaan', 'pengawasan.id', '=', 'pengawasan_perusahaan.pengawasan_id')->groupBy('pengawasan.id');
 
         if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
             $data->where('daerah_id', Auth::User()->daerah_id);
@@ -256,6 +256,7 @@ class RequestPengawasan
             $data_perusahaan[$key] = [
                 'id' => Str::uuid()->toString(),
                 'pengawasan_id' => $id,
+                'lokasi_kegiatan' => $request->lokasi_perusahaan[$key],
                 'nama_perusahaan' => $request->nama_perusahaan[$key],
                 'kontak' => $request->kontak[$key],
                 'nib' => $request->nib[$key],
