@@ -22,12 +22,15 @@ class PaguTargetImport implements ToModel, WithStartRow
             'type_daerah' => $row[3],
             'periode_id' => $row[4],
             'pagu_apbn' => $row[5],
-            'pagu_promosi' => $row[6],
-            'pagu_dalak' => $row[7],
-            'target_pengawasan' => $row[8],
-            'target_penyelesaian_permasalahan' => $row[9],
-            'target_bimbingan_teknis' => $row[10],
-            'target_video_promosi' => $row[11],
+            'pagu_pengawasan' => $row[6],
+            'pagu_penyelesaian_permasalahan' => $row[7],
+            'pagu_bimbingan_teknis' => $row[8],
+            'pagu_promosi' => $row[9],
+            'pagu_dalak' => $row[10],
+            'target_pengawasan' => $row[11],
+            'target_penyelesaian_permasalahan' => $row[12],
+            'target_bimbingan_teknis' => $row[13],
+            'target_video_promosi' => $row[14],
 
         ]);
     }

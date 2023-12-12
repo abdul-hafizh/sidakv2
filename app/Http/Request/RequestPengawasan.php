@@ -119,7 +119,7 @@ class RequestPengawasan
 
             $row    = array();
             $row[]  = $val->id;
-            $row[]  = RequestDaerah::GetDaerahWhereName($val->daerah_id);
+            $row[]  = RequestDaerah::GetDaerahWhereID($val->daerah_id);
             $row[]  = RequestPengawasan::getLabelSubMenu($val->sub_menu_slug);
             $row[]  = $val->nama_prshn;
             $row[]  = $val->nama_kegiatan;
