@@ -64,13 +64,12 @@
             <span id="biaya-messages"></span>
           </div>
 
-          <div id="lokasi-alert" class="form-group has-feedback">
-            <label>Lokasi Kegiatan</label>
-            <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi Kegiatan" value="">
-            <span id="lokasi-messages"></span>
-          </div>
-
           <div class="is_analisa">
+            <div id="lokasi-alert" class="form-group has-feedback">
+              <label>Lokasi Kegiatan</label>
+              <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi Kegiatan" value="">
+              <span id="lokasi-messages"></span>
+            </div>
             <div id="lap_kegiatan-alert" class="form-group has-feedback">
               <label>Laporan</label>
               <a href="#" class="text-bold text-profile" id="modal-lap_kegiatan" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kegiatan)</small></a>
@@ -90,6 +89,14 @@
                     <label>Data Perusahaan</label>
                     <button type="button" class="btn btn-info" style="float: right;" id="btn-add-row"><i class="fa fa-plus"></i></button>
                     <table class="table table-hover text-nowrap">
+                      <tr>
+                        <td colspan="2" style="padding: 2px;">
+                          <div id="lokasi_perusahaan_0-alert" class=" has-feedback">
+                            <input type="text" class="form-control" name="lokasi_perusahaan[0]" placeholder="Lokasi Kegiatan" value="">
+                            <span id="lokasi_perusahaan_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
                       <tr>
                         <td style="padding: 2px;">
                           <div id="nib_0-alert" class="has-feedback">
@@ -372,6 +379,14 @@
       <label>Data Perusahaan</label>
       <button class="btn btn-danger btn-sm" type="button" style="float: right;" onclick="if($('#tbody-row tr').length > 1) { $(this).closest('tr').remove() }"><i class="fa fa-trash"></i></button>
       <table class="table table-hover text-nowrap">
+        <tr>
+          <td colspan="2" style="padding: 2px;">
+            <div id="lokasi_perusahaan_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="text" class="form-control" name="lokasi_perusahaan[countArraynyaDigantiNanti]" placeholder="Lokasi Kegiatan" value="">
+              <span id="lokasi_perusahaan_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
         <tr>
           <td style="padding: 2px;">
             <div id="nib_countArraynyaDigantiNanti-alert" class="has-feedback">
@@ -936,6 +951,16 @@
           else
             row += `<button class="btn btn-danger btn-sm" type="button" style="float: right;" onclick="if($('#tbody-row tr').length > 1) { $(this).closest('tr').remove() }"><i class="fa fa-trash"></i></button>`;
           row += `<table class="table table-hover text-nowrap">`;
+
+          row += `<tr>
+                    <td colspan="2" style="padding: 2px;">
+                      <div id="lokasi_perusahaan${index}-alert" class=" has-feedback">
+                        <input type="text" class="form-control" name="lokasi_perusahaan[${index}]" placeholder="Lokasi Kegiatan" value="` + option.lokasi_kegiatan + `">
+                        <span id="lokasi_perusahaan_${index}-messages"></span>
+                      </div>
+                    </td>
+                  </tr>`;
+
           row += `<tr>`;
           row += `<td style="padding: 2px;">`;
           row += `<div id="nib_${index}-alert" class="has-feedback">`;
