@@ -67,21 +67,49 @@
 
 <section class="content-header pd-left-right-15">
 	<div class="row">
-		<div class="col-lg-4 col-md-6 col-sm-12">
+		<div class="col-lg-3 col-md-6 col-sm-12">
 			<div class="box box-solid box-primary ">
 				<div class="box-body btn-primary border-radius-13">
 					<div class="card-body table-responsive p-0">
 						<div class="media">
 							<div class="media-body text-left">
-								<span>Pagu APBN</span>
-								<h3 class="card-text" id="total_apbn"></h3>
+								<span>Pagu Pengawasan</span>
+								<h3 class="card-text" id="total_pengawasan"></h3>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-4 col-md-6 col-sm-12">
+		<div class="col-lg-3 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary ">
+				<div class="box-body btn-primary border-radius-13">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Pagu Penyelesaian Permasalahan</span>
+								<h3 class="card-text" id="total_penyelesaian_permasalahan"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-6 col-sm-12">
+			<div class="box box-solid box-primary ">
+				<div class="box-body btn-primary border-radius-13">
+					<div class="card-body table-responsive p-0">
+						<div class="media">
+							<div class="media-body text-left">
+								<span>Pagu Bimbingan Teknis</span>
+								<h3 class="card-text" id="total_bimbingan_teknis"></h3>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-6 col-sm-12">
 			<div class="box box-solid box-primary">
 				<div class="box-body btn-primary border-radius-13">
 					<div class="card-body table-responsive p-0">
@@ -95,7 +123,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-4 col-md-6 col-sm-12">
+		<div class="col-lg-3 col-md-6 col-sm-12">
 			<div class="box box-solid box-primary">
 				<div class="box-body btn-primary border-radius-13">
 					<div class="card-body table-responsive p-0">
@@ -194,12 +222,15 @@
 							</th>
 							<th rowspan="2"><span class="border-left-table">Type </span> </th>
 							<th rowspan="2"><span class="border-left-table">Periode </span></th>
-							<th colspan="3" class="dt-head-center">Pagu</th>
+							<th colspan="6" class="dt-head-center">Pagu</th>
 							<th colspan="4" class="dt-head-center border-left-table">Target</th>
 							<th rowspan="2"><span class="border-left-table"> Aksi </span> </th>
 						</tr>
 						<tr>
 							<th><span class="border-left-table"> APBN (Rp) </span> </th>
+							<th><span class="border-left-table"> Pengawasan (Rp) </span> </th>
+							<th><span class="border-left-table"> Penyelesaian Permasalahan (Rp) </span> </th>
+							<th><span class="border-left-table"> Bimbingan Teknis (Rp) </span> </th>
 							<th><span class="border-left-table"> Promosi (Rp) </span> </th>
 							<th><span class="border-left-table"> Dalak (Rp) </span> </th>
 							<th class="border-left-table"> Pengawasan </th>
@@ -271,6 +302,9 @@
 			dataType: 'json',
 			success: function(result) {
 				$('#total_apbn').html('<b>' + result.total_apbn + '</b>');
+				$('#total_pengawasan').html('<b>' + result.total_pengawasan + '</b>');
+				$('#total_penyelesaian_permasalahan').html('<b>' + result.total_penyelesaian_permasalahan + '</b>');
+				$('#total_bimbingan_teknis').html('<b>' + result.total_bimbingan_teknis + '</b>');
 				$('#total_promosi').html('<b>' + result.total_promosi + '</b>');
 				$('#total_all').html('<b>' + result.total_all + '</b>');
 			},
@@ -353,11 +387,11 @@
 					}
 				},
 				{
-					targets: [4, 5, 6],
+					targets: [4, 5, 6, 7, 8, 9],
 					className: 'dt-body-right'
 				},
 				{
-					targets: [2, 3, 7, 8, 9, 10],
+					targets: [2, 3, 10, 11, 12, 13],
 					className: 'dt-body-center'
 				}
 			],
@@ -389,10 +423,10 @@
 
 		function reformatNumber(data, row, column, node) {
 			// replace spaces with nothing; replace commas with points.
-			if (column == 4 || column == 5 || column == 6) {
+			if (column == 4 || column == 5 || column == 6 || column == 7 || column == 8 || column == 9) {
 				var newData = data.replace('Rp ', '').replaceAll('.', '');
 				return newData;
-			} else if (column != 0 && column != 11) {
+			} else if (column != 0 && column != 14) {
 				return data;
 			}
 		}

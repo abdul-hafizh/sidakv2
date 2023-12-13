@@ -1462,6 +1462,8 @@
                   $('.modal-backdrop').remove();
                   $('#datatable').DataTable().ajax.reload();
 
+                  // window.location.replace('/pengawasan');
+
                 }
               });
 
