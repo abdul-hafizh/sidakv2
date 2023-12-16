@@ -75,7 +75,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-4" style="margin-bottom: 9px;">
+		<div class="col-sm-3" style="margin-bottom: 9px;">
 			<select class="form-control height-35 border-radius-13" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
 				<option value="">Pilih Periode</option>
 			</select>
