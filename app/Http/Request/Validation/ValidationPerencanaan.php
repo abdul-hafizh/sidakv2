@@ -43,7 +43,7 @@ class ValidationPerencanaan
             'pengawas_inspeksi_target' => 'required|numeric|min:0|gt:0',
             'pengawas_inspeksi_pagu' => 'required|numeric|min:0|gt:0',
             'pengawas_evaluasi_target' => 'numeric',
-            'pengawas_evaluasi_pagu' => 'required|numeric|min:0|gt:0',
+            'pengawas_evaluasi_pagu' => 'numeric',
 
             'bimtek_perizinan_target' => 'required|numeric|min:0|gt:0',
             'bimtek_perizinan_pagu' => 'required|numeric|min:0|gt:0',
@@ -55,7 +55,7 @@ class ValidationPerencanaan
             'penyelesaian_realisasi_target' => 'required|numeric|min:0|gt:0',
             'penyelesaian_realisasi_pagu' => 'required|numeric|min:0|gt:0',
             'penyelesaian_evaluasi_target' => 'numeric',
-            'penyelesaian_evaluasi_pagu' => 'required|numeric|min:0|gt:0',
+            'penyelesaian_evaluasi_pagu' => 'numeric',
 
             'periode_id' => [
                 'required',
