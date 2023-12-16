@@ -75,13 +75,13 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-2" style="margin-bottom: 9px;">
+		<div class="col-sm-4" style="margin-bottom: 9px;">
 			<select class="form-control height-35 border-radius-13" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
 				<option value="">Pilih Periode</option>
 			</select>
 		</div>
 		@if($access =='admin' || $access == 'pusat' )
-		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
+		<div class="col-sm-3" id="daerah-search" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Provinsi/Kabupaten" data-live-search="true">
 				<option value="">Pilih Daerah</option>
 			</select>
@@ -89,7 +89,7 @@
 		@else
 		<input type="hidden" class="form-control" name="daerah_id" id="daerah_id" value="">
 		@endif
-		<div class="col-sm-2" style="margin-bottom: 9px;">
+		<div class="col-sm-3" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
 				<option value="">Pilih Jenis Kegiatan</option>
 				<option value="identifikasi">Identifikasi Penyelesaian</option>
