@@ -209,13 +209,13 @@ class PenyelesaianApiController extends Controller
                 $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.';
             }
 
-            if (
-                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
-                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
-                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
-            ) {
-                $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
-            }
+            // if (
+            //     ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
+            //     ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
+            //     ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
+            // ) {
+            //     $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
+            // }
 
             if (!empty($err)) {
                 return response()->json($err, 400);
@@ -353,13 +353,13 @@ class PenyelesaianApiController extends Controller
                 $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.';
             }
 
-            if (
-                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
-                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
-                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
-            ) {
-                $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
-            }
+            // if (
+            //     ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
+            //     ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
+            //     ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
+            // ) {
+            //     $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
+            // }
 
             if (!empty($err)) {
                 return response()->json($err, 400);
