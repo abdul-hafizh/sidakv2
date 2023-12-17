@@ -99,15 +99,15 @@
 	</div>
 
     <div class="row margin-top-bottom-20">
-        <div class="col-sm-2" style="margin-bottom: 9px;">
+        <div class="col-lg-3 col-sm-12" style="margin-bottom: 9px;">
                  <div id="selectPeriode" class="form-group margin-none"></div>
             </div> 	        
         @if($access == 'admin' || $access == 'pusat' )
-        <div class="col-sm-2" style="margin-bottom: 9px;">
+        <div class="col-lg-3 col-sm-12" style="margin-bottom: 9px;">
             <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Daerah"></select>
         </div>
         @endif
-        <div class="col-sm-2" style="margin-bottom: 9px;">    
+        <div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">    
             <select id="search_status" class="selectpicker" data-style="btn-default" title="Pilih Status">
                 <option value="1">Draft</option>
                 <option value="2">Request Dokumen</option>
@@ -117,10 +117,10 @@
                 <option value="6">Perlu Perbaikan</option>
             </select>
         </div> 	
-        <div class="col-sm-2" style="margin-bottom: 9px;">
+        <div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">
             <input type="text" id="search_text" class="form-control border-radius-13" placeholder="Pencarian">
         </div> 	
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-sm-12">
             <div class="btn-group">
                 <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
                 <button id="Reset" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
@@ -168,7 +168,7 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table class="table table-hover" border="0" style="height: auto">
+				<table class="table table-hover" border="0" style="height: 100%">
                     <thead>
                         <tr>
                            <th rowspan="2" id="ShowChecklistAll" style="display:none;" >
