@@ -109,6 +109,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('pengawasan/kirim/{id}', [PengawasanApiController::class, 'update']);
     Route::delete('pengawasan/{id}', [PengawasanApiController::class, 'delete']);
     Route::post('pengawasan/selected', [PengawasanApiController::class, 'deleteSelected']);
+    Route::post('pengawasan/approve_selected', [PengawasanApiController::class, 'approveSelected']);
     Route::put('pengawasan/request_edit/{id}', [PengawasanApiController::class, 'request_edit']);
     Route::put('pengawasan/request_revisi/{id}', [PengawasanApiController::class, 'request_revisi']);
     Route::put('pengawasan/approve_edit/{id}', [PengawasanApiController::class, 'approve_edit']);
@@ -128,7 +129,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('regency/search', [RegencyApiController::class, 'search']);
     Route::post('regency/selected', [RegencyApiController::class, 'deleteSelected']);
     Route::delete('regency/{id}', [RegencyApiController::class, 'delete']);
-    
+
     Route::get('dashboard', [DashboardApiController::class, 'index']);
 
     Route::get('role', [RolesApiController::class, 'index']);
@@ -236,6 +237,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('bimsos/kirim/{id}', [BimsosApiController::class, 'update']);
     Route::delete('bimsos/{id}', [BimsosApiController::class, 'delete']);
     Route::post('bimsos/selected', [BimsosApiController::class, 'deleteSelected']);
+    Route::post('bimsos/approve_selected', [BimsosApiController::class, 'approveSelected']);
     Route::put('bimsos/request_edit/{id}', [BimsosApiController::class, 'request_edit']);
     Route::put('bimsos/request_revisi/{id}', [BimsosApiController::class, 'request_revisi']);
     Route::put('bimsos/approve_edit/{id}', [BimsosApiController::class, 'approve_edit']);
@@ -288,7 +290,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
 
     Route::get('rekapitulasi', [RekapitulasiApiController::class, 'index']);
-    
+
 
     // Route::get('user/profile', [UserApiController::class, 'GetUserID']);
     // Route::post('user/update', [UserApiController::class, 'updateProfile']);

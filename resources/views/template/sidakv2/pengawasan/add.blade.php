@@ -693,7 +693,9 @@
             title: 'Sukses!',
             text: respons.message,
             icon: 'success',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
 
           }).then((result) => {
             if (result.isConfirmed) {
@@ -722,7 +724,9 @@
           Swal.fire({
             title: 'Periksa kembali data anda.',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
           }).then((result) => {});
         }
       });
@@ -759,7 +763,9 @@
             title: 'Sukses!',
             text: respons.message,
             icon: 'success',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
 
           }).then((result) => {
             if (result.isConfirmed) {
@@ -788,7 +794,9 @@
           Swal.fire({
             title: 'Periksa kembali data anda.',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
           }).then((result) => {});
         }
       });
@@ -1323,7 +1331,9 @@
               title: 'Sukses!',
               text: respons.message,
               icon: 'success',
-              confirmButtonText: 'OK'
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              allowEscapeKey: false
             }).then((result) => {
               if (result.isConfirmed) {
                 $('#modal-add').hide();
@@ -1380,7 +1390,9 @@
               title: 'Sukses!',
               text: respons.message,
               icon: 'success',
-              confirmButtonText: 'OK'
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              allowEscapeKey: false
             }).then((result) => {
               if (result.isConfirmed) {
                 $('#modal-add').hide();
@@ -1452,7 +1464,9 @@
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -1521,7 +1535,9 @@
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -1550,7 +1566,9 @@
               Swal.fire({
                 title: 'Periksa kembali data anda.',
                 icon: 'error',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
               }).then((result) => {});
             }
           });
@@ -1572,7 +1590,9 @@
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {
