@@ -66,7 +66,7 @@
   </div>
 </div>
 
-<div id="modal-add" class="modal fade in" role="dialog">
+<div id="modal-add" class="modal fade in" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header bg-primary">
@@ -330,7 +330,7 @@
   </div>
 </div>
 
-<div class="modal fade" id="modalPDF" role="dialog" data-backdrop="static" data-keyboard="false">
+<div id="modalPDF" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

@@ -89,7 +89,7 @@
 		@else
 		<input type="hidden" class="form-control" name="daerah_id" id="daerah_id" value="">
 		@endif
-		<div class="col-lg-3 col-sm-12" style="margin-bottom: 9px;">
+		<div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
 				<option value="">Pilih Jenis Kegiatan</option>
 				<option value="identifikasi">Identifikasi Penyelesaian</option>
