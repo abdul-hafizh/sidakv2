@@ -75,13 +75,13 @@
 	</div>
 
 	<div class="row">
-		<div class="col-sm-2" style="margin-bottom: 9px;">
+		<div class="col-lg-3 col-sm-12">
 			<select class="form-control height-35 border-radius-13" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
 				<option value="">Pilih Periode</option>
 			</select>
 		</div>
 		@if($access =='admin' || $access == 'pusat' )
-		<div class="col-sm-2" id="daerah-search" style="margin-bottom: 9px;">
+		<div class="col-lg-3 col-sm-12" id="daerah-search" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Provinsi/Kabupaten" data-live-search="true">
 				<option value="">Pilih Daerah</option>
 			</select>
@@ -89,7 +89,7 @@
 		@else
 		<input type="hidden" class="form-control" name="daerah_id" id="daerah_id" value="">
 		@endif
-		<div class="col-sm-2" style="margin-bottom: 9px;">
+		<div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
 				<option value="">Pilih Jenis Kegiatan</option>
 				<option value="identifikasi">Identifikasi Penyelesaian</option>
@@ -97,7 +97,7 @@
 				<option value="evaluasi">Evaluasi Penyelesaian</option>
 			</select>
 		</div>
-		<div class="col-sm-2" style="margin-bottom: 9px;">
+		<div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">
 			<select class="selectpicker" name="search_status" id="search_status">
 				<option value="">Pilih Status</option>
 				<option value="13">Draft</option>
@@ -106,10 +106,10 @@
 				<option value="13">Perlu Perbaikan</option>
 			</select>
 		</div>
-		<div class="col-sm-2" style="margin-bottom: 9px;">
+		<div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">
 			<input type="text" id="search-input" placeholder="Cari" class="form-control border-radius-13">
 		</div>
-		<div class="col-lg-2">
+		<div class="col-lg-2 col-sm-12">
 			<div class="btn-group">
 				<button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
 				<button id="Clear" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
@@ -153,7 +153,7 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table id="datatable" class="table-hover" style="height: auto">
+				<table id="datatable" class="table-hover" style="height: 100%">
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>
