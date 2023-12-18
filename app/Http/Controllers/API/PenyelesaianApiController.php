@@ -615,4 +615,20 @@ class PenyelesaianApiController extends Controller
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
     }
+
+    public function approveSelected(Request $request)
+    {
+        $messages['messages'] = false;
+
+        foreach ($request->data as $key) {
+            $update = RequestPenyelesaian::fieldApprEdit($request);
+            $results = Penyelesaian::where('id', (int)$key)->update($update);
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    }
 }
