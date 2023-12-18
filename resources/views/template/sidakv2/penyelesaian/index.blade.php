@@ -68,12 +68,10 @@
 </style>
 
 <section class="content-header pd-left-right-15">
-
 	<div class="row">
 		<div class="col-md-12" id="header">
 		</div>
 	</div>
-
 	<div class="row">
 		<div class="col-lg-3 col-sm-12">
 			<select class="form-control height-35 border-radius-13" data-style="btn-default" name="periode_id2" id="periode_id2" title="Pilih Periode" data-live-search="true">
@@ -81,14 +79,15 @@
 			</select>
 		</div>
 		@if($access =='admin' || $access == 'pusat' )
-		<div class="col-lg-3 col-sm-12" id="daerah-search" style="margin-bottom: 9px;">
+		<div class="col-lg-2 col-sm-12" id="daerah-search" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="daerah_id" id="daerah_id" title="Pilih Provinsi/Kabupaten" data-live-search="true">
 				<option value="">Pilih Daerah</option>
 			</select>
 		</div>
-		@else
+		@else		
 		<input type="hidden" class="form-control" name="daerah_id" id="daerah_id" value="">
 		@endif
+		<input type="hidden" class="form-control" name="access" id="access" value="<?php echo $access; ?>">
 		<div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">
 			<select class="selectpicker" data-style="btn-default" name="jenis_sub" id="jenis_sub">
 				<option value="">Pilih Jenis Kegiatan</option>
@@ -137,6 +136,9 @@
 					Tambah Data
 				</button>
 				@endif
+				<button id="approval-selected" style="display:none;" type="button" class="btn btn-primary border-radius-10">
+					Approve
+				</button>
 				<button type="button" class="btn btn-info border-radius-10" id="exportData"></button>
 			</div>
 		</div>
@@ -178,25 +180,30 @@
 @push('scripts')
 
 <script>
-	$(function() {
+	var search = '';
+	select_periode();
+	getPeriodeAdd();
+	hasil_header(search);
 
-		var search = '';
-		hasil_header(search);
+	function formatRupiah(data) {
+		var new_data = accounting.formatNumber(data, 0, ".", ".");
+		return 'Rp ' + new_data;
+	}
 
-		function hasil_header(search) {
-			if (search !== "")
-				var filter = JSON.stringify(search);
-			$.ajax({
-				url: BASE_URL + '/api/penyelesaian/header',
-				method: 'POST',
-				data: {
-					data: filter
-				},
-				dataType: 'json',
-				success: function(result) {
-					if (result.user == 'daerah' || result.user == 'province') {
-						if (result.semester == '01') {
-							var table_header = `<table class="table box box-solid box-primary">
+	function hasil_header(search) {
+		if (search !== "")
+			var filter = JSON.stringify(search);
+		$.ajax({
+			url: BASE_URL + '/api/penyelesaian/header',
+			method: 'POST',
+			data: {
+				data: filter
+			},
+			dataType: 'json',
+			success: function(result) {
+				if (result.user == 'daerah' || result.user == 'province') {
+					if (result.semester == '01') {
+						var table_header = `<table class="table box box-solid box-primary">
 						<thead>
 							<tr>
 								<th rowspan="2">Sub Kegiatan</th>
@@ -240,97 +247,169 @@
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_realisasi+result.data[0].realisasi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
 							</tr>
 						</tbody>
-					</table>`;
-						} else {
-							var table_header = `<table class="table box box-solid box-primary">
-						<thead>
-							<tr>
-								<th rowspan="2">Sub Kegiatan</th>
-								<th colspan="2" style="text-align: center">Perencanaan Tahun ${result.tahun}</th>
-								<th colspan="2" style="text-align: center">Realisasi Semester 1</th>
-								<th colspan="2" style="text-align: center">Realisasi Semester 2</th>
-								<th colspan="2" style="text-align: center">Total Realisasi</th>
-							</tr>
-							<tr>
-								<th style="text-align: center">Target</th>
-								<th style="text-align: center">Nilai</th>
-								<th style="text-align: center">Target</th>
-								<th style="text-align: center">Nilai</th>
-								<th style="text-align: center">Target</th>
-								<th style="text-align: center">Nilai</th>
-								<th style="text-align: center">Target</th>
-								<th style="text-align: center">Nilai</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>Identifikasi</td>
-								<td style="text-align: center"><span >${result.data[0].identifikasi_rencana_target_peserta}</span></td>
-								<td style="text-align: right"><span >${formatRupiah(result.data[0].identifikasi_rencana)}</span></td>
-								<td style="text-align: center"><span >${result.data[0].identifikasi_realisasi_target_peserta}</span></td>
-								<td style="text-align: right"><span >${formatRupiah(result.data[0].identifikasi_realisasi)}</span></td>
-								<td style="text-align: center">${result.data[0].identifikasi_realisasi_target_peserta_2}</td>
-								<td style="text-align: right">${formatRupiah(result.data[0].identifikasi_realisasi_2)}</td>
-								<td style="text-align: center"><span >${result.data[0].identifikasi_realisasi_target_peserta_total}</span></td>
-								<td style="text-align: right"><span >${formatRupiah(result.data[0].identifikasi_realisasi_2_total)}</span></td>
-							</tr>
-							<tr>
-								<td>Penyelesaian Masalah</td>
-								<td style="text-align: center"><span>${result.data[0].penyelesaian_rencana_target_peserta}</span></td>
-								<td style="text-align: right"><span>${formatRupiah(result.data[0].penyelesaian_realisasi_rencana)}</span></td>
-								<td style="text-align: center"><span>${result.data[0].penyelesaian_realisasi_target_peserta}</span></td>
-								<td style="text-align: right"><span>${formatRupiah(result.data[0].realisasi_realisasi)}</span></td>
-								<td style="text-align: center">${result.data[0].penyelesaian_realisasi_target_peserta_2}</td>
-								<td style="text-align: right">${formatRupiah(result.data[0].realisasi_realisasi_2)}</td>
-								<td style="text-align: center"><span>${result.data[0].penyelesaian_realisasi_target_peserta_total}</span></td>
-								<td style="text-align: right"><span>${formatRupiah(result.data[0].realisasi_realisasi_total)}</span></td>
-							</tr>
-							<tr>
-								<td>Evaluasi</td>
-								<td style="text-align: center"><span>${result.data[0].evaluasi_rencanan_target}</span></td>
-								<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_rencana)}</span></td>
-								<td style="text-align: center"><span>${result.data[0].evaluasi_realisasi_target}</span></td>
-								<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_realisasi)}</span></td>
-								<td style="text-align: center">${result.data[0].evaluasi_realisasi_target_2}</td>
-								<td style="text-align: right">${formatRupiah(result.data[0].evaluasi_realisasi_2)}</td>
-								<td style="text-align: center"><span>${result.data[0].evaluasi_realisasi_target_total}</span></td>
-								<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_realisasi_total)}</span></td>
-							</tr>
-							<tr>
-								<th>Total</th>
-								<th style="text-align: center"><span>${result.data[0].identifikasi_rencana_target_peserta+result.data[0].penyelesaian_rencana_target_peserta+result.data[0].evaluasi_rencanan_target}</span></th>
-								<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_rencana+result.data[0].penyelesaian_realisasi_rencana+result.data[0].evaluasi_rencana)}</span></th>
-								<th style="text-align: center"><span>${result.data[0].identifikasi_realisasi_target_peserta+result.data[0].penyelesaian_realisasi_target_peserta+result.data[0].evaluasi_realisasi_target}</span></th>
-								<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_realisasi+result.data[0].realisasi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
-								<th style="text-align: center">${result.data[0].identifikasi_realisasi_target_peserta_2+result.data[0].penyelesaian_realisasi_target_peserta_2+result.data[0].evaluasi_realisasi_target_2}</th>
-								<th style="text-align: right">${formatRupiah(result.data[0].identifikasi_realisasi_2+result.data[0].realisasi_realisasi_2+result.data[0].evaluasi_realisasi_2)}</th>
-								<th style="text-align: center"><span>${result.data[0].identifikasi_realisasi_target_peserta_total+result.data[0].penyelesaian_realisasi_target_peserta_total+result.data[0].evaluasi_realisasi_target_total}</span></th>
-								<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_realisasi_2_total+result.data[0].realisasi_realisasi_total+result.data[0].evaluasi_realisasi_total)}</span></th>
-							</tr>
-						</tbody>
-					</table>`;
-						}
-
-						$('#header').html(table_header);
+						</table>`;
+					} else {
+						var table_header = `<table class="table box box-solid box-primary">
+							<thead>
+								<tr>
+									<th rowspan="2">Sub Kegiatan</th>
+									<th colspan="2" style="text-align: center">Perencanaan Tahun ${result.tahun}</th>
+									<th colspan="2" style="text-align: center">Realisasi Semester 1</th>
+									<th colspan="2" style="text-align: center">Realisasi Semester 2</th>
+									<th colspan="2" style="text-align: center">Total Realisasi</th>
+								</tr>
+								<tr>
+									<th style="text-align: center">Target</th>
+									<th style="text-align: center">Nilai</th>
+									<th style="text-align: center">Target</th>
+									<th style="text-align: center">Nilai</th>
+									<th style="text-align: center">Target</th>
+									<th style="text-align: center">Nilai</th>
+									<th style="text-align: center">Target</th>
+									<th style="text-align: center">Nilai</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Identifikasi</td>
+									<td style="text-align: center"><span >${result.data[0].identifikasi_rencana_target_peserta}</span></td>
+									<td style="text-align: right"><span >${formatRupiah(result.data[0].identifikasi_rencana)}</span></td>
+									<td style="text-align: center"><span >${result.data[0].identifikasi_realisasi_target_peserta}</span></td>
+									<td style="text-align: right"><span >${formatRupiah(result.data[0].identifikasi_realisasi)}</span></td>
+									<td style="text-align: center">${result.data[0].identifikasi_realisasi_target_peserta_2}</td>
+									<td style="text-align: right">${formatRupiah(result.data[0].identifikasi_realisasi_2)}</td>
+									<td style="text-align: center"><span >${result.data[0].identifikasi_realisasi_target_peserta_total}</span></td>
+									<td style="text-align: right"><span >${formatRupiah(result.data[0].identifikasi_realisasi_2_total)}</span></td>
+								</tr>
+								<tr>
+									<td>Penyelesaian Masalah</td>
+									<td style="text-align: center"><span>${result.data[0].penyelesaian_rencana_target_peserta}</span></td>
+									<td style="text-align: right"><span>${formatRupiah(result.data[0].penyelesaian_realisasi_rencana)}</span></td>
+									<td style="text-align: center"><span>${result.data[0].penyelesaian_realisasi_target_peserta}</span></td>
+									<td style="text-align: right"><span>${formatRupiah(result.data[0].realisasi_realisasi)}</span></td>
+									<td style="text-align: center">${result.data[0].penyelesaian_realisasi_target_peserta_2}</td>
+									<td style="text-align: right">${formatRupiah(result.data[0].realisasi_realisasi_2)}</td>
+									<td style="text-align: center"><span>${result.data[0].penyelesaian_realisasi_target_peserta_total}</span></td>
+									<td style="text-align: right"><span>${formatRupiah(result.data[0].realisasi_realisasi_total)}</span></td>
+								</tr>
+								<tr>
+									<td>Evaluasi</td>
+									<td style="text-align: center"><span>${result.data[0].evaluasi_rencanan_target}</span></td>
+									<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_rencana)}</span></td>
+									<td style="text-align: center"><span>${result.data[0].evaluasi_realisasi_target}</span></td>
+									<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_realisasi)}</span></td>
+									<td style="text-align: center">${result.data[0].evaluasi_realisasi_target_2}</td>
+									<td style="text-align: right">${formatRupiah(result.data[0].evaluasi_realisasi_2)}</td>
+									<td style="text-align: center"><span>${result.data[0].evaluasi_realisasi_target_total}</span></td>
+									<td style="text-align: right"><span>${formatRupiah(result.data[0].evaluasi_realisasi_total)}</span></td>
+								</tr>
+								<tr>
+									<th>Total</th>
+									<th style="text-align: center"><span>${result.data[0].identifikasi_rencana_target_peserta+result.data[0].penyelesaian_rencana_target_peserta+result.data[0].evaluasi_rencanan_target}</span></th>
+									<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_rencana+result.data[0].penyelesaian_realisasi_rencana+result.data[0].evaluasi_rencana)}</span></th>
+									<th style="text-align: center"><span>${result.data[0].identifikasi_realisasi_target_peserta+result.data[0].penyelesaian_realisasi_target_peserta+result.data[0].evaluasi_realisasi_target}</span></th>
+									<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_realisasi+result.data[0].realisasi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
+									<th style="text-align: center">${result.data[0].identifikasi_realisasi_target_peserta_2+result.data[0].penyelesaian_realisasi_target_peserta_2+result.data[0].evaluasi_realisasi_target_2}</th>
+									<th style="text-align: right">${formatRupiah(result.data[0].identifikasi_realisasi_2+result.data[0].realisasi_realisasi_2+result.data[0].evaluasi_realisasi_2)}</th>
+									<th style="text-align: center"><span>${result.data[0].identifikasi_realisasi_target_peserta_total+result.data[0].penyelesaian_realisasi_target_peserta_total+result.data[0].evaluasi_realisasi_target_total}</span></th>
+									<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_realisasi_2_total+result.data[0].realisasi_realisasi_total+result.data[0].evaluasi_realisasi_total)}</span></th>
+								</tr>
+							</tbody>
+						</table>`;
 					}
-				},
-				error: function(error) {
-					console.error(error);
+					$('#header').html(table_header);
+				} else {
+					var table_header = `<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary ">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Perencanaan</span>
+																<h3 class="card-text"><b>${result.data.total_perencanaan}</b></h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Terkirim</span>
+																<h3 class="card-text"><b>${result.data.total_penyelesaian}</b></h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Draft</span>
+																<h3 class="card-text"><b>${result.data.total_draft}</b></h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>`;
+					$('#header').html(table_header);
 				}
-			});
-		}
+			},
+			error: function(error) {
+				console.error(error);
+			}
+		});
+	}
 
-		function formatRupiah(data) {
-			var new_data = accounting.formatNumber(data, 0, ".", ".");
-			return 'Rp ' + new_data;
+	function select_periode() {
+		$.ajax({
+			url: BASE_URL + '/api/select-periode-semester',
+			method: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				periode = '<option value="">Pilih Periode</option>';
+				$.each(data.periode, function(key, val) {
+					var select = '';
+					if (data.tahunSemester == val.value)
+						select = 'selected';
+					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+				});
+				$('#periode_id2').html(periode);
+			}
+		})
 
-		}
+	}
 
-		$('.semester2').hide();
+	function getPeriodeAdd() {
+		$.ajax({
+			url: BASE_URL + '/api/select-periode-semester',
+			method: 'GET',
+			dataType: 'json',
+			success: function(data) {
+				periode = '<option value="">Pilih Periode</option>';
+				$.each(data.periode, function(key, val) {
+					var select = '';
+					if (data.tahunSemester == val.value)
+						select = 'selected';
+					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
+				});
+				$('#periode_id_mdl').html(periode);
+			}
+		})
+	}
 
-		var year = new Date().getFullYear();
-		var month = new Date().getMonth() + 1;
-
+	$(function() {
+		var access = $("#access").val();		
+		
 		$.ajax({
 			url: BASE_URL + '/api/select-daerah',
 			method: 'GET',
@@ -347,29 +426,7 @@
 			error: function(error) {
 				console.error(error);
 			}
-		})
-
-		$.ajax({
-			url: BASE_URL + '/api/select-periode-semester',
-			method: 'GET',
-			dataType: 'json',
-			success: function(data) {
-				if (month) {
-
-				}
-				periode = '<option value="">Pilih Periode</option>';
-				$.each(data.periode, function(key, val) {
-					var select = '';
-					if (data.tahunSemester == val.value) {
-						select = 'selected';
-					}
-					periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
-
-				});
-				$('#periode_id2').html(periode);
-			}
-		})
-
+		})	
 
 		var table = $('#datatable').DataTable({
 			processing: true,
@@ -407,10 +464,18 @@
 					'orderable': false,
 					'className': 'dt-body-center',
 					'render': function(data, type, full, meta) {
-						if (full[7] == 'Terkirim') {
-							return '<input disabled type="checkbox">'
+						if (access == 'daerah' || access == 'province') {
+							if (full[7] == 'Terkirim') {
+								return '<input disabled  type="checkbox">'
+							} else {
+								return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							}
 						} else {
-							return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							if (full[7] == 'Request Edit') {
+								return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							} else {
+								return '<input disabled  type="checkbox">'
+							}
 						}
 					}
 				},
@@ -433,18 +498,21 @@
 		});
 
 		function listOptions(data) {
-
 			data.forEach(function(item, index) {
 				if (item.action == 'create') {
 					if (item.checked == true) {
 						$('#tambah').show();
-
 					} else {
 						$('#tambah').hide();
-
 					}
 				}
-
+				if (item.action == 'approval') {
+					if (item.checked == true) {
+						$('#approval-selected').show();
+					} else {
+						$('#approval-selected').hide();
+					}
+				}
 			});
 		}
 
@@ -469,26 +537,7 @@
 					callback.apply(context, args);
 				}, ms || 0);
 			};
-		}
-
-		$('.select-periode-mdl').select2(
-			$.ajax({
-				url: BASE_URL + '/api/select-periode-semester',
-				method: 'GET',
-				dataType: 'json',
-				success: function(data) {
-					periode = '<option value="">Pilih Periode</option>';
-					$.each(data.periode, function(key, val) {
-						var select = '';
-						if (data.tahunSemester == val.value)
-							select = 'selected';
-						periode += '<option value="' + val.value + '" ' + select + '>' + val.text + '</option>';
-
-					});
-					$('#periode_id_mdl').html(periode);
-				}
-			})
-		);
+		}		
 
 		$('#search-input').keyup(delay(function(e) {
 			var filter = [{
@@ -587,6 +636,48 @@
 				},
 				error: function(error) {
 					console.error('Error deleting items:', error);
+				}
+			});
+		}
+
+		$('#approval-selected').on('click', function() {
+			const selectedIds = [];
+			Swal.fire({
+				title: 'Apakah anda yakin approve?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#3085d6',
+				confirmButtonText: 'Ya'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$('.item-checkbox:checked').each(function() {
+						selectedIds.push($(this).data('id'));
+					});
+					approveItems(selectedIds);
+					Swal.fire(
+						'Approve!',
+						'Data berhasil diapprove.',
+						'success'
+					);
+				}
+			});
+		});
+
+		function approveItems(ids) {
+			$.ajax({
+				url: BASE_URL + `/api/penyelesaian/approve_selected`,
+				method: 'POST',
+				data: {
+					data: ids,
+					status: 13,
+					request_edit: false
+				},
+				success: function(response) {
+					table.search("").columns().search("").draw();
+				},
+				error: function(error) {
+					console.error('Error approve items:', error);
 				}
 			});
 		}

@@ -65,19 +65,28 @@ class PenyelesaianApiController extends Controller
     {
         $searchColumn = $request->data;
         $tahunSemester = GeneralHelpers::semesterToday();
-        if (!empty($request->data)) {
-            $filterjs = json_decode($searchColumn);
-            $data = DB::select(
-                'call header_modul(?,?,?)',
-                array('PENYELESAIAN', $filterjs[0]->periode_id, Auth::User()->daerah_id)
-            );
-            $semester = substr($filterjs[0]->periode_id, 4);
-            $tahun = substr($filterjs[0]->periode_id, 0, 4);
+        if ($_COOKIE['access'] == 'daerah' || $_COOKIE['access'] == 'province') {
+            if (!empty($request->data)) {
+                $filterjs = json_decode($searchColumn);
+                $data = DB::select(
+                    'call header_modul(?,?,?)',
+                    array('PENYELESAIAN', $filterjs[0]->periode_id, Auth::User()->daerah_id)
+                );
+                $semester = substr($filterjs[0]->periode_id, 4);
+                $tahun = substr($filterjs[0]->periode_id, 0, 4);
+            } else {
+                $data = DB::select(
+                    'call header_modul(?,?,?)',
+                    array('PENYELESAIAN', $tahunSemester, Auth::User()->daerah_id)
+                );
+                $semester = substr($tahunSemester, 4);
+                $tahun = substr($tahunSemester, 0, 4);
+            }
         } else {
-            $data = DB::select(
-                'call header_modul(?,?,?)',
-                array('PENYELESAIAN', $tahunSemester, Auth::User()->daerah_id)
-            );
+            $result = RequestPenyelesaian::GetTotalPagu($request);
+            $data['total_perencanaan'] = GeneralHelpers::formatRupiah($result->total_perencanaan);
+            $data['total_penyelesaian'] = GeneralHelpers::formatRupiah($result->total_penyelesaian);
+            $data['total_draft'] = GeneralHelpers::formatRupiah($result->total_draft);
             $semester = substr($tahunSemester, 4);
             $tahun = substr($tahunSemester, 0, 4);
         }
@@ -614,5 +623,21 @@ class PenyelesaianApiController extends Controller
         }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
+    }
+
+    public function approveSelected(Request $request)
+    {
+        $messages['messages'] = false;
+
+        foreach ($request->data as $key) {
+            $update = RequestPenyelesaian::fieldApprEdit($request);
+            $results = Penyelesaian::where('id', (int)$key)->update($update);
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
     }
 }
