@@ -48,6 +48,7 @@ class PengawasanApiController extends Controller
             "recordsTotal" => $result->total,
             "recordsFiltered" => $count->total,
             "data" => $result->data,
+            "options" => $result->options,
         );
         return response()->json($output);
     }
@@ -241,6 +242,22 @@ class PengawasanApiController extends Controller
 
         foreach ($request->data as $key) {
             $results = Pengawasan::where('id', (int)$key)->delete();
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    }
+
+    public function approveSelected(Request $request)
+    {
+        $messages['messages'] = false;
+
+        foreach ($request->data as $key) {
+            $update = RequestPengawasan::fieldApprEdit($request);
+            $results = Pengawasan::where('id', (int)$key)->update($update);
         }
 
         if ($results) {

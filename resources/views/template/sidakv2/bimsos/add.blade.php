@@ -372,7 +372,9 @@
               title: 'Periode Input Data Sudah Habis.',
               text: 'Periksa kembali periode input data.',
               icon: 'error',
-              confirmButtonText: 'OK'
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              allowEscapeKey: false
             }).then((result) => {});
           } else {
             $('#simpan').show();
@@ -382,7 +384,9 @@
           Swal.fire({
             title: 'Data tidak ditemukan.',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
           }).then((result) => {});
         }
       });
@@ -429,7 +433,9 @@
             title: 'Sukses!',
             text: respons.message,
             icon: 'success',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
 
           }).then((result) => {
             if (result.isConfirmed) {
@@ -459,7 +465,9 @@
           Swal.fire({
             title: 'Periksa kembali data anda.',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
           }).then((result) => {});
         }
       });
@@ -512,7 +520,9 @@
             title: 'Sukses!',
             text: respons.message,
             icon: 'success',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
 
           }).then((result) => {
             if (result.isConfirmed) {
@@ -542,7 +552,9 @@
           Swal.fire({
             title: 'Periksa kembali data anda.',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
           }).then((result) => {});
         }
       });
@@ -857,7 +869,9 @@
               title: 'Sukses!',
               text: respons.message,
               icon: 'success',
-              confirmButtonText: 'OK'
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              allowEscapeKey: false
             }).then((result) => {
               if (result.isConfirmed) {
                 $('#modal-add').hide();
@@ -912,7 +926,9 @@
               title: 'Sukses!',
               text: respons.message,
               icon: 'success',
-              confirmButtonText: 'OK'
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              allowEscapeKey: false
             }).then((result) => {
               if (result.isConfirmed) {
                 $('#modal-add').hide();
@@ -985,7 +1001,9 @@
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -1039,18 +1057,35 @@
             'lap_document'
           ];
           formData.append("status", 14);
+          $('#progressModal').show();
           $.ajax({
             type: "POST",
             url: BASE_URL + '/api/bimsos/kirim/' + id_modal,
             data: formData,
             processData: false,
             contentType: false,
+            xhr: function() {
+              var xhr = new window.XMLHttpRequest();
+              xhr.upload.addEventListener("progress", function(evt) {
+                if (evt.lengthComputable) {
+                  var percentComplete = (evt.loaded / evt.total) * 100;
+                  $('#progress').css('width', percentComplete + '%');
+                  $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                  // Place upload progress bar visibility code here
+                }
+              }, false);
+
+              return xhr;
+            },
             success: (respons) => {
+              $('#progressModal').hide();
               Swal.fire({
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -1065,6 +1100,7 @@
               //
             },
             error: (respons) => {
+              $('#progressModal').hide();
               errors = respons.responseJSON;
               for (let i = 0; i < form.length; i++) {
                 const field = form[i];
@@ -1079,7 +1115,9 @@
               Swal.fire({
                 title: 'Periksa kembali data anda.',
                 icon: 'error',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
               }).then((result) => {});
             }
           });
@@ -1090,6 +1128,7 @@
             "status": 13,
             "request_edit": "false",
           };
+          $('#progressModal').hide();
           $.ajax({
             type: "PUT",
             url: BASE_URL + '/api/bimsos/approve_edit/' + id_modal,
@@ -1097,11 +1136,14 @@
             cache: false,
             dataType: "json",
             success: (respons) => {
+              $('#progressModal').hide();
               Swal.fire({
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {

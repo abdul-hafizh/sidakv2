@@ -81,6 +81,7 @@
 		@else
 		<input type="hidden" class="form-control" name="daerah_id" id="daerah_id" value="">
 		@endif
+		<input type="hidden" class="form-control" name="access" id="access" value="<?php echo $access; ?>">
 		<div class="col-sm-2">
 			<select class="selectpicker" name="jenis_sub" id="jenis_sub" title="Jenis">
 				<option value="">-Pilih Tipe-</option>
@@ -128,10 +129,14 @@
 				<button type="button" id="delete-selected" class="btn btn-danger border-radius-10">
 					Hapus
 				</button>
-				<button id="tambah" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
+				<button id="tambah" style="display:none;" type="button" class="btn btn-primary border-radius-10 modal-add" data-toggle="modal" data-target="#modal-add">
 					Tambah Data
 				</button>
 				@endif
+				<button id="approval-selected" style="display:none;" type="button" class="btn btn-primary border-radius-10">
+					Approve
+				</button>
+
 				<button type="button" class="btn btn-info border-radius-10" id="exportData">
 				</button>
 			</div>
@@ -412,6 +417,7 @@
 	}
 
 	$(function() {
+		var access = $("#access").val();
 
 		var table = $('#datatable').DataTable({
 			processing: true,
@@ -452,10 +458,18 @@
 					'orderable': false,
 					'className': 'dt-body-center',
 					'render': function(data, type, full, meta) {
-						if (full[7] == 'Terkirim') {
-							return '<input disabled  type="checkbox">'
+						if (access == 'daerah' || access == 'province') {
+							if (full[7] == 'Terkirim') {
+								return '<input disabled  type="checkbox">'
+							} else {
+								return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							}
 						} else {
-							return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							if (full[7] == 'Request Edit') {
+								return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							} else {
+								return '<input disabled  type="checkbox">'
+							}
 						}
 					}
 				},
@@ -469,8 +483,34 @@
 			],
 			initComplete: (settings, json) => {
 				$('.dataTables_paginate').appendTo('#datatable_paginate');
+				listOptions(json.options);
 			}
 		});
+
+		function listOptions(data) {
+
+			data.forEach(function(item, index) {
+				if (item.action == 'create') {
+					if (item.checked == true) {
+						$('#tambah').show();
+
+					} else {
+						$('#tambah').hide();
+
+					}
+				}
+				if (item.action == 'approval') {
+					if (item.checked == true) {
+						$('#approval-selected').show();
+
+					} else {
+						$('#approval-selected').hide();
+
+					}
+				}
+
+			});
+		}
 
 		function reformatNumber(data, row, column, node) {
 			// replace spaces with nothing; replace commas with points.
@@ -618,6 +658,48 @@
 				},
 				error: function(error) {
 					console.error('Error deleting items:', error);
+				}
+			});
+		}
+
+		$('#approval-selected').on('click', function() {
+			const selectedIds = [];
+			Swal.fire({
+				title: 'Apakah anda yakin approve?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#3085d6',
+				confirmButtonText: 'Ya'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$('.item-checkbox:checked').each(function() {
+						selectedIds.push($(this).data('id'));
+					});
+					approveItems(selectedIds);
+					Swal.fire(
+						'Approve!',
+						'Data berhasil diapprove.',
+						'success'
+					);
+				}
+			});
+		});
+
+		function approveItems(ids) {
+			$.ajax({
+				url: BASE_URL + `/api/pengawasan/approve_selected`,
+				method: 'POST',
+				data: {
+					data: ids,
+					status: 13,
+					request_edit: false
+				},
+				success: function(response) {
+					table.search("").columns().search("").draw();
+				},
+				error: function(error) {
+					console.error('Error approve items:', error);
 				}
 			});
 		}

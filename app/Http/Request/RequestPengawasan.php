@@ -8,6 +8,7 @@ use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Models\Pengawasan;
 use App\Models\Perencanaan;
+use App\Http\Request\RequestMenuRoles;
 use App\Http\Request\RequestSettingApps;
 use Illuminate\Support\Str;
 use DB;
@@ -108,13 +109,41 @@ class RequestPengawasan
 
         $numberNext = 1;
         $result = $data->get();
+        $options = RequestMenuRoles::ActionPage('pengawasan');
+
         foreach ($result as $key => $val) {
             $edit_url = "";
             $delete_url = "";
-            $edit_url =  '<div id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
-            if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
-                if ($val->status_laporan_id != 14)
-                    $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>';
+            //    $edit_url =  '<div id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add" type="button" data-toggle="tooltip" data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
+
+
+            foreach ($options as $rows => $row) {
+                if ($row->action == 'update') {
+                    if ($row->checked == true) {
+
+                        if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
+
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
+                        }
+                    }
+                }
+
+                if ($row->action == 'delete') {
+                    if ($row->checked == true) {
+                        if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
+                            if ($val->status_laporan_id != 14)
+                                $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>';
+                        }
+                    }
+                }
+
+                if ($row->action == 'approval') {
+                    if ($row->checked == true) {
+                        if ($_COOKIE['access'] != "daerah" || $_COOKIE['access'] != "province") {
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
+                        }
+                    }
+                }
             }
 
             $row    = array();
@@ -131,6 +160,7 @@ class RequestPengawasan
             $temp[] = $row;
         }
         $temp2['data'] = $temp;
+        $temp2['options'] = $options;
         $temp2['total'] = $data->count();
         return json_decode(json_encode($temp2), FALSE);
     }

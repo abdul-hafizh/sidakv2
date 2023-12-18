@@ -328,6 +328,22 @@ class BimsosApiController extends Controller
         return response()->json($messages);
     }
 
+    public function approveSelected(Request $request)
+    {
+        $messages['messages'] = false;
+
+        foreach ($request->data as $key) {
+            $update = RequestBimsos::fieldApprEdit($request);
+            $results = Bimsos::where('id', (int)$key)->update($update);
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    }
+
     public function request_edit($id, Request $request)
     {
 
