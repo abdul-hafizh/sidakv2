@@ -55,7 +55,7 @@
 <div id="progressModal" class="modal-loading" style="display: none;">
   <div class="modal-content2">
     <span class="close" id="closeProgressModal">&times;</span>
-    <h2>Upload Progress</h2>
+    <h2>Progress</h2>
     <div id="progress-container">
       <div id="progress-bar">
         <div id="progress" style="width: 0%"></div>
@@ -128,6 +128,7 @@
           <div class="row">
             <div id="biaya_kegiatan-alert" class="form-group has-feedback col-md-12">
               <label>Biaya </label>
+              <i class="icon-info" data-toggle="tooltip" data-placement="right" title="Biaya yang diinput sudah termasuk seluruh biaya yang digunakan untuk pelaksanaan bimtek"></i>
               <input type="number" class="form-control" name="biaya_kegiatan" id="biaya_kegiatan" placeholder="Biaya " value="">
               <span id="biaya_kegiatan-messages"></span>
             </div>

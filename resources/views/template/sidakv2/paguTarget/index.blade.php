@@ -209,7 +209,7 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table id="datatable" class="table-hover text-nowrap">
+				<table id="datatable" class="table-hover text-nowrap" style="height: 100%">
 					<thead>
 						<tr>
 

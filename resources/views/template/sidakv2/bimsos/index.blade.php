@@ -62,6 +62,14 @@
 		border-bottom: 1px solid #f4f4f4;
 
 	}
+
+	.text-wrap {
+		white-space: normal;
+	}
+
+	.width-200 {
+		width: 200px;
+	}
 </style>
 
 
@@ -155,7 +163,7 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table id="datatable" class="table-hover text-nowrap">
+				<table id="datatable" class="table-hover text-nowrap" style="height: 100%">
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>
@@ -478,6 +486,12 @@
 				{
 					targets: [3],
 					className: 'dt-body-center'
+				},
+				{
+					render: function(data, type, full, meta) {
+						return "<div class='text-wrap width-200'>" + data + "</div>";
+					},
+					targets: [2, 3, 5]
 				}
 			],
 			order: [

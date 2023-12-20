@@ -1,3 +1,70 @@
+<style>
+  .modal-loading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 99999;
+  }
+
+  .modal-content2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+
+  /* Styling untuk progress bar */
+  #progress-container {
+    text-align: center;
+  }
+
+  #progress-bar {
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+
+  #progress {
+    height: 20px;
+    background-color: #4caf50;
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  #progress-label {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+<!-- Modal loading -->
+<div id="progressModal" class="modal-loading" style="display: none;">
+  <div class="modal-content2">
+    <span class="close" id="closeProgressModal">&times;</span>
+    <h2>Progress</h2>
+    <div id="progress-container">
+      <div id="progress-bar">
+        <div id="progress" style="width: 0%"></div>
+      </div>
+      <div id="progress-label">0%</div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal -->
 <div id="modal-add" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -669,6 +736,7 @@
         'lokasi'
       ];
       formData.append("status", 13);
+      $('#progressModal').show();
       $.ajax({
         type: "POST",
         url: BASE_URL + '/api/pengawasan',
@@ -689,6 +757,7 @@
           return xhr;
         },
         success: (respons) => {
+          $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
             text: respons.message,
@@ -709,7 +778,7 @@
           //
         },
         error: (respons) => {
-
+          $('#progressModal').hide();
           errors = respons.responseJSON;
           for (let i = 0; i < form.length; i++) {
             const field = form[i];
@@ -752,6 +821,7 @@
         'lap_document'
       ];
       formData.append("status", 14);
+      $('#progressModal').show();
       $.ajax({
         type: "POST",
         url: BASE_URL + '/api/pengawasan',
@@ -759,6 +829,7 @@
         processData: false,
         contentType: false,
         success: (respons) => {
+          $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
             text: respons.message,
@@ -780,6 +851,7 @@
           //
         },
         error: (respons) => {
+          $('#progressModal').hide();
           errors = respons.responseJSON;
           for (let i = 0; i < form.length; i++) {
             const field = form[i];
@@ -1497,12 +1569,18 @@
                   $('#' + field + '-messages').removeClass('help-block').html('');
                 }
               }
+              Swal.fire({
+                title: 'Periksa kembali data anda.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+              }).then((result) => {});
             }
           });
         });
 
         $('#kirim-' + id_modal).on('click', function() {
-          console.log(id_modal);
           var formData = new FormData($('#FormSubmit')[0]);
           var form = [
             'id_pengawasan',
@@ -1524,6 +1602,7 @@
             'lap_document'
           ];
           formData.append("status", 14);
+          $('#progressModal').show();
           $.ajax({
             type: "POST",
             url: BASE_URL + '/api/pengawasan/kirim/' + id_modal,
@@ -1531,6 +1610,7 @@
             processData: false,
             contentType: false,
             success: (respons) => {
+              $('#progressModal').hide();
               Swal.fire({
                 title: 'Sukses!',
                 text: respons.message,
@@ -1552,6 +1632,7 @@
               //
             },
             error: (respons) => {
+              $('#progressModal').hide();
               errors = respons.responseJSON;
               for (let i = 0; i < form.length; i++) {
                 const field = form[i];
@@ -1579,6 +1660,7 @@
             "status": 13,
             "request_edit": "false",
           };
+          $('#progressModal').show();
           $.ajax({
             type: "PUT",
             url: BASE_URL + '/api/pengawasan/approve_edit/' + id_modal,
@@ -1586,6 +1668,7 @@
             cache: false,
             dataType: "json",
             success: (respons) => {
+              $('#progressModal').hide();
               Swal.fire({
                 title: 'Sukses!',
                 text: respons.message,
