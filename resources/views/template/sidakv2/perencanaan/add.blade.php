@@ -686,7 +686,7 @@
 
                     //isi pagu
                     $('#pagu_apbn').html('<b>'+find.pagu_apbn+'</b>');
-                    $('#pagu_apbn_sec').html('<b>'+find.pagu_apbn+'</b>');
+                    $('#pagu_apbn_sec').html('<b>'+find.pagu_apbn+'</b>');                  
                     $('#pagu_promosi_header').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#promosi_pagu_sec').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#promosi_pengadaan_pagu').val(find.pagu_promosi);
@@ -694,12 +694,15 @@
                     $('#total_promosi_pagu').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#pagu_apbn_inp').val(find.pagu_apbn.replace(/[^0-9]/g, ''));
                     
-                    //isi target pengawasan
+                    //isi target dan pagu pengawasan
                     pengawasan = find.target_pengawasan;
                     $(".pengawasan_nilai_target").prop("disabled", false);
                     $(".pengawasan_nilai_pagu").prop("disabled", false);
                     $('.target_pengawasan').val(pengawasan);
                     $(".target_pengawasan").prop("disabled", true);
+                    $("#pengawas_analisa_pagu").val(find.pagu_pengawasan * 0.1);
+                    $("#pengawas_inspeksi_pagu").val(find.pagu_pengawasan * 0.8);
+                    $("#pengawas_evaluasi_pagu").val(find.pagu_pengawasan * 0.1);
                     $("#total_pengawasan_target").text(pengawasan);
                     
                     //isi target bimtek
@@ -708,6 +711,8 @@
                     $(".bimtek_nilai_pagu").prop("disabled", false);
                     $("#total_bimtek_target").text(bimtek);
                     $("#total_target_bimtek_inp").val(bimtek);
+                    $("#bimtek_perizinan_pagu").val(find.pagu_bimbingan_teknis * 0.5);
+                    $("#bimtek_pengawasan_pagu").val(find.pagu_bimbingan_teknis * 0.5);
 
                     if (bimtek % 2 === 0) {
                          $(".bimtek_perizinan_target").val(bimtek/2);
@@ -724,6 +729,13 @@
                     $('.target_penyelesaian').val(penyelesaian);
                     $(".target_penyelesaian").prop("disabled", true);
                     $("#total_penyelesaian_target").text(penyelesaian);
+                    $("#penyelesaian_identifikasi_pagu").val(find.pagu_penyelesaian * 0.1);
+                    $("#penyelesaian_realisasi_pagu").val(find.pagu_penyelesaian * 0.8);
+                    $("#penyelesaian_evaluasi_pagu").val(find.pagu_penyelesaian * 0.1);
+
+                    calculatePengawasanPagu();
+                    calculateBimtekPagu();
+                    calculatePenyelesaianPagu();
                });
           }
 
