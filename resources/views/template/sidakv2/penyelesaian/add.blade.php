@@ -118,7 +118,6 @@
           <div class="row">
             <div id="biaya-alert" class="form-group has-feedback col-md-12">
               <label>Biaya Kegiatan</label> <small class="text-red" id="anggaran"></small>
-              <i class="icon-info" data-toggle="tooltip" data-placement="right" title="Biaya yang diinput sudah termasuk seluruh biaya yang digunakan untuk pelaksanaan kegiatan"></i>
               <input type="number" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
               <span id="biaya-messages"></span>
             </div>
@@ -244,7 +243,7 @@
         <div class="modal-footer modal-add2">
           <button class="btn btn-default" data-dismiss="modal">Close</button>
           <button id="simpan" type="button" class="btn btn-primary">Simpan</button>
-          <button id="kirim" type="button" class="btn btn-primary">Kirim</button>
+          <button id="kirim" type="button" class="btn btn-warning">Kirim</button>
         </div>
 
         <div class="modal-footer modal-edit"></div>
