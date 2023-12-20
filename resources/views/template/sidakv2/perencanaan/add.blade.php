@@ -321,7 +321,7 @@
                               <div class="col-sm-3">
                                    <div id="tgl-tandatangan-alert" class="margin-none form-group">
                                         <label>Tanggal Ditandatangani :</label>
-                                        <input id="tgl_tandatangan" value="" name="tgl_tandatangan" type="date" class="form-control" placeholder="Tanggal Ditandatangani">
+                                        <input id="tgl_tandatangan" value="{{ date('Y-m-d') }}" name="tgl_tandatangan" type="date" class="form-control" placeholder="Tanggal Ditandatangani">
                                         <span id="tgl-tandatangan-messages"></span>
                                    </div>
                               </div>
