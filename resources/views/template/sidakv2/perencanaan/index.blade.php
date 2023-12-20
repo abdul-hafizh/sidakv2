@@ -104,7 +104,7 @@
             </div> 	        
         @if($access == 'admin' || $access == 'pusat' )
         <div class="col-lg-3 col-sm-12" style="margin-bottom: 9px;">
-            <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Daerah"></select>
+            <select id="daerah_id" data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Daerah"></select>
         </div>
         @endif
         <div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">    
@@ -349,15 +349,17 @@
         var list = [];
         var year = new Date().getFullYear();
         var daerah_id = 0;
-        
-       
-
       
         fetchData(page,year);
-        getperiode(year);
-        getdaerah(daerah_id);            
-           
+        
+        var tmp = JSON.parse(localStorage.getItem('search'));
 
+        if(!tmp)
+        {
+            getperiode(year);
+            getdaerah(daerah_id);            
+        }
+           
         $('#row_page').on('change', function() {
             var value = $(this).val();         
             if(value)
@@ -512,33 +514,29 @@
             const content = $('#content');
             content.empty();
             var url = '';
-        var method = '';
-        var data = {};
+            var method = '';
+            var data = {};
           
             let row = ``;
                 row +=`<tr><td colspan="18" align="center"> <b>Loading ...</b></td></tr>`;
                 content.append(row);
-
                 var tmp = JSON.parse(localStorage.getItem('search'));
                 if(tmp)
                 {
-
                    url = BASE_URL+ `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}&periode_id=${tmp.periode_id}`;
                    method = 'POST';
                    data = {'search':tmp.search,'daerah_id':tmp.daerah_id,'status':tmp.status};
-                   getdaerah(tmp.periode_id);
+                   getperiode(tmp.periode_id);
                    getdaerah(tmp.daerah_id);
-
         
                    $('#search_status').val(tmp.status);
                    $('#search_text').val(tmp.search);
                    $('#search_status').selectpicker('refresh');
 
-                }else{
+                } else {
                    url = BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`;
-                   method = 'GET';
-                  
-        }   
+                   method = 'GET';                  
+                }   
 
             $.ajax({
                 url: url,
@@ -954,8 +952,6 @@
             });
         }
 
-      
-
         function exportData(data)
         {
             const content = $('#exportView');
@@ -989,8 +985,6 @@
             ExportExel();   
         }
 
-
-
         function ExportExel()
         {
             var dt = new Date();
@@ -1004,73 +998,55 @@
             XLSX.writeFile(wb, "Report-data-perencanaan-"+ time +".xlsx");
         }
 
-         function getperiode(periode_id){
-               $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode"  class="selectpicker"></select>');
-               $.ajax({
-                    type: 'GET',
-                    dataType: 'json',
-                    url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
-                    success: function(data) {
+        function getperiode(periode_id){
+            $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode"  class="selectpicker"></select>');
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
+                success: function(data) {
 
-                          getperiodeList(data);
-                          $('#periode_id').val(periode_id).selectpicker('refresh');
-                        
-                    },
-                    error: function( error) {}
-               });
-
-              
+                        getperiodeList(data);
+                        $('#periode_id').val(periode_id).selectpicker('refresh');
+                    
+                },
+                error: function( error) {}
+            }); 
         }
 
         function getperiodeList(data){
-
-                var select =  $('#periode_id');
-                 select.empty();
-                 $.each(data.result, function(index, option) {
-                      select.append($('<option>', {
-                           value: option.value,
-                           text: option.text
-                      }));
-                 });
-                  select.selectpicker('refresh'); 
-                  periode = data.result;          
+            var select =  $('#periode_id');
+                select.empty();
+                $.each(data.result, function(index, option) {
+                    select.append($('<option>', {
+                        value: option.value,
+                        text: option.text
+                    }));
+                });
+                select.selectpicker('refresh'); 
+                periode = data.result;          
         }
 
-          function getdaerah(daerah_id){
-
-        $.ajax({
-        url: BASE_URL +'/api/select-daerah',
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Populate SelectPicker options using received data
-            $.each(data, function(index, option) {
-                $('#daerah_id').append($('<option>', {
-                  value: option.value,
-                  text: option.text
-                }));
+        function getdaerah(daerah_id){
+            $.ajax({
+                url: BASE_URL +'/api/select-daerah',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $.each(data, function(index, option) {
+                        $('#daerah_id').append($('<option>', {
+                            value: option.value,
+                            text: option.text
+                        }));
+                    });
+                    $('#daerah_id').selectpicker('refresh');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
             });
-
-            if(daerah_id !=0)
-            {
-                 $('#daerah_id').val(daerah_id);
-            }   
-
-            // Refresh the SelectPicker to apply the new options
-            $('#daerah_id').selectpicker('refresh');
-            },
-            error: function(error) {
-                console.error(error);
-            }
-        });
-
-    }
-
-       
-
-
+        }
     });
-
 </script>
 
 @stop
