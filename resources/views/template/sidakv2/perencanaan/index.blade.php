@@ -168,17 +168,16 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table class="table table-hover" border="0" style="height: 100%">
+				<table class="table table-hover" style="height: 100%">
                     <thead>
                         <tr>
-                           <th rowspan="2" id="ShowChecklistAll" style="display:none;" >
+                            <th rowspan="2" id="ShowChecklistAll" style="display:none;" >
                                 <input id="select-all" class="border-left-table" type="checkbox">
                             </th>
                             <th rowspan="2"  class=" font-bold">No</th>
                             <th rowspan="2" colspan="2" class="text-center font-bold">
                               <div class="split-table"></div>
-                              <span class="padding-top-bottom-12 ">Nama Daerah</span>
-                            
+                              <span class="padding-top-bottom-12 ">Nama Daerah</span>                            
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
@@ -194,10 +193,8 @@
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
-                            </th>
-                          
-                            <th colspan="3" class="text-center font-bold">  
-                             
+                            </th>                          
+                            <th colspan="3" class="text-center font-bold">                               
                               <span class="padding-top-bottom-12">Penyelesaian Masalah</span> 
                             </th>
                              <th rowspan="2"  class="text-center font-bold">
@@ -229,7 +226,6 @@
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Evaluasi</span>
                             </th>
-
                              <th  class="text-center font-bold">   
                                 <span class="padding-top-bottom-12">Perizinan</span>
                             </th>
@@ -240,7 +236,6 @@
                                
                                <span class="span-title">Pengawasan</span>
                             </th>
-
                              <th  class="text-center font-bold">
                                 <span class="padding-top-bottom-12">Identifikasi</span>
                             </th>
@@ -253,42 +248,8 @@
                                <span class="padding-top-bottom-12 position-top-10">Evaluasi</span>
                             </th>
                         </tr>
-
-
-                       
-                        
                     </thead>
-					<!-- <thead>
-						<tr>
-							<th rowspan="2" id="ShowChecklistAll" style="display:none;" class="th-checkbox">
-                                <input id="select-all" class="border-left-table" type="checkbox">
-                            </th>
-							<th rowspan="2"><div id="ShowChecklistAll" style="display:none;" class="split-table"></div><span>No</span></th>
-							<th rowspan="2"><span class="border-left-table">Nama Daerah </span></th>
-							<th rowspan="2"><span class="border-left-table">Periode </span></th>
-							<th colspan="3" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Pengawasan </th>
-							<th colspan="2" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Bimsos </th>
-							<th colspan="3" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Penyelesaian Masalah </th>
-							<th rowspan="2"><span class="border-left-table">Promosi </span></th>
-							<th rowspan="2"><span class="border-left-table">Total </span></th>
-							<th rowspan="2"><span class="border-left-table">Status </span></th>
-							<th rowspan="2"><span class="border-left-table">Update </span></th>
-							<th rowspan="2"><span class="border-left-table">Aksi </span> </th>
-						</tr>
-						<tr>							
-							<th><span class="border-left-table">Analisa </span></th>
-							<th><span class="border-left-table">Inspeksi </span></th>
-							<th><span class="border-left-table">Evaluasi </span></th>
-							<th><span class="border-left-table">Perizinan </span></th>
-							<th><span class="border-left-table">Pengawasan </span></th>
-							<th><span class="border-left-table">Identifikasi </span></th>
-							<th><span class="border-left-table">Realisasi </span></th>
-							<th><span class="border-left-table">Evaluasi </span></th>
-						</tr>
-					</thead> -->
-
 					<tbody id="content"></tbody>
-
                 </table>
             </div>
         </div>
