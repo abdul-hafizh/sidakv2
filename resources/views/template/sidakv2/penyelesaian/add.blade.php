@@ -142,7 +142,7 @@
             <div class="row">
               <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
                   <label>Profile Pelaku Usaha </label>
-                  <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF Profile"></a>
+                  <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Profile"></a>
                   <input type="file" class="form-control file-access" name="lap_profile" id="AddFilesProfile" accept=".pdf">
                   <input type="hidden" name="lap_profile_file" id="lap_profile_file" value="">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
@@ -156,7 +156,7 @@
             <div class="row">
               <div id="lap_peserta-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Hadir </label>
-                <a href="#" class="text-bold text-peserta" id="modal-peserta" data-target="Peserta" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF Peserta"></a>
+                <a href="#" class="text-bold text-peserta" id="modal-peserta" data-target="Peserta" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Peserta"></a>
                 <input type="file" class="form-control file-access" name="lap_peserta" id="AddFilesPeserta" accept=".pdf">
                 <input type="hidden" name="lap_peserta_file" id="lap_peserta_file" value="">
                 <div id="ShowPdfPeserta" style="margin-top:8px"></div>
@@ -166,7 +166,7 @@
             <div class="row">
               <div id="lap_profile2-alert" class="form-group has-feedback col-md-12">
                 <label>Profile Pelaku Usaha </label>
-                <a href="#" class="text-bold text-profile2" id="modal-profile2" data-target="Profile2" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF Profile"></a>
+                <a href="#" class="text-bold text-profile2" id="modal-profile2" data-target="Profile2" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Profile"></a>
                 <input type="file" class="form-control file-access" name="lap_profile2" id="AddFilesProfile2" accept=".pdf">
                 <input type="hidden" name="lap_profile2_file" id="lap_profile2_file" value="">
                 <div id="ShowPdfProfile2" style="margin-top:8px"></div>
@@ -176,7 +176,7 @@
             <div class="row">
               <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12">
                 <label>Daftar Narasumber </label>
-                <a href="#" class="text-bold text-narasumber" id="modal-narasumber" data-target="Narasumber" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF Narasumber"></a>
+                <a href="#" class="text-bold text-narasumber" id="modal-narasumber" data-target="Narasumber" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Narasumber"></a>
                 <input type="file" class="form-control file-access" name="lap_narasumber" id="AddFilesNarasumber" accept=".pdf">
                 <input type="hidden" name="lap_narasumber_file" id="lap_narasumber_file" value="">
                 <div id="ShowPdfNarasumber" style="margin-top:8px"></div>
@@ -186,7 +186,7 @@
             <div class="row">
               <div id="notula2-alert" class="form-group has-feedback col-md-12">
                 <label>Notula Kegiatan </label>
-                <a href="#" class="text-bold text-notula2" id="modal-notula2" data-target="Notula2" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF Notula"></a>
+                <a href="#" class="text-bold text-notula2" id="modal-notula2" data-target="Notula2" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Notula"></a>
                 <input type="file" class="form-control file-access" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
                 <input type="hidden" name="lap_notula2_file" id="lap_notula2_file" value="">
                 <div id="ShowPdfNotula2" style="margin-top:8px"></div>
@@ -196,7 +196,7 @@
             <div class="row">
               <div id="lap_lkpm-alert" class="form-group has-feedback col-md-12">
                 <label>Laporan LKPM </label>
-                <a href="#" class="text-bold text-lkpm" id="modal-lkpm" data-target="Lkpm" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF LKPM"></a>
+                <a href="#" class="text-bold text-lkpm" id="modal-lkpm" data-target="Lkpm" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF LKPM"></a>
                 <input type="file" class="form-control file-access" name="lap_lkpm" id="AddFilesLkpm" accept=".pdf">
                 <input type="hidden" name="lap_lkpm_file" id="lap_lkpm_file" value="">
                 <div id="ShowPdfLkpm" style="margin-top:8px"></div>
@@ -206,7 +206,7 @@
             <div class="row">
               <div id="lap_document-alert" class="form-group has-feedback col-md-12">
                 <label>Laporan Dokumentasi </label>
-                <a href="#" class="text-bold text-doc" id="modal-doc" data-target="Doc" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF Dokumen"></a>
+                <a href="#" class="text-bold text-doc" id="modal-doc" data-target="Doc" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Dokumen"></a>
                 <input type="file" class="form-control file-access" name="lap_document" id="AddFilesDoc" accept=".pdf">
                 <input type="hidden" name="lap_document_file" id="lap_document_file" value="">
                 <div id="ShowPdfDoc" style="margin-top:8px"></div>
@@ -220,7 +220,7 @@
             <div class="row">
               <div id="notula-alert" class="form-group has-feedback col-md-12">
                   <label>Notula Rapat </label>
-                  <a href="#" class="text-bold text-notula" id="modal-notula" data-target="Notula" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF Notula"></a>
+                  <a href="#" class="text-bold text-notula" id="modal-notula" data-target="Notula" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Notula"></a>
                   <input type="file" class="form-control file-access" name="lap_notula" id="AddFilesNotula" accept=".pdf">
                   <input type="hidden" name="lap_notula_file" id="lap_notula_file" value="">
                   <div id="ShowPdfNotula" style="margin-top:8px"></div>
@@ -230,7 +230,7 @@
             <div class="row">
               <div id="lap_evaluasi-alert" class="form-group has-feedback col-md-12">
                   <label>Laporan Hasil Evaluasi </label>
-                  <a href="#" class="text-bold text-eval" id="modal-eval" data-target="Evaluasi" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" alt="PDF Evaluasi"></a>
+                  <a href="#" class="text-bold text-eval" id="modal-eval" data-target="Evaluasi" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Evaluasi"></a>
                   <input type="file" class="form-control file-access" name="lap_evaluasi" id="AddFilesEvaluasi" accept=".pdf">
                   <input type="hidden" name="lap_evaluasi_file" id="lap_evaluasi_file" value="">
                   <div id="ShowPdfEvaluasi" style="margin-top:8px"></div>
