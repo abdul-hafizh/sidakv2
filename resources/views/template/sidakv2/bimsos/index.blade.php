@@ -484,10 +484,6 @@
 					className: 'dt-body-right'
 				},
 				{
-					targets: [3],
-					className: 'dt-body-center'
-				},
-				{
 					render: function(data, type, full, meta) {
 						return "<div class='text-wrap width-200'>" + data + "</div>";
 					},

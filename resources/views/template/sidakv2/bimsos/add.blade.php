@@ -128,9 +128,9 @@
           <div class="row">
             <div id="biaya_kegiatan-alert" class="form-group has-feedback col-md-12">
               <label>Biaya </label>
-              <i class="icon-info" data-toggle="tooltip" data-placement="right" title="Biaya yang diinput sudah termasuk seluruh biaya yang digunakan untuk pelaksanaan bimtek"></i>
               <input type="number" class="form-control" name="biaya_kegiatan" id="biaya_kegiatan" placeholder="Biaya " value="">
               <span id="biaya_kegiatan-messages"></span>
+              <small class="text-red">*Biaya yang diinput sudah termasuk seluruh biaya yang digunakan untuk pelaksanaan bimtek</small>
             </div>
           </div>
           <div class="row">
