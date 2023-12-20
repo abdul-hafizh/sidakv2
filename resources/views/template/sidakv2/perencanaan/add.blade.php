@@ -24,7 +24,7 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span id="label-peta">Pagu Promosi</span>
+                                        <span id="label-peta">Pagu Peta Potensi</span>
                                         <h3 class="card-text" id="pagu_promosi_header"></h3>
                                    </div>
                               </div>
@@ -256,14 +256,14 @@
                                    @if($access == 'province')
                                    <tr>
                                         <td><strong>4</strong></td>
-                                        <td class="text-left"><strong id="label-peta-judul">Penyusunan Bahan Promosi Penanaman Modal</strong></td>
+                                        <td class="text-left"><strong id="label-peta-judul">Penyusunan Bahan Peta Pontesi</strong></td>
                                         <td class="text-center"><strong>1</strong></td>
                                         <td class="text-center"><strong>Video</strong></td>
                                         <td class="text-right"><strong id="total_promosi_pagu">Rp 0</strong></td>
                                    </tr>
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
-                                        <td id="label-peta-sub">A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>
+                                        <td id="label-peta-sub">A. Penyediaan File sebagai Bahan Peta Potensi</td>
                                         <td>
                                              <div class="margin-none form-group">  
                                                   <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>
@@ -281,7 +281,7 @@
                                    </tr>
                                    <tr>
                                         <td colspan="3">&nbsp;</td>
-                                        <td class="text-right"><strong id="label-peta-total">Total Promosi :</strong></td>
+                                        <td class="text-right"><strong id="label-peta-total">Total Peta Potensi :</strong></td>
                                         <td class="text-right"><span id="promosi_pagu_sec"></span></td>
                                    </tr>                                   
                                    @else
@@ -321,7 +321,7 @@
                               <div class="col-sm-3">
                                    <div id="tgl-tandatangan-alert" class="margin-none form-group">
                                         <label>Tanggal Ditandatangani :</label>
-                                        <input id="tgl_tandatangan" value="" name="tgl_tandatangan" type="date" class="form-control" placeholder="Tanggal Ditandatangani">
+                                        <input id="tgl_tandatangan" value="{{ date('Y-m-d') }}" name="tgl_tandatangan" type="date" class="form-control" placeholder="Tanggal Ditandatangani">
                                         <span id="tgl-tandatangan-messages"></span>
                                    </div>
                               </div>
@@ -686,7 +686,7 @@
 
                     //isi pagu
                     $('#pagu_apbn').html('<b>'+find.pagu_apbn+'</b>');
-                    $('#pagu_apbn_sec').html('<b>'+find.pagu_apbn+'</b>');
+                    $('#pagu_apbn_sec').html('<b>'+find.pagu_apbn+'</b>');                  
                     $('#pagu_promosi_header').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#promosi_pagu_sec').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#promosi_pengadaan_pagu').val(find.pagu_promosi);
@@ -694,12 +694,15 @@
                     $('#total_promosi_pagu').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#pagu_apbn_inp').val(find.pagu_apbn.replace(/[^0-9]/g, ''));
                     
-                    //isi target pengawasan
+                    //isi target dan pagu pengawasan
                     pengawasan = find.target_pengawasan;
                     $(".pengawasan_nilai_target").prop("disabled", false);
                     $(".pengawasan_nilai_pagu").prop("disabled", false);
                     $('.target_pengawasan').val(pengawasan);
                     $(".target_pengawasan").prop("disabled", true);
+                    $("#pengawas_analisa_pagu").val(find.pagu_pengawasan * 0.1);
+                    $("#pengawas_inspeksi_pagu").val(find.pagu_pengawasan * 0.8);
+                    $("#pengawas_evaluasi_pagu").val(find.pagu_pengawasan * 0.1);
                     $("#total_pengawasan_target").text(pengawasan);
                     
                     //isi target bimtek
@@ -708,6 +711,8 @@
                     $(".bimtek_nilai_pagu").prop("disabled", false);
                     $("#total_bimtek_target").text(bimtek);
                     $("#total_target_bimtek_inp").val(bimtek);
+                    $("#bimtek_perizinan_pagu").val(find.pagu_bimbingan_teknis * 0.5);
+                    $("#bimtek_pengawasan_pagu").val(find.pagu_bimbingan_teknis * 0.5);
 
                     if (bimtek % 2 === 0) {
                          $(".bimtek_perizinan_target").val(bimtek/2);
@@ -724,6 +729,13 @@
                     $('.target_penyelesaian').val(penyelesaian);
                     $(".target_penyelesaian").prop("disabled", true);
                     $("#total_penyelesaian_target").text(penyelesaian);
+                    $("#penyelesaian_identifikasi_pagu").val(find.pagu_penyelesaian * 0.1);
+                    $("#penyelesaian_realisasi_pagu").val(find.pagu_penyelesaian * 0.8);
+                    $("#penyelesaian_evaluasi_pagu").val(find.pagu_penyelesaian * 0.1);
+
+                    calculatePengawasanPagu();
+                    calculateBimtekPagu();
+                    calculatePenyelesaianPagu();
                });
           }
 
