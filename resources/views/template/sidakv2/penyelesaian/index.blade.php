@@ -65,6 +65,14 @@
 		border-bottom: 1px solid #f4f4f4;
 
 	}
+
+	.text-wrap {
+		white-space: normal;
+	}
+
+	.width-200 {
+		width: 200px;
+	}
 </style>
 
 <section class="content-header pd-left-right-15">
@@ -486,6 +494,12 @@
 				{
 					targets: [3],
 					className: 'dt-body-center'
+				},
+				{
+					render: function(data, type, full, meta) {
+						return "<div class='text-wrap width-200'>" + data + "</div>";
+					},
+					targets: [2, 3, 5]
 				}
 			],
 			order: [

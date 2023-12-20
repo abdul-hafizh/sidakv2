@@ -118,6 +118,7 @@
           <div class="row">
             <div id="biaya-alert" class="form-group has-feedback col-md-12">
               <label>Biaya Kegiatan</label> <small class="text-red" id="anggaran"></small>
+              <i class="icon-info" data-toggle="tooltip" data-placement="right" title="Biaya yang diinput sudah termasuk seluruh biaya yang digunakan untuk pelaksanaan kegiatan"></i>
               <input type="number" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
               <span id="biaya-messages"></span>
             </div>
@@ -141,7 +142,7 @@
             <div class="row">
               <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
                   <label>Profile Pelaku Usaha </label>
-                  <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
+                  <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><img src="{{ asset('public/template/sidakv2/img/pdf-icon.png') }}" alt="PDF" /></a>
                   <input type="file" class="form-control file-access" name="lap_profile" id="AddFilesProfile" accept=".pdf">
                   <input type="hidden" name="lap_profile_file" id="lap_profile_file" value="">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
