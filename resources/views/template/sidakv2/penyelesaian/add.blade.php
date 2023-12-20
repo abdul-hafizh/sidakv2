@@ -142,7 +142,7 @@
             <div class="row">
               <div id="lap_profile-alert" class="form-group has-feedback col-md-12">
                   <label>Profile Pelaku Usaha </label>
-                  <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><img src="{{ asset('public/template/sidakv2/img/pdf-icon.png') }}" alt="PDF" /></a>
+                  <a href="#" class="text-bold text-profile" id="modal-profile" data-target="Profile" style="margin-left: 5px"><small>(Tampilkan Profile)</small></a>
                   <input type="file" class="form-control file-access" name="lap_profile" id="AddFilesProfile" accept=".pdf">
                   <input type="hidden" name="lap_profile_file" id="lap_profile_file" value="">
                   <div id="ShowPdfProfile" style="margin-top:8px"></div>
@@ -444,6 +444,18 @@
       $('#FormSubmit input').removeAttr('readonly');
       $('#FormSubmit select').removeAttr('disabled');
       $('#anggaran').html("");      
+
+      $('.file-access').show();
+
+      $('.text-peserta').hide();
+      $('.text-profile').hide();
+      $('.text-profile2').hide();
+      $('.text-notula').hide();
+      $('.text-notula2').hide();
+      $('.text-narasumber').hide();
+      $('.text-lkpm').hide();
+      $('.text-doc').hide();
+      $('.text-eval').hide();
       
       $('#ShowPdfProfile').empty();
       $('#ShowPdfProfile2').empty();
