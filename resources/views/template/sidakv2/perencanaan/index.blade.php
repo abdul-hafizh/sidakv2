@@ -88,7 +88,7 @@
                 <div class="card-body table-responsive p-0">
                     <div class="media">
                         <div class="media-body text-left">
-                            <span>Total Promosi</span>
+                            <span>Total Peta Potensi</span>
                             <h3 class="card-text" id="total-rencana-promosi"></h3>
                         </div>
                     </div>
@@ -202,7 +202,7 @@
                             </th>
                              <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
-                              <span class="padding-top-bottom-12">Promosi</span>
+                              <span class="padding-top-bottom-12">Peta Potensi</span>
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
@@ -216,10 +216,6 @@
                               <div class="split-table"></div>
                               <span class="padding-top-bottom-12">Aksi</span>
                             </th>
-
-
-
-                            
                         </tr>
                         <tr>
                             <th  class="text-center font-bold">

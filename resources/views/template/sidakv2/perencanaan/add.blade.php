@@ -24,7 +24,7 @@
                          <div class="card-body table-responsive p-0">
                               <div class="media">
                                    <div class="media-body text-left">
-                                        <span id="label-peta">Pagu Promosi</span>
+                                        <span id="label-peta">Pagu Peta Potensi</span>
                                         <h3 class="card-text" id="pagu_promosi_header"></h3>
                                    </div>
                               </div>
@@ -256,14 +256,14 @@
                                    @if($access == 'province')
                                    <tr>
                                         <td><strong>4</strong></td>
-                                        <td class="text-left"><strong id="label-peta-judul">Penyusunan Bahan Promosi Penanaman Modal</strong></td>
+                                        <td class="text-left"><strong id="label-peta-judul">Penyusunan Bahan Peta Pontesi</strong></td>
                                         <td class="text-center"><strong>1</strong></td>
                                         <td class="text-center"><strong>Video</strong></td>
                                         <td class="text-right"><strong id="total_promosi_pagu">Rp 0</strong></td>
                                    </tr>
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
-                                        <td id="label-peta-sub">A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal</td>
+                                        <td id="label-peta-sub">A. Penyediaan File sebagai Bahan Peta Potensi</td>
                                         <td>
                                              <div class="margin-none form-group">  
                                                   <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>
@@ -281,7 +281,7 @@
                                    </tr>
                                    <tr>
                                         <td colspan="3">&nbsp;</td>
-                                        <td class="text-right"><strong id="label-peta-total">Total Promosi :</strong></td>
+                                        <td class="text-right"><strong id="label-peta-total">Total Peta Potensi :</strong></td>
                                         <td class="text-right"><span id="promosi_pagu_sec"></span></td>
                                    </tr>                                   
                                    @else
