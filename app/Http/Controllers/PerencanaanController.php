@@ -18,7 +18,7 @@ class PerencanaanController extends Controller
     }
 
     public function index(Request $request)
-    {      
+    {
         $title = 'Perencanaan Tahun Anggaran';
         $log = array(             
             'menu' => $title,            
@@ -26,13 +26,18 @@ class PerencanaanController extends Controller
             'url' => 'perencanaan'
         );
         
+        RequestSystemLog::CreateLog($log);
         $access = RequestAuth::Access();
-        RequestSystemLog::CreateLog($log);  
-
-        $with =  ['title' => $title,'access' => $access,'template' => 'template/'.$this->template];
-
-        return view('template/' . $this->template . '.perencanaan.index')->with($with);
         
+        if($access =='pusat' || $access =='admin') {
+            $view = 'template/' . $this->template . '.perencanaan.index'; 
+        } else {
+            $view = 'template/' . $this->template . '.perencanaan.daerah';
+        }        
+
+        $with =  ['title' => $title, 'access' => $access, 'template' => 'template/'.$this->template];
+
+        return view($view)->with($with);
     }
 
     public function add(Request $request)

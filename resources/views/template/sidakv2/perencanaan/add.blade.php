@@ -1,7 +1,67 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
 
-<style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
+<style>    
+     tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; }
+     .modal-loading {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 99999;
+    }
+    .modal-content2 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    #progress-container {
+        text-align: center;
+    }
+    #progress-bar {
+        width: 100%;
+        background-color: #ccc;
+        border-radius: 4px;
+    }
+    #progress {
+        height: 20px;
+        background-color: #4caf50;
+        border-radius: 4px;
+        transition: width 0.3s ease-in-out;
+    }
+    #progress-label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<!-- Modal loading -->
+<div id="progressModal" class="modal-loading" style="display: none;">
+  <div class="modal-content2">
+    <span class="close" id="closeProgressModal">&times;</span>
+    <h2>Upload Dokumen</h2>
+    <div id="progress-container">
+      <div id="progress-bar">
+        <div id="progress" style="width: 0%"></div>
+      </div>
+      <div id="progress-label">0%</div>
+    </div>
+  </div>
+</div>
 
 <div class="content">
      <form id="FormSubmit">
@@ -65,7 +125,6 @@
                     </div>
                </div>
           </div>
-
           <div class="box box-solid box-primary">
                <div class="box-body">
                     <div class="card-body table-responsive">
@@ -92,7 +151,7 @@
                                         <td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>
                                         <td>
                                            <div id="pengawas-analisa-target-alert" class="margin-none form-group">  
-                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target target_pengawasan_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-analisa-target-messages"></span>
                                            </div>  
                                         </td>
@@ -130,7 +189,7 @@
                                         <td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>
                                         <td>
                                           <div id="pengawas-evaluasi-target-alert" class="margin-none form-group">
-                                             <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target target_pengawasan_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-evaluasi-target-messages"></span>
                                           </div>   
                                         </td>
@@ -201,7 +260,7 @@
                                         <td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>
                                         <td>
                                           <div id="penyelesaian-identifikasi-target-alert" class="margin-none form-group"> 
-                                               <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                               <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control penyelesaian_nilai_target target_penyelesaian_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-identifikasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -239,7 +298,7 @@
                                         <td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>
                                         <td>
                                            <div id="penyelesaian-evaluasi-target-alert" class="margin-none form-group">  
-                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control penyelesaian_nilai_target target_penyelesaian_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-evaluasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -305,7 +364,6 @@
                     </div>
                </div>
           </div>
-          
           <div class="box box-solid box-primary">
                <div class="box-body">
                     <div class="card-body">
@@ -345,7 +403,6 @@
                     </div>
                </div>
           </div> 
-
           <div class="box-footer">
                <div class="btn-group just-center">
                     <button id="simpan" type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> SIMPAN</button>
@@ -699,6 +756,7 @@
                     $(".pengawasan_nilai_target").prop("disabled", false);
                     $(".pengawasan_nilai_pagu").prop("disabled", false);
                     $('.target_pengawasan').val(pengawasan);
+                    $('.target_pengawasan_edit').val(pengawasan);
                     $(".target_pengawasan").prop("disabled", true);
                     $("#pengawas_analisa_pagu").val(find.pagu_pengawasan * 0.1);
                     $("#pengawas_inspeksi_pagu").val(find.pagu_pengawasan * 0.8);
@@ -722,11 +780,12 @@
                          $(".bimtek_pengawasan_target").val(Math.floor(bimtek / 2));
                     }
                     
-                    //isi target penyelesaian
+                    //isi target dan pagu penyelesaian
                     penyelesaian = find.target_penyelesaian;
                     $(".penyelesaian_nilai_target").prop("disabled", false);
                     $(".penyelesaian_nilai_pagu").prop("disabled", false);
                     $('.target_penyelesaian').val(penyelesaian);
+                    $('.target_penyelesaian_edit').val(penyelesaian);
                     $(".target_penyelesaian").prop("disabled", true);
                     $("#total_penyelesaian_target").text(penyelesaian);
                     $("#penyelesaian_identifikasi_pagu").val(find.pagu_penyelesaian * 0.1);
@@ -743,13 +802,27 @@
 
                var pesan = (form.type === 'kirim') ? 'Terkirim ke Pusat.' : 'Berhasil Simpan.';
 
+               $('#progressModal').show();
+
                $.ajax({
                     type:"POST",
                     url: BASE_URL+'/api/perencanaan',
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          if(respons.status) {
                               Swal.fire({
                                    title: 'Sukses!',
@@ -770,11 +843,9 @@
                               }).then((result) => {});
                          }
                     },
-
                     error: (respons) => {
-
-                         errors = respons.responseJSON;
-                         
+                         $('#progressModal').hide();
+                         errors = respons.responseJSON;                         
                          if(errors.messages.pengawas_analisa_target)
                          {
                               $('#pengawas-analisa-target-alert').addClass('has-error');

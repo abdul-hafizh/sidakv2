@@ -1,11 +1,68 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
-
 <style>
     .inner {
-		max-height: 200px !important;
-	}
+        max-height: 200px !important;
+    }
+    .modal-loading {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 99999;
+    }
+    .modal-content2 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    #progress-container {
+        text-align: center;
+    }
+    #progress-bar {
+        width: 100%;
+        background-color: #ccc;
+        border-radius: 4px;
+    }
+    #progress {
+        height: 20px;
+        background-color: #4caf50;
+        border-radius: 4px;
+        transition: width 0.3s ease-in-out;
+    }
+    #progress-label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
 </style>
+
+<!-- Modal loading -->
+<div id="progressModal" class="modal-loading" style="display: none;">
+  <div class="modal-content2">
+    <span class="close" id="closeProgressModal">&times;</span>
+    <h2>Upload Dokumen</h2>
+    <div id="progress-container">
+      <div id="progress-bar">
+        <div id="progress" style="width: 0%"></div>
+      </div>
+      <div id="progress-label">0%</div>
+    </div>
+  </div>
+</div>
 
 <section class="content-header pd-left-right-15">    
     <div class="row padding-default" style="margin-bottom: 20px">
@@ -88,7 +145,7 @@
                 <div class="card-body table-responsive p-0">
                     <div class="media">
                         <div class="media-body text-left">
-                            <span>Total Peta Potensi</span>
+                            <span>Total </span><span class="label-peta-potensi">Peta Potensi</span>
                             <h3 class="card-text" id="total-rencana-promosi"></h3>
                         </div>
                     </div>
@@ -183,27 +240,27 @@
                               <div class="split-table"></div>
                             </th>
                             <th colspan="3" class="text-center font-bold border-bottom-th">  
-                              <span class="padding-top-bottom-12">Pengawasan</span> 
+                              <span class="padding-top-bottom-12">Pengawasan (Rp.)</span> 
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table "></div>
                             </th>
                             <th colspan="3" class="text-center font-bold">
-                              <span class="padding-top-bottom-12 ">Bimsos</span>
+                              <span class="padding-top-bottom-12 ">Bimsos (Rp.)</span>
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
                             </th>                          
                             <th colspan="3" class="text-center font-bold">                               
-                              <span class="padding-top-bottom-12">Penyelesaian Masalah</span> 
+                              <span class="padding-top-bottom-12">Penyelesaian Masalah (Rp.)</span> 
                             </th>
                              <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
-                              <span class="padding-top-bottom-12">Peta Potensi</span>
+                              <span class="padding-top-bottom-12 label-peta-potensi-table">Peta Potensi (Rp.)</span>
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
-                              <span class="padding-top-bottom-12">Total</span>
+                              <span class="padding-top-bottom-12">Total (Rp.)</span>
                             </th>
                             <th rowspan="2" class="text-center font-bold">
                               <div class="split-table"></div>
@@ -215,35 +272,35 @@
                             </th>
                         </tr>
                         <tr>
-                            <th  class="text-center font-bold">
+                            <th class="text-center font-bold">
                                 <span class="padding-top-bottom-12">Analisa</span>
                             </th>
-                            <th  class="text-center font-bold">
+                            <th class="text-center font-bold">
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Inspeksi</span>
                             </th>
-                             <th  class="text-center font-bold">
+                             <th class="text-center font-bold">
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Evaluasi</span>
                             </th>
-                             <th  class="text-center font-bold">   
+                             <th class="text-center font-bold">   
                                 <span class="padding-top-bottom-12">Perizinan</span>
                             </th>
-                             <th   class="text-center font-bold">
+                             <th  class="text-center font-bold">
                               <div class="split-table"></div>
                             </th>
-                            <th  class="text-center font-bold">
+                            <th class="text-center font-bold">
                                
                                <span class="span-title">Pengawasan</span>
                             </th>
-                             <th  class="text-center font-bold">
+                             <th class="text-center font-bold">
                                 <span class="padding-top-bottom-12">Identifikasi</span>
                             </th>
-                            <th  class="text-center font-bold">
+                            <th class="text-center font-bold">
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Realisasi</span>
                             </th>
-                             <th  class="text-center font-bold">
+                             <th class="text-center font-bold">
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Evaluasi</span>
                             </th>
@@ -348,7 +405,7 @@
         var periode = [];
         var list = [];
         var year = new Date().getFullYear();
-        var daerah_id = 0;
+        var daerah_id = 0;        
       
         fetchData(page,year);
         
@@ -457,12 +514,12 @@
         });
 
         $('#Reset').on('click', function() {
-                localStorage.removeItem('search');
-                
-                $('#periode_id').val();
-                $("#daerah_id").val();
-                $('#search_status').val();
-                $('#search_text').val('');
+            localStorage.removeItem('search');
+            
+            $('#periode_id').val();
+            $("#daerah_id").val();
+            $('#search_status').val();
+            $('#search_text').val('');
             location.reload(true); 
         });
 
@@ -470,10 +527,18 @@
             var daerah_id = $("#daerah_id").val();
             var periode_id = $('#periode_id').val(); 
             var search_status = $('#search_status').val();
-            var search_text = $('#search_text').val();
+            var search_text = $('#search_text').val();                    
 
-             var form = {'periode_id':periode_id,'daerah_id':daerah_id,'status':search_status,'search':search_text};
-             localStorage.setItem('search', JSON.stringify(form));
+            if(periode_id < 2024) {                         
+                $(".label-peta-potensi").text('Promosi');
+                $(".label-peta-potensi-table").text('Promosi (Rp.)');
+            } else {
+                $(".label-peta-potensi").text('Peta Potensi');
+                $(".label-peta-potensi-table").text('Peta Potensi (Rp.)');
+            }
+
+            var form = {'periode_id':periode_id,'daerah_id':daerah_id,'status':search_status,'search':search_text};
+            localStorage.setItem('search', JSON.stringify(form));
 
             const content = $('#content');
             content.empty();
@@ -496,15 +561,29 @@
             });
         });
 
-        function approveItems(ids) {        
+        function approveItems(ids) {    
+            $('#progressModal').show();    
             $.ajax({
                 url:  BASE_URL +`/api/perencanaan/approve_selected`,
                 method: 'POST',
                 data: { data: ids },
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            $('#progress').css('width', percentComplete + '%');
+                            $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
                 success: function(response) {
+                    $('#progressModal').hide();
                     fetchData(page,year);
                 },
                 error: function(error) {
+                    $('#progressModal').hide();
                     console.error('Error deleting items:', error);
                 }
             });
@@ -569,17 +648,16 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                
-                  options.forEach(function(opt, arr) 
-                  {
-                     if(opt.action == 'approval')
-                     {
+                options.forEach(function(opt, arr) 
+                {
+                    if(opt.action == 'approval')
+                    {
                         if(opt.checked == true)
                         {
-                             row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                            row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
                         }
-                     }       
-                  }); 
+                    }       
+                }); 
 
                 total_pengawasan += item.total_rencana_pengawasan;
                 total_bimsos += item.total_rencana_bimsos;
@@ -588,27 +666,24 @@
 
                 var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + item.lap_rencana + '" class="pointer btn-padding-action pull-left" title="Download PDF" target="_blank" style="margin-right: 4px"><i class="fa-icon icon-download"></i></a>';
 
-                row +=`<td>${item.number}</td>`;
-                row +=`<td colspan="2">${item.nama_daerah}</td>`;
-                 row +=`<td></td>`;
-                row +=`<td class="text-right">${item.pengawas_analisa_pagu_convert}</td>`;
-                row +=`<td class="text-right">${item.pengawas_inspeksi_pagu_convert}</td>`;
-                row +=`<td class="text-right">${item.pengawas_evaluasi_pagu_convert}</td>`;
+                row +=`<td style="vertical-align: middle;">${item.number}</td>`;
+                row +=`<td colspan="2" style="vertical-align: middle;">${item.nama_daerah}</td>`;
                 row +=`<td></td>`;
-                row +=`<td class="text-right">${item.bimtek_perizinan_pagu_convert}</td>`;
+                row +=`<td class="text-right">Target : ${item.pengawas_analisa_target}<br/>${item.pengawas_analisa_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right">Target : ${item.pengawas_inspeksi_target}<br/>${item.pengawas_inspeksi_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right">Target : ${item.pengawas_evaluasi_target}<br/>${item.pengawas_evaluasi_pagu_convert.replace('Rp ', '')}</td>`;
                 row +=`<td></td>`;
-                row +=`<td class="text-right">${item.bimtek_pengawasan_pagu_convert}</td>`;
-                  row +=`<td></td>`;
-                row +=`<td class="text-right">${item.penyelesaian_identifikasi_pagu_convert}</td>`;
-                row +=`<td class="text-right">${item.penyelesaian_realisasi_pagu_convert}</td>`;
-                row +=`<td class="text-right">${item.penyelesaian_evaluasi_pagu_convert}</td>`;
-                
-                row +=`<td class="text-right">${item.promosi_pengadaan_pagu_convert}</td>`;
-
-                row +=`<td class="text-right">${item.total_pagu}</td>`;
-                row +=`<td class="text-center">${item.status}</td>`;
-                // // row +=`<td class="table-padding-second">${item.updated_at}</td>`;
-                row +=`<td>`; 
+                row +=`<td class="text-right">Target : ${item.bimtek_perizinan_target}<br/>${item.bimtek_perizinan_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td></td>`;
+                row +=`<td class="text-right">Target : ${item.bimtek_pengawasan_target}<br/>${item.bimtek_pengawasan_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td></td>`;
+                row +=`<td class="text-right">Target : ${item.penyelesaian_identifikasi_target}<br/>${item.penyelesaian_identifikasi_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right">Target : ${item.penyelesaian_realisasi_target}<br/>${item.penyelesaian_realisasi_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right">Target : ${item.penyelesaian_evaluasi_target}<br/>${item.penyelesaian_evaluasi_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right" style="vertical-align: middle;">${item.promosi_pengadaan_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right" style="vertical-align: middle;">${item.total_pagu.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-center" style="vertical-align: middle;">${item.status}</td>`;
+                row +=`<td style="vertical-align: middle;">`; 
                     row +=`<div class="btn-action">`;
                     if(item.lap_rencana != '') {                                   
                         row += download_link;
@@ -799,13 +874,26 @@
            
 
             function reqeditItem(form) {
+                $('#progressModal').show();
                 $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/reqedit/' + item.id,
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                        $('#progressModal').hide();
                         Swal.fire({
                             title: 'Sukses!',
                             text: 'Berhasil Request Edit Data Perencanaan.',
@@ -817,17 +905,34 @@
                             }
                         });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error unapproving data:', error);
+                    }
                 });
             }
 
             function reqrevisiItem(form) {
+                $('#progressModal').show();
                 $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/reqrevisi/' + item.id,
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                        $('#progressModal').hide();
                         Swal.fire({
                             title: 'Sukses!',
                             text: 'Berhasil Request Edit Data Perencanaan.',
@@ -839,6 +944,10 @@
                             }
                         });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error unapproving data:', error);
+                    }
                 });
             }
 
@@ -864,13 +973,27 @@
         }
 
         function deleteItem(id){
+            $('#progressModal').show();
             $.ajax({
                 url:  BASE_URL +`/api/perencanaan/`+ id,
                 method: 'DELETE',
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            $('#progress').css('width', percentComplete + '%');
+                            $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
                 success: function(response) {
+                    $('#progressModal').hide();
                     fetchData(page,year);
                 },
                 error: function(error) {
+                    $('#progressModal').hide();
                     console.error('Error deleting items:', error);
                 }
             });
@@ -998,20 +1121,26 @@
             XLSX.writeFile(wb, "Report-data-perencanaan-"+ time +".xlsx");
         }
 
-        function getperiode(periode_id){
+        function getperiode(periode_id){            
             $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode"  class="selectpicker"></select>');
             $.ajax({
                 type: 'GET',
                 dataType: 'json',
                 url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
                 success: function(data) {
-
-                        getperiodeList(data);
-                        $('#periode_id').val(periode_id).selectpicker('refresh');
+                    getperiodeList(data);
+                    $('#periode_id').val(periode_id).selectpicker('refresh');
                     
                 },
                 error: function( error) {}
             }); 
+            if(periode_id < 2024) {                         
+                $(".label-peta-potensi").text('Promosi');
+                $(".label-peta-potensi-table").text('Promosi (Rp.)');
+            } else {
+                $(".label-peta-potensi").text('Peta Potensi');
+                $(".label-peta-potensi-table").text('Peta Potensi (Rp.)');
+            }
         }
 
         function getperiodeList(data){
