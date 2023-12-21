@@ -4,7 +4,67 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 
-<style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
+<style>    
+     tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; }
+     .modal-loading {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 99999;
+    }
+    .modal-content2 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    #progress-container {
+        text-align: center;
+    }
+    #progress-bar {
+        width: 100%;
+        background-color: #ccc;
+        border-radius: 4px;
+    }
+    #progress {
+        height: 20px;
+        background-color: #4caf50;
+        border-radius: 4px;
+        transition: width 0.3s ease-in-out;
+    }
+    #progress-label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<!-- Modal loading -->
+<div id="progressModal" class="modal-loading" style="display: none;">
+  <div class="modal-content2">
+    <span class="close" id="closeProgressModal">&times;</span>
+    <h2>Upload Dokumen</h2>
+    <div id="progress-container">
+      <div id="progress-bar">
+        <div id="progress" style="width: 0%"></div>
+      </div>
+      <div id="progress-label">0%</div>
+    </div>
+  </div>
+</div>
 
 <div class="content">
      <div class="row" style="margin-bottom: 20px">
@@ -660,6 +720,8 @@
                               ).then((act) => {
                                    if (act.isConfirmed) {
                                         window.location.replace('/perencanaan');
+                                   } else {
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          }
@@ -683,6 +745,8 @@
                                    'success'
                               ).then((act) => {
                                    if (act.isConfirmed) {
+                                        window.location.replace('/perencanaan');
+                                   } else {
                                         window.location.replace('/perencanaan');
                                    }
                               });
@@ -820,6 +884,8 @@
                               ).then((act) => {
                                    if (act.isConfirmed) {
                                         window.location.replace('/perencanaan');
+                                   } else {
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          }
@@ -827,7 +893,6 @@
                });
 
                $("#AddFiles").change((event)=> {     
-            
                     const files = event.target.files
                     let filename = files[0].name
                     const fileReader = new FileReader()
@@ -908,7 +973,9 @@
                                    
                               }).then((result) => {
                                    if (result.isConfirmed) {
-                                   window.location.replace('/perencanaan');
+                                        window.location.replace('/perencanaan');
+                                   } else {
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          },
@@ -933,40 +1000,78 @@
           }
 
           function reqdocItem(id) {
+               $('#progressModal').show();
                $.ajax({
                     url:  BASE_URL +`/api/perencanaan/request_doc/`+ id,
                     method: 'PUT',
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: function(response) {
-                         fetchData(page);
+                         $('#progressModal').hide();
                     },
                     error: function(error) {
+                         $('#progressModal').hide();
                          console.error('Error request data:', error);
                     }                
                });
           }
 
           function approveItem(id) {
+               $('#progressModal').show();
                $.ajax({
                     url:  BASE_URL +`/api/perencanaan/approve/`+ id,
                     method: 'PUT',
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: function(response) {
-                         fetchData(page);
+                         $('#progressModal').hide();
                     },
                     error: function(error) {
+                         $('#progressModal').hide();
                          console.error('Error approving data:', error);
                     }                
                });
           }
 
           function unapproveItem(form) {
-
+               $('#progressModal').show();
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/unapprove/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          Swal.fire({
                               title: 'Sukses!',
                               text: 'Berhasil Unapprove Data Perencanaan.',
@@ -975,21 +1080,39 @@
                          }).then((result) => {
                               if (result.isConfirmed) {
                                    window.location.replace('/perencanaan');
+                              } else {
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error unapproving data:', error);
+                    }
                });
           }
 
           function unapproveDocItem(form) {
-
+               $('#progressModal').show();
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/unapprove_doc/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          Swal.fire({
                               title: 'Sukses!',
                               text: 'Berhasil Unapprove Data Perencanaan.',
@@ -998,21 +1121,39 @@
                          }).then((result) => {
                               if (result.isConfirmed) {
                                    window.location.replace('/perencanaan');
+                              } else {
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error unapproving data:', error);
+                    }
                });
           }
 
           function reqeditItem(form) {
-
+               $('#progressModal').show();
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/reqedit/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          Swal.fire({
                               title: 'Sukses!',
                               text: 'Berhasil Request Edit Data Perencanaan.',
@@ -1021,21 +1162,39 @@
                          }).then((result) => {
                               if (result.isConfirmed) {
                                    window.location.replace('/perencanaan');
+                              } else {
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error request data:', error);
+                    }
                });
           }
 
           function reqrevisiItem(form) {
-
+               $('#progressModal').show();
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/reqrevisi/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          Swal.fire({
                               title: 'Sukses!',
                               text: 'Berhasil Request Edit Data Perencanaan.',
@@ -1044,22 +1203,41 @@
                          }).then((result) => {
                               if (result.isConfirmed) {
                                    window.location.replace('/perencanaan');
+                              } else {
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error request data:', error);
+                    }
                });
           }
           
           function approveEditItem(id) {
+               $('#progressModal').show();
                $.ajax({
                     url:  BASE_URL +`/api/perencanaan/approve_edit/`+ id,
                     method: 'PUT',
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: function(response) {
-                         fetchData(page);
+                         $('#progressModal').hide();
                     },
                     error: function(error) {
+                         $('#progressModal').hide();
                          console.error('Error approving data:', error);
-                    }                
+                    }
                });
           }
      });

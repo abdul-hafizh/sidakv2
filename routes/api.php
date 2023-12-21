@@ -71,6 +71,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::put('perencanaan/reqedit/{id}', [PerencanaanApiController::class, 'reqedit']);
     Route::put('perencanaan/reqrevisi/{id}', [PerencanaanApiController::class, 'reqrevisi']);
     Route::get('perencanaan/edit/{id}', [PerencanaanApiController::class, 'edit']);
+    Route::get('perencanaan/daerah/{id}', [PerencanaanApiController::class, 'daerah']);
     Route::post('perencanaan/search', [PerencanaanApiController::class, 'search']);
     Route::post('perencanaan/selected', [PerencanaanApiController::class, 'deleteSelected']);
     Route::post('perencanaan/approve_selected', [PerencanaanApiController::class, 'approveSelected']);

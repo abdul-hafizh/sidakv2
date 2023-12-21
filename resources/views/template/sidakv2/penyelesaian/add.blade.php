@@ -978,13 +978,26 @@
       });
 
       function req_edit(form) {
+        $('#progressModal').show();
         $.ajax({
           type: "PUT",
           url: BASE_URL + '/api/penyelesaian/request_edit/' + id,
           data: form,
           cache: false,
           dataType: "json",
+          xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = (evt.loaded / evt.total) * 100;
+                $('#progress').css('width', percentComplete + '%');
+                $('#progress-label').text(percentComplete.toFixed(2) + '%');
+              }
+            }, false);
+            return xhr;
+          },
           success: (respons) => {
+            $('#progressModal').hide();
             Swal.fire({
               title: 'Sukses!',
               text: 'Berhasil mengajukan edit.',
@@ -992,10 +1005,22 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
+                $('#modal-add').hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#datatable').DataTable().ajax.reload();
+              } else {
+                $('#modal-add').hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
                 $('#datatable').DataTable().ajax.reload();
               }
             });
           },
+          error: function(error) {
+            $('#progressModal').hide();
+            console.error('Error process data:', error);
+          }
         });
       }
 
@@ -1028,13 +1053,26 @@
       });
 
       function req_revisi(form) {
+        $('#progressModal').show();
         $.ajax({
           type: "PUT",
           url: BASE_URL + '/api/penyelesaian/request_revisi/' + id,
           data: form,
           cache: false,
           dataType: "json",
+          xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+              if (evt.lengthComputable) {
+                var percentComplete = (evt.loaded / evt.total) * 100;
+                $('#progress').css('width', percentComplete + '%');
+                $('#progress-label').text(percentComplete.toFixed(2) + '%');
+              }
+            }, false);
+            return xhr;
+          },
           success: (respons) => {
+            $('#progressModal').hide();
             Swal.fire({
               title: 'Sukses!',
               text: 'Berhasil mengajukan revisi.',
@@ -1042,13 +1080,22 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
-                // $('#modal-add').hide();
-                // $('#modal-req-revision').hide();
-                // $('#datatable').DataTable().ajax.reload();                
-                window.location.replace('/penyelesaian');
+                $('#modal-add').hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#datatable').DataTable().ajax.reload();
+              } else {
+                $('#modal-add').hide();
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+                $('#datatable').DataTable().ajax.reload();
               }
             });
           },
+          error: function(error) {
+            $('#progressModal').hide();
+            console.error('Error process data:', error);
+          }
         });
       }
 
@@ -1187,23 +1234,11 @@
                 });
               } else {
                 Swal.fire({
-                  title: 'Gagal Kirim ke Pusat!',
+                  title: 'Gagal Kirim ke Pusat. Periksa Kembali Data Anda.',
                   text: respons.message,
                   icon: 'error',
                   confirmButtonText: 'OK'
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    $('#modal-add').hide();
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
-                    $('#datatable').DataTable().ajax.reload();
-                  } else {
-                    $('#modal-add').hide();
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
-                    $('#datatable').DataTable().ajax.reload();
-                  }
-                });
+                }).then((result) => {});
               }
             },
             error: (respons) => {
