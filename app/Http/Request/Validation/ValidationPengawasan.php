@@ -145,6 +145,7 @@ class ValidationPengawasan
         $fields = [
             'lap_kegiatan'  => 'Laporan kegiatan',
             'nib.*'  => 'NIB',
+            'nama_perusahaan.*'  => 'Nama Perusahaan',
 
         ];
 
@@ -153,6 +154,7 @@ class ValidationPengawasan
                 $request->all(),
                 [
                     "nib.*"  => "required",
+                    "nama_perusahaan.*"  => "required",
                 ]
             );
         } else if ($request->sub_menu_slug == 'analisa' || $request->sub_menu_slug == 'evaluasi') {
@@ -189,9 +191,9 @@ class ValidationPengawasan
             'nama_kegiatan' => 'Nama Kegiatan',
             'hasil_analisa' => 'Hasil analisa',
             'tanggal_kegiatan' => 'Tanggal Kegiatan',
-            'biaya' => 'Biaya',
+            //    'biaya' => 'Biaya',
             'lokasi' => 'Lokasi',
-            // 'nib.*' => 'NIB',
+            'nib.*' => 'NIB',
 
 
         ];
@@ -205,10 +207,10 @@ class ValidationPengawasan
                 'hasil_analisa'  => 'required',
                 'tanggal_kegiatan'  => 'required',
                 //    'jml_peserta'  => 'required_if:sub_menu_slug,is_bimtek_ipbbr|nullable|integer',
-                'biaya'  => 'required|integer',
+                //    'biaya'  => 'required|integer',
                 'lokasi'  => 'required_if:sub_menu_slug,analisa|required_if:sub_menu_slug,evaluasi',
-                //  "nib"    => "required|array|min:1",
-                // "nib.*"  => "required",
+                "nib.*"    => "required",
+
             ]
         );
 

@@ -249,7 +249,7 @@
 								<th>Total</th>
 								<th style="text-align: center"><span>${result.data[0].pengawasan_rencana_target+result.data[0].pendamping_rencana_target+result.data[0].perizinan_rencana_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_rencana+result.data[0].pendamping_rencana+result.data[0].perizinan_rencana)}</span></th>
-								<th style="text-align: center"><span>${result.data[0].pengawasan_realiasi_target+result.data[0].pendamping_realisasi_target+result.data[0].perizinan_realisasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].pengawasan_realiasi_target+result.data[0].perizinan_realisasi_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_realiasasi+result.data[0].pendamping_realisasi+result.data[0].perizinan_realisasi)}</span></th>
 							</tr>
 						</tbody>
@@ -313,11 +313,11 @@
 								<th>Total</th>
 								<th style="text-align: center"><span>${result.data[0].pengawasan_rencana_target+result.data[0].pendamping_rencana_target+result.data[0].perizinan_rencana_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_rencana+result.data[0].pendamping_rencana+result.data[0].perizinan_rencana)}</span></th>
-								<th style="text-align: center"><span>${result.data[0].pengawasan_realisasi_target+result.data[0].pendamping_realisasi_target+result.data[0].perizinan_realisasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].pengawasan_realisasi_target+result.data[0].perizinan_realisasi_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_realisasi+result.data[0].pendamping_realisasi+result.data[0].perizinan_realisasi)}</span></th>
-								<th style="text-align: center">${result.data[0].pengawasan_realisasi_target_2+result.data[0].pendamping_target_2+result.data[0].perizinan_realisasi_target_2}</th>
+								<th style="text-align: center">${result.data[0].pengawasan_realisasi_target_2+result.data[0].perizinan_realisasi_target_2}</th>
 								<th style="text-align: right">${formatRupiah(result.data[0].pengawasan_realisasi_2+result.data[0].pendamping_realisasi_2+result.data[0].perizinan_realisasi_2)}</th>
-								<th style="text-align: center"><span>${result.data[0].pengawasan_realisasi_target_total+result.data[0].pendamping_target_total+result.data[0].perizinan_realisasi_target_total}</span></th>
+								<th style="text-align: center"><span>${result.data[0].pengawasan_realisasi_target_total+result.data[0].perizinan_realisasi_target_total}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_realisasi_total+result.data[0].pendamping_realisasi_2_total+result.data[0].perizinan_realisasi_total)}</span></th>
 							</tr>
 						</tbody>

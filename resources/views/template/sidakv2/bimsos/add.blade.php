@@ -150,7 +150,7 @@
           <div class="row">
             <div id="lap_hadir-alert" class="form-group has-feedback col-md-12">
               <label>Daftar hadir</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_hadir" style="display: none" style="margin-left: 5px"><small>(Tampilkan Daftar hadir)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_hadir" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Lap Hadir"></a>
               <input type="hidden" class="form-control" name="lap_hadir_file" id="lap_hadir_file" value="">
               <input type="file" class="form-control file-access" name="lap_hadir" id="lap_hadir" accept=".pdf">
               <span id="lap_hadir-messages"></span>
@@ -160,7 +160,7 @@
           <div class="row">
             <div id="lap_pendamping-alert" class="form-group has-feedback col-md-12">
               <label>Laporan Tenaga Pendamping</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_pendamping" style="display: none" style="margin-left: 5px"><small>(Tampilkan Tenaga Pendamping)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_pendamping" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Tenaga Pendamping"></a>
               <input type="hidden" class="form-control" name="lap_pendamping_file" id="lap_pendamping_file" value="">
               <input type="file" class="form-control file-access" name="lap_pendamping" id="lap_pendamping" accept=".pdf">
               <span id="lap_pendamping-messages"></span>
@@ -170,7 +170,7 @@
           <div class="row">
             <div id="lap_notula-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Notula Kegiatan</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_notula" style="display: none" style="margin-left: 5px"><small>(Tampilkan Notula Kegiatan)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_notula" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Notula Kegiatan"></a>
               <input type="hidden" class="form-control" name="lap_notula_file" id="lap_notula_file" value="">
               <input type="file" class="form-control file-access" name="lap_notula" id="lap_notula" accept=".pdf">
               <span id="lap_notula-messages"></span>
@@ -180,7 +180,7 @@
           <div class="row">
             <div id="lap_survey-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Hasil Survey</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_survey" style="display: none" style="margin-left: 5px"><small>(Tampilkan Hasil Survey)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_survey" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Hasil Survey"></a>
               <input type="hidden" class="form-control" name="lap_survey_file" id="lap_survey_file" value="">
               <input type="file" class="form-control file-access" name="lap_survey" id="lap_survey" accept=".pdf">
               <span id="lap_survey-messages"></span>
@@ -190,7 +190,7 @@
           <div class="row">
             <div id="lap_narasumber-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Daftar Narasumber</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_narasumber" style="display: none" style="margin-left: 5px"><small>(Tampilkan Daftar Narasumber)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_narasumber" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Daftar Narasumber"></a>
               <input type="hidden" class="form-control" name="lap_narasumber_file" id="lap_narasumber_file" value="">
               <input type="file" class="form-control file-access" name="lap_narasumber" id="lap_narasumber" accept=".pdf">
               <span id="lap_narasumber-messages"></span>
@@ -200,7 +200,7 @@
           <div class="row">
             <div id="lap_materi-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Materi</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_materi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Materi)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_materi" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Materi"></a>
               <input type="hidden" class="form-control" name="lap_materi_file" id="lap_materi_file" value="">
               <input type="file" class="form-control file-access" name="lap_materi" id="lap_materi" accept=".pdf">
               <span id="lap_materi-messages"></span>
@@ -210,7 +210,7 @@
           <div class="row">
             <div id="lap_document-alert" class="form-group has-feedback col-md-12" style="display: none">
               <label>Laporan Dokumentasi</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_document" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Dokumentasi)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_document" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Dokumentasi"></a>
               <input type="hidden" class="form-control" name="lap_document_file" id="lap_document_file" value="">
               <input type="file" class="form-control file-access" name="lap_document" id="lap_document" accept=".pdf">
               <span id="lap_document-messages"></span>
