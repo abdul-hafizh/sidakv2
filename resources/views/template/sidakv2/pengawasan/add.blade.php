@@ -66,7 +66,7 @@
 </div>
 
 <!-- Modal -->
-<div id="modal-add" class="modal fade" role="dialog">
+<div id="modal-add" class="modal fade" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -127,7 +127,7 @@
 
           <div id="biaya-alert" class="form-group has-feedback">
             <label>Biaya (Rp.)</label>
-            <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
+            <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="" required>
             <span id="biaya-messages"></span>
           </div>
 
@@ -139,7 +139,7 @@
             </div>
             <div id="lap_kegiatan-alert" class="form-group has-feedback">
               <label>Laporan</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_kegiatan" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kegiatan)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_kegiatan" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Kegiatan"></a>
               <input type="hidden" class="form-control" name="lap_kegiatan_file" id="lap_kegiatan_file" value="">
               <input type="file" class="form-control file-access" name="lap_kegiatan" id="lap_kegiatan" accept=".pdf">
               <span id="lap_kegiatan-messages"></span>
@@ -315,7 +315,7 @@
                         <td style="padding: 2px;">
                           <div id="lap_bap_0-alert" class="form-group has-feedback">
                             <label>Laporan BAP Pengawasan</label>
-                            <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan BAP Pengawasan"></a>
                             <input type="hidden" class="form-control" name="lap_bap_file" id="lap_bap_file" value="">
                             <input type="file" class="form-control file-access" name="lap_bap[0]" id="lap_bap" accept=".pdf">
                             <span id="lap_bap_0-messages"></span>
@@ -325,7 +325,7 @@
                         <td style="padding: 2px;">
                           <div id="lap_lkpm_0-alert" class="form-group has-feedback">
                             <label>Laporan LKPM</label>
-                            <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan LKPM"></a>
                             <input type="hidden" class="form-control" name="lap_lkpm_file" id="lap_lkpm_file" value="">
                             <input type="file" class="form-control file-access" name="lap_lkpm[0]" id="lap_lkpm" accept=".pdf">
                             <span id="lap_lkpm_0-messages"></span>
@@ -337,7 +337,7 @@
                         <td style="padding: 2px;">
                           <div id="lap_evaluasi_0-alert" class="form-group has-feedback">
                             <label>Laporan Kepatuhan Pelaku Usaha</label>
-                            <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Kepatuhan Pelaku Usaha"></a>
                             <input type="hidden" class="form-control" name="lap_evaluasi_file" id="lap_evaluasi_file" value="">
                             <input type="file" class="form-control file-access" name="lap_evaluasi[0]" id="lap_evaluasi" accept=".pdf">
                             <span id="lap_evaluasi_0-messages"></span>
@@ -347,7 +347,7 @@
                         <td style="padding: 2px;">
                           <div id="lap_profile_0-alert" class="form-group has-feedback">
                             <label>Laporan Profile</label>
-                            <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Profile"></a>
                             <input type="hidden" class="form-control" name="lap_profile_file" id="lap_profile_file" value="">
                             <input type="file" class="form-control file-access" name="lap_profile[0]" id="lap_profile" accept=".pdf">
                             <span id="lap_profile_0-messages"></span>
@@ -604,7 +604,7 @@
           <td style="padding: 2px;">
             <div id="lap_bap_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
               <label>Laporan BAP Pengawasan</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan BAP Pengawasan"></a>
               <input type="hidden" class="form-control" name="lap_bap_file[countArraynyaDigantiNanti]" id="lap_bap_file" value="">
               <input type="file" class="form-control file-access" name="lap_bap[countArraynyaDigantiNanti]" id="lap_bap" accept=".pdf">
               <span id="lap_bap_countArraynyaDigantiNanti-messages"></span>
@@ -614,7 +614,7 @@
           <td style="padding: 2px;">
             <div id="lap_lkpm_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
               <label>Laporan LKPM</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan LKPM"></a>
               <input type="hidden" class="form-control" name="lap_lkpm_file[countArraynyaDigantiNanti]" id="lap_lkpm_file" value="">
               <input type="file" class="form-control file-access" name="lap_lkpm[countArraynyaDigantiNanti]" id="lap_lkpm" accept=".pdf">
               <span id="lap_lkpm_countArraynyaDigantiNanti-messages"></span>
@@ -626,7 +626,7 @@
           <td style="padding: 2px;">
             <div id="lap_evaluasi_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
               <label>Laporan Kepatuhan Pelaku Usaha</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Kepatuhan Pelaku Usaha"></a>
               <input type="hidden" class="form-control" name="lap_evaluasi_file[countArraynyaDigantiNanti]" id="lap_evaluasi_file" value="">
               <input type="file" class="form-control file-access" name="lap_evaluasi[countArraynyaDigantiNanti]" id="lap_evaluasi" accept=".pdf">
               <span id="lap_evaluasi_countArraynyaDigantiNanti-messages"></span>
@@ -636,7 +636,7 @@
           <td style="padding: 2px;">
             <div id="lap_profile_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
               <label>Laporan Profile</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Profile"></a>
               <input type="hidden" class="form-control" name="lap_profile_file[countArraynyaDigantiNanti]" id="lap_profile_file" value="">
               <input type="file" class="form-control file-access" name="lap_profile[countArraynyaDigantiNanti]" id="lap_profile" accept=".pdf">
               <span id="lap_profile_countArraynyaDigantiNanti-messages"></span>
@@ -733,7 +733,8 @@
         'hasil_analisa',
         'tanggal_kegiatan',
         'biaya',
-        'lokasi'
+        'lokasi',
+        'nib'
       ];
       formData.append("status", 13);
       $('#progressModal').show();
@@ -1192,7 +1193,7 @@
           <td style="padding: 2px;">
             <div id="lap_bap_${index}-alert" class="form-group has-feedback">
               <label>Laporan BAP Pengawasan</label></br>
-              <a href="#" class="text-bold text-profile" id="modal-lap_bap${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_bap${index}" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF BAP Pengawasan"></a>
               <input type="hidden" class="form-control" name="lap_bap_file[${index}]" id="lap_bap_file${index}" value="">
               <input type="file" class="form-control file-access" name="lap_bap[${index}]" id="lap_bap" accept=".pdf">
               <span id="lap_bap_${index}-messages"></span>
@@ -1202,7 +1203,7 @@
           <td style="padding: 2px;">
             <div id="lap_lkpm_${index}-alert" class="form-group has-feedback">
               <label>Laporan LKPM</label></br>
-              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm${index}" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan LKPM"></a>
               <input type="hidden" class="form-control" name="lap_lkpm_file[${index}]" id="lap_lkpm_file${index}" value="">
               <input type="file" class="form-control file-access" name="lap_lkpm[${index}]" id="lap_lkpm" accept=".pdf">
               <span id="lap_lkpm_${index}-messages"></span>
@@ -1214,7 +1215,7 @@
           <td style="padding: 2px;">
             <div id="lap_evaluasi_${index}-alert" class="form-group has-feedback">
               <label>Laporan Kepatuhan Pelaku Usaha</label></br>
-              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi${index}" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Kepatuhan Pelaku Usaha"></a>
               <input type="hidden" class="form-control" name="lap_evaluasi_file[${index}]" id="lap_evaluasi_file${index}" value="">
               <input type="file" class="form-control file-access" name="lap_evaluasi[${index}]" id="lap_evaluasi" accept=".pdf">
               <span id="lap_evaluasi_${index}-messages"></span>
@@ -1224,7 +1225,7 @@
           <td style="padding: 2px;">
             <div id="lap_profile_${index}-alert" class="form-group has-feedback">
               <label>Laporan Profile</label></br>
-              <a href="#" class="text-bold text-profile" id="modal-lap_profile${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_profile${index}" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Profile"></a>
               <input type="hidden" class="form-control" name="lap_profile_file[${index}]" id="lap_profile_file${index}" value="">
               <input type="file" class="form-control file-access" name="lap_profile[${index}]" id="lap_profile" accept=".pdf">
               <span id="lap_profile_${index}-messages"></span>
