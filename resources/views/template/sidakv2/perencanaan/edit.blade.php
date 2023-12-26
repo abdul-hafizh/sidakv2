@@ -381,7 +381,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>';
                     row+= '<td class="text-center">';
-                         row+= '<input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-analisa-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
@@ -397,7 +397,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Inspeksi Lapangan</td>';
                     row+= '<td class="text-center">';
-                         row+= '<input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'" oninput="this.value = Math.abs(this.value)" disabled>';
+                         row+= '<input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'" oninput="this.value = Math.abs(this.value)" disabled>';
                          row+= '<span id="pengawas-inspeksi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
@@ -413,7 +413,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>';
                     row+= '<td class="text-center">';
-                         row+= '<input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-evaluasi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
@@ -437,7 +437,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>';
                     row+= '<td class="text-center">';
-                         row+= '<input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control text-center bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="bimtek-perizinan-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
@@ -453,7 +453,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>';
                     row+= '<td class="text-center">';
-                         row+= '<input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control text-center bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="bimtek-pengawasan-target-messages"></span> ';
                     row+= '</td>';
                     row+= '<td>';
@@ -477,7 +477,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>';
                     row+= '<td class="text-center">';
-                         row+= '<input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" value="'+ data.penyelesaian_identifikasi_target+'" min="0" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" value="'+ data.penyelesaian_identifikasi_target+'" min="0" type="number" class="form-control text-center penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-identifikasi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
@@ -493,7 +493,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>';
                     row+= '<td class="text-center">';
-                         row+= '<input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" value="'+ data.penyelesaian_realisasi_target +'" type="number" min="0" class="form-control penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)" disabled>';
+                         row+= '<input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" value="'+ data.penyelesaian_realisasi_target +'" type="number" min="0" class="form-control text-center penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)" disabled>';
                          row+= '<span id="penyelesaian-realisasi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
@@ -509,7 +509,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>';
                     row+= '<td class="text-center">';
-                         row+= '<input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" value="'+ data.penyelesaian_evaluasi_target +'" type="number" min="0" class="form-control penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
+                         row+= '<input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" value="'+ data.penyelesaian_evaluasi_target +'" type="number" min="0" class="form-control text-center penyelesaian_nilai_target" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="penyelesaian-evaluasi-target-messages"></span>';
                     row+= '</td>';
                     row+= '<td>';
@@ -544,9 +544,9 @@
                     row+= '<tr class="border-bottom">';
                          row+= '<td>&nbsp;</td>';
                          row+= '<td>' + label_sub + '</td>';
-                         row+= '<td>';
+                         row+= '<td class="text-center">';
                               row+= '<div class="margin-none form-group">';
-                                   row+= '<input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1">';
+                                   row+= '<input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control text-center" placeholder="Target" value="1">';
                               row+= '</div>';
                          row+= '</td>';
                          row+= '<td>';
