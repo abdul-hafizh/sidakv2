@@ -335,7 +335,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>';
                     row+= '<td></td>';
-                    row+= '<td>';
+                    row+= '<td class="text-center">';
                          row+= '<input disabled id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target">';
                          row+= '<span id="pengawas-analisa-target-messages"></span>';
                     row+= '</td>';
@@ -354,7 +354,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Inspeksi Lapangan</td>';
                     row+= '<td></td>';
-                    row+= '<td>';
+                    row+= '<td class="text-center">';
                          row+= '<input disabled id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'">';
                          row+= '<span id="pengawas-inspeksi-target-messages"></span>';
                     row+= '</td>';
@@ -373,7 +373,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>';
                     row+= '<td></td>';
-                    row+= '<td>';
+                    row+= '<td class="text-center">';
                          row+= '<input disabled id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target">';
                          row+= '<span id="pengawas-evaluasi-target-messages"></span>';
                     row+= '</td>';
@@ -404,7 +404,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>';
                     row+= '<td></td>';
-                    row+= '<td>';
+                    row+= '<td class="text-center">';
                          row+= '<input disabled id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target">';
                          row+= '<span id="bimtek-perizinan-target-messages"></span>';
                     row+= '</td>';
@@ -423,7 +423,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>';
                     row+= '<td></td>';
-                    row+= '<td>';
+                    row+= '<td class="text-center">';
                          row+= '<input disabled id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target">';
                          row+= '<span id="bimtek-pengawasan-target-messages"></span> ';
                     row+= '</td>';
@@ -454,7 +454,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>';
                     row+= '<td></td>';
-                    row+= '<td>';
+                    row+= '<td class="text-center">';
                          row+= '<input disabled id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" value="'+ data.penyelesaian_identifikasi_target+'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-identifikasi-target-messages"></span>';
                     row+= '</td>';
@@ -473,7 +473,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>';
                     row+= '<td></td>';
-                    row+= '<td>';
+                    row+= '<td class="text-center">';
                          row+= '<input disabled id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" value="'+ data.penyelesaian_realisasi_target +'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-realisasi-target-messages"></span>';
                     row+= '</td>';
@@ -492,7 +492,7 @@
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>';
                     row+= '<td></td>';
-                    row+= '<td>';
+                    row+= '<td class="text-center">';
                          row+= '<input disabled id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" value="'+ data.penyelesaian_evaluasi_target +'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-evaluasi-target-messages"></span>';
                     row+= '</td>';
