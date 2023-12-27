@@ -215,15 +215,15 @@ class PerencanaanApiController extends Controller
                         $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
                         $notif = RequestNotification::fieldsData($type, $messages_desc, $url,$pusat->username);
                         $insertNotif = Notification::create($notif);
-        
-                        if ($insertNotif) {
-                            DB::commit();
-                            Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
-                            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
-                        } else {
-                            DB::rollBack(); 
-                            return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
-                        }
+                        DB::commit();
+                        // if ($insertNotif) {
+                        //     DB::commit();
+                        //     Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
+                        //     return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
+                        // } else {
+                        //     DB::rollBack(); 
+                        //     return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                        // }
                     } else {
                         DB::commit();
                         return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Simpan data berhasil']);
