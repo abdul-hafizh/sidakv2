@@ -18,8 +18,12 @@ class RequestDashboard
    
    public static function TotalKegiatan($periode_id,$semester_id,$daerah_id)
    {
+
+    
+     $Promosi = 0;
+     $petaPotensi = 0;
      $access = RequestAuth::Access();
-     if($access == 'province' || $access =='daerah')
+     if( $access =='daerah')
      {
            $PaguApbn = PaguTarget::where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->sum('pagu_apbn');
            $Perencanaan = Perencanaan::where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id,'status'=>16])
@@ -32,6 +36,8 @@ class RequestDashboard
            $Bimsos = Bimsos::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id])->sum('biaya_kegiatan');
            $Penyelesaian = Penyelesaian::where(['status_laporan_id'=>'14','periode_id'=>$periode,'daerah_id'=>$daerah_id])->sum('biaya');
 
+          
+         if($access == 'province'){   
 
 
             $Promosi = Promosi::where(['status_laporan_id'=>'14','periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
@@ -39,7 +45,7 @@ class RequestDashboard
 
             $petaPotensi = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
                      ->sum(\DB::raw('budget_potensi + budget_fgd_persiapan + budget_fgd_identifikasi + budget_sektor  + budget_fgd_klarifikasi + budget_finalisasi + budget_penyusunan + budget_info_grafis + budget_dokumentasi'));           
-         
+           }
         }else{
 
            $PaguApbn = PaguTarget::where(['periode_id'=>$periode_id])->sum('pagu_apbn');
@@ -63,6 +69,8 @@ class RequestDashboard
          
 
         }
+
+
        $total = [
            "pagu_apbn"=> GeneralHelpers::formatRupiah($PaguApbn),
            "perencanaan"=> GeneralHelpers::formatRupiah($Perencanaan),
@@ -1084,7 +1092,7 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
 
    public static function PromosiRealisasiAPBN($periode_id,$daerah_id)
    {
-     
+        $access = RequestAuth::Access();
 
         if($periode_id < '2024')
         {
