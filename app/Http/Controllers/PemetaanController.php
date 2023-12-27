@@ -20,7 +20,7 @@ class PemetaanController extends Controller
 
     public function index(Request $request)
     {
-        $title = 'Pemetaan';
+        $title = 'Peta Potensi';
         $log = array(
             'menu' => $title,
             'slug' => 'pemetaan',
@@ -46,7 +46,7 @@ class PemetaanController extends Controller
     
     public function add(Request $request)
     {
-        $title = 'Tambah Pemetaan';
+        $title = 'Tambah Peta Potensi';
         $log = array(
             'menu' => $title,
             'slug' => 'add-pemetaan',
@@ -65,7 +65,7 @@ class PemetaanController extends Controller
 
     public function edit($id,Request $request)
     {
-        $title = 'Edit Pemetaan';
+        $title = 'Edit Peta Potensi';
         $log = array(
             'menu' => $title,
             'slug' => 'edit-pemetaan',
@@ -85,7 +85,7 @@ class PemetaanController extends Controller
 
      public function show($id,Request $request)
     {
-        $title = 'Detail Pemetaan';
+        $title = 'Detail Peta Potensi';
         $log = array(
             'menu' => $title,
             'slug' => 'detail-pemetaan',

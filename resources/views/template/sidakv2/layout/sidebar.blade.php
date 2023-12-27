@@ -21,7 +21,7 @@
 			<div class="pull-left full info">
 				<div class="text-center">
 					<p>Selamat Datang {{ Cookie::get('access') }}</p>
-					<p id="username" class="font-bold text-capitalize"></p>
+					<p id="username" class="font-bold text-capitalize text-wrap"></p>
 				</div>
 			</div>
 		</div> 
