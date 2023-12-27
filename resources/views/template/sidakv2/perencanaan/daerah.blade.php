@@ -697,51 +697,49 @@
 
 				$('.btn-request-doc').html(rows_doc);         
 
-				if(data.access == 'daerah') {
-					if(([14, 15, 16].includes(data.status_code)) || (data.status_code === 14 && data.request_edit === 'request_doc')) {
-						rows_btn+= '<div class="box-footer">';
-						rows_btn+= '<div class="btn-group just-center">';
-							if(data.lap_rencana != '') {
-								rows_btn+= download_link;
-							}
-							
-							data.options.forEach(function(item, index) 
-							{
-								if(item.action == 'update')
-								{
-									if(item.checked == true) {
-										rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit"><i class="fa fa-pencil"></i> Request Edit</button>';
-									} else {
-										rows_btn+= '<button type="button" disabled class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Request Edit</button>';
-									}
-								}
-								if(item.action =='create')
-								{
-									if(item.checked ==true)
-									{
-										$('#ShowAdd').show();
-									} else {
-										$('#ShowAdd').hide();
-									}    
-								}							
-							});                              
-
-						rows_btn+= '</div>';
-						rows_btn+= '</div>';
-
-					} else {
-						if(data.status_code == 15 && data.request_edit == 'request_doc') {
-							$('#div-generate').show();
-							$('#generate_pdf').html(generate_pdf);
-
-						} else if(data.status_code == 13) {
-							rows_btn+= '<div class="box-footer">';
-								rows_btn+= '<div class="btn-group just-center">';
-									rows_btn += '<a href="' + BASE_URL + '/perencanaan/edit/' + data.id + '" class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Edit Data</a>';
-									rows_btn+= '<a href="#" class="btn btn-danger col-md-2"><i class="fa fa-pencil"></i> Hapus Data</a>';
-								rows_btn+= '</div>';
-							rows_btn+= '</div>';
+				if(([14, 15, 16].includes(data.status_code) && data.request_edit === 'false') || (data.status_code === 14 && data.request_edit === 'request_doc')) {
+					rows_btn+= '<div class="box-footer">';
+					rows_btn+= '<div class="btn-group just-center">';
+						if(data.lap_rencana != '') {
+							rows_btn+= download_link;
 						}
+						
+						data.options.forEach(function(item, index) 
+						{
+							if(item.action == 'update')
+							{
+								if(item.checked == true) {
+									rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqedit"><i class="fa fa-pencil"></i> Request Edit</button>';
+								} else {
+									rows_btn+= '<button type="button" disabled class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Request Edit</button>';
+								}
+							}
+							if(item.action =='create')
+							{
+								if(item.checked ==true)
+								{
+									$('#ShowAdd').show();
+								} else {
+									$('#ShowAdd').hide();
+								}    
+							}							
+						});                              
+
+					rows_btn+= '</div>';
+					rows_btn+= '</div>';
+
+				} else {
+					if(data.status_code == 15 && data.request_edit == 'request_doc') {
+						$('#div-generate').show();
+						$('#generate_pdf').html(generate_pdf);
+
+					} else if(data.status_code == 13) {
+						rows_btn+= '<div class="box-footer">';
+							rows_btn+= '<div class="btn-group just-center">';
+								rows_btn += '<a href="' + BASE_URL + '/perencanaan/edit/' + data.id + '" class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Edit Data</a>';
+								rows_btn+= '<a href="#" class="btn btn-danger col-md-2"><i class="fa fa-pencil"></i> Hapus Data</a>';
+							rows_btn+= '</div>';
+						rows_btn+= '</div>';
 					}
 				}
 
