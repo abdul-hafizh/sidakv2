@@ -72,48 +72,48 @@ class BimsosApiController extends Controller
                     return response()->json($validationFile, 400);
                 }
             }
-
+            $path = 'bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
-                $lap_hadir = 'lap_hadir_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path('laporan/bimsos'), $lap_hadir);
-                $insert['lap_hadir'] = 'laporan/bimsos/' . $lap_hadir;
+                $lap_hadir = 'hadir-' . time() . '-' . $file_hadir->getClientOriginalName();
+                $file_hadir->move(public_path($path), $lap_hadir);
+                $insert['lap_hadir'] = $path . '/' . $lap_hadir;
             }
             if ($request->hasFile('lap_pendamping')) {
                 $file_pendamping = $request->file('lap_pendamping');
-                $lap_pendamping = 'lap_pendamping_' . time() . '_' . $file_pendamping->getClientOriginalName();
-                $file_pendamping->move(public_path('laporan/bimsos'), $lap_pendamping);
-                $insert['lap_pendamping'] = 'laporan/bimsos/' . $lap_pendamping;
+                $lap_pendamping = 'pendamping-' . time() . '-' . $file_pendamping->getClientOriginalName();
+                $file_pendamping->move(public_path($path), $lap_pendamping);
+                $insert['lap_pendamping'] = $path . '/' . $lap_pendamping;
             }
             if ($request->hasFile('lap_notula')) {
                 $file_notula = $request->file('lap_notula');
-                $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/bimsos'), $lap_notula);
-                $insert['lap_notula'] = 'laporan/bimsos/' . $lap_notula;
+                $lap_notula = 'notula-' . time() . '-' . $file_notula->getClientOriginalName();
+                $file_notula->move(public_path($path), $lap_notula);
+                $insert['lap_notula'] = $path . '/' . $lap_notula;
             }
             if ($request->hasFile('lap_survey')) {
                 $file_survey = $request->file('lap_survey');
-                $lap_survey = 'lap_survey_' . time() . '_' . $file_survey->getClientOriginalName();
-                $file_survey->move(public_path('laporan/bimsos'), $lap_survey);
-                $insert['lap_survey'] = 'laporan/bimsos/' . $lap_survey;
+                $lap_survey = 'survey-' . time() . '-' . $file_survey->getClientOriginalName();
+                $file_survey->move(public_path($path), $lap_survey);
+                $insert['lap_survey'] = $path . '/' . $lap_survey;
             }
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
-                $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/bimsos'), $lap_narasumber);
-                $insert['lap_narasumber'] = 'laporan/bimsos/' . $lap_narasumber;
+                $lap_narasumber = 'narasumber-' . time() . '-' . $file_narasumber->getClientOriginalName();
+                $file_narasumber->move(public_path($path), $lap_narasumber);
+                $insert['lap_narasumber'] = $path . '/' . $lap_narasumber;
             }
             if ($request->hasFile('lap_materi')) {
                 $file_materi = $request->file('lap_materi');
-                $lap_materi = 'lap_materi_' . time() . '_' . $file_materi->getClientOriginalName();
-                $file_materi->move(public_path('laporan/bimsos'), $lap_materi);
-                $insert['lap_materi'] = 'laporan/bimsos/' . $lap_materi;
+                $lap_materi = 'materi-' . time() . '-' . $file_materi->getClientOriginalName();
+                $file_materi->move(public_path($path), $lap_materi);
+                $insert['lap_materi'] = $path . '/' . $lap_materi;
             }
             if ($request->hasFile('lap_document')) {
                 $file_document = $request->file('lap_document');
-                $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/bimsos'), $lap_document);
-                $insert['lap_document'] = 'laporan/bimsos/' . $lap_document;
+                $lap_document = 'document-' . time() . '-' . $file_document->getClientOriginalName();
+                $file_document->move(public_path($path), $lap_document);
+                $insert['lap_document'] = $path . '/' . $lap_document;
             }
 
             $result = RequestBimsos::GetNilaiPerencanaan($request);
@@ -176,47 +176,48 @@ class BimsosApiController extends Controller
 
             $update = RequestBimsos::fieldsData($request);
             //update account
+            $path = 'bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
-                $lap_hadir = 'lap_hadir_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path('laporan/bimsos'), $lap_hadir);
-                $update['lap_hadir'] = 'laporan/bimsos/' . $lap_hadir;
+                $lap_hadir = 'hadir-' . time() . '-' . $file_hadir->getClientOriginalName();
+                $file_hadir->move(public_path($path), $lap_hadir);
+                $update['lap_hadir'] = $path . '/' . $lap_hadir;
             }
             if ($request->hasFile('lap_pendamping')) {
                 $file_pendamping = $request->file('lap_pendamping');
-                $lap_pendamping = 'lap_pendamping_' . time() . '_' . $file_pendamping->getClientOriginalName();
-                $file_pendamping->move(public_path('laporan/bimsos'), $lap_pendamping);
-                $update['lap_pendamping'] = 'laporan/bimsos/' . $lap_pendamping;
+                $lap_pendamping = 'pendamping-' . time() . '-' . $file_pendamping->getClientOriginalName();
+                $file_pendamping->move(public_path($path), $lap_pendamping);
+                $update['lap_pendamping'] = $path . '/' . $lap_pendamping;
             }
             if ($request->hasFile('lap_notula')) {
                 $file_notula = $request->file('lap_notula');
-                $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/bimsos'), $lap_notula);
-                $update['lap_notula'] = 'laporan/bimsos/' . $lap_notula;
+                $lap_notula = 'notula-' . time() . '-' . $file_notula->getClientOriginalName();
+                $file_notula->move(public_path($path), $lap_notula);
+                $update['lap_notula'] = $path . '/' . $lap_notula;
             }
             if ($request->hasFile('lap_survey')) {
                 $file_survey = $request->file('lap_survey');
-                $lap_survey = 'lap_survey_' . time() . '_' . $file_survey->getClientOriginalName();
-                $file_survey->move(public_path('laporan/bimsos'), $lap_survey);
-                $update['lap_survey'] = 'laporan/bimsos/' . $lap_survey;
+                $lap_survey = 'survey-' . time() . '-' . $file_survey->getClientOriginalName();
+                $file_survey->move(public_path($path), $lap_survey);
+                $update['lap_survey'] = $path . '/' . $lap_survey;
             }
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
-                $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/bimsos'), $lap_narasumber);
-                $update['lap_narasumber'] = 'laporan/bimsos/' . $lap_narasumber;
+                $lap_narasumber = 'narasumber-' . time() . '-' . $file_narasumber->getClientOriginalName();
+                $file_narasumber->move(public_path($path), $lap_narasumber);
+                $update['lap_narasumber'] = $path . '/' . $lap_narasumber;
             }
             if ($request->hasFile('lap_materi')) {
                 $file_materi = $request->file('lap_materi');
-                $lap_materi = 'lap_materi_' . time() . '_' . $file_materi->getClientOriginalName();
-                $file_materi->move(public_path('laporan/bimsos'), $lap_materi);
-                $update['lap_materi'] = 'laporan/bimsos/' . $lap_materi;
+                $lap_materi = 'materi-' . time() . '-' . $file_materi->getClientOriginalName();
+                $file_materi->move(public_path($path), $lap_materi);
+                $update['lap_materi'] = $path . '/' . $lap_materi;
             }
             if ($request->hasFile('lap_document')) {
                 $file_document = $request->file('lap_document');
-                $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/bimsos'), $lap_document);
-                $update['lap_document'] = 'laporan/bimsos/' . $lap_document;
+                $lap_document = 'document-' . time() . '-' . $file_document->getClientOriginalName();
+                $file_document->move(public_path($path), $lap_document);
+                $update['lap_document'] = $path . '/' . $lap_document;
             }
 
 

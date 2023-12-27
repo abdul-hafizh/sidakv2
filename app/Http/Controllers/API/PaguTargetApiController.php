@@ -100,11 +100,6 @@ class PaguTargetApiController extends Controller
             return response()->json($validation, 400);
         } else {
 
-            if ($request->pagu_apbn != ($request->pagu_pengawasan + $request->pagu_penyelesaian_permasalahan + $request->pagu_bimbingan_teknis)) {
-                $err['messages']['pagu_apbn'] = 'Total Pagu tidak sama.';
-                return response()->json($err, 400);
-            }
-
             $update = RequestPaguTarget::fieldsData($request);
             //update account
 

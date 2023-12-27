@@ -309,38 +309,40 @@ class RequestPengawasan
                 'created_at' => date('Y-m-d H:i:s'),
             ];
 
+            $path = 'pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+
             if ($request->hasFile('lap_evaluasi.' . $key)) {
                 $file_evaluasi = $request->file('lap_evaluasi')[$key];
-                $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
-                $file_evaluasi->move(public_path('laporan/pengawasan'), $lap_evaluasi);
-                $data_perusahaan[$key]['lap_evaluasi'] = 'laporan/pengawasan/' . $lap_evaluasi;
+                $lap_evaluasi = 'kepatuhan-' . time() . '_' . $file_evaluasi->getClientOriginalName();
+                $file_evaluasi->move(public_path($path), $lap_evaluasi);
+                $data_perusahaan[$key]['lap_evaluasi'] = $path . '/' . $lap_evaluasi;
             } else {
                 $data_perusahaan[$key]['lap_evaluasi'] = $request->lap_evaluasi_file[$key];
             }
             if ($request->hasFile('lap_lkpm.' . $key)) {
                 $file_lkpm = $request->file('lap_lkpm')[$key];
-                $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
-                $file_lkpm->move(public_path('laporan/pengawasan'), $lap_lkpm);
+                $lap_lkpm = 'lkpm-' . time() . '-' . $file_lkpm->getClientOriginalName();
+                $file_lkpm->move(public_path($path), $lap_lkpm);
 
-                $data_perusahaan[$key]['lap_lkpm'] = 'laporan/pengawasan/' . $lap_lkpm;
+                $data_perusahaan[$key]['lap_lkpm'] = $path . '/'  . $lap_lkpm;
             } else {
                 $data_perusahaan[$key]['lap_lkpm'] = $request->lap_lkpm_file[$key];
             }
             if ($request->hasFile('lap_bap.' . $key)) {
                 $file_bap = $request->file('lap_bap')[$key];
-                $lap_bap = 'lap_bap_' . time() . '_' . $file_bap->getClientOriginalName();
-                $file_bap->move(public_path('laporan/pengawasan'), $lap_bap);
+                $lap_bap = 'bap-' . time() . '-' . $file_bap->getClientOriginalName();
+                $file_bap->move(public_path($path), $lap_bap);
 
-                $data_perusahaan[$key]['lap_bap'] = 'laporan/pengawasan/' . $lap_bap;
+                $data_perusahaan[$key]['lap_bap'] = $path . '/'  . $lap_bap;
             } else {
                 $data_perusahaan[$key]['lap_bap'] = $request->lap_bap_file[$key];
             }
             if ($request->hasFile('lap_profile.' . $key)) {
                 $file_profile = $request->file('lap_profile')[$key];
-                $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
-                $file_profile->move(public_path('laporan/pengawasan'), $lap_profile);
+                $lap_profile = 'profile-' . time() . '-' . $file_profile->getClientOriginalName();
+                $file_profile->move(public_path($path), $lap_profile);
 
-                $data_perusahaan[$key]['lap_profile'] = 'laporan/pengawasan/' . $lap_profile;
+                $data_perusahaan[$key]['lap_profile'] = $path . '/'  . $lap_profile;
             } else {
                 $data_perusahaan[$key]['lap_profile'] = $request->lap_profile_file[$key];
             }
