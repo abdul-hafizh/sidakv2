@@ -324,7 +324,7 @@ class RequestPengawasan
                 'created_at' => date('Y-m-d H:i:s'),
             ];
 
-            $path = 'pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+            $path = 'pengawasan_file/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
 
             if ($request->hasFile('lap_evaluasi.' . $key)) {
                 $file_evaluasi = $request->file('lap_evaluasi')[$key];
