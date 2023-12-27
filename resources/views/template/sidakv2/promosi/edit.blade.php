@@ -50,6 +50,20 @@
                </div>
           </div>
 
+           <div class="box box-solid box-primary" id="div-edit" style="display:none;">
+               <div class="box-body">
+                    <div class="card-body">
+                         <div class="row pd-top-bottom-15">
+                              <div class="col-lg-12">
+                                   <div id="periode-alert" class="form-group">
+                                        <span id="alasan-edit-view"></span>
+                                   </div>
+                              </div>
+                         </div>                          
+                    </div>
+               </div>
+          </div>
+
           <div class="box box-solid box-primary">
                <div class="box-body">
                     <div class="card-body table-responsive">
@@ -153,8 +167,9 @@
                     'type': 'draft',
                };
 
-                                   
-
+                 
+                                
+              
                if (total_promosi != pagu_promosi) {
                     Swal.fire({
                          icon: 'info',
@@ -331,7 +346,7 @@
                     url: BASE_URL +'/api/promosi/'+ segments[5],
                     success: function(data) {
                          periode_id = data.periode_id;
-                       
+                         total_promosi = data.total_promosi;
                          updateContent(data);
                          getperiode(data.periode_id); 
                        
@@ -814,6 +829,23 @@
 
                        content.append(row);
                        pagu_promosi = item.pagu_promosi;
+
+                       if(item.request_edit == 'true')
+                        { 
+                          $('#div-edit').show();
+                          $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
+                          if(item.request_edit_by =="member")
+                          {
+                            $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
+                          }else{
+                             $('#alasan-edit-view').html('<b>Permintaan Request Edit Dari PUSAT  : '+item.alasan+'</b>').addClass('col-lg-12 text-red');   
+                          }   
+                         
+                        }else{
+                         $('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
+                         $('#div-edit').remove();
+                        }     
+
                       
                        $(".promosi_inp").on("input", updateTotalPromosi);
 
@@ -844,19 +876,8 @@
                     dataType: 'json',
                     url: BASE_URL +'/api/select-periode?type=PUT&action=promosi',
                     success: function(data) {
-                         var select =  $('#periode_id');
-                           select.empty();
-                         $.each(data.result, function(index, option) {
-                              select.append($('<option>', {
-                                   value: option.value,
-                                   text: option.text
-                              }));
-                         });
-                         
-                           
-                        
-                         select.val(periode_id);
-                         select.selectpicker('refresh');
+                         getperiodeList(data)
+                         $('#periode_id').val(periode_id).selectpicker('refresh');
                          periode = data.result; 
                     },
                     error: function( error) {}
@@ -877,6 +898,21 @@
                     
                });
           }
+
+
+          function getperiodeList(data){
+
+                var select =  $('#periode_id');
+                 select.empty();
+                 $.each(data.result, function(index, option) {
+                      select.append($('<option>', {
+                           value: option.value,
+                           text: option.text
+                      }));
+                 });
+                  select.selectpicker('refresh'); 
+                  periode = data.result;          
+        }
 
 
 

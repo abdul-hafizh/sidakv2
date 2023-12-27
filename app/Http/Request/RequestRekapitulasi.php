@@ -57,7 +57,13 @@ class RequestRekapitulasi
     }  
 
     $periode = $request->periode_id.$request->semester_id;
-    $perencanaan = RequestDashboard::Perencanaan($request->periode_id,'null');
+    $access = RequestAuth::Access();
+    if($access =='admin' || $access =='pusat'){
+         $perencanaan = RequestDashboard::Perencanaan($request->periode_id,'null'); 
+    }else{
+         $perencanaan = RequestDashboard::Perencanaan($request->periode_id,Auth::User()->daerah_id);
+    }
+   
     foreach ($data as $key => $val) 
     {
 

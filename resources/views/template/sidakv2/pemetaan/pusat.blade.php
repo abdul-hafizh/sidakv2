@@ -10,7 +10,7 @@
                               <div class="media">
                                    <div class="media-body text-left">
                                         <span>Total Budget Pemetaan</span>
-                                        <h3 class="card-text" id="total_promosi"></h3>
+                                        <h3 class="card-text" id="total-budget"></h3>
                                    </div>
                               </div>
                          </div>
@@ -179,6 +179,10 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	    </div>
 	</div>
+
+     <div id="modal-reqedit" class="modal fade" role="dialog">
+
+     </div>
    
      @include('template/sidakv2/pemetaan.export')
 <script type="text/javascript">
@@ -201,9 +205,9 @@
     var total_daerah = 0;
     var total_requestedit = 0;
     var daerah_id = 0;
+ $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode"  class="selectpicker"  ></select>');
 
-
-      $('#total_promosi').html('<b>Rp. 0</b>');
+      $('#total-budget').html('<b>Rp. 0</b>');
 	$('#periode_id').on('change', function() {
 		var index = $(this).val();
 		let find = periode.find(o => o.value === index);
@@ -610,8 +614,8 @@
                 listOptions(response.options);
                 updateContent(response.data,response.options);
                 updatePagination(response.current_page, response.last_page);
-
-                $('#total_promosi').html('<b>'+response.total_pemetaan+'</b>');
+                   
+                $('#total-budget').html('<b>'+response.total_budget_pemetaan+'</b>');
             	$('#total_daerah').html('<b>'+response.total_daerah+'</b>');
             	$('#total_requestedit').html('<b>'+response.total_requestedit+'</b>');
                 $('#total_draft').html('<b> '+response.total_draft+'</b> | <b>  '+response.total_terkirim+'</b>');
@@ -658,15 +662,15 @@
                row +=`<td>${item.number}</td>`;
                row +=`<td>${item.daerah_name}</td>`;
               
-               row +=`<td align="right">${item.total_identifikasi}</td>`;
-               row +=`<td align="right">${item.total_analisis}</td>`;
-               row +=`<td align="right">${item.total_pelaksanaan}</td>`;
+               row +=`<td align="right">${item.total_budget_potensi}</td>`;
+               row +=`<td align="right">${item.total_budget_pelaksanaan}</td>`;
+               row +=`<td align="right">${item.total_budget_penyusunan}</td>`;
                row +=`<td align="right">${item.total_budget}</td>`;
                
                	  row +=`<td>${item.status.status_convert}  </td>`;
                	
              
-
+                    
                
 	               	if(item.request_edit == 'true')
 	                {
@@ -693,6 +697,14 @@
             
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
+
+                if(item.status_laporan_id == '14' && item.request_edit =='false')
+                {
+
+                     row +=`<div id="RequestEdit"  data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-reqedit" data-toggle="tooltip" data-placement="top" title="Request Edit"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-reqedit" ></i></div>`;
+                    
+                }    
+
 
                   row +=`<div id="Detail" data-param_id="`+ item.id +`"  data-toggle="tooltip" data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-detail" ></i></div>`;
 
@@ -782,6 +794,13 @@
 	           $('#approve-selected').prop("disabled", true);
 	         } 	
    		});
+
+        $( "#content" ).on( "click", "#RequestEdit", (e) => {
+             
+             let id = e.currentTarget.dataset.param_id;
+              
+             ModalRequestEdit(id)
+         });
 
 
    		$( "#content" ).on( "click", "#Detail", (e) => {
@@ -908,6 +927,72 @@
 
        
         
+    }
+
+    function ModalRequestEdit(id){
+        
+        var row = '';
+
+        
+             row +=`<div class="modal-dialog">`;
+                  row +=`<div class="modal-content">`;
+                       row +=`<div class="modal-header">`;
+                            row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                            row +=`<h4 class="modal-title">Request Edit Pemetaan</h4>`;
+                       row +=`</div>`;
+                       row +=`<div class="modal-body">`;
+                            row +=`<div class="form-group">`;
+                                 row +=`<label>Alasan Permintaan Edit Data</label>`;
+                                 row +=`<textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_edit_inp" name="alasan_edit" placeholder="Alasan Edit"></textarea>`;
+                            row +=`</div>`;
+                       row +=`</div>`;
+                       row +=`<div class="modal-footer">`;
+                            row +=`<button type="button"  id="reqedit" class="btn btn-default">Request Edit</button>`;
+                            row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                       row +=`</div>`;
+                  row +=`</div>`;
+             row +=`</div>`;
+        
+
+            $('#modal-reqedit').html(row);
+
+    
+      
+            $("#reqedit").click( () => {    
+                var alasan =  $('#alasan_edit_inp').val();
+
+                  var form = {'access':'pusat','alasan': alasan};
+                    $.ajax({
+                        type:"POST",
+                        url: BASE_URL+'/api/pemetaan/requestedit/'+ id,
+                        data:form,
+                        cache: false,
+                        dataType: "json",
+                        success: (respons) =>{
+                                  
+                              Swal.fire({
+                              title: 'Sukses!',
+                              text: 'Berhasil mengirim alasan request edit ',
+                              icon: 'success',
+                              confirmButtonText: 'OK'                        
+                             }).then((result) => {
+                                  if (result.isConfirmed) {
+                                       window.location.replace('/pemetaan');
+                                  }
+                             });
+
+                        },
+                        error: (respons)=>{
+                            errors = respons.responseJSON;
+                            
+
+                            
+                        }
+                    });
+
+            
+            });
+
     }
 
      function resultTotal(total){

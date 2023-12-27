@@ -81,6 +81,7 @@ class Promosi extends Model
             "keterangan_subtitle",
             "created_by",
             "request_edit",
+            "request_edit_by",
             "status_laporan_id",
             "alasan",
             "checklist",

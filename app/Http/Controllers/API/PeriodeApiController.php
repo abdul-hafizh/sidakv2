@@ -102,6 +102,7 @@ class PeriodeApiController extends Controller
                     DB::table('promosi')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
+                 $query->where('d.periode_id','<=','2023');
 
 
               }else if($request->type == 'PUT'){
@@ -111,6 +112,8 @@ class PeriodeApiController extends Controller
                     DB::table('perencanaan')
                         ->select('periode_id')->where('daerah_id', Auth::User()->daerah_id)
                 );
+                    $query->where('d.periode_id','<=','2023');
+                   
 
               }else if($request->type == 'GET'){
 
@@ -131,12 +134,12 @@ class PeriodeApiController extends Controller
 
                if($request->type == 'POST')
                {
-                $query->whereNotIn(
-                    'year',
-                    DB::table('pemetaan')
-                        ->select('periode_id')
-                        ->where('daerah_id', Auth::User()->daerah_id)
-                );
+                    $query->whereNotIn(
+                        'year',
+                        DB::table('pemetaan')
+                            ->select('periode_id')
+                            ->where('daerah_id', Auth::User()->daerah_id)
+                    );
 
 
                 }else if($request->type == 'PUT'){

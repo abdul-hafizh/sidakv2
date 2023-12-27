@@ -710,7 +710,13 @@
 				    { 
                           $('#div-edit').show();
                           $('#status-view').html('<b>Proses</b> (Waiting Request Edit)');
-                          $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
+                          if(item.request_edit_by =="member")
+                          {
+                            $('#alasan-edit-view').html('<b>Alasan Edit : '+item.alasan+'</b>').addClass('col-lg-12 text-red');
+                          }else{
+                             $('#alasan-edit-view').html('<b>Permintaan Request edit dari PUSAT  : '+item.alasan+'</b>').addClass('col-lg-12 text-red');   
+                          }   
+                         
 				    }else{
 				    	$('#status-view').html('<b>'+item.status.status_convert +'</b>'); 
                          $('#div-edit').remove();
@@ -842,7 +848,7 @@
             $("#reqedit").click( () => {    
                 var alasan =  $('#alasan_edit_inp').val();
               
-                  var form = {'alasan':alasan};
+                  var form = {'access':'member','alasan':alasan};
                     $.ajax({
 			            type:"POST",
 			            url: BASE_URL+'/api/promosi/requestedit/'+ item.id,

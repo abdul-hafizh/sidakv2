@@ -22,7 +22,7 @@ class RequestDashboard
      if($access == 'province' || $access =='daerah')
      {
            $PaguApbn = PaguTarget::where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->sum('pagu_apbn');
-           $Perencanaan = Perencanaan::where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
+           $Perencanaan = Perencanaan::where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id,'status'=>16])
             ->sum(\DB::raw('pengawas_analisa_pagu + pengawas_inspeksi_pagu + pengawas_evaluasi_pagu + bimtek_perizinan_pagu + bimtek_pengawasan_pagu + penyelesaian_identifikasi_pagu + penyelesaian_realisasi_pagu + penyelesaian_evaluasi_pagu'));
 
            
@@ -38,7 +38,7 @@ class RequestDashboard
                      ->sum(\DB::raw('budget_peluang + budget_storyline + budget_storyboard + budget_lokasi + budget_talent + budget_testimoni + budget_audio + budget_editing + budget_gambar + budget_video + budget_editvideo + budget_grafik + budget_mixing + budget_voice + budget_subtitle'));
 
             $petaPotensi = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
-                     ->sum(\DB::raw('budget_rencana_kerja + budget_studi_literatur + budget_rapat_kordinasi + budget_data_sekunder + budget_fgd_persiapan + budget_fgd_identifikasi + budget_lq + budget_shift_share + budget_tipologi_sektor + budget_klassen + budget_fgd_klarifikasi + budget_finalisasi + budget_summary_sektor_unggulan + budget_sektor_unggulan + budget_potensi_pasar + budget_parameter_sektor_unggulan + budget_subsektor_unggulan + budget_intensif_daerah + budget_potensi_lanjutan + budget_info_grafis + budget_dokumentasi'));           
+                     ->sum(\DB::raw('budget_potensi + budget_fgd_persiapan + budget_fgd_identifikasi + budget_sektor  + budget_fgd_klarifikasi + budget_finalisasi + budget_penyusunan + budget_info_grafis + budget_dokumentasi'));           
          
         }else{
 
@@ -59,7 +59,7 @@ class RequestDashboard
                      ->sum(\DB::raw('budget_peluang + budget_storyline + budget_storyboard + budget_lokasi + budget_talent + budget_testimoni + budget_audio + budget_editing + budget_gambar + budget_video + budget_editvideo + budget_grafik + budget_mixing + budget_voice + budget_subtitle'));
 
            $petaPotensi = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$periode_id])
-                     ->sum(\DB::raw('budget_rencana_kerja + budget_studi_literatur + budget_rapat_kordinasi + budget_data_sekunder + budget_fgd_persiapan + budget_fgd_identifikasi + budget_lq + budget_shift_share + budget_tipologi_sektor + budget_klassen + budget_fgd_klarifikasi + budget_finalisasi + budget_summary_sektor_unggulan + budget_sektor_unggulan + budget_potensi_pasar + budget_parameter_sektor_unggulan + budget_subsektor_unggulan + budget_intensif_daerah + budget_potensi_lanjutan + budget_info_grafis + budget_dokumentasi'));          
+                     ->sum(\DB::raw('budget_potensi + budget_fgd_persiapan + budget_fgd_identifikasi + budget_sektor + budget_fgd_klarifikasi + budget_finalisasi + budget_penyusunan + budget_info_grafis + budget_dokumentasi'));          
          
 
         }
@@ -82,7 +82,7 @@ class RequestDashboard
    public static function Pengawasan($periode_id,$semester_id,$daerah_id){
               
          $perencanaan = RequestDashboard::Perencanaan($periode_id,$daerah_id);
-
+    
          $data[0] = RequestDashboard::PengawasanAnalisa($perencanaan,$periode_id,$semester_id,$daerah_id);
          $data[1] = RequestDashboard::PengawasanInspeksi($perencanaan,$periode_id,$semester_id,$daerah_id);
          $data[2] = RequestDashboard::PengawasanEvaluasi($perencanaan,$periode_id,$semester_id,$daerah_id);
@@ -96,11 +96,15 @@ class RequestDashboard
     public static function Bimsos($periode_id,$semester_id,$daerah_id){
               
          $perencanaan = RequestDashboard::Perencanaan($periode_id,$daerah_id);
-         $data[0] = RequestDashboard::BimsosPendamping($perencanaan,$periode_id,$semester_id,$daerah_id);
-         $data[1] = RequestDashboard::BimsosPerizinan($perencanaan,$periode_id,$semester_id,$daerah_id);
-         $data[2] = RequestDashboard::BimsosPengawasan($perencanaan,$periode_id,$semester_id,$daerah_id);
-         $data[3] = RequestDashboard::BimsosTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id);
-
+         if($perencanaan)
+         {
+             $data[0] = RequestDashboard::BimsosPendamping($perencanaan,$periode_id,$semester_id,$daerah_id);
+             $data[1] = RequestDashboard::BimsosPerizinan($perencanaan,$periode_id,$semester_id,$daerah_id);
+             $data[2] = RequestDashboard::BimsosPengawasan($perencanaan,$periode_id,$semester_id,$daerah_id);
+             $data[3] = RequestDashboard::BimsosTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id);
+         }else{
+             $data = [];
+         }
          return $data;
 
    }
@@ -109,12 +113,15 @@ class RequestDashboard
    public static function Penyelesaian($periode_id,$semester_id,$daerah_id){
               
          $perencanaan = RequestDashboard::Perencanaan($periode_id,$daerah_id);
-
-         $data[0] = RequestDashboard::PenyelesaianIdentifikasi($perencanaan,$periode_id,$semester_id,$daerah_id);
-         $data[1] = RequestDashboard::PenyelesaianRealisasi($perencanaan,$periode_id,$semester_id,$daerah_id);
-         $data[2] = RequestDashboard::PenyelesaianEvaluasi($perencanaan,$periode_id,$semester_id,$daerah_id);
-         $data[3] = RequestDashboard::PenyelesaianTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id);
-
+         if($perencanaan)
+         {
+             $data[0] = RequestDashboard::PenyelesaianIdentifikasi($perencanaan,$periode_id,$semester_id,$daerah_id);
+             $data[1] = RequestDashboard::PenyelesaianRealisasi($perencanaan,$periode_id,$semester_id,$daerah_id);
+             $data[2] = RequestDashboard::PenyelesaianEvaluasi($perencanaan,$periode_id,$semester_id,$daerah_id);
+             $data[3] = RequestDashboard::PenyelesaianTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id);
+         }else{
+            $data = [];
+         }
          return $data;
 
    }
@@ -125,10 +132,10 @@ class RequestDashboard
      $access = RequestAuth::Access();
      if($access == 'province' || $access =='daerah')
      {
-          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->first();
+          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['status'=>16,'periode_id'=>$periode_id,'daerah_id'=>$daerah_id])->first();
      }else{
 
-          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['periode_id'=>$periode_id])->first();
+          $perencanaan = Perencanaan::select('pengawas_analisa_target','pengawas_analisa_pagu','pengawas_inspeksi_target','pengawas_inspeksi_pagu','pengawas_evaluasi_target','pengawas_evaluasi_pagu','bimtek_perizinan_target','bimtek_perizinan_pagu','bimtek_pengawasan_target','bimtek_pengawasan_pagu','penyelesaian_identifikasi_target','penyelesaian_identifikasi_pagu','penyelesaian_realisasi_target','penyelesaian_realisasi_pagu','penyelesaian_evaluasi_target','penyelesaian_evaluasi_pagu','promosi_pengadaan_target','promosi_pengadaan_pagu')->where(['status'=>16,'periode_id'=>$periode_id])->first();
 
      }   
         return $perencanaan;
@@ -140,14 +147,24 @@ class RequestDashboard
 
 
    public static function PengawasanAnalisa($perencanaan,$periode_id,$semester_id,$daerah_id){
-
+         
+           if($perencanaan)
+           {
+            $pengawas_analisa_target = $perencanaan->pengawas_analisa_target;
+            $pengawas_analisa_pagu = GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu);
+           }else{
+            $pengawas_analisa_target = 0;
+            $pengawas_analisa_pagu = 0;
+           } 
+             
        if($semester_id =="01")
        {
+
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
                "sub_menu" =>"Analisa",
-               "target"=> $perencanaan->pengawas_analisa_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu),
+               "target"=> $pengawas_analisa_target ,
+               "pagu"=> GeneralHelpers::formatRupiah($pengawas_analisa_pagu),
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'analisa'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'analisa')),
                "realisasi_target"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'analisa'),
@@ -163,8 +180,8 @@ class RequestDashboard
 
            $semester1 = [
                "sub_menu" =>"Analisa",
-               "target"=> $perencanaan->pengawas_analisa_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu),
+               "target"=> $pengawas_analisa_target,
+               "pagu"=> $pengawas_analisa_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'analisa'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'analisa'))
                     
@@ -189,14 +206,23 @@ class RequestDashboard
 
 
    public static function PengawasanInspeksi($perencanaan,$periode_id,$semester_id,$daerah_id){
+        
+           if($perencanaan)
+           {
+            $pengawas_inspeksi_target = $perencanaan->pengawas_inspeksi_target;
+            $pengawas_inspeksi_pagu = $perencanaan->pengawas_inspeksi_pagu;
+           }else{
+            $pengawas_inspeksi_target = 0;
+            $pengawas_inspeksi_pagu = 0;
+           } 
 
        if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
                "sub_menu" =>"Inspeksi",
-               "target"=> $perencanaan->pengawas_inspeksi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->pengawas_inspeksi_pagu),
+               "target"=> $pengawas_inspeksi_target,
+               "pagu"=> GeneralHelpers::formatRupiah($pengawas_inspeksi_pagu),
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'inspeksi')),
 
@@ -213,8 +239,8 @@ class RequestDashboard
 
            $semester1 = [
                "sub_menu" =>"Inspeksi",
-               "target"=> $perencanaan->pengawas_inspeksi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->pengawas_inspeksi_pagu),
+               "target"=> $pengawas_inspeksi_target,
+               "pagu"=> GeneralHelpers::formatRupiah($pengawas_inspeksi_pagu),
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'inspeksi'))        
            ];
@@ -238,14 +264,23 @@ class RequestDashboard
 
 
     public static function PengawasanEvaluasi($perencanaan,$periode_id,$semester_id,$daerah_id){
+       
+          if($perencanaan)
+           {
+             $pengawas_evaluasi_target = $perencanaan->pengawas_evaluasi_target;
+             $pengawas_evaluasi_pagu = GeneralHelpers::formatRupiah($perencanaan->pengawas_evaluasi_pagu);
+           }else{
+             $pengawas_evaluasi_target = 0;
+             $pengawas_evaluasi_pagu = 0;
+           } 
 
        if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
                "sub_menu" =>"Evaluasi",
-               "target"=> $perencanaan->pengawas_evaluasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->pengawas_evaluasi_pagu),
+               "target"=>  $pengawas_evaluasi_target,
+               "pagu"=> $pengawas_evaluasi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
                "realisasi_target"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
@@ -261,8 +296,8 @@ class RequestDashboard
 
            $semester1 = [
                "sub_menu" =>"Evaluasi",
-               "target"=> $perencanaan->pengawas_evaluasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->pengawas_evaluasi_pagu),
+               "target"=> $pengawas_evaluasi_target,
+               "pagu"=> $pengawas_evaluasi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
                      
@@ -288,7 +323,7 @@ class RequestDashboard
 
 
     public static function BimsosPendamping($perencanaan,$periode_id,$semester_id,$daerah_id){
-
+    
        if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
@@ -334,14 +369,22 @@ class RequestDashboard
 
 
     public static function BimsosPerizinan($perencanaan,$periode_id,$semester_id,$daerah_id){
-
+           
+        if($perencanaan)
+        {
+            $bimtek_perizinan_target = $perencanaan->bimtek_perizinan_target;
+            $bimtek_perizinan_pagu = $perencanaan->bimtek_perizinan_pagu;
+        }else{
+            $bimtek_perizinan_target = 0;
+            $bimtek_perizinan_pagu = 0;
+        }   
        if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
                "sub_menu" =>"Bimtek Perizinan Usaha",
-               "target"=> $perencanaan->bimtek_perizinan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu),
+               "target"=> $bimtek_perizinan_target,
+               "pagu"=> GeneralHelpers::formatRupiah($bimtek_perizinan_pagu),
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr')),
                "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') ,
@@ -357,8 +400,8 @@ class RequestDashboard
 
            $semester1 = [
                "sub_menu" =>"Bimtek Perizinan Usaha",
-               "target"=> $perencanaan->bimtek_perizinan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu),
+               "target"=> $bimtek_perizinan_target,
+               "pagu"=> GeneralHelpers::formatRupiah($bimtek_perizinan_pagu),
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr'))        
            ];
@@ -382,14 +425,22 @@ class RequestDashboard
 
 
     public static function BimsosPengawasan($perencanaan,$periode_id,$semester_id,$daerah_id){
-
+       
+       if( $perencanaan)
+       {
+          $bimtek_pengawasan_target = $perencanaan->bimtek_pengawasan_target;
+          $bimtek_pengawasan_pagu = GeneralHelpers::formatRupiah($perencanaan->bimtek_pengawasan_pagu);
+       }else{
+          $bimtek_pengawasan_target = 0;
+          $bimtek_pengawasan_pagu = 0;
+       } 
        if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
                "sub_menu" =>"Bimtek Pengawasan Perizinan Usaha",
-               "target"=> $perencanaan->bimtek_pengawasan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->bimtek_pengawasan_pagu),
+               "target"=>$bimtek_pengawasan_target,
+               "pagu"=> GeneralHelpers::formatRupiah($bimtek_pengawasan_pagu),
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr')),
                "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
@@ -405,8 +456,8 @@ class RequestDashboard
 
            $semester1 = [
                "sub_menu" =>"Bimtek Pengawasan Perizinan Usaha",
-               "target"=> $perencanaan->bimtek_pengawasan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->bimtek_pengawasan_pagu),
+               "target"=> $bimtek_pengawasan_target,
+               "pagu"=> $bimtek_pengawasan_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr'))        
            ];
@@ -431,14 +482,22 @@ class RequestDashboard
 
 
    public static function PenyelesaianIdentifikasi($perencanaan,$periode_id,$semester_id,$daerah_id){
-
+       
+       if($perencanaan)
+       {
+          $penyelesaian_identifikasi_target = $perencanaan->penyelesaian_identifikasi_target;
+          $penyelesaian_identifikasi_pagu = $perencanaan->penyelesaian_identifikasi_pagu;
+       }else{
+           $penyelesaian_identifikasi_target = 0;
+           $penyelesaian_identifikasi_pagu = 0;
+       } 
        if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
                "sub_menu" =>"Identifikasi",
-               "target"=> $perencanaan->penyelesaian_identifikasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_identifikasi_pagu),
+               "target"=>  $penyelesaian_identifikasi_target,
+               "pagu"=> GeneralHelpers::formatRupiah($penyelesaian_identifikasi_pagu),
                "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'identifikasi')),
                "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi'),
@@ -454,8 +513,8 @@ class RequestDashboard
 
            $semester1 = [
                "sub_menu" =>"Identifikasi",
-               "target"=> $perencanaan->penyelesaian_identifikasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_identifikasi_pagu),
+               "target"=> $penyelesaian_identifikasi_target,
+               "pagu"=> GeneralHelpers::formatRupiah($penyelesaian_identifikasi_pagu),
                "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'identifikasi'))        
            ];
@@ -478,14 +537,23 @@ class RequestDashboard
    }
 
    public static function PenyelesaianRealisasi($perencanaan,$periode_id,$semester_id,$daerah_id){
-
+        
+          if($perencanaan)
+           {
+             $penyelesaian_realisasi_target = $perencanaan->penyelesaian_realisasi_target;
+             $penyelesaian_realisasi_pagu = GeneralHelpers::formatRupiah($perencanaan->penyelesaian_realisasi_pagu);
+           }else{
+             $penyelesaian_realisasi_target = 0;
+             $penyelesaian_realisasi_pagu = 0;
+           } 
+            
        if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
                "sub_menu" =>"Realisasi",
-               "target"=> $perencanaan->penyelesaian_realisasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_realisasi_pagu),
+               "target"=> $penyelesaian_realisasi_target,
+               "pagu"=> $penyelesaian_realisasi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'penyelesaian')),
                "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian') ,
@@ -501,8 +569,8 @@ class RequestDashboard
 
            $semester1 = [
                "sub_menu" =>"Realisasi",
-               "target"=> $perencanaan->penyelesaian_realisasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_realisasi_pagu),
+               "target"=> $penyelesaian_realisasi_target,
+               "pagu"=> $penyelesaian_realisasi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'penyelesaian'))        
            ];
@@ -526,14 +594,24 @@ class RequestDashboard
 
 
    public static function PenyelesaianEvaluasi($perencanaan,$periode_id,$semester_id,$daerah_id){
+        
+          if($perencanaan)
+           {
+             $penyelesaian_evaluasi_target = $perencanaan->penyelesaian_evaluasi_target;
+             $penyelesaian_evaluasi_pagu = GeneralHelpers::formatRupiah($perencanaan->penyelesaian_evaluasi_pagu);
+           }else{
+             $penyelesaian_evaluasi_target = 0;
+             $penyelesaian_evaluasi_pagu = 0;
+           } 
+            
 
        if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
                "sub_menu" =>"Evaluasi",
-               "target"=> $perencanaan->penyelesaian_evaluasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_evaluasi_pagu),
+               "target"=> $penyelesaian_evaluasi_target,
+               "pagu"=> $penyelesaian_evaluasi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
                "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
@@ -549,8 +627,8 @@ class RequestDashboard
 
            $semester1 = [
                "sub_menu" =>"Evaluasi",
-               "target"=> $perencanaan->penyelesaian_evaluasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_evaluasi_pagu),
+               "target"=> $penyelesaian_evaluasi_target,
+               "pagu"=> $penyelesaian_evaluasi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'evaluasi'))        
            ];
@@ -574,15 +652,24 @@ class RequestDashboard
 
    
     public static function PengawasanTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id){
+           $periode_01 = $periode_id.$semester_id; 
+           if($perencanaan)
+           {
+             $target = $perencanaan->pengawas_analisa_target;
+             $pagu_apbn = GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu);
+           }else{
+             $target = 0;
+             $pagu_apbn = 0;
+           } 
 
         if($semester_id =="01")
        {
-           $periode_01 = $periode_id.$semester_id; 
-
+           
+            
            $data = [
                "sub_menu" =>"Total",
-               "target"=> $perencanaan->pengawas_analisa_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu) ,
+               "target"=>  $target,
+               "pagu"=> $pagu_apbn,
 
 
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'analisa') + RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi') + RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
@@ -605,8 +692,8 @@ class RequestDashboard
 
             $semester1 = [
                "sub_menu" =>"Total",
-               "target"=> $perencanaan->pengawas_analisa_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu) ,
+               "target"=>$target,
+               "pagu"=> $pagu_apbn ,
               
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'analisa') + RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi') + RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
 
@@ -641,15 +728,23 @@ class RequestDashboard
 
    
    public static function BimsosTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id){
-
+         
+         if($perencanaan)
+         {
+             $target = $perencanaan->bimtek_perizinan_target + $perencanaan->bimtek_pengawasan_target;
+             $pagu = GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu);
+         }else{
+             $target = 0;
+             $pagu = 0;
+         }   
         if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
 
            $data = [
                "sub_menu" =>"Total",
-               "target"=> $perencanaan->bimtek_perizinan_target + $perencanaan->bimtek_pengawasan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu) ,
+               "target"=>  $target,
+               "pagu"=>  $pagu,
 
 
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_tenaga_pendamping') +RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
@@ -671,8 +766,8 @@ class RequestDashboard
 
             $semester1 = [
                "sub_menu" =>"Total",
-               "target"=> $perencanaan->bimtek_perizinan_target + $perencanaan->bimtek_pengawasan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu) ,
+               "target"=> $target,
+               "pagu"=> $pagu ,
               
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_tenaga_pendamping') +RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
                
@@ -706,15 +801,23 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
 
 
      public static function PenyelesaianTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id){
-
+       
+        if($perencanaan)
+        {
+          $target = $perencanaan->penyelesaian_realisasi_target;
+          $pagu = GeneralHelpers::formatRupiah($perencanaan->penyelesaian_identifikasi_pagu + $perencanaan->penyelesaian_realisasi_pagu + $perencanaan->penyelesaian_evaluasi_pagu);
+        }else{
+          $target = 0;
+          $pagu = 0;
+        }    
         if($semester_id =="01")
        {
            $periode_01 = $periode_id.$semester_id; 
 
            $data = [
                "sub_menu" =>"Total",
-               "target"=> $perencanaan->penyelesaian_realisasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_identifikasi_pagu + $perencanaan->penyelesaian_realisasi_pagu + $perencanaan->penyelesaian_evaluasi_pagu) ,
+               "target"=> $target,
+               "pagu"=> $pagu ,
 
 
                "realisasi_target_sem_1"=>  RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian') +  RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
@@ -736,8 +839,8 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
 
             $semester1 = [
                "sub_menu" =>"Total",
-               "target"=>  $perencanaan->penyelesaian_realisasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_identifikasi_pagu + $perencanaan->penyelesaian_realisasi_pagu + $perencanaan->penyelesaian_evaluasi_pagu) ,
+               "target"=>  $target,
+               "pagu"=>$pagu,
               
                "realisasi_target_sem_1"=>  RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian') ,
                
