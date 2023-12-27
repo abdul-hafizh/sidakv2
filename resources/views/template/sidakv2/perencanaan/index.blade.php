@@ -705,7 +705,7 @@
 
             $( "#content" ).on( "click", "#RequestEdit", (e) => {
                 let id = e.currentTarget.dataset.param_id;              
-                ModalRequestEdit(id);
+                modalRequestEdit(id);
             });             
 
             $( "#content" ).on( "click", "#Destroy", (e) => {
