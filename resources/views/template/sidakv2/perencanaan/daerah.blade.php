@@ -695,36 +695,10 @@
 					rows_doc+= '</div>';
 				}
 
-				$('.btn-request-doc').html(rows_doc);
-
-				if(data.access == 'pusat') {
-					if(data.status_code != 13) {
-						rows_btn+= '<div class="box-footer">';
-						rows_btn+= '<div class="btn-group just-center">';
-						if(data.lap_rencana != '') {                                   
-							rows_btn+= download_link;
-						}
-						if(data.status_code == 15 && data.request_edit == 'false') {
-							rows_btn+= '<button id="req_doc" type="button" class="btn btn-primary col-md-2"><i class="fa fa-check"></i> Approve</button>';
-							rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove"><i class="fa fa-ban"></i> Unapprove</button>';
-						}
-						if(data.status_code == 14 && data.request_edit == 'false') {
-							rows_btn+= '<button id="approve" type="button" class="btn btn-primary col-md-2"><i class="fa fa-check"></i> Approve</button>';
-							rows_btn+= '<button type="button" class="btn btn-danger col-md-2" data-toggle="modal" data-target="#modal-unapprove-doc"><i class="fa fa-ban"></i> Unapprove</button>';
-						}
-						if(data.status_code == 15 && data.request_edit == 'true') {
-							rows_btn+= '<button id="approve_edit" type="button" class="btn btn-primary col-md-2"><i class="fa fa-check"></i> Approve Request Edit</button>';
-						}
-						if(data.status_code == 16 && data.request_edit == 'false') {                                   
-							rows_btn+= '<button type="button" class="btn btn-warning col-md-2" data-toggle="modal" data-target="#modal-reqrevisi"><i class="fa fa-pencil"></i> Request Edit</button>';
-						}                              
-						rows_btn+= '</div>';
-						rows_btn+= '</div>';
-					}
-				}               
+				$('.btn-request-doc').html(rows_doc);         
 
 				if(data.access == 'daerah') {
-					if(([14, 15, 16].includes(data.status_code) && data.request_edit === 'false') || (data.status_code === 14 && data.request_edit === 'request_doc')) {
+					if(([14, 15, 16].includes(data.status_code)) || (data.status_code === 14 && data.request_edit === 'request_doc')) {
 						rows_btn+= '<div class="box-footer">';
 						rows_btn+= '<div class="btn-group just-center">';
 							if(data.lap_rencana != '') {
