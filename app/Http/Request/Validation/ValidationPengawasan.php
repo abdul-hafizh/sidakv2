@@ -157,14 +157,17 @@ class ValidationPengawasan
     {
         $err = array();
 
-        $fields = [
-            'lap_kegiatan'  => 'Laporan kegiatan',
-            'nib.*'  => 'NIB',
-            'nama_perusahaan.*'  => 'Nama Perusahaan',
-
-        ];
+       
 
         if ($request->sub_menu_slug == 'inspeksi') {
+
+             $fields = [
+                'lap_kegiatan'  => 'Laporan kegiatan',
+                'nib.*'  => 'NIB',
+                'nama_perusahaan.*'  => 'Nama Perusahaan',
+
+            ];
+
             $validator =  Validator::make(
                 $request->all(),
                 [
@@ -173,6 +176,10 @@ class ValidationPengawasan
                 ]
             );
         } else if ($request->sub_menu_slug == 'analisa' || $request->sub_menu_slug == 'evaluasi') {
+            $fields = [
+                'lap_kegiatan'  => 'Laporan kegiatan',
+            ];
+
             $validator =  Validator::make(
                 $request->all(),
                 [
