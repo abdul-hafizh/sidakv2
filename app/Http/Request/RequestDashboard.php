@@ -680,14 +680,14 @@ class RequestDashboard
                "pagu"=> $pagu_apbn,
 
 
-               "realisasi_target_sem_1"=>  RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi') ,
+               "realisasi_target_sem_1"=>  RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi'),
                
 
 
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'analisa') + RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'inspeksi') + RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
 
 
-               "realisasi_target"=>  RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi')  ,
+               "realisasi_target"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi'),
 
 
 
@@ -703,7 +703,7 @@ class RequestDashboard
                "target"=>$target,
                "pagu"=> $pagu_apbn ,
               
-               "realisasi_target_sem_1"=>  RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi'),
+               "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi'),
 
 
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'analisa') + RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'inspeksi') + RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
@@ -712,13 +712,13 @@ class RequestDashboard
             $semester2 = [
           
               
-               "realisasi_target_sem_2"=> R RequestDashboard::PengawasanRealisasiTarget($periode_02,$daerah_id,'inspeksi'),
+               "realisasi_target_sem_2"=>  RequestDashboard::PengawasanRealisasiTarget($periode_02,$daerah_id,'inspeksi'),
 
                
                "realisasi_apbn_sem_2"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_02,$daerah_id,'analisa') + RequestDashboard::PengawasanRealisasiAPBN($periode_02,$daerah_id,'inspeksi') + RequestDashboard::PengawasanRealisasiAPBN($periode_02,$daerah_id,'evaluasi')),
 
 
-               "realisasi_target"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi') ,
+               "realisasi_target"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi')  + RequestDashboard::PengawasanRealisasiTarget($periode_02,$daerah_id,'inspeksi'),
 
 
 
