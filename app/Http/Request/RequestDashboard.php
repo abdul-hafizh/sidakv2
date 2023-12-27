@@ -340,7 +340,10 @@ class RequestDashboard
                "target"=> 0,
                "pagu"=> 'Rp 0',
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_tenaga_pendamping'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_tenaga_pendamping'))        
+               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_tenaga_pendamping'))  
+
+                "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_tenaga_pendamping'),
+                "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_tenaga_pendamping')),        
            ];
 
             $data = $semester1;
