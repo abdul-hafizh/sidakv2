@@ -801,7 +801,6 @@
           function SendingData(form) {
 
                var pesan = (form.type === 'kirim') ? 'Terkirim ke Pusat.' : 'Berhasil Simpan.';
-               console.log(form);
                $.ajax({
                     type:"POST",
                     url: BASE_URL+'/api/perencanaan',
