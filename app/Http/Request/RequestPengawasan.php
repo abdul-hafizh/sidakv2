@@ -153,11 +153,17 @@ class RequestPengawasan
                 }
             }
 
+            if($val->nama_prshn ==null){
+               $perusahaan = '';
+            }else{ 
+               $perusahaan =$val->nama_prshn; 
+            }
+
             $row    = array();
             $row[]  = $val->id;
             $row[]  = RequestDaerah::GetDaerahWhereID($val->daerah_id);
             $row[]  = RequestPengawasan::getLabelSubMenu($val->sub_menu_slug);
-            $row[]  = if($val->nama_prshn ==null){''}else{ $val->nama_prshn; }
+            $row[]  = $perusahaan;
             $row[]  = $val->nama_kegiatan;
             $row[]  = GeneralHelpers::formatDate($val->tgl_kegiatan);
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
