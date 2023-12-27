@@ -149,9 +149,9 @@
                                    <tr>
                                         <td>&nbsp;</td>
                                         <td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>
-                                        <td>
+                                        <td class="text-center">
                                            <div id="pengawas-analisa-target-alert" class="margin-none form-group">  
-                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target target_pengawasan_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target target_pengawasan_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-analisa-target-messages"></span>
                                            </div>  
                                         </td>
@@ -168,9 +168,9 @@
                                    <tr>
                                         <td>&nbsp;</td>
                                         <td>B. Inspeksi Lapangan</td>
-                                        <td>
+                                        <td class="text-center">
                                            <div id="pengawas-inspeksi-target-alert" class="margin-none form-group">  
-                                             <input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target target_pengawasan" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target target_pengawasan" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-inspeksi-target-messages"></span>
                                           </div>   
                                         </td>
@@ -187,9 +187,9 @@
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
                                         <td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>
-                                        <td>
+                                        <td class="text-center">
                                           <div id="pengawas-evaluasi-target-alert" class="margin-none form-group">
-                                             <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target target_pengawasan_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target target_pengawasan_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-evaluasi-target-messages"></span>
                                           </div>   
                                         </td>
@@ -213,9 +213,9 @@
                                    <tr>
                                         <td>&nbsp;</td>
                                         <td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>
-                                        <td>
+                                        <td class="text-center">
                                              <div id="bimtek-perizinan-target-alert" class="margin-none form-group">
-                                                  <input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_perizinan_target bimtek_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                                  <input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control text-center bimtek_perizinan_target bimtek_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                                   <span id="bimtek-perizinan-target-messages"></span>
                                              </div>
                                         </td>
@@ -232,9 +232,9 @@
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
                                         <td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>
-                                        <td>
+                                        <td class="text-center">
                                              <div id="bimtek-pengawasan-target-alert" class="margin-none form-group">
-                                                  <input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_pengawasan_target bimtek_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                                  <input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control text-center bimtek_pengawasan_target bimtek_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                                   <span id="bimtek-pengawasan-target-messages"></span> 
                                              </div>
                                         </td>
@@ -258,9 +258,9 @@
                                    <tr>
                                         <td>&nbsp;</td>
                                         <td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>
-                                        <td>
+                                        <td class="text-center">
                                           <div id="penyelesaian-identifikasi-target-alert" class="margin-none form-group"> 
-                                               <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control penyelesaian_nilai_target target_penyelesaian_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                               <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control text-center penyelesaian_nilai_target target_penyelesaian_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-identifikasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -277,9 +277,9 @@
                                    <tr>
                                         <td>&nbsp;</td>
                                         <td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>
-                                        <td>
+                                        <td class="text-center">
                                            <div id="penyelesaian-realisasi-target-alert" class="margin-none form-group">   
-                                             <input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" type="number" class="form-control penyelesaian_nilai_target target_penyelesaian" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" type="number" class="form-control text-center penyelesaian_nilai_target target_penyelesaian" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-realisasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -296,9 +296,9 @@
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
                                         <td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>
-                                        <td>
+                                        <td class="text-center">
                                            <div id="penyelesaian-evaluasi-target-alert" class="margin-none form-group">  
-                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control penyelesaian_nilai_target target_penyelesaian_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control text-center penyelesaian_nilai_target target_penyelesaian_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-evaluasi-target-messages"></span>
                                            </div>  
                                         </td>
@@ -323,9 +323,9 @@
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
                                         <td id="label-peta-sub">A. Penyediaan File sebagai Bahan Peta Potensi</td>
-                                        <td>
+                                        <td class="text-center">
                                              <div class="margin-none form-group">  
-                                                  <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>
+                                                  <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control text-center" placeholder="Target" value="1" readonly>
                                              </div>  
                                         </td>
                                         <td>
