@@ -337,7 +337,7 @@ class PenyelesaianApiController extends Controller
                 $insertNotif = Notification::create($notif);
 
                 if ($insertNotif) {
-                    Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
+                    //Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
                     return response()->json(['status' => true, 'message' => 'Berhasil kirim data']);
                 } else {
                     return response()->json(['status' => false, 'message' => 'Gagal kirim data']);
@@ -484,7 +484,7 @@ class PenyelesaianApiController extends Controller
             $pesan = 'Mohon persetujuan untuk request edit menu penyelesaian masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
 
             if ($insertNotif) {
-                Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'request_edit'));
+                // Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'request_edit'));
                 return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil request edit data']);
             } else {
                 return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal request edit data']);
@@ -532,7 +532,7 @@ class PenyelesaianApiController extends Controller
             $pesan = 'Mohon persetujuan untuk perbaikan data penyelesaian masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
 
             if ($insertNotif) {
-                Mail::to('abdulha05518@gmail.com')->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'revisi'));
+                // Mail::to('abdulha05518@gmail.com')->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'revisi'));
                 return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil kirim perbaikan data']);
             } else {
                 return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal kirim perbaikan data']);

@@ -215,16 +215,15 @@ class PerencanaanApiController extends Controller
                         $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
                         $notif = RequestNotification::fieldsData($type, $messages_desc, $url,$pusat->username);
                         $insertNotif = Notification::create($notif);
-                        DB::commit();
-                        return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
-                        // if ($insertNotif) {
-                        //     DB::commit();
-                        //     Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
-                        //     return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
-                        // } else {
-                        //     DB::rollBack(); 
-                        //     return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
-                        // }
+                        
+                        if ($insertNotif) {
+                            DB::commit();
+                            // Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
+                            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
+                        } else {
+                            DB::rollBack(); 
+                            return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                        }
                     } else {
                         DB::commit();
                         return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Simpan data berhasil']);
@@ -273,17 +272,14 @@ class PerencanaanApiController extends Controller
                         $notif = RequestNotification::fieldsData($type, $messages_desc, $url,$pusat->username);
                         $insertNotif = Notification::create($notif);
 
-                        DB::commit();
-                        return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
-
-                        // if ($insertNotif) {
-                        //     DB::commit();
-                        //     Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
-                        //     return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
-                        // } else {
-                        //     DB::rollBack(); 
-                        //     return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
-                        // }
+                        if ($insertNotif) {
+                            DB::commit();
+                            // Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
+                            return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
+                        } else {
+                            DB::rollBack(); 
+                            return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                        }
                     } else {
                         DB::commit();
                         return response()->json(['status'=>true,'id'=>$UpdateData,'message'=>'Update data sucessfully']);
@@ -379,12 +375,10 @@ class PerencanaanApiController extends Controller
             $messages_desc = strtoupper(Auth::User()->username) . ' mengunggah Dokumen Perencanaan Tahun '. $_res->periode_id;
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url,$_res->created_by);
             Notification::create($notif);
-            
-
 
             $results = $_res->where('id', $id)->update([ 'lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
             
-            Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'upload_doc'));
+            // Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'upload_doc'));
 
             return response()->json(['status' => true, 'messages' => 'Update data sucessfully']);
         }  
@@ -577,14 +571,13 @@ class PerencanaanApiController extends Controller
             $saveLog = AuditLogRequest::create($dataLog);
 
             $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
-
             
             $judul = 'Perencanaan DAK';
             $kepada = 'Kementerian Investasi';
             $subject = 'Permohonan Persetujuan Request edit Perencanaan Perencanaan Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name;
             $pesan = 'Mohon persetujuan untuk Request edit Perencanaan Perencanaan Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
 
-            Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'request_edit'));
+            // Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'request_edit'));
 
             $messages['messages'] = true;
         }
@@ -632,7 +625,7 @@ class PerencanaanApiController extends Controller
             $subject = 'Permohonan Perbaikan Perencanaan DAK Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name;
             $pesan = 'Mohon untuk memperbaiki Perencanaan DAK Tahun ' . $_res->periode_id . ' Kab/Prop ' . $daerah_name . ', dengan alasan ' . $request->alasan;
 
-            Mail::to('abdulha05518@gmail.com')->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'revisi'));
+            // Mail::to('abdulha05518@gmail.com')->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'revisi'));
 
             $messages['messages'] = true;
         }
