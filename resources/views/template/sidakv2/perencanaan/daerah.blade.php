@@ -675,7 +675,7 @@
 
 				$('#Attr').html(rows);
 
-				if(data.access == 'daerah' && data.status_code == 15 && data.request_edit == 'request_doc') {
+				if(data.status_code == 15 && data.request_edit == 'request_doc') {
 					rows_doc+= '<div class="box box-solid box-primary">';
 						rows_doc+= '<div class="box-body">';
 							rows_doc+= '<div class="card-body">';
