@@ -114,67 +114,69 @@ class PenyelesaianApiController extends Controller
                 }
             }
 
+            $path = 'penyelesaian_masalah/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;            
+
             if ($request->hasFile('lap_profile')) {
                 $file_profile = $request->file('lap_profile');
                 $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
-                $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
-                $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
+                $file_profile->move(public_path($path), $lap_profile);
+                $insert['lap_profile'] = $path. '/' . $lap_profile;
             }
 
             if ($request->hasFile('lap_peserta')) {
                 $file_peserta = $request->file('lap_peserta');
                 $lap_peserta = 'lap_peserta_' . time() . '_' . $file_peserta->getClientOriginalName();
-                $file_peserta->move(public_path('laporan/penyelesaian'), $lap_peserta);
-                $insert['lap_peserta'] = 'laporan/penyelesaian/' . $lap_peserta;
+                $file_peserta->move(public_path($path), $lap_peserta);
+                $insert['lap_peserta'] = $path. '/' . $lap_peserta;
             }
 
             if ($request->hasFile('lap_profile2')) {
                 $file_profile2 = $request->file('lap_profile2');
                 $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
-                $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
-                $insert['lap_profile2'] = 'laporan/penyelesaian/' . $lap_profile2;
+                $file_profile2->move(public_path($path), $lap_profile2);
+                $insert['lap_profile2'] = $path. '/' . $lap_profile2;
             }
 
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
                 $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/penyelesaian'), $lap_narasumber);
-                $insert['lap_narasumber'] = 'laporan/penyelesaian/' . $lap_narasumber;
+                $file_narasumber->move(public_path($path), $lap_narasumber);
+                $insert['lap_narasumber'] = $path. '/' . $lap_narasumber;
             }
 
             if ($request->hasFile('lap_notula2')) {
                 $file_notula2 = $request->file('lap_notula2');
                 $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
-                $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
-                $insert['lap_notula2'] = 'laporan/penyelesaian/' . $lap_notula2;
+                $file_notula2->move(public_path($path), $lap_notula2);
+                $insert['lap_notula2'] = $path. '/' . $lap_notula2;
             }
 
             if ($request->hasFile('lap_lkpm')) {
                 $file_lkpm = $request->file('lap_lkpm');
                 $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
-                $file_lkpm->move(public_path('laporan/penyelesaian'), $lap_lkpm);
-                $insert['lap_lkpm'] = 'laporan/penyelesaian/' . $lap_lkpm;
+                $file_lkpm->move(public_path($path), $lap_lkpm);
+                $insert['lap_lkpm'] = $path. '/' . $lap_lkpm;
             }
 
             if ($request->hasFile('lap_document')) {
                 $file_document = $request->file('lap_document');
                 $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/penyelesaian'), $lap_document);
-                $insert['lap_document'] = 'laporan/penyelesaian/' . $lap_document;
+                $file_document->move(public_path($path), $lap_document);
+                $insert['lap_document'] = $path. '/' . $lap_document;
             }
 
             if ($request->hasFile('lap_notula')) {
                 $file_notula = $request->file('lap_notula');
                 $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
-                $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
+                $file_notula->move(public_path($path), $lap_notula);
+                $insert['lap_notula'] = $path. '/' . $lap_notula;
             }
 
             if ($request->hasFile('lap_evaluasi')) {
                 $file_evaluasi = $request->file('lap_evaluasi');
                 $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
-                $file_evaluasi->move(public_path('laporan/penyelesaian'), $lap_evaluasi);
-                $insert['lap_evaluasi'] = 'laporan/penyelesaian/' . $lap_evaluasi;
+                $file_evaluasi->move(public_path($path), $lap_evaluasi);
+                $insert['lap_evaluasi'] = $path. '/' . $lap_evaluasi;
             }
 
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);
@@ -229,67 +231,69 @@ class PenyelesaianApiController extends Controller
 
             $update = RequestPenyelesaian::fieldsData($request);
 
+            $path = 'penyelesaian_masalah/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+
             if ($request->hasFile('lap_profile')) {
                 $file_profile = $request->file('lap_profile');
                 $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
-                $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
-                $update['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
+                $file_profile->move(public_path($path), $lap_profile);
+                $update['lap_profile'] = $path. '/' . $lap_profile;
             }
 
             if ($request->hasFile('lap_peserta')) {
                 $file_peserta = $request->file('lap_peserta');
                 $lap_peserta = 'lap_peserta_' . time() . '_' . $file_peserta->getClientOriginalName();
-                $file_peserta->move(public_path('laporan/penyelesaian'), $lap_peserta);
-                $update['lap_peserta'] = 'laporan/penyelesaian/' . $lap_peserta;
+                $file_peserta->move(public_path($path), $lap_peserta);
+                $update['lap_peserta'] = $path. '/' . $lap_peserta;
             }
 
             if ($request->hasFile('lap_profile2')) {
                 $file_profile2 = $request->file('lap_profile2');
                 $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
-                $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
-                $update['lap_profile2'] = 'laporan/penyelesaian/' . $lap_profile2;
+                $file_profile2->move(public_path($path), $lap_profile2);
+                $update['lap_profile2'] = $path. '/' . $lap_profile2;
             }
 
             if ($request->hasFile('lap_notula2')) {
                 $file_notula2 = $request->file('lap_notula2');
                 $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
-                $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
-                $update['lap_notula2'] = 'laporan/penyelesaian/' . $lap_notula2;
+                $file_notula2->move(public_path($path), $lap_notula2);
+                $update['lap_notula2'] = $path. '/' . $lap_notula2;
             }
 
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
                 $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/penyelesaian'), $lap_narasumber);
-                $update['lap_narasumber'] = 'laporan/penyelesaian/' . $lap_narasumber;
+                $file_narasumber->move(public_path($path), $lap_narasumber);
+                $update['lap_narasumber'] = $path. '/' . $lap_narasumber;
             }
 
             if ($request->hasFile('lap_lkpm')) {
                 $file_lkpm = $request->file('lap_lkpm');
                 $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
-                $file_lkpm->move(public_path('laporan/penyelesaian'), $lap_lkpm);
-                $update['lap_lkpm'] = 'laporan/penyelesaian/' . $lap_lkpm;
+                $file_lkpm->move(public_path($path), $lap_lkpm);
+                $update['lap_lkpm'] = $path. '/' . $lap_lkpm;
             }
 
             if ($request->hasFile('lap_document')) {
                 $file_document = $request->file('lap_document');
                 $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/penyelesaian'), $lap_document);
-                $update['lap_document'] = 'laporan/penyelesaian/' . $lap_document;
+                $file_document->move(public_path($path), $lap_document);
+                $update['lap_document'] = $path. '/' . $lap_document;
             }
 
             if ($request->hasFile('lap_notula')) {
                 $file_notula = $request->file('lap_notula');
                 $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
-                $update['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
+                $file_notula->move(public_path($path), $lap_notula);
+                $update['lap_notula'] = $path. '/' . $lap_notula;
             }
 
             if ($request->hasFile('lap_evaluasi')) {
                 $file_evaluasi = $request->file('lap_evaluasi');
                 $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
-                $file_evaluasi->move(public_path('laporan/penyelesaian'), $lap_evaluasi);
-                $update['lap_evaluasi'] = 'laporan/penyelesaian/' . $lap_evaluasi;
+                $file_evaluasi->move(public_path($path), $lap_evaluasi);
+                $update['lap_evaluasi'] = $path. '/' . $lap_evaluasi;
             }
 
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);

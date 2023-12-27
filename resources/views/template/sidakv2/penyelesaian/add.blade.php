@@ -569,19 +569,7 @@
               text: respons.message,
               icon: 'error',
               confirmButtonText: 'OK'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $('#datatable').DataTable().ajax.reload();
-              } else {
-                $('#modal-add').hide();
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $('#datatable').DataTable().ajax.reload();
-              }
-            });
+            }).then((result) => {});
           }
         },
         error: (respons) => {
@@ -775,7 +763,7 @@
             $('#modal-peserta').show();
             $('#lap_peserta_file').val(data.lap_peserta);
             $('#modal-peserta').click(function() {
-              tampilkanModal(data.lap_peserta, 'Peserta');
+              tampilkanModal(data.lap_peserta);
             });
           } else {
             $('#modal-peserta').hide();
@@ -786,7 +774,7 @@
             $('#modal-profile').show();
             $('#lap_profile_file').val(data.lap_profile);
             $('#modal-profile').click(function() {
-              tampilkanModal(data.lap_profile, 'Profile');
+              tampilkanModal(data.lap_profile);
             });
           } else {
             $('#modal-profile').hide();
@@ -797,7 +785,7 @@
             $('#modal-profile2').show();
             $('#lap_profile2_file').val(data.lap_profile2);
             $('#modal-profile2').click(function() {
-              tampilkanModal(data.lap_profile, 'Profile2');
+              tampilkanModal(data.lap_profile2);
             });
           } else {
             $('#modal-profile2').hide();
@@ -808,7 +796,7 @@
             $('#modal-narasumber').show();
             $('#lap_narasumber_file').val(data.lap_narasumber);
             $('#modal-narasumber').click(function() {
-              tampilkanModal(data.lap_narasumber, 'Narasumber');
+              tampilkanModal(data.lap_narasumber);
             });
           } else {
             $('#modal-narasumber').hide();
@@ -819,7 +807,7 @@
             $('#modal-notula').show();
             $('#lap_notula_file').val(data.lap_notula);
             $('#modal-notula').click(function() {
-              tampilkanModal(data.lap_notula, 'Notula');
+              tampilkanModal(data.lap_notula);
             });
           } else {
             $('#modal-notula').hide();
@@ -830,7 +818,7 @@
             $('#modal-notula2').show();
             $('#lap_notula2_file').val(data.lap_notula2);
             $('#modal-notula2').click(function() {
-              tampilkanModal(data.lap_notula2, 'Notula2');
+              tampilkanModal(data.lap_notula2);
             });
           } else {
             $('#modal-notula2').hide();
@@ -841,7 +829,7 @@
             $('#modal-lkpm').show();
             $('#lap_lkpm_file').val(data.lap_lkpm);
             $('#modal-lkpm').click(function() {
-              tampilkanModal(data.lap_lkpm, 'Lkpm');
+              tampilkanModal(data.lap_lkpm);
             });
           } else {
             $('#modal-lkpm').hide();
@@ -852,7 +840,7 @@
             $('#modal-doc').show();
             $('#lap_doc_file').val(data.lap_document);
             $('#modal-doc').click(function() {
-              tampilkanModal(data.lap_document, 'Doc');
+              tampilkanModal(data.lap_document);
             });
           } else {
             $('#modal-doc').hide();
@@ -863,7 +851,7 @@
             $('#modal-eval').show();
             $('#lap_eval_file').val(data.lap_evaluasi);
             $('#modal-eval').click(function() {
-              tampilkanModal(data.lap_evaluasi, 'Evaluasi');
+              tampilkanModal(data.lap_evaluasi);
             });
           } else {
             $('#modal-eval').hide();
@@ -1042,11 +1030,13 @@
             }).then((result) => {
               if (result.isConfirmed) {
                 $('#modal-add').hide();
+                $('#modal-req-edit').hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
                 $('#datatable').DataTable().ajax.reload();
               } else {
                 $('#modal-add').hide();
+                $('#modal-req-edit').hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
                 $('#datatable').DataTable().ajax.reload();
@@ -1117,11 +1107,13 @@
             }).then((result) => {
               if (result.isConfirmed) {
                 $('#modal-add').hide();
+                $('#modal-req-revision').hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
                 $('#datatable').DataTable().ajax.reload();
               } else {
                 $('#modal-add').hide();
+                $('#modal-req-revision').hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
                 $('#datatable').DataTable().ajax.reload();
@@ -1409,7 +1401,7 @@
       }
     });
 
-    function tampilkanModal(url, test) {
+    function tampilkanModal(url) {
       $.ajax({
         url: url,
         method: 'GET',
