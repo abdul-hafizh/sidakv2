@@ -110,27 +110,27 @@ class ValidationPenyelesaian
             $validator =  Validator::make(
                 $request->all(),
                 [
-                    'lap_profile'  =>  ['required', 'file', 'mimes:pdf',  'max:2056']
+                    'lap_profile'  =>  ['required', 'file', 'mimes:pdf', 'max:2056']
                 ]
             );
         } else if ($request->sub_menu_slug == 'penyelesaian') {
             $validator =  Validator::make(
                 $request->all(),
                 [
-                    'lap_peserta'  =>  ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_notula2'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_profile2'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_narasumber'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_lkpm'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_document'  => ['required', 'file', 'mimes:pdf',  'max:2056']
+                    'lap_peserta'  =>  ['required', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_notula2'  => ['required', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_profile2'  => ['required', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_narasumber'  => ['required', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_lkpm'  => ['required', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_document'  => ['required', 'file', 'mimes:pdf', 'max:2056']
                 ]
             );
         } else if ($request->sub_menu_slug == 'evaluasi') {
             $validator =  Validator::make(
                 $request->all(),
                 [
-                    'lap_notula'  =>  ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_evaluasi'  => ['required', 'file', 'mimes:pdf',  'max:2056']
+                    'lap_notula'  =>  ['required', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_evaluasi'  => ['required', 'file', 'mimes:pdf', 'max:2056']
                 ]
             );
         }
@@ -167,27 +167,27 @@ class ValidationPenyelesaian
             $validator =  Validator::make(
                 $request->all(),
                 [
-                    'lap_profile'  =>  ['required_without:lap_profile_file', 'file', 'mimes:pdf',  'max:2056']
+                    'lap_profile'  =>  ['required_without:lap_profile_file', 'file', 'mimes:pdf', 'max:2056']
                 ]
             );
         } else if ($request->sub_menu_slug == 'penyelesaian') {
             $validator =  Validator::make(
                 $request->all(),
                 [
-                    'lap_peserta'  =>  ['required_without:lap_peserta_file', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_notula2'  => ['required_without:lap_notula2_file', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_profile2'  => ['required_without:lap_profile2_file', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_narasumber'  => ['required_without:lap_narasumber_file', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_lkpm'  => ['required_without:lap_lkpm_file', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_document'  => ['required_without:lap_document_file', 'file', 'mimes:pdf',  'max:2056']
+                    'lap_peserta'  =>  ['required_without:lap_peserta_file', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_notula2'  => ['required_without:lap_notula2_file', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_profile2'  => ['required_without:lap_profile2_file', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_narasumber'  => ['required_without:lap_narasumber_file', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_lkpm'  => ['required_without:lap_lkpm_file', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_document'  => ['required_without:lap_document_file', 'file', 'mimes:pdf', 'max:2056']
                 ]
             );
         } else if ($request->sub_menu_slug == 'evaluasi') {
             $validator =  Validator::make(
                 $request->all(),
                 [
-                    'lap_notula'  => ['required_without:lap_notula_file', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_evaluasi'  => ['required_without:lap_evaluasi_file', 'file', 'mimes:pdf',  'max:2056']
+                    'lap_notula'  => ['required_without:lap_notula_file', 'file', 'mimes:pdf', 'max:2056'],
+                    'lap_evaluasi'  => ['required_without:lap_evaluasi_file', 'file', 'mimes:pdf', 'max:2056']
                 ]
             );
         }
