@@ -259,7 +259,7 @@ class RequestPaguTarget
                 'periode_id'  => $request->periode_id,
                 'daerah_id'  => $request->daerah_id,
                 'nama_daerah'  => $request->nama_daerah,
-                'pagu_apbn'  => $request->pagu_apbn,
+                'pagu_apbn'  => $request->pagu_pengawasan + $request->pagu_penyelesaian_permasalahan + $request->pagu_bimbingan_teknis,
                 'pagu_promosi'  => $request->pagu_promosi,
                 'type_daerah'  => $request->type_daerah,
                 'pagu_pengawasan' => $request->pagu_pengawasan,
@@ -269,7 +269,7 @@ class RequestPaguTarget
                 'target_penyelesaian_permasalahan'  => $request->target_penyelesaian_permasalahan,
                 'target_bimbingan_teknis'  => $request->target_bimbingan_teknis,
                 'target_video_promosi'  => $request->target_video_promosi,
-                'pagu_dalak'  => $request->pagu_promosi + $request->pagu_apbn,
+                'pagu_dalak'  => $request->pagu_pengawasan + $request->pagu_penyelesaian_permasalahan + $request->pagu_bimbingan_teknis + $request->pagu_promosi,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
             ];
