@@ -66,44 +66,6 @@
 
 <section class="content-header pd-left-right-15">    
     <div class="row padding-default" style="margin-bottom: 20px">
-        @if($access == 'daerah' )
-		<div class="col-lg-4 col-sm-12">
-            <div class="box-body btn-primary border-radius-13">
-                <div class="card-body table-responsive p-0">
-                        <div class="media">
-                            <div class="media-body text-left">
-                                <span>Total Rencana Pengawasan</span>
-                                <h3 class="card-text" id="total-rencana-pengawasan"></h3>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-		<div class="col-lg-4 col-sm-12">
-            <div class="box-body btn-primary border-radius-13">
-                <div class="card-body table-responsive p-0">
-                    <div class="media">
-                        <div class="media-body text-left">
-                            <span>Total Rencana Bimsos</span>
-                            <h3 class="card-text" id="total-rencana-bimsos"></h3>
-                        </div>
-                    </div>
-			    </div>
-			</div>
-		</div>
-		<div class="col-lg-4 col-sm-12">
-            <div class="box-body btn-primary border-radius-13">
-                <div class="card-body table-responsive p-0">
-                    <div class="media">
-                        <div class="media-body text-left">
-                            <span>Total Penyelesaian Masalah</span>
-                            <h3 class="card-text" id="total-rencana-masalah"></h3>
-                        </div>
-                    </div>
-			    </div>
-			</div>
-		</div>
-        @else
         <div class="col-lg-3 col-sm-12">
             <div class="box-body btn-primary border-radius-13">
                 <div class="card-body table-responsive p-0">
@@ -152,7 +114,6 @@
 			    </div>
 			</div>
 		</div>
-        @endif
 	</div>
 
     <div class="row margin-top-bottom-20">
