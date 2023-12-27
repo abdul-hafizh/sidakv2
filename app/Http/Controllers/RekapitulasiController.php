@@ -27,9 +27,15 @@ class RekapitulasiController extends Controller
         );
         RequestSystemLog::CreateLog($log);
 
-       
+         $access = RequestAuth::Access();
+        if($access =='pusat' || $access =='admin')
+        {
+             $view = 'template/' . $this->template . '.rekapitulasi.pusat'; 
+        }else{
+             $view = 'template/' . $this->template . '.rekapitulasi.province';
+        }    
       
-        $view = 'template/' . $this->template . '.rekapitulasi.index'; 
+      
         
 
         return view($view)

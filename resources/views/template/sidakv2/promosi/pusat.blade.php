@@ -183,6 +183,10 @@
           <div id="total-data" class="pull-left width-25"></div> 	
 	    </div>
 	</div>
+
+    <div id="modal-reqedit" class="modal fade" role="dialog">
+
+    </div>
    
      @include('template/sidakv2/promosi.export')
 <script type="text/javascript">
@@ -215,6 +219,7 @@
         fetchData(page,find.value);
       
 	});
+     $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode"  class="selectpicker"  ></select>');
 
      $("#ExportButton").click(function() {
 	     $.ajax({
@@ -485,7 +490,7 @@
 
 
     function getperiode(periode_id){
-               $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode"  class="selectpicker"  ></select>');
+              
                $.ajax({
                     type: 'GET',
                     dataType: 'json',
@@ -673,7 +678,6 @@
                
                	  row +=`<td> ${item.status.status_convert}  </td>`;
                	
-             
 
                
 	               	if(item.request_edit == 'true')
@@ -703,6 +707,14 @@
             
                row +=`<td>`; 
                 row +=`<div class="btn-group">`;
+
+                if(item.status_laporan_id == '14' && item.request_edit =='false')
+                {
+
+                     row +=`<div  data-param_id="`+ item.id +`" data-toggle="modal" data-target="#modal-reqedit" id="RequestEdit" data-toggle="tooltip" data-placement="top" title="Request Edit"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-reqedit" ></i></div>`;
+                    
+                }    
+
 
                   row +=`<div id="Detail" data-param_id="`+ item.id +`"  data-toggle="tooltip" data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-detail" ></i></div>`;
 
@@ -792,6 +804,14 @@
 	           $('#approve-selected').prop("disabled", true);
 	         } 	
    		});
+
+
+         $( "#content" ).on( "click", "#RequestEdit", (e) => {
+             
+             let id = e.currentTarget.dataset.param_id;
+              
+             ModalRequestEdit(id)
+         });
 
 
    		$( "#content" ).on( "click", "#Detail", (e) => {
@@ -922,6 +942,72 @@
         
     }
 
+    function ModalRequestEdit(id){
+        
+        var row = '';
+
+        
+             row +=`<div class="modal-dialog">`;
+                  row +=`<div class="modal-content">`;
+                       row +=`<div class="modal-header">`;
+                            row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                            row +=`<h4 class="modal-title">Request Edit Promosi</h4>`;
+                       row +=`</div>`;
+                       row +=`<div class="modal-body">`;
+                            row +=`<div class="form-group">`;
+                                 row +=`<label>Alasan Permintaan Edit Data</label>`;
+                                 row +=`<textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_edit_inp" name="alasan_edit" placeholder="Alasan Edit"></textarea>`;
+                            row +=`</div>`;
+                       row +=`</div>`;
+                       row +=`<div class="modal-footer">`;
+                            row +=`<button type="button"  id="reqedit" class="btn btn-default">Request Edit</button>`;
+                            row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                       row +=`</div>`;
+                  row +=`</div>`;
+             row +=`</div>`;
+        
+
+            $('#modal-reqedit').html(row);
+
+    
+      
+            $("#reqedit").click( () => {    
+                var alasan =  $('#alasan_edit_inp').val();
+
+                  var form = {'access':'pusat','alasan': alasan};
+                    $.ajax({
+                        type:"POST",
+                        url: BASE_URL+'/api/promosi/requestedit/'+ id,
+                        data:form,
+                        cache: false,
+                        dataType: "json",
+                        success: (respons) =>{
+                                  
+                              Swal.fire({
+                              title: 'Sukses!',
+                              text: 'Berhasil mengirim alasan request edit ',
+                              icon: 'success',
+                              confirmButtonText: 'OK'                        
+                             }).then((result) => {
+                                  if (result.isConfirmed) {
+                                       window.location.replace('/promosi');
+                                  }
+                             });
+
+                        },
+                        error: (respons)=>{
+                            errors = respons.responseJSON;
+                            
+
+                            
+                        }
+                    });
+
+            
+            });
+
+    }
+
      function resultTotal(total){
        $('#total-data').html('<span><b>Total Data : '+ total +'</b></span>');
     }
@@ -1013,7 +1099,7 @@
            }else{
 
 
-           	        if(item.checklist == 'proses')
+           	        if(item.status_laporan_id == '14' && item.request_edit =='false')
 	                {
 	                    row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
 	                }else{

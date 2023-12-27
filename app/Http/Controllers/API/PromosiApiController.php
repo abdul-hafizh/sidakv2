@@ -136,9 +136,8 @@ class PromosiApiController extends Controller
                     'description' => 'Menambahkan data promosi '.$daerah_name.' periode <b> ' . $request->periode_id . '</b>',
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
-                //create menu
-                $saveData = Promosi::create($insert);
-                 if($request->status =='Y')
+                
+                 if($request->status_laporan_id =='14')
                  {   
                     $access = RequestAuth::Access();
                       //send notif
@@ -153,15 +152,18 @@ class PromosiApiController extends Controller
                          $datafrom = User::where('username','pusat')->first();
 
                         $description = $request->description;
-                        
-                         $pusat = User::where('username','pusat')->first()->email;
-                         Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
+                         
+                         // $pusat = User::where('username','pusat')->first()->email;
+                         // Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
+
+                        //create menu
+                        $saveData = Promosi::create($insert);
                       
 
                     }
                  }
                 //result
-                return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Insert data sucessfully']);
+                return response()->json(['status' => true, 'id' => $notif, 'message' => 'Insert data sucessfully']);
             }    
             
         
@@ -170,48 +172,73 @@ class PromosiApiController extends Controller
 
     public function reqedit($id, Request $request)
     {
-        $find = Promosi::find($id);
-        if (empty($find)) {
-            return response()->json(['messages' => false]);
-        }  
+       
 
         $messages['messages'] = false;
         $_res = Promosi::find($id);
-         $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
-
-        $log = array(
-            'category' => 'LOG_DATA_PROMOSI',
-            'group_menu' => 'requestedit_data_promosi',
-            'description' => $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan,
-        );
-        $datalog = RequestAuditLog::fieldsData($log);
-
- 
 
 
         if (empty($_res)) {
             return response()->json(['messages' => false]);
         }
-
-        $results = $_res->where('id',$id)->update(['alasan'=>$request->alasan,'request_edit'=>'true','checklist'=>'not_approved']);
-         $access = RequestAuth::Access();
-        if($access !="admin" || $access !="pusat")
+         $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id); 
+        if($request->access =='member')
         {
-                // $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
-                 $type = 'promosi';
+
+               $results = $_res->where('id',$id)->update(['alasan'=>$request->alasan,'request_edit'=>'true','checklist'=>'not_approved','request_edit_by'=>$access_type]);
+
+                  $type = 'promosi';
                  $msg = $daerah_name.' mengajukan permintaan request edit untuk periode tahun <b>' . $_res->periode_id . '</b>  dengan alasan '.$request->alasan;
                  $url = url('promosi/detail/'.$id);
                  $sender = User::where(['username'=>'pusat'])->first()->username;
                  $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
                  Notification::create($notif);
-                 $datafrom = User::where('username','pusat')->first();
 
-        }
+               
+                $log = array(
+                    'category' => 'LOG_DATA_PROMOSI',
+                    'group_menu' => 'request_edit_data_promosi_member',
+                    'description' => $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan,
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
 
+                $access_type = 'member';
+                 
+
+
+        }else{
+                 
+                $type = 'promosi';
+                 $msg = 'Pusat meminta untuk merevisi laporan data promosi daerah  '.$daerah_name.' periode tahun <b>' . $_res->periode_id . '</b> alasan '.$request->alasan;
+                 $url = url('promosi/detail/'.$id);
+                 $sender = User::where(['daerah_id'=>$_res->daerah_id])->first()->username;
+                 $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
+                 Notification::create($notif);
+
+               
+                $log = array(
+                    'category' => 'LOG_DATA_PROMOSI',
+                    'group_menu' => 'request_edit_data_promosi_pusat',
+                    'description' => 'Pusat meminta untuk merevisi laporan data promosi daerah  '.$daerah_name.' periode tahun <b>' . $_res->periode_id . '</b> alasan '.$request->alasan,
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
+
+                $access_type = 'pusat';
+                 $results = $_res->where('id',$id)->update(['alasan'=>$request->alasan,'request_edit'=>'true','checklist'=>'not_approved','status_laporan_id'=>'13','request_edit_by'=>$access_type]);
+
+        }    
+
+    
+
+ 
+
+
+
+    
         if ($results) {
             $messages['messages'] = true;
         }
-        return response()->json($messages);
+        return response()->json($results);
 
         
          
@@ -236,7 +263,7 @@ class PromosiApiController extends Controller
 
         if($type =='approved')
         {
-             $results = $_res->update(['status_laporan_id'=>'13','request_edit'=>'false','checklist'=>'approved']);  
+             $results = $_res->update(['status_laporan_id'=>'13','request_edit'=>'false','checklist'=>'approved','alasan'=>'']);  
 
              $type = 'periode';
            
@@ -262,10 +289,10 @@ class PromosiApiController extends Controller
             $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
             Notification::create($notif);
 
-             $status = 'Ditolak';
-             $description = $_res->description;
+             // $status = 'Ditolak';
+             // $description = $_res->description;
              
-            Mail::to($_res)->send(new PeriodeApproved($daerah_name,$url,$_res->year,$_res->semester,$daerah_name,$status,$description));   
+            // Mail::to($_res)->send(new PeriodeApproved($daerah_name,$url,$_res->year,$_res->semester,$daerah_name,$status,$description));   
         }    
 
        
@@ -283,21 +310,59 @@ class PromosiApiController extends Controller
             return response()->json($validation, 400);
         } else {
 
-          
 
+                if($request->status_laporan_id =='14')
+                {   
+                    $access = RequestAuth::Access();
+                      //send notif
+                    if($access !="admin" || $access !="pusat")
+                    {
+                        $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id); 
+           
+            
+                         $type = 'promosi';
+                         $messages = Auth::User()->username.' Menambahkan promosi '.$daerah_name.' periode '.$request->periode_id;
+                         $url = url('promosi/show/'.$id);
+                         $sender = Auth::User()->username;
+                         $notif = RequestNotification::fieldsData($type,$messages,$url,$sender);
+                         Notification::create($notif);
+                         $datafrom = User::where('username','pusat')->first();
 
-                $update = RequestPromosi::fieldsData($request);
-                $UpdateData = Promosi::where('id', $id)->update($update);
+                        $description = $request->description;
+                         
+                         // $pusat = User::where('username','pusat')->first()->email;
+                         // Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
 
-                 
+                          $find = Promosi::find($id);
+                         if($find->status_laporan_id =='13' && $find->request_edit =="true")
+                         {
+                             $merge = ['alasan'=>'','checklist'=>''];
+                             $update = array_merge($merge,RequestPromosi::fieldsData($request));
+                         }else{
+                            $update =  RequestPromosi::fieldsData($request);
+                         }   
+                        
+                         $UpdateData = Promosi::where('id', $id)->update($update);
+                      
+
+                    }
+                 }else{
+
+                       $update =  RequestPromosi::fieldsData($request);
+                       $UpdateData = Promosi::where('id', $id)->update($update);
+                 }
+              
+
                   $log = array(
                     'category' => 'LOG_DATA_PROMOSI',
                     'group_menu' => 'mengubah_data_promosi',
                     'description' => 'Mengubah data Promosi <b>' . $request->periode_id . '</b>',
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
-
+            
                 return response()->json(['status' => true, 'id' => $UpdateData, 'message' => 'Update data sucessfully']);
+
+              
              
         }
     }

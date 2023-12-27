@@ -28,12 +28,20 @@ class RekapitulasiApiController extends Controller
         $semester_id = $request->semester_id;
         $daerah_id = $request->daerah_id;
       
-        if($daerah_id =="")
-        {
-          $query = User::where('status','Y')->whereNotIn('username',['admin','pusat'])->orderBy('created_at', 'DESC');
+        
+
+
+        if($access =='admin' || $access =='pusat'){
+            if($daerah_id =="")
+            {
+              $query = User::where('status','Y')->whereNotIn('username',['admin','pusat'])->orderBy('created_at', 'DESC');
+            }else{
+              $query = User::where(['daerah_id'=> $daerah_id,'status','Y'])->orderBy('created_at', 'DESC');  
+            }  
         }else{
-          $query = User::where(['daerah_id'=> $daerah_id,'status','Y'])->orderBy('created_at', 'DESC');  
-        }  
+            $query = User::where(['daerah_id'=> Auth::User()->daerah_id,'status','Y'])->orderBy('created_at', 'DESC');  
+            
+        }
 
          
          if($request->per_page !='all')

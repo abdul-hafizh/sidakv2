@@ -569,7 +569,7 @@
                    url = BASE_URL+ `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}&periode_id=${tmp.periode_id}`;
                    method = 'POST';
                    data = {'search':tmp.search,'daerah_id':tmp.daerah_id,'status':tmp.status};
-                   getdaerah(tmp.periode_id);
+                   getperiode(tmp.periode_id);
                    getdaerah(tmp.daerah_id);
 
         

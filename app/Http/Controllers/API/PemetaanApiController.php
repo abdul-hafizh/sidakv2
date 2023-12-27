@@ -13,6 +13,7 @@ use App\Http\Request\Validation\ValidationPemetaan;
 use App\Http\Request\RequestAuditLog;
 use App\Helpers\GeneralHelpers;
 use App\Helpers\GeneralPaginate;
+
 use App\Models\Notification;
 use App\Http\Request\RequestDaerah;
 use App\Http\Request\RequestNotification;
@@ -29,11 +30,12 @@ class PemetaanApiController extends Controller
 
     public function __construct()
     {
+       
     }
 
     public function index(Request $request)
     {
-
+          
         $access = RequestAuth::Access(); 
         $year = $request->periode_id;
 
@@ -123,6 +125,11 @@ class PemetaanApiController extends Controller
 
     public function store(Request $request)
     {
+          
+        // $id = '';
+        //    $insert = RequestPemetaan::fieldsGroup($request,$id);
+        //   return  $insert;
+
         $validation = ValidationPemetaan::validation($request);
         if ($validation) {
 
@@ -133,7 +140,7 @@ class PemetaanApiController extends Controller
                 $daerah_name = RequestDaerah::GetDaerahWhereID(Auth::User()->daerah_id); 
            
                 $id = '';
-                $insert = RequestPemetaan::fieldsGroup($request,$id); 
+                
                 $log = array(
                     'category' => 'LOG_DATA_PEMETAAN',
                     'group_menu' => 'upload_data_pemetaan',
@@ -141,6 +148,7 @@ class PemetaanApiController extends Controller
                 );
                 $datalog = RequestAuditLog::fieldsData($log);
                 //create menu
+                $insert = RequestPemetaan::fieldsGroup($request,$id); 
                 $saveData = Pemetaan::create($insert);
                  if($request->status =='Y')
                  {   
@@ -158,8 +166,8 @@ class PemetaanApiController extends Controller
 
                         $description = $request->description;
                         
-                         $pusat = User::where('username','pusat')->first()->email;
-                         Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
+                         // $pusat = User::where('username','pusat')->first()->email;
+                         // Mail::to($pusat)->send(new PeriodeExtension(Auth::User()->username,$url,$request->year,$request->semester,$description, $daerah_name));
                       
 
                     }
@@ -171,62 +179,81 @@ class PemetaanApiController extends Controller
         
     }
 
-
     public function reqedit($id, Request $request)
     {
-        $find = Pemetaan::find($id);
-        if (empty($find)) {
-            return response()->json(['messages' => false]);
-        }  
+       
 
         $messages['messages'] = false;
         $_res = Pemetaan::find($id);
-         $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
-
-        $log = array(
-            'category' => 'LOG_DATA_PEMETAAN',
-            'group_menu' => 'requestedit_data_pemetaan',
-            'description' => $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan,
-        );
-        $datalog = RequestAuditLog::fieldsData($log);
-
- 
 
 
         if (empty($_res)) {
             return response()->json(['messages' => false]);
         }
-
-        $results = $_res->where('id',$id)->update(['alasan'=>$request->alasan,'request_edit'=>'true','checklist'=>'not_approved']);
-         $access = RequestAuth::Access();
-        if($access !="admin" || $access !="pusat")
+         $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id); 
+        if($request->access =='member')
         {
-                // $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
-                 $type = 'pemetaan';
+
+               $results = $_res->where('id',$id)->update(['alasan'=>$request->alasan,'request_edit'=>'true','checklist'=>'not_approved','request_edit_by'=>$access_type]);
+
+                  $type = 'pemetaan';
                  $msg = $daerah_name.' mengajukan permintaan request edit untuk periode tahun <b>' . $_res->periode_id . '</b>  dengan alasan '.$request->alasan;
                  $url = url('pemetaan/detail/'.$id);
                  $sender = User::where(['username'=>'pusat'])->first()->username;
                  $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
                  Notification::create($notif);
-                 $datafrom = User::where('username','pusat')->first();
 
-        }
+               
+                $log = array(
+                    'category' => 'LOG_DATA_PEMETAAN',
+                    'group_menu' => 'request_edit_data_pemetaan_member',
+                    'description' => $daerah_name.' untuk periode tahun <b>' . $_res->periode_id . '</b> mengajukan permintaan request edit dengan alasan '.$request->alasan,
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
 
+                $access_type = 'member';
+                 
+
+
+        }else{
+                 
+                $type = 'pemetaan';
+                 $msg = 'Pusat meminta untuk merevisi laporan data pemetaan daerah  '.$daerah_name.' periode tahun <b>' . $_res->periode_id . '</b> alasan '.$request->alasan;
+                 $url = url('pemetaan/detail/'.$id);
+                 $sender = User::where(['daerah_id'=>$_res->daerah_id])->first()->username;
+                 $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
+                 Notification::create($notif);
+
+               
+                $log = array(
+                    'category' => 'LOG_DATA_PEMETAAN',
+                    'group_menu' => 'request_edit_data_pemetaan_pusat',
+                    'description' => 'Pusat meminta untuk merevisi laporan data pemetaan daerah  '.$daerah_name.' periode tahun <b>' . $_res->periode_id . '</b> alasan '.$request->alasan,
+                );
+                $datalog = RequestAuditLog::fieldsData($log);
+
+                $access_type = 'pusat';
+                 $results = $_res->where('id',$id)->update(['alasan'=>$request->alasan,'request_edit'=>'true','checklist'=>'not_approved','status_laporan_id'=>'13','request_edit_by'=>$access_type]);
+
+        }    
+
+    
         if ($results) {
             $messages['messages'] = true;
         }
-        return response()->json($messages);
+        return response()->json($results);
 
         
          
     }
+
 
      public function approved($type,$id)
     {
         $messages['messages'] = false;
         $_res = Pemetaan::find($id);
        
-        $daerah_name = RequestDaerah::GetDaerahWhereName($_res->daerah_id);
+        $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
         $log = array(
             'category' => 'LOG_DATA_PEMETAAN',
             'group_menu' => 'approved_pengajuan_pemetaan',
@@ -240,7 +267,7 @@ class PemetaanApiController extends Controller
 
         if($type =='approved')
         {
-             $results = $_res->update(['status_laporan_id'=>'13','request_edit'=>'false','checklist'=>'approved']);  
+             $results = $_res->update(['status_laporan_id'=>'13','request_edit'=>'false','checklist'=>'approved','alasan'=>'']);  
 
              $type = 'periode';
            
@@ -266,10 +293,10 @@ class PemetaanApiController extends Controller
             $notif = RequestNotification::fieldsData($type,$msg,$url,$sender);
             Notification::create($notif);
 
-             $status = 'Ditolak';
-             $description = $_res->description;
+             // $status = 'Ditolak';
+             // $description = $_res->description;
              
-            Mail::to($_res)->send(new PeriodeApproved($daerah_name,$url,$_res->year,$_res->semester,$daerah_name,$status,$description));   
+            // Mail::to($_res)->send(new PeriodeApproved($daerah_name,$url,$_res->year,$_res->semester,$daerah_name,$status,$description));   
         }    
 
        
@@ -279,6 +306,8 @@ class PemetaanApiController extends Controller
         return response()->json($messages);
 
     }
+
+    
 
     public function update($id, Request $request)
     {

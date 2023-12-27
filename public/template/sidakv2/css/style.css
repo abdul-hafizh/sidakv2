@@ -80,6 +80,11 @@
         padding: 10px 0px!important;
 }
 
+.pdf-penyusunan{
+       padding: 214px 18px!important;
+   
+}
+
 .textarea-table{
     resize: none;
     border-style: none!important;
@@ -99,8 +104,17 @@
         padding: 89px 18px;
 }
 
+
+.input-text-pilihan{
+        padding: 89px 0px!important;
+}
+
 .penyusunan-peta{
-    padding: 214px 18px;
+    padding: 214px 0px!important;
+}
+
+.penyusunan-peta-input {
+    padding: 214px 0px!important;
 }
 
 .progress-bar{

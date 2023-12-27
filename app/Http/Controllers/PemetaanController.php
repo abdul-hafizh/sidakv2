@@ -110,15 +110,15 @@ class PemetaanController extends Controller
         // dd($build);
         $data = ['title' => 'Pemetaan', 'rows' => $build ];
           
-         // return view('template/' . $this->template . '.pemetaan.print')
-         //    ->with(
-         //        [
-         //            'title' =>  'Pemetaan',
-         //            'rows' => $build,
-         //            'template' => 'template/' . $this->template
-         //        ]
-         //    );
-       $pdf = PDF::loadView('template/sidakv2/pemetaan/print', $data);
-       return $pdf->download('Pemetaan_' . $build->daerah_name . '_Tahun_' . $build->periode_id . '.pdf');
+         return view('template/' . $this->template . '.pemetaan.print')
+            ->with(
+                [
+                    'title' =>  'Pemetaan',
+                    'rows' => $build,
+                    'template' => 'template/' . $this->template
+                ]
+            );
+       //$pdf = PDF::loadView('template/sidakv2/pemetaan/print', $data);
+      // return $pdf->download('Pemetaan_' . $build->daerah_name . '_Tahun_' . $build->periode_id . '.pdf');
     }
 }
