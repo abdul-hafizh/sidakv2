@@ -138,7 +138,9 @@ class RequestPengawasan
                 if ($row->action == 'delete') {
                     if ($row->checked == true) {
                         if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
-                            if ($val->status_laporan_id != 14)
+                            if ($val->status_laporan_id == 13 && $val->request_edit =='false')
+                               
+
                                 $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>';
                         }
                     }
