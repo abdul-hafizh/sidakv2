@@ -579,7 +579,7 @@ class RequestDashboard
            $periode_02 = $periode_id.'02';
 
            $semester1 = [
-               "sub_menu" =>"Realisasi",
+               "sub_menu" =>"Penyelesaian Masalah",
                "target"=> $penyelesaian_realisasi_target,
                "pagu"=> $penyelesaian_realisasi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian'),
@@ -764,10 +764,10 @@ class RequestDashboard
 
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr')),
 
-                "realisasi_target"=>  RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
+                "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
 
                  
-               "realisasi_apbn"=>  RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr'),
+               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_tenaga_pendamping') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr')),
 
            ];
          }else{
@@ -782,22 +782,22 @@ class RequestDashboard
               
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
                
-               "realisasi_apbn_sem_1"=>
-RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr')
+               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_tenaga_pendamping') + 
+RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr'))
            ];
 
             $semester2 = [
           
               
-                "realisasi_target_sem_2"=> RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ippbbr'),
+                "realisasi_target_sem_2"=>  RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ippbbr'),
 
                
-                "realisasi_apbn_sem_2"=> RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ippbbr'),
+                "realisasi_apbn_sem_2"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_tenaga_pendamping') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ippbbr')),
 
-               "realisasi_target"=>  RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr') + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_tenaga_pendamping')  + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ippbbr'),
+               "realisasi_target"=>  RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr') + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ippbbr'),
 
                  
-               "realisasi_apbn"=>  RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ippbbr'),
+               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_tenaga_pendamping') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_tenaga_pendamping') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ippbbr')),
             
             ];
 
@@ -831,7 +831,7 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
                "pagu"=> $pagu ,
 
 
-               "realisasi_target_sem_1"=>  RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian'),
+               "realisasi_target_sem_1"=>  RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian') +  RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
                
 
 
