@@ -403,6 +403,13 @@
     background-repeat: no-repeat;
 }
 
-
+.icon-info{
+   
+    background: url('../img/circle-info-solid.svg');
+    background-repeat: no-repeat;
+    width: 18px;
+    height: 18px;
+    display: inline-block;
+}
 
 

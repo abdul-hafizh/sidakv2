@@ -50,8 +50,8 @@ class RequestPaguTarget
         $temp = array();
 
         $getRequest = $request->all();
-        $column_order   = array('', 'nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
-        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $column_order   = array('', 'nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_pengawasan', 'pagu_penyelesaian_permasalahan', 'pagu_bimbingan_teknis', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_pengawasan', 'pagu_penyelesaian_permasalahan', 'pagu_bimbingan_teknis', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
         $order = array('nama_daerah' => 'ASC');
 
         $data = DB::table('pagu_target');
@@ -125,6 +125,9 @@ class RequestPaguTarget
             $row[]  = $val->type_daerah;
             $row[]  = $val->periode_id;
             $row[]  = GeneralHelpers::formatRupiah($val->pagu_apbn);
+            $row[]  = GeneralHelpers::formatRupiah($val->pagu_pengawasan);
+            $row[]  = GeneralHelpers::formatRupiah($val->pagu_penyelesaian_permasalahan);
+            $row[]  = GeneralHelpers::formatRupiah($val->pagu_bimbingan_teknis);
             $row[]  = GeneralHelpers::formatRupiah($val->pagu_promosi);
             $row[]  = GeneralHelpers::formatRupiah($val->pagu_dalak);
             $row[]  = $val->target_pengawasan;
@@ -132,13 +135,16 @@ class RequestPaguTarget
             $row[]  = $val->target_bimbingan_teknis;
             $row[]  = $val->target_video_promosi;
 
-            $row[]  = '<div class="list-menu-table-pagu">'.$edit_url . " " . $delete_url.'</div>';
+            $row[]  = '<div class="list-menu-table-pagu">' . $edit_url . " " . $delete_url . '</div>';
 
             $temp[] = $row;
         }
         $temp2['data'] = $temp;
         $temp2['total'] = $data->count();
         $temp2['total_apbn'] = $data->sum('pagu_apbn');
+        $temp2['total_pengawasan'] = $data->sum('pagu_pengawasan');
+        $temp2['total_penyelesaian_permasalahan'] = $data->sum('pagu_penyelesaian_permasalahan');
+        $temp2['total_bimbingan_teknis'] = $data->sum('pagu_bimbingan_teknis');
         $temp2['total_promosi'] = $data->sum('pagu_promosi');
         $temp2['options'] = $options;
         return json_decode(json_encode($temp2), FALSE);
@@ -149,8 +155,8 @@ class RequestPaguTarget
     {
         $temp = array();
 
-        $column_order   = array('', 'nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
-        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $column_order   = array('', 'nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_pengawasan', 'pagu_penyelesaian_permasalahan', 'pagu_bimbingan_teknis', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_pengawasan', 'pagu_penyelesaian_permasalahan', 'pagu_bimbingan_teknis', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
         $order = array('nama_daerah' => 'ASC');
 
         $data = DB::table('pagu_target');
@@ -201,7 +207,7 @@ class RequestPaguTarget
     public static function GetTotalPagu($request)
     {
 
-        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
+        $column_search  = array('nama_daerah', 'type_daerah', 'periode_id', 'pagu_apbn', 'pagu_pengawasan', 'pagu_penyelesaian_permasalahan', 'pagu_bimbingan_teknis', 'pagu_promosi', 'target_pengawasan', 'target_penyelesaian_permasalahan', 'target_bimbingan_teknis', 'target_video_promosi', 'pagu_dalak');
 
         $data = DB::table('pagu_target');
         $searchColumn = $request->data;
@@ -235,6 +241,10 @@ class RequestPaguTarget
 
         $temp2['total_apbn'] = $data->sum('pagu_apbn');
         $temp2['total_promosi'] = $data->sum('pagu_promosi');
+        $temp2['total_pengawasan'] = $data->sum('pagu_pengawasan');
+        $temp2['total_penyelesaian_permasalahan'] = $data->sum('pagu_penyelesaian_permasalahan');
+        $temp2['total_bimbingan_teknis'] = $data->sum('pagu_bimbingan_teknis');
+
 
         return json_decode(json_encode($temp2), FALSE);
     }
@@ -249,14 +259,17 @@ class RequestPaguTarget
                 'periode_id'  => $request->periode_id,
                 'daerah_id'  => $request->daerah_id,
                 'nama_daerah'  => $request->nama_daerah,
-                'pagu_apbn'  => $request->pagu_apbn,
+                'pagu_apbn'  => $request->pagu_pengawasan + $request->pagu_penyelesaian_permasalahan + $request->pagu_bimbingan_teknis,
                 'pagu_promosi'  => $request->pagu_promosi,
                 'type_daerah'  => $request->type_daerah,
+                'pagu_pengawasan' => $request->pagu_pengawasan,
+                'pagu_penyelesaian_permasalahan'  => $request->pagu_penyelesaian_permasalahan,
+                'pagu_bimbingan_teknis'  => $request->pagu_bimbingan_teknis,
                 'target_pengawasan' => $request->target_pengawasan,
                 'target_penyelesaian_permasalahan'  => $request->target_penyelesaian_permasalahan,
                 'target_bimbingan_teknis'  => $request->target_bimbingan_teknis,
                 'target_video_promosi'  => $request->target_video_promosi,
-                'pagu_dalak'  => $request->pagu_promosi + $request->pagu_apbn,
+                'pagu_dalak'  => $request->pagu_pengawasan + $request->pagu_penyelesaian_permasalahan + $request->pagu_bimbingan_teknis + $request->pagu_promosi,
                 'created_by' => Auth::User()->username,
                 'created_at' => date('Y-m-d H:i:s'),
             ];

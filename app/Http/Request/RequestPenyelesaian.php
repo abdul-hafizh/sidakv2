@@ -95,27 +95,19 @@ class RequestPenyelesaian
         $result = $data->get();
         $options = RequestMenuRoles::ActionPage('penyelesaian');
         foreach ($result as $key => $val) {
-            
             $log_url = "";
             $edit_url = "";
             $delete_url = "";
-
-
             foreach ($options as $rows => $row) {
                 if ($row->action == 'update') {
                     if ($row->checked == true) 
                     {
-
-                       if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province")
+                        if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province")
                         { 
-                       
-                           $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
-                        }else{
-                           
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
+                        } else {                           
                             $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
-
                         }   
-
                     }
                 }
 
@@ -128,9 +120,16 @@ class RequestPenyelesaian
                             if ($val->status_laporan_id != 14)
                             {
                                 $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . '  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy"></i> </div>';
-                           }         
-                       }
-                       
+                            }
+                       }                       
+                    }
+                }
+
+                if ($row->action == 'approval') {
+                    if ($row->checked == true) {
+                        if ($_COOKIE['access'] != "daerah" || $_COOKIE['access'] != "province") {
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
+                        }
                     }
                 }
 
@@ -138,23 +137,7 @@ class RequestPenyelesaian
                {
                    $log_url =  '<div id="Log" data-param_id=' . $val->id . ' data-toggle="modal" data-target="#modal-log"  data-toggle="tooltip" data-placement="top" title="Log Data" class="pointer btn-padding-action pull-left modalLog"><i class="fa-icon icon-detail"></i></div>';
                }
-
-
             }
-
-
-            // $edit_url = '<button id="Edit" data-placement="top" data-toggle="modal" data-toggle="tooltip" data-target="#modal-add" type="button" title="Edit Data" data-param_id=' . $val->id . ' class="btn btn-primary modalUbah"><i class="fa fa-pencil" ></i></button>';
-                        
-            // if ($access == 'daerah' || $access == 'province') {
-            //     if ($val->status_laporan_id != 14)
-            //     {
-            //         $delete_url = '<button id="Destroy" data-placement="top" data-toggle="tooltip" type="button" title="Hapus Data" data-param_id=' . $val->id . ' class="btn btn-primary"><i class="fa fa-trash"></i></button>';
-            //     }
-            // }
-
-            // if(!empty($val->alasan_edit) || !empty($val->alasan_edit)) {
-            //     $log_url =  '<button id="Log" data-param_id=' . $val->id . ' data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa fa-history" ></i></button>';
-            // }
 
             $numberNext++;
             $row   = array();
@@ -285,6 +268,45 @@ class RequestPenyelesaian
         ];
 
         return json_decode(json_encode($result), FALSE);
+    }
+
+    public static function GetTotalPagu($request)
+    {
+        $tahunSemester = GeneralHelpers::semesterToday();
+        $perencanaan = DB::table('perencanaan');
+        $terkirim = DB::table('penyelesaian');
+        $draft = DB::table('penyelesaian');
+        $searchColumn = $request->data;
+        if (!empty($request->data)) {
+            $value = $searchColumn;
+            $filterjs = json_decode($value);
+            if ($filterjs[0]->periode_id) {
+                $perencanaan->where('periode_id', substr($filterjs[0]->periode_id, 0, 4));
+                $terkirim->where('periode_id', $filterjs[0]->periode_id);
+                $draft->where('periode_id', $filterjs[0]->periode_id);
+            } else {
+                $perencanaan->where('periode_id', substr($tahunSemester, 0, 4));
+                $terkirim->where('periode_id', $tahunSemester);
+                $draft->where('periode_id', $tahunSemester);
+            }
+            if ($filterjs[0]->daerah_id) {
+                $perencanaan->where('daerah_id', $filterjs[0]->daerah_id);
+                $terkirim->where('daerah_id', $filterjs[0]->daerah_id);
+                $draft->where('daerah_id', $filterjs[0]->daerah_id);
+            }
+        } else {
+            $perencanaan->where('periode_id', substr($tahunSemester, 0, 4));
+            $terkirim->where('periode_id', $tahunSemester);
+            $draft->where('periode_id', $tahunSemester);
+        }
+        $terkirim->where('status_laporan_id', 14);
+        $draft->whereNotIn('status_laporan_id', [14]);
+
+        $temp2['total_perencanaan'] = $perencanaan->sum('penyelesaian_identifikasi_pagu') + $perencanaan->sum('penyelesaian_realisasi_pagu') + $perencanaan->sum('penyelesaian_evaluasi_pagu');
+        $temp2['total_penyelesaian'] = $terkirim->sum('biaya');
+        $temp2['total_draft'] = $draft->sum('biaya');
+
+        return json_decode(json_encode($temp2), FALSE);
     }
 
     public static function fieldsData($request)

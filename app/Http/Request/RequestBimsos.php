@@ -95,9 +95,6 @@ class RequestBimsos
                         if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
 
                             $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Edit Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-edit" ></i></div>';
-                        } else {
-
-                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
                         }
                     }
                 }
@@ -108,6 +105,14 @@ class RequestBimsos
                             if ($val->status_laporan_id != 14) {
                                 $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . '  class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy"></i> </div>';
                             }
+                        }
+                    }
+                }
+
+                if ($row->action == 'approval') {
+                    if ($row->checked == true) {
+                        if ($_COOKIE['access'] != "daerah" || $_COOKIE['access'] != "province") {
+                            $edit_url =  '<div href="javascript:void(0)" id="Edit"  data-param_id=' .  $val->id . ' data-toggle="modal" data-target="#modal-add"  data-placement="top" title="Detail Data"  class="pointer btn-padding-action pull-left modalUbah"><i class="fa-icon icon-detail" ></i></div>';
                         }
                     }
                 }
@@ -162,10 +167,16 @@ class RequestBimsos
             if ($filterjs[0]->jenis_sub) {
                 $data->where('sub_menu_slug', $filterjs[0]->jenis_sub);
             }
+            if ($filterjs[0]->search_status) {
+                $data->where('status_laporan_id', $filterjs[0]->search_status);
+            }
             if ($filterjs[0]->periode_id) {
                 $data->where('periode_id', $filterjs[0]->periode_id);
             } else {
                 $data->where('periode_id', $tahunSemester);
+            }
+            if ($filterjs[0]->daerah_id) {
+                $data->where('daerah_id', $filterjs[0]->daerah_id);
             }
         } else {
             $data->where('periode_id', $tahunSemester);
@@ -330,5 +341,46 @@ class RequestBimsos
             }
         }
         return "Label tidak ditemukan";
+    }
+
+    public static function GetTotalPagu($request)
+    {
+
+        $tahunSemester = GeneralHelpers::semesterToday();
+
+        $perencanaan = DB::table('perencanaan');
+        $bimsos_terkirim = DB::table('bimsos');
+        $bimsos_draft = DB::table('bimsos');
+        $searchColumn = $request->data;
+        if (!empty($request->data)) {
+            $value = $searchColumn;
+            $filterjs = json_decode($value);
+            if ($filterjs[0]->periode_id) {
+                $perencanaan->where('periode_id', substr($filterjs[0]->periode_id, 0, 4));
+                $bimsos_terkirim->where('periode_id', $filterjs[0]->periode_id);
+                $bimsos_draft->where('periode_id', $filterjs[0]->periode_id);
+            } else {
+                $perencanaan->where('periode_id', substr($tahunSemester, 0, 4));
+                $bimsos_terkirim->where('periode_id', $tahunSemester);
+                $bimsos_draft->where('periode_id', $tahunSemester);
+            }
+            if ($filterjs[0]->daerah_id) {
+                $perencanaan->where('daerah_id', $filterjs[0]->daerah_id);
+                $bimsos_terkirim->where('daerah_id', $filterjs[0]->daerah_id);
+                $bimsos_draft->where('daerah_id', $filterjs[0]->daerah_id);
+            }
+        } else {
+            $perencanaan->where('periode_id', substr($tahunSemester, 0, 4));
+            $bimsos_terkirim->where('periode_id', $tahunSemester);
+            $bimsos_draft->where('periode_id', $tahunSemester);
+        }
+        $bimsos_terkirim->where('status_laporan_id', 14);
+        $bimsos_draft->whereNotIn('status_laporan_id', [14]);
+
+        $temp2['total_perencanaan'] = $perencanaan->sum('bimtek_perizinan_pagu') + $perencanaan->sum('bimtek_pengawasan_pagu');
+        $temp2['total_bimsos'] = $bimsos_terkirim->sum('biaya_kegiatan');
+        $temp2['total_bimsos_draft'] = $bimsos_draft->sum('biaya_kegiatan');
+
+        return json_decode(json_encode($temp2), FALSE);
     }
 }

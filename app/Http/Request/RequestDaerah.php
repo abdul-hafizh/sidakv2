@@ -9,71 +9,59 @@ use DB;
 
 class RequestDaerah
 {
-    // public static function GetProvinceID()
-    // {
-       
-    //     $province = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
+   // public static function GetProvinceID()
+   // {
 
-    //     return $province;
-    // }
+   //     $province = Provinces::select('id as value','name as text')->orderBy('value','ASC')->get();
 
-     public static function GetDaerahWhereID($id)
-    {
-       
-        $result = '';
-        $province = DB::table('provinces')->select('name')->where('id',$id)->first();
-        if($province){
-           $result = $province->name;
+   //     return $province;
+   // }
 
-        }else{
-             $regency = DB::table('regencies')->select('name')->where('id',$id)->first();
-             if($regency)
-             {
-                $result = $regency->name;
+   public static function GetDaerahWhereID($id)
+   {
 
-             }
-        }
-
-   
-        return $result;
-    }
-
-     public static function GetDaerahWhereName($name)
-    {
-        $result = '';
-        $province = DB::table('provinces')->select('name')->where('name',$name)->first();
-        if($province){
-           $result = $province->name;
-
-        }else{
-             $regency = DB::table('regencies')->select('name')->where('id',$name)->first();
-             if($regency)
-             {
-                $result = $regency->name;
-
-             }
-        }
-
-   
-        return $result;
-    }
-
-    public static function checkValidate($daerah_id){
-
-       $data = User::where('daerah_id',$daerah_id)->first();
-       if($data)
-       {
-          $result = false;
-       }else{
-          $result = true;
-       } 
-
-       return $result;
-  }
-
-   
-
-   
+      $result = '';
+      $province = DB::table('provinces')->select('name')->where('id', $id)->first();
+      if ($province) {
+         $result = $province->name;
+      } else {
+         $regency = DB::table('regencies')->select('name')->where('id', $id)->first();
+         if ($regency) {
+            $result = $regency->name;
+         }
+      }
 
 
+      return $result;
+   }
+
+   public static function GetDaerahWhereName($name)
+   {
+      $result = '';
+      $province = DB::table('provinces')->select('name')->where('id', $name)->first();
+      if ($province) {
+         $result = $province->name;
+      } else {
+         $regency = DB::table('regencies')->select('name')->where('id', $name)->first();
+         if ($regency) {
+            $result = $regency->name;
+         }
+      }
+
+
+      return $result;
+   }
+
+   public static function checkValidate($daerah_id)
+   {
+
+      $data = User::where('daerah_id', $daerah_id)->first();
+      if ($data) {
+         $result = false;
+      } else {
+         $result = true;
+      }
+
+      return $result;
+   }
 }

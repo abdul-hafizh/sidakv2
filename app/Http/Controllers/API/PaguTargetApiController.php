@@ -60,6 +60,9 @@ class PaguTargetApiController extends Controller
         $output = array(
             "total_apbn" => GeneralHelpers::formatRupiah($result->total_apbn),
             "total_promosi" => GeneralHelpers::formatRupiah($result->total_promosi),
+            "total_pengawasan" => GeneralHelpers::formatRupiah($result->total_pengawasan),
+            "total_penyelesaian_permasalahan" => GeneralHelpers::formatRupiah($result->total_penyelesaian_permasalahan),
+            "total_bimbingan_teknis" => GeneralHelpers::formatRupiah($result->total_bimbingan_teknis),
             "total_all" => GeneralHelpers::formatRupiah($result->total_promosi + $result->total_apbn)
         );
         return response()->json($output);

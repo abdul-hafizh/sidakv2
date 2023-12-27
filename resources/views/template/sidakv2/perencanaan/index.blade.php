@@ -1,52 +1,71 @@
 @extends('template/sidakv2/layout.app')
 @section('content')
-
 <style>
     .inner {
-		max-height: 200px !important;
-	}
+        max-height: 200px !important;
+    }
+    .modal-loading {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 99999;
+    }
+    .modal-content2 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    #progress-container {
+        text-align: center;
+    }
+    #progress-bar {
+        width: 100%;
+        background-color: #ccc;
+        border-radius: 4px;
+    }
+    #progress {
+        height: 20px;
+        background-color: #4caf50;
+        border-radius: 4px;
+        transition: width 0.3s ease-in-out;
+    }
+    #progress-label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
 </style>
+
+<!-- Modal loading -->
+<div id="progressModal" class="modal-loading" style="display: none;">
+  <div class="modal-content2">
+    <span class="close" id="closeProgressModal">&times;</span>
+    <h2>Upload Dokumen</h2>
+    <div id="progress-container">
+      <div id="progress-bar">
+        <div id="progress" style="width: 0%"></div>
+      </div>
+      <div id="progress-label">0%</div>
+    </div>
+  </div>
+</div>
 
 <section class="content-header pd-left-right-15">    
     <div class="row padding-default" style="margin-bottom: 20px">
-        @if($access == 'daerah' )
-		<div class="col-lg-4 col-sm-12">
-            <div class="box-body btn-primary border-radius-13">
-                <div class="card-body table-responsive p-0">
-                        <div class="media">
-                            <div class="media-body text-left">
-                                <span>Total Rencana Pengawasan</span>
-                                <h3 class="card-text" id="total-rencana-pengawasan"></h3>
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
-		<div class="col-lg-4 col-sm-12">
-            <div class="box-body btn-primary border-radius-13">
-                <div class="card-body table-responsive p-0">
-                    <div class="media">
-                        <div class="media-body text-left">
-                            <span>Total Rencana Bimsos</span>
-                            <h3 class="card-text" id="total-rencana-bimsos"></h3>
-                        </div>
-                    </div>
-			    </div>
-			</div>
-		</div>
-		<div class="col-lg-4 col-sm-12">
-            <div class="box-body btn-primary border-radius-13">
-                <div class="card-body table-responsive p-0">
-                    <div class="media">
-                        <div class="media-body text-left">
-                            <span>Total Penyelesaian Masalah</span>
-                            <h3 class="card-text" id="total-rencana-masalah"></h3>
-                        </div>
-                    </div>
-			    </div>
-			</div>
-		</div>
-        @else
         <div class="col-lg-3 col-sm-12">
             <div class="box-body btn-primary border-radius-13">
                 <div class="card-body table-responsive p-0">
@@ -88,26 +107,25 @@
                 <div class="card-body table-responsive p-0">
                     <div class="media">
                         <div class="media-body text-left">
-                            <span>Total Promosi</span>
+                            <span>Total </span><span class="label-peta-potensi">Peta Potensi</span>
                             <h3 class="card-text" id="total-rencana-promosi"></h3>
                         </div>
                     </div>
 			    </div>
 			</div>
 		</div>
-        @endif
 	</div>
 
     <div class="row margin-top-bottom-20">
-        <div class="col-sm-2" style="margin-bottom: 9px;">
+        <div class="col-lg-3 col-sm-12" style="margin-bottom: 9px;">
                  <div id="selectPeriode" class="form-group margin-none"></div>
             </div> 	        
         @if($access == 'admin' || $access == 'pusat' )
-        <div class="col-sm-2" style="margin-bottom: 9px;">
-            <select id="daerah_id"  data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Daerah"></select>
+        <div class="col-lg-3 col-sm-12" style="margin-bottom: 9px;">
+            <select id="daerah_id" data-live-search="true" class="selectpicker" data-style="btn-default" title="Pilih Daerah"></select>
         </div>
         @endif
-        <div class="col-sm-2" style="margin-bottom: 9px;">    
+        <div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">    
             <select id="search_status" class="selectpicker" data-style="btn-default" title="Pilih Status">
                 <option value="1">Draft</option>
                 <option value="2">Request Dokumen</option>
@@ -117,10 +135,10 @@
                 <option value="6">Perlu Perbaikan</option>
             </select>
         </div> 	
-        <div class="col-sm-2" style="margin-bottom: 9px;">
+        <div class="col-lg-2 col-sm-12" style="margin-bottom: 9px;">
             <input type="text" id="search_text" class="form-control border-radius-13" placeholder="Pencarian">
         </div> 	
-        <div class="col-lg-2">
+        <div class="col-lg-2 col-sm-12">
             <div class="btn-group">
                 <button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
                 <button id="Reset" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
@@ -168,45 +186,42 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table class="table table-hover text-nowrap" border="0">
+				<table class="table table-hover" style="height: 100%">
                     <thead>
                         <tr>
-                           <th rowspan="2" id="ShowChecklistAll" style="display:none;" >
+                            <th rowspan="2" id="ShowChecklistAll" style="display:none;" >
                                 <input id="select-all" class="border-left-table" type="checkbox">
                             </th>
                             <th rowspan="2"  class=" font-bold">No</th>
                             <th rowspan="2" colspan="2" class="text-center font-bold">
                               <div class="split-table"></div>
-                              <span class="padding-top-bottom-12 ">Nama Daerah</span>
-                            
+                              <span class="padding-top-bottom-12 ">Nama Daerah</span>                            
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
                             </th>
                             <th colspan="3" class="text-center font-bold border-bottom-th">  
-                              <span class="padding-top-bottom-12">Pengawasan</span> 
+                              <span class="padding-top-bottom-12">Pengawasan (Rp.)</span> 
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table "></div>
                             </th>
                             <th colspan="3" class="text-center font-bold">
-                              <span class="padding-top-bottom-12 ">Bimsos</span>
+                              <span class="padding-top-bottom-12 ">Bimsos (Rp.)</span>
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
-                            </th>
-                          
-                            <th colspan="3" class="text-center font-bold">  
-                             
-                              <span class="padding-top-bottom-12">Penyelesaian Masalah</span> 
+                            </th>                          
+                            <th colspan="3" class="text-center font-bold">                               
+                              <span class="padding-top-bottom-12">Penyelesaian Masalah (Rp.)</span> 
                             </th>
                              <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
-                              <span class="padding-top-bottom-12">Promosi</span>
+                              <span class="padding-top-bottom-12 label-peta-potensi-table">Peta Potensi (Rp.)</span>
                             </th>
                             <th rowspan="2"  class="text-center font-bold">
                               <div class="split-table"></div>
-                              <span class="padding-top-bottom-12">Total</span>
+                              <span class="padding-top-bottom-12">Total (Rp.)</span>
                             </th>
                             <th rowspan="2" class="text-center font-bold">
                               <div class="split-table"></div>
@@ -216,83 +231,43 @@
                               <div class="split-table"></div>
                               <span class="padding-top-bottom-12">Aksi</span>
                             </th>
-
-
-
-                            
                         </tr>
                         <tr>
-                            <th  class="text-center font-bold">
+                            <th class="text-center font-bold">
                                 <span class="padding-top-bottom-12">Analisa</span>
                             </th>
-                            <th  class="text-center font-bold">
+                            <th class="text-center font-bold">
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Inspeksi</span>
                             </th>
-                             <th  class="text-center font-bold">
+                             <th class="text-center font-bold">
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Evaluasi</span>
                             </th>
-
-                             <th  class="text-center font-bold">   
+                             <th class="text-center font-bold">   
                                 <span class="padding-top-bottom-12">Perizinan</span>
                             </th>
-                             <th   class="text-center font-bold">
+                             <th  class="text-center font-bold">
                               <div class="split-table"></div>
                             </th>
-                            <th  class="text-center font-bold">
+                            <th class="text-center font-bold">
                                
                                <span class="span-title">Pengawasan</span>
                             </th>
-
-                             <th  class="text-center font-bold">
+                             <th class="text-center font-bold">
                                 <span class="padding-top-bottom-12">Identifikasi</span>
                             </th>
-                            <th  class="text-center font-bold">
+                            <th class="text-center font-bold">
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Realisasi</span>
                             </th>
-                             <th  class="text-center font-bold">
+                             <th class="text-center font-bold">
                                 <div class="split-table"></div>
                                <span class="padding-top-bottom-12 position-top-10">Evaluasi</span>
                             </th>
                         </tr>
-
-
-                       
-                        
                     </thead>
-					<!-- <thead>
-						<tr>
-							<th rowspan="2" id="ShowChecklistAll" style="display:none;" class="th-checkbox">
-                                <input id="select-all" class="border-left-table" type="checkbox">
-                            </th>
-							<th rowspan="2"><div id="ShowChecklistAll" style="display:none;" class="split-table"></div><span>No</span></th>
-							<th rowspan="2"><span class="border-left-table">Nama Daerah </span></th>
-							<th rowspan="2"><span class="border-left-table">Periode </span></th>
-							<th colspan="3" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Pengawasan </th>
-							<th colspan="2" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Bimsos </th>
-							<th colspan="3" class="text-center"><span class="border-left-table pull-left">&nbsp;</span>Penyelesaian Masalah </th>
-							<th rowspan="2"><span class="border-left-table">Promosi </span></th>
-							<th rowspan="2"><span class="border-left-table">Total </span></th>
-							<th rowspan="2"><span class="border-left-table">Status </span></th>
-							<th rowspan="2"><span class="border-left-table">Update </span></th>
-							<th rowspan="2"><span class="border-left-table">Aksi </span> </th>
-						</tr>
-						<tr>							
-							<th><span class="border-left-table">Analisa </span></th>
-							<th><span class="border-left-table">Inspeksi </span></th>
-							<th><span class="border-left-table">Evaluasi </span></th>
-							<th><span class="border-left-table">Perizinan </span></th>
-							<th><span class="border-left-table">Pengawasan </span></th>
-							<th><span class="border-left-table">Identifikasi </span></th>
-							<th><span class="border-left-table">Realisasi </span></th>
-							<th><span class="border-left-table">Evaluasi </span></th>
-						</tr>
-					</thead> -->
-
 					<tbody id="content"></tbody>
-
                 </table>
             </div>
         </div>
@@ -317,27 +292,6 @@
                </div>
                <div class="modal-footer">
                     <button type="button" id="reqrevisi" class="btn btn-warning">Request Edit</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-               </div>
-          </div>
-     </div>
-</div>
-
-<div id="modal-reqedit" class="modal fade" role="dialog">
-     <div class="modal-dialog">
-          <div class="modal-content">
-               <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Request Edit Perencanaan</h4>
-               </div>
-               <div class="modal-body">
-                    <div class="form-group">
-                         <label>Alasan Permintaan Edit Data</label>
-                         <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_edit_inp" name="alasan_edit" placeholder="Alasan Edit"></textarea>
-                    </div>
-               </div>
-               <div class="modal-footer">
-                    <button type="button" id="reqedit" class="btn btn-warning">Request Edit</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
                </div>
           </div>
@@ -391,16 +345,18 @@
         var periode = [];
         var list = [];
         var year = new Date().getFullYear();
-        var daerah_id = 0;
-        
-       
-
+        var daerah_id = 0;        
       
         fetchData(page,year);
-        getperiode(year);
-        getdaerah(daerah_id);            
-           
+        
+        var tmp = JSON.parse(localStorage.getItem('search'));
 
+        if(!tmp)
+        {
+            getperiode(year);
+            getdaerah(daerah_id);            
+        }
+           
         $('#row_page').on('change', function() {
             var value = $(this).val();         
             if(value)
@@ -498,12 +454,12 @@
         });
 
         $('#Reset').on('click', function() {
-                localStorage.removeItem('search');
-                
-                $('#periode_id').val();
-                $("#daerah_id").val();
-                $('#search_status').val();
-                $('#search_text').val('');
+            localStorage.removeItem('search');
+            
+            $('#periode_id').val();
+            $("#daerah_id").val();
+            $('#search_status').val();
+            $('#search_text').val('');
             location.reload(true); 
         });
 
@@ -511,10 +467,18 @@
             var daerah_id = $("#daerah_id").val();
             var periode_id = $('#periode_id').val(); 
             var search_status = $('#search_status').val();
-            var search_text = $('#search_text').val();
+            var search_text = $('#search_text').val();                    
 
-             var form = {'periode_id':periode_id,'daerah_id':daerah_id,'status':search_status,'search':search_text};
-             localStorage.setItem('search', JSON.stringify(form));
+            if(periode_id < 2024) {                         
+                $(".label-peta-potensi").text('Promosi');
+                $(".label-peta-potensi-table").text('Promosi (Rp.)');
+            } else {
+                $(".label-peta-potensi").text('Peta Potensi');
+                $(".label-peta-potensi-table").text('Peta Potensi (Rp.)');
+            }
+
+            var form = {'periode_id':periode_id,'daerah_id':daerah_id,'status':search_status,'search':search_text};
+            localStorage.setItem('search', JSON.stringify(form));
 
             const content = $('#content');
             content.empty();
@@ -537,15 +501,29 @@
             });
         });
 
-        function approveItems(ids) {        
+        function approveItems(ids) {    
+            $('#progressModal').show();    
             $.ajax({
                 url:  BASE_URL +`/api/perencanaan/approve_selected`,
                 method: 'POST',
                 data: { data: ids },
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            $('#progress').css('width', percentComplete + '%');
+                            $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
                 success: function(response) {
+                    $('#progressModal').hide();
                     fetchData(page,year);
                 },
                 error: function(error) {
+                    $('#progressModal').hide();
                     console.error('Error deleting items:', error);
                 }
             });
@@ -555,33 +533,29 @@
             const content = $('#content');
             content.empty();
             var url = '';
-        var method = '';
-        var data = {};
+            var method = '';
+            var data = {};
           
             let row = ``;
                 row +=`<tr><td colspan="18" align="center"> <b>Loading ...</b></td></tr>`;
                 content.append(row);
-
                 var tmp = JSON.parse(localStorage.getItem('search'));
                 if(tmp)
                 {
-
                    url = BASE_URL+ `/api/perencanaan/search?page=${page}&per_page=${itemsPerPage}&periode_id=${tmp.periode_id}`;
                    method = 'POST';
                    data = {'search':tmp.search,'daerah_id':tmp.daerah_id,'status':tmp.status};
                    getperiode(tmp.periode_id);
                    getdaerah(tmp.daerah_id);
-
         
                    $('#search_status').val(tmp.status);
                    $('#search_text').val(tmp.search);
                    $('#search_status').selectpicker('refresh');
 
-                }else{
+                } else {
                    url = BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_id}`;
-                   method = 'GET';
-                  
-        }   
+                   method = 'GET';                  
+                }   
 
             $.ajax({
                 url: url,
@@ -614,17 +588,16 @@
                 let row = ``;
                 row +=`<tr>`;
 
-                
-                  options.forEach(function(opt, arr) 
-                  {
-                     if(opt.action == 'approval')
-                     {
+                options.forEach(function(opt, arr) 
+                {
+                    if(opt.action == 'approval')
+                    {
                         if(opt.checked == true)
                         {
-                             row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
+                            row +=`<td><input class="item-checkbox" data-id="${item.id}"  type="checkbox"></td></td>`;
                         }
-                     }       
-                  }); 
+                    }       
+                }); 
 
                 total_pengawasan += item.total_rencana_pengawasan;
                 total_bimsos += item.total_rencana_bimsos;
@@ -633,27 +606,24 @@
 
                 var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + item.lap_rencana + '" class="pointer btn-padding-action pull-left" title="Download PDF" target="_blank" style="margin-right: 4px"><i class="fa-icon icon-download"></i></a>';
 
-                row +=`<td>${item.number}</td>`;
-                row +=`<td colspan="2">${item.nama_daerah}</td>`;
-                 row +=`<td></td>`;
-                row +=`<td class="text-right">${item.pengawas_analisa_pagu_convert}</td>`;
-                row +=`<td class="text-right">${item.pengawas_inspeksi_pagu_convert}</td>`;
-                row +=`<td class="text-right">${item.pengawas_evaluasi_pagu_convert}</td>`;
+                row +=`<td style="vertical-align: middle;">${item.number}</td>`;
+                row +=`<td colspan="2" style="vertical-align: middle;">${item.nama_daerah}</td>`;
                 row +=`<td></td>`;
-                row +=`<td class="text-right">${item.bimtek_perizinan_pagu_convert}</td>`;
+                row +=`<td class="text-right">Target : ${item.pengawas_analisa_target}<br/>${item.pengawas_analisa_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right">Target : ${item.pengawas_inspeksi_target}<br/>${item.pengawas_inspeksi_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right">Target : ${item.pengawas_evaluasi_target}<br/>${item.pengawas_evaluasi_pagu_convert.replace('Rp ', '')}</td>`;
                 row +=`<td></td>`;
-                row +=`<td class="text-right">${item.bimtek_pengawasan_pagu_convert}</td>`;
-                  row +=`<td></td>`;
-                row +=`<td class="text-right">${item.penyelesaian_identifikasi_pagu_convert}</td>`;
-                row +=`<td class="text-right">${item.penyelesaian_realisasi_pagu_convert}</td>`;
-                row +=`<td class="text-right">${item.penyelesaian_evaluasi_pagu_convert}</td>`;
-                
-                row +=`<td class="text-right">${item.promosi_pengadaan_pagu_convert}</td>`;
-
-                row +=`<td class="text-right">${item.total_pagu}</td>`;
-                row +=`<td class="text-center">${item.status}</td>`;
-                // // row +=`<td class="table-padding-second">${item.updated_at}</td>`;
-                row +=`<td>`; 
+                row +=`<td class="text-right">Target : ${item.bimtek_perizinan_target}<br/>${item.bimtek_perizinan_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td></td>`;
+                row +=`<td class="text-right">Target : ${item.bimtek_pengawasan_target}<br/>${item.bimtek_pengawasan_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td></td>`;
+                row +=`<td class="text-right">Target : ${item.penyelesaian_identifikasi_target}<br/>${item.penyelesaian_identifikasi_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right">Target : ${item.penyelesaian_realisasi_target}<br/>${item.penyelesaian_realisasi_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right">Target : ${item.penyelesaian_evaluasi_target}<br/>${item.penyelesaian_evaluasi_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right" style="vertical-align: middle;">${item.promosi_pengadaan_pagu_convert.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-right" style="vertical-align: middle;">${item.total_pagu.replace('Rp ', '')}</td>`;
+                row +=`<td class="text-center" style="vertical-align: middle;">${item.status}</td>`;
+                row +=`<td style="vertical-align: middle;">`; 
                     row +=`<div class="btn-action">`;
                     if(item.lap_rencana != '') {                                   
                         row += download_link;
@@ -661,12 +631,8 @@
 
                     row +=`<div id="Detail" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left" title="Detail Data"><i class="fa-icon icon-detail"></i></div>`;
 
-                    if(item.access == 'pusat' && item.status_code == 16 && item.request_edit == 'false') {
-                        row += '<div type="button" class="pointer btn-padding-action pull-left" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>';
-                    }               
-
-                    if(item.access == 'daerah' && ([14, 15, 16].includes(item.status_code) && item.request_edit === 'false') || (item.status_code === 14 && item.request_edit === 'request_doc')) {                         
-                        row += '<div class="pointer btn-padding-action pull-left" data-toggle="modal" data-target="#modal-reqedit" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>';
+                    if(item.access == 'pusat' && item.status_code == 16) {
+                        row += `<div type="button" data-param_id="${item.id}" class="pointer btn-padding-action pull-left" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>`;
                     }
 
                     if(item.status_code == 13)
@@ -697,7 +663,7 @@
                     }
 
                     if(item.alasan_edit !== null || item.alasan_revisi !== null || item.alasan_unapprove !== null || item.alasan_unapprove_doc !== null) {
-                        row += `<div id="Log" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="btn btn-primary modalLog"><i class="fa-icon icon-detail" ></i></div>`;
+                        row += `<div id="Log" data-param_id="${item.id}" data-toggle="modal" data-target="#modal-log" type="button" data-toggle="tooltip" data-placement="top" title="Log Data" class="pointer btn-padding-action pull-left modalLog"><i class="fa-icon icon-detail" ></i></div>`;
                     }
 
                     row +=`</div>`;
@@ -705,6 +671,35 @@
 
                 row +=`</tr>`; 
                 content.append(row);
+
+                $("#reqrevisi").click( () => {
+                    Swal.fire({
+                        title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Ya'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            var form = {
+                                "alasan": $("#alasan_revisi_inp").val(),
+                                "jenis_kegiatan": "Perencanaan",
+                                "type": "revisi"
+                            };
+                            if($("#alasan_revisi_inp").val() != '') {  
+                                reqrevisiItem(form, item.id);
+                            } else {
+                                Swal.fire(
+                                    'Gagal.',
+                                    'Alasan belum diisi.',
+                                    'error'
+                                );
+                            }
+                        }
+                    });
+                });
+
             });            
 
             $('#total-rencana-pengawasan').html('<b> Rp. '+accounting.formatNumber(total_pengawasan, 0, ".", ".")+'</b>');
@@ -787,103 +782,43 @@
                         alert('Gagal mengambil data.');
                     }
                 })
-            });
+            });            
 
-            $("#reqedit").click( () => {
-                Swal.fire({
-                        title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya'
-                }).then((result) => {
-                        if (result.isConfirmed) {
-                            var form = {
-                                "alasan_edit": $("#alasan_edit_inp").val()
-                            };
-                            if($("#alasan_edit_inp").val() != '') {  
-                                reqeditItem(form);
-                            } else {
-                                Swal.fire(
-                                    'Gagal.',
-                                    'Alasan belum diisi.',
-                                    'error'
-                                );
-                            }
-                        }
-                });
-            });
-            
-            $("#reqrevisi").click( () => {
-                Swal.fire({
-                        title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya'
-                }).then((result) => {
-                        if (result.isConfirmed) {
-                            var form = {
-                                "alasan_revisi": $("#alasan_revisi_inp").val()
-                            };
-                            if($("#alasan_revisi_inp").val() != '') {  
-                                reqrevisiItem(form);
-                            } else {
-                                Swal.fire(
-                                    'Gagal.',
-                                    'Alasan belum diisi.',
-                                    'error'
-                                );
-                            }
-                        }
-                });
-            });
-
-           
-
-            function reqeditItem(form) {
+            function reqrevisiItem(form, id) {
+                $('#progressModal').show();
                 $.ajax({
                     type:"PUT",
-                    url: BASE_URL+'/api/perencanaan/reqedit/' + item.id,
+                    url: BASE_URL+'/api/perencanaan/reqrevisi/' + id,
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                var percentComplete = (evt.loaded / evt.total) * 100;
+                                $('#progress').css('width', percentComplete + '%');
+                                $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                        $('#progressModal').hide();
                         Swal.fire({
                             title: 'Sukses!',
                             text: 'Berhasil Request Edit Data Perencanaan.',
                             icon: 'success',
                             confirmButtonText: 'OK'                        
                         }).then((result) => {
-                            if (result.isConfirmed) {
-                                    window.location.replace('/perencanaan');
-                            }
+                            window.location.replace('/perencanaan');
                         });
                     },
-                });
-            }
-
-            function reqrevisiItem(form) {
-                $.ajax({
-                    type:"PUT",
-                    url: BASE_URL+'/api/perencanaan/reqrevisi/' + item.id,
-                    data:form,
-                    cache: false,
-                    dataType: "json",
-                    success: (respons) =>{
-                        Swal.fire({
-                            title: 'Sukses!',
-                            text: 'Berhasil Request Edit Data Perencanaan.',
-                            icon: 'success',
-                            confirmButtonText: 'OK'                        
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                    window.location.replace('/perencanaan');
-                            }
-                        });
-                    },
+                    error: function(error) {
+                        $('#progressModal').hide();
+                        console.error('Error request edit data:', error);
+                        window.location.replace('/perencanaan');
+                    }
                 });
             }
 
@@ -909,13 +844,27 @@
         }
 
         function deleteItem(id){
+            $('#progressModal').show();
             $.ajax({
                 url:  BASE_URL +`/api/perencanaan/`+ id,
                 method: 'DELETE',
+                xhr: function() {
+                    var xhr = new window.XMLHttpRequest();
+                    xhr.upload.addEventListener("progress", function(evt) {
+                        if (evt.lengthComputable) {
+                            var percentComplete = (evt.loaded / evt.total) * 100;
+                            $('#progress').css('width', percentComplete + '%');
+                            $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                        }
+                    }, false);
+                    return xhr;
+                },
                 success: function(response) {
+                    $('#progressModal').hide();
                     fetchData(page,year);
                 },
                 error: function(error) {
+                    $('#progressModal').hide();
                     console.error('Error deleting items:', error);
                 }
             });
@@ -997,8 +946,6 @@
             });
         }
 
-      
-
         function exportData(data)
         {
             const content = $('#exportView');
@@ -1032,8 +979,6 @@
             ExportExel();   
         }
 
-
-
         function ExportExel()
         {
             var dt = new Date();
@@ -1047,73 +992,61 @@
             XLSX.writeFile(wb, "Report-data-perencanaan-"+ time +".xlsx");
         }
 
-         function getperiode(periode_id){
-               $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode"  class="selectpicker"></select>');
-               $.ajax({
-                    type: 'GET',
-                    dataType: 'json',
-                    url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
-                    success: function(data) {
-
-                          getperiodeList(data);
-                          $('#periode_id').val(periode_id).selectpicker('refresh');
-                        
-                    },
-                    error: function( error) {}
-               });
-
-              
+        function getperiode(periode_id){            
+            $('#selectPeriode').html('<select  id="periode_id" title="Pilih Periode"  class="selectpicker"></select>');
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: BASE_URL +'/api/select-periode?type=GET&action=perencanaan',
+                success: function(data) {
+                    getperiodeList(data);
+                    $('#periode_id').val(periode_id).selectpicker('refresh');
+                    
+                },
+                error: function( error) {}
+            }); 
+            if(periode_id < 2024) {                         
+                $(".label-peta-potensi").text('Promosi');
+                $(".label-peta-potensi-table").text('Promosi (Rp.)');
+            } else {
+                $(".label-peta-potensi").text('Peta Potensi');
+                $(".label-peta-potensi-table").text('Peta Potensi (Rp.)');
+            }
         }
 
         function getperiodeList(data){
-
-                var select =  $('#periode_id');
-                 select.empty();
-                 $.each(data.result, function(index, option) {
-                      select.append($('<option>', {
-                           value: option.value,
-                           text: option.text
-                      }));
-                 });
-                  select.selectpicker('refresh'); 
-                  periode = data.result;          
+            var select =  $('#periode_id');
+                select.empty();
+                $.each(data.result, function(index, option) {
+                    select.append($('<option>', {
+                        value: option.value,
+                        text: option.text
+                    }));
+                });
+                select.selectpicker('refresh'); 
+                periode = data.result;          
         }
 
-          function getdaerah(daerah_id){
-
-        $.ajax({
-        url: BASE_URL +'/api/select-daerah',
-        method: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Populate SelectPicker options using received data
-            $.each(data, function(index, option) {
-                $('#daerah_id').append($('<option>', {
-                  value: option.value,
-                  text: option.text
-                }));
+        function getdaerah(daerah_id){
+            $.ajax({
+                url: BASE_URL +'/api/select-daerah',
+                method: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $.each(data, function(index, option) {
+                        $('#daerah_id').append($('<option>', {
+                            value: option.value,
+                            text: option.text
+                        }));
+                    });
+                    $('#daerah_id').selectpicker('refresh');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
             });
-
-            if(daerah_id !=0)
-            {
-                 $('#daerah_id').val(daerah_id);
-            }   
-
-            // Refresh the SelectPicker to apply the new options
-            $('#daerah_id').selectpicker('refresh');
-            },
-            error: function(error) {
-                console.error(error);
-            }
-        });
-
-    }
-
-       
-
-
+        }
     });
-
 </script>
 
 @stop

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Request\RequestBimsos;
 use App\Models\AuditLogRequest;
 use App\Models\Bimsos;
+use App\Models\User;
 use App\Helpers\GeneralPaginate;
 use App\Helpers\GeneralHelpers;
 use App\Http\Request\RequestAuth;
@@ -71,50 +72,56 @@ class BimsosApiController extends Controller
                     return response()->json($validationFile, 400);
                 }
             }
-
+            $path = 'bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
-                $lap_hadir = 'lap_hadir_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path('laporan/bimsos'), $lap_hadir);
-                $insert['lap_hadir'] = 'laporan/bimsos/' . $lap_hadir;
+                $lap_hadir = 'hadir-' . time() . '-' . $file_hadir->getClientOriginalName();
+                $file_hadir->move(public_path($path), $lap_hadir);
+                $insert['lap_hadir'] = $path . '/' . $lap_hadir;
             }
             if ($request->hasFile('lap_pendamping')) {
                 $file_pendamping = $request->file('lap_pendamping');
-                $lap_pendamping = 'lap_pendamping_' . time() . '_' . $file_pendamping->getClientOriginalName();
-                $file_pendamping->move(public_path('laporan/bimsos'), $lap_pendamping);
-                $insert['lap_pendamping'] = 'laporan/bimsos/' . $lap_pendamping;
+                $lap_pendamping = 'pendamping-' . time() . '-' . $file_pendamping->getClientOriginalName();
+                $file_pendamping->move(public_path($path), $lap_pendamping);
+                $insert['lap_pendamping'] = $path . '/' . $lap_pendamping;
             }
             if ($request->hasFile('lap_notula')) {
                 $file_notula = $request->file('lap_notula');
-                $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/bimsos'), $lap_notula);
-                $insert['lap_notula'] = 'laporan/bimsos/' . $lap_notula;
+                $lap_notula = 'notula-' . time() . '-' . $file_notula->getClientOriginalName();
+                $file_notula->move(public_path($path), $lap_notula);
+                $insert['lap_notula'] = $path . '/' . $lap_notula;
             }
             if ($request->hasFile('lap_survey')) {
                 $file_survey = $request->file('lap_survey');
-                $lap_survey = 'lap_survey_' . time() . '_' . $file_survey->getClientOriginalName();
-                $file_survey->move(public_path('laporan/bimsos'), $lap_survey);
-                $insert['lap_survey'] = 'laporan/bimsos/' . $lap_survey;
+                $lap_survey = 'survey-' . time() . '-' . $file_survey->getClientOriginalName();
+                $file_survey->move(public_path($path), $lap_survey);
+                $insert['lap_survey'] = $path . '/' . $lap_survey;
             }
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
-                $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/bimsos'), $lap_narasumber);
-                $insert['lap_narasumber'] = 'laporan/bimsos/' . $lap_narasumber;
+                $lap_narasumber = 'narasumber-' . time() . '-' . $file_narasumber->getClientOriginalName();
+                $file_narasumber->move(public_path($path), $lap_narasumber);
+                $insert['lap_narasumber'] = $path . '/' . $lap_narasumber;
             }
             if ($request->hasFile('lap_materi')) {
                 $file_materi = $request->file('lap_materi');
-                $lap_materi = 'lap_materi_' . time() . '_' . $file_materi->getClientOriginalName();
-                $file_materi->move(public_path('laporan/bimsos'), $lap_materi);
-                $insert['lap_materi'] = 'laporan/bimsos/' . $lap_materi;
+                $lap_materi = 'materi-' . time() . '-' . $file_materi->getClientOriginalName();
+                $file_materi->move(public_path($path), $lap_materi);
+                $insert['lap_materi'] = $path . '/' . $lap_materi;
             }
             if ($request->hasFile('lap_document')) {
                 $file_document = $request->file('lap_document');
-                $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/bimsos'), $lap_document);
-                $insert['lap_document'] = 'laporan/bimsos/' . $lap_document;
+                $lap_document = 'document-' . time() . '-' . $file_document->getClientOriginalName();
+                $file_document->move(public_path($path), $lap_document);
+                $insert['lap_document'] = $path . '/' . $lap_document;
             }
 
+            $result = RequestBimsos::GetNilaiPerencanaan($request);
+            $sumBimsos = RequestBimsos::GetSumBimsos($request);
+            if ($result->total_pagu < $sumBimsos->biaya_kegiatan && $request->status == 14) {
+                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
+                return response()->json($err, 400);
+            }
 
             $saveData = Bimsos::create($insert);
             //result
@@ -132,9 +139,10 @@ class BimsosApiController extends Controller
                 // $subject = 'Permohonan Persetujuan/Approval Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
                 // $pesan = 'Mohon persetujuan untuk Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
 
+                $pusat = User::where('username', 'pusat')->first();
                 $type = 'bimsos';
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-                $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $pusat->username);
                 $insertNotif = Notification::create($notif);
 
                 if ($insertNotif) {
@@ -168,47 +176,48 @@ class BimsosApiController extends Controller
 
             $update = RequestBimsos::fieldsData($request);
             //update account
+            $path = 'bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
-                $lap_hadir = 'lap_hadir_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path('laporan/bimsos'), $lap_hadir);
-                $update['lap_hadir'] = 'laporan/bimsos/' . $lap_hadir;
+                $lap_hadir = 'hadir-' . time() . '-' . $file_hadir->getClientOriginalName();
+                $file_hadir->move(public_path($path), $lap_hadir);
+                $update['lap_hadir'] = $path . '/' . $lap_hadir;
             }
             if ($request->hasFile('lap_pendamping')) {
                 $file_pendamping = $request->file('lap_pendamping');
-                $lap_pendamping = 'lap_pendamping_' . time() . '_' . $file_pendamping->getClientOriginalName();
-                $file_pendamping->move(public_path('laporan/bimsos'), $lap_pendamping);
-                $update['lap_pendamping'] = 'laporan/bimsos/' . $lap_pendamping;
+                $lap_pendamping = 'pendamping-' . time() . '-' . $file_pendamping->getClientOriginalName();
+                $file_pendamping->move(public_path($path), $lap_pendamping);
+                $update['lap_pendamping'] = $path . '/' . $lap_pendamping;
             }
             if ($request->hasFile('lap_notula')) {
                 $file_notula = $request->file('lap_notula');
-                $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
-                $file_notula->move(public_path('laporan/bimsos'), $lap_notula);
-                $update['lap_notula'] = 'laporan/bimsos/' . $lap_notula;
+                $lap_notula = 'notula-' . time() . '-' . $file_notula->getClientOriginalName();
+                $file_notula->move(public_path($path), $lap_notula);
+                $update['lap_notula'] = $path . '/' . $lap_notula;
             }
             if ($request->hasFile('lap_survey')) {
                 $file_survey = $request->file('lap_survey');
-                $lap_survey = 'lap_survey_' . time() . '_' . $file_survey->getClientOriginalName();
-                $file_survey->move(public_path('laporan/bimsos'), $lap_survey);
-                $update['lap_survey'] = 'laporan/bimsos/' . $lap_survey;
+                $lap_survey = 'survey-' . time() . '-' . $file_survey->getClientOriginalName();
+                $file_survey->move(public_path($path), $lap_survey);
+                $update['lap_survey'] = $path . '/' . $lap_survey;
             }
             if ($request->hasFile('lap_narasumber')) {
                 $file_narasumber = $request->file('lap_narasumber');
-                $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
-                $file_narasumber->move(public_path('laporan/bimsos'), $lap_narasumber);
-                $update['lap_narasumber'] = 'laporan/bimsos/' . $lap_narasumber;
+                $lap_narasumber = 'narasumber-' . time() . '-' . $file_narasumber->getClientOriginalName();
+                $file_narasumber->move(public_path($path), $lap_narasumber);
+                $update['lap_narasumber'] = $path . '/' . $lap_narasumber;
             }
             if ($request->hasFile('lap_materi')) {
                 $file_materi = $request->file('lap_materi');
-                $lap_materi = 'lap_materi_' . time() . '_' . $file_materi->getClientOriginalName();
-                $file_materi->move(public_path('laporan/bimsos'), $lap_materi);
-                $update['lap_materi'] = 'laporan/bimsos/' . $lap_materi;
+                $lap_materi = 'materi-' . time() . '-' . $file_materi->getClientOriginalName();
+                $file_materi->move(public_path($path), $lap_materi);
+                $update['lap_materi'] = $path . '/' . $lap_materi;
             }
             if ($request->hasFile('lap_document')) {
                 $file_document = $request->file('lap_document');
-                $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
-                $file_document->move(public_path('laporan/bimsos'), $lap_document);
-                $update['lap_document'] = 'laporan/bimsos/' . $lap_document;
+                $lap_document = 'document-' . time() . '-' . $file_document->getClientOriginalName();
+                $file_document->move(public_path($path), $lap_document);
+                $update['lap_document'] = $path . '/' . $lap_document;
             }
 
 
@@ -218,10 +227,10 @@ class BimsosApiController extends Controller
                 $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
                 return response()->json($err, 400);
             }
-            if ($result->total_peserta < $sumBimsos->jml_peserta && $request->status == 14) {
-                $err['messages']['jml_peserta'] = 'Jumlah Peserta melebihi perencanaan.';
-                return response()->json($err, 400);
-            }
+            // if ($result->total_peserta < $sumBimsos->jml_peserta && $request->status == 14) {
+            //     $err['messages']['jml_peserta'] = 'Jumlah Peserta melebihi perencanaan.';
+            //     return response()->json($err, 400);
+            // }
             $id_bimsos = $request->id_bimsos;
             $UpdateData = Bimsos::where('id', $id_bimsos)->update($update);
 
@@ -239,9 +248,10 @@ class BimsosApiController extends Controller
                 // $subject = 'Permohonan Persetujuan/Approval Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
                 // $pesan = 'Mohon persetujuan untuk Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
 
+                $pusat = User::where('username', 'pusat')->first();
                 $type = 'bimsos';
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-                $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $pusat->username);
                 $insertNotif = Notification::create($notif);
 
                 if ($insertNotif) {
@@ -319,6 +329,22 @@ class BimsosApiController extends Controller
         return response()->json($messages);
     }
 
+    public function approveSelected(Request $request)
+    {
+        $messages['messages'] = false;
+
+        foreach ($request->data as $key) {
+            $update = RequestBimsos::fieldApprEdit($request);
+            $results = Bimsos::where('id', (int)$key)->update($update);
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
+    }
+
     public function request_edit($id, Request $request)
     {
 
@@ -351,9 +377,10 @@ class BimsosApiController extends Controller
             // $subject = 'Meminta Request Edit Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
             // $pesan = 'Meminta Request Edit untuk Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
 
+            $pusat = User::where('username', 'pusat')->first();
             $type = 'bimsos';
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $pusat->username);
             $insertNotif = Notification::create($notif);
 
             if ($insertNotif) {
@@ -399,9 +426,10 @@ class BimsosApiController extends Controller
             // $subject = 'Meminta Request Edit Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
             // $pesan = 'Meminta Request Edit untuk Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
 
+            $bim = Bimsos::find($id);
             $type = 'bimsos';
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request revisi Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $bim->created_by);
             $insertNotif = Notification::create($notif);
 
             if ($insertNotif) {
@@ -425,6 +453,16 @@ class BimsosApiController extends Controller
             return response()->json(['messages' => false]);
         }
 
+        $bim = Bimsos::find($id);
+        $type = 'bimsos';
+        $url = url('bimsos/');
+        $tahun = substr($request->periode_id_mdl, 0, 4);
+        $semester = substr($request->periode_id_mdl, 4);
+        $sub_kegiatan = ucwords($request->sub_menu_slug);
+        $messages_desc = strtoupper(Auth::User()->username) . ' Approve edit revisi Bimbingan Teknis/Sosialisasi Kemudahan Berusaha (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
+        $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $bim->created_by);
+        Notification::create($notif);
+
         $update = RequestBimsos::fieldApprEdit($request);
         $results = Bimsos::where('id', $id)->update($update);
 
@@ -443,19 +481,28 @@ class BimsosApiController extends Controller
     {
         $searchColumn = $request->data;
         $tahunSemester = GeneralHelpers::semesterToday();
-        if (!empty($request->data)) {
-            $filterjs = json_decode($searchColumn);
-            $data = DB::select(
-                'call header_modul(?,?,?)',
-                array('BIMSOS', $filterjs[0]->periode_id, Auth::User()->daerah_id)
-            );
-            $semester = substr($filterjs[0]->periode_id, 4);
-            $tahun = substr($filterjs[0]->periode_id, 0, 4);
+        if ($_COOKIE['access'] == 'daerah' || $_COOKIE['access'] == 'province') {
+            if (!empty($request->data)) {
+                $filterjs = json_decode($searchColumn);
+                $data = DB::select(
+                    'call header_modul(?,?,?)',
+                    array('BIMSOS', $filterjs[0]->periode_id, Auth::User()->daerah_id)
+                );
+                $semester = substr($filterjs[0]->periode_id, 4);
+                $tahun = substr($filterjs[0]->periode_id, 0, 4);
+            } else {
+                $data = DB::select(
+                    'call header_modul(?,?,?)',
+                    array('BIMSOS', $tahunSemester, Auth::User()->daerah_id)
+                );
+                $semester = substr($tahunSemester, 4);
+                $tahun = substr($tahunSemester, 0, 4);
+            }
         } else {
-            $data = DB::select(
-                'call header_modul(?,?,?)',
-                array('BIMSOS', $tahunSemester, Auth::User()->daerah_id)
-            );
+            $result = RequestBimsos::GetTotalPagu($request);
+            $data['total_perencanaan'] = GeneralHelpers::formatRupiah($result->total_perencanaan);
+            $data['total_bimsos'] = GeneralHelpers::formatRupiah($result->total_bimsos);
+            $data['total_bimsos_draft'] = GeneralHelpers::formatRupiah($result->total_bimsos_draft);
             $semester = substr($tahunSemester, 4);
             $tahun = substr($tahunSemester, 0, 4);
         }

@@ -36,7 +36,6 @@ class PerencanaanApiController extends Controller
     {                
         $access = RequestAuth::Access(); 
         $year = $request->periode_id;
-        //$tahunSemester = GeneralHelpers::semesterToday();
 
         if($access == 'daerah' ||  $access == 'province') { 
              $query = Perencanaan::where(['daerah_id'=>Auth::User()->daerah_id,'periode_id'=>$year])->orderBy('created_at', 'DESC');
@@ -82,6 +81,21 @@ class PerencanaanApiController extends Controller
         })
         ->select('perencanaan.*', 'pagu_target.pagu_apbn', 'pagu_target.pagu_promosi', 'pagu_target.target_pengawasan', 'pagu_target.target_penyelesaian_permasalahan', 'pagu_target.target_bimbingan_teknis', 'pagu_target.target_video_promosi', 'pagu_target.pagu_dalak')
         ->where('perencanaan.id', $id)
+        ->first();        
+
+        $result = RequestPerencanaan::GetDetailID($data); 
+        return response()->json($result);
+    }
+
+    public function daerah($periode_id)
+    { 
+        $data = Perencanaan::leftJoin('pagu_target', function($join) {
+            $join->on('perencanaan.periode_id', '=', 'pagu_target.periode_id')
+                 ->on('perencanaan.daerah_id', '=', 'pagu_target.daerah_id');
+        })
+        ->select('perencanaan.*', 'pagu_target.pagu_apbn', 'pagu_target.pagu_promosi', 'pagu_target.target_pengawasan', 'pagu_target.target_penyelesaian_permasalahan', 'pagu_target.target_bimbingan_teknis', 'pagu_target.target_video_promosi', 'pagu_target.pagu_dalak')
+        ->where('perencanaan.periode_id', $periode_id)
+        ->where('perencanaan.daerah_id', Auth::User()->daerah_id)
         ->first();        
 
         $result = RequestPerencanaan::GetDetailID($data); 
@@ -185,29 +199,34 @@ class PerencanaanApiController extends Controller
                 $insert = RequestPerencanaan::fieldsData($request);  
                 $saveData = Perencanaan::create($insert);
     
-                if($saveData && $request->type == 'kirim')
-                {                    
-                    $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+                if($saveData)
+                {           
+                    if($request->type == 'kirim') {
+                        $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
     
-                    $url = url('perencanaan/detail/' . $saveData->id);
-                    $pusat = User::where('username','pusat')->first();
-                    $judul = 'Perencanaan DAK';
-                    $kepada = 'Kementerian Investasi';
-                    $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK Tahun ' . $request->periode_id . ' Kab/Prop ' . $daerah_name;
-                    $pesan = 'Mohon persetujuan untuk perencanaan DAK Tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;
-    
-                    $type = 'perencanaan';
-                    $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
-                    $notif = RequestNotification::fieldsData($type, $messages_desc, $url,$pusat->username);
-                    $insertNotif = Notification::create($notif);
-    
-                    if ($insertNotif) {
-                        DB::commit();
-                        Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
-                        return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
+                        $url = url('perencanaan/detail/' . $saveData->id);
+                        $pusat = User::where('username','pusat')->first();
+                        $judul = 'Perencanaan DAK';
+                        $kepada = 'Kementerian Investasi';
+                        $subject = 'Permohonan Persetujuan/Approval Perencanaan DAK Tahun ' . $request->periode_id . ' Kab/Prop ' . $daerah_name;
+                        $pesan = 'Mohon persetujuan untuk perencanaan DAK Tahun ' . $request->periode_id . ' dari daerah Kab/Prov ' . $daerah_name;
+        
+                        $type = 'perencanaan';
+                        $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Perencanaan Tahun ' . $request->periode_id;
+                        $notif = RequestNotification::fieldsData($type, $messages_desc, $url,$pusat->username);
+                        $insertNotif = Notification::create($notif);
+        
+                        if ($insertNotif) {
+                            DB::commit();
+                            Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $request->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'kirim'));
+                            return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Input data berhasil']);
+                        } else {
+                            DB::rollBack(); 
+                            return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                        }
                     } else {
-                        DB::rollBack(); 
-                        return response()->json(['status' => false, 'message' => 'Gagal menyimpan notifikasi']);
+                        DB::commit();
+                        return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Simpan data berhasil']);
                     }
                 } else {
                     DB::rollBack();

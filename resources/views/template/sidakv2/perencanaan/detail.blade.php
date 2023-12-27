@@ -4,7 +4,67 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 
-<style> tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; } </style>
+<style>    
+     tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; }
+     .modal-loading {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 99999;
+    }
+    .modal-content2 {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 4px;
+        text-align: center;
+    }
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+    #progress-container {
+        text-align: center;
+    }
+    #progress-bar {
+        width: 100%;
+        background-color: #ccc;
+        border-radius: 4px;
+    }
+    #progress {
+        height: 20px;
+        background-color: #4caf50;
+        border-radius: 4px;
+        transition: width 0.3s ease-in-out;
+    }
+    #progress-label {
+        margin-top: 10px;
+        font-weight: bold;
+    }
+</style>
+
+<!-- Modal loading -->
+<div id="progressModal" class="modal-loading" style="display: none;">
+  <div class="modal-content2">
+    <span class="close" id="closeProgressModal">&times;</span>
+    <h2>Upload Dokumen</h2>
+    <div id="progress-container">
+      <div id="progress-bar">
+        <div id="progress" style="width: 0%"></div>
+      </div>
+      <div id="progress-label">0%</div>
+    </div>
+  </div>
+</div>
 
 <div class="content">
      <div class="row" style="margin-bottom: 20px">
@@ -263,27 +323,27 @@
                     row+= '<td><strong>1</strong></td>';
                     row+= '<td rowspan="4"></td>';
                     row+= '<td class="text-left"><strong>Pengawasan Penanaman Modal</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-center"><strong id="total_pengawasan_target">' + data.target_pengawasan +'</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-center"><strong>Kegiatan Usaha</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"><strong id="total_pengawasan_pagu">' + data.total_pagu_pengawasan_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>';
-                    row+= '<td ></td>';
-                    row+= '<td>';
-                         row+= '<input disabled id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target">';
+                    row+= '<td></td>';
+                    row+= '<td class="text-center">';
+                         row+= '<input disabled id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target">';
                          row+= '<span id="pengawas-analisa-target-messages"></span>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_analisa_pagu_convert +'">';
                          row+= '<span id="pengawas-analisa-pagu-messages"></span>';
@@ -293,16 +353,16 @@
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Inspeksi Lapangan</td>';
-                    row+= '<td ></td>';
-                    row+= '<td>';
-                         row+= '<input disabled id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'">';
+                    row+= '<td></td>';
+                    row+= '<td class="text-center">';
+                         row+= '<input disabled id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'">';
                          row+= '<span id="pengawas-inspeksi-target-messages"></span>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_inspeksi_pagu_convert +'">';                       
                          row+= '<span id="pengawas-inspeksi-pagu-messages"></span>';
@@ -312,16 +372,16 @@
                row+= '<tr class="border-bottom">';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>';
-                    row+= '<td ></td>';
-                    row+= '<td>';
-                         row+= '<input disabled id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target">';
+                    row+= '<td></td>';
+                    row+= '<td class="text-center">';
+                         row+= '<input disabled id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target">';
                          row+= '<span id="pengawas-evaluasi-target-messages"></span>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input disabled id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="text" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="'+ data.pengawas_evaluasi_pagu_convert +'">';
                          row+= '<span id="pengawas-evaluasi-pagu-messages"></span>';
@@ -332,27 +392,27 @@
                     row+= '<td><strong>2</strong></td>';
                      row+= '<td rowspan="3"></td>';
                     row+= '<td class="text-left"><strong>Bimbingan Teknis Kepada Pelaku Usaha</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-center"><strong id="total_bimtek_target">'+data.target_bimtek +'</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-center"><strong>Pelaku Usaha</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"><strong id="total_bimtek_pagu">'+ data.total_pagu_bimtek_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>';
-                    row+= '<td ></td>';
-                    row+= '<td>';
-                         row+= '<input disabled id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target">';
+                    row+= '<td></td>';
+                    row+= '<td class="text-center">';
+                         row+= '<input disabled id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control text-center bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target">';
                          row+= '<span id="bimtek-perizinan-target-messages"></span>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Pelaku Usaha" value="Pelaku Usaha" disabled>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input disabled id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="text" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_perizinan_pagu_convert +'">';
                          row+= '<span id="bimtek-perizinan-pagu-messages"></span>';
@@ -362,16 +422,16 @@
                row+= '<tr class="border-bottom">';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>';
-                    row+= '<td>';
-                    row+= '<td ></td>';
-                         row+= '<input disabled id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target">';
+                    row+= '<td></td>';
+                    row+= '<td class="text-center">';
+                         row+= '<input disabled id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control text-center bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target">';
                          row+= '<span id="bimtek-pengawasan-target-messages"></span> ';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Pelaku Usaha" value="Pelaku Usaha" disabled>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input disabled id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="text" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="'+ data.bimtek_pengawasan_pagu_convert +'">';
                          row+= '<span id="bimtek-pengawasan-pagu-messages"></span>';
@@ -382,27 +442,27 @@
                     row+= '<td><strong>3</strong></td>';
                      row+= '<td rowspan="4"></td>';
                     row+= '<td class="text-left"><strong>Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-center"><strong id="total_penyelesaian_target">'+ data.target_penyelesaian +'</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-center"><strong>Kegiatan Usaha</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"><strong id="total_penyelesaian_pagu">'+ data.total_pagu_penyelesaian_convert +'</strong></td>';
                row+= '</tr>';
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>';
-                    row+= '<td ></td>';
-                    row+= '<td>';
-                         row+= '<input disabled id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" value="'+ data.penyelesaian_identifikasi_target+'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
+                    row+= '<td></td>';
+                    row+= '<td class="text-center">';
+                         row+= '<input disabled id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" value="'+ data.penyelesaian_identifikasi_target+'" type="number" class="form-control text-center penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-identifikasi-target-messages"></span>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input disabled id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_identifikasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-identifikasi-pagu-messages"></span>';
@@ -412,16 +472,16 @@
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>';
-                    row+= '<td>';
-                    row+= '<td ></td>';
-                         row+= '<input disabled id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" value="'+ data.penyelesaian_realisasi_target +'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
+                    row+= '<td></td>';
+                    row+= '<td class="text-center">';
+                         row+= '<input disabled id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" value="'+ data.penyelesaian_realisasi_target +'" type="number" class="form-control text-center penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-realisasi-target-messages"></span>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input disabled id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_realisasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-realisasi-pagu-messages"></span>';
@@ -431,16 +491,16 @@
                row+= '<tr class="border-bottom">';
                     row+= '<td>&nbsp;</td>';
                     row+= '<td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>';
-                    row+= '<td>';
-                    row+= '<td ></td>';
-                         row+= '<input disabled id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" value="'+ data.penyelesaian_evaluasi_target +'" type="number" class="form-control penyelesaian_nilai_target" placeholder="Target">';
+                    row+= '<td></td>';
+                    row+= '<td class="text-center">';
+                         row+= '<input disabled id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" value="'+ data.penyelesaian_evaluasi_target +'" type="number" class="form-control text-center penyelesaian_nilai_target" placeholder="Target">';
                          row+= '<span id="penyelesaian-evaluasi-target-messages"></span>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>';
                     row+= '</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td>';
                          row+= '<input disabled id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="text" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="'+ data.penyelesaian_evaluasi_pagu_convert +'">';
                          row+= '<span id="penyelesaian-evaluasi-pagu-messages"></span>';
@@ -464,11 +524,11 @@
 
                           row+= '<td rowspan="2"></td>';                     
                          row+= '<td class="text-left"><strong>'+ label_judul + '</strong></td>';
-                         row+= '<td ></td>';
+                         row+= '<td></td>';
                          row+= '<td class="text-center"><strong>1</strong></td>';
-                         row+= '<td ></td>';
+                         row+= '<td></td>';
                          row+= '<td class="text-center"><strong>' + label_satuan + '</strong></td>';
-                         row+= '<td ></td>';
+                         row+= '<td></td>';
                          row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';                         
                     row+= '</tr>';
      
@@ -476,17 +536,17 @@
 
                          row+= '<td>&nbsp;</td>';
                          row+= '<td>' + label_sub + '</td>';
-                         row+= '<td ></td>';
-                         row+= '<td>';
+                         row+= '<td></td>';
+                         row+= '<td class="text-center">';
                               row+= '<div class="margin-none form-group">';
-                                   row+= '<input name="promosi_pengadaan_target" type="number" class="form-control" placeholder="Target" value="1" readonly>';
+                                   row+= '<input name="promosi_pengadaan_target" type="number" class="form-control text-center" placeholder="Target" value="1" readonly>';
                               row+= '</div>';
                          row+= '</td>';
-                         row+= '<td ></td>';
+                         row+= '<td></td>';
                          row+= '<td>';
                               row+= '<input name="promosi_pengadaan_satuan" type="text" class="form-control" value="' + label_satuan + '" readonly>';
                          row+= '</td>';
-                         row+= '<td ></td>';
+                         row+= '<td></td>';
                          row+= '<td>';
                               row+= '<div class="margin-none form-group">';
                                    row+= '<input name="promosi_pengadaan_pagu" type="text" class="form-control text-right" placeholder="Pagu" value="'+ data.pagu_promosi +'" readonly>';
@@ -496,31 +556,31 @@
                     
                     row+= '<tr>';
                          row+= '<td colspan="3">&nbsp;</td>';
-                         row+= '<td ></td>';
+                         row+= '<td></td>';
                          row+= '<td class="text-right"></td>';
-                         row+= '<td ></td>';
+                         row+= '<td></td>';
                          row+= '<td class="text-right"><strong>' + label_total + ' :</strong></td>';
-                         row+= '<td ></td>';
+                         row+= '<td></td>';
                          row+= '<td class="text-right"><strong>' + data.pagu_promosi + '</strong></td>';
                     row+= '</tr>';
                }
 
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"><strong>Total PAGU :</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"><strong>' + data.pagu_apbn + '</strong></td>';
                row+= '</tr>';
                row+= '<tr>';
                     row+= '<td colspan="3">&nbsp;</td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"><strong>Total Perencanaan :</strong></td>';
-                    row+= '<td ></td>';
+                    row+= '<td></td>';
                     row+= '<td class="text-right"><strong>' + data.total_rencana + '</strong></td>';
                row+= '</tr>';
 
@@ -660,6 +720,8 @@
                               ).then((act) => {
                                    if (act.isConfirmed) {
                                         window.location.replace('/perencanaan');
+                                   } else {
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          }
@@ -683,6 +745,8 @@
                                    'success'
                               ).then((act) => {
                                    if (act.isConfirmed) {
+                                        window.location.replace('/perencanaan');
+                                   } else {
                                         window.location.replace('/perencanaan');
                                    }
                               });
@@ -820,6 +884,8 @@
                               ).then((act) => {
                                    if (act.isConfirmed) {
                                         window.location.replace('/perencanaan');
+                                   } else {
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          }
@@ -827,7 +893,6 @@
                });
 
                $("#AddFiles").change((event)=> {     
-            
                     const files = event.target.files
                     let filename = files[0].name
                     const fileReader = new FileReader()
@@ -908,7 +973,9 @@
                                    
                               }).then((result) => {
                                    if (result.isConfirmed) {
-                                   window.location.replace('/perencanaan');
+                                        window.location.replace('/perencanaan');
+                                   } else {
+                                        window.location.replace('/perencanaan');
                                    }
                               });
                          },
@@ -933,40 +1000,78 @@
           }
 
           function reqdocItem(id) {
+               $('#progressModal').show();
                $.ajax({
                     url:  BASE_URL +`/api/perencanaan/request_doc/`+ id,
                     method: 'PUT',
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: function(response) {
-                         fetchData(page);
+                         $('#progressModal').hide();
                     },
                     error: function(error) {
+                         $('#progressModal').hide();
                          console.error('Error request data:', error);
                     }                
                });
           }
 
           function approveItem(id) {
+               $('#progressModal').show();
                $.ajax({
                     url:  BASE_URL +`/api/perencanaan/approve/`+ id,
                     method: 'PUT',
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: function(response) {
-                         fetchData(page);
+                         $('#progressModal').hide();
                     },
                     error: function(error) {
+                         $('#progressModal').hide();
                          console.error('Error approving data:', error);
                     }                
                });
           }
 
           function unapproveItem(form) {
-
+               $('#progressModal').show();
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/unapprove/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          Swal.fire({
                               title: 'Sukses!',
                               text: 'Berhasil Unapprove Data Perencanaan.',
@@ -975,21 +1080,39 @@
                          }).then((result) => {
                               if (result.isConfirmed) {
                                    window.location.replace('/perencanaan');
+                              } else {
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error unapproving data:', error);
+                    }
                });
           }
 
           function unapproveDocItem(form) {
-
+               $('#progressModal').show();
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/unapprove_doc/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          Swal.fire({
                               title: 'Sukses!',
                               text: 'Berhasil Unapprove Data Perencanaan.',
@@ -998,21 +1121,39 @@
                          }).then((result) => {
                               if (result.isConfirmed) {
                                    window.location.replace('/perencanaan');
+                              } else {
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error unapproving data:', error);
+                    }
                });
           }
 
           function reqeditItem(form) {
-
+               $('#progressModal').show();
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/reqedit/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          Swal.fire({
                               title: 'Sukses!',
                               text: 'Berhasil Request Edit Data Perencanaan.',
@@ -1021,21 +1162,39 @@
                          }).then((result) => {
                               if (result.isConfirmed) {
                                    window.location.replace('/perencanaan');
+                              } else {
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error request data:', error);
+                    }
                });
           }
 
           function reqrevisiItem(form) {
-
+               $('#progressModal').show();
                $.ajax({
                     type:"PUT",
                     url: BASE_URL+'/api/perencanaan/reqrevisi/' + segments[5],
                     data:form,
                     cache: false,
                     dataType: "json",
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: (respons) =>{
+                         $('#progressModal').hide();
                          Swal.fire({
                               title: 'Sukses!',
                               text: 'Berhasil Request Edit Data Perencanaan.',
@@ -1044,22 +1203,41 @@
                          }).then((result) => {
                               if (result.isConfirmed) {
                                    window.location.replace('/perencanaan');
+                              } else {
+                                   window.location.replace('/perencanaan');
                               }
                          });
                     },
+                    error: function(error) {
+                         $('#progressModal').hide();
+                         console.error('Error request data:', error);
+                    }
                });
           }
           
           function approveEditItem(id) {
+               $('#progressModal').show();
                $.ajax({
                     url:  BASE_URL +`/api/perencanaan/approve_edit/`+ id,
                     method: 'PUT',
+                    xhr: function() {
+                         var xhr = new window.XMLHttpRequest();
+                         xhr.upload.addEventListener("progress", function(evt) {
+                              if (evt.lengthComputable) {
+                                   var percentComplete = (evt.loaded / evt.total) * 100;
+                                   $('#progress').css('width', percentComplete + '%');
+                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
+                              }
+                         }, false);
+                         return xhr;
+                    },
                     success: function(response) {
-                         fetchData(page);
+                         $('#progressModal').hide();
                     },
                     error: function(error) {
+                         $('#progressModal').hide();
                          console.error('Error approving data:', error);
-                    }                
+                    }
                });
           }
      });

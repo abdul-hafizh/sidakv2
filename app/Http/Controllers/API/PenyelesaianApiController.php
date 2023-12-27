@@ -65,19 +65,28 @@ class PenyelesaianApiController extends Controller
     {
         $searchColumn = $request->data;
         $tahunSemester = GeneralHelpers::semesterToday();
-        if (!empty($request->data)) {
-            $filterjs = json_decode($searchColumn);
-            $data = DB::select(
-                'call header_modul(?,?,?)',
-                array('PENYELESAIAN', $filterjs[0]->periode_id, Auth::User()->daerah_id)
-            );
-            $semester = substr($filterjs[0]->periode_id, 4);
-            $tahun = substr($filterjs[0]->periode_id, 0, 4);
+        if ($_COOKIE['access'] == 'daerah' || $_COOKIE['access'] == 'province') {
+            if (!empty($request->data)) {
+                $filterjs = json_decode($searchColumn);
+                $data = DB::select(
+                    'call header_modul(?,?,?)',
+                    array('PENYELESAIAN', $filterjs[0]->periode_id, Auth::User()->daerah_id)
+                );
+                $semester = substr($filterjs[0]->periode_id, 4);
+                $tahun = substr($filterjs[0]->periode_id, 0, 4);
+            } else {
+                $data = DB::select(
+                    'call header_modul(?,?,?)',
+                    array('PENYELESAIAN', $tahunSemester, Auth::User()->daerah_id)
+                );
+                $semester = substr($tahunSemester, 4);
+                $tahun = substr($tahunSemester, 0, 4);
+            }
         } else {
-            $data = DB::select(
-                'call header_modul(?,?,?)',
-                array('PENYELESAIAN', $tahunSemester, Auth::User()->daerah_id)
-            );
+            $result = RequestPenyelesaian::GetTotalPagu($request);
+            $data['total_perencanaan'] = GeneralHelpers::formatRupiah($result->total_perencanaan);
+            $data['total_penyelesaian'] = GeneralHelpers::formatRupiah($result->total_penyelesaian);
+            $data['total_draft'] = GeneralHelpers::formatRupiah($result->total_draft);
             $semester = substr($tahunSemester, 4);
             $tahun = substr($tahunSemester, 0, 4);
         }
@@ -96,18 +105,20 @@ class PenyelesaianApiController extends Controller
         if ($validation) {
             return response()->json($validation, 400);
         } else {
-
             $insert = RequestPenyelesaian::fieldsData($request);
+
+            if ($request->type == 'kirim') {
+                $validationFile = ValidationPenyelesaian::validationFile($request);
+                if ($validationFile) {
+                    return response()->json($validationFile, 400);
+                }
+            }
 
             if ($request->hasFile('lap_profile')) {
                 $file_profile = $request->file('lap_profile');
                 $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
                 $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
                 $insert['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'identifikasi') {
-                    return response()->json(['status' => false, 'message' => 'File Profile Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_peserta')) {
@@ -115,10 +126,6 @@ class PenyelesaianApiController extends Controller
                 $lap_peserta = 'lap_peserta_' . time() . '_' . $file_peserta->getClientOriginalName();
                 $file_peserta->move(public_path('laporan/penyelesaian'), $lap_peserta);
                 $insert['lap_peserta'] = 'laporan/penyelesaian/' . $lap_peserta;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian') {
-                    return response()->json(['status' => false, 'message' => 'File Daftar Hadir Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_profile2')) {
@@ -126,10 +133,6 @@ class PenyelesaianApiController extends Controller
                 $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
                 $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
                 $insert['lap_profile2'] = 'laporan/penyelesaian/' . $lap_profile2;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian') {
-                    return response()->json(['status' => false, 'message' => 'File Profile Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_narasumber')) {
@@ -137,10 +140,6 @@ class PenyelesaianApiController extends Controller
                 $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
                 $file_narasumber->move(public_path('laporan/penyelesaian'), $lap_narasumber);
                 $insert['lap_narasumber'] = 'laporan/penyelesaian/' . $lap_narasumber;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian') {
-                    return response()->json(['status' => false, 'message' => 'File Narasumber Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_notula2')) {
@@ -148,10 +147,6 @@ class PenyelesaianApiController extends Controller
                 $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
                 $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
                 $insert['lap_notula2'] = 'laporan/penyelesaian/' . $lap_notula2;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian') {
-                    return response()->json(['status' => false, 'message' => 'File Notula Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_lkpm')) {
@@ -159,10 +154,6 @@ class PenyelesaianApiController extends Controller
                 $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
                 $file_lkpm->move(public_path('laporan/penyelesaian'), $lap_lkpm);
                 $insert['lap_lkpm'] = 'laporan/penyelesaian/' . $lap_lkpm;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian') {
-                    return response()->json(['status' => false, 'message' => 'File LKPM Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_document')) {
@@ -170,10 +161,6 @@ class PenyelesaianApiController extends Controller
                 $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
                 $file_document->move(public_path('laporan/penyelesaian'), $lap_document);
                 $insert['lap_document'] = 'laporan/penyelesaian/' . $lap_document;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian') {
-                    return response()->json(['status' => false, 'message' => 'File Dokumentasi Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_notula')) {
@@ -181,10 +168,6 @@ class PenyelesaianApiController extends Controller
                 $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
                 $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
                 $insert['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'evaluasi') {
-                    return response()->json(['status' => false, 'message' => 'File Notula Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_evaluasi')) {
@@ -192,10 +175,6 @@ class PenyelesaianApiController extends Controller
                 $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
                 $file_evaluasi->move(public_path('laporan/penyelesaian'), $lap_evaluasi);
                 $insert['lap_evaluasi'] = 'laporan/penyelesaian/' . $lap_evaluasi;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'evaluasi') {
-                    return response()->json(['status' => false, 'message' => 'File Evaluasi Wajib Diisi.']);
-                }
             }
 
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);
@@ -209,13 +188,13 @@ class PenyelesaianApiController extends Controller
                 $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.';
             }
 
-            if (
-                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
-                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
-                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
-            ) {
-                $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
-            }
+            // if (
+            //     ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
+            //     ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
+            //     ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
+            // ) {
+            //     $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
+            // }
 
             if (!empty($err)) {
                 return response()->json($err, 400);
@@ -241,6 +220,13 @@ class PenyelesaianApiController extends Controller
             return response()->json($validation, 400);
         } else {
 
+            if ($request->type == 'kirim') {
+                $validationFile = ValidationPenyelesaian::validationUpdateFile($request, $id);
+                if ($validationFile) {
+                    return response()->json($validationFile, 400);
+                }
+            }
+
             $update = RequestPenyelesaian::fieldsData($request);
 
             if ($request->hasFile('lap_profile')) {
@@ -248,10 +234,6 @@ class PenyelesaianApiController extends Controller
                 $lap_profile = 'lap_profile_' . time() . '_' . $file_profile->getClientOriginalName();
                 $file_profile->move(public_path('laporan/penyelesaian'), $lap_profile);
                 $update['lap_profile'] = 'laporan/penyelesaian/' . $lap_profile;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'identifikasi' && empty($_res->lap_profile)) {
-                    return response()->json(['status' => false, 'message' => 'File Profile Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_peserta')) {
@@ -259,10 +241,6 @@ class PenyelesaianApiController extends Controller
                 $lap_peserta = 'lap_peserta_' . time() . '_' . $file_peserta->getClientOriginalName();
                 $file_peserta->move(public_path('laporan/penyelesaian'), $lap_peserta);
                 $update['lap_peserta'] = 'laporan/penyelesaian/' . $lap_peserta;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian' && empty($_res->lap_peserta)) {
-                    return response()->json(['status' => false, 'message' => 'File Daftar Hadir Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_profile2')) {
@@ -270,10 +248,6 @@ class PenyelesaianApiController extends Controller
                 $lap_profile2 = 'lap_profile_' . time() . '_' . $file_profile2->getClientOriginalName();
                 $file_profile2->move(public_path('laporan/penyelesaian'), $lap_profile2);
                 $update['lap_profile2'] = 'laporan/penyelesaian/' . $lap_profile2;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian' && empty($_res->lap_profile2)) {
-                    return response()->json(['status' => false, 'message' => 'File Profile Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_notula2')) {
@@ -281,10 +255,6 @@ class PenyelesaianApiController extends Controller
                 $lap_notula2 = 'lap_notula_' . time() . '_' . $file_notula2->getClientOriginalName();
                 $file_notula2->move(public_path('laporan/penyelesaian'), $lap_notula2);
                 $update['lap_notula2'] = 'laporan/penyelesaian/' . $lap_notula2;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian' && empty($_res->lap_notula2)) {
-                    return response()->json(['status' => false, 'message' => 'File Notula Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_narasumber')) {
@@ -292,10 +262,6 @@ class PenyelesaianApiController extends Controller
                 $lap_narasumber = 'lap_narasumber_' . time() . '_' . $file_narasumber->getClientOriginalName();
                 $file_narasumber->move(public_path('laporan/penyelesaian'), $lap_narasumber);
                 $update['lap_narasumber'] = 'laporan/penyelesaian/' . $lap_narasumber;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian' && empty($_res->lap_narasumber)) {
-                    return response()->json(['status' => false, 'message' => 'File Narasumber Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_lkpm')) {
@@ -303,10 +269,6 @@ class PenyelesaianApiController extends Controller
                 $lap_lkpm = 'lap_lkpm_' . time() . '_' . $file_lkpm->getClientOriginalName();
                 $file_lkpm->move(public_path('laporan/penyelesaian'), $lap_lkpm);
                 $update['lap_lkpm'] = 'laporan/penyelesaian/' . $lap_lkpm;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian' && empty($_res->lap_lkpm)) {
-                    return response()->json(['status' => false, 'message' => 'File LKPM Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_document')) {
@@ -314,10 +276,6 @@ class PenyelesaianApiController extends Controller
                 $lap_document = 'lap_document_' . time() . '_' . $file_document->getClientOriginalName();
                 $file_document->move(public_path('laporan/penyelesaian'), $lap_document);
                 $update['lap_document'] = 'laporan/penyelesaian/' . $lap_document;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'penyelesaian' && empty($_res->lap_document)) {
-                    return response()->json(['status' => false, 'message' => 'File Dokumentasi Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_notula')) {
@@ -325,10 +283,6 @@ class PenyelesaianApiController extends Controller
                 $lap_notula = 'lap_notula_' . time() . '_' . $file_notula->getClientOriginalName();
                 $file_notula->move(public_path('laporan/penyelesaian'), $lap_notula);
                 $update['lap_notula'] = 'laporan/penyelesaian/' . $lap_notula;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'evaluasi' && empty($_res->lap_notula)) {
-                    return response()->json(['status' => false, 'message' => 'File Notula Wajib Diisi.']);
-                }
             }
 
             if ($request->hasFile('lap_evaluasi')) {
@@ -336,10 +290,6 @@ class PenyelesaianApiController extends Controller
                 $lap_evaluasi = 'lap_evaluasi_' . time() . '_' . $file_evaluasi->getClientOriginalName();
                 $file_evaluasi->move(public_path('laporan/penyelesaian'), $lap_evaluasi);
                 $update['lap_evaluasi'] = 'laporan/penyelesaian/' . $lap_evaluasi;
-            } else {
-                if ($request->type == 'kirim' && $request->sub_menu_slug == 'evaluasi' && empty($_res->lap_evaluasi)) {
-                    return response()->json(['status' => false, 'message' => 'File Evaluasi Wajib Diisi.']);
-                }
             }
 
             $result = RequestPenyelesaian::GetNilaiPerencanaan($request);
@@ -353,13 +303,13 @@ class PenyelesaianApiController extends Controller
                 $err['messages']['biaya'] = 'Biaya Kegiatan Melebihi Perencanaan.';
             }
 
-            if (
-                ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
-                ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
-                ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
-            ) {
-                $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
-            }
+            // if (
+            //     ($request->sub_menu_slug == 'identifikasi' && $result->penyelesaian_identifikasi_target < $sumPenyelesaian->jml_perusahaan) ||
+            //     ($request->sub_menu_slug == 'penyelesaian' && $result->penyelesaian_realisasi_target < $sumPenyelesaian->jml_perusahaan) ||
+            //     ($request->sub_menu_slug == 'evaluasi' && $result->penyelesaian_evaluasi_target < $sumPenyelesaian->jml_perusahaan)
+            // ) {
+            //     $err['messages']['jml_perusahaan'] = 'Jumlah Perusahaan Melebihi Target.';
+            // }
 
             if (!empty($err)) {
                 return response()->json($err, 400);
@@ -383,7 +333,7 @@ class PenyelesaianApiController extends Controller
 
                 $type = 'penyelesaian';
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-                $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url, Auth::User()->username);
                 $insertNotif = Notification::create($notif);
 
                 if ($insertNotif) {
@@ -524,7 +474,7 @@ class PenyelesaianApiController extends Controller
             $url = url('penyelesaian/' . $id);
             $type = 'penyelesaian';
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Request Edit Penyelesaian Masalah (' . $sub_kegiatan . '), Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, Auth::User()->username);
             $insertNotif = Notification::create($notif);
 
             $pusat = User::where('username', 'pusat')->first()->email;
@@ -572,7 +522,7 @@ class PenyelesaianApiController extends Controller
             $type = 'penyelesaian';
             $url = url('penyelesaian');
             $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Revisi Penyelesaian Masalah (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, Auth::User()->username);
             $insertNotif = Notification::create($notif);
 
             $email_daerah = User::where('username', $_res->created_by)->first()->email;
@@ -609,10 +559,26 @@ class PenyelesaianApiController extends Controller
             $type = 'penyelesaian';
             $url = 'penyelesaian';
             $messages_desc = strtoupper(Auth::User()->username) . ' Request Edit Telah Diapprove';
-            $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+            $notif = RequestNotification::fieldsData($type, $messages_desc, $url, Auth::User()->username);            
             Notification::create($notif);
         }
 
         return response()->json(['status' => true, 'id' => $results, 'message' => 'Update data sucessfully']);
+    }
+
+    public function approveSelected(Request $request)
+    {
+        $messages['messages'] = false;
+
+        foreach ($request->data as $key) {
+            $update = RequestPenyelesaian::fieldApprEdit($request);
+            $results = Penyelesaian::where('id', (int)$key)->update($update);
+        }
+
+        if ($results) {
+            $messages['messages'] = true;
+        }
+
+        return response()->json($messages);
     }
 }

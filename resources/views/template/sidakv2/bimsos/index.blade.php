@@ -62,6 +62,14 @@
 		border-bottom: 1px solid #f4f4f4;
 
 	}
+
+	.text-wrap {
+		white-space: normal;
+	}
+
+	.width-200 {
+		width: 200px;
+	}
 </style>
 
 
@@ -81,6 +89,7 @@
 		@else
 		<input type="hidden" class="form-control" name="daerah_id" id="daerah_id" value="">
 		@endif
+		<input type="hidden" class="form-control" name="access" id="access" value="<?php echo $access; ?>">
 		<div class="col-sm-2">
 			<select class="selectpicker" name="jenis_sub" id="jenis_sub" title="Jenis">
 				<option value="">-Pilih Tipe-</option>
@@ -101,7 +110,7 @@
 		<div class="col-sm-2" style="margin-bottom: 9px;">
 			<input type="text" id="search-input" class="form-control border-radius-13" placeholder="Pencarian">
 		</div>
-		<div class="col-lg-2">
+		<div class="col-sm-2">
 			<div class="btn-group">
 				<button id="Search" type="button" title="Cari" class="btn btn-info btn-group-radius-left"><i class="fa fa-filter"></i> Cari</button>
 				<button id="Clear" type="button" title="Reset" class="btn btn-info btn-group-radius-right"><i class="fa fa-refresh"></i></button>
@@ -132,6 +141,9 @@
 					Tambah Data
 				</button>
 				@endif
+				<button id="approval-selected" style="display:none;" type="button" class="btn btn-primary border-radius-10">
+					Approve
+				</button>
 				<button type="button" class="btn btn-info border-radius-10" id="exportData">
 				</button>
 			</div>
@@ -151,7 +163,7 @@
 	<div class="box box-solid box-primary">
 		<div class="box-body">
 			<div class="card-body table-responsive p-0">
-				<table id="datatable" class="table-hover text-nowrap">
+				<table id="datatable" class="table-hover text-nowrap" style="height: 100%">
 					<thead>
 						<tr>
 							<th><input type="checkbox" id="checkAll"></th>
@@ -237,7 +249,7 @@
 								<th>Total</th>
 								<th style="text-align: center"><span>${result.data[0].pengawasan_rencana_target+result.data[0].pendamping_rencana_target+result.data[0].perizinan_rencana_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_rencana+result.data[0].pendamping_rencana+result.data[0].perizinan_rencana)}</span></th>
-								<th style="text-align: center"><span>${result.data[0].pengawasan_realiasi_target+result.data[0].pendamping_realisasi_target+result.data[0].perizinan_realisasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].pengawasan_realiasi_target+result.data[0].perizinan_realisasi_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_realiasasi+result.data[0].pendamping_realisasi+result.data[0].perizinan_realisasi)}</span></th>
 							</tr>
 						</tbody>
@@ -301,17 +313,61 @@
 								<th>Total</th>
 								<th style="text-align: center"><span>${result.data[0].pengawasan_rencana_target+result.data[0].pendamping_rencana_target+result.data[0].perizinan_rencana_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_rencana+result.data[0].pendamping_rencana+result.data[0].perizinan_rencana)}</span></th>
-								<th style="text-align: center"><span>${result.data[0].pengawasan_realisasi_target+result.data[0].pendamping_realisasi_target+result.data[0].perizinan_realisasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].pengawasan_realisasi_target+result.data[0].perizinan_realisasi_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_realisasi+result.data[0].pendamping_realisasi+result.data[0].perizinan_realisasi)}</span></th>
-								<th style="text-align: center">${result.data[0].pengawasan_realisasi_target_2+result.data[0].pendamping_target_2+result.data[0].perizinan_realisasi_target_2}</th>
+								<th style="text-align: center">${result.data[0].pengawasan_realisasi_target_2+result.data[0].perizinan_realisasi_target_2}</th>
 								<th style="text-align: right">${formatRupiah(result.data[0].pengawasan_realisasi_2+result.data[0].pendamping_realisasi_2+result.data[0].perizinan_realisasi_2)}</th>
-								<th style="text-align: center"><span>${result.data[0].pengawasan_realisasi_target_total+result.data[0].pendamping_target_total+result.data[0].perizinan_realisasi_target_total}</span></th>
+								<th style="text-align: center"><span>${result.data[0].pengawasan_realisasi_target_total+result.data[0].perizinan_realisasi_target_total}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].pengawasan_realisasi_total+result.data[0].pendamping_realisasi_2_total+result.data[0].perizinan_realisasi_total)}</span></th>
 							</tr>
 						</tbody>
 					</table>`;
 					}
 
+					$('#header').html(table_header);
+				} else {
+					var table_header = `<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary ">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Perencanaan</span>
+																<h3 class="card-text" >${result.data.total_perencanaan}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Bimsos Terkirim</span>
+																<h3 class="card-text" >${result.data.total_bimsos}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="col-lg-4 col-md-6 col-sm-12">
+											<div class="box box-solid box-primary">
+												<div class="box-body btn-primary border-radius-13">
+													<div class="card-body table-responsive p-0">
+														<div class="media">
+															<div class="media-body text-left">
+																<span>Total Bimsos Draft</span>
+																<h3 class="card-text">${result.data.total_bimsos_draft}</h3>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>`;
 					$('#header').html(table_header);
 				}
 			},
@@ -367,6 +423,7 @@
 	}
 
 	$(function() {
+		var access = $("#access").val();
 
 		var table = $('#datatable').DataTable({
 			processing: true,
@@ -407,10 +464,18 @@
 					'orderable': false,
 					'className': 'dt-body-center',
 					'render': function(data, type, full, meta) {
-						if (full[7] == 'Terkirim') {
-							return '<input disabled  type="checkbox">'
+						if (access == 'daerah' || access == 'province') {
+							if (full[7] == 'Terkirim') {
+								return '<input disabled  type="checkbox">'
+							} else {
+								return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							}
 						} else {
-							return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							if (full[7] == 'Request Edit') {
+								return '<input type="checkbox" class="item-checkbox" name="idsData" data-id="' + $('<div/>').text(data).html() + '" value="' + $('<div/>').text(data).html() + '">';
+							} else {
+								return '<input disabled  type="checkbox">'
+							}
 						}
 					}
 				},
@@ -419,8 +484,10 @@
 					className: 'dt-body-right'
 				},
 				{
-					targets: [3],
-					className: 'dt-body-center'
+					render: function(data, type, full, meta) {
+						return "<div class='text-wrap width-200'>" + data + "</div>";
+					},
+					targets: [2, 3, 5]
 				}
 			],
 			order: [
@@ -441,6 +508,15 @@
 
 					} else {
 						$('#tambah').hide();
+
+					}
+				}
+				if (item.action == 'approval') {
+					if (item.checked == true) {
+						$('#approval-selected').show();
+
+					} else {
+						$('#approval-selected').hide();
 
 					}
 				}
@@ -597,6 +673,48 @@
 				},
 				error: function(error) {
 					console.error('Error deleting items:', error);
+				}
+			});
+		}
+
+		$('#approval-selected').on('click', function() {
+			const selectedIds = [];
+			Swal.fire({
+				title: 'Apakah anda yakin approve?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#d33',
+				cancelButtonColor: '#3085d6',
+				confirmButtonText: 'Ya'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$('.item-checkbox:checked').each(function() {
+						selectedIds.push($(this).data('id'));
+					});
+					approveItems(selectedIds);
+					Swal.fire(
+						'Approve!',
+						'Data berhasil diapprove.',
+						'success'
+					);
+				}
+			});
+		});
+
+		function approveItems(ids) {
+			$.ajax({
+				url: BASE_URL + `/api/bimsos/approve_selected`,
+				method: 'POST',
+				data: {
+					data: ids,
+					status: 13,
+					request_edit: false
+				},
+				success: function(response) {
+					table.search("").columns().search("").draw();
+				},
+				error: function(error) {
+					console.error('Error approve items:', error);
 				}
 			});
 		}

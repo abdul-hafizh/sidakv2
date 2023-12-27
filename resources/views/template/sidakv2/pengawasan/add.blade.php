@@ -1,5 +1,72 @@
+<style>
+  .modal-loading {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 99999;
+  }
+
+  .modal-content2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+
+  /* Styling untuk progress bar */
+  #progress-container {
+    text-align: center;
+  }
+
+  #progress-bar {
+    width: 100%;
+    background-color: #ccc;
+    border-radius: 4px;
+  }
+
+  #progress {
+    height: 20px;
+    background-color: #4caf50;
+    border-radius: 4px;
+    transition: width 0.3s ease-in-out;
+  }
+
+  #progress-label {
+    margin-top: 10px;
+    font-weight: bold;
+  }
+</style>
+<!-- Modal loading -->
+<div id="progressModal" class="modal-loading" style="display: none;">
+  <div class="modal-content2">
+    <span class="close" id="closeProgressModal">&times;</span>
+    <h2>Progress</h2>
+    <div id="progress-container">
+      <div id="progress-bar">
+        <div id="progress" style="width: 0%"></div>
+      </div>
+      <div id="progress-label">0%</div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal -->
-<div id="modal-add" class="modal fade" role="dialog">
+<div id="modal-add" class="modal fade" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog">
 
     <!-- Modal content-->
@@ -60,20 +127,19 @@
 
           <div id="biaya-alert" class="form-group has-feedback">
             <label>Biaya (Rp.)</label>
-            <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="">
+            <input type="text" class="form-control" name="biaya" id="biaya" placeholder="Biaya Kegiatan" value="" required>
             <span id="biaya-messages"></span>
           </div>
 
-          <div id="lokasi-alert" class="form-group has-feedback">
-            <label>Lokasi Kegiatan</label>
-            <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi Kegiatan" value="">
-            <span id="lokasi-messages"></span>
-          </div>
-
           <div class="is_analisa">
+            <div id="lokasi-alert" class="form-group has-feedback">
+              <label>Lokasi Kegiatan</label>
+              <input type="text" class="form-control" name="lokasi" id="lokasi" placeholder="Lokasi Kegiatan" value="">
+              <span id="lokasi-messages"></span>
+            </div>
             <div id="lap_kegiatan-alert" class="form-group has-feedback">
               <label>Laporan</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_kegiatan" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kegiatan)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_kegiatan" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Kegiatan"></a>
               <input type="hidden" class="form-control" name="lap_kegiatan_file" id="lap_kegiatan_file" value="">
               <input type="file" class="form-control file-access" name="lap_kegiatan" id="lap_kegiatan" accept=".pdf">
               <span id="lap_kegiatan-messages"></span>
@@ -90,6 +156,14 @@
                     <label>Data Perusahaan</label>
                     <button type="button" class="btn btn-info" style="float: right;" id="btn-add-row"><i class="fa fa-plus"></i></button>
                     <table class="table table-hover text-nowrap">
+                      <tr>
+                        <td colspan="2" style="padding: 2px;">
+                          <div id="lokasi_perusahaan_0-alert" class=" has-feedback">
+                            <input type="text" class="form-control" name="lokasi_perusahaan[0]" placeholder="Lokasi Kegiatan" value="">
+                            <span id="lokasi_perusahaan_0-messages"></span>
+                          </div>
+                        </td>
+                      </tr>
                       <tr>
                         <td style="padding: 2px;">
                           <div id="nib_0-alert" class="has-feedback">
@@ -241,7 +315,7 @@
                         <td style="padding: 2px;">
                           <div id="lap_bap_0-alert" class="form-group has-feedback">
                             <label>Laporan BAP Pengawasan</label>
-                            <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan BAP Pengawasan"></a>
                             <input type="hidden" class="form-control" name="lap_bap_file" id="lap_bap_file" value="">
                             <input type="file" class="form-control file-access" name="lap_bap[0]" id="lap_bap" accept=".pdf">
                             <span id="lap_bap_0-messages"></span>
@@ -251,7 +325,7 @@
                         <td style="padding: 2px;">
                           <div id="lap_lkpm_0-alert" class="form-group has-feedback">
                             <label>Laporan LKPM</label>
-                            <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan LKPM"></a>
                             <input type="hidden" class="form-control" name="lap_lkpm_file" id="lap_lkpm_file" value="">
                             <input type="file" class="form-control file-access" name="lap_lkpm[0]" id="lap_lkpm" accept=".pdf">
                             <span id="lap_lkpm_0-messages"></span>
@@ -263,7 +337,7 @@
                         <td style="padding: 2px;">
                           <div id="lap_evaluasi_0-alert" class="form-group has-feedback">
                             <label>Laporan Kepatuhan Pelaku Usaha</label>
-                            <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Kepatuhan Pelaku Usaha"></a>
                             <input type="hidden" class="form-control" name="lap_evaluasi_file" id="lap_evaluasi_file" value="">
                             <input type="file" class="form-control file-access" name="lap_evaluasi[0]" id="lap_evaluasi" accept=".pdf">
                             <span id="lap_evaluasi_0-messages"></span>
@@ -273,7 +347,7 @@
                         <td style="padding: 2px;">
                           <div id="lap_profile_0-alert" class="form-group has-feedback">
                             <label>Laporan Profile</label>
-                            <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+                            <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Profile"></a>
                             <input type="hidden" class="form-control" name="lap_profile_file" id="lap_profile_file" value="">
                             <input type="file" class="form-control file-access" name="lap_profile[0]" id="lap_profile" accept=".pdf">
                             <span id="lap_profile_0-messages"></span>
@@ -372,6 +446,14 @@
       <label>Data Perusahaan</label>
       <button class="btn btn-danger btn-sm" type="button" style="float: right;" onclick="if($('#tbody-row tr').length > 1) { $(this).closest('tr').remove() }"><i class="fa fa-trash"></i></button>
       <table class="table table-hover text-nowrap">
+        <tr>
+          <td colspan="2" style="padding: 2px;">
+            <div id="lokasi_perusahaan_countArraynyaDigantiNanti-alert" class=" has-feedback">
+              <input type="text" class="form-control" name="lokasi_perusahaan[countArraynyaDigantiNanti]" placeholder="Lokasi Kegiatan" value="">
+              <span id="lokasi_perusahaan_countArraynyaDigantiNanti-messages"></span>
+            </div>
+          </td>
+        </tr>
         <tr>
           <td style="padding: 2px;">
             <div id="nib_countArraynyaDigantiNanti-alert" class="has-feedback">
@@ -522,7 +604,7 @@
           <td style="padding: 2px;">
             <div id="lap_bap_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
               <label>Laporan BAP Pengawasan</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_bap" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan BAP Pengawasan"></a>
               <input type="hidden" class="form-control" name="lap_bap_file[countArraynyaDigantiNanti]" id="lap_bap_file" value="">
               <input type="file" class="form-control file-access" name="lap_bap[countArraynyaDigantiNanti]" id="lap_bap" accept=".pdf">
               <span id="lap_bap_countArraynyaDigantiNanti-messages"></span>
@@ -532,7 +614,7 @@
           <td style="padding: 2px;">
             <div id="lap_lkpm_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
               <label>Laporan LKPM</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan LKPM"></a>
               <input type="hidden" class="form-control" name="lap_lkpm_file[countArraynyaDigantiNanti]" id="lap_lkpm_file" value="">
               <input type="file" class="form-control file-access" name="lap_lkpm[countArraynyaDigantiNanti]" id="lap_lkpm" accept=".pdf">
               <span id="lap_lkpm_countArraynyaDigantiNanti-messages"></span>
@@ -544,7 +626,7 @@
           <td style="padding: 2px;">
             <div id="lap_evaluasi_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
               <label>Laporan Kepatuhan Pelaku Usaha</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Kepatuhan Pelaku Usaha"></a>
               <input type="hidden" class="form-control" name="lap_evaluasi_file[countArraynyaDigantiNanti]" id="lap_evaluasi_file" value="">
               <input type="file" class="form-control file-access" name="lap_evaluasi[countArraynyaDigantiNanti]" id="lap_evaluasi" accept=".pdf">
               <span id="lap_evaluasi_countArraynyaDigantiNanti-messages"></span>
@@ -554,7 +636,7 @@
           <td style="padding: 2px;">
             <div id="lap_profile_countArraynyaDigantiNanti-alert" class="form-group has-feedback">
               <label>Laporan Profile</label>
-              <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_profile" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Profile"></a>
               <input type="hidden" class="form-control" name="lap_profile_file[countArraynyaDigantiNanti]" id="lap_profile_file" value="">
               <input type="file" class="form-control file-access" name="lap_profile[countArraynyaDigantiNanti]" id="lap_profile" accept=".pdf">
               <span id="lap_profile_countArraynyaDigantiNanti-messages"></span>
@@ -651,9 +733,11 @@
         'hasil_analisa',
         'tanggal_kegiatan',
         'biaya',
-        'lokasi'
+        'lokasi',
+        'nib'
       ];
       formData.append("status", 13);
+      $('#progressModal').show();
       $.ajax({
         type: "POST",
         url: BASE_URL + '/api/pengawasan',
@@ -674,11 +758,14 @@
           return xhr;
         },
         success: (respons) => {
+          $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
             text: respons.message,
             icon: 'success',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
 
           }).then((result) => {
             if (result.isConfirmed) {
@@ -692,7 +779,7 @@
           //
         },
         error: (respons) => {
-
+          $('#progressModal').hide();
           errors = respons.responseJSON;
           for (let i = 0; i < form.length; i++) {
             const field = form[i];
@@ -707,7 +794,9 @@
           Swal.fire({
             title: 'Periksa kembali data anda.',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
           }).then((result) => {});
         }
       });
@@ -733,6 +822,7 @@
         'lap_document'
       ];
       formData.append("status", 14);
+      $('#progressModal').show();
       $.ajax({
         type: "POST",
         url: BASE_URL + '/api/pengawasan',
@@ -740,11 +830,14 @@
         processData: false,
         contentType: false,
         success: (respons) => {
+          $('#progressModal').hide();
           Swal.fire({
             title: 'Sukses!',
             text: respons.message,
             icon: 'success',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
 
           }).then((result) => {
             if (result.isConfirmed) {
@@ -759,6 +852,7 @@
           //
         },
         error: (respons) => {
+          $('#progressModal').hide();
           errors = respons.responseJSON;
           for (let i = 0; i < form.length; i++) {
             const field = form[i];
@@ -773,7 +867,9 @@
           Swal.fire({
             title: 'Periksa kembali data anda.',
             icon: 'error',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
           }).then((result) => {});
         }
       });
@@ -791,6 +887,8 @@
         'nama_kegiatan',
         'hasil_analisa',
         'tanggal_kegiatan',
+        'biaya_kegiatan',
+        'jml_target',
         'biaya',
         'lokasi',
         'lap_kegiatan',
@@ -934,6 +1032,16 @@
           else
             row += `<button class="btn btn-danger btn-sm" type="button" style="float: right;" onclick="if($('#tbody-row tr').length > 1) { $(this).closest('tr').remove() }"><i class="fa fa-trash"></i></button>`;
           row += `<table class="table table-hover text-nowrap">`;
+
+          row += `<tr>
+                    <td colspan="2" style="padding: 2px;">
+                      <div id="lokasi_perusahaan${index}-alert" class=" has-feedback">
+                        <input type="text" class="form-control" name="lokasi_perusahaan[${index}]" placeholder="Lokasi Kegiatan" value="` + option.lokasi_kegiatan + `">
+                        <span id="lokasi_perusahaan_${index}-messages"></span>
+                      </div>
+                    </td>
+                  </tr>`;
+
           row += `<tr>`;
           row += `<td style="padding: 2px;">`;
           row += `<div id="nib_${index}-alert" class="has-feedback">`;
@@ -1085,7 +1193,7 @@
           <td style="padding: 2px;">
             <div id="lap_bap_${index}-alert" class="form-group has-feedback">
               <label>Laporan BAP Pengawasan</label></br>
-              <a href="#" class="text-bold text-profile" id="modal-lap_bap${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan BAP Pengawasan)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_bap${index}" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF BAP Pengawasan"></a>
               <input type="hidden" class="form-control" name="lap_bap_file[${index}]" id="lap_bap_file${index}" value="">
               <input type="file" class="form-control file-access" name="lap_bap[${index}]" id="lap_bap" accept=".pdf">
               <span id="lap_bap_${index}-messages"></span>
@@ -1095,7 +1203,7 @@
           <td style="padding: 2px;">
             <div id="lap_lkpm_${index}-alert" class="form-group has-feedback">
               <label>Laporan LKPM</label></br>
-              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan LKPM)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_lkpm${index}" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan LKPM"></a>
               <input type="hidden" class="form-control" name="lap_lkpm_file[${index}]" id="lap_lkpm_file${index}" value="">
               <input type="file" class="form-control file-access" name="lap_lkpm[${index}]" id="lap_lkpm" accept=".pdf">
               <span id="lap_lkpm_${index}-messages"></span>
@@ -1107,7 +1215,7 @@
           <td style="padding: 2px;">
             <div id="lap_evaluasi_${index}-alert" class="form-group has-feedback">
               <label>Laporan Kepatuhan Pelaku Usaha</label></br>
-              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Kepatuhan Pelaku Usaha)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_evaluasi${index}" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Kepatuhan Pelaku Usaha"></a>
               <input type="hidden" class="form-control" name="lap_evaluasi_file[${index}]" id="lap_evaluasi_file${index}" value="">
               <input type="file" class="form-control file-access" name="lap_evaluasi[${index}]" id="lap_evaluasi" accept=".pdf">
               <span id="lap_evaluasi_${index}-messages"></span>
@@ -1117,7 +1225,7 @@
           <td style="padding: 2px;">
             <div id="lap_profile_${index}-alert" class="form-group has-feedback">
               <label>Laporan Profile</label></br>
-              <a href="#" class="text-bold text-profile" id="modal-lap_profile${index}" style="display: none" style="margin-left: 5px"><small>(Tampilkan Laporan Profile)</small></a>
+              <a href="#" class="text-bold text-profile" id="modal-lap_profile${index}" style="display: none" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Laporan Profile"></a>
               <input type="hidden" class="form-control" name="lap_profile_file[${index}]" id="lap_profile_file${index}" value="">
               <input type="file" class="form-control file-access" name="lap_profile[${index}]" id="lap_profile" accept=".pdf">
               <span id="lap_profile_${index}-messages"></span>
@@ -1296,7 +1404,9 @@
               title: 'Sukses!',
               text: respons.message,
               icon: 'success',
-              confirmButtonText: 'OK'
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              allowEscapeKey: false
             }).then((result) => {
               if (result.isConfirmed) {
                 $('#modal-add').hide();
@@ -1353,7 +1463,9 @@
               title: 'Sukses!',
               text: respons.message,
               icon: 'success',
-              confirmButtonText: 'OK'
+              confirmButtonText: 'OK',
+              allowOutsideClick: false,
+              allowEscapeKey: false
             }).then((result) => {
               if (result.isConfirmed) {
                 $('#modal-add').hide();
@@ -1425,7 +1537,9 @@
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -1434,6 +1548,8 @@
                   $('body').removeClass('modal-open');
                   $('.modal-backdrop').remove();
                   $('#datatable').DataTable().ajax.reload();
+
+                  // window.location.replace('/pengawasan');
 
                 }
               });
@@ -1454,12 +1570,18 @@
                   $('#' + field + '-messages').removeClass('help-block').html('');
                 }
               }
+              Swal.fire({
+                title: 'Periksa kembali data anda.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+              }).then((result) => {});
             }
           });
         });
 
         $('#kirim-' + id_modal).on('click', function() {
-          console.log(id_modal);
           var formData = new FormData($('#FormSubmit')[0]);
           var form = [
             'id_pengawasan',
@@ -1468,6 +1590,8 @@
             'nama_kegiatan',
             'hasil_analisa',
             'tanggal_kegiatan',
+            'biaya_kegiatan',
+            'jml_target',
             'biaya',
             'lokasi',
             'lap_kegiatan',
@@ -1479,6 +1603,7 @@
             'lap_document'
           ];
           formData.append("status", 14);
+          $('#progressModal').show();
           $.ajax({
             type: "POST",
             url: BASE_URL + '/api/pengawasan/kirim/' + id_modal,
@@ -1486,11 +1611,14 @@
             processData: false,
             contentType: false,
             success: (respons) => {
+              $('#progressModal').hide();
               Swal.fire({
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {
@@ -1505,6 +1633,7 @@
               //
             },
             error: (respons) => {
+              $('#progressModal').hide();
               errors = respons.responseJSON;
               for (let i = 0; i < form.length; i++) {
                 const field = form[i];
@@ -1519,7 +1648,9 @@
               Swal.fire({
                 title: 'Periksa kembali data anda.',
                 icon: 'error',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
               }).then((result) => {});
             }
           });
@@ -1530,6 +1661,7 @@
             "status": 13,
             "request_edit": "false",
           };
+          $('#progressModal').show();
           $.ajax({
             type: "PUT",
             url: BASE_URL + '/api/pengawasan/approve_edit/' + id_modal,
@@ -1537,11 +1669,14 @@
             cache: false,
             dataType: "json",
             success: (respons) => {
+              $('#progressModal').hide();
               Swal.fire({
                 title: 'Sukses!',
                 text: respons.message,
                 icon: 'success',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
 
               }).then((result) => {
                 if (result.isConfirmed) {

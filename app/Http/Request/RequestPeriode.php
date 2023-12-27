@@ -92,6 +92,9 @@ class RequestPeriode
                   {   
                      $temp[$key]['pagu_apbn'] = GeneralHelpers::formatRupiah($val->pagu_apbn);
                      $temp[$key]['pagu_promosi'] = GeneralHelpers::formatRupiah($val->pagu_promosi);
+                     $temp[$key]['pagu_pengawasan'] = (int)$val->pagu_pengawasan;
+                     $temp[$key]['pagu_bimbingan_teknis'] = (int)$val->pagu_bimbingan_teknis;
+                     $temp[$key]['pagu_penyelesaian'] = (int)$val->pagu_penyelesaian_permasalahan;
                      $temp[$key]['target_pengawasan'] = $val->target_pengawasan;
                      $temp[$key]['target_bimtek'] = $val->target_bimbingan_teknis;
                      $temp[$key]['target_penyelesaian'] = $val->target_penyelesaian_permasalahan;
