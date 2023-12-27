@@ -104,8 +104,9 @@ class PengawasanApiController extends Controller
                 // $pesan = 'Mohon persetujuan untuk Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
 
                 $type = 'pengawasan';
+                $sender = User::where(['username'=>'pusat'])->first()->username;
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-                $notif = RequestNotification::fieldsData($type, $messages_desc, $url);
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url,$sender);
                 $insertNotif = Notification::create($notif);
 
                 if ($insertNotif) {
