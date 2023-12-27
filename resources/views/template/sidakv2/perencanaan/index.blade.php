@@ -670,36 +670,7 @@
                     row +=`</td>`;
 
                 row +=`</tr>`; 
-                content.append(row);
-
-                $("#reqrevisi").click( () => {
-                    Swal.fire({
-                        title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var form = {
-                                "alasan": $("#alasan_revisi_inp").val(),
-                                "jenis_kegiatan": "Perencanaan",
-                                "type": "revisi"
-                            };
-                            if($("#alasan_revisi_inp").val() != '') {  
-                                reqrevisiItem(form, item.id);
-                            } else {
-                                Swal.fire(
-                                    'Gagal.',
-                                    'Alasan belum diisi.',
-                                    'error'
-                                );
-                            }
-                        }
-                    });
-                });
-
+                content.append(row);                
             });            
 
             $('#total-rencana-pengawasan').html('<b> Rp. '+accounting.formatNumber(total_pengawasan, 0, ".", ".")+'</b>');
@@ -748,6 +719,35 @@
                 let id = e.currentTarget.dataset.param_id;
                 window.location.replace('/perencanaan/edit/'+ id);   
             }); 
+
+            $("#reqrevisi").click( (e) => {
+                let id = e.currentTarget.dataset.param_id;
+                Swal.fire({
+                    title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = {
+                            "alasan": $("#alasan_revisi_inp").val(),
+                            "jenis_kegiatan": "Perencanaan",
+                            "type": "revisi"
+                        };
+                        if($("#alasan_revisi_inp").val() != '') {  
+                            reqrevisiItem(form, id);
+                        } else {
+                            Swal.fire(
+                                'Gagal.',
+                                'Alasan belum diisi.',
+                                'error'
+                            );
+                        }
+                    }
+                });
+            });
 
             $( "#content" ).on( "click", "#Destroy", (e) => {
                 let id = e.currentTarget.dataset.param_id;
