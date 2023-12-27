@@ -741,45 +741,7 @@
                         alert('Gagal mengambil data.');
                     }
                 })
-            });            
-
-            function reqrevisiItem(form, id) {
-                $('#progressModal').show();
-                $.ajax({
-                    type:"PUT",
-                    url: BASE_URL+'/api/perencanaan/reqrevisi/' + id,
-                    data:form,
-                    cache: false,
-                    dataType: "json",
-                    xhr: function() {
-                         var xhr = new window.XMLHttpRequest();
-                         xhr.upload.addEventListener("progress", function(evt) {
-                              if (evt.lengthComputable) {
-                                var percentComplete = (evt.loaded / evt.total) * 100;
-                                $('#progress').css('width', percentComplete + '%');
-                                $('#progress-label').text(percentComplete.toFixed(2) + '%');
-                              }
-                         }, false);
-                         return xhr;
-                    },
-                    success: (respons) =>{
-                        $('#progressModal').hide();
-                        Swal.fire({
-                            title: 'Sukses!',
-                            text: 'Berhasil Request Edit Data Perencanaan.',
-                            icon: 'success',
-                            confirmButtonText: 'OK'                        
-                        }).then((result) => {
-                            window.location.replace('/perencanaan');
-                        });
-                    },
-                    error: function(error) {
-                        $('#progressModal').hide();
-                        console.error('Error request edit data:', error);
-                        window.location.replace('/perencanaan');
-                    }
-                });
-            }
+            });                        
 
             function dataLogRequset(data_log) {        
                 var tableBody = $('#dataLog tbody');
@@ -852,6 +814,30 @@
                         }
                     }
                 });
+            });
+        }
+
+        function reqrevisiItem(form, id) {
+            $.ajax({
+                type:"PUT",
+                url: BASE_URL+'/api/perencanaan/reqrevisi/' + id,
+                data:form,
+                cache: false,
+                dataType: "json",
+                success: (respons) =>{
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: 'Berhasil Request Edit Data Perencanaan.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'                        
+                    }).then((result) => {
+                        window.location.replace('/perencanaan');
+                    });
+                },
+                error: function(error) {
+                    console.error('Error request edit data:', error);
+                    window.location.replace('/perencanaan');
+                }
             });
         }
 
