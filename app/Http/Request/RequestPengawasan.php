@@ -25,12 +25,19 @@ class RequestPengawasan
         $numberNext = (($page * $perPage) - ($perPage - 1));
         foreach ($data as $key => $val) {
 
+            if($val->nama_perusahaan ==null)
+            {
+                $nama_perusahaan = '';
+            }else{
+               $nama_perusahaan = $val->nama_perusahaan;
+            }    
+
             $temp[$key]['number'] = $numberNext++;
 
             $temp[$key]['id'] = $val->id;
             $temp[$key]['periode_id'] = $val->periode_id;
             $temp[$key]['daerah_id'] = $val->daerah_id;
-            $temp[$key]['nama_perusahaan'] = $val->nama_perusahaan;
+            $temp[$key]['nama_perusahaan'] =  $nama_perusahaan;
             $temp[$key]['kontak'] = $val->kontak;
             $temp[$key]['nib'] = $val->nib;
             $temp[$key]['tgl_nib'] = $val->tgl_nib;
