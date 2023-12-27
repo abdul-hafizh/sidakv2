@@ -19,7 +19,7 @@ class RequestDashboard
    public static function TotalKegiatan($periode_id,$semester_id,$daerah_id)
    {
 
-    
+
      $Promosi = 0;
      $petaPotensi = 0;
      $access = RequestAuth::Access();
@@ -172,7 +172,7 @@ class RequestDashboard
            $semester1 = [
                "sub_menu" =>"Analisa",
                "target"=> $pengawas_analisa_target ,
-               "pagu"=> GeneralHelpers::formatRupiah($pengawas_analisa_pagu),
+               "pagu"=>$pengawas_analisa_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'analisa'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'analisa')),
                "realisasi_target"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'analisa'),
@@ -218,7 +218,7 @@ class RequestDashboard
            if($perencanaan)
            {
             $pengawas_inspeksi_target = $perencanaan->pengawas_inspeksi_target;
-            $pengawas_inspeksi_pagu = $perencanaan->pengawas_inspeksi_pagu;
+            $pengawas_inspeksi_pagu = GeneralHelpers::formatRupiah($perencanaan->pengawas_inspeksi_pagu);
            }else{
             $pengawas_inspeksi_target = 0;
             $pengawas_inspeksi_pagu = 0;
@@ -230,7 +230,7 @@ class RequestDashboard
            $semester1 = [
                "sub_menu" =>"Inspeksi",
                "target"=> $pengawas_inspeksi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($pengawas_inspeksi_pagu),
+               "pagu"=> $pengawas_inspeksi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'inspeksi')),
 
@@ -248,7 +248,7 @@ class RequestDashboard
            $semester1 = [
                "sub_menu" =>"Inspeksi",
                "target"=> $pengawas_inspeksi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($pengawas_inspeksi_pagu),
+               "pagu"=> $pengawas_inspeksi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PengawasanRealisasiTarget($periode_01,$daerah_id,'inspeksi'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PengawasanRealisasiAPBN($periode_01,$daerah_id,'inspeksi'))        
            ];
@@ -559,7 +559,7 @@ class RequestDashboard
        {
            $periode_01 = $periode_id.$semester_id; 
            $semester1 = [
-               "sub_menu" =>"Realisasi",
+               "sub_menu" =>"Penyelesaian Masalah",
                "target"=> $penyelesaian_realisasi_target,
                "pagu"=> $penyelesaian_realisasi_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian'),
