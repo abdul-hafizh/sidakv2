@@ -183,7 +183,7 @@
               </div>
             </div>
             <div class="row">
-              <div id="notula2-alert" class="form-group has-feedback col-md-12">
+              <div id="lap_notula2-alert" class="form-group has-feedback col-md-12">
                 <label>Notula Kegiatan </label>
                 <a href="#" class="text-bold text-notula2" id="modal-notula2" data-target="Notula2" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Notula"></a>
                 <input type="file" class="form-control file-access" name="lap_notula2" id="AddFilesNotula2" accept=".pdf">
@@ -217,7 +217,7 @@
 
           <div id="tab_evaluasi">
             <div class="row">
-              <div id="notula-alert" class="form-group has-feedback col-md-12">
+              <div id="lap_notula-alert" class="form-group has-feedback col-md-12">
                   <label>Notula Rapat </label>
                   <a href="#" class="text-bold text-notula" id="modal-notula" data-target="Notula" style="margin-left: 5px"><img src="{{ asset('template/sidakv2/img/pdf-icon.png') }}" style="width: 30px; margin-bottom: 10px;" alt="PDF Notula"></a>
                   <input type="file" class="form-control file-access" name="lap_notula" id="AddFilesNotula" accept=".pdf">
@@ -392,6 +392,7 @@
         success: function(res) {
           if (res.status != 'Y') {
               $('#simpan').hide();
+              $('#kirim').hide();
               Swal.fire({
                 title: 'Periode Input Data Sudah Habis.',
                 text: 'Periksa kembali periode input data.',
@@ -399,7 +400,8 @@
                 confirmButtonText: 'OK'
               }).then((result) => {});
           } else {
-            $('#simpan').show();              
+            $('#simpan').show(); 
+            $('#kirim').show();             
           }
         },
         error: function() {
@@ -483,7 +485,16 @@
         'tgl_kegiatan',
         'lokasi',
         'biaya',
-        'jml_perusahaan'
+        'jml_perusahaan',
+        'lap_peserta',
+        'lap_profile',
+        'lap_profile2',
+        'lap_notula',
+        'lap_notula2',
+        'lap_narasumber',
+        'lap_lkpm',
+        'lap_document',
+        'lap_evaluasi'
       ];
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
@@ -502,7 +513,16 @@
         'tgl_kegiatan',
         'lokasi',
         'biaya',
-        'jml_perusahaan'
+        'jml_perusahaan',
+        'lap_peserta',
+        'lap_profile',
+        'lap_profile2',
+        'lap_notula',
+        'lap_notula2',
+        'lap_narasumber',
+        'lap_lkpm',
+        'lap_document',
+        'lap_evaluasi'
       ];      
       $('#progressModal').show();
       $.ajax({
@@ -590,7 +610,16 @@
         'tgl_kegiatan',
         'lokasi',
         'biaya',
-        'jml_perusahaan'
+        'jml_perusahaan',
+        'lap_peserta',
+        'lap_profile',
+        'lap_profile2',
+        'lap_notula',
+        'lap_notula2',
+        'lap_narasumber',
+        'lap_lkpm',
+        'lap_document',
+        'lap_evaluasi'
       ];      
 
       formData.append("status", 14);
@@ -669,6 +698,13 @@
               $('#' + field + '-messages').removeClass('help-block').html('');
             }
           }
+          Swal.fire({
+            title: 'Periksa kembali data anda.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+          }).then((result) => {});
         }
       });
     });
@@ -1120,7 +1156,16 @@
             'tgl_kegiatan',
             'lokasi',
             'biaya',
-            'jml_perusahaan'
+            'jml_perusahaan',
+            'lap_peserta',
+            'lap_profile',
+            'lap_profile2',
+            'lap_notula',
+            'lap_notula2',
+            'lap_narasumber',
+            'lap_lkpm',
+            'lap_document',
+            'lap_evaluasi'
           ];
           formData.append("status", 13);
           $('#progressModal').show();
@@ -1189,7 +1234,16 @@
             'tgl_kegiatan',
             'lokasi',
             'biaya',
-            'jml_perusahaan'
+            'jml_perusahaan',
+            'lap_peserta',
+            'lap_profile',
+            'lap_profile2',
+            'lap_notula',
+            'lap_notula2',
+            'lap_narasumber',
+            'lap_lkpm',
+            'lap_document',
+            'lap_evaluasi'
           ];
           formData.append("status", 14);
           formData.append("type", "kirim");
@@ -1254,6 +1308,13 @@
                   $('#' + field + '-messages').removeClass('help-block').html('');
                 }
               }
+              Swal.fire({
+                title: 'Periksa kembali data anda.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+              }).then((result) => {});
             }
           });
         });

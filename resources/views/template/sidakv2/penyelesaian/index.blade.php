@@ -249,9 +249,9 @@
 							</tr>
 							<tr>
 								<th>Total</th>
-								<th style="text-align: center"><span>${result.data[0].identifikasi_rencana_target_peserta+result.data[0].penyelesaian_rencana_target_peserta+result.data[0].evaluasi_rencanan_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].penyelesaian_rencana_target_peserta}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_rencana+result.data[0].penyelesaian_realisasi_rencana+result.data[0].evaluasi_rencana)}</span></th>
-								<th style="text-align: center"><span>${result.data[0].identifikasi_realisasi_target_peserta+result.data[0].penyelesaian_realisasi_target_peserta+result.data[0].evaluasi_realisasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].penyelesaian_realisasi_target_peserta}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_realisasi+result.data[0].realisasi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
 							</tr>
 						</tbody>
@@ -313,13 +313,13 @@
 								</tr>
 								<tr>
 									<th>Total</th>
-									<th style="text-align: center"><span>${result.data[0].identifikasi_rencana_target_peserta+result.data[0].penyelesaian_rencana_target_peserta+result.data[0].evaluasi_rencanan_target}</span></th>
+									<th style="text-align: center"><span>${result.data[0].penyelesaian_rencana_target_peserta}</span></th>
 									<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_rencana+result.data[0].penyelesaian_realisasi_rencana+result.data[0].evaluasi_rencana)}</span></th>
-									<th style="text-align: center"><span>${result.data[0].identifikasi_realisasi_target_peserta+result.data[0].penyelesaian_realisasi_target_peserta+result.data[0].evaluasi_realisasi_target}</span></th>
+									<th style="text-align: center"><span>${result.data[0].penyelesaian_realisasi_target_peserta}</span></th>
 									<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_realisasi+result.data[0].realisasi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
-									<th style="text-align: center">${result.data[0].identifikasi_realisasi_target_peserta_2+result.data[0].penyelesaian_realisasi_target_peserta_2+result.data[0].evaluasi_realisasi_target_2}</th>
+									<th style="text-align: center">${result.data[0].penyelesaian_realisasi_target_peserta_2}</th>
 									<th style="text-align: right">${formatRupiah(result.data[0].identifikasi_realisasi_2+result.data[0].realisasi_realisasi_2+result.data[0].evaluasi_realisasi_2)}</th>
-									<th style="text-align: center"><span>${result.data[0].identifikasi_realisasi_target_peserta_total+result.data[0].penyelesaian_realisasi_target_peserta_total+result.data[0].evaluasi_realisasi_target_total}</span></th>
+									<th style="text-align: center"><span>${result.data[0].penyelesaian_realisasi_target_peserta_total}</span></th>
 									<th style="text-align: right"><span>${formatRupiah(result.data[0].identifikasi_realisasi_2_total+result.data[0].realisasi_realisasi_total+result.data[0].evaluasi_realisasi_total)}</span></th>
 								</tr>
 							</tbody>
