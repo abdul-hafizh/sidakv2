@@ -99,30 +99,45 @@ class ValidationPengawasan
             'lap_narasumber' => 'Daftar Narasumber',
             'lap_materi' => 'Materi',
             'lap_document' => 'Laporan Dokumentasi',
+            'lap_kegiatan' => 'Laporan kegiatan',
         ];
 
-        if ($request->sub_menu_slug == 'is_tenaga_pendamping') {
-            $validator =  Validator::make(
-                $request->all(),
-                [
-                    'lap_hadir'  =>  ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_pendamping'  => ['required', 'file', 'mimes:pdf',  'max:2056']
-                ]
-            );
-        } else if ($request->sub_menu_slug == 'is_bimtek_ipbbr' || $request->sub_menu_slug == 'is_bimtek_ippbbr') {
+        // if ($request->sub_menu_slug == 'is_tenaga_pendamping') {
+        //     $validator =  Validator::make(
+        //         $request->all(),
+        //         [
+        //             'lap_hadir'  =>  ['required', 'file', 'mimes:pdf',  'max:2056'],
+        //             'lap_pendamping'  => ['required', 'file', 'mimes:pdf',  'max:2056']
+        //         ]
+        //     );
+        // } else if ($request->sub_menu_slug == 'is_bimtek_ipbbr' || $request->sub_menu_slug == 'is_bimtek_ippbbr') {
+        //     $validator =  Validator::make(
+        //         $request->all(),
+        //         [
+
+        //             'lap_hadir'  =>  ['required', 'file', 'mimes:pdf',  'max:2056'],
+        //             'lap_notula'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
+        //             'lap_survey'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
+        //             'lap_narasumber'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
+        //             'lap_materi'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
+        //             'lap_document'  => ['required', 'file', 'mimes:pdf',  'max:2056']
+        //         ]
+        //     );
+        // }
+
+        if ($request->sub_menu_slug == 'analisa' || $request->sub_menu_slug == 'evaluasi') {
             $validator =  Validator::make(
                 $request->all(),
                 [
 
-                    'lap_hadir'  =>  ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_notula'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_survey'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_narasumber'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_materi'  => ['required', 'file', 'mimes:pdf',  'max:2056'],
-                    'lap_document'  => ['required', 'file', 'mimes:pdf',  'max:2056']
+                    'lap_kegiatan'  =>  ['required_without:lap_kegiatan_file', 'file', 'mimes:pdf',  'max:2056']
                 ]
             );
         }
+
+
+
+
 
         $validator->setAttributeNames($fields);
         if ($validator->fails()) {
