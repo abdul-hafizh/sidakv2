@@ -278,24 +278,7 @@
 </div>
 
 <div id="modal-reqrevisi" class="modal fade" role="dialog">
-     <div class="modal-dialog">
-          <div class="modal-content">
-               <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Request Edit Perencanaan</h4>
-               </div>
-               <div class="modal-body">
-                    <div class="form-group">
-                         <label>Alasan Permintaan Edit Data</label>
-                         <textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_revisi_inp" name="alasan_revisi" placeholder="Alasan Edit"></textarea>
-                    </div>
-               </div>
-               <div class="modal-footer">
-                    <button type="button" id="reqrevisi" class="btn btn-warning">Request Edit</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-               </div>
-          </div>
-     </div>
+     
 </div>
 
 <div id="modal-log" class="modal fade in" role="dialog">
@@ -632,7 +615,7 @@
                     row +=`<div id="Detail" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left" title="Detail Data"><i class="fa-icon icon-detail"></i></div>`;
 
                     if(item.access == 'pusat' && item.status_code == 16) {
-                        row += `<div type="button" data-param_id="${item.id}" class="pointer btn-padding-action pull-left" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>`;
+                        row += `<div data-param_id="`+ item.id +`" id="RequestEdit" class="pointer btn-padding-action pull-left" data-toggle="modal" data-toggle="tooltip" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>`;
                     }
 
                     if(item.status_code == 13)
@@ -670,36 +653,7 @@
                     row +=`</td>`;
 
                 row +=`</tr>`; 
-                content.append(row);
-
-                $("#reqrevisi").click( () => {
-                    Swal.fire({
-                        title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Ya'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            var form = {
-                                "alasan": $("#alasan_revisi_inp").val(),
-                                "jenis_kegiatan": "Perencanaan",
-                                "type": "revisi"
-                            };
-                            if($("#alasan_revisi_inp").val() != '') {  
-                                reqrevisiItem(form, item.id);
-                            } else {
-                                Swal.fire(
-                                    'Gagal.',
-                                    'Alasan belum diisi.',
-                                    'error'
-                                );
-                            }
-                        }
-                    });
-                });
-
+                content.append(row);                   
             });            
 
             $('#total-rencana-pengawasan').html('<b> Rp. '+accounting.formatNumber(total_pengawasan, 0, ".", ".")+'</b>');
@@ -747,7 +701,12 @@
             $( "#content" ).on( "click", "#Edit", (e) => {
                 let id = e.currentTarget.dataset.param_id;
                 window.location.replace('/perencanaan/edit/'+ id);   
-            }); 
+            });             
+
+            $( "#content" ).on( "click", "#RequestEdit", (e) => {
+                let id = e.currentTarget.dataset.param_id;              
+                modalRequestEdit(id);
+            });             
 
             $( "#content" ).on( "click", "#Destroy", (e) => {
                 let id = e.currentTarget.dataset.param_id;
@@ -782,45 +741,7 @@
                         alert('Gagal mengambil data.');
                     }
                 })
-            });            
-
-            function reqrevisiItem(form, id) {
-                $('#progressModal').show();
-                $.ajax({
-                    type:"PUT",
-                    url: BASE_URL+'/api/perencanaan/reqrevisi/' + id,
-                    data:form,
-                    cache: false,
-                    dataType: "json",
-                    xhr: function() {
-                         var xhr = new window.XMLHttpRequest();
-                         xhr.upload.addEventListener("progress", function(evt) {
-                              if (evt.lengthComputable) {
-                                var percentComplete = (evt.loaded / evt.total) * 100;
-                                $('#progress').css('width', percentComplete + '%');
-                                $('#progress-label').text(percentComplete.toFixed(2) + '%');
-                              }
-                         }, false);
-                         return xhr;
-                    },
-                    success: (respons) =>{
-                        $('#progressModal').hide();
-                        Swal.fire({
-                            title: 'Sukses!',
-                            text: 'Berhasil Request Edit Data Perencanaan.',
-                            icon: 'success',
-                            confirmButtonText: 'OK'                        
-                        }).then((result) => {
-                            window.location.replace('/perencanaan');
-                        });
-                    },
-                    error: function(error) {
-                        $('#progressModal').hide();
-                        console.error('Error request edit data:', error);
-                        window.location.replace('/perencanaan');
-                    }
-                });
-            }
+            });                        
 
             function dataLogRequset(data_log) {        
                 var tableBody = $('#dataLog tbody');
@@ -841,6 +762,83 @@
                     tableBody.append(row);
                 });
             }
+        }
+
+        function modalRequestEdit(id) {
+            var row = '';
+
+                row +=`<div class="modal-dialog">`;
+                row +=`<div class="modal-content">`;
+                row +=`<div class="modal-header">`;
+                row +=`<button type="button" class="close" data-dismiss="modal">&times;</button>`;
+                row +=`<h4 class="modal-title">Request Edit Perencanaan</h4>`;
+                row +=`</div>`;
+                row +=`<div class="modal-body">`;
+                row +=`<div class="form-group">`;
+                row +=`<label>Alasan Permintaan Edit Data</label>`;
+                row +=`<textarea rows="4" cols="50" class="form-control textarea-fixed-replay" id="alasan_revisi_inp" name="alasan_revisi" placeholder="Alasan Edit"></textarea>`;
+                row +=`</div>`;
+                row +=`</div>`;
+                row +=`<div class="modal-footer">`;
+                row +=`<button type="button" id="reqrevisi" class="btn btn-warning">Request Edit</button>`;
+                row +=`<button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>`;
+                row +=`</div>`;
+                row +=`</div>`;
+                row +=`</div>`;
+
+            $('#modal-reqrevisi').html(row);
+
+            $("#reqrevisi").click( () => {
+                Swal.fire({
+                    title: 'Apakah Anda Yakin Request Edit Perencanaan Ini?',			    
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var form = {
+                            "alasan": $("#alasan_revisi_inp").val(),
+                            "jenis_kegiatan": "Perencanaan",
+                            "type": "revisi"
+                        };
+                        if($("#alasan_revisi_inp").val() != '') {  
+                            reqrevisiItem(form, id);
+                        } else {
+                            Swal.fire(
+                                'Gagal.',
+                                'Alasan belum diisi.',
+                                'error'
+                            );
+                        }
+                    }
+                });
+            });
+        }
+
+        function reqrevisiItem(form, id) {
+            $.ajax({
+                type:"PUT",
+                url: BASE_URL+'/api/perencanaan/reqrevisi/' + id,
+                data:form,
+                cache: false,
+                dataType: "json",
+                success: (respons) =>{
+                    Swal.fire({
+                        title: 'Sukses!',
+                        text: 'Berhasil Request Edit Data Perencanaan.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'                        
+                    }).then((result) => {
+                        window.location.replace('/perencanaan');
+                    });
+                },
+                error: function(error) {
+                    console.error('Error request edit data:', error);
+                    window.location.replace('/perencanaan');
+                }
+            });
         }
 
         function deleteItem(id){

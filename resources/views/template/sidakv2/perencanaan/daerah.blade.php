@@ -755,7 +755,7 @@
 						confirmButtonText: 'Ya'
 					}).then((result) => {
 						if (result.isConfirmed) {
-							reqdocItem(segments[5]);
+							reqdocItem(data.id);
 							Swal.fire(
 								'Approved.',
 								'Dokumen Approved.',
@@ -779,7 +779,7 @@
 						confirmButtonText: 'Ya'
 					}).then((result) => {
 						if (result.isConfirmed) {
-							approveItem(segments[5]);
+							approveItem(data.id);
 							Swal.fire(
 								'Approved!',
 								'Data berhasil diapprove.',
@@ -809,7 +809,7 @@
 								"type": "unapprove"
 							};
 							if($("#alasan_unapprove_inp").val() != '') {  
-								unapproveItem(form);
+								unapproveItem(form, data.id);
 							} else {
 								Swal.fire(
 									'Gagal.',
@@ -837,7 +837,7 @@
 								"type": "unapprove_doc"
 							};
 							if($("#alasan_unapprove_doc_inp").val() != '') {  
-								unapproveDocItem(form);
+								unapproveDocItem(form, data.id);
 							} else {
 								Swal.fire(
 									'Gagal.',
@@ -865,7 +865,7 @@
 								"type": "request_edit"
 							};
 							if($("#alasan_edit_inp").val() != '') {  
-								reqeditItem(form);
+								reqeditItem(form, data.id);
 							} else {
 								Swal.fire(
 									'Gagal.',
@@ -893,7 +893,7 @@
 								"type": "revisi"
 							};
 							if($("#alasan_revisi_inp").val() != '') {  
-								reqrevisiItem(form);
+								reqrevisiItem(form, data.id);
 							} else {
 								Swal.fire(
 									'Gagal.',
@@ -915,7 +915,7 @@
 						confirmButtonText: 'Ya'
 					}).then((result) => {
 						if (result.isConfirmed) {
-							approveEditItem(segments[5]);
+							approveEditItem(data.id);
 							Swal.fire(
 								'Approved!',
 								'Data berhasil diapprove.',
@@ -1103,11 +1103,11 @@
 			});
 		}
 
-		function unapproveItem(form) {
+		function unapproveItem(form, id) {
 			$('#progressModal').show();
 			$.ajax({
 				type:"PUT",
-				url: BASE_URL+'/api/perencanaan/unapprove/' + segments[5],
+				url: BASE_URL+'/api/perencanaan/unapprove/' + id,
 				data:form,
 				cache: false,
 				dataType: "json",
@@ -1142,11 +1142,11 @@
 			});
 		}
 
-		function unapproveDocItem(form) {
+		function unapproveDocItem(form, id) {
 			$('#progressModal').show();
 			$.ajax({
 				type:"PUT",
-				url: BASE_URL+'/api/perencanaan/unapprove_doc/' + segments[5],
+				url: BASE_URL+'/api/perencanaan/unapprove_doc/' + id,
 				data:form,
 				cache: false,
 				dataType: "json",
@@ -1181,11 +1181,11 @@
 			});
 		}
 
-		function reqeditItem(form) {
+		function reqeditItem(form, id) {
 			$('#progressModal').show();
 			$.ajax({
 				type:"PUT",
-				url: BASE_URL+'/api/perencanaan/reqedit/' + segments[5],
+				url: BASE_URL+'/api/perencanaan/reqedit/' + id,
 				data:form,
 				cache: false,
 				dataType: "json",
@@ -1220,11 +1220,11 @@
 			});
 		}
 
-		function reqrevisiItem(form) {
+		function reqrevisiItem(form, id) {
 			$('#progressModal').show();
 			$.ajax({
 				type:"PUT",
-				url: BASE_URL+'/api/perencanaan/reqrevisi/' + segments[5],
+				url: BASE_URL+'/api/perencanaan/reqrevisi/' + id,
 				data:form,
 				cache: false,
 				dataType: "json",

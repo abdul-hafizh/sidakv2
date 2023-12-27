@@ -49,20 +49,6 @@
     }
 </style>
 
-<!-- Modal loading -->
-<div id="progressModal" class="modal-loading" style="display: none;">
-  <div class="modal-content2">
-    <span class="close" id="closeProgressModal">&times;</span>
-    <h2>Upload Dokumen</h2>
-    <div id="progress-container">
-      <div id="progress-bar">
-        <div id="progress" style="width: 0%"></div>
-      </div>
-      <div id="progress-label">0%</div>
-    </div>
-  </div>
-</div>
-
 <div class="content">
      <form id="FormSubmit">
           <div class="row padding-default" style="margin-bottom: 20px">
@@ -801,28 +787,13 @@
           function SendingData(form) {
 
                var pesan = (form.type === 'kirim') ? 'Terkirim ke Pusat.' : 'Berhasil Simpan.';
-
-               $('#progressModal').show();
-
                $.ajax({
                     type:"POST",
                     url: BASE_URL+'/api/perencanaan',
                     data:form,
                     cache: false,
                     dataType: "json",
-                    xhr: function() {
-                         var xhr = new window.XMLHttpRequest();
-                         xhr.upload.addEventListener("progress", function(evt) {
-                              if (evt.lengthComputable) {
-                                   var percentComplete = (evt.loaded / evt.total) * 100;
-                                   $('#progress').css('width', percentComplete + '%');
-                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
-                              }
-                         }, false);
-                         return xhr;
-                    },
                     success: (respons) =>{
-                         $('#progressModal').hide();
                          if(respons.status) {
                               Swal.fire({
                                    title: 'Sukses!',
@@ -844,7 +815,6 @@
                          }
                     },
                     error: (respons) => {
-                         $('#progressModal').hide();
                          errors = respons.responseJSON;                         
                          if(errors.messages.pengawas_analisa_target)
                          {
