@@ -797,7 +797,7 @@
             $('#modal-profile2').show();
             $('#lap_profile2_file').val(data.lap_profile2);
             $('#modal-profile2').click(function() {
-              tampilkanModal(data.lap_profile);
+              tampilkanModal(data.lap_profile2);
             });
           } else {
             $('#modal-profile2').hide();
@@ -1414,25 +1414,21 @@
     });
 
     function tampilkanModal(url) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', url);
-      xhr.responseType = 'blob';
-
-      xhr.onload = function() {
-        if (xhr.status === 200) {
-          var blobUrl = URL.createObjectURL(xhr.response);
+      $.ajax({
+        url: url,
+        method: 'GET',
+        xhrFields: {
+          responseType: 'blob'
+        },
+        success: function(data) {
+          var blobUrl = URL.createObjectURL(data);
           $('#framePDF').attr('src', blobUrl);
           $('#modalPDF').modal('show');
-        } else {
+        },
+        error: function() {
           alert('Gagal mengambil file PDF.');
         }
-      };
-
-      xhr.onerror = function() {
-        alert('Gagal mengambil file PDF.');
-      };
-
-      xhr.send();
+      });
     }
 
     function showSwalMessage(message) {
