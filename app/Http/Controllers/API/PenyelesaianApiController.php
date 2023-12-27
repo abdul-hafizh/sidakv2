@@ -114,7 +114,7 @@ class PenyelesaianApiController extends Controller
                 }
             }
 
-            $path = 'penyelesaian_masalah/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+            $path = 'penyelesaian_masalah/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;            
 
             if ($request->hasFile('lap_profile')) {
                 $file_profile = $request->file('lap_profile');

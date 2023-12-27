@@ -569,19 +569,7 @@
               text: respons.message,
               icon: 'error',
               confirmButtonText: 'OK'
-            }).then((result) => {
-              if (result.isConfirmed) {
-                $('#modal-add').hide();
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $('#datatable').DataTable().ajax.reload();
-              } else {
-                $('#modal-add').hide();
-                $('body').removeClass('modal-open');
-                $('.modal-backdrop').remove();
-                $('#datatable').DataTable().ajax.reload();
-              }
-            });
+            }).then((result) => {});
           }
         },
         error: (respons) => {
