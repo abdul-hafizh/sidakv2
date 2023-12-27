@@ -1094,7 +1094,7 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
         }else{
             
             $data = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$periode_id,'daerah_id'=>$daerah_id])
-                     ->sum(\DB::raw('budget_rencana_kerja + budget_studi_literatur + budget_rapat_kordinasi + budget_data_sekunder + budget_fgd_persiapan + budget_fgd_identifikasi + budget_lq + budget_shift_share + budget_tipologi_sektor + budget_klassen + budget_fgd_klarifikasi + budget_finalisasi + budget_summary_sektor_unggulan + budget_sektor_unggulan + budget_potensi_pasar + budget_parameter_sektor_unggulan + budget_subsektor_unggulan + budget_intensif_daerah + budget_potensi_lanjutan + budget_info_grafis + budget_dokumentasi'));  
+                     ->sum(\DB::raw('budget_potensi + budget_fgd_persiapan + budget_fgd_identifikasi + budget_sektor + budget_fgd_klarifikasi + budget_finalisasi + budget_penyusunan + budget_info_grafis + budget_dokumentasi'));  
 
         }    
        

@@ -28,6 +28,11 @@
     box-shadow: none;
 }
 
+.text-wrap{
+    word-wrap: break-word;
+    white-space: pre-wrap;
+}
+
 .text-capitalize{
     text-transform: capitalize;
 }

@@ -36,10 +36,10 @@ class RekapitulasiApiController extends Controller
             {
               $query = User::where('status','Y')->whereNotIn('username',['admin','pusat'])->orderBy('created_at', 'DESC');
             }else{
-              $query = User::where(['daerah_id'=> $daerah_id,'status','Y'])->orderBy('created_at', 'DESC');  
+              $query = User::where(['daerah_id'=> $daerah_id,'status'=>'Y'])->orderBy('created_at', 'DESC');  
             }  
         }else{
-            $query = User::where(['daerah_id'=> Auth::User()->daerah_id,'status','Y'])->orderBy('created_at', 'DESC');  
+            $query = User::where(['daerah_id'=> Auth::User()->daerah_id,'status'=>'Y'])->orderBy('created_at', 'DESC');  
             
         }
 

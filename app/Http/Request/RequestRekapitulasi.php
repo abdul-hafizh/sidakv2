@@ -63,6 +63,32 @@ class RequestRekapitulasi
     }else{
          $perencanaan = RequestDashboard::Perencanaan($request->periode_id,Auth::User()->daerah_id);
     }
+
+     if($perencanaan)
+     {
+       $pengawas_target = $perencanaan->pengawas_inspeksi_target;
+       $pengawas_pagu = ['original'=>$perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu)];
+
+       $bimtek_target = $perencanaan->bimtek_perizinan_target + $perencanaan->bimtek_pengawasan_target;
+       $bimtek_pagu = ['original'=>$perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu)];
+
+       $penyelesaian_target = $perencanaan->penyelesaian_realisasi_target;
+       $penyelesaian_pagu = ['original'=>$perencanaan->penyelesaian_identifikasi_pagu + $perencanaan->penyelesaian_realisasi_pagu + $perencanaan->penyelesaian_evaluasi_pagu,'convert'=> GeneralHelpers::formatRupiah($perencanaan->penyelesaian_identifikasi_pagu + $perencanaan->penyelesaian_realisasi_pagu + $perencanaan->penyelesaian_evaluasi_pagu)];
+
+       $target_promosi = $perencanaan->promosi_pengadaan_target;
+       $pagu_promosi = ['original'=>$perencanaan->promosi_pengadaan_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan->promosi_pengadaan_pagu)];
+        
+     }else{
+        $pengawas_target = 0;
+        $pengawas_pagu = ['original'=>'','convert'=>''];
+        $bimtek_target = 0;
+        $bimtek_pagu = ['original'=>'','convert'=>''];
+        $penyelesaian_target = 0;
+        $penyelesaian_pagu = ['original'=>'','convert'=>''];
+        $target_promosi = 0;
+        $pagu_promosi =  ['original'=>'','convert'=>''];
+
+     }   
    
     foreach ($data as $key => $val) 
     {
@@ -75,10 +101,10 @@ class RequestRekapitulasi
               $temp[$key]['daerah_id'] = $val->daerah_id;
               $temp[$key]['daerah_name'] = RequestDaerah::GetDaerahWhereID($val->daerah_id);
               
-              $temp[$key]['pengawas_target'] =  $perencanaan->pengawas_inspeksi_target;
-              $temp[$key]['pengawas_pagu'] = $perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu;
+              $temp[$key]['pengawas_target'] =  $pengawas_target;
+              $temp[$key]['pengawas_pagu'] =  $pengawas_pagu;
 
-               $temp[$key]['pengawas_pagu_convert'] =  GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu);
+             
 
               $temp[$key]['pengawas_realisasi_target'] = RequestDashboard::PengawasanRealisasiTarget($periode,$val->daerah_id,'analisa') + RequestDashboard::PengawasanRealisasiTarget($periode,$val->daerah_id,'inspeksi') + RequestDashboard::PengawasanRealisasiTarget($periode,$val->daerah_id,'evaluasi');
 
@@ -88,19 +114,18 @@ class RequestRekapitulasi
 
 
 
-              $temp[$key]['bimsos_target'] =  $perencanaan->bimtek_perizinan_target + $perencanaan->bimtek_pengawasan_target;
-              $temp[$key]['bimsos_pagu'] =  $perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu;
-              $temp[$key]['bimsos_pagu_convert'] =  GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu);
-
+              $temp[$key]['bimsos_target'] =  $bimtek_target;
+              $temp[$key]['bimsos_pagu'] = $bimtek_pagu;
+          
               $temp[$key]['bimsos_realisasi_target'] =  RequestDashboard::BimsosRealisasiTarget($periode,$val->daerah_id,'perizinan') + RequestDashboard::BimsosRealisasiTarget($periode,$val->daerah_id,'pengawasan');
 
               $temp[$key]['bimsos_realisasi_apbn'] = RequestDashboard::BimsosRealisasiAPBN($periode,$val->daerah_id,'perizinan') + RequestDashboard::BimsosRealisasiAPBN($periode,$val->daerah_id,'pengawasan');
               $temp[$key]['bimsos_realisasi_apbn_convert'] = GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode,$val->daerah_id,'perizinan') + RequestDashboard::BimsosRealisasiAPBN($periode,$val->daerah_id,'pengawasan'));
 
             
-              $temp[$key]['penyelesain_target'] =  $perencanaan->penyelesaian_realisasi_target;
-              $temp[$key]['penyelesain_pagu'] = $perencanaan->penyelesaian_identifikasi_pagu + $perencanaan->penyelesaian_realisasi_pagu + $perencanaan->penyelesaian_evaluasi_pagu;
-              $temp[$key]['penyelesain_pagu_convert'] =  GeneralHelpers::formatRupiah($perencanaan->penyelesaian_identifikasi_pagu + $perencanaan->penyelesaian_realisasi_pagu + $perencanaan->penyelesaian_evaluasi_pagu);
+              $temp[$key]['penyelesain_target'] = $penyelesaian_target;
+              $temp[$key]['penyelesain_pagu'] = $penyelesaian_pagu;
+           
               $temp[$key]['penyelesain_realisasi_target'] = RequestDashboard::PenyelesaianRealisasiTarget($periode,$val->daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiTarget($periode,$val->daerah_id,'penyelesaian') + RequestDashboard::PenyelesaianRealisasiTarget($periode,$val->daerah_id,'evaluasi');
 
               $temp[$key]['penyelesain_realisasi_apbn'] = RequestDashboard::PenyelesaianRealisasiAPBN($periode,$val->daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiAPBN($periode,$val->daerah_id,'penyelesaian') + RequestDashboard::PenyelesaianRealisasiAPBN($periode,$val->daerah_id,'evaluasi');
@@ -108,9 +133,8 @@ class RequestRekapitulasi
                $temp[$key]['penyelesain_realisasi_apbn_convert'] = GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode,$val->daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiAPBN($periode,$val->daerah_id,'penyelesaian') + RequestDashboard::PenyelesaianRealisasiAPBN($periode,$val->daerah_id,'evaluasi'));
 
 
-              $temp[$key]['promosi_target'] =  $perencanaan->promosi_pengadaan_target;
-              $temp[$key]['promosi_pagu'] =  $perencanaan->promosi_pengadaan_pagu;
-               $temp[$key]['promosi_pagu_convert'] =  GeneralHelpers::formatRupiah($perencanaan->promosi_pengadaan_pagu);
+              $temp[$key]['promosi_target'] = $target_promosi;
+              $temp[$key]['promosi_pagu'] =  $pagu_promosi;
               $temp[$key]['promosi_realisasi_target'] =  RequestDashboard::PromosiRealisasiTarget($request->periode_id,$val->daerah_id);
 
               $temp[$key]['promosi_realisasi_apbn'] = RequestDashboard::PromosiRealisasiAPBN($request->periode_id,$val->daerah_id);
@@ -320,7 +344,7 @@ class RequestRekapitulasi
            
            $pemetaan = Pemetaan::select(
               DB::raw('COUNT(id) as realisasi_target'),
-              DB::raw('SUM(budget_rencana_kerja + budget_studi_literatur + budget_rapat_kordinasi + budget_data_sekunder + budget_fgd_persiapan + budget_fgd_identifikasi + budget_lq + budget_shift_share + budget_tipologi_sektor + budget_klassen + budget_fgd_klarifikasi + budget_finalisasi + budget_summary_sektor_unggulan + budget_sektor_unggulan + budget_potensi_pasar + budget_parameter_sektor_unggulan + budget_subsektor_unggulan + budget_intensif_daerah + budget_potensi_lanjutan + budget_info_grafis + budget_dokumentasi) as realisasi_pagu')
+              DB::raw('SUM(budget_potensi + budget_fgd_persiapan + budget_fgd_identifikasi + budget_sektor + budget_fgd_klarifikasi + budget_finalisasi + budget_penyusunan + budget_info_grafis + budget_dokumentasi) as realisasi_pagu')
         )->where(['status_laporan_id'=>'14','periode_id'=>$periode])->get();
             if($pemetaan[0]->realisasi_target ==NULL){ 
                $pemetaan_target = 0;
