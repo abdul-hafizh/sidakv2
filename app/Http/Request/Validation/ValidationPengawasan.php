@@ -231,7 +231,7 @@ class ValidationPengawasan
                 //    'jml_peserta'  => 'required_if:sub_menu_slug,is_bimtek_ipbbr|nullable|integer',
                 //    'biaya'  => 'required|integer',
                 'lokasi'  => 'required_if:sub_menu_slug,analisa|required_if:sub_menu_slug,evaluasi',
-                "nib.*"    => "required",
+                "nib.*"    => "required_if:sub_menu_slug,inspeksi",
 
             ]
         );
