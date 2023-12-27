@@ -157,7 +157,7 @@ class RequestPengawasan
             $row[]  = $val->id;
             $row[]  = RequestDaerah::GetDaerahWhereID($val->daerah_id);
             $row[]  = RequestPengawasan::getLabelSubMenu($val->sub_menu_slug);
-            $row[]  = $val->nama_prshn;
+            $row[]  = if($val->nama_prshn ==null){''}else{ $val->nama_prshn; }
             $row[]  = $val->nama_kegiatan;
             $row[]  = GeneralHelpers::formatDate($val->tgl_kegiatan);
             $row[]  = GeneralHelpers::formatRupiah($val->biaya_kegiatan);
