@@ -615,7 +615,7 @@
                     row +=`<div id="Detail" data-param_id="${item.id}"  class="pointer btn-padding-action pull-left" title="Detail Data"><i class="fa-icon icon-detail"></i></div>`;
 
                     if(item.access == 'pusat' && item.status_code == 16) {
-                        row += `<div type="button" data-param_id="${item.id}" id="RequestEdit" class="pointer btn-padding-action pull-left" data-toggle="modal" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>`;
+                        row += `<div data-param_id="`+ item.id +`" id="RequestEdit" class="pointer btn-padding-action pull-left" data-toggle="modal" data-toggle="tooltip" data-target="#modal-reqrevisi" title="Request Edit"><i class="fa-icon icon-reqedit"></i></div>`;
                     }
 
                     if(item.status_code == 13)
@@ -705,7 +705,7 @@
 
             $( "#content" ).on( "click", "#RequestEdit", (e) => {
                 let id = e.currentTarget.dataset.param_id;              
-                ModalRequestEdit(id)
+                ModalRequestEdit(id);
             });             
 
             $( "#content" ).on( "click", "#Destroy", (e) => {
