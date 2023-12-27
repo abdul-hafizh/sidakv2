@@ -1041,11 +1041,13 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
+                $('#modal-add').hide();
                 $('#modal-req-edit').hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
                 $('#datatable').DataTable().ajax.reload();
               } else {
+                $('#modal-add').hide();
                 $('#modal-req-edit').hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
@@ -1116,11 +1118,13 @@
               confirmButtonText: 'OK'
             }).then((result) => {
               if (result.isConfirmed) {
+                $('#modal-add').hide();
                 $('#modal-req-revision').hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
                 $('#datatable').DataTable().ajax.reload();
               } else {
+                $('#modal-add').hide();
                 $('#modal-req-revision').hide();
                 $('body').removeClass('modal-open');
                 $('.modal-backdrop').remove();
