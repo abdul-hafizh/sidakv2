@@ -268,9 +268,9 @@
 							</tr>
 							<tr>
 								<th>Total</th>
-								<th style="text-align: center"><span>${result.data[0].analisa_rencana_target+result.data[0].inspeksi_target+result.data[0].evaluasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].inspeksi_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_rencana+result.data[0].inspeksi_rencana+result.data[0].evaluasi_rencana)}</span></th>
-								<th style="text-align: center"><span>${result.data[0].analisa_realisasi_target+result.data[0].inspeksi_realisasi_target+result.data[0].evaluasi_realisasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].inspeksi_realisasi_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_realisasi+result.data[0].inspeksi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
 							</tr>
 						</tbody>
@@ -332,13 +332,13 @@
 							</tr>
 							<tr>
 								<th>Total</th>
-								<th style="text-align: center"><span>${result.data[0].analisa_rencana_target+result.data[0].inspeksi_target+result.data[0].evaluasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].inspeksi_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_rencana+result.data[0].inspeksi_rencana+result.data[0].evaluasi_rencana)}</span></th>
-								<th style="text-align: center"><span>${result.data[0].analisa_realisasi_target+result.data[0].inspeksi_realisasi_target+result.data[0].evaluasi_realisasi_target}</span></th>
+								<th style="text-align: center"><span>${result.data[0].inspeksi_realisasi_target}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_realisasi+result.data[0].inspeksi_realisasi+result.data[0].evaluasi_realisasi)}</span></th>
-								<th style="text-align: center">${result.data[0].analisa_realisasi_target_2+result.data[0].inspeksi_realisasi_target_2+result.data[0].evaluasi_realisasi_target_2}</th>
+								<th style="text-align: center">${result.data[0].inspeksi_realisasi_target_2}</th>
 								<th style="text-align: right">${formatRupiah(result.data[0].analisa_realisasi_2+result.data[0].inspeksi_realisasi_2+result.data[0].evaluasi_realisasi_2)}</th>
-								<th style="text-align: center"><span>${result.data[0].analisa_realisasi_target_total+result.data[0].inspeksi_realisasi_target_total+result.data[0].evaluasi_realisasi_target_total}</span></th>
+								<th style="text-align: center"><span>${result.data[0].inspeksi_realisasi_target_total}</span></th>
 								<th style="text-align: right"><span>${formatRupiah(result.data[0].analisa_realisasi_total+result.data[0].inspeksi_realisasi_total+result.data[0].evaluasi_realisasi_total)}</span></th>
 							</tr>
 						</tbody>
