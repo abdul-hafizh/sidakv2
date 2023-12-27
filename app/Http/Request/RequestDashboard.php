@@ -448,7 +448,7 @@ class RequestDashboard
            $semester1 = [
                "sub_menu" =>"Bimtek Pengawasan Perizinan Usaha",
                "target"=>$bimtek_pengawasan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($bimtek_pengawasan_pagu),
+               "pagu"=> $bimtek_pengawasan_pagu,
                "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
                "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr')),
                "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
