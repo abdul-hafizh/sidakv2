@@ -801,28 +801,14 @@
           function SendingData(form) {
 
                var pesan = (form.type === 'kirim') ? 'Terkirim ke Pusat.' : 'Berhasil Simpan.';
-
-               $('#progressModal').show();
-
+               console.log(form);
                $.ajax({
                     type:"POST",
                     url: BASE_URL+'/api/perencanaan',
                     data:form,
                     cache: false,
                     dataType: "json",
-                    xhr: function() {
-                         var xhr = new window.XMLHttpRequest();
-                         xhr.upload.addEventListener("progress", function(evt) {
-                              if (evt.lengthComputable) {
-                                   var percentComplete = (evt.loaded / evt.total) * 100;
-                                   $('#progress').css('width', percentComplete + '%');
-                                   $('#progress-label').text(percentComplete.toFixed(2) + '%');
-                              }
-                         }, false);
-                         return xhr;
-                    },
                     success: (respons) =>{
-                         $('#progressModal').hide();
                          if(respons.status) {
                               Swal.fire({
                                    title: 'Sukses!',
@@ -844,7 +830,6 @@
                          }
                     },
                     error: (respons) => {
-                         $('#progressModal').hide();
                          errors = respons.responseJSON;                         
                          if(errors.messages.pengawas_analisa_target)
                          {
