@@ -55,7 +55,7 @@
       //$('#template').hide();
       //$('#import').hide();
       //$('#loading-bar').show();
-      proggresbar();
+      ImportExcel();
 
     });
 
@@ -94,7 +94,6 @@
           $('#modal-import').modal('toggle');
           ImportExcel();
         }
-
         var row = '';
         row += '<label><h4>Loading data ...</h4></label>';
         row += '<div class="progress loading-submit" >';
@@ -119,6 +118,8 @@
       var formData = new FormData(); // Create a FormData object
 
       formData.append('file', fileInput);
+      $('#progressModal').show();
+
       $.ajax({
         type: 'POST',
         url: BASE_URL + '/api/pagutarget/import_excel',
@@ -126,9 +127,11 @@
         contentType: false,
         processData: false,
         success: (response) => {
+          $('#progressModal').hide();
           window.location.replace('/paguapbn');
         },
         error: function(response) {
+          $('#progressModal').hide();
           $('#file-input-error').text(response.responseJSON.errors.file);
         }
       });

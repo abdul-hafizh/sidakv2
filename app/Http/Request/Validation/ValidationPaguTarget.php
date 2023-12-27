@@ -14,7 +14,6 @@ class ValidationPaguTarget
         $fields = [
             'periode_id'  => 'Periode',
             'daerah_id'  => 'Daerah',
-            'pagu_apbn'  => 'Pagu APBN',
             'pagu_promosi'  => 'Pagu Promosi',
             'type_daerah'  => 'Tipe Daerah',
             'pagu_pengawasan' => 'Pagu Pengawasan',
@@ -33,7 +32,6 @@ class ValidationPaguTarget
                     Rule::unique('pagu_target', 'periode_id')->where('daerah_id', $request->daerah_id),
                 ],
                 'daerah_id'  => 'required',
-                'pagu_apbn'  => 'required|integer',
                 'type_daerah'  => 'required',
                 'pagu_promosi'  => 'required_if:type_daerah,Provinsi|nullable|integer',
                 'pagu_pengawasan'  => 'required|integer',
@@ -66,7 +64,6 @@ class ValidationPaguTarget
         $fields = [
             'periode_id'  => 'Periode',
             'daerah_id'  => 'Daerah',
-            'pagu_apbn'  => 'Pagu APBN',
             'pagu_promosi'  => 'Pagu Promosi',
             'type_daerah'  => 'Tipe Daerah',
             'pagu_pengawasan' => 'Pagu Pengawasan',
@@ -87,7 +84,6 @@ class ValidationPaguTarget
                 ],
 
                 'daerah_id'  => 'required',
-                'pagu_apbn'  => 'required|integer',
                 'pagu_promosi'  => 'required_if:type_daerah,Provinsi|nullable|integer',
                 'type_daerah'  => 'required',
                 'pagu_pengawasan'  => 'required|integer',
