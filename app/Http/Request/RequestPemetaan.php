@@ -158,7 +158,7 @@ class RequestPemetaan
          $temp[$key]['realisasi_potensi'] = $val->realisasi_potensi;
          $temp[$key]['keterangan_potensi'] =$potensi;  
 
-         $temp[$key]['total_budget_potensi'] = GeneralHelpers::formatRupiah($val->budget_potensi);
+         $temp[$key]['total_budget_potensi'] = ['original'=>$val->budget_potensi,'convert'=>GeneralHelpers::formatRupiah($val->budget_potensi)];
          $temp[$key]['total_realisasi_potensi'] = GeneralHelpers::formatRupiah($val->realisasi_potensi);
 
 
@@ -211,7 +211,7 @@ class RequestPemetaan
         
 
 
-         $temp[$key]['total_budget_pelaksanaan'] = GeneralHelpers::formatRupiah($val->budget_fgd_persiapan + $val->budget_fgd_identifikasi + $val->budget_sektor + $val->budget_fgd_klarifikasi + $val->budget_finalisasi); 
+         $temp[$key]['total_budget_pelaksanaan'] = ['original'=>$val->budget_fgd_persiapan + $val->budget_fgd_identifikasi + $val->budget_sektor + $val->budget_fgd_klarifikasi + $val->budget_finalisasi,'convert'=>GeneralHelpers::formatRupiah($val->budget_fgd_persiapan + $val->budget_fgd_identifikasi + $val->budget_sektor + $val->budget_fgd_klarifikasi + $val->budget_finalisasi)]; 
 
           $temp[$key]['total_realisasi_pelaksanaan'] = GeneralHelpers::formatRupiah($val->realisasi_fgd_persiapan + $val->realisasi_fgd_identifikasi + $val->realisasi_sektor + $val->realisasi_fgd_klarifikasi + $val->realisasi_finalisasi); 
 
@@ -232,7 +232,7 @@ class RequestPemetaan
 
          $temp[$key]['total_analisis_doc'] = GeneralHelpers::formatRupiah($val->budget_penyusunan);
 
-         $temp[$key]['total_budget_penyusunan'] = GeneralHelpers::formatRupiah($val->budget_penyusunan + $val->budget_info_grafis + $val->budget_dokumentasi);
+         $temp[$key]['total_budget_penyusunan'] = ['original'=>$val->budget_penyusunan + $val->budget_info_grafis + $val->budget_dokumentasi,'convert'=>GeneralHelpers::formatRupiah($val->budget_penyusunan + $val->budget_info_grafis + $val->budget_dokumentasi)];
 
          $temp[$key]['total_realisasi_penyusunan'] = GeneralHelpers::formatRupiah($val->realisasi_penyusunan + $val->realisasi_info_grafis + $val->realisasi_dokumentasi);
 

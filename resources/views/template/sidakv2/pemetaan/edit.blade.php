@@ -187,11 +187,12 @@
           var file_data_penyusunan = '';
           var file_penyusunan_infografis = '';
           var file_doc_info_grafis = '';
+          
+          var status_jasa_konsultan = false;
+          var status_swakelola = false;  
 
           var btn_potensi = 'false';
          
-
-
           var btn_fgd_persiapan = 'false';
           var btn_data_identifikasi = 'false';
           var btn_data_sektor = 'false';
@@ -201,8 +202,9 @@
           var btn_data_penyusunan = 'false';
           var btn_penyusunan_infografis = 'false';
           var btn_doc_info_grafis = 'false';
+          
 
-           var url = window.location.href; 
+          var url = window.location.href; 
           var segments = url.split('/');
 
           $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
@@ -229,26 +231,9 @@
                        
                          updateContent(data);
 
-                          pagu_promosi = data.pagu_promosi;
-                          total_promosi = data.total_promosi;
-                         
-                          btn_rencana_kerja = data.btn_rencana_kerja;
-                          btn_studi_literatur = data.btn_studi_literatur;
-                          btn_rapat_kordinasi = data.btn_rapat_kordinasi;
-                          btn_data_sekunder = data.btn_data_sekunder;
+                         pagu_promosi = data.pagu_promosi;
+                         total_promosi = data.total_promosi;
 
-
-                          btn_fgd_persiapan = data.btn_fgd_persiapan;
-                          btn_data_identifikasi = data.btn_fgd_identifikasi;
-                          btn_data_pengolahan = data.btn_pengolahan;
-                          btn_data_klarifikasi = data.btn_fgd_klarifikasi;
-                          btn_data_finalisasi = data.btn_finalisasi;
-
-                          btn_data_penyusunan = data.btn_penyusunan;
-                          btn_penyusunan_infografis = data.btn_info_grafis;
-                          btn_doc_info_grafis = data.btn_dokumentasi;
-
-                         
                          getperiode(data.periode_id); 
                         
                        
@@ -269,7 +254,7 @@
                             row+=`<td  class="font-bold text-center">1</td>`;
                             row+=`<td></td>`;
                             row+=`<td colspan="16" class="font-bold"> Identifikasi Pemetaan Potensi Investasi : </td>`;
-                            row+=`<td align="right"><strong id="total-budget-indentifikasi">${item.total_budget_potensi }</td>`;
+                            row+=`<td align="right"><strong id="total-budget-indentifikasi">${item.total_budget_potensi.convert }</td>`;
                               row+=`<td></td>`;
                               row+=`<td align="right"><strong id="total-realisasi-identifikasi">${item.total_realisasi_potensi }</td>`;
                              row+=`<td></td>`;
@@ -408,7 +393,7 @@
                              row+=`<td  class="font-bold text-center">2</td>`;  
                              row+=`<td></td>`;  
                              row+=`<td colspan="16" class="font-bold"> Perumusan dan Pelaksanaan Pemetaan Potensi Investasi : Investasi : </td>`;  
-                             row+=`<td align="right"><strong id="total-pelaksanaan-budget">${item.total_budget_pelaksanaan}</td>`;  
+                             row+=`<td align="right"><strong id="total-pelaksanaan-budget">${item.total_budget_pelaksanaan.convert}</td>`;  
                                row+=`<td></td>`;  
                                row+=`<td align="right"><strong id="total-pelaksanaan-realisasi">${item.total_realisasi_pelaksanaan}</td>`;
                               row+=`<td></td>`;  
@@ -748,7 +733,7 @@
                               row+=`<td></td>`; 
                               row+=`<td>`; 
                                    row+=`<div id="desc-d-pro-alert" class="pdf-btn-center">`; 
-                                         row+=`<button id="file-fgd-klarifikasi" disabled="" type="button" class="file btn btn-default"> Upload File</button>`; 
+                                         row+=`<button id="file-fgd-klarifikasi"  type="button" class="file btn btn-default"> Upload File</button>`; 
                                    
                                          row+=`<div id="img-file-fgd-klarifikasi">`;
                                                if(item.keterangan_fgd_klarifikasi)
@@ -813,7 +798,7 @@
                                row+=`<td></td>`; 
                                row+=`<td>`; 
                                     row+=`<div id="desc-e-pro-alert" class="pdf-btn-center">`; 
-                                         row+=`<button id="file-fgd-konfirmasi" disabled="" type="button" class="file btn btn-default"> Upload File</button>`; 
+                                         row+=`<button id="file-fgd-konfirmasi"  type="button" class="file btn btn-default"> Upload File</button>`; 
                                    
                                           row+=`<div id="img-file-fgd-konfirmasi">`;
                                                if(item.keterangan_finalisasi)
@@ -837,7 +822,7 @@
                             row+=`<td class="font-bold text-center">3</td>`; 
                             row+=`<td></td>`; 
                             row+=`<td colspan="16" class="font-bold"> Perumusan dan Pelaksanaan Pemetaan Potensi Investasi : Investasi : </td>`; 
-                            row+=`<td align="right"><strong id="total-penyusunan-budget">${item.total_budget_penyusunan }</strong></td>`; 
+                            row+=`<td align="right"><strong id="total-penyusunan-budget">${item.total_budget_penyusunan.convert }</strong></td>`; 
                               row+=`<td></td>`; 
                               row+=`<td align="right"><strong id="total-penyusunan-realisasi">${item.total_realisasi_penyusunan }</strong></td>`; 
                              row+=`<td></td>`; 
@@ -1180,6 +1165,11 @@
                     content.append(row);
 
                     pagu_apbn = item.pagu_pemetaan.original;
+                    temp_total_identifikasi_budget = item.total_budget_potensi.original;
+                    temp_total_pelaksanaan_budget =  item.total_budget_pelaksanaan.original;
+                    temp_total_penyusunan_budget = item.total_budget_penyusunan.original;
+
+                    temp_total_swakelola_budget = item.budget_fgd_persiapan + item.budget_fgd_identifikasi + item.budget_fgd_klarifikasi + item.budget_finalisasi + item.budget_info_grafis + item.budget_dokumentasi;
 
                     $('#pagu-apbn').html('<b>'+item.pagu_pemetaan.convert+'</b>');
                     $('#total-budget').html('<b>'+item.total_budget_pemetaan.convert+'</b>');
@@ -1301,66 +1291,78 @@
                var btn = '';
                     btn+='<button id="update"  type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> UPDATE</button>';
 
-                   
-                    
+                     btn_potensi = item.btn_potensi;
+                     btn_fgd_persiapan = item.btn_fgd_persiapan;
+                     btn_fgd_identifikasi = item.btn_fgd_identifikasi;
+                     btn_sektor = item.btn_sektor;
+                     btn_fgd_klarifikasi = item.btn_fgd_klarifikasi;
+                     btn_finalisasi = item.btn_finalisasi;
+                     btn_penyusunan = item.btn_penyusunan;
+                     btn_info_grafis = item.btn_info_grafis;
+                     btn_dokumentasi = item.btn_dokumentasi;
 
-                  // if(btn_potensi == 'true' && btn_fgd_persiapan == 'true' && btn_data_identifikasi == 'true' && btn_data_sektor == 'true' && btn_data_penyusunan == 'true' && btn_penyusunan_infografis == 'true' && btn_doc_info_grafis == 'true')
-                  // {  
+                     console.log(btn_potensi)
+                     console.log(btn_fgd_persiapan)
+                     console.log(btn_fgd_identifikasi)
+                     console.log(btn_sektor)
+
+
+
+                     console.log(btn_fgd_klarifikasi)
+                     console.log(btn_finalisasi)
+                     console.log(btn_penyusunan)
+                     console.log(btn_info_grafis)
+                     console.log(btn_dokumentasi)
+
+
+
+                  if(btn_potensi == 'true' && btn_fgd_persiapan == 'true' && btn_fgd_identifikasi == 'true' && btn_sektor == 'true' && btn_fgd_klarifikasi == 'true' && btn_finalisasi == 'true' && btn_penyusunan == 'true' && btn_info_grafis == 'true' && btn_dokumentasi =='true')
+                  {  
                     btn+='<button id="kirim"  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>';
-                  // }else{
-                  //   btn+='<button disabled  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>';  
-                  // }  
+                  }else{
+                    btn+='<button disabled  type="button" class="btn btn-primary col-md-2"><i class="fa fa-upload"></i> KIRIM</button>';  
+                  }  
                     $('#btn-submit').html(btn);
+                     
 
-              $("#update").click( () => {
-                var status_jasa_konsultan = true;
-                var status_swakelola = true;
+                    jasaKonsultan();
+                    swakelola();
+
+                    $("#update").click( () => {
+                       BtnUpdate(item)
+                    });
+                    
+                    $("#kirim").click( () => {  
+                      BtnKirim(item)
+                     
+                    }); 
+          
+
+          }
+
+
+          function BtnUpdate(item){
+
+               
+                    jasaKonsultan();
+                    swakelola();
               
                
-               var form = {
+                var form = {
                     'status_laporan_id':13,
                     'type': 'draft',
-               };
+                    'btn_potensi': item.btn_potensi,
+                    'btn_fgd_persiapan': item.btn_fgd_persiapan,
+                    'btn_fgd_identifikasi':item.btn_fgd_identifikasi,
+                    'btn_sektor':item.btn_sektor,
+                    'btn_fgd_klarifikasi':item.btn_fgd_klarifikasi,
+                    'btn_finalisasi':item.btn_finalisasi,
+                    'btn_penyusunan':item.btn_penyusunan,
+                    'btn_info_grafis':item.btn_info_grafis,
+                    'btn_dokumentasi':item.btn_dokumentasi,
+                };
 
-               var total_jasa_konsultan = item.total_identifikasi_budget + item.total_pelaksanaan_budget + item.total_penyusunan_budget;
-                    var total_swakelola =  ''
-                    const min_jasa = pagu_apbn * 60 / 100;  
-
-                    console.log(total_jasa_konsultan)                     
-                      console.log(min_jasa)  
-               if(min_jasa > total_jasa_konsultan) 
-               {
-                    status_jasa_konsultan = false;
-                    var alt = '';
-                    alt +='<h4>Info!</h4>'
-                    alt += 'Anggaran jasa konsultan tidak boleh kurang dari <b>Rp'+ accounting.formatNumber(min_jasa, 0, ".", ".") +' </b> atau  <b>60%</b> dari total APBN.';
-                     $('#alert-jasa-konsultasi').show().html(alt);
-                     $('#total-budget').removeClass('text-black').addClass('text-red').addClass('blinking-text');
-               } else {
-                   $('#alert-jasa-konsultasi').hide().html('');  
-                   $('#total-budget').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
-                   status_jasa_konsultan = true;
-               }  
-
-
-               var total_sakelola = temp_total_swakelola_budget;
-               const min_swakelola = pagu_apbn * 40 / 100;
-               if (min_swakelola > total_sakelola) 
-               {
-                    status_swakelola = false;
-                    var alt = '';
-                     alt +='<h4>Info!</h4>';
-                     alt += 'Anggaran swakelola tidak boleh kurang dari <b>Rp '+ accounting.formatNumber(min_jasa, 0, ".", ".") +'</b> atau <b>40%</b> dari total APBN.';
-                     $('#alert-swakelola').show().html(alt);
-                      $('#total-budget').removeClass('text-black').addClass('text-red').addClass('blinking-text');
-
-               }else{
-                      status_swakelola = true;
-                     $('#alert-swakelola').hide().html('');
-                     $('#total-budget').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
-               }  
-
-
+                 
 
                     var periode_id = $('#periode_id').val();
                     if(periode_id)
@@ -1381,30 +1383,64 @@
                          });
                     }     
    
-                
-               
+           
+          }
+
+
+          function BtnKirim(item){
+                   jasaKonsultan();
+                    swakelola();
+                 
+                                
+                    
+                    var form = {
+                         'status_laporan_id':14,
+                         'type': 'kirim',
+                         'btn_potensi': item.btn_potensi,
+                         'btn_fgd_persiapan': item.btn_fgd_persiapan,
+                         'btn_fgd_identifikasi':item.btn_fgd_identifikasi,
+                         'btn_sektor':item.btn_sektor,
+                         'btn_fgd_klarifikasi':item.btn_fgd_klarifikasi,
+                         'btn_finalisasi':item.btn_finalisasi,
+                         'btn_penyusunan':item.btn_penyusunan,
+                         'btn_info_grafis':item.btn_info_grafis,
+                         'btn_dokumentasi':item.btn_dokumentasi,
+                    };
+
+                   
+                    
+                    var periode_id = $('#periode_id').val();
+                    if(periode_id)
+                    {
+                       if(status_swakelola == true && status_swakelola == true)
+                       {
+                           SendingData(form);
+                       }  
+                       
+                    }else{
+                             Swal.fire({
+                              icon: 'info',
+                              title: 'Peringatan',
+                              text: 'Maaf, Periode Belum di pilih.',
+                              confirmButtonColor: '#000',
+                              showConfirmButton: true,
+                              confirmButtonText: 'OK',
+                              });
+                         }   
+        
+                  
+
               
 
-          });
+          }
 
-          $("#kirim").click( () => {
-
-               
-
-                                          
-               var status_jasa_konsultan = false;
-                var status_swakelola = false;
-              
-               
-              var form = {
-                    'status_laporan_id':14,
-                    'type': 'kirim',
-               };
+          function jasaKonsultan(){
 
                var total_jasa_konsultan = temp_total_identifikasi_budget + temp_total_pelaksanaan_budget + temp_total_penyusunan_budget;
-                    var total_swakelola =  ''
-                    const min_jasa = pagu_apbn * 60 / 100;                       
-     
+               var total_swakelola =  ''
+               const min_jasa = pagu_apbn * 60 / 100;                       
+                  console.log(min_jasa);
+
                if(min_jasa > total_jasa_konsultan) 
                {
                     status_jasa_konsultan = false;
@@ -1419,6 +1455,9 @@
                    status_jasa_konsultan = true;
                }  
 
+          }
+
+          function swakelola(){
 
                var total_sakelola = temp_total_swakelola_budget;
                const min_swakelola = pagu_apbn * 40 / 100;
@@ -1427,7 +1466,7 @@
                     status_swakelola = false;
                     var alt = '';
                      alt +='<h4>Info!</h4>';
-                     alt += 'Anggaran swakelola tidak boleh kurang dari <b>Rp '+ accounting.formatNumber(min_jasa, 0, ".", ".") +'</b> atau <b>40%</b> dari total APBN.';
+                     alt += 'Anggaran swakelola tidak boleh kurang dari <b>Rp '+ accounting.formatNumber(min_swakelola, 0, ".", ".") +'</b> atau <b>40%</b> dari total APBN.';
                      $('#alert-swakelola').show().html(alt);
                       $('#total-budget').removeClass('text-black').addClass('text-red').addClass('blinking-text');
 
@@ -1435,33 +1474,7 @@
                       status_swakelola = true;
                      $('#alert-swakelola').hide().html('');
                      $('#total-budget').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
-               }  
-
-
-
-                    var periode_id = $('#periode_id').val();
-                    if(periode_id)
-                   {
-                       if(status_swakelola == true && status_swakelola == true)
-                       {
-                           SendingData(form);
-                       }  
-                       
-                    }else{
-                        Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Periode Belum di pilih.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                         });
-                    }   
-   
-             
-
-          });
-
+               }
           }
 
 
@@ -2409,9 +2422,9 @@
                          row +=`</div>`;
                      
                          $('#img-file-fgd-klarifikasi').html(row);
-                        file_data_klarifikasi = ReConvertFile(files[0].name,file);
-                        btn_data_klarifikasi = 'true';
-                        getbutton();
+                         file_data_klarifikasi = ReConvertFile(files[0].name,file);
+                         btn_data_klarifikasi = 'true';
+                         getbutton();
                      }else{
                          Swal.fire({
                                icon: 'info',
@@ -2866,12 +2879,23 @@
                     'periode_id':periode_id,
                     'status_laporan_id':form.status_laporan_id,
 
+                    'btn_potensi': form.btn_potensi,
+                    'btn_fgd_persiapan': form.btn_fgd_persiapan,
+                    'btn_fgd_identifikasi':form.btn_fgd_identifikasi,
+                    'btn_sektor':form.btn_sektor,
+                    'btn_fgd_klarifikasi':form.btn_fgd_klarifikasi,
+                    'btn_finalisasi':form.btn_finalisasi,
+                    'btn_penyusunan':form.btn_penyusunan,
+                    'btn_info_grafis':form.btn_info_grafis,
+                    'btn_dokumentasi':form.btn_dokumentasi,
+                    
                     'checklist_rk':checklist_rk,
                     'checklist_sl':checklist_sl,
                     'checklist_kor':checklist_kor, 
                     'checklist_ds':checklist_ds, 
 
                     'type_potensi':'jasa-konsultan', 
+
                     'tgl_awal_potensi':$('#startdate-potensi').val(),
                     'tgl_ahir_potensi':$('#enddate-potensi').val(),
                     'budget_potensi':$('#budget-potensi').val(),
@@ -2951,8 +2975,7 @@
  
                };
                
-              
-              
+               
           
                $.ajax({
                     type:"PUT",

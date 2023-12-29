@@ -835,12 +835,12 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
                
 
 
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'identifikasi') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'penyelesaian') +  RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
+               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'penyelesaian') +  RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
 
                "realisasi_target"=>  RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian'),
 
                  
-               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'identifikasi') + RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'penyelesaian') +  RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
+               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'penyelesaian') +  RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
 
            ];
          }else{

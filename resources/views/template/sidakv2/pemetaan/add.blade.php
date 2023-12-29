@@ -904,8 +904,6 @@
 
           var btn_potensi = 'false';
          
-
-
           var btn_fgd_persiapan = 'false';
           var btn_data_identifikasi = 'false';
           var btn_data_sektor = 'false';
@@ -979,7 +977,7 @@
           getbutton();
 
           function getbutton(){
-              
+               
                var btn = '';
                     btn+='<button id="simpan"  type="button" class="btn btn-warning col-md-2"><i class="fa fa-send"></i> SIMPAN</button>';
 
@@ -994,92 +992,111 @@
                   }  
                     $('#btn-submit').html(btn);
 
+               jasaKonsultan();
+               swakelola();
+
               $("#simpan").click( () => {
-                var status_jasa_konsultan = false;
-                var status_swakelola = false;
-              
+                  BtnUpdate();
+               });
+
+               $("#kirim").click( () => {
+                    BtnKirim();
+
+               });
+
+          }
+
+
+          function BtnUpdate(){
+                  
+               
+                  jasaKonsultan();
+                    swakelola();
                
                var form = {
                     'status_laporan_id':13,
                     'type': 'draft',
+                    'btn_potensi': 'true',
+                    'btn_fgd_persiapan': 'true',
+                    'btn_fgd_identifikasi':'true',
+                    'btn_sektor':'true',
+                    'btn_fgd_klarifikasi':'true',
+                    'btn_finalisasi':'true',
+                    'btn_penyusunan':'true',
+                    'btn_info_grafis':'true',
+                    'btn_dokumentasi':'true',
                };
 
-               var total_jasa_konsultan = temp_total_identifikasi_budget + temp_total_pelaksanaan_budget + temp_total_penyusunan_budget;
-                    var total_swakelola =  ''
-                    const min_jasa = pagu_apbn * 60 / 100;                       
-     
-               if(min_jasa > total_jasa_konsultan) 
-               {
-                    status_jasa_konsultan = false;
-                    var alt = '';
-                    alt +='<h4>Info!</h4>'
-                    alt += 'Anggaran jasa konsultan tidak boleh kurang dari <b>Rp'+ accounting.formatNumber(min_jasa, 0, ".", ".") +' </b> atau  <b>60%</b> dari total APBN.';
-                     $('#alert-jasa-konsultasi').show().html(alt);
-                     $('#total-budget').removeClass('text-black').addClass('text-red').addClass('blinking-text');
-               } else {
-                   $('#alert-jasa-konsultasi').hide().html('');  
-                   $('#total-budget').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
-                   status_jasa_konsultan = true;
-               }  
+               
 
 
-               var total_sakelola = temp_total_swakelola_budget;
-               const min_swakelola = pagu_apbn * 40 / 100;
-               if (min_swakelola > total_sakelola) 
-               {
-                    status_swakelola = false;
-                    var alt = '';
-                     alt +='<h4>Info!</h4>';
-                     alt += 'Anggaran swakelola tidak boleh kurang dari <b>Rp '+ accounting.formatNumber(min_jasa, 0, ".", ".") +'</b> atau <b>40%</b> dari total APBN.';
-                     $('#alert-swakelola').show().html(alt);
-                      $('#total-budget').removeClass('text-black').addClass('text-red').addClass('blinking-text');
-
+               var periode_id = $('#periode_id').val();
+               if(periode_id)
+              {
+                  if(status_jasa_konsultan == true && status_swakelola == true)
+                  {
+                      SendingData(form);
+                  }  
+                  
                }else{
-                      status_swakelola = true;
-                     $('#alert-swakelola').hide().html('');
-                     $('#total-budget').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
-               }  
+                   Swal.fire({
+                    icon: 'info',
+                    title: 'Peringatan',
+                    text: 'Maaf, Periode Belum di pilih.',
+                    confirmButtonColor: '#000',
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK',
+                    });
+               }    
 
 
+          }
 
-                    var periode_id = $('#periode_id').val();
-                    if(periode_id)
-                   {
-                       if(status_jasa_konsultan == true && status_swakelola == true)
-                       {
-                           SendingData(form);
-                       }  
-                       
-                    }else{
-                        Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Periode Belum di pilih.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                         });
-                    }     
-   
-                
-               
-              
 
-          });
+          function BtnKirim(){
+              jasaKonsultan();
+               swakelola();
 
-          $("#kirim").click( () => {
-
-               
-
-                                          
-               var status_jasa_konsultan = false;
-                var status_swakelola = false;
-              
-               
               var form = {
                     'status_laporan_id':14,
                     'type': 'kirim',
+                    'btn_potensi': btn_potensi,
+                    'btn_fgd_persiapan': btn_fgd_persiapan,
+                    'btn_fgd_identifikasi':btn_fgd_identifikasi,
+                    'btn_sektor':btn_sektor,
+                    'btn_fgd_klarifikasi':btn_fgd_klarifikasi,
+                    'btn_finalisasi':btn_finalisasi,
+                    'btn_penyusunan':btn_penyusunan,
+                    'btn_info_grafis':btn_info_grafis,
+                    'btn_dokumentasi':btn_dokumentasi,
                };
+
+                 
+
+               var periode_id = $('#periode_id').val();
+               if(periode_id)
+              {
+                  if(status_swakelola == true && status_swakelola == true)
+                  {
+                      SendingData(form);
+                  }  
+                  
+               }else{
+                   Swal.fire({
+                    icon: 'info',
+                    title: 'Peringatan',
+                    text: 'Maaf, Periode Belum di pilih.',
+                    confirmButtonColor: '#000',
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK',
+                    });
+               }   
+   
+
+
+          }
+
+          function jasaKonsultan(){
 
                var total_jasa_konsultan = temp_total_identifikasi_budget + temp_total_pelaksanaan_budget + temp_total_penyusunan_budget;
                     var total_swakelola =  ''
@@ -1100,6 +1117,13 @@
                }  
 
 
+              
+
+          }
+
+
+          function swakelola(){
+
                var total_sakelola = temp_total_swakelola_budget;
                const min_swakelola = pagu_apbn * 40 / 100;
                if (min_swakelola > total_sakelola) 
@@ -1107,7 +1131,7 @@
                     status_swakelola = false;
                     var alt = '';
                      alt +='<h4>Info!</h4>';
-                     alt += 'Anggaran swakelola tidak boleh kurang dari <b>Rp '+ accounting.formatNumber(min_jasa, 0, ".", ".") +'</b> atau <b>40%</b> dari total APBN.';
+                     alt += 'Anggaran swakelola tidak boleh kurang dari <b>Rp '+ accounting.formatNumber(min_swakelola, 0, ".", ".") +'</b> atau <b>40%</b> dari total APBN.';
                      $('#alert-swakelola').show().html(alt);
                       $('#total-budget').removeClass('text-black').addClass('text-red').addClass('blinking-text');
 
@@ -1116,31 +1140,6 @@
                      $('#alert-swakelola').hide().html('');
                      $('#total-budget').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                }  
-
-
-
-                    var periode_id = $('#periode_id').val();
-                    if(periode_id)
-                   {
-                       if(status_swakelola == true && status_swakelola == true)
-                       {
-                           SendingData(form);
-                       }  
-                       
-                    }else{
-                        Swal.fire({
-                         icon: 'info',
-                         title: 'Peringatan',
-                         text: 'Maaf, Periode Belum di pilih.',
-                         confirmButtonColor: '#000',
-                         showConfirmButton: true,
-                         confirmButtonText: 'OK',
-                         });
-                    }   
-   
-             
-
-          });
 
           }
 
@@ -2464,7 +2463,7 @@
                      {
                          var alt = '';
                           alt +='<h4>Info!</h4>';
-                          alt += 'Anggaran swakelola tidak boleh kurang dari <b>Rp '+ accounting.formatNumber(min_jasa, 0, ".", ".") +'</b> atau <b>40%</b> dari total APBN.';
+                          alt += 'Anggaran swakelola tidak boleh kurang dari <b>Rp '+ accounting.formatNumber(min_swakelola, 0, ".", ".") +'</b> atau <b>40%</b> dari total APBN.';
                           $('#alert-swakelola').show().html(alt);
                           $('#simpan').prop('disabled',true);
 

@@ -636,7 +636,7 @@
                  row +=`<td></td>`;
                  row +=`<td align="center">${item.pengawas_target}</td>`;
                  row +=`<td></td>`;
-                 row +=`<td align="right">${item.pengawas_pagu_convert}</td>`;
+                 row +=`<td align="right">${item.pengawas_pagu.convert}</td>`;
                  row +=`<td></td>`;
                  row +=`<td  align="center">${item.pengawas_realisasi_target}</td>`;  
                  row +=`<td></td>`;
@@ -644,7 +644,7 @@
                  row +=`<td></td>`;
                  row +=`<td  align="center">${item.bimsos_target}</td>`;
                  row +=`<td></td>`;
-                 row +=`<td  align="right">${item.bimsos_pagu_convert}</td>`;
+                 row +=`<td  align="right">${item.bimsos_pagu.convert}</td>`;
                  row +=`<td></td>`
                  row +=`<td  align="center">${item.bimsos_realisasi_target}</td>`;  
                  row +=`<td></td>`;
@@ -652,7 +652,7 @@
                  row +=`<td></td>`;
                  row +=`<td  align="center">${item.penyelesain_target}</td>`;
                  row +=`<td></td>`;
-                 row +=`<td  align="right">${item.penyelesain_pagu_convert}</td>`;
+                 row +=`<td  align="right">${item.penyelesain_pagu.convert}</td>`;
                  row +=`<td></td>`
                  row +=`<td  align="center">${item.penyelesain_realisasi_target}</td>`;  
                  row +=`<td></td>`;
@@ -660,7 +660,7 @@
                  row +=`<td></td>`;
                  row +=`<td  align="center">${item.promosi_target}</td>`;
                  row +=`<td></td>`;
-                 row +=`<td  align="right">${item.promosi_pagu_convert}</td>`;
+                 row +=`<td  align="right">${item.promosi_pagu.convert}</td>`;
                  row +=`<td></td>`
                  row +=`<td  align="center">${item.promosi_realisasi_target}</td>`;  
                  row +=`<td></td>`;

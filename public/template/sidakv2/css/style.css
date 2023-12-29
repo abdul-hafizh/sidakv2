@@ -152,6 +152,13 @@
       top: 22px;
 }
 
+.text-info-dasboard{
+    padding: 21px 9px;
+    float: left;
+    
+}
+
+
 .progress {
     height: 30px !important;
     margin-bottom: 0px !important; 
