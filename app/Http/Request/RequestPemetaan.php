@@ -303,7 +303,7 @@ class RequestPemetaan
       $result['total_terkirim'] = Pemetaan::where(['status_laporan_id'=>'14','periode_id'=>$year])->count();
       }
 
-      $result['options'] = RequestMenuRoles::ActionPage('promosi');
+      $result['options'] = RequestMenuRoles::ActionPage('peta-potensi');
       if ($perPage != 'all') {
          $result['current_page'] = $data->currentPage();
          $result['last_page'] = $data->lastPage();
