@@ -86,46 +86,46 @@ class ValidationPemetaan
          'tgl_ahir_potensi' => 'required',
          'budget_potensi' =>   'required|numeric|gt:0',
          'realisasi_potensi' => 'required|numeric|gt:0',
-         'keterangan_potensi' => 'required_if:status_laporan_id,14',
+         'keterangan_potensi' => 'required_if:btn_potensi,false',
          
 
          'tgl_awal_fgd_persiapan' => 'required',
          'tgl_ahir_fgd_persiapan' => 'required',
          'budget_fgd_persiapan' => 'required|numeric|gt:0',
          'realisasi_fgd_persiapan' => 'required|numeric|gt:0',
-         'keterangan_fgd_persiapan' => 'required_if:status_laporan_id,14',
+         'keterangan_fgd_persiapan' => 'required_if:btn_fgd_persiapan,false',
 
          'tgl_awal_fgd_identifikasi' =>'required',
          'tgl_ahir_fgd_identifikasi' => 'required',
          'budget_fgd_identifikasi' => 'required|numeric|gt:0',
          'realisasi_fgd_identifikasi' => 'required|numeric|gt:0',
-         'keterangan_fgd_identifikasi' => 'required_if:status_laporan_id,14',
+         'keterangan_fgd_identifikasi' => 'required_if:btn_fgd_identifikasi,false',
 
          'tgl_awal_sektor' => 'required',
          'tgl_ahir_sektor' => 'required',
          'budget_sektor' => 'required|numeric|gt:0',
          'realisasi_sektor' => 'required|numeric|gt:0',
-         'keterangan_sektor' => 'required_if:status_laporan_id,14',
+         'keterangan_sektor' => 'required_if:btn_sektor,false',
 
 
          'tgl_awal_fgd_klarifikasi' => 'required',
          'tgl_ahir_fgd_klarifikasi' =>'required',
          'budget_fgd_klarifikasi' => 'required|numeric|gt:0',
          'realisasi_fgd_klarifikasi' => 'required|numeric|gt:0',
-         'keterangan_fgd_klarifikasi' => 'required_if:status_laporan_id,14',
+         'keterangan_fgd_klarifikasi' => 'required_if:btn_fgd_klarifikasi,false',
 
          'tgl_awal_finalisasi' => 'required',
          'tgl_ahir_finalisasi' => 'required',
          'budget_finalisasi' => 'required|numeric|gt:0',
          'realisasi_finalisasi' => 'required|numeric|gt:0',
-         'keterangan_finalisasi' => 'required_if:status_laporan_id,14',
+         'keterangan_finalisasi' => 'required_if:btn_finalisasi,false',
 
 
          'tgl_awal_penyusunan' => 'required',
          'tgl_ahir_penyusunan' => 'required',
          'budget_penyusunan' => 'required|numeric|gt:0',
          'realisasi_penyusunan' => 'required|numeric|gt:0',
-         'keterangan_penyusunan' => 'required_if:status_laporan_id,14',
+         'keterangan_penyusunan' => 'required_if:btn_penyusunan,false',
 
          
 
@@ -133,14 +133,14 @@ class ValidationPemetaan
          'tgl_ahir_info_grafis' => 'required',
          'budget_info_grafis' => 'required|numeric|gt:0',
          'realisasi_info_grafis' => 'required|numeric|gt:0',
-         'keterangan_info_grafis' => 'required_if:status_laporan_id,14',
+         'keterangan_info_grafis' => 'required_if:btn_info_grafis,false',
 
 
          'tgl_awal_dokumentasi' => 'required',
          'tgl_ahir_dokumentasi' => 'required',
          'budget_dokumentasi' => 'required|numeric|gt:0',
          'realisasi_dokumentasi' => 'required|numeric|gt:0',
-         'keterangan_dokumentasi' => 'required_if:status_laporan_id,14',
+         'keterangan_dokumentasi' => 'required_if:btn_dokumentasi,false',
 
          
         ]);
@@ -173,7 +173,7 @@ class ValidationPemetaan
 
 
             if($errors->has('keterangan_potensi')){
-                $err['messages']['keterangan_potensi'] = $errors->first('keterangan_potensi');
+                $err['messages']['keterangan_potensi'] = "File PDF masih kosong";
             }
 
 
@@ -197,7 +197,7 @@ class ValidationPemetaan
             }
 
             if($errors->has('keterangan_fgd_persiapan')){
-                $err['messages']['keterangan_fgd_persiapan'] = $errors->first('keterangan_fgd_persiapan');
+                $err['messages']['keterangan_fgd_persiapan'] = "File PDF masih kosong";
             }
 
 
@@ -218,7 +218,7 @@ class ValidationPemetaan
             }
 
             if($errors->has('keterangan_fgd_identifikasi')){
-                $err['messages']['keterangan_fgd_identifikasi'] = $errors->first('keterangan_fgd_identifikasi');
+                $err['messages']['keterangan_fgd_identifikasi'] = "File PDF masih kosong";
             }
 
            
@@ -241,7 +241,7 @@ class ValidationPemetaan
             }
 
             if($errors->has('keterangan_sektor')){
-                $err['messages']['keterangan_sektor'] = $errors->first('keterangan_sektor');
+                $err['messages']['keterangan_sektor'] = "File PDF masih kosong";
             }
 
          
@@ -264,7 +264,7 @@ class ValidationPemetaan
             }
 
             if($errors->has('keterangan_fgd_klarifikasi')){
-                $err['messages']['keterangan_fgd_klarifikasi'] = $errors->first('keterangan_fgd_klarifikasi');
+                $err['messages']['keterangan_fgd_klarifikasi'] = "File PDF masih kosong";
             }
 
 
@@ -285,8 +285,9 @@ class ValidationPemetaan
                 $err['messages']['realisasi_finalisasi'] = $errors->first('realisasi_finalisasi');
             }
 
-            if($errors->has('keterangan_finalisasi')){
-                $err['messages']['keterangan_finalisasi'] = $errors->first('keterangan_finalisasi');
+            if($errors->has('keterangan_finalisasi'))
+            {
+                $err['messages']['keterangan_finalisasi'] = "File PDF masih kosong";
             }
 
             
@@ -307,7 +308,7 @@ class ValidationPemetaan
             }
 
             if($errors->has('keterangan_penyusunan')){
-                $err['messages']['keterangan_penyusunan'] = $errors->first('keterangan_penyusunan');
+                $err['messages']['keterangan_penyusunan'] = "File PDF masih kosong";
             }
 
           
@@ -330,7 +331,7 @@ class ValidationPemetaan
             }
 
             if($errors->has('keterangan_info_grafis')){
-                $err['messages']['keterangan_info_grafis'] = $errors->first('keterangan_info_grafis');
+                $err['messages']['keterangan_info_grafis'] = "File PDF masih kosong";
             }
 
 
@@ -351,12 +352,12 @@ class ValidationPemetaan
             }
 
             if($errors->has('keterangan_dokumentasi')){
-                $err['messages']['keterangan_dokumentasi'] = $errors->first('keterangan_dokumentasi');
+                $err['messages']['keterangan_dokumentasi'] = "File PDF masih kosong";
             }
 
             if($request->checklist_lq == 'false' && $request->checklist_shift_share =='false' &&  $request->checklist_tipologi_sektor =='false' && $request->checklist_klassen =='false'){
 
-                $err['messages']['pengolahan'] = 'Maksimal 1 pilihan analisis!';
+                $err['messages']['sektor'] = 'Maksimal 1 pilihan analisis!';
                 
             }
 

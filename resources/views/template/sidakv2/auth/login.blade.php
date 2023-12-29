@@ -161,7 +161,32 @@
    
 }
 
+.padding-info{
+  padding: 10px 13px;
+  font-size:18px;
+   text-decoration: blink;
+   color: #ff0000;
+   background: #fff;
+    float: left;
+    border-radius: 12px;
+ 
+}
 
+.padding-info .alert-text{
+      animation: blink-animation 1s steps(5, start) infinite;
+-webkit-animation: blink-animation 1s steps(5, start) infinite;
+}
+
+@keyframes blink-animation  {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation  {
+  to {
+    visibility: hidden;
+  }
+}
 .auth-page .auth-img .auth-img-bg {
     background-color: #f5f5f5;
 }
@@ -299,6 +324,12 @@
 
                                                      <div id="FormLogin">
                                                      </div>
+
+
+                                                     <div class="padding-info text-center">
+                                                      <div class="alert-text"> Web ini adalah versi trial/training aplikasi <b>SIDAK versi 4.0 (Versi Baru)</b></div>
+
+                                                     </div>   
 
                                                     <div class="pull-left full pd-copyright">
                                                                     <p class="text-center  color-white  font-sm-1 text-bold-600">Copyright by BKPM</p>

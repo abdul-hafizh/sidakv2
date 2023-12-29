@@ -151,6 +151,12 @@
 .group-pdf{
       top: 22px;
 }
+.text-info-dasboard{
+    padding: 18px 9px;
+    float: left;
+    color: #ff0000;
+    font-size: 16px;
+}
 
 .progress {
     height: 30px !important;
@@ -1287,6 +1293,7 @@ padding: 0px 12px 0px 0px!important;
   padding: 0px 2px;
    top: 2px;
     position: relative;
+    font-weight: 500;
 }
 
 .main-sidebar{

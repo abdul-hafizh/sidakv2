@@ -57,7 +57,7 @@
                 <div class="card-body table-responsive p-0">
                     <div class="media">
                         <div class="media-body text-left">
-                            <span>Total Penyelesain</span>
+                            <span>Total Penyelesaian</span>
                             <h3 class="card-text" id="total-penyelesaian"></h3>
                         </div>
                     </div>

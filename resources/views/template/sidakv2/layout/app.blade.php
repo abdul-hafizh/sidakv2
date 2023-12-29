@@ -58,6 +58,7 @@
                 </a>
 
                 <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
+                <small class="text-info-dasboard">Web ini adalah versi trial/training aplikasi <b>SIDAK versi 4.0 (Versi Baru)</small>
                 <div class="navbar-custom-menu mt-10 mc-15">
                     <ul class="nav navbar-nav">
                         <li class="dropdown messages-menu">
