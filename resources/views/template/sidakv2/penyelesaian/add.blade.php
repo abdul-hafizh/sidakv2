@@ -838,24 +838,24 @@
 
           if (data.lap_document) {
             $('#modal-doc').show();
-            $('#lap_doc_file').val(data.lap_document);
+            $('#lap_document_file').val(data.lap_document);
             $('#modal-doc').click(function() {
               tampilkanModal(data.lap_document);
             });
           } else {
             $('#modal-doc').hide();
-            $('#lap_doc_file').val('');
+            $('#lap_document_file').val('');
           }
 
           if (data.lap_evaluasi) {
             $('#modal-eval').show();
-            $('#lap_eval_file').val(data.lap_evaluasi);
+            $('#lap_evaluasi_file').val(data.lap_evaluasi);
             $('#modal-eval').click(function() {
               tampilkanModal(data.lap_evaluasi);
             });
           } else {
             $('#modal-eval').hide();
-            $('#lap_eval_file').val('');
+            $('#lap_evaluasi_file').val('');
           }
           
           $('#sub_menu_slug').val(data.sub_menu_slug);

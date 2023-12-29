@@ -732,7 +732,7 @@
                     $('#pagu_apbn_sec').html('<b>'+find.pagu_apbn+'</b>');                  
                     $('#pagu_promosi_header').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#promosi_pagu_sec').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
-                    $('#promosi_pengadaan_pagu').val(find.pagu_promosi);
+                    $('#promosi_pengadaan_pagu').val(find.pagu_promosi.replace('Rp ', '').replace(/\./g, ''));
                     $('#promosi_pengadaan_pagu_convert').val('Rp. '+find.pagu_promosi.toLocaleString('id-ID'));
                     $('#total_promosi_pagu').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#pagu_apbn_inp').val(find.pagu_apbn.replace(/[^0-9]/g, ''));
