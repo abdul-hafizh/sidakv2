@@ -50,7 +50,7 @@ class PerencanaanApiController extends Controller
            $data = $query->get(); 
         }   
         
-        $result = RequestPerencanaan::GetDataAll($data,$request->per_page,$request);    
+        $result = RequestPerencanaan::GetDataAll($data, $request->per_page, $request);
         return response()->json($result);        
     }
 

@@ -430,20 +430,7 @@
         $('.item-checkbox').on('change', function() {
             const allChecked = $('.item-checkbox:checked').length === $('.item-checkbox').length;
             $('.select-all').prop('checked', allChecked);
-        });
-
-        $("#ExportButton").click(function() {
-            $.ajax({
-                url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=${itemsPerPage}`,
-                method: 'GET',
-                success: function(response) {
-                    exportData(response.data);
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                }
-            });
-        });
+        });        
 
         $('#Reset').on('click', function() {
             localStorage.removeItem('search');
@@ -459,7 +446,9 @@
             var daerah_id = $("#daerah_id").val();
             var periode_id = $('#periode_id').val(); 
             var search_status = $('#search_status').val();
-            var search_text = $('#search_text').val();                    
+            var search_text = $('#search_text').val();    
+            
+            year = periode_id;
 
             if(periode_id < 2024) {                         
                 $(".label-peta-potensi").text('Promosi');
@@ -486,6 +475,19 @@
                     resultTotal(response.total);
                     updateContent(response.data, response.options);
                     updatePagination(response.current_page, response.last_page);
+                },
+                error: function(error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        });
+
+        $("#ExportButton").click(function() {
+            $.ajax({
+                url: BASE_URL+ `/api/perencanaan?page=${page}&per_page=all&periode_id=${year}`,
+                method: 'GET',
+                success: function(response) {
+                    exportData(response.data);
                 },
                 error: function(error) {
                     console.error('Error fetching data:', error);
@@ -974,20 +976,28 @@
                     let row = ``;
                         row +=`<tr>`;
                         row +=`<td class="padding-text-table">${item.number}</td>`;
-                        row +=`<td class="padding-text-table">${item.nama_daerah}gjs</td>`;
+                        row +=`<td class="padding-text-table">${item.nama_daerah}</td>`;
                         row +=`<td class="padding-text-table">${item.periode}</td>`;
                         row +=`<td class="padding-text-table">${item.pengawas_analisa_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.pengawas_analisa_target}</td>`;
                         row +=`<td class="padding-text-table">${item.pengawas_inspeksi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.pengawas_inspeksi_target}</td>`;
                         row +=`<td class="padding-text-table">${item.pengawas_evaluasi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.pengawas_evaluasi_target}</td>`;
                         row +=`<td class="padding-text-table">${item.bimtek_perizinan_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.bimtek_perizinan_target}</td>`;
                         row +=`<td class="padding-text-table">${item.bimtek_pengawasan_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.bimtek_pengawasan_target}</td>`;
                         row +=`<td class="padding-text-table">${item.penyelesaian_identifikasi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.penyelesaian_identifikasi_target}</td>`;
                         row +=`<td class="padding-text-table">${item.penyelesaian_realisasi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.penyelesaian_realisasi_target}</td>`;
                         row +=`<td class="padding-text-table">${item.penyelesaian_evaluasi_pagu}</td>`;
+                        row +=`<td class="padding-text-table">${item.penyelesaian_evaluasi_target}</td>`;
                         row +=`<td class="padding-text-table">${item.promosi_pengadaan_pagu}</td>`;
                         row +=`<td class="padding-text-table">${item.total_pagu_export}</td>`;
                         row +=`<td class="padding-text-table">${item.status}</td>`;
-                        row +=`<td class="padding-text-table">${item.updated_at_export}</td>`;
+                        row +=`<td class="padding-text-table">${item.updated_at_format}</td>`;
                         row +=`</tr>`;
                     content.append(row);
                 });     

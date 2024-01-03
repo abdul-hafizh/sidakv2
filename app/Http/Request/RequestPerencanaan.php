@@ -82,6 +82,8 @@ class RequestPerencanaan
                 $temp[$key]['alasan_revisi'] = $val->alasan_revisi;
                 $temp[$key]['created_at_export'] = $val->created_at;
                 $temp[$key]['updated_at_export'] = $val->updated_at;
+                $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
+                $temp[$key]['updated_at_format'] = GeneralHelpers::formatExcel($val->updated_at);
             }
         }
 
@@ -140,6 +142,8 @@ class RequestPerencanaan
                 $temp[$key]['updated_at'] = GeneralHelpers::tanggal_indo($val->updated_at);
                 $temp[$key]['created_at_export'] = $val->created_at;
                 $temp[$key]['updated_at_export'] = $val->updated_at;
+                $temp[$key]['created_at_format'] = GeneralHelpers::formatExcel($val->created_at);
+                $temp[$key]['updated_at_format'] = GeneralHelpers::formatExcel($val->updated_at);
             }
         }
 
