@@ -755,9 +755,55 @@
           footer_modal(id);     
           subMenu(data.sub_menu_slug);
           getPeriode(data.periode_id);
-          getAnggaran(data.periode_id, data.sub_menu_slug);    
+          getAnggaran(data.periode_id, data.sub_menu_slug);
           
-          $('.modal-edit').show();          
+          $('.modal-edit').show();
+
+          if (parseInt(data.periode_id.substring(0, 4)) > 2023) {
+            if (data.lap_profile2) {
+              $('#modal-profile2').show();
+              $('#lap_profile2_file').val(data.lap_profile2);
+              $('#modal-profile2').click(function() {
+                tampilkanModal(data.lap_profile2);
+              });
+            } else {
+              $('#modal-profile2').hide();
+              $('#lap_profile2_file').val('');
+            }
+
+            if (data.lap_notula2) {
+              $('#modal-notula2').show();
+              $('#lap_notula2_file').val(data.lap_notula2);
+              $('#modal-notula2').click(function() {
+                tampilkanModal(data.lap_notula2);
+              });
+            } else {
+              $('#modal-notula2').hide();
+              $('#lap_notula2_file').val('');
+            }
+          } else {
+            if (data.lap_profile) {
+              $('#modal-profile2').show();
+              $('#lap_profile2_file').val(data.lap_profile);
+              $('#modal-profile2').click(function() {
+                tampilkanModal(data.lap_profile);
+              });
+            } else {
+              $('#modal-profile2').hide();
+              $('#lap_profile2_file').val('');
+            }
+
+            if (data.lap_notula) {
+              $('#modal-notula2').show();
+              $('#lap_notula2_file').val(data.lap_notula);
+              $('#modal-notula2').click(function() {
+                tampilkanModal(data.lap_notula);
+              });
+            } else {
+              $('#modal-notula2').hide();
+              $('#lap_notula2_file').val('');
+            }
+          }
           
           if (data.lap_peserta) {
             $('#modal-peserta').show();
@@ -779,18 +825,7 @@
           } else {
             $('#modal-profile').hide();
             $('#lap_profile_file').val('');
-          }
-
-          if (data.lap_profile2) {
-            $('#modal-profile2').show();
-            $('#lap_profile2_file').val(data.lap_profile2);
-            $('#modal-profile2').click(function() {
-              tampilkanModal(data.lap_profile2);
-            });
-          } else {
-            $('#modal-profile2').hide();
-            $('#lap_profile2_file').val('');
-          }
+          }          
 
           if (data.lap_narasumber) {
             $('#modal-narasumber').show();
@@ -1403,7 +1438,7 @@
 
     function tampilkanModal(url) {
       $.ajax({
-        url: url,
+        url:  'laporan/penyelesaian/' + url,
         method: 'GET',
         xhrFields: {
           responseType: 'blob'
