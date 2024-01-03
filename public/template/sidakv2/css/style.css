@@ -132,12 +132,21 @@
     padding: 0px 30px;
 }
 
+input{
+    font-weight: 500!important;
+}
+
 .viewpdf{
     position: relative;
    
     text-align: center;
     cursor: pointer;
     font-weight: bold;
+}
+
+.text-width-table{
+    float: left;
+    width: 142px;
 }
 
 .viewpdf:hover{
@@ -1189,6 +1198,14 @@ padding: 0px 12px 0px 0px!important;
 
 .bg-table-radius-right-bottom{
        border-radius: 0px 0px 15px 0px;
+}
+
+.bg-table-radius-left-top{
+       border-radius: 15px 0px 0px 0px;
+}
+
+.bg-table-radius-left-bottom{
+       border-radius: 0px 0px 0px 15px;
 }
 
 .span-title{

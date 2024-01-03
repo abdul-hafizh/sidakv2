@@ -90,6 +90,7 @@ class RequestDashboard
    public static function Pengawasan($periode_id,$semester_id,$daerah_id){
               
          $perencanaan = RequestDashboard::Perencanaan($periode_id,$daerah_id);
+
     
          $data[0] = RequestDashboard::PengawasanAnalisa($perencanaan,$periode_id,$semester_id,$daerah_id);
          $data[1] = RequestDashboard::PengawasanInspeksi($perencanaan,$periode_id,$semester_id,$daerah_id);
@@ -104,15 +105,12 @@ class RequestDashboard
     public static function Bimsos($periode_id,$semester_id,$daerah_id){
               
          $perencanaan = RequestDashboard::Perencanaan($periode_id,$daerah_id);
-         if($perencanaan)
-         {
+         
              $data[0] = RequestDashboard::BimsosPendamping($perencanaan,$periode_id,$semester_id,$daerah_id);
              $data[1] = RequestDashboard::BimsosPerizinan($perencanaan,$periode_id,$semester_id,$daerah_id);
              $data[2] = RequestDashboard::BimsosPengawasan($perencanaan,$periode_id,$semester_id,$daerah_id);
              $data[3] = RequestDashboard::BimsosTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id);
-         }else{
-             $data = [];
-         }
+        
          return $data;
 
    }
@@ -121,15 +119,12 @@ class RequestDashboard
    public static function Penyelesaian($periode_id,$semester_id,$daerah_id){
               
          $perencanaan = RequestDashboard::Perencanaan($periode_id,$daerah_id);
-         if($perencanaan)
-         {
-             $data[0] = RequestDashboard::PenyelesaianIdentifikasi($perencanaan,$periode_id,$semester_id,$daerah_id);
-             $data[1] = RequestDashboard::PenyelesaianRealisasi($perencanaan,$periode_id,$semester_id,$daerah_id);
-             $data[2] = RequestDashboard::PenyelesaianEvaluasi($perencanaan,$periode_id,$semester_id,$daerah_id);
-             $data[3] = RequestDashboard::PenyelesaianTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id);
-         }else{
-            $data = [];
-         }
+         
+         $data[0] = RequestDashboard::PenyelesaianIdentifikasi($perencanaan,$periode_id,$semester_id,$daerah_id);
+         $data[1] = RequestDashboard::PenyelesaianRealisasi($perencanaan,$periode_id,$semester_id,$daerah_id);
+         $data[2] = RequestDashboard::PenyelesaianEvaluasi($perencanaan,$periode_id,$semester_id,$daerah_id);
+         $data[3] = RequestDashboard::PenyelesaianTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id);
+         
          return $data;
 
    }
@@ -380,111 +375,19 @@ class RequestDashboard
 
 
     public static function BimsosPerizinan($perencanaan,$periode_id,$semester_id,$daerah_id){
-           
+        $label = "Bimtek Perizinan Usaha";
+        $value = "is_bimtek_ipbbr";   
         if($perencanaan)
         {
-            $bimtek_perizinan_target = $perencanaan->bimtek_perizinan_target;
-            $bimtek_perizinan_pagu = $perencanaan->bimtek_perizinan_pagu;
+            $target = $perencanaan->bimtek_perizinan_target;
+            $pagu = $perencanaan->bimtek_perizinan_pagu;
+           
+            $data = RequestDashboard::viewDashboardData($target,$pagu,$daerah_id,$periode_id,$semester_id,$label,$value);
+
         }else{
-            $bimtek_perizinan_target = 0;
-            $bimtek_perizinan_pagu = 0;
+            $data = RequestDashboard::Nullable($semester_id,$periode_id,$label);
         }   
-       if($semester_id =="01")
-       {
-           $periode_01 = $periode_id.$semester_id; 
-           $semester1 = [
-               "sub_menu" =>"Bimtek Perizinan Usaha",
-               "target"=> $bimtek_perizinan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($bimtek_perizinan_pagu),
-               "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr')),
-               "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') ,
-               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr')),     
-           ];
-
-            $data = $semester1;
-
-       }else{
-
-           $periode_01 = $periode_id.'01'; 
-           $periode_02 = $periode_id.'02';
-
-           $semester1 = [
-               "sub_menu" =>"Bimtek Perizinan Usaha",
-               "target"=> $bimtek_perizinan_target,
-               "pagu"=> GeneralHelpers::formatRupiah($bimtek_perizinan_pagu),
-               "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr'))        
-           ];
-
-
-            $semester2 = [
-          
-               
-               "realisasi_target_sem_2"=> RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ipbbr'),
-               "realisasi_apbn_sem_2"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ipbbr')),
-               "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ipbbr'),
-                "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ipbbr')),
-            ];
-
-            $data = array_merge($semester1,$semester2);
-       } 
-
        
-        return $data;
-   }
-
-
-    public static function BimsosPengawasan($perencanaan,$periode_id,$semester_id,$daerah_id){
-       
-       if( $perencanaan)
-       {
-          $bimtek_pengawasan_target = $perencanaan->bimtek_pengawasan_target;
-          $bimtek_pengawasan_pagu = GeneralHelpers::formatRupiah($perencanaan->bimtek_pengawasan_pagu);
-       }else{
-          $bimtek_pengawasan_target = 0;
-          $bimtek_pengawasan_pagu = 0;
-       } 
-       if($semester_id =="01")
-       {
-           $periode_01 = $periode_id.$semester_id; 
-           $semester1 = [
-               "sub_menu" =>"Bimtek Pengawasan Perizinan Usaha",
-               "target"=>$bimtek_pengawasan_target,
-               "pagu"=> $bimtek_pengawasan_pagu,
-               "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr')),
-               "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
-               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr')),         
-           ];
-
-            $data = $semester1;
-
-       }else{
-
-           $periode_01 = $periode_id.'01'; 
-           $periode_02 = $periode_id.'02';
-
-           $semester1 = [
-               "sub_menu" =>"Bimtek Pengawasan Perizinan Usaha",
-               "target"=> $bimtek_pengawasan_target,
-               "pagu"=> $bimtek_pengawasan_pagu,
-               "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr'))        
-           ];
-
-
-            $semester2 = [
-          
-               
-               "realisasi_target_sem_2"=> RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ippbbr'),
-               "realisasi_apbn_sem_2"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ippbbr')),
-               "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,'is_bimtek_ippbbr') + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ippbbr'),
-                "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ippbbr') + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,'is_bimtek_ippbbr')),
-            ];
-
-            $data = array_merge($semester1,$semester2);
-       } 
 
        
         return $data;
@@ -492,171 +395,73 @@ class RequestDashboard
 
 
 
-   public static function PenyelesaianIdentifikasi($perencanaan,$periode_id,$semester_id,$daerah_id){
+
+
+    public static function BimsosPengawasan($perencanaan,$periode_id,$semester_id,$daerah_id)
+    {
+        $label = "Bimtek Pengawasan Perizinan Usaha";
+        $value = "is_bimtek_ippbbr"; 
+        if( $perencanaan)
+        {
+           $target = $perencanaan->bimtek_pengawasan_target;
+           $pagu = GeneralHelpers::formatRupiah($perencanaan->bimtek_pengawasan_pagu);
+           $data = RequestDashboard::viewDashboardData($target,$pagu,$daerah_id,$periode_id,$semester_id,$label,$value);
+        }else{
+           $data = RequestDashboard::Nullable($semester_id,$periode_id,$label);
+        } 
        
+        return $data;
+   }
+
+
+
+   public static function PenyelesaianIdentifikasi($perencanaan,$periode_id,$semester_id,$daerah_id)
+   {
+       $label = "Identifikasi";
+       $value = "identifikasi"; 
        if($perencanaan)
        {
-          $penyelesaian_identifikasi_target = $perencanaan->penyelesaian_identifikasi_target;
-          $penyelesaian_identifikasi_pagu = $perencanaan->penyelesaian_identifikasi_pagu;
+          $target = $perencanaan->penyelesaian_identifikasi_target;
+          $pagu = $perencanaan->penyelesaian_identifikasi_pagu;
+          $data = RequestDashboard::viewDashboardData($target,$pagu,$daerah_id,$periode_id,$semester_id,$label,$value);
        }else{
-           $penyelesaian_identifikasi_target = 0;
-           $penyelesaian_identifikasi_pagu = 0;
-       } 
-       if($semester_id =="01")
-       {
-           $periode_01 = $periode_id.$semester_id; 
-           $semester1 = [
-               "sub_menu" =>"Identifikasi",
-               "target"=>  $penyelesaian_identifikasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($penyelesaian_identifikasi_pagu),
-               "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'identifikasi')),
-               "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi'),
-               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'identifikasi')),       
-           ];
-
-            $data = $semester1;
-
-       }else{
-
-           $periode_01 = $periode_id.'01'; 
-           $periode_02 = $periode_id.'02';
-
-           $semester1 = [
-               "sub_menu" =>"Identifikasi",
-               "target"=> $penyelesaian_identifikasi_target,
-               "pagu"=> GeneralHelpers::formatRupiah($penyelesaian_identifikasi_pagu),
-               "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'identifikasi'))        
-           ];
-
-
-            $semester2 = [
-          
-               
-               "realisasi_target_sem_2"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_02,$daerah_id,'identifikasi'),
-               "realisasi_apbn_sem_2"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_02,$daerah_id,'identifikasi')),
-               "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiTarget($periode_02,$daerah_id,'identifikasi'),
-                "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'identifikasi') + RequestDashboard::PenyelesaianRealisasiAPBN($periode_02,$daerah_id,'identifikasi')),
-            ];
-
-            $data = array_merge($semester1,$semester2);
+          $data = RequestDashboard::Nullable($semester_id,$periode_id,$label); 
        } 
 
-       
-        return $data;
+       return $data;
    }
 
-   public static function PenyelesaianRealisasi($perencanaan,$periode_id,$semester_id,$daerah_id){
-        
+   public static function PenyelesaianRealisasi($perencanaan,$periode_id,$semester_id,$daerah_id)
+   {
+          $label = "Penyelesaian Masalah";
+          $value = "penyelesaian";
           if($perencanaan)
            {
-             $penyelesaian_realisasi_target = $perencanaan->penyelesaian_realisasi_target;
-             $penyelesaian_realisasi_pagu = GeneralHelpers::formatRupiah($perencanaan->penyelesaian_realisasi_pagu);
+              $target = $perencanaan->penyelesaian_realisasi_target;
+              $pagu = GeneralHelpers::formatRupiah($perencanaan->penyelesaian_realisasi_pagu);
+              $data = RequestDashboard::viewDashboardData($target,$pagu,$daerah_id,$periode_id,$semester_id,$label,$value);
            }else{
-             $penyelesaian_realisasi_target = 0;
-             $penyelesaian_realisasi_pagu = 0;
+              $data = RequestDashboard::Nullable($semester_id,$periode_id,$label);
            } 
             
-       if($semester_id =="01")
-       {
-           $periode_01 = $periode_id.$semester_id; 
-           $semester1 = [
-               "sub_menu" =>"Penyelesaian Masalah",
-               "target"=> $penyelesaian_realisasi_target,
-               "pagu"=> $penyelesaian_realisasi_pagu,
-               "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'penyelesaian')),
-               "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian') ,
-               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'penyelesaian')),       
-           ];
-
-            $data = $semester1;
-
-       }else{
-
-           $periode_01 = $periode_id.'01'; 
-           $periode_02 = $periode_id.'02';
-
-           $semester1 = [
-               "sub_menu" =>"Penyelesaian Masalah",
-               "target"=> $penyelesaian_realisasi_target,
-               "pagu"=> $penyelesaian_realisasi_pagu,
-               "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'penyelesaian'))        
-           ];
-
-
-            $semester2 = [
-          
-               
-               "realisasi_target_sem_2"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_02,$daerah_id,'penyelesaian'),
-               "realisasi_apbn_sem_2"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_02,$daerah_id,'penyelesaian')),
-               "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'penyelesaian') + RequestDashboard::PenyelesaianRealisasiTarget($periode_02,$daerah_id,'penyelesaian'),
-                "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'penyelesaian') + RequestDashboard::PenyelesaianRealisasiAPBN($periode_02,$daerah_id,'penyelesaian')),
-            ];
-
-            $data = array_merge($semester1,$semester2);
-       } 
-
+       
        
         return $data;
    }
 
 
    public static function PenyelesaianEvaluasi($perencanaan,$periode_id,$semester_id,$daerah_id){
-        
+          $label = "Evaluasi";
+          $value = "evaluasi";
           if($perencanaan)
            {
-             $penyelesaian_evaluasi_target = $perencanaan->penyelesaian_evaluasi_target;
-             $penyelesaian_evaluasi_pagu = GeneralHelpers::formatRupiah($perencanaan->penyelesaian_evaluasi_pagu);
+             $target = $perencanaan->penyelesaian_evaluasi_target;
+             $pagu = GeneralHelpers::formatRupiah($perencanaan->penyelesaian_evaluasi_pagu);
+             $data = RequestDashboard::viewDashboardData($target,$pagu,$daerah_id,$periode_id,$semester_id,$label,$value);
            }else{
-             $penyelesaian_evaluasi_target = 0;
-             $penyelesaian_evaluasi_pagu = 0;
+             $data = RequestDashboard::Nullable($semester_id,$periode_id,$label);
            } 
             
-
-       if($semester_id =="01")
-       {
-           $periode_01 = $periode_id.$semester_id; 
-           $semester1 = [
-               "sub_menu" =>"Evaluasi",
-               "target"=> $penyelesaian_evaluasi_target,
-               "pagu"=> $penyelesaian_evaluasi_pagu,
-               "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),
-               "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
-               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'evaluasi')),      
-           ];
-
-            $data = $semester1;
-
-       }else{
-
-           $periode_01 = $periode_id.'01'; 
-           $periode_02 = $periode_id.'02';
-
-           $semester1 = [
-               "sub_menu" =>"Evaluasi",
-               "target"=> $penyelesaian_evaluasi_target,
-               "pagu"=> $penyelesaian_evaluasi_pagu,
-               "realisasi_target_sem_1"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi'),
-               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'evaluasi'))        
-           ];
-
-
-            $semester2 = [
-          
-               
-               "realisasi_target_sem_2"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_02,$daerah_id,'evaluasi'),
-               "realisasi_apbn_sem_2"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_02,$daerah_id,'evaluasi')),
-               "realisasi_target"=> RequestDashboard::PenyelesaianRealisasiTarget($periode_01,$daerah_id,'evaluasi') + RequestDashboard::PenyelesaianRealisasiTarget($periode_02,$daerah_id,'evaluasi'),
-                "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::PenyelesaianRealisasiAPBN($periode_01,$daerah_id,'evaluasi') + RequestDashboard::PenyelesaianRealisasiAPBN($periode_02,$daerah_id,'evaluasi')),
-            ];
-
-            $data = array_merge($semester1,$semester2);
-       } 
-
        
         return $data;
    }
@@ -670,7 +475,7 @@ class RequestDashboard
              $pagu_apbn = GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu);
            }else{
              $target = 0;
-             $pagu_apbn = 0;
+             $pagu_apbn = 'Rp 0';
            } 
 
         if($semester_id =="01")
@@ -738,7 +543,8 @@ class RequestDashboard
    }
 
    
-   public static function BimsosTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id){
+   public static function BimsosTotalHeader($perencanaan,$periode_id,$semester_id,$daerah_id)
+   {
          
          if($perencanaan)
          {
@@ -746,7 +552,7 @@ class RequestDashboard
              $pagu = GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu);
          }else{
              $target = 0;
-             $pagu = 0;
+             $pagu = 'Rp 0';
          }   
         if($semester_id =="01")
        {
@@ -819,7 +625,7 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
           $pagu = GeneralHelpers::formatRupiah($perencanaan->penyelesaian_identifikasi_pagu + $perencanaan->penyelesaian_realisasi_pagu + $perencanaan->penyelesaian_evaluasi_pagu);
         }else{
           $target = 0;
-          $pagu = 0;
+          $pagu = 'Rp 0';
         }    
         if($semester_id =="01")
        {
@@ -1118,10 +924,99 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
    }
 
   
-   
+     public static function viewDashboardData($target,$pagu,$daerah_id,$periode_id,$semester_id,$label,$value)
+   {
 
-  
+       if($semester_id =="01")
+       {
+           $periode_01 = $periode_id.$semester_id; 
+           $semester1 = [
+               "sub_menu" => $label,
+               "target"=> $target,
+               "pagu"=> GeneralHelpers::formatRupiah($pagu),
+               "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,$value),
+               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,$value)),
+               "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,) ,
+               "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,$value)),     
+           ];
 
-   
+            $data = $semester1;
+
+       }else{
+
+           $periode_01 = $periode_id.'01'; 
+           $periode_02 = $periode_id.'02';
+
+           $semester1 = [
+               "sub_menu" => $label,
+               "target"=> $bimtek_perizinan_target,
+               "pagu"=> GeneralHelpers::formatRupiah($bimtek_perizinan_pagu),
+               "realisasi_target_sem_1"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,$value),
+               "realisasi_apbn_sem_1"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,$value))        
+           ];
+
+
+            $semester2 = [
+          
+               
+               "realisasi_target_sem_2"=> RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,'is_bimtek_ipbbr'),
+               "realisasi_apbn_sem_2"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,$value)),
+               "realisasi_target"=> RequestDashboard::BimsosRealisasiTarget($periode_01,$daerah_id,$value) + RequestDashboard::BimsosRealisasiTarget($periode_02,$daerah_id,$value),
+                "realisasi_apbn"=> GeneralHelpers::formatRupiah(RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,$value) + RequestDashboard::BimsosRealisasiAPBN($periode_02,$daerah_id,$value)),
+            ];
+
+            $data = array_merge($semester1,$semester2);
+       } 
+   }
+
+   public static function Nullable($semester_id,$periode_id,$label)
+   {
+
+                 if($semester_id =="01")
+                {
+
+                   $semester1 = [
+                       "sub_menu" =>$label,
+                       "target"=> 0 ,
+                       "pagu"=> 'Rp 0',
+                       "realisasi_target_sem_1"=> 0 ,
+                       "realisasi_apbn_sem_1"=> 'Rp 0',
+                       "realisasi_target"=> 0,
+                       "realisasi_apbn"=> 'Rp 0',      
+                   ];
+
+                    $data = $semester1;
+
+               }else{
+
+                   $periode_01 = $periode_id.'01'; 
+                   $periode_02 = $periode_id.'02';
+
+                   $semester1 = [
+                       "sub_menu" =>$label,
+                       "target"=> 0 ,
+                       "pagu"=> 'Rp 0',
+                       "realisasi_target_sem_1"=> 0 ,
+                       "realisasi_apbn_sem_1"=> 'Rp 0',
+                       "realisasi_target"=> 0,
+                       "realisasi_apbn"=> 'Rp 0'
+                            
+                   ];
+
+
+                    $semester2 = [
+                        "realisasi_target_sem_2"=> 0,
+                        "realisasi_apbn_sem_2"=> 'Rp 0',
+                        "realisasi_target"=> 0,
+                        "realisasi_apbn"=> 'Rp 0',
+                    ];
+
+                    $data = array_merge($semester1,$semester2);
+         
+               }
+
+               return $data;
+
+   }
 
 }

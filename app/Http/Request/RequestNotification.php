@@ -65,6 +65,7 @@ class RequestNotification
    public static function GetDataLimit($data)
    {
           $temp = array();
+          $access = RequestAuth::Access();
           foreach($data as $key => $val)
           {
              $messages =  $val->messages;
@@ -88,7 +89,7 @@ class RequestNotification
             $temp[$key]['created_at'] = GeneralHelpers::timeAgo($val['created_at']);
           } 
 
-        if($_COOKIE['access'] =='admin' && $_COOKIE['access'] =='pusat')
+        if($access =='admin' && $access =='pusat')
         {
           $total = Notification::where(['view_from'=>'false','sender'=>Auth::User()->username])->count();
           $total_all = Notification::where('sender',Auth::User()->username)->count();  

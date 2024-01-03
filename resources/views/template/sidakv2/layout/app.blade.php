@@ -194,16 +194,18 @@ s0.parentNode.insertBefore(s1,s0);
         }
 
         function UpdateData(id) {
-            $.ajax({
-                url: BASE_URL + `/api/notif-update/` + id,
-                method: 'PUT',
-                success: function(response) {
-                    $('#total-notif').html('');
-                },
-                error: function(error) {
-                    //console.error('Error fetching data:', error);
-                }
-            });
+            console.log(id)
+            // $.ajax({
+            //     url: BASE_URL + `/api/notif-update/` + id,
+            //     method: 'PUT',
+            //     success: function(response) {
+            //         console.log(response)
+            //         $('#total-notif').html('');
+            //     },
+            //     error: function(error) {
+            //         //console.error('Error fetching data:', error);
+            //     }
+            // });
         }
 
         function getNotif() {
