@@ -72,7 +72,7 @@ class BimsosApiController extends Controller
                     return response()->json($validationFile, 400);
                 }
             }
-            $path = 'bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+            $path = 'laporan/bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
                 $lap_hadir = 'hadir-' . time() . '-' . $file_hadir->getClientOriginalName();
@@ -176,7 +176,7 @@ class BimsosApiController extends Controller
 
             $update = RequestBimsos::fieldsData($request);
             //update account
-            $path = 'bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+            $path = 'laporan/bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
                 $lap_hadir = 'hadir-' . time() . '-' . $file_hadir->getClientOriginalName();

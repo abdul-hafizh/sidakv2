@@ -79,10 +79,11 @@ class PengawasanApiController extends Controller
             }
 
             if ($request->hasFile('lap_kegiatan')) {
+                $path = 'laporan/pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
                 $file_hadir = $request->file('lap_kegiatan');
                 $lap_kegiatan = 'lap_kegiatan_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path('laporan/pengawasan'), $lap_kegiatan);
-                $insert['lap_kegiatan'] = 'laporan/pengawasan/' . $lap_kegiatan;
+                $file_hadir->move(public_path($path), $lap_kegiatan);
+                $insert['lap_kegiatan'] = $path . '/' . $lap_kegiatan;
             }
 
 
@@ -104,9 +105,9 @@ class PengawasanApiController extends Controller
                 // $pesan = 'Mohon persetujuan untuk Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
 
                 $type = 'pengawasan';
-                $sender = User::where(['username'=>'pusat'])->first()->username;
+                $sender = User::where(['username' => 'pusat'])->first()->username;
                 $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-                $notif = RequestNotification::fieldsData($type, $messages_desc, $url,$sender);
+                $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $sender);
                 $insertNotif = Notification::create($notif);
 
                 if ($insertNotif) {
@@ -155,10 +156,11 @@ class PengawasanApiController extends Controller
             $update = RequestPengawasan::fieldsData($request);
             //update account
             if ($request->hasFile('lap_kegiatan')) {
+                $path = 'laporan/pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
                 $file_hadir = $request->file('lap_kegiatan');
                 $lap_kegiatan = 'lap_kegiatan_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path('laporan/pengawasan'), $lap_kegiatan);
-                $update['lap_kegiatan'] = 'laporan/pengawasan/' . $lap_kegiatan;
+                $file_hadir->move(public_path($path), $lap_kegiatan);
+                $update['lap_kegiatan'] = $path . '/' . $lap_kegiatan;
             }
 
             $result = RequestPengawasan::GetNilaiPerencanaan($request);
