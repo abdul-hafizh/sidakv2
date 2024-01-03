@@ -342,11 +342,12 @@ class PerencanaanApiController extends Controller
         } else {
                           
             $source = explode(";base64,", $request->lap_rencana);
-            $fileDir = '/file/perencanaan/';
+            $fileDir = '/laporan/rencana/' . $_res->periode_id . '/' . $_res->daerah_id . '/';
             $image = base64_decode($source[1]);
             $filePath = public_path() . $fileDir;
-            $filepdf = time() .'.pdf';
+            $filepdf =  'rencana-' . $_res->periode_id . '-' . $_res->daerah_id . '-' . time() . '.pdf';
             $success = file_put_contents($filePath.$filepdf, $image);
+            $file_add = $_res->periode_id . '/' . $_res->daerah_id . '/' . $filepdf;
 
             $daerah_name = RequestDaerah::GetDaerahWhereID($_res->daerah_id);
 
@@ -363,12 +364,13 @@ class PerencanaanApiController extends Controller
                 File::delete(public_path() . $fileDir . $check->lap_rencana);
             } 
             
-             $log = array(
+            $log = array(
                 'category' => 'LOG_DATA_UPLOAD_DOCUMENT',
                 'group_menu' => 'upload_data_dokumen',
                 'description' => '<b>' . $_res->created_by . '</b> mengunggah dokumen Perencanaan Tahun ' .$_res->periode_id,
-             );
-             $datalog = RequestAuditLog::fieldsData($log);
+            );
+
+            $datalog = RequestAuditLog::fieldsData($log);
 
             $type = 'perencanaan';
             
@@ -376,7 +378,7 @@ class PerencanaanApiController extends Controller
             $notif = RequestNotification::fieldsData($type,$messages_desc,$url,$_res->created_by);
             Notification::create($notif);
 
-            $results = $_res->where('id', $id)->update([ 'lap_rencana' => $filepdf, 'status' => 14, 'request_edit' => 'false']);
+            $results = $_res->where('id', $id)->update([ 'lap_rencana' => $file_add, 'status' => 14, 'request_edit' => 'false']);
             
             // Mail::to($pusat->email)->send(new PerencanaanMail(Auth::User()->username, $url, $_res->periode_id, $daerah_name, $judul, $kepada, $subject, $pesan, 'upload_doc'));
 

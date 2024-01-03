@@ -439,6 +439,7 @@
 		var table = $('#datatable').DataTable({
 			processing: true,
 			serverSide: true,
+			ordering: false,
 			ajax: BASE_URL + '/api/penyelesaian/datalist',
 			fixedHeader: {
 				header: true,
@@ -458,8 +459,10 @@
 						body: function(data, row, column, node) {
 							return reformatNumber(data, row, column, node);
 						}
-					},
-					columns: [0, 1, 2, 3, 4, 5, 6, 7]
+					}
+				},
+				exportOptions: {
+					columns: [1, 2, 3, 4, 5, 6, 7]
 				}
 			}],
 			dom: 'Bprti',
