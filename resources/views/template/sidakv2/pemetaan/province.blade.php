@@ -1499,7 +1499,7 @@
       }
 
 
-      function getperiodeList(data){
+        function getperiodeList(data){
 
                 var select =  $('#periode_id');
                  select.empty();

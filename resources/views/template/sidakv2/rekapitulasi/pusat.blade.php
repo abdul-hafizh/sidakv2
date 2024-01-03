@@ -324,7 +324,12 @@
           
        } 
        
-       
+        $('#Reset').on('click', function() {
+           
+            localStorage.removeItem('search');
+            getRekapitulasi();
+        
+        });
        
        if(year > '2023')
        {
@@ -334,27 +339,44 @@
        } 
 
         $("#ExportButton").click(function() {
+
+                var tmp = JSON.parse(localStorage.getItem('search'));
+                if(tmp)
+                { 
+                    var url = BASE_URL + `/api/rekapitulasi?page=${page}&per_page=${itemsPerPage}&periode_id=`+ tmp.periode_id +`&semester_id=`+ tmp.semester_id +`&daerah_id=`+ tmp.daerah_id +``;
+
+                     getperiode(tmp.periode_id);
+                     getsemester(tmp.semester_id);
+                     getdaerah(tmp.daerah_id);
+                }else{
+                    var url = BASE_URL +`/api/rekapitulasi?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_val}&semester_id=${semester_val}`;
+
+                    getperiode(year);
+                    getsemester(semester_val);
+                    getdaerah(daerah_id);
+                } 
          
-            $.ajax({
-                url: BASE_URL+ `/api/rekapitulasi?page=${page}&per_page=all&periode_id=${periode_val}&semester_id=${semester_val}`,
-                method: 'GET',
-                success: function(response) {
-                    
-                     exportData(response.data);
-                },
-                error: function(error) {
-                    console.error('Error fetching data:', error);
-                }
-            });
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function(response) {
+                         
+                             exportData(response.rekapitulasi.data);
+                             
+                        
+                    },
+                    error: function(error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
 
             
-          });
+        });
   
-    
-
-       getperiode(year);
-       getsemester(semester_val);
-       getdaerah();
+       
+      
+      
+      
        getRekapitulasi();
 
 
@@ -431,10 +453,17 @@
                   $('#total-convert').html('<span>Total Promosi </span><h3 class="card-text" id="total-promosi"></h3>');
                 } 
   
+                var form = {
+                    'periode_id': periode_id,
+                    'semester_id': semester_id,
+                    'daerah_id': daerah_id,     
+                }; 
+
+               localStorage.setItem('search', JSON.stringify(form));
 
             
              $.ajax({
-                url: BASE_URL +'/api/rekapitulasi?periode_id='+ periode_id +'&semester_id='+ semester_id +'&daerah_id='+ daerah_id +'',
+                url: BASE_URL +'/api/rekapitulasi?page='+ page +'&per_page='+ itemsPerPage +'&periode_id='+ periode_id +'&semester_id='+ semester_id +'&daerah_id='+ daerah_id +'',
                 method: 'GET',
                 success: function(response) {
                    
@@ -498,7 +527,7 @@
 
         } 
 
-        function getdaerah(){
+        function getdaerah(daerah_id){
 
            $.ajax({
                 url: BASE_URL +'/api/select-daerah',
@@ -506,7 +535,20 @@
                 dataType: 'json',
                 success: function(data) {
                     // Populate SelectPicker options using received data
-                    $.each(data, function(index, option) {
+                    getlistdaerah(data);
+                    $('#daerah_id').val(daerah_id).selectpicker('refresh');
+                },
+                error: function(error) {
+                    console.error(error);
+                }
+            });
+
+        } 
+
+
+        function getlistdaerah(data){
+
+                  $.each(data, function(index, option) {
                         $('#daerah_id').append($('<option>', {
                           value: option.value,
                           text: option.text
@@ -515,13 +557,8 @@
 
                     // Refresh the SelectPicker to apply the new options
                     $('#daerah_id').selectpicker('refresh');
-                },
-                error: function(error) {
-                    console.error(error);
-                }
-            });
-
-        } 
+                     
+        }
 
         function getRekapitulasi(){
 
@@ -538,19 +575,41 @@
                 row2 +=`<tr><td colspan="10" align="center"> <b>Loading ...</b></td></tr>`;
                 content2.append(row2);
 
-                
+                var tmp = JSON.parse(localStorage.getItem('search'));
+                if(tmp)
+                { 
+                    var url = BASE_URL + `/api/rekapitulasi?page=${page}&per_page=${itemsPerPage}&periode_id=`+ tmp.periode_id +`&semester_id=`+ tmp.semester_id +`&daerah_id=`+ tmp.daerah_id +``;
+
+                     getperiode(tmp.periode_id);
+                     getsemester(tmp.semester_id);
+                     getdaerah(tmp.daerah_id);
+                }else{
+                     
+                     var url = BASE_URL +`/api/rekapitulasi?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_val}&semester_id=${semester_val}`;
+                     getperiode(year);
+                     getsemester(semester_val);
+                     getdaerah(daerah_id);
+                } 
 
                 $.ajax({
                     type: 'GET',
                     dataType: 'json',
-                    url: BASE_URL +`/api/rekapitulasi?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_val}&semester_id=${semester_val}`,
+                    url: url,
                     success: function(response) {
+                       
+                        if(response.rekapitulasi.data.length >0)
+                         {
+                               header = response.header;
+                               list = response.rekapitulasi.data;
+                               ShowHeader(response.header)
+                               ShowData(response.rekapitulasi.data)
+                               updatePagination(response.rekapitulasi.current_page, response.rekapitulasi.last_page);
+                             $('#ExportButton').prop('disabled',false);
+                         }else{
+                             $('#ExportButton').prop('disabled',true);
+                         } 
 
-                       header = response.header;
-                       list = response.rekapitulasi.data;
-                       ShowHeader(response.header)
-                       ShowData(response.rekapitulasi.data)
-                       updatePagination(response.rekapitulasi.current_page, response.rekapitulasi.last_page);
+                       
                     },
                     error: function( error) {}
                });
@@ -690,6 +749,7 @@
 
          const content = $('#exportView');
          content.empty();
+         console.log(data)
          if(data.length>0)
          {
             // Populate content with new data

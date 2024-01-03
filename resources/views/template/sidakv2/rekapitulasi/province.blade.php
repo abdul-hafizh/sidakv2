@@ -67,15 +67,7 @@
     </div>
 
     <div class="row margin-top-bottom-20">
-           <div class="pull-left" style="margin-bottom: 9px;">
-                <select id="row_page" class="selectpicker" data-style="bg-navy" >
-                    <option value="10" selected>10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                    <option value="all">All</option>
-                </select>
-            </div>
+          
 
             <div   class="col-sm-2" style="margin-bottom: 9px;">
                 <button type="button" id="ExportButton"  class="btn btn-info border-radius-10">
@@ -109,9 +101,7 @@
     </div>  
 
 
-        <div  class="pull-right width-50">
-            <ul id="pagination" class="pagination-table pagination"></ul>
-        </div>
+     
     
    
 </section>
@@ -128,20 +118,10 @@
                 <table class="table table-hover" border="0">
                     <thead class="bg-table">
                         <tr>
-                             <th rowspan="2"  class="text-center  font-bold bg-table-radius-left">
-                                <span class="pd-top-12 ">No</span>
-                            </th> 
-                            <th  rowspan="2" class="text-center font-bold">
-                              <div class="split-table-white"></div>
-                            </th>
-                            <th rowspan="2"  class="text-center">
-                                <span class="pd-top-12 width-daerah">Nama Daerah</span>
-                            </th>
-                            <th  rowspan="2" class="text-center font-bold">
-                              <div class="split-table-white"></div>
-                            </th>
+                          
                          
-                            <th colspan="7" class="text-center font-bold border-bottom-th">  
+                         
+                            <th colspan="7" class="text-center font-bold border-bottom-th bg-table-radius-left-top">  
                               <span class="pd-top-12">Pengawasan</span> 
                             </th>
                              <th  rowspan="2" class="text-center font-bold">
@@ -162,7 +142,7 @@
                             </th>
                          
                             <th colspan="7"  class="text-center  font-bold">
-                                <span class="pd-top-12 ">Promosi</span>
+                                <span id="textLabel" class="pd-top-12 "></span>
                             </th>
                             <th  rowspan="2" class="text-center font-bold">
                               <div class="split-table-white"></div>
@@ -176,7 +156,7 @@
                             
                         </tr>
                         <tr>
-                            <th  class="text-center font-bold">   
+                            <th  class="text-center font-bold bg-table-radius-left-bottom">   
                                 <span class="pd-top-12">Target</span>
                             </th>
                              <th   class="text-center font-bold">
@@ -325,15 +305,24 @@
        
        if(year > '2023')
        {
+          $('#textLabel').text('Peta Potensi');
           $('#total-convert').html('<span>Total Peta Potensi </span><h3 class="card-text" id="total-promosi"></h3>');
        }else{
+          $('#textLabel').text('Promosi');
           $('#total-convert').html('<span>Total Promosi </span><h3 class="card-text" id="total-promosi"></h3>');
        } 
 
         $("#ExportButton").click(function() {
-         
+            
+             var tmp = JSON.parse(localStorage.getItem('search'));
+                if(tmp)
+                { 
+                    var url = BASE_URL + `/api/rekapitulasi?page=${page}&per_page=${itemsPerPage}&periode_id=`+ tmp.periode_id +`&semester_id=`+ tmp.semester_id +`&daerah_id=`+ tmp.daerah_id +``;
+                }else{
+                    var url = BASE_URL +`/api/rekapitulasi?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_val}&semester_id=${semester_val}`;
+                } 
             $.ajax({
-                url: BASE_URL+ `/api/rekapitulasi?page=${page}&per_page=all&periode_id=${periode_val}&semester_id=${semester_val}`,
+                url: url,
                 method: 'GET',
                 success: function(response) {
                     
@@ -427,7 +416,14 @@
                 }else{
                   $('#total-convert').html('<span>Total Promosi </span><h3 class="card-text" id="total-promosi"></h3>');
                 } 
-  
+
+                var form = {
+                'periode_id': periode_id,
+                'semester_id': semester_id,
+                'daerah_id': '',     
+               }; 
+
+               localStorage.setItem('search', JSON.stringify(form));
 
             
              $.ajax({
@@ -535,12 +531,27 @@
                 row2 +=`<tr><td colspan="10" align="center"> <b>Loading ...</b></td></tr>`;
                 content2.append(row2);
 
+
+                var tmp = JSON.parse(localStorage.getItem('search'));
+                if(tmp)
+                {
+                  
+                  var url = BASE_URL + `/api/rekapitulasi?page=${page}&per_page=all&periode_id=`+ tmp.periode_id +`&semester_id=`+ tmp.semester_id +``;
+
+
+                }else{
+                   var url = BASE_URL +`/api/rekapitulasi?page=${page}&per_page=all&periode_id=${periode_val}&semester_id=${semester_val}`;
+                  
+                  
+                }   
+          
+
                 
 
                 $.ajax({
                     type: 'GET',
                     dataType: 'json',
-                    url: BASE_URL +`/api/rekapitulasi?page=${page}&per_page=${itemsPerPage}&periode_id=${periode_val}&semester_id=${semester_val}`,
+                    url: url,
                     success: function(response) {
 
                        header = response.header;
@@ -630,10 +641,7 @@
                 data.forEach(function(item, index) {
                 let row = ``;
                 row +=`<tr>`;
-                 row +=`<td>${item.number}</td>`;
-                   row +=`<td></td>`;
-                 row +=`<td>${item.fullname}</td>`;
-                 row +=`<td></td>`;
+                
                  row +=`<td align="center">${item.pengawas_target}</td>`;
                  row +=`<td></td>`;
                  row +=`<td align="right">${item.pengawas_pagu.convert}</td>`;

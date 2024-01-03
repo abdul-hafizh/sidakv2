@@ -67,7 +67,7 @@ class RequestRekapitulasi
      if($perencanaan)
      {
        $pengawas_target = $perencanaan->pengawas_inspeksi_target;
-       $pengawas_pagu = ['original'=>$perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu)];
+       $pengawas_pagu = ['original'=> $perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan->pengawas_analisa_pagu + $perencanaan->pengawas_inspeksi_pagu + $perencanaan->pengawas_evaluasi_pagu)];
 
        $bimtek_target = $perencanaan->bimtek_perizinan_target + $perencanaan->bimtek_pengawasan_target;
        $bimtek_pagu = ['original'=>$perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan->bimtek_perizinan_pagu + $perencanaan->bimtek_pengawasan_pagu)];
@@ -80,13 +80,13 @@ class RequestRekapitulasi
         
      }else{
         $pengawas_target = 0;
-        $pengawas_pagu = ['original'=>'','convert'=>''];
+        $pengawas_pagu = ['original'=>'Rp 0','convert'=>'Rp 0'];
         $bimtek_target = 0;
-        $bimtek_pagu = ['original'=>'','convert'=>''];
+        $bimtek_pagu = ['original'=>'Rp 0','convert'=>'Rp 0'];
         $penyelesaian_target = 0;
-        $penyelesaian_pagu = ['original'=>'','convert'=>''];
+        $penyelesaian_pagu = ['original'=>'Rp 0','convert'=>'Rp 0'];
         $target_promosi = 0;
-        $pagu_promosi =  ['original'=>'','convert'=>''];
+        $pagu_promosi =  ['original'=>'Rp 0','convert'=>'Rp 0'];
 
      }   
    
@@ -359,7 +359,7 @@ class RequestRekapitulasi
                "target"=> (int)$perencanaan[0]->promosi_target,
                "pagu"=> ['original'=>$perencanaan[0]->promosi_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan[0]->promosi_pagu)] ,
                "realisasi_target"=> $pemetaan_target,
-               "realisasi_apbn"=> ['original'=>$promosi[0]->realisasi_pagu,'convert'=>GeneralHelpers::formatRupiah($promosi[0]->realisasi_pagu)],          
+               "realisasi_apbn"=> ['original'=>$perencanaan[0]->realisasi_pagu,'convert'=>GeneralHelpers::formatRupiah($perencanaan[0]->realisasi_pagu)],          
            ];
 
       return $data;     
