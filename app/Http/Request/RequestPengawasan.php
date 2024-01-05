@@ -265,7 +265,7 @@ class RequestPengawasan
         $temp = array();
         $year = substr((string)$request->periode_id_mdl, 0, 4);
         $slug = $request->sub_menu_slug;
-        $periode = Pengawasan::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14, 'sub_menu_slug' => $slug])->where('periode_id', 'LIKE', $year . '%');
+        $periode = Pengawasan::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14])->where('periode_id', 'LIKE', $year . '%');
 
         $temp['biaya_kegiatan'] = $request->biaya + $periode->sum('biaya_kegiatan');
         $temp['jml_target'] = 1 + $periode->count();

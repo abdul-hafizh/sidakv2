@@ -55,76 +55,99 @@ class PengawasanApiController extends Controller
 
     public function store(Request $request)
     {
-        $validation = ValidationPengawasan::validation($request);
-        if ($validation) {
-            return response()->json($validation, 400);
-        } else {
+        DB::beginTransaction();
 
-            if ($request->status == 14) {
-                if ($request->sub_menu_slug == 'inspeksi') {
-                    $validationPerusahaan = ValidationPengawasan::validationPerusahaan($request);
-                    if ($validationPerusahaan) {
-                        return response()->json($validationPerusahaan, 400);
+        try {
+            $validation = ValidationPengawasan::validation($request);
+            if ($validation) {
+                DB::rollBack();
+                return response()->json($validation, 400);
+            } else {
+
+                if ($request->status == 14) {
+                    if ($request->sub_menu_slug == 'inspeksi') {
+                        $validationPerusahaan = ValidationPengawasan::validationPerusahaan($request);
+                        if ($validationPerusahaan) {
+                            DB::rollBack();
+                            return response()->json($validationPerusahaan, 400);
+                        }
                     }
                 }
-            }
 
-            $insert = RequestPengawasan::fieldsData($request);
+                $insert = RequestPengawasan::fieldsData($request);
 
-            if ($request->status == 14) {
-                $validationFile = ValidationPengawasan::validationFile($request);
-                if ($validationFile) {
-                    return response()->json($validationFile, 400);
+                if ($request->status == 14) {
+                    $validationFile = ValidationPengawasan::validationFile($request);
+                    if ($validationFile) {
+                        DB::rollBack();
+                        return response()->json($validationFile, 400);
+                    }
                 }
-            }
 
-            if ($request->hasFile('lap_kegiatan')) {
-                $path = 'laporan/pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
-                $file_hadir = $request->file('lap_kegiatan');
-                $lap_kegiatan = 'lap_kegiatan_' . time() . '_' . $file_hadir->getClientOriginalName();
-                $file_hadir->move(public_path($path), $lap_kegiatan);
-                $insert['lap_kegiatan'] = $path . '/' . $lap_kegiatan;
-            }
+                if ($request->hasFile('lap_kegiatan')) {
+                    $path = 'laporan/pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+                    $file_hadir = $request->file('lap_kegiatan');
+                    $lap_kegiatan = 'lap_kegiatan_' . time() . '_' . $file_hadir->getClientOriginalName();
+                    $file_hadir->move(public_path($path), $lap_kegiatan);
+                    $insert['lap_kegiatan'] = $path . '/' . $lap_kegiatan;
+                }
+
+                $result = RequestPengawasan::GetNilaiPerencanaan($request);
+                $sumPengawasan = RequestPengawasan::GetSumPengawasan($request);
+
+                if ($result->total_pagu < $sumPengawasan->biaya_kegiatan && $request->status == 14) {
+                    $kelebihan = $sumPengawasan->biaya_kegiatan - $result->total_pagu;
+                    $err['messages']['biaya'] = 'biaya kegiatan melebihi perencanaan. sebesar ' . GeneralHelpers::formatRupiah($kelebihan);
+                    DB::rollBack();
+                    return response()->json($err, 400);
+                }
 
 
+                $saveData = Pengawasan::create($insert);
+                //result
+                if ($saveData && $request->status == 14) {
+                    $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
 
-            $saveData = Pengawasan::create($insert);
-            //result
-            if ($saveData && $request->status == 14) {
-                $daerah_name = RequestDaerah::GetDaerahWhereName(Auth::User()->daerah_id);
+                    $url = url('pengawasan/' . $saveData);
+                    $tahun = substr($request->periode_id_mdl, 0, 4);
+                    $semester = substr($request->periode_id_mdl, 4);
+                    $sub_kegiatan = ucwords($request->sub_menu_slug);
 
-                $url = url('pengawasan/' . $saveData);
-                $tahun = substr($request->periode_id_mdl, 0, 4);
-                $semester = substr($request->periode_id_mdl, 4);
-                $sub_kegiatan = ucwords($request->sub_menu_slug);
+                    // $pusat = User::where('username', 'pusat')->first()->email;
+                    // $judul = 'Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ')';
+                    // $kepada = 'Kementerian Investasi';
+                    // $subject = 'Permohonan Persetujuan/Approval Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
+                    // $pesan = 'Mohon persetujuan untuk Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
 
-                // $pusat = User::where('username', 'pusat')->first()->email;
-                // $judul = 'Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ')';
-                // $kepada = 'Kementerian Investasi';
-                // $subject = 'Permohonan Persetujuan/Approval Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' Kab/Prop ' . $daerah_name;
-                // $pesan = 'Mohon persetujuan untuk Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester . ' dari daerah Kab/Prov ' . $daerah_name;
+                    $type = 'pengawasan';
+                    $sender = User::where(['username' => 'pusat'])->first()->username;
+                    $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
+                    $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $sender);
+                    $insertNotif = Notification::create($notif);
 
-                $type = 'pengawasan';
-                $sender = User::where(['username' => 'pusat'])->first()->username;
-                $messages_desc = strtoupper(Auth::User()->username) . ' Meminta Approve Pengawasan Pelaksanaan Penanaman Modal (' . $sub_kegiatan . ') Tahun ' . $tahun . ' Semester ' . $semester;
-                $notif = RequestNotification::fieldsData($type, $messages_desc, $url, $sender);
-                $insertNotif = Notification::create($notif);
-
-                if ($insertNotif) {
-                    //  Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
-                    return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil kirim data']);
+                    if ($insertNotif) {
+                        //  Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
+                        DB::commit();
+                        return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil kirim data']);
+                    } else {
+                        DB::rollBack();
+                        return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal kirim data']);
+                    }
+                } else if ($saveData) {
+                    if ($request->sub_menu_slug == 'inspeksi' && isset($request->nib)) {
+                        $data_perusahaan = RequestPengawasan::fieldsDataPerusahaan($request, $saveData->id);
+                        Pengawasan_perusahaan::insert($data_perusahaan);
+                    }
+                    DB::commit();
+                    return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil simpan data']);
                 } else {
-                    return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal kirim data']);
+                    DB::rollBack();
+                    return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal simpan data']);
                 }
-            } else if ($saveData) {
-                if ($request->sub_menu_slug == 'inspeksi' && isset($request->nib)) {
-                    $data_perusahaan = RequestPengawasan::fieldsDataPerusahaan($request, $saveData->id);
-                    Pengawasan_perusahaan::insert($data_perusahaan);
-                }
-                return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil simpan data']);
-            } else {
-                return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal simpan data']);
             }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan dalam menyimpan data']);
         }
     }
 
@@ -165,15 +188,12 @@ class PengawasanApiController extends Controller
 
             $result = RequestPengawasan::GetNilaiPerencanaan($request);
             $sumPengawasan = RequestPengawasan::GetSumPengawasan($request);
-
             if ($result->total_pagu < $sumPengawasan->biaya_kegiatan && $request->status == 14) {
-                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
+                $kelebihan = $sumPengawasan->biaya_kegiatan - $result->total_pagu;
+                $err['messages']['biaya'] = 'biaya kegiatan melebihi perencanaan. sebesar ' . GeneralHelpers::formatRupiah($kelebihan);
                 return response()->json($err, 400);
             }
-            if ($result->total_target < $sumPengawasan->jml_target && $request->status == 14) {
-                $err['messages']['jml_target'] = 'Jumlah Target melebihi perencanaan.';
-                return response()->json($err, 400);
-            }
+
 
             $id_pengawasan = $request->id_pengawasan;
             $UpdateData = Pengawasan::where('id', $id_pengawasan)->update($update);
