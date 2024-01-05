@@ -25,12 +25,11 @@ class RequestPengawasan
         $numberNext = (($page * $perPage) - ($perPage - 1));
         foreach ($data as $key => $val) {
 
-            if($val->nama_perusahaan ==null)
-            {
+            if ($val->nama_perusahaan == null) {
                 $nama_perusahaan = '';
-            }else{
-               $nama_perusahaan = $val->nama_perusahaan;
-            }    
+            } else {
+                $nama_perusahaan = $val->nama_perusahaan;
+            }
 
             $temp[$key]['number'] = $numberNext++;
 
@@ -138,8 +137,8 @@ class RequestPengawasan
                 if ($row->action == 'delete') {
                     if ($row->checked == true) {
                         if ($_COOKIE['access'] == "daerah" || $_COOKIE['access'] == "province") {
-                            if ($val->status_laporan_id == 13 && $val->request_edit =='false')
-                               
+                            if ($val->status_laporan_id == 13 && $val->request_edit == 'false')
+
 
                                 $delete_url = '<div id="Destroy" data-placement="top"  data-toggle="tooltip" title="Hapus Data" data-param_id=' .  $val->id . ' class="pointer btn-padding-action pull-left"><i class="fa-icon icon-destroy" ></i></div>';
                         }
@@ -155,10 +154,10 @@ class RequestPengawasan
                 }
             }
 
-            if($val->nama_prshn ==null){
-               $perusahaan = '';
-            }else{ 
-               $perusahaan =$val->nama_prshn; 
+            if ($val->nama_prshn == null) {
+                $perusahaan = '';
+            } else {
+                $perusahaan = $val->nama_prshn;
             }
 
             $row    = array();
@@ -266,7 +265,7 @@ class RequestPengawasan
         $temp = array();
         $year = substr((string)$request->periode_id_mdl, 0, 4);
         $slug = $request->sub_menu_slug;
-        $periode = Pengawasan::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14, 'sub_menu_slug' => $slug])->where('periode_id', 'LIKE', $year . '%');
+        $periode = Pengawasan::where(['daerah_id' => Auth::User()->daerah_id, 'status_laporan_id' => 14])->where('periode_id', 'LIKE', $year . '%');
 
         $temp['biaya_kegiatan'] = $request->biaya + $periode->sum('biaya_kegiatan');
         $temp['jml_target'] = 1 + $periode->count();
@@ -301,18 +300,18 @@ class RequestPengawasan
             $data_perusahaan[$key] = [
                 'id' => Str::uuid()->toString(),
                 'pengawasan_id' => $id,
-                'lokasi_kegiatan' => $request->lokasi_perusahaan[$key],
-                'nama_perusahaan' => $request->nama_perusahaan[$key],
-                'kontak' => $request->kontak[$key],
-                'nib' => $request->nib[$key],
+                'lokasi_kegiatan' => !empty($request->lokasi_perusahaan[$key]) ? $request->lokasi_perusahaan[$key] : '',
+                'nama_perusahaan' => !empty($request->nama_perusahaan[$key]) ? $request->nama_perusahaan[$key] : '',
+                'kontak' => !empty($request->kontak[$key]) ? $request->kontak[$key] : '',
+                'nib' => !empty($request->nib[$key]) ? $request->nib[$key] : '',
                 'tgl_nib' => $request->tgl_nib[$key],
-                'no_izin_lokasi' => $request->no_izin_lokasi[$key],
+                'no_izin_lokasi' => !empty($request->no_izin_lokasi[$key]) ? $request->no_izin_lokasi[$key] : '',
                 'tgl_izin_lokasi' => $request->tgl_izin_lokasi[$key],
-                'no_izin_amdal' => $request->no_izin_amdal[$key],
+                'no_izin_amdal' => !empty($request->no_izin_amdal[$key]) ? $request->no_izin_amdal[$key] : '',
                 'tgl_izin_amdal' => $request->tgl_izin_amdal[$key],
-                'no_izin_lingkungan' => $request->no_izin_lingkungan[$key],
+                'no_izin_lingkungan' => !empty($request->no_izin_lingkungan[$key]) ? $request->no_izin_lingkungan[$key] : '',
                 'tgl_izin_lingkungan' => $request->tgl_izin_lingkungan[$key],
-                'no_imb' => $request->no_imb[$key],
+                'no_imb' => !empty($request->no_imb[$key]) ? $request->no_imb[$key] : '',
                 'tgl_imb' => $request->tgl_imb[$key],
                 'total_rencana_inv' => $request->total_rencana_inv[$key],
                 'total_realisasi_inv' => $request->total_realisasi_inv[$key],
@@ -324,7 +323,7 @@ class RequestPengawasan
                 'created_at' => date('Y-m-d H:i:s'),
             ];
 
-            $path = 'pengawasan_file/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+            $path = 'laporan/pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
 
             if ($request->hasFile('lap_evaluasi.' . $key)) {
                 $file_evaluasi = $request->file('lap_evaluasi')[$key];

@@ -72,7 +72,7 @@ class BimsosApiController extends Controller
                     return response()->json($validationFile, 400);
                 }
             }
-            $path = 'bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+            $path = 'laporan/bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
                 $lap_hadir = 'hadir-' . time() . '-' . $file_hadir->getClientOriginalName();
@@ -119,7 +119,8 @@ class BimsosApiController extends Controller
             $result = RequestBimsos::GetNilaiPerencanaan($request);
             $sumBimsos = RequestBimsos::GetSumBimsos($request);
             if ($result->total_pagu < $sumBimsos->biaya_kegiatan && $request->status == 14) {
-                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
+                $kelebihan = $sumBimsos->biaya_kegiatan - $result->total_pagu;
+                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan. sebesar ' . GeneralHelpers::formatRupiah($kelebihan);
                 return response()->json($err, 400);
             }
 
@@ -176,7 +177,7 @@ class BimsosApiController extends Controller
 
             $update = RequestBimsos::fieldsData($request);
             //update account
-            $path = 'bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+            $path = 'laporan/bimtek/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             if ($request->hasFile('lap_hadir')) {
                 $file_hadir = $request->file('lap_hadir');
                 $lap_hadir = 'hadir-' . time() . '-' . $file_hadir->getClientOriginalName();
@@ -224,7 +225,8 @@ class BimsosApiController extends Controller
             $result = RequestBimsos::GetNilaiPerencanaan($request);
             $sumBimsos = RequestBimsos::GetSumBimsos($request);
             if ($result->total_pagu < $sumBimsos->biaya_kegiatan && $request->status == 14) {
-                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
+                $kelebihan = $sumBimsos->biaya_kegiatan - $result->total_pagu;
+                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan. sebesar ' . GeneralHelpers::formatRupiah($kelebihan);
                 return response()->json($err, 400);
             }
             // if ($result->total_peserta < $sumBimsos->jml_peserta && $request->status == 14) {

@@ -935,7 +935,7 @@
 
           getPeriode(data.periode_id);
           subMenu(data.sub_menu_slug);
-          timpa(data.perusahaan);
+          timpa(data.perusahaan, data.status_laporan_id);
           footer_modal(id);
           if (data.access == 'daerah' || data.access == 'province') {
             $('#approve_edit-' + id).hide();
@@ -1017,7 +1017,7 @@
 
       })
 
-      function timpa(perusahaan) {
+      function timpa(perusahaan, status) {
 
         let row = `<tbody id="tbody-row">`;
         $.each(perusahaan, function(index, option) {
@@ -1027,10 +1027,12 @@
             row += `<tr class="hapus_row">`;
           row += `<td>`;
           row += `<label>Data Perusahaan</label>`;
-          if (index == 0)
-            row += `<button type="button" class="btn btn-info" style="float: right;" id="btn-edit-row"><i class="fa fa-plus"></i></button>`;
-          else
-            row += `<button class="btn btn-danger btn-sm" type="button" style="float: right;" onclick="if($('#tbody-row tr').length > 1) { $(this).closest('tr').remove() }"><i class="fa fa-trash"></i></button>`;
+          if (status == 13) {
+            if (index == 0)
+              row += `<button type="button" class="btn btn-info" style="float: right;" id="btn-edit-row"><i class="fa fa-plus"></i></button>`;
+            else
+              row += `<button class="btn btn-danger btn-sm" type="button" style="float: right;" onclick="if($('#tbody-row tr').length > 1) { $(this).closest('tr').remove() }"><i class="fa fa-trash"></i></button>`;
+          }
           row += `<table class="table table-hover text-nowrap">`;
 
           row += `<tr>
