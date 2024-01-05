@@ -119,7 +119,8 @@ class BimsosApiController extends Controller
             $result = RequestBimsos::GetNilaiPerencanaan($request);
             $sumBimsos = RequestBimsos::GetSumBimsos($request);
             if ($result->total_pagu < $sumBimsos->biaya_kegiatan && $request->status == 14) {
-                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
+                $kelebihan = $sumBimsos->biaya_kegiatan - $result->total_pagu;
+                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan. sebesar ' . GeneralHelpers::formatRupiah($kelebihan);
                 return response()->json($err, 400);
             }
 
@@ -224,7 +225,8 @@ class BimsosApiController extends Controller
             $result = RequestBimsos::GetNilaiPerencanaan($request);
             $sumBimsos = RequestBimsos::GetSumBimsos($request);
             if ($result->total_pagu < $sumBimsos->biaya_kegiatan && $request->status == 14) {
-                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan.';
+                $kelebihan = $sumBimsos->biaya_kegiatan - $result->total_pagu;
+                $err['messages']['biaya_kegiatan'] = 'biaya kegiatan melebihi perencanaan. sebesar ' . GeneralHelpers::formatRupiah($kelebihan);
                 return response()->json($err, 400);
             }
             // if ($result->total_peserta < $sumBimsos->jml_peserta && $request->status == 14) {
