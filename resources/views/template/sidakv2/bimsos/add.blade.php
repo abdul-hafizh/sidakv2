@@ -763,7 +763,7 @@
       function tampilkanModal(url) {
 
         $.ajax({
-          url: url,
+          url: 'laporan/bimtek/' + url,
           method: 'GET',
           xhrFields: {
             responseType: 'blob'

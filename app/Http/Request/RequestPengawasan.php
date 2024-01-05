@@ -324,12 +324,13 @@ class RequestPengawasan
             ];
 
             $path = 'laporan/pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+            $path_save = $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
 
             if ($request->hasFile('lap_evaluasi.' . $key)) {
                 $file_evaluasi = $request->file('lap_evaluasi')[$key];
                 $lap_evaluasi = 'kepatuhan-' . time() . '_' . $file_evaluasi->getClientOriginalName();
                 $file_evaluasi->move(public_path($path), $lap_evaluasi);
-                $data_perusahaan[$key]['lap_evaluasi'] = $path . '/' . $lap_evaluasi;
+                $data_perusahaan[$key]['lap_evaluasi'] = $path_save . '/' . $lap_evaluasi;
             } else {
                 $data_perusahaan[$key]['lap_evaluasi'] = $request->lap_evaluasi_file[$key];
             }
@@ -338,7 +339,7 @@ class RequestPengawasan
                 $lap_lkpm = 'lkpm-' . time() . '-' . $file_lkpm->getClientOriginalName();
                 $file_lkpm->move(public_path($path), $lap_lkpm);
 
-                $data_perusahaan[$key]['lap_lkpm'] = $path . '/'  . $lap_lkpm;
+                $data_perusahaan[$key]['lap_lkpm'] = $path_save . '/'  . $lap_lkpm;
             } else {
                 $data_perusahaan[$key]['lap_lkpm'] = $request->lap_lkpm_file[$key];
             }
@@ -347,7 +348,7 @@ class RequestPengawasan
                 $lap_bap = 'bap-' . time() . '-' . $file_bap->getClientOriginalName();
                 $file_bap->move(public_path($path), $lap_bap);
 
-                $data_perusahaan[$key]['lap_bap'] = $path . '/'  . $lap_bap;
+                $data_perusahaan[$key]['lap_bap'] = $path_save . '/'  . $lap_bap;
             } else {
                 $data_perusahaan[$key]['lap_bap'] = $request->lap_bap_file[$key];
             }
@@ -356,7 +357,7 @@ class RequestPengawasan
                 $lap_profile = 'profile-' . time() . '-' . $file_profile->getClientOriginalName();
                 $file_profile->move(public_path($path), $lap_profile);
 
-                $data_perusahaan[$key]['lap_profile'] = $path . '/'  . $lap_profile;
+                $data_perusahaan[$key]['lap_profile'] = $path_save . '/'  . $lap_profile;
             } else {
                 $data_perusahaan[$key]['lap_profile'] = $request->lap_profile_file[$key];
             }
