@@ -1308,7 +1308,7 @@
       function tampilkanModal(url) {
 
         $.ajax({
-          url: url,
+          url: 'laporan/pengawasan/' + url,
           method: 'GET',
           xhrFields: {
             responseType: 'blob'

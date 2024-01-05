@@ -86,10 +86,11 @@ class PengawasanApiController extends Controller
 
                 if ($request->hasFile('lap_kegiatan')) {
                     $path = 'laporan/pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+                    $path_save = $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
                     $file_hadir = $request->file('lap_kegiatan');
                     $lap_kegiatan = 'lap_kegiatan_' . time() . '_' . $file_hadir->getClientOriginalName();
                     $file_hadir->move(public_path($path), $lap_kegiatan);
-                    $insert['lap_kegiatan'] = $path . '/' . $lap_kegiatan;
+                    $insert['lap_kegiatan'] = $path_save . '/' . $lap_kegiatan;
                 }
 
                 $result = RequestPengawasan::GetNilaiPerencanaan($request);
@@ -180,10 +181,11 @@ class PengawasanApiController extends Controller
             //update account
             if ($request->hasFile('lap_kegiatan')) {
                 $path = 'laporan/pengawasan/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+                $path_save = $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
                 $file_hadir = $request->file('lap_kegiatan');
                 $lap_kegiatan = 'lap_kegiatan_' . time() . '_' . $file_hadir->getClientOriginalName();
                 $file_hadir->move(public_path($path), $lap_kegiatan);
-                $update['lap_kegiatan'] = $path . '/' . $lap_kegiatan;
+                $update['lap_kegiatan'] = $path_save . '/' . $lap_kegiatan;
             }
 
             $result = RequestPengawasan::GetNilaiPerencanaan($request);
