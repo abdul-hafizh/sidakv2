@@ -189,92 +189,79 @@
                 <table class="table table-hover" >
                     <thead>
                         <tr>
-                           <th rowspan="3"  class=" font-bold" id="ShowChecklistAll" style="display:none;">
-                            <input id="select-all" class="border-left-table" type="checkbox">
-                           </th>
-                           <th rowspan="3" class="text-center font-bold">
-                                <div class="split-table"></div>
-                           </th>
-
-                           <th rowspan="3"  class=" font-bold">No</th>
-                           <th rowspan="3" class="text-center font-bold">
-                                <div class="split-table"></div>
-                           </th>
-                           <th rowspan="3"  colspan="8" class="text-center font-bold">
-                             <span class="">Nama Daerah</span>
-                           </th> 
-                           
-                           <th rowspan="3" ><div class="split-table padding-none"></div> </th>
-                           <th colspan="5" class="text-center font-bold">
-                             <span class="padding-top-bottom-12">Pengawasan (Rp)</span>
-                           </th>
-                           <th rowspan="3" ><div class="split-table padding-none"></div> </th>
-
-                          
-                           <th colspan="3" class="text-center font-bold">
-                             <span class="padding-top-bottom-12">Bimsos (Rp)</span>
-                           </th>
-                           <th rowspan="3" ><div class="split-table padding-none"></div> </th>
-
-                            <th colspan="5" class="text-center font-bold">
-                             <span class="padding-top-bottom-12">Penyelesaian (Rp)</span>
-                           </th>
-                           <th rowspan="3" ><div class="split-table padding-none"></div> </th>
-
-                           <th rowspan="3"  class="text-center font-bold">
-                             <span class="">Peta Potensi (Rp)</span>
-                           </th>
-                           <th rowspan="3" ><div class="split-table padding-none"></div> </th>
-                            <th rowspan="3"  class="text-center font-bold">
-                             <span class="">Total (Rp)</span>
-                           </th>
-                            <th rowspan="3" ><div class="split-table padding-none"></div> </th>
-
-                            <th rowspan="3"  class="text-center font-bold">
-                              <span class="padding-top-bottom-12">Status </span>
+                            <th rowspan="3"  class=" font-bold" id="ShowChecklistAll" style="display:none;">
+                                <input id="select-all" class="border-left-table" type="checkbox">
                             </th>
-
+                            <th rowspan="3" class="text-center font-bold">
+                                <div class="split-table"></div>
+                            </th>
+                            <th rowspan="3"  class=" font-bold">No</th>
+                            <th rowspan="3" class="text-center font-bold">
+                                <div class="split-table"></div>
+                            </th>
+                            <th rowspan="3"  colspan="8" class="text-center font-bold">
+                                <span class="">Nama Daerah</span>
+                            </th>                             
                             <th rowspan="3" ><div class="split-table padding-none"></div> </th>
-
-                               <th rowspan="3"  class="text-center font-bold">
-                                 <span class="padding-top-bottom-12">Aksi</span>
-                               </th>       
+                            <th colspan="5" class="text-center font-bold">
+                                <span class="padding-top-bottom-12">Pengawasan (Rp)</span>
+                            </th>
+                            <th rowspan="3" ><div class="split-table padding-none"></div> </th>
+                            <th colspan="3" class="text-center font-bold">
+                                <span class="padding-top-bottom-12">Bimsos (Rp)</span>
+                            </th>
+                            <th rowspan="3" ><div class="split-table padding-none"></div> </th>
+                            <th colspan="5" class="text-center font-bold">
+                                <span class="padding-top-bottom-12">Penyelesaian (Rp)</span>
+                            </th>
+                            <th rowspan="3" ><div class="split-table padding-none"></div> </th>
+                            <th rowspan="3"  class="text-center font-bold">
+                                <span class="">Peta Potensi (Rp)</span>
+                            </th>
+                            <th rowspan="3" ><div class="split-table padding-none"></div> </th>
+                            <th rowspan="3"  class="text-center font-bold">
+                                <span class="">Total (Rp)</span>
+                            </th>
+                            <th rowspan="3" ><div class="split-table padding-none"></div> </th>
+                            <th rowspan="3"  class="text-center font-bold">
+                                <span class="padding-top-bottom-12">Status </span>
+                            </th>
+                            <th rowspan="3" ><div class="split-table padding-none"></div> </th>
+                            <th rowspan="3"  class="text-center font-bold">
+                                <span class="padding-top-bottom-12">Aksi</span>
+                            </th>       
                         </tr>
                          <tr>
-                                   <th  class="text-center font-bold"> 
-                                       <span class="padding-top-bottom-12">Analisa</span>
-                                   </th>
-                                   <th ><div class="split-table  padding-none"></div> </th>
-                                   <th  class="text-center font-bold">
-                                      <span class="">Inspeksi</span>
-                                   </th>
-                                   <th ><div class="split-table  padding-none"></div> </th>
-                                   <th  class="text-center font-bold">
-                                      <span class="">Evaluasi</span>
-                                   </th>
-                                   
-                                   <th  class="text-center font-bold"> 
-                                       <span class="padding-top-bottom-12">Perizinan</span>
-                                   </th>
-                                   <th ><div class="split-table  padding-none"></div> </th>
-                                    <th  class="text-center font-bold"> 
-                                       <span class="padding-top-bottom-12">Pengawasan</span>
-                                   </th>
-
-                                    <th  class="text-center font-bold"> 
-                                       <span class="padding-top-bottom-12">Identifikasi</span>
-                                   </th>
-                                   <th ><div class="split-table  padding-none"></div> </th>
-                                   <th  class="text-center font-bold">
-                                      <span class="">Realisasi</span>
-                                   </th>
-                                   <th ><div class="split-table  padding-none"></div> </th>
-                                   <th  class="text-center font-bold">
-                                      <span class="">Evaluasi</span>
-                                   </th>
-                                  
-                             </tr>
-                            
+                            <th class="text-center font-bold"> 
+                                <span class="padding-top-bottom-12">Perencanaan Inspeksi</span>
+                            </th>
+                            <th><div class="split-table  padding-none"></div> </th>
+                            <th class="text-center font-bold">
+                                <span class="">Pelaksanaan Inspeksi</span>
+                            </th>
+                            <th><div class="split-table  padding-none"></div> </th>
+                            <th class="text-center font-bold">
+                                <span class="">Penilaian Kepatuhan</span>
+                            </th>                                   
+                            <th class="text-center font-bold"> 
+                                <span class="padding-top-bottom-12">Perizinan dan Pengawasan</span>
+                            </th>
+                            <th><div class="split-table  padding-none"></div> </th>
+                            <th class="text-center font-bold"> 
+                                <span class="padding-top-bottom-12">LKPM</span>
+                            </th>
+                            <th class="text-center font-bold"> 
+                                <span class="padding-top-bottom-12">Identifikasi</span>
+                            </th>
+                            <th><div class="split-table  padding-none"></div> </th>
+                            <th class="text-center font-bold">
+                                <span class="">Penyelesaian</span>
+                            </th>
+                            <th><div class="split-table  padding-none"></div> </th>
+                            <th class="text-center font-bold">
+                                <span class="">Evaluasi</span>
+                            </th>                                  
+                        </tr>                            
                     </thead>
                     <tbody id="content"></tbody>
                 </table>
