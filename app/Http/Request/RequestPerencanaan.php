@@ -64,12 +64,16 @@ class RequestPerencanaan
                 $temp[$key]['penyelesaian_evaluasi_pagu_convert'] = GeneralHelpers::formatRupiah($val->penyelesaian_evaluasi_pagu);
                 $temp[$key]['promosi_pengadaan_pagu'] = $val->promosi_pengadaan_pagu;
                 $temp[$key]['promosi_pengadaan_pagu_convert'] = GeneralHelpers::formatRupiah($val->promosi_pengadaan_pagu);
+                $temp[$key]['identifikasi_peta_potensi'] = $val->identifikasi_peta_potensi;
+                $temp[$key]['identifikasi_peta_potensi_convert'] = GeneralHelpers::formatRupiah($val->identifikasi_peta_potensi);
+                $temp[$key]['perumusan_peta_potensi'] = $val->perumusan_peta_potensi;
+                $temp[$key]['perumusan_peta_potensi_convert'] = GeneralHelpers::formatRupiah($val->perumusan_peta_potensi);
                 $temp[$key]['periode'] =  $periode;
                 $temp[$key]['total_rencana_pengawasan'] = $val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu;
                 $temp[$key]['total_rencana_bimsos'] = $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu;
                 $temp[$key]['total_rencana_masalah'] = $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu;
-                $temp[$key]['total_pagu'] =  GeneralHelpers::formatRupiah($val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu + $val->pagu_promosi);
-                $temp[$key]['total_pagu_export'] =  $val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu + $val->pagu_promosi;
+                $temp[$key]['total_pagu'] =  GeneralHelpers::formatRupiah($val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu + $val->identifikasi_peta_potensi + $val->perumusan_peta_potensi);
+                $temp[$key]['total_pagu_export'] =  $val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu + $val->identifikasi_peta_potensi + $val->perumusan_peta_potensi;
                 $temp[$key]['status'] = RequestPerencanaan::getLabelStatus($val->status, $val->request_edit);
                 $temp[$key]['deleted'] = RequestPerencanaan::checkValidate($val->status);
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
@@ -131,11 +135,13 @@ class RequestPerencanaan
                 $temp[$key]['penyelesaian_realisasi_pagu'] = $val->penyelesaian_realisasi_pagu;
                 $temp[$key]['penyelesaian_evaluasi_pagu'] = $val->penyelesaian_evaluasi_pagu;
                 $temp[$key]['promosi_pengadaan_pagu'] = $val->promosi_pengadaan_pagu;
+                $temp[$key]['identifikasi_peta_potensi'] = $val->identifikasi_peta_potensi;
+                $temp[$key]['perumusan_peta_potensi'] = $val->perumusan_peta_potensi;
                 $temp[$key]['periode'] =  $periode;
                 $temp[$key]['total_rencana_pengawasan'] = $val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu;
                 $temp[$key]['total_rencana_bimsos'] = $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu;
                 $temp[$key]['total_rencana_masalah'] = $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu;
-                $temp[$key]['total_pagu_export'] =  $val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu + $val->pagu_promosi;
+                $temp[$key]['total_pagu_export'] =  $val->pengawas_analisa_pagu + $val->pengawas_inspeksi_pagu + $val->pengawas_evaluasi_pagu + $val->bimtek_perizinan_pagu + $val->bimtek_pengawasan_pagu + $val->penyelesaian_identifikasi_pagu + $val->penyelesaian_realisasi_pagu + $val->penyelesaian_evaluasi_pagu + $val->promosi_pengadaan_pagu + $val->identifikasi_peta_potensi + $val->perumusan_peta_potensi;
                 $temp[$key]['status'] = RequestPerencanaan::getLabelStatus($val->status, $val->request_edit);
                 $temp[$key]['deleted'] = RequestPerencanaan::checkValidate($val->status);
                 $temp[$key]['created_at'] = GeneralHelpers::tanggal_indo($val->created_at);
@@ -174,8 +180,14 @@ class RequestPerencanaan
         $temp['options'] = RequestMenuRoles::ActionPage('perencanaan');
         $temp['periode_name'] = RequestPeriode::GetPeriodeName($data->periode_id);
         $temp['pagu_apbn'] = GeneralHelpers::formatRupiah($data->pagu_apbn);
-        $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->pagu_promosi);
-        $temp['pagu_promosi_cek'] = $data->pagu_promosi;
+        $temp['pagu_promosi'] = GeneralHelpers::formatRupiah($data->promosi_pengadaan_pagu);
+        $temp['promosi_pengadaan_pagu'] = $data->promosi_pengadaan_pagu;
+        $temp['identifikasi_peta_potensi'] = $data->identifikasi_peta_potensi;
+        $temp['identifikasi_peta_potensi_convert'] = GeneralHelpers::formatRupiah($data->identifikasi_peta_potensi);
+        $temp['perumusan_peta_potensi'] = $data->perumusan_peta_potensi;
+        $temp['perumusan_peta_potensi_convert'] = GeneralHelpers::formatRupiah($data->perumusan_peta_potensi);
+        $temp['total_pagu_peta_potensi'] = $data->perumusan_peta_potensi + $data->perumusan_peta_potensi + $data->promosi_pengadaan_pagu;
+        $temp['total_pagu_peta_potensi_convert'] = GeneralHelpers::formatRupiah($data->perumusan_peta_potensi + $data->perumusan_peta_potensi + $data->promosi_pengadaan_pagu);
         $temp['total_rencana'] =  GeneralHelpers::formatRupiah($data->pengawas_analisa_pagu + $data->pengawas_inspeksi_pagu + $data->pengawas_evaluasi_pagu + $data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu + $data->penyelesaian_identifikasi_pagu + $data->penyelesaian_realisasi_pagu + $data->penyelesaian_evaluasi_pagu);
 
         $temp['target_pengawasan'] = $data->target_pengawasan;
@@ -202,6 +214,16 @@ class RequestPerencanaan
         $temp['bimtek_pengawasan_target'] = $data->bimtek_pengawasan_target;
         $temp['bimtek_pengawasan_pagu'] = $data->bimtek_pengawasan_pagu;
         $temp['bimtek_pengawasan_pagu_convert'] = GeneralHelpers::formatRupiah($data->bimtek_pengawasan_pagu);
+
+        $temp['pengawas_analisa_satuan'] = $data->pengawas_analisa_satuan;
+        $temp['pengawas_inspeksi_satuan'] = $data->pengawas_inspeksi_satuan;
+        $temp['pengawas_evaluasi_satuan'] = $data->pengawas_evaluasi_satuan;
+        $temp['bimtek_perizinan_satuan'] = $data->bimtek_perizinan_satuan;
+        $temp['bimtek_pengawasan_satuan'] = $data->bimtek_pengawasan_satuan;
+        $temp['penyelesaian_identifikasi_satuan'] = $data->penyelesaian_identifikasi_satuan;
+        $temp['penyelesaian_realisasi_satuan'] = $data->penyelesaian_realisasi_satuan;
+        $temp['penyelesaian_evaluasi_satuan'] = $data->penyelesaian_evaluasi_satuan;
+        $temp['promosi_pengadaan_satuan'] = $data->promosi_pengadaan_satuan;
 
         $temp['total_target_bimtek'] = $data->bimtek_perizinan_target + $data->bimtek_pengawasan_target;
         $temp['total_pagu_bimtek'] = $data->bimtek_perizinan_pagu + $data->bimtek_pengawasan_pagu;
@@ -277,26 +299,36 @@ class RequestPerencanaan
         $fields = [
             'pengawas_analisa_target' => $request->pengawas_analisa_target,
             'pengawas_analisa_pagu' => $request->pengawas_analisa_pagu,
+            'pengawas_analisa_satuan' => $request->pengawas_analisa_satuan,
             'pengawas_inspeksi_target' => $request->pengawas_inspeksi_target,
             'pengawas_inspeksi_pagu' => $request->pengawas_inspeksi_pagu,
+            'pengawas_inspeksi_satuan' => $request->pengawas_inspeksi_satuan,
             'pengawas_evaluasi_target' => $request->pengawas_evaluasi_target,
             'pengawas_evaluasi_pagu' => $request->pengawas_evaluasi_pagu,
+            'pengawas_evaluasi_satuan' => $request->pengawas_evaluasi_satuan,
 
             'bimtek_perizinan_target' => $request->bimtek_perizinan_target,
             'bimtek_perizinan_pagu' => $request->bimtek_perizinan_pagu,
+            'bimtek_perizinan_satuan' => $request->bimtek_perizinan_satuan,
             'bimtek_pengawasan_target' => $request->bimtek_pengawasan_target,
             'bimtek_pengawasan_pagu' => $request->bimtek_pengawasan_pagu,
+            'bimtek_pengawasan_satuan' => $request->bimtek_pengawasan_satuan,
 
             'penyelesaian_identifikasi_target' => $request->penyelesaian_identifikasi_target,
             'penyelesaian_identifikasi_pagu' => $request->penyelesaian_identifikasi_pagu,
+            'penyelesaian_identifikasi_satuan' => $request->penyelesaian_identifikasi_satuan,
             'penyelesaian_realisasi_target' => $request->penyelesaian_realisasi_target,
             'penyelesaian_realisasi_pagu' => $request->penyelesaian_realisasi_pagu,
+            'penyelesaian_realisasi_satuan' => $request->penyelesaian_realisasi_satuan,
             'penyelesaian_evaluasi_target' => $request->penyelesaian_evaluasi_target,
             'penyelesaian_evaluasi_pagu' => $request->penyelesaian_evaluasi_pagu,
+            'penyelesaian_evaluasi_satuan' => $request->penyelesaian_evaluasi_satuan,
 
             'promosi_pengadaan_target' => $request->promosi_pengadaan_target,
             'promosi_pengadaan_satuan' => $request->promosi_pengadaan_satuan,
             'promosi_pengadaan_pagu' => $request->promosi_pengadaan_pagu,
+            'identifikasi_peta_potensi' => $request->identifikasi_peta_potensi,
+            'perumusan_peta_potensi' => $request->perumusan_peta_potensi,
 
             'periode_id' => $request->periode_id,
             'nama_pejabat' => $request->nama_pejabat,

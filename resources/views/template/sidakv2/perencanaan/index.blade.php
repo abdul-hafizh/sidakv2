@@ -598,7 +598,7 @@
                 total_masalah += item.total_rencana_masalah;
                 total_promosi += item.promosi_pengadaan_pagu;
 
-                var download_link = '<a href="'+BASE_URL+'/file/perencanaan/' + item.lap_rencana + '" class="pointer btn-padding-action pull-left" title="Download PDF" target="_blank" style="margin-right: 4px"><i class="fa-icon icon-download"></i></a>';
+                var download_link = '<a href="'+BASE_URL+'/laporan/rencana/' + item.lap_rencana + '" class="pointer btn-padding-action pull-left" title="Download PDF" target="_blank" style="margin-right: 4px"><i class="fa-icon icon-download"></i></a>';
                  row +=`<td></td>`; 
                 row +=`<td >${item.number}</td>`;
                  row +=`<td></td>`;

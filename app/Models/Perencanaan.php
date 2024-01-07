@@ -48,6 +48,8 @@ class Perencanaan extends Model
         'promosi_pengadaan_target',
         'promosi_pengadaan_satuan',
         'promosi_pengadaan_pagu',
+        'identifikasi_peta_potensi',
+        'perumusan_peta_potensi',        
 
         'tgl_tandatangan',
         'nama_pejabat',
