@@ -332,7 +332,7 @@ class RequestPengawasan
                 $file_evaluasi->move(public_path($path), $lap_evaluasi);
                 $data_perusahaan[$key]['lap_evaluasi'] = $path_save . '/' . $lap_evaluasi;
             } else {
-                $data_perusahaan[$key]['lap_evaluasi'] = $request->lap_evaluasi_file[$key];
+                $data_perusahaan[$key]['lap_evaluasi'] = !empty($request->lap_evaluasi_file[$key]) ? $request->lap_evaluasi_file[$key] : '';
             }
             if ($request->hasFile('lap_lkpm.' . $key)) {
                 $file_lkpm = $request->file('lap_lkpm')[$key];
@@ -341,7 +341,7 @@ class RequestPengawasan
 
                 $data_perusahaan[$key]['lap_lkpm'] = $path_save . '/'  . $lap_lkpm;
             } else {
-                $data_perusahaan[$key]['lap_lkpm'] = $request->lap_lkpm_file[$key];
+                $data_perusahaan[$key]['lap_lkpm'] = !empty($request->lap_lkpm_file[$key]) ? $request->lap_lkpm_file[$key] : '';
             }
             if ($request->hasFile('lap_bap.' . $key)) {
                 $file_bap = $request->file('lap_bap')[$key];
@@ -350,7 +350,7 @@ class RequestPengawasan
 
                 $data_perusahaan[$key]['lap_bap'] = $path_save . '/'  . $lap_bap;
             } else {
-                $data_perusahaan[$key]['lap_bap'] = $request->lap_bap_file[$key];
+                $data_perusahaan[$key]['lap_bap'] = !empty($request->lap_bap_file[$key]) ? $request->lap_bap_file[$key] : '';
             }
             if ($request->hasFile('lap_profile.' . $key)) {
                 $file_profile = $request->file('lap_profile')[$key];
@@ -359,7 +359,7 @@ class RequestPengawasan
 
                 $data_perusahaan[$key]['lap_profile'] = $path_save . '/'  . $lap_profile;
             } else {
-                $data_perusahaan[$key]['lap_profile'] = $request->lap_profile_file[$key];
+                $data_perusahaan[$key]['lap_profile'] = !empty($request->lap_profile_file[$key]) ? $request->lap_profile_file[$key] : '';
             }
         }
         return $data_perusahaan;
