@@ -721,6 +721,7 @@
                     if(data.status_code != 13) {
                          rows_btn+= '<div class="box-footer">';
                          rows_btn+= '<div class="btn-group just-center">';
+                              rows_btn += '<a href="{{ url('/perencanaan') }}" class="btn btn-info col-md-2"><i class="fa fa-arrow-left"></i> Kembali</a>';
                               if(data.lap_rencana != '') {                                   
                                    rows_btn+= download_link;
                               }
@@ -740,13 +741,20 @@
                               }                              
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
+                    } else {
+                         rows_btn+= '<div class="box-footer">';
+                         rows_btn+= '<div class="btn-group just-center">';
+                         rows_btn += '<a href="{{ url('/perencanaan') }}" class="btn btn-info col-md-2"><i class="fa fa-arrow-left"></i> Kembali</a>';                                              
+                         rows_btn+= '</div>';
+                         rows_btn+= '</div>';
                     }
                }               
 
                if(data.access == 'daerah') {
                     if(([14, 15, 16].includes(data.status_code) && data.request_edit === 'false') || (data.status_code === 14 && data.request_edit === 'request_doc')) {
                          rows_btn+= '<div class="box-footer">';
-                         rows_btn+= '<div class="btn-group just-center">';
+                         rows_btn+= '<div class="btn-group just-center">';                              
+
                               if(data.lap_rencana != '') {
                                    rows_btn+= download_link;
                               }
@@ -762,7 +770,7 @@
                                         }
                                    }
                                    
-                              });                              
+                              });
 
                          rows_btn+= '</div>';
                          rows_btn+= '</div>';
