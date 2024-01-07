@@ -88,13 +88,15 @@ class NotificationApiController extends Controller
         {
 
             $access = RequestAuth::Access();
-            if($access !='admin' ||  $access !='pusat')
+            if($access =='admin' ||  $access =='pusat')
             {
 
-              $update = Notification::where(['from'=>'pusat','sender'=>Auth::User()->username])->Orwhere(['from'=>'admin','sender'=>Auth::User()->username])->update(['view_from'=>'true','updated_by'=>Auth::User()->username]);
+                 $update = Notification::where(['id'=>$id,'sender'=>'pusat'])->update(['view_from'=>'true','updated_by'=>Auth::User()->username]);
             }else{
+
+                 $update = Notification::where(['from'=>'pusat','sender'=>Auth::User()->username])->Orwhere(['from'=>'admin','sender'=>Auth::User()->username])->update(['view_sender'=>'true','updated_by'=>Auth::User()->username]);
                
-               $update = Notification::where(['id'=>$id,'sender'=>'pusat'])->update(['view_sender'=>'true','updated_by'=>Auth::User()->username]);
+            
             }   
             return response()->json(['status'=>'success','messages'=>'Update notif success']);
         }else{

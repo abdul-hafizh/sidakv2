@@ -73,7 +73,7 @@ class RequestNotification
                 $messages = substr($messages, 0, 25) . "...";
              } 
 
-            if($_COOKIE['access'] !='admin' && $_COOKIE['access'] !='pusat')
+            if($access !='admin' && $access !='pusat')
             { 
 
                 $temp[$key]['photo'] = RequestAuth::photoUser($val->from);
@@ -102,7 +102,7 @@ class RequestNotification
           {
             $total_not_show = $total;
           }else{
-            $total_not_show = '';
+            $total_not_show = 0;
           } 
           $result['data'] = $temp;
           $result['total_not_show'] =  $total_not_show;
