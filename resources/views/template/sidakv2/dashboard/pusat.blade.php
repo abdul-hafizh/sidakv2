@@ -277,7 +277,7 @@
                               <div class="split-table-white"></div>
                             </th>
                             <th  class="text-center font-bold  bg-table-radius-right-bottom">
-                               <span class="span-title width-pagu">Total Pagu</span>
+                               <span class="span-title width-pagu">Total Realisasi</span>
                             </th>
                         </tr> 
                         
@@ -635,7 +635,7 @@
                 row +=`<tr>`;
                  row +=`<td>${item.number}</td>`;
                    row +=`<td></td>`;
-                 row +=`<td>${item.fullname}</td>`;
+                 row +=`<td>${item.daerah_name}</td>`;
                  row +=`<td></td>`;
                  row +=`<td align="center">${item.pengawas_target}</td>`;
                  row +=`<td></td>`;
@@ -698,7 +698,7 @@
                  row +=`<tr>`;
 
                    row +=`<td>${item.number}</td>`;
-                 row +=`<td>${item.fullname}</td>`;
+                 row +=`<td>${item.daerah_name}</td>`;
                  row +=`<td align="center">${item.pengawas_target}</td>`;
                  row +=`<td align="right">${item.pengawas_pagu}</td>`;
                  row +=`<td  align="center">${item.pengawas_realisasi_target}</td>`;  
