@@ -326,10 +326,7 @@
                                                      </div>
 
 
-                                                    <!--  <div class="padding-info text-center">
-                                                      <div class="alert-text"> Web ini adalah versi trial/training aplikasi <b>SIDAK versi 4.0 (Versi Baru)</b></div>
-
-                                                     </div>   --> 
+                                                       
 
                                                     <div class="pull-left full pd-copyright">
                                                                     <p class="text-center  color-white  font-sm-1 text-bold-600">Copyright by BKPM</p>
