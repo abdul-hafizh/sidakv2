@@ -152,7 +152,7 @@
                             </th>
                             <th rowspan="2" class="text-center font-bold bg-table-radius-right">
                               <div class="split-table-white"></div>
-                              <span class="pd-top-12">Total Pagu</span>
+                              <span class="pd-top-12">Total Realisasi</span>
                             </th>
                        
 
@@ -244,7 +244,7 @@
                             </th>
                             <th rowspan="2" class="text-center font-bold bg-table-radius-right">
                               <div class="split-table-white"></div>
-                              <span class="pd-top-12">Total Pagu</span>
+                              <span class="pd-top-12">Total Realisasi</span>
                             </th>
                        
 
@@ -337,7 +337,7 @@
                             </th>
                             <th rowspan="2" class="text-center font-bold bg-table-radius-right">
                               <div class="split-table-white"></div>
-                              <span class="pd-top-12">Total Pagu</span>
+                              <span class="pd-top-12">Total Realisasi</span>
                             </th>
                        
 
