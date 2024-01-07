@@ -57,7 +57,8 @@
                     <span class="icon-bar"></span>
                 </a>
 
-                <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
+              <!--   <h3 class="pull-left padding-10-0 mgn-none text-capitalize">{{ $title  }} </h3>
+                <small class="text-info-dasboard">Web ini adalah versi trial/training aplikasi <b>SIDAK versi 4.0 (Versi Baru)</small> -->
                 <div class="navbar-custom-menu mt-10 mc-15">
                     <ul class="nav navbar-nav">
                         <li class="dropdown messages-menu">
@@ -120,19 +121,19 @@
     <script src="{{ config('app.url').$template.'/js/xlsx.full.min.js' }}"></script>
     <script src="{{ config('app.url').$template.'/js/sortable.js' }}"></script>
 
-    <!--Start of Tawk.to Script-->
-    <script type="text/javascript">
+ <!--Start of Tawk.to Script-->
+<script type="text/javascript">
 var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
 (function(){
 var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
 s1.async=true;
-s1.src='https://embed.tawk.to/652b5c66eb150b3fb9a17233/1hcom1slg';
+s1.src='https://embed.tawk.to/6598cd650ff6374032bd1a36/1hjee4lk5';
 s1.charset='UTF-8';
 s1.setAttribute('crossorigin','*');
 s0.parentNode.insertBefore(s1,s0);
 })();
 </script>
-    <!--End of Tawk.to Script-->
+<!--End of Tawk.to Script-->
 
 
     <script type="text/javascript">
@@ -160,8 +161,8 @@ s0.parentNode.insertBefore(s1,s0);
                     $("#menu-notif").on("click", "#updateNotif", (e) => {
 
                         let id = e.currentTarget.dataset.param_id;
-
-                        UpdateData(id);
+                        let url = e.currentTarget.dataset.param_url;
+                        UpdateData(id,url);
                     });
                 }
 
@@ -192,19 +193,20 @@ s0.parentNode.insertBefore(s1,s0);
             $('.selectpicker').selectpicker('refresh');
         }
 
-        function UpdateData(id) {
-            console.log(id)
-            // $.ajax({
-            //     url: BASE_URL + `/api/notif-update/` + id,
-            //     method: 'PUT',
-            //     success: function(response) {
-            //         console.log(response)
-            //         $('#total-notif').html('');
-            //     },
-            //     error: function(error) {
-            //         //console.error('Error fetching data:', error);
-            //     }
-            // });
+        function UpdateData(id,url) {
+          
+            $.ajax({
+                url: BASE_URL + `/api/notif-update/` + id,
+                method: 'PUT',
+                success: function(response) {
+                    
+                    $('#total-notif').html(''); 
+                    window.location.replace(url);
+                },
+                error: function(error) {
+                    //console.error('Error fetching data:', error);
+                }
+            });
         }
 
         function getNotif() {
@@ -220,12 +222,14 @@ s0.parentNode.insertBefore(s1,s0);
                     if (response.data.length > 0) {
                         response.data.forEach(function(item, index) {
                             var row = "";
-                            row += `<li id="updateNotif" data-param_id="` + item.id + `">`;
-                            if (item.url != '') {
-                                row += `<a href="` + item.url + `" >`;
-                            } else {
-                                row += `<a >`;
-                            }
+                            row += `<li >`;
+                            // if (item.url != '') {
+                            //     row += `<a href="` + item.url + `" >`;
+                            // } else {
+                            //     row += `<a >`;
+                            // }
+                            row += `<a id="updateNotif" class="pointer" data-param_id="` + item.id + `" data-param_url="` + item.url + `">`;
+                           // console.log(item.url)
 
                             row += `<div class="pull-left">`;
                             row += `<img src="${item.photo}" class="img-circle" alt="User Image">`;
