@@ -139,6 +139,8 @@ class PerencanaanApiController extends Controller
                   ->orWhere('penyelesaian_realisasi_pagu', 'like', "%$search_text%")
                   ->orWhere('penyelesaian_evaluasi_pagu', 'like', "%$search_text%")
                   ->orWhere('promosi_pengadaan_pagu', 'like', "%$search_text%")
+                  ->orWhere('identifikasi_peta_potensi', 'like', "%$search_text%")
+                  ->orWhere('perumusan_peta_potensi', 'like', "%$search_text%")
                   ->orWhere('lokasi', 'like', "%$search_text%");
             });
         }             

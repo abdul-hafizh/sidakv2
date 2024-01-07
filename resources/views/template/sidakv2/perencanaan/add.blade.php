@@ -3,6 +3,7 @@
 
 <style>    
      tr.border-bottom td { border-bottom: 3pt solid #f4f4f4; } td { padding: 10px !important; }
+     ol { padding-inline-start: 20px !important; }
      .modal-loading {
         display: none;
         position: fixed;
@@ -102,8 +103,10 @@
                                              <div id="selectPeriode" class="form-group margin-none"></div>
                                              <span id="periode-id-messages"></span>
                                              <input type="hidden" id="pagu_apbn_inp">
+                                             <input type="hidden" id="pagu_peta_inp">
                                              <input type="hidden" id="total_target_bimtek_inp">
                                              <input type="hidden" id="total_rencana_inp">
+                                             <input type="hidden" id="total_peta_inp">
                                         </div>
                                    </div>
                               </div>
@@ -126,7 +129,7 @@
                               </thead>
                               <tbody>
                                    <tr>
-                                        <td><strong>1</strong></td>
+                                        <td><strong>1.</strong></td>
                                         <td class="text-left"><strong>Pengawasan Penanaman Modal</strong></td>
                                         <td class="text-center"><strong id="total_pengawasan_target">0</strong></td>
                                         <td class="text-center"><strong>Kegiatan Usaha</strong></td>
@@ -134,7 +137,7 @@
                                    </tr>
                                    <tr>
                                         <td>&nbsp;</td>
-                                        <td>A. Analisa Dan Verifikasi Data, Profil Dan Informasi Kegiatan Usaha Dari Pelaku Usaha</td>
+                                        <td><ol type="a"><li>Perencanaan Inspeksi Lapangan Tahunan</li></ol></td>
                                         <td class="text-center">
                                            <div id="pengawas-analisa-target-alert" class="margin-none form-group">  
                                              <input id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target target_pengawasan_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
@@ -146,14 +149,14 @@
                                         </td>
                                         <td>
                                           <div id="pengawas-analisa-pagu-alert" class="margin-none form-group">
-                                             <input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_analisa_pagu" name="pengawas_analisa_pagu" type="number" min="0" class="form-control pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-analisa-pagu-messages"></span>
                                           </div>   
                                         </td>
                                    </tr>
                                    <tr>
                                         <td>&nbsp;</td>
-                                        <td>B. Inspeksi Lapangan</td>
+                                        <td><ol type="a" start="2"><li>Pelaksanaan Inspeksi Lapangan</li></ol></td>
                                         <td class="text-center">
                                            <div id="pengawas-inspeksi-target-alert" class="margin-none form-group">  
                                              <input id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target target_pengawasan" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
@@ -165,14 +168,14 @@
                                         </td>
                                         <td>
                                            <div id="pengawas-inspeksi-pagu-alert" class="margin-none form-group">  
-                                             <input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_inspeksi_pagu" name="pengawas_inspeksi_pagu" type="number" min="0" class="form-control pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-inspeksi-pagu-messages"></span>
                                            </div>  
                                         </td>
                                    </tr>        
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
-                                        <td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>
+                                        <td><ol type="a" start="3"><li>Penilaian Kepatuhan Pelaksanaan Perizinan Berusaha</li></ol></td>
                                         <td class="text-center">
                                           <div id="pengawas-evaluasi-target-alert" class="margin-none form-group">
                                              <input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target target_pengawasan_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
@@ -184,13 +187,13 @@
                                         </td>
                                         <td>
                                            <div id="pengawas-evaluasi-pagu-alert" class="margin-none form-group">
-                                             <input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control nilai_inp pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="pengawas_evaluasi_pagu" name="pengawas_evaluasi_pagu" type="number" min="0" class="form-control pengawasan_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="pengawas-evaluasi-pagu-messages"></span>
                                            </div>  
                                         </td>
                                    </tr>
                                    <tr>
-                                        <td><strong>2</strong></td>
+                                        <td><strong>2.</strong></td>
                                         <td class="text-left"><strong>Bimbingan Teknis Kepada Pelaku Usaha</strong></td>
                                         <td class="text-center"><strong id="total_bimtek_target">0</strong></td>
                                         <td class="text-center"><strong>Pelaku Usaha</strong></td>
@@ -198,7 +201,7 @@
                                    </tr>
                                    <tr>
                                         <td>&nbsp;</td>
-                                        <td>A. Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko</td>
+                                        <td><ol type="a"><li>Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko <br/> dan Pengawasan Perizinan Berusaha Berbasis Risiko</li></ol></td>
                                         <td class="text-center">
                                              <div id="bimtek-perizinan-target-alert" class="margin-none form-group">
                                                   <input id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control text-center bimtek_perizinan_target bimtek_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
@@ -210,14 +213,14 @@
                                              </td>
                                         <td>
                                              <div id="bimtek-perizinan-pagu-alert" class="margin-none form-group">
-                                                  <input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                                  <input id="bimtek_perizinan_pagu" name="bimtek_perizinan_pagu" type="number" min="0" class="form-control bimtek_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                                   <span id="bimtek-perizinan-pagu-messages"></span>
                                              </div>
                                         </td>
                                    </tr>
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
-                                        <td>B. Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko</td>
+                                        <td><ol type="a" start="2"><li>Bimbingan Teknis/Sosialisasi Laporan Kegiatan Penanaman Modal</li></ol></td>
                                         <td class="text-center">
                                              <div id="bimtek-pengawasan-target-alert" class="margin-none form-group">
                                                   <input id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control text-center bimtek_pengawasan_target bimtek_nilai_target" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
@@ -229,21 +232,21 @@
                                         </td>
                                         <td>
                                              <div id="bimtek-pengawasan-pagu-alert" class="margin-none form-group">
-                                                  <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control nilai_inp bimtek_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                                  <input id="bimtek_pengawasan_pagu" name="bimtek_pengawasan_pagu" type="number" min="0" class="form-control bimtek_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                                   <span id="bimtek-pengawasan-pagu-messages"></span>
                                              </div>
                                         </td>
                                    </tr>
                                    <tr>
-                                        <td><strong>3</strong></td>
-                                        <td class="text-left"><strong>Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</strong></td>
+                                        <td><strong>3.</strong></td>
+                                        <td class="text-left"><strong>Penyelesaian Permasalahan dan Hambatan yang Dihadapi Pelaku Usaha <br/> dalam Merealisasikan Kegiatan Usahanya</strong></td>
                                         <td class="text-center"><strong id="total_penyelesaian_target">0</strong></td>
                                         <td class="text-center"><strong>Kegiatan Usaha</strong></td>
                                         <td class="text-right"><strong id="total_penyelesaian_pagu">Rp 0</strong></td>
                                    </tr>
                                    <tr>
                                         <td>&nbsp;</td>
-                                        <td>A. Identifikasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya</td>
+                                        <td><ol type="a"><li>Identifikasi Permasalahan dan Hambatan yang Dihadapi Pelaku Usaha <br/> dalam Merealisasikan Kegiatan Usahanya</li></ol></td>
                                         <td class="text-center">
                                           <div id="penyelesaian-identifikasi-target-alert" class="margin-none form-group"> 
                                                <input id="penyelesaian_identifikasi_target" name="penyelesaian_identifikasi_target" type="number" class="form-control text-center penyelesaian_nilai_target target_penyelesaian_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
@@ -255,14 +258,14 @@
                                         </td>
                                         <td>
                                            <div id="penyelesaian-identifikasi-pagu-alert" class="margin-none form-group"> 
-                                             <input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="penyelesaian_identifikasi_pagu" name="penyelesaian_identifikasi_pagu" type="number" class="form-control penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-identifikasi-pagu-messages"></span>
                                            </div>  
                                         </td>
                                    </tr>
                                    <tr>
                                         <td>&nbsp;</td>
-                                        <td>B. Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi Pelaku Usaha <br/> Dalam Merealisasikan Kegiatan Usahanya</td>
+                                        <td><ol type="a" start="2"><li>Penyelesaian Permasalahan dan Hambatan yang Dihadapi Pelaku Usaha <br/> dalam Merealisasikan Kegiatan Usahanya</li></ol></td>
                                         <td class="text-center">
                                            <div id="penyelesaian-realisasi-target-alert" class="margin-none form-group">   
                                              <input id="penyelesaian_realisasi_target" name="penyelesaian_realisasi_target" type="number" class="form-control text-center penyelesaian_nilai_target target_penyelesaian" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
@@ -274,53 +277,63 @@
                                         </td>
                                         <td>
                                            <div id="penyelesaian-realisasi-pagu-alert" class="margin-none form-group">  
-                                             <input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             <input id="penyelesaian_realisasi_pagu" name="penyelesaian_realisasi_pagu" type="number" class="form-control penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              <span id="penyelesaian-realisasi-pagu-messages"></span>
                                            </div>  
                                         </td>
                                    </tr>
-                                   <tr class="border-bottom">
-                                        <td>&nbsp;</td>
-                                        <td>C. Evaluasi Penyelesaian Permasalahan Dan Hambatan Yang Dihadapi <br/> Pelaku Usaha Dalam Merealisasikan Kegiatan Usahanya Perizinan <br/> Berusaha Para Pelaku Usaha</td>
-                                        <td class="text-center">
-                                           <div id="penyelesaian-evaluasi-target-alert" class="margin-none form-group">  
-                                             <input id="penyelesaian_evaluasi_target" name="penyelesaian_evaluasi_target" type="number" class="form-control text-center penyelesaian_nilai_target target_penyelesaian_edit" placeholder="Target" value="0" disabled oninput="this.value = Math.abs(this.value)">
-                                             <span id="penyelesaian-evaluasi-target-messages"></span>
-                                           </div>  
-                                        </td>
-                                        <td>
-                                             <input type="text" class="form-control" placeholder="Kegiatan Usaha" value="Kegiatan Usaha" disabled>
-                                        </td>
-                                        <td>
-                                             <div id="penyelesaian-evaluasi-pagu-alert" class="margin-none form-group"> 
-                                                  <input id="penyelesaian_evaluasi_pagu" name="penyelesaian_evaluasi_pagu" type="number" class="form-control nilai_inp penyelesaian_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
-                                                  <span id="penyelesaian-evaluasi-pagu-messages"></span>
-                                             </div>   
-                                        </td>
-                                   </tr>
                                    @if($access == 'province')
                                    <tr>
-                                        <td><strong>4</strong></td>
-                                        <td class="text-left"><strong id="label-peta-judul">Penyusunan Bahan Peta Pontesi</strong></td>
+                                        <td><strong>4.</strong></td>
+                                        <td class="text-left"><strong id="label-peta-judul">Penyusunan Peta Potensi Investasi Provinsi</strong></td>
                                         <td class="text-center"><strong>1</strong></td>
-                                        <td class="text-center"><strong>Video</strong></td>
+                                        <td class="text-center"><strong>Dokumen Peta Potensi <br/> Investasi Provinsi</strong></td>
                                         <td class="text-right"><strong id="total_promosi_pagu">Rp 0</strong></td>
                                    </tr>
                                    <tr class="border-bottom">
                                         <td>&nbsp;</td>
-                                        <td id="label-peta-sub">A. Penyediaan File sebagai Bahan Peta Potensi</td>
+                                        <td><ol type="a"><li>Identifikasi Pemetaan Potensi Investasi Provinsi</li></ol></td>
+                                        <td>
+                                             <input type="text" class="form-control text-center" value="-" readonly>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control text-center" value="-" readonly>
+                                        </td>
+                                        <td>
+                                             <div class="margin-none form-group"> 
+                                                  <input id="identifikasi_peta_potensi" name="identifikasi_peta_potensi" type="number" class="form-control peta_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             </div>   
+                                        </td>
+                                   </tr>
+                                   <tr class="border-bottom">
+                                        <td>&nbsp;</td>
+                                        <td><ol type="a" start="2"><li>Perumusan dan Pelaksanaan Pemetaan Potensi Investasi Provinsi</li></ol></td>
+                                        <td>
+                                             <input type="text" class="form-control text-center" value="-" readonly>
+                                        </td>
+                                        <td>
+                                             <input type="text" class="form-control text-center" value="-" readonly>
+                                        </td>
+                                        <td>
+                                             <div class="margin-none form-group"> 
+                                                  <input id="perumusan_peta_potensi" name="perumusan_peta_potensi" type="number" class="form-control peta_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
+                                             </div>   
+                                        </td>
+                                   </tr>
+                                   <tr class="border-bottom">
+                                        <td>&nbsp;</td>
+                                        <td><ol type="a" start="3"><li>Penyusunan Peta Potensi Investasi Provinsi</li></ol></td>
                                         <td class="text-center">
                                              <div class="margin-none form-group">  
                                                   <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="number" class="form-control text-center" placeholder="Target" value="1" readonly>
                                              </div>  
                                         </td>
                                         <td>
-                                             <input id="promosi_pengadaan_satuan" name="promosi_pengadaan_target" type="text" class="form-control" placeholder="Video" value="Video" readonly>
+                                             <input type="text" class="form-control" value="Dokumen Peta Potensi Investasi Provinsi" readonly>
                                         </td>
                                         <td>
                                              <div class="margin-none form-group"> 
-                                                  <input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden" value="0">
-                                                  <input id="promosi_pengadaan_pagu_convert" name="promosi_pengadaan_pagu_convert" type="text" class="form-control text-right" placeholder="Pagu" value="0" disabled>
+                                                  <input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="number" class="form-control peta_nilai_pagu text-right" placeholder="Pagu" value="0" disabled oninput="this.value = Math.abs(this.value)">
                                              </div>   
                                         </td>
                                    </tr>
@@ -333,6 +346,8 @@
                                         <input id="promosi_pengadaan_target" name="promosi_pengadaan_target" type="hidden" value="0">
                                         <input id="promosi_pengadaan_satuan" name="promosi_pengadaan_satuan" type="hidden" value="">
                                         <input id="promosi_pengadaan_pagu" name="promosi_pengadaan_pagu" type="hidden" value="0">
+                                        <input id="identifikasi_peta_potensi" name="identifikasi_peta_potensi" type="hidden" value="0">
+                                        <input id="perumusan_peta_potensi" name="perumusan_peta_potensi" type="hidden" value="0">
                                    @endif
 
                                    <tr>
@@ -409,9 +424,11 @@
           var total_bimtek_pagu = 0;
           var penyelesaian = 0;
           var total_penyelesaian_pagu = 0;
+          var total_peta_pagu = 0;
           var temp_total_pengawasan = 0;
           var temp_total_bimtek = 0;
           var temp_total_penyelesaian = 0;
+          var temp_total_peta = 0;
 
           $('#selectPeriode').html('<select id="periode_id" title="Pilih Periode" class="form-control selectpicker"></select>'); 
          
@@ -426,7 +443,7 @@
           $('#total_rencana').html('<b>Rp. 0</b>');           
           $('#total_rencana_sec').html('<b>Rp. 0</b>'); 
           
-          getperiode();            
+          getperiode();
 
           $(".pengawasan_nilai_pagu").on("input", function() {
                calculatePengawasanPagu();
@@ -444,10 +461,14 @@
                calculatePenyelesaianPagu();
           });
 
+          $(".peta_nilai_pagu").on("input", function() {
+               calculatePetaPagu();
+          });
+
           $("#kirim").click( () => {
 
                var periode_id = $('#periode_id').val();
-               var totalRencana = parseFloat($('#total_rencana_inp').val());
+               var totalRencana = parseFloat($('#total_rencana_inp').val()) + parseFloat($('#total_peta_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
                var total_target_bimtek = $('#total_target_bimtek_inp').val();
                var total_target_bimtek_inp = parseInt($("#bimtek_perizinan_target").val()) + parseInt($("#bimtek_pengawasan_target").val());
@@ -469,12 +490,23 @@
                     "penyelesaian_identifikasi_pagu": $("#penyelesaian_identifikasi_pagu").val(),
                     "penyelesaian_realisasi_target": $("#penyelesaian_realisasi_target").val(),
                     "penyelesaian_realisasi_pagu": $("#penyelesaian_realisasi_pagu").val(),
-                    "penyelesaian_evaluasi_target": $("#penyelesaian_evaluasi_target").val(),
-                    "penyelesaian_evaluasi_pagu": $("#penyelesaian_evaluasi_pagu").val(),
+                    "penyelesaian_evaluasi_target": 0,
+                    "penyelesaian_evaluasi_pagu": 0,
+
+                    "pengawas_analisa_satuan": 'Kegiatan Usaha',
+                    "pengawas_inspeksi_satuan": 'Kegiatan Usaha',
+                    "pengawas_evaluasi_satuan": 'Pelaku Usaha',
+                    "bimtek_perizinan_satuan": 'Pelaku Usaha',
+                    "bimtek_pengawasan_satuan": 'Pelaku Usaha',
+                    "penyelesaian_identifikasi_satuan": 'Kegiatan Usaha',
+                    "penyelesaian_realisasi_satuan": 'Kegiatan Usaha',
+                    "penyelesaian_evaluasi_satuan": '-',
 
                     "promosi_pengadaan_target": $("#promosi_pengadaan_target").val(),
-                    "promosi_pengadaan_satuan": $("#promosi_pengadaan_satuan").val(),
+                    "promosi_pengadaan_satuan": 'Dokumen Peta Potensi Investasi Provinsi',
                     "promosi_pengadaan_pagu": $("#promosi_pengadaan_pagu").val(),
+                    "identifikasi_peta_potensi": $("#identifikasi_peta_potensi").val(),
+                    "perumusan_peta_potensi": $("#perumusan_peta_potensi").val(),
 
                     "lokasi": $("#lokasi").val(),
                     "tgl_tandatangan": $("#tgl_tandatangan").val(),
@@ -516,7 +548,7 @@
           $("#simpan").click( () => {
 
                var periode_id = $('#periode_id').val(); 
-               var totalRencana = parseFloat($('#total_rencana_inp').val());
+               var totalRencana = parseFloat($('#total_rencana_inp').val()) + parseFloat($('#total_peta_inp').val());
                var paguApbn = parseFloat($('#pagu_apbn_inp').val());
                var total_target_bimtek = $('#total_target_bimtek_inp').val();
                var total_target_bimtek_inp = parseInt($("#bimtek_perizinan_target").val()) + parseInt($("#bimtek_pengawasan_target").val());
@@ -538,12 +570,23 @@
                     "penyelesaian_identifikasi_pagu": $("#penyelesaian_identifikasi_pagu").val(),
                     "penyelesaian_realisasi_target": $("#penyelesaian_realisasi_target").val(),
                     "penyelesaian_realisasi_pagu": $("#penyelesaian_realisasi_pagu").val(),
-                    "penyelesaian_evaluasi_target": $("#penyelesaian_evaluasi_target").val(),
-                    "penyelesaian_evaluasi_pagu": $("#penyelesaian_evaluasi_pagu").val(),
+                    "penyelesaian_evaluasi_target": 0,
+                    "penyelesaian_evaluasi_pagu": 0,
+
+                    "pengawas_analisa_satuan": 'Kegiatan Usaha',
+                    "pengawas_inspeksi_satuan": 'Kegiatan Usaha',
+                    "pengawas_evaluasi_satuan": 'Pelaku Usaha',
+                    "bimtek_perizinan_satuan": 'Pelaku Usaha',
+                    "bimtek_pengawasan_satuan": 'Pelaku Usaha',
+                    "penyelesaian_identifikasi_satuan": 'Kegiatan Usaha',
+                    "penyelesaian_realisasi_satuan": 'Kegiatan Usaha',
+                    "penyelesaian_evaluasi_satuan": '-',
 
                     "promosi_pengadaan_target": $("#promosi_pengadaan_target").val(),
-                    "promosi_pengadaan_satuan": $("#promosi_pengadaan_satuan").val(),
+                    "promosi_pengadaan_satuan": 'Dokumen Peta Potensi Investasi Provinsi',
                     "promosi_pengadaan_pagu": $("#promosi_pengadaan_pagu").val(),
+                    "identifikasi_peta_potensi": $("#identifikasi_peta_potensi").val(),
+                    "perumusan_peta_potensi": $("#perumusan_peta_potensi").val(),
 
                     "lokasi": $("#lokasi").val(),
                     "tgl_tandatangan": $("#tgl_tandatangan").val(),
@@ -655,21 +698,38 @@
                totalRencana();
           }
 
+          function calculatePetaPagu() {
+               var total_peta_pagu = 0;
+
+               $(".peta_nilai_pagu").each(function() {
+                    total_peta_pagu += parseFloat($(this).val());
+               });
+
+               var number = total_peta_pagu;
+               var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
+
+               $("#total_promosi_pagu").text('Rp '+ formattedNumber);
+     
+               temp_total_peta = number;
+               totalRencana();
+          }
+
           function totalRencana() {
                
                var total_rencana = temp_total_pengawasan + temp_total_bimtek + temp_total_penyelesaian;
-               var number = total_rencana;
-               var formattedNumber = accounting.formatNumber(number, 0, ".", ".");
+               var total_rencana_dan_peta = temp_total_pengawasan + temp_total_bimtek + temp_total_penyelesaian + temp_total_peta;
+               var total_peta = temp_total_peta;
                var periode_id = $('#periode_id').val();
                var pagu_apbn = $('#pagu_apbn_inp').val();
+               var pagu_peta = $('#pagu_peta_inp').val();
 
                if(periode_id)
                {    
-                    if(pagu_apbn < total_rencana) {
+                    if(pagu_apbn < total_rencana_dan_peta) {
                          Swal.fire({
                               icon: 'info',
                               title: 'Peringatan',
-                              text:'Total Perencanaan Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_apbn, 0, ".", "."),
+                              text:'Total Perencanaan Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_apbn - pagu_peta, 0, ".", "."),
                               confirmButtonColor: '#000',
                               showConfirmButton: true,
                               confirmButtonText: 'OK',
@@ -683,11 +743,33 @@
                          $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                          $('#total_rencana_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
                     }
+
+                    if(pagu_peta < total_peta) {
+                         Swal.fire({
+                              icon: 'info',
+                              title: 'Peringatan',
+                              text:'Total Perencanaan Peta Potensi Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_peta, 0, ".", "."),
+                              confirmButtonColor: '#000',
+                              showConfirmButton: true,
+                              confirmButtonText: 'OK',
+                         });  
+                         
+                         $('#pagu_promosi_header').removeClass('text-black').addClass('text-red').addClass('blinking-text');
+                         $('#promosi_pagu_sec').removeClass('text-black').addClass('text-red').addClass('blinking-text');
+
+                    } else {
+
+                         $('#pagu_promosi_header').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
+                         $('#promosi_pagu_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
+                    }
                }
                
-               $('#total_rencana').html('<b>Rp. '+formattedNumber+'</b>');
-               $('#total_rencana_sec').html('<b>Rp. '+formattedNumber+'</b>');
-               $('#total_rencana_inp').val(number);
+               $('#total_rencana').html('<b>Rp. '+accounting.formatNumber(total_rencana, 0, ".", ".")+'</b>');
+               $('#total_rencana_sec').html('<b>Rp. '+accounting.formatNumber(total_rencana, 0, ".", ".")+'</b>');
+               $('#pagu_promosi_header').html('<b>Rp. '+accounting.formatNumber(total_peta, 0, ".", ".")+'</b>');
+               $('#promosi_pagu_sec').html('<b>Rp. '+accounting.formatNumber(total_peta, 0, ".", ".")+'</b>');
+               $('#total_rencana_inp').val(total_rencana);
+               $('#total_peta_inp').val(total_peta);
           }
 
           function getperiode(){
@@ -717,24 +799,20 @@
 
                     if(index > 2023) {                         
                          $('#label-peta').text('Pagu Peta Potensi');
-                         $('#label-peta-judul').text('Penyusunan Bahan Peta Pontesi');
-                         $('#label-peta-sub').text('A. Penyediaan File sebagai Bahan Peta Potensi');
-                         $('#label-peta-total').text('Total Peta Pontesi');
+                         $('#label-peta-judul').text('Penyusunan Peta Potensi Investasi Provinsi');
+                         $('#label-peta-total').text('Total Peta Potensi');
                     } else {
                          $('#label-peta').text('Pagu Promosi');
                          $('#label-peta-judul').text('Penyusunan Bahan Promosi Penanaman Modal');
-                         $('#label-peta-sub').text('A. Penyediaan Video Promosi Digital sebagai Bahan Promosi Penanaman Modal');
                          $('#label-peta-total').text('Total Promosi');
                     }
 
                     //isi pagu
                     $('#pagu_apbn').html('<b>'+find.pagu_apbn+'</b>');
                     $('#pagu_apbn_sec').html('<b>'+find.pagu_apbn+'</b>');                  
-                    $('#pagu_promosi_header').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
-                    $('#promosi_pagu_sec').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
-                    $('#promosi_pengadaan_pagu').val(find.pagu_promosi.replace('Rp ', '').replace(/\./g, ''));
-                    $('#promosi_pengadaan_pagu_convert').val('Rp. '+find.pagu_promosi.toLocaleString('id-ID'));
-                    $('#total_promosi_pagu').html('<b>Rp. '+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
+                    $('#pagu_promosi_header').html('<b>'+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
+                    $('#promosi_pagu_sec').html('<b>'+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
+                    $('#total_promosi_pagu').html('<b>'+find.pagu_promosi.toLocaleString('id-ID')+'</b>');
                     $('#pagu_apbn_inp').val(find.pagu_apbn.replace(/[^0-9]/g, ''));
                     
                     //isi target dan pagu pengawasan
@@ -774,13 +852,21 @@
                     $('.target_penyelesaian_edit').val(penyelesaian);
                     $(".target_penyelesaian").prop("disabled", true);
                     $("#total_penyelesaian_target").text(penyelesaian);
-                    $("#penyelesaian_identifikasi_pagu").val(find.pagu_penyelesaian * 0.1);
+                    $("#penyelesaian_identifikasi_pagu").val(find.pagu_penyelesaian * 0.2);
                     $("#penyelesaian_realisasi_pagu").val(find.pagu_penyelesaian * 0.8);
-                    $("#penyelesaian_evaluasi_pagu").val(find.pagu_penyelesaian * 0.1);
+                    
+                    //isi peta potensi
+                    $(".peta_nilai_pagu").prop("disabled", false);
+                    $('#identifikasi_peta_potensi').val(find.pagu_promosi.replace('Rp ', '').replace(/\./g, '')  * 0.1);
+                    $('#perumusan_peta_potensi').val(find.pagu_promosi.replace('Rp ', '').replace(/\./g, '') * 0.1);
+                    $('#promosi_pengadaan_pagu').val(find.pagu_promosi.replace('Rp ', '').replace(/\./g, '') * 0.8);
+                    $('#total_peta_inp').val(find.pagu_promosi.replace('Rp ', '').replace(/\./g, ''));
+                    $('#pagu_peta_inp').val(find.pagu_promosi.replace('Rp ', '').replace(/\./g, ''));
 
                     calculatePengawasanPagu();
                     calculateBimtekPagu();
                     calculatePenyelesaianPagu();
+                    calculatePetaPagu();
                });
           }
 
@@ -942,23 +1028,23 @@
                               $('#penyelesaian-realisasi-pagu-messages').removeClass('help-block').html('');
                          } 
 
-                         if(errors.messages.penyelesaian_evaluasi_target)
-                         {
-                              $('#penyelesaian-evaluasi-target-alert').addClass('has-error');
-                              $('#penyelesaian-evaluasi-target-messages').addClass('help-block').html('<strong>'+ errors.messages.penyelesaian_evaluasi_target +'</strong>');
-                         } else {
-                              $('#penyelesaian-evaluasi-target-alert').removeClass('has-error');
-                              $('#penyelesaian-evaluasi-target-messages').removeClass('help-block').html('');
-                         }  
+                         // if(errors.messages.penyelesaian_evaluasi_target)
+                         // {
+                         //      $('#penyelesaian-evaluasi-target-alert').addClass('has-error');
+                         //      $('#penyelesaian-evaluasi-target-messages').addClass('help-block').html('<strong>'+ errors.messages.penyelesaian_evaluasi_target +'</strong>');
+                         // } else {
+                         //      $('#penyelesaian-evaluasi-target-alert').removeClass('has-error');
+                         //      $('#penyelesaian-evaluasi-target-messages').removeClass('help-block').html('');
+                         // }  
 
-                         if(errors.messages.penyelesaian_evaluasi_pagu)
-                         {
-                              $('#penyelesaian-evaluasi-pagu-alert').addClass('has-error');
-                              $('#penyelesaian-evaluasi-pagu-messages').addClass('help-block').html('<strong>'+ errors.messages.penyelesaian_evaluasi_pagu +'</strong>');
-                         } else {
-                              $('#penyelesaian-evaluasi-pagu-alert').removeClass('has-error');
-                              $('#penyelesaian-evaluasi-pagu-messages').removeClass('help-block').html('');
-                         }  
+                         // if(errors.messages.penyelesaian_evaluasi_pagu)
+                         // {
+                         //      $('#penyelesaian-evaluasi-pagu-alert').addClass('has-error');
+                         //      $('#penyelesaian-evaluasi-pagu-messages').addClass('help-block').html('<strong>'+ errors.messages.penyelesaian_evaluasi_pagu +'</strong>');
+                         // } else {
+                         //      $('#penyelesaian-evaluasi-pagu-alert').removeClass('has-error');
+                         //      $('#penyelesaian-evaluasi-pagu-messages').removeClass('help-block').html('');
+                         // }  
 
                          if(errors.messages.periode_id)
                          {
