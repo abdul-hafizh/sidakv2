@@ -132,7 +132,8 @@ class PengawasanApiController extends Controller
                         return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil kirim data']);
                     } else {
                         DB::rollBack();
-                        return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal kirim data']);
+                        $err['messages'] = 'Gagal kirim data';
+                        return response()->json($err, 400);
                     }
                 } else if ($saveData) {
                     if ($request->sub_menu_slug == 'inspeksi' && isset($request->nib)) {
@@ -143,12 +144,14 @@ class PengawasanApiController extends Controller
                     return response()->json(['status' => true, 'id' => $saveData, 'message' => 'Berhasil simpan data']);
                 } else {
                     DB::rollBack();
-                    return response()->json(['status' => false, 'id' => $saveData, 'message' => 'Gagal simpan data']);
+                    $err['messages'] = 'Gagal simpan data';
+                    return response()->json($err, 400);
                 }
             }
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['status' => false, 'message' => 'Terjadi kesalahan dalam menyimpan data']);
+            $err['messages'] = 'Terjadi kesalahan dalam menyimpan data';
+            return response()->json($err, 400);
         }
     }
 
@@ -230,7 +233,8 @@ class PengawasanApiController extends Controller
                     //  Mail::to($pusat)->send(new PenyelesaianMail(Auth::User()->username, $url, $tahun, $semester, $daerah_name, $sub_kegiatan, $judul, $kepada, $subject, $pesan, 'kirim'));
                     return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil kirim data']);
                 } else {
-                    return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal kirim data']);
+                    $err['messages'] = 'Gagal kirim data';
+                    return response()->json($err, 400);
                 }
             } else if ($UpdateData) {
                 if ($request->sub_menu_slug == 'inspeksi' && isset($request->nib)) {
@@ -240,7 +244,8 @@ class PengawasanApiController extends Controller
                 }
                 return response()->json(['status' => true, 'id' => $id, 'message' => 'Berhasil ubah data']);
             } else {
-                return response()->json(['status' => false, 'id' => $id, 'message' => 'Gagal ubah data']);
+                $err['messages'] = 'Gagal ubah data';
+                return response()->json($err, 400);
             }
         }
     }
