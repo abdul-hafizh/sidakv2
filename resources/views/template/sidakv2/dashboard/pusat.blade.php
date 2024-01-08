@@ -324,8 +324,7 @@
           
        } 
        
-       
-       
+  
        if(year > '2023')
        {
           $('#total-convert').html('<span>Total Peta Potensi </span><h3 class="card-text" id="total-promosi"></h3>');

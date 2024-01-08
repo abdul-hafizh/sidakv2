@@ -724,7 +724,7 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
 
       }else{
       
-        if($daerah_id =="")
+        if($daerah_id)
         {
 
            $data = Pengawasan::where(['status_laporan_id'=>'14','periode_id'=>$periode,'sub_menu_slug'=>$type])->sum('biaya_kegiatan');
@@ -753,7 +753,7 @@ RequestDashboard::BimsosRealisasiAPBN($periode_01,$daerah_id,'is_bimtek_ipbbr') 
     
      }else{
         
-        if($daerah_id =="")
+        if($daerah_id)
         {
            if($type == 'is_tenaga_pendamping')
            {
