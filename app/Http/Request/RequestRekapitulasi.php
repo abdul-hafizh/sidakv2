@@ -40,9 +40,12 @@ class RequestRekapitulasi
                   }else{
                      $arr[3] = RequestRekapitulasi::Pemetaan($perencanaan,$periode,$daerah_id);  
                   }
+                     $arr[4] = RequestRekapitulasi::TotalHeader($arr[0],$arr[1],$arr[2],$arr[3]); 
+               }else{
+                    $arr[3] = RequestRekapitulasi::TotalHeader($arr[0],$arr[1],$arr[2]); 
+
                }   
 
-              $arr[4] = RequestRekapitulasi::TotalHeader($arr[0],$arr[1],$arr[2],$arr[3]); 
               
             return $arr; 
   }
