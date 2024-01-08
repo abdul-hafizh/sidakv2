@@ -430,7 +430,7 @@
 
                row+= '<tr class="border-bottom">';
                     row+= '<td>&nbsp;</td>';
-                    row+= '<td>C. Evaluasi penilaian kepatuhan pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>';
+                    row+= '<td>C. Evaluasi Penilaian Kepatuhan Pelaksanaan Perizinan Berusaha Para Pelaku Usaha</td>';
                     row+= '<td class="text-center">';
                          row+= '<input id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target" oninput="this.value = Math.abs(this.value)">';
                          row+= '<span id="pengawas-evaluasi-target-messages"></span>';
