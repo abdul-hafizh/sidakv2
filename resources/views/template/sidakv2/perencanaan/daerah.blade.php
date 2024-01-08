@@ -241,7 +241,7 @@
 </div>
 
 <script type="text/javascript">
-	$(document).ready(function() {          
+	$(document).ready(function() {
 		let page = 1;
 		var list = [];
 		var periode =[];
@@ -812,12 +812,21 @@
 						$('#generate_pdf').html(generate_pdf);
 
 					} else if(data.status_code == 13) {
-						rows_btn+= '<div class="box-footer">';
-							rows_btn+= '<div class="btn-group just-center">';
-								rows_btn += '<a href="' + BASE_URL + '/perencanaan/edit/' + data.id + '" class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Edit Data</a>';
-								rows_btn+= '<a href="#" class="btn btn-danger col-md-2"><i class="fa fa-pencil"></i> Hapus Data</a>';
+						if(data.periode_id > 2023) {
+							rows_btn+= '<div class="box-footer">';
+								rows_btn+= '<div class="btn-group just-center">';
+									rows_btn += '<a href="' + BASE_URL + '/perencanaan/edit/' + data.id + '" class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Edit Data</a>';
+									rows_btn+= '<a href="#" class="btn btn-danger col-md-2"><i class="fa fa-pencil"></i> Hapus Data</a>';
+								rows_btn+= '</div>';
 							rows_btn+= '</div>';
-						rows_btn+= '</div>';
+						} else {				
+							rows_btn+= '<div class="box-footer">';
+								rows_btn+= '<div class="btn-group just-center">';
+									rows_btn += '<a href="' + BASE_URL + '/perencanaan/ubah/' + data.id + '" class="btn btn-warning col-md-2"><i class="fa fa-pencil"></i> Edit Data</a>';
+									rows_btn+= '<a href="#" class="btn btn-danger col-md-2"><i class="fa fa-pencil"></i> Hapus Data</a>';
+								rows_btn+= '</div>';
+							rows_btn+= '</div>';
+						}
 					}
 				}
 

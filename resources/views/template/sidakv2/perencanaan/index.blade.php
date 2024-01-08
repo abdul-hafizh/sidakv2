@@ -616,7 +616,7 @@
                  row +=`<td></td>`;
                 row +=`<td >`; 
                     row +=`<div class="btn-action">`;
-                    if(item.lap_rencana != '') {                                   
+                    if(item.lap_rencana !== '' || item.lap_rencana !== null || item.lap_rencana !== 'null') {                                   
                         row += download_link;
                     }
 
