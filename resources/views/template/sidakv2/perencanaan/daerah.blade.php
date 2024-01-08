@@ -409,7 +409,7 @@
 
 				row+= '<tr>';
 					row+= '<td>&nbsp;</td>';
-					row+= '<td><ol type="a"><li>'+ label_la +'</li></ol></td>';
+					row+= '<td><ol type="a"><li>'+ label_1a +'</li></ol></td>';
 					row+= '<td></td>';
 					row+= '<td class="text-center">';
 						row+= '<input disabled id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target">';
