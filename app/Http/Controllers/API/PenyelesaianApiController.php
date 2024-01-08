@@ -4,11 +4,11 @@ namespace App\Http\Controllers\API;
 
 use DB;
 use Auth;
-use File;
 use Response;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\File;
 use App\Models\Penyelesaian;
 use App\Models\AuditLogRequest;
 use App\Models\Periode;
@@ -116,6 +116,10 @@ class PenyelesaianApiController extends Controller
 
             $path = 'laporan/penyelesaian/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             $path_save = $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+
+            if (!File::exists(public_path($path))) {
+                File::makeDirectory(public_path($path), $mode = 0777, true, true);
+            }
 
             if ($request->hasFile('lap_profile')) {
                 $file_profile = $request->file('lap_profile');
@@ -234,6 +238,10 @@ class PenyelesaianApiController extends Controller
 
             $path = 'laporan/penyelesaian/' . $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
             $path_save = $request->periode_id_mdl . '/' . Auth::User()->daerah_id;
+
+            if (!File::exists(public_path($path))) {
+                File::makeDirectory(public_path($path), $mode = 0755, true, true);
+            }
 
             if ($request->hasFile('lap_profile')) {
                 $file_profile = $request->file('lap_profile');

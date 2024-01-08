@@ -347,6 +347,9 @@ class PerencanaanApiController extends Controller
             $fileDir = '/laporan/rencana/' . $_res->periode_id . '/' . $_res->daerah_id . '/';
             $image = base64_decode($source[1]);
             $filePath = public_path() . $fileDir;
+            if (!file_exists($filePath)) {
+                mkdir($filePath, 0755, true);
+            }
             $filepdf =  'rencana-' . $_res->periode_id . '-' . $_res->daerah_id . '-' . time() . '.pdf';
             $success = file_put_contents($filePath.$filepdf, $image);
             $file_add = $_res->periode_id . '/' . $_res->daerah_id . '/' . $filepdf;
