@@ -711,21 +711,19 @@
                $("#total_promosi_pagu").text('Rp '+ formattedNumber);
      
                temp_total_peta = number;
-               totalRencana();
+               totalRencanaPeta();
           }
 
           function totalRencana() {
                
                var total_rencana = temp_total_pengawasan + temp_total_bimtek + temp_total_penyelesaian;
-               var total_rencana_dan_peta = temp_total_pengawasan + temp_total_bimtek + temp_total_penyelesaian + temp_total_peta;
-               var total_peta = temp_total_peta;
                var periode_id = $('#periode_id').val();
                var pagu_apbn = $('#pagu_apbn_inp').val();
                var pagu_peta = $('#pagu_peta_inp').val();
 
                if(periode_id)
                {    
-                    if(pagu_apbn < total_rencana_dan_peta) {
+                    if(pagu_apbn - pagu_peta < total_rencana) {
                          Swal.fire({
                               icon: 'info',
                               title: 'Peringatan',
@@ -742,8 +740,22 @@
 
                          $('#total_rencana').removeClass('text-red').removeClass('blinking-text').addClass('text-white');
                          $('#total_rencana_sec').removeClass('text-red').removeClass('blinking-text').addClass('text-black');
-                    }
+                    }                    
+               }
+               
+               $('#total_rencana').html('<b>Rp. '+accounting.formatNumber(total_rencana, 0, ".", ".")+'</b>');
+               $('#total_rencana_sec').html('<b>Rp. '+accounting.formatNumber(total_rencana, 0, ".", ".")+'</b>');
+               $('#total_rencana_inp').val(total_rencana);               
+          }
 
+          function totalRencanaPeta() {
+               
+               var total_peta = temp_total_peta;
+               var periode_id = $('#periode_id').val();
+               var pagu_peta = $('#pagu_peta_inp').val();
+
+               if(periode_id)
+               {
                     if(pagu_peta < total_peta) {
                          Swal.fire({
                               icon: 'info',
@@ -764,11 +776,8 @@
                     }
                }
                
-               $('#total_rencana').html('<b>Rp. '+accounting.formatNumber(total_rencana, 0, ".", ".")+'</b>');
-               $('#total_rencana_sec').html('<b>Rp. '+accounting.formatNumber(total_rencana, 0, ".", ".")+'</b>');
                $('#pagu_promosi_header').html('<b>Rp. '+accounting.formatNumber(total_peta, 0, ".", ".")+'</b>');
                $('#promosi_pagu_sec').html('<b>Rp. '+accounting.formatNumber(total_peta, 0, ".", ".")+'</b>');
-               $('#total_rencana_inp').val(total_rencana);
                $('#total_peta_inp').val(total_peta);
           }
 
