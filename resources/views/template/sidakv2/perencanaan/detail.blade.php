@@ -319,6 +319,24 @@
                $('#selectPeriode').html('<b>'+data.periode_id+'<b>');
                $('#status-view').html('<b>'+data.status+'</b>');
 
+               if (data.periode_id > 2023) {
+                    var label_1a = 'Perencanaan Inspeksi Lapangan Tahunan';
+                    var label_1b = 'Pelaksanaan Inspeksi Lapangan';
+                    var label_1c = 'Penilaian Kepatuhan Pelaksanaan Perizinan Berusaha';
+                    var label_2a = 'Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko <br/> dan Pengawasan Perizinan Berusaha Berbasis Risiko';
+                    var label_2b = 'Bimbingan Teknis/Sosialisasi Laporan Kegiatan Penanaman Modal';
+                    var label_3a = 'Identifikasi Permasalahan dan Hambatan yang Dihadapi Pelaku Usaha <br/> dalam Merealisasikan Kegiatan Usahanya';
+                    var label_3b = 'Penyelesaian Permasalahan dan Hambatan yang Dihadapi Pelaku Usaha <br/> dalam Merealisasikan Kegiatan Usahanya';
+               } else {
+                    var label_1a = 'Analisa dan Verifikasi Data, Profil dan Informasi Kegiatan Usaha Dari Pelaku Usaha'; 
+                    var label_1b = 'Inspeksi Lapangan';
+                    var label_1c = 'Evaluasi Penilaian Kepatuhan Pelaksanaan Perizinan Berusaha Para Pelaku Usaha';
+                    var label_2a = 'Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko';
+                    var label_2b = 'Bimbingan Teknis/Sosialisasi Implementasi Pengawasan Perizinan Berusaha Berbasis Risiko';
+                    var label_3a = 'Identifikasi Penyelesaian Permasalahan dan Hambatan yang Dihadapi <br/> Pelaku Usaha dalam Merealisasikan Kegiatan Usahanya';
+                    var label_3b = 'Penyelesaian Permasalahan dan Hambatan yang Dihadapi Pelaku Usaha <br/> dalam Merealisasikan Kegiatan Usahanya';
+               }
+
                row+= '<tr>';
                     row+= '<td><strong>1</strong></td>';
                     row+= '<td rowspan="4"></td>';
@@ -333,7 +351,7 @@
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
-                    row+= '<td><ol type="a"><li>Perencanaan Inspeksi Lapangan Tahunan</li></ol></td>';
+                    row+= '<td><ol type="a"><li>'+ label_la +'</li></ol></td>';
                     row+= '<td></td>';
                     row+= '<td class="text-center">';
                          row+= '<input disabled id="pengawas_analisa_target" name="pengawas_analisa_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" value="'+ data.pengawas_analisa_target +'" placeholder="Target">';
@@ -352,7 +370,7 @@
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
-                    row+= '<td><ol type="a" start="2"><li>Pelaksanaan Inspeksi Lapangan</li></ol></td>';
+                    row+= '<td><ol type="a" start="2"><li>'+ label_1b +'</li></ol></td>';
                     row+= '<td></td>';
                     row+= '<td class="text-center">';
                          row+= '<input disabled id="pengawas_inspeksi_target" name="pengawas_inspeksi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" placeholder="Target" value="'+ data.pengawas_inspeksi_target +'">';
@@ -371,7 +389,7 @@
 
                row+= '<tr class="border-bottom">';
                     row+= '<td>&nbsp;</td>';
-                    row+= '<td><ol type="a" start="3"><li>Penilaian Kepatuhan Pelaksanaan Perizinan Berusaha</li></ol></td>';
+                    row+= '<td><ol type="a" start="3"><li>'+ label_1c +'</li></ol></td>';
                     row+= '<td></td>';
                     row+= '<td class="text-center">';
                          row+= '<input disabled id="pengawas_evaluasi_target" name="pengawas_evaluasi_target" type="number" min="0" class="form-control text-center pengawasan_nilai_target" value="'+ data.pengawas_evaluasi_target +'" placeholder="Target">';
@@ -402,7 +420,7 @@
 
                row+= '<tr>';
                     row+= '<td>&nbsp;</td>';
-                    row+= '<td><ol type="a"><li>Bimbingan Teknis/Sosialisasi Implementasi Perizinan Berusaha Berbasis Risiko <br/> dan Pengawasan Perizinan Berusaha Berbasis Risiko</li></ol></td>';
+                    row+= '<td><ol type="a"><li>'+ label_2a +'</li></ol></td>';
                     row+= '<td></td>';
                     row+= '<td class="text-center">';
                          row+= '<input disabled id="bimtek_perizinan_target" name="bimtek_perizinan_target" type="number" min="0" class="form-control text-center bimtek_nilai_target" value="'+ data.bimtek_perizinan_target +'" placeholder="Target">';
@@ -421,7 +439,7 @@
 
                row+= '<tr class="border-bottom">';
                     row+= '<td>&nbsp;</td>';
-                    row+= '<td><ol type="a" start="2"><li>Bimbingan Teknis/Sosialisasi Laporan Kegiatan Penanaman Modal</li></ol></td>';
+                    row+= '<td><ol type="a" start="2"><li>'+ label_2b +'</li></ol></td>';
                     row+= '<td></td>';
                     row+= '<td class="text-center">';
                          row+= '<input disabled id="bimtek_pengawasan_target" name="bimtek_pengawasan_target" type="number" min="0" class="form-control text-center bimtek_nilai_target" value="'+ data.bimtek_pengawasan_target +'" placeholder="Target">';

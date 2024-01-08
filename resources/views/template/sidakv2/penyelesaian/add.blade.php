@@ -740,6 +740,7 @@
         'lap_document',
         'lap_evaluasi',
       ];
+      
       for (let i = 0; i < form.length; i++) {
         const field = form[i];
         $('#' + field).val('');
@@ -763,7 +764,7 @@
             if (data.lap_profile2) {
               $('#modal-profile2').show();
               $('#lap_profile2_file').val(data.lap_profile2);
-              $('#modal-profile2').click(function() {
+              $('#modal-profile2').off('click').click(function() {
                 tampilkanModal(data.lap_profile2);
               });
             } else {
@@ -774,7 +775,7 @@
             if (data.lap_notula2) {
               $('#modal-notula2').show();
               $('#lap_notula2_file').val(data.lap_notula2);
-              $('#modal-notula2').click(function() {
+              $('#modal-notula2').off('click').click(function() {
                 tampilkanModal(data.lap_notula2);
               });
             } else {
@@ -785,7 +786,7 @@
             if (data.lap_profile) {
               $('#modal-profile2').show();
               $('#lap_profile2_file').val(data.lap_profile);
-              $('#modal-profile2').click(function() {
+              $('#modal-profile2').off('click').click(function() {
                 tampilkanModal(data.lap_profile);
               });
             } else {
@@ -796,7 +797,7 @@
             if (data.lap_notula) {
               $('#modal-notula2').show();
               $('#lap_notula2_file').val(data.lap_notula);
-              $('#modal-notula2').click(function() {
+              $('#modal-notula2').off('click').click(function() {
                 tampilkanModal(data.lap_notula);
               });
             } else {
@@ -808,7 +809,7 @@
           if (data.lap_peserta) {
             $('#modal-peserta').show();
             $('#lap_peserta_file').val(data.lap_peserta);
-            $('#modal-peserta').click(function() {
+            $('#modal-peserta').off('click').click(function() {
               tampilkanModal(data.lap_peserta);
             });
           } else {
@@ -819,7 +820,7 @@
           if (data.lap_profile) {
             $('#modal-profile').show();
             $('#lap_profile_file').val(data.lap_profile);
-            $('#modal-profile').click(function() {
+            $('#modal-profile').off('click').click(function() {
               tampilkanModal(data.lap_profile);
             });
           } else {
@@ -830,7 +831,7 @@
           if (data.lap_narasumber) {
             $('#modal-narasumber').show();
             $('#lap_narasumber_file').val(data.lap_narasumber);
-            $('#modal-narasumber').click(function() {
+            $('#modal-narasumber').off('click').click(function() {
               tampilkanModal(data.lap_narasumber);
             });
           } else {
@@ -841,7 +842,7 @@
           if (data.lap_notula) {
             $('#modal-notula').show();
             $('#lap_notula_file').val(data.lap_notula);
-            $('#modal-notula').click(function() {
+            $('#modal-notula').off('click').click(function() {
               tampilkanModal(data.lap_notula);
             });
           } else {
@@ -852,7 +853,7 @@
           if (data.lap_notula2) {
             $('#modal-notula2').show();
             $('#lap_notula2_file').val(data.lap_notula2);
-            $('#modal-notula2').click(function() {
+            $('#modal-notula2').off('click').click(function() {
               tampilkanModal(data.lap_notula2);
             });
           } else {
@@ -863,7 +864,7 @@
           if (data.lap_lkpm) {
             $('#modal-lkpm').show();
             $('#lap_lkpm_file').val(data.lap_lkpm);
-            $('#modal-lkpm').click(function() {
+            $('#modal-lkpm').off('click').click(function() {
               tampilkanModal(data.lap_lkpm);
             });
           } else {
@@ -874,7 +875,7 @@
           if (data.lap_document) {
             $('#modal-doc').show();
             $('#lap_document_file').val(data.lap_document);
-            $('#modal-doc').click(function() {
+            $('#modal-doc').off('click').click(function() {
               tampilkanModal(data.lap_document);
             });
           } else {
@@ -885,7 +886,7 @@
           if (data.lap_evaluasi) {
             $('#modal-eval').show();
             $('#lap_evaluasi_file').val(data.lap_evaluasi);
-            $('#modal-eval').click(function() {
+            $('#modal-eval').off('click').click(function() {
               tampilkanModal(data.lap_evaluasi);
             });
           } else {
@@ -972,6 +973,24 @@
           }          
         }
       })
+
+      function tampilkanModal(url) {
+        $.ajax({
+          url:  'laporan/penyelesaian/' + url,
+          method: 'GET',
+          xhrFields: {
+            responseType: 'blob'
+          },
+          success: function(data) {
+            var blobUrl = URL.createObjectURL(data);
+            $('#framePDF').attr('src', blobUrl);
+            $('#modalPDF').modal('show');
+          },
+          error: function() {
+            alert('Gagal mengambil file PDF.');
+          }
+        });
+      }
 
       function subMenu(sub_menu_slug) {
         if (sub_menu_slug == 'identifikasi') {
@@ -1399,7 +1418,7 @@
             }
           });
         });
-      }
+      }      
     });
 
     $("#datatable").on("click", ".modalLog", function() {      
@@ -1434,25 +1453,7 @@
           tableBody.append(row);
         });
       }
-    });
-
-    function tampilkanModal(url) {
-      $.ajax({
-        url:  'laporan/penyelesaian/' + url,
-        method: 'GET',
-        xhrFields: {
-          responseType: 'blob'
-        },
-        success: function(data) {
-          var blobUrl = URL.createObjectURL(data);
-          $('#framePDF').attr('src', blobUrl);
-          $('#modalPDF').modal('show');
-        },
-        error: function() {
-          alert('Gagal mengambil file PDF.');
-        }
-      });
-    }
+    });    
 
     function showSwalMessage(message) {
       Swal.fire({
