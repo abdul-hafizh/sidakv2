@@ -30,12 +30,14 @@ class DashboardApiController extends Controller
        }else{
          $daerah_id = $request->daerah_id;
        }
-       $total_kegiatan = RequestDashboard::TotalKegiatan($periode_id,$semester_id,$daerah_id);
-       $Pengawasan = RequestDashboard::Pengawasan($periode_id,$semester_id,$daerah_id);
-       $Bimsos = RequestDashboard::Bimsos($periode_id,$semester_id,$daerah_id);
-       $Penyelesaian = RequestDashboard::Penyelesaian($periode_id,$semester_id,$daerah_id);
+
+       return response()->json($daerah_id);
+       // $total_kegiatan = RequestDashboard::TotalKegiatan($periode_id,$semester_id,$daerah_id);
+       // $Pengawasan = RequestDashboard::Pengawasan($periode_id,$semester_id,$daerah_id);
+       // $Bimsos = RequestDashboard::Bimsos($periode_id,$semester_id,$daerah_id);
+       // $Penyelesaian = RequestDashboard::Penyelesaian($periode_id,$semester_id,$daerah_id);
       
-       return response()->json(['total'=>$total_kegiatan,'access'=>$access,'pengawasan'=>$Pengawasan,'bimsos'=> $Bimsos,'penyelesaian'=>$Penyelesaian]);
+       //return response()->json(['total'=>$total_kegiatan,'access'=>$access,'pengawasan'=>$Pengawasan,'bimsos'=> $Bimsos,'penyelesaian'=>$Penyelesaian,'daerah_id'=>$daerah_id]);
 
     }
 
