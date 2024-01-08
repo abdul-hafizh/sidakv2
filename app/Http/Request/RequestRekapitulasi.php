@@ -23,19 +23,24 @@ class RequestRekapitulasi
   public static function Header($data, $perPage, $request)
   {       
               $daerah_id = "";
+              $access = RequestAuth::Access();
               $periode = $request->periode_id.$request->semester_id;
            
               $perencanaan = RequestRekapitulasi::Rencana($request->periode_id);
-          
+              
               $arr[0] = RequestRekapitulasi::Pengawasan($perencanaan,$periode,$daerah_id);
               $arr[1] = RequestRekapitulasi::Bimsos($perencanaan,$periode,$daerah_id);
               $arr[2] = RequestRekapitulasi::Penyelesaian($perencanaan,$periode,$daerah_id); 
-              if($request->periode_id < 2024)
-              {
-                 $arr[3] = RequestRekapitulasi::Promosi($perencanaan,$periode,$daerah_id);  
-              }else{
-                 $arr[3] = RequestRekapitulasi::Pemetaan($perencanaan,$periode,$daerah_id);  
-              }  
+
+               if($access !='daerah')
+               {
+                  if($request->periode_id < 2024)
+                  {
+                     $arr[3] = RequestRekapitulasi::Promosi($perencanaan,$periode,$daerah_id);  
+                  }else{
+                     $arr[3] = RequestRekapitulasi::Pemetaan($perencanaan,$periode,$daerah_id);  
+                  }
+               }   
 
               $arr[4] = RequestRekapitulasi::TotalHeader($arr[0],$arr[1],$arr[2],$arr[3]); 
               
