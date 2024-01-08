@@ -822,11 +822,11 @@
 
                if(periode_id)
                {    
-                    if(pagu_apbn - pagu_peta < total_rencana ) {
+                    if(pagu_apbn < total_rencana ) {
                          Swal.fire({
                               icon: 'info',
                               title: 'Peringatan',
-                              text:'Total Perencanaan Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_apbn - pagu_peta, 0, ".", "."),
+                              text:'Total Perencanaan Melebihi PAGU yang Diizinkan : Rp. ' + accounting.formatNumber(pagu_apbn, 0, ".", "."),
                               confirmButtonColor: '#000',
                               showConfirmButton: true,
                               confirmButtonText: 'OK',
